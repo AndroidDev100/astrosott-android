@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/dimen5dp"
+        android:background="@color/cod_gray"
+        android:layout_marginTop="@dimen/dimen5dp">
+
+        <FrameLayout
+            android:id="@+id/frameLayoutPackage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/cod_gray">
+
+            <LinearLayout
+                android:id="@+id/liPlanMainLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen5dp"
+                android:layout_marginRight="@dimen/dimen5dp"
+                android:background="@drawable/plan_un_selected_bg"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dimen2dp"
+                android:paddingLeft="@dimen/dimen2dp"
+                android:paddingRight="@dimen/dimen2dp"
+                android:paddingTop=".1dp">
+
+<!--                <RelativeLayout-->
+<!--                    android:id="@+id/rlPackageTitle"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="@dimen/dimen80dp"-->
+<!--                    android:background="@color/colorPrimaryDark">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtPackageTitle"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:layout_marginLeft="@dimen/dimen15dp"-->
+<!--                        android:fontFamily="@font/roboto_regular"-->
+<!--                        android:gravity="center|center_vertical"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="@dimen/sp18" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtPackageCost"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_alignParentRight="true"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:layout_marginRight="@dimen/dp10"-->
+<!--                        android:fontFamily="@font/roboto_bold"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="@dimen/sp18" />-->
+<!--                </RelativeLayout>-->
+                <RelativeLayout
+                    android:id="@+id/rlPackageTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dtv_item_height"
+                    android:background="@color/colorPrimaryDark">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_centerVertical="true"
+                        android:gravity="center|center_vertical">
+
+                    <TextView
+                        android:id="@+id/txtPackageTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/sp15"
+                        android:layout_marginLeft="@dimen/dimen5dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/white"
+                        android:layout_weight="1.4"
+                        android:maxLines="1"
+                        android:ems="10"
+                        android:ellipsize="end"
+                        />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".6"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right">
+
+
+                        <TextView
+                            android:id="@+id/txtPackageCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dp14"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/dimen10dp"/>
+
+
+                    </LinearLayout>
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlPackageDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/search_toolbar_background"
+                    android:padding="@dimen/dimen8dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/txtPackageDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/sign_up_sub_title"
+                        android:fontFamily="@font/roboto_light"
+                        android:lineSpacingExtra="@dimen/dimen3dp"
+                        android:textSize="@dimen/sp15" />
+
+                    <Button
+                        android:id="@+id/txtViewAllChannel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/transparentColor"
+                        android:layout_marginBottom="@dimen/dimen5dp"
+                        android:layout_below="@id/txtPackageDescription"
+                        android:layout_marginTop="@dimen/dimen10dp"
+                        android:text="@string/view_all_channels_live"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textColor="@color/monarch"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/sp15" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imvSelectedPackage"
+                android:layout_width="@dimen/dimen20dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen40dp"
+                android:src="@drawable/ic_check"
+                android:visibility="gone"
+                android:layout_marginStart="-0.5dp"/>
+        </FrameLayout>
+
+    </LinearLayout>
+</layout>

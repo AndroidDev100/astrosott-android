@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_dtv_fragment"
+    app:startDestination="@id/addDTVFragment">
+    <fragment
+        android:id="@+id/addDTVFragment"
+        android:name="com.dialog.dialoggo.activities.subscription.fragment.AddDTVFragment"
+        android:label="fragment_add_dtv"
+        tools:layout="@layout/fragment_add_dtv" >
+        <action
+            android:id="@+id/action_addDTVFragment_to_premiumOTPDtvFragment"
+            app:destination="@id/premiumOTPDtvFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/premiumOTPDtvFragment"
+        android:name="com.dialog.dialoggo.activities.subscription.fragment.PremiumOTPDtvFragment"
+        android:label="fragment_premium_otpdtv"
+        tools:layout="@layout/fragment_premium_otpdtv" >
+        <action
+            android:id="@+id/action_premiumOTPDtvFragment_to_premiumDtvSuccessFragment"
+            app:destination="@id/premiumDtvSuccessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/premiumDtvSuccessFragment"
+        android:name="com.dialog.dialoggo.activities.subscription.fragment.PremiumDtvSuccessFragment"
+        android:label="fragment_premium_dtv_success"
+        tools:layout="@layout/fragment_premium_dtv_success" />
+
+</navigation>

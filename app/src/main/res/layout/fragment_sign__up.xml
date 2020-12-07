@@ -1,0 +1,186 @@
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="@dimen/fragment_width"
+        android:layout_height="@dimen/fragment_height"
+        android:background="@color/fragment_background_color"
+        android:filterTouchesWhenObscured="true"
+        android:focusable="true">
+
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/sign_up_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/sign_up_title_margin_left"
+            android:layout_marginTop="@dimen/sign_up_title_margin_top"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/sign_up"
+            android:textColor="@color/sign_up_title"
+            android:textSize="@dimen/font_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/enter_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/sign_up_title_margin_left"
+            android:layout_marginTop="@dimen/enter_text_margin_top"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/enter_phone"
+            android:textColor="@color/sign_up_sub_title"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up_text" />
+
+        <EditText
+            android:id="@+id/et_phoneno"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="@string/hint_number"
+            android:imeOptions="actionDone"
+            android:layout_marginLeft="@dimen/sign_up_title_margin_left"
+            android:layout_marginTop="@dimen/exclusive_tab_height"
+            android:layout_marginRight="@dimen/sign_up_title_margin_left"
+            android:inputType="number"
+            android:maxLength="9"
+            app:errorEnabled="true"
+            android:textColorHint="@color/white"
+            android:backgroundTint="@color/white"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_medium"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/enter_Text"/>
+
+        <TextView
+            android:id="@+id/errorText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:text=""
+            android:layout_marginRight="@dimen/sign_up_title_margin_left"
+            android:layout_marginLeft="@dimen/sign_up_title_margin_left"
+            android:fontFamily="@font/roboto_regular"
+            app:errorEnabled="true"
+            android:visibility="gone"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/font_medium"
+            app:layout_constraintTop_toBottomOf="@id/et_phoneno"/>
+
+
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:id="@+id/number_edit_text_layout"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="@dimen/sign_up_title_margin_left"-->
+            <!--android:layout_marginTop="@dimen/exclusive_tab_height"-->
+            <!--android:layout_marginRight="@dimen/sign_up_title_margin_left"-->
+            <!--android:focusable="true"-->
+            <!--android:theme="@style/TextLabel"-->
+            <!--app:errorEnabled="true"-->
+            <!--app:errorTextAppearance="@style/ErrorAppearance"-->
+            <!--app:layout_constraintHorizontal_weight="1"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintRight_toRightOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@id/enter_Text">-->
+
+            <!--<android.support.design.widget.TextInputEditText-->
+                <!--android:id="@+id/et_phoneno"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/edit_text_height"-->
+                <!--android:focusable="true"-->
+                <!--android:fontFamily="@font/roboto_regular"-->
+                <!--android:hint="@string/hint_number"-->
+                <!--android:imeOptions="actionDone"-->
+                <!--android:inputType="number"-->
+                <!--android:maxLength="9"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="@dimen/font_medium" />-->
+        <!--</android.support.design.widget.TextInputLayout>-->
+
+        <!--<View-->
+        <!--android:id="@+id/edit_text_underline"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/edit_text_underline_height"-->
+        <!--android:layout_marginLeft="@dimen/sign_up_title_margin_left"-->
+        <!--android:layout_marginTop="@dimen/edit_text_underline_margin_top"-->
+        <!--android:layout_marginRight="@dimen/sign_up_title_margin_left"-->
+        <!--android:background="@color/white"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/enter_Text"></View>-->
+
+        <TextView
+            android:id="@+id/already_user_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/sign_up_title_margin_left"
+            android:layout_marginTop="@dimen/already_user_text_margin_top"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="4dp"
+            android:text="@string/already_user"
+            android:textColor="@color/blue_brand_color"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_phoneno"/>
+
+        <TextView
+            android:id="@+id/cancel_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/sign_up_title_margin_left"
+            android:layout_marginBottom="@dimen/cancel_text_margin_bottom"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_bold"
+            android:padding="4dp"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/cancel_text"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_continue" />
+
+        <TextView
+            android:id="@+id/tv_continue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/sign_up_title_margin_left"
+            android:layout_marginBottom="@dimen/cancel_text_margin_bottom"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_bold"
+            android:padding="4dp"
+            android:text="@string/continue_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <include
+            android:id="@+id/include_progressbar"
+            layout="@layout/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

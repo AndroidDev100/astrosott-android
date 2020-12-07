@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:id="@+id/mRoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:paddingTop="@dimen/more_time_padding"
+            android:paddingBottom="@dimen/more_time_padding">
+
+            <ImageView
+                android:id="@+id/more_list_icon"
+                android:layout_width="wrap_content"
+                tools:ignore="ContentDescription"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/more_icon" />
+
+            <TextView
+                android:id="@+id/more_list_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/more_title_margin_left"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textColor="@color/more_item_title"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

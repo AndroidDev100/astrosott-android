@@ -1,0 +1,381 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!---->
+
+    <!--<variable-->
+    <!--name="movieAssestModel"-->
+    <!--type="com.kaltura.client.types.Asset" />-->
+
+    <!--<variable-->
+    <!--name="tagText"-->
+    <!--type="String" />-->
+
+    <data>
+
+        <variable
+            name="castValue"
+            type="String" />
+
+        <variable
+            name="expandabletext"
+            type="String" />
+
+    </data>
+
+    <!--<variable-->
+    <!--name="castValue"-->
+    <!--type="String" />-->
+
+    <!--<variable-->
+    <!--name="crewValue"-->
+    <!--type="String" />-->
+
+    <!--<variable-->
+    <!--name="expandabletext"-->
+    <!--type="String" />-->
+    <!--</data>-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:filterTouchesWhenObscured="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:descendantFocusability="blocksDescendants"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/movie_detail_ll_margin_left"
+                        android:orientation="vertical">
+
+
+                        <RelativeLayout
+                            android:id="@+id/content_frame"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/movie_detail_ll_margin_left"
+                            android:layout_marginTop="@dimen/now_playing_rl_margin_top"
+                            android:layout_marginEnd="@dimen/movie_detail_ll_margin_right">
+
+                            <ImageView
+                                android:id="@+id/channel_logo"
+                                android:layout_width="@dimen/now_palying_fragment_iv_width"
+                                android:layout_height="@dimen/now_palying_fragment_iv_height"
+                                android:layout_alignParentStart="true"
+                                android:contentDescription="@string/channel_logo"
+                                android:scaleType="fitXY"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:id="@+id/text_view_no_epg"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/now_palying_fragment_iv_height"
+                                android:visibility="gone"
+                                android:layout_marginStart="@dimen/movie_detail_ll_margin_left"
+                                android:layout_toEndOf="@id/channel_logo"
+                                android:foregroundGravity="center_vertical"
+                                android:gravity="center_vertical"
+                                android:text="@string/epg_information_not_available"
+                                android:textColor="@color/white"
+                                android:textSize="15sp" />
+
+                            <RelativeLayout
+                                android:id="@+id/details_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/now_palying_fragment_iv_height"
+                                android:layout_toEndOf="@+id/channel_logo">
+
+                                <TextView
+                                    android:id="@+id/program_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:layout_toStartOf="@+id/start_lay"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:singleLine="true"
+                                    android:text=""
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/font_medium_large" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/program_name"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginEnd="4dp"
+                                    android:layout_toStartOf="@+id/start_lay"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/genre_txt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:singleLine="true"
+                                        android:text=""
+                                        android:textColor="@color/gray"
+                                        android:textSize="@dimen/font_small"
+                                        android:visibility="gone" />
+
+                                    <TextView
+                                        android:id="@+id/dot"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="12dp"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginStart="@dimen/total_duration_left"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:gravity="center"
+                                        android:text="@string/bullet_symbol"
+                                        android:textColor="@color/gray"
+                                        android:textSize="@dimen/font_small"
+                                        android:visibility="gone" />
+
+
+                                    <TextView
+                                        android:id="@+id/total_duration_txt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginStart="@dimen/total_duration_left"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:text=""
+                                        android:maxLines="1"
+                                        android:ellipsize="end"
+                                        android:textColor="@color/gray"
+                                        android:textSize="@dimen/font_medium" />
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/start_lay"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginEnd="3dp"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:text="@string/start"
+                                        android:textColor="@color/primary_blue"
+                                        android:textSize="@dimen/font_small" />
+
+
+                                    <TextView
+                                        android:id="@+id/start"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:text=""
+                                        android:textColor="@color/primary_blue"
+                                        android:textSize="@dimen/font_small" />
+
+
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginTop="26dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginEnd="8dp"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:text="@string/end"
+                                        android:textColor="@color/primary_blue"
+                                        android:textSize="@dimen/font_small" />
+
+
+                                    <TextView
+                                        android:id="@+id/end"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:text=""
+                                        android:textColor="@color/primary_blue"
+                                        android:textSize="@dimen/font_small" />
+
+
+                                </LinearLayout>
+
+                            </RelativeLayout>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/more_frame"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/movie_detail_ll_margin_left"
+                            android:layout_marginTop="@dimen/movie_detail_ll_margin_top"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <com.dialog.dialoggo.utils.helpers.ExpandableTextView
+                                android:id="@+id/description_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="2dp"
+                                android:layout_marginEnd="14dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:lineSpacingExtra="2dp"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/movie_metadata_expandable_text_size" />
+
+                            <com.dialog.dialoggo.utils.helpers.ExpandableCardLayout
+                                android:id="@+id/expandable_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/movie_metadata_expandable_card_margin_right"
+                                android:orientation="vertical"
+                                app:el_expanded="false">
+
+
+                                <LinearLayout
+                                    android:id="@+id/cast_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/movie_detail_ll_margin_top"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/cast_hint"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/roboto_medium"
+                                        android:text="@string/actors"
+                                        android:textColor="@color/gray"
+                                        android:textSize="@dimen/movie_metadata_cast_title_text_size" />
+
+                                    <TextView
+                                        android:id="@+id/cast_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:text="@{castValue}"
+                                        android:textColor="@color/gray"
+                                        android:textSize="@dimen/movie_metadata_cast_text_size" />
+                                </LinearLayout>
+                            </com.dialog.dialoggo.utils.helpers.ExpandableCardLayout>
+
+                            <LinearLayout
+                                android:id="@+id/less_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_marginTop="@dimen/less_button_margin_top"
+                                android:layout_marginEnd="16dp"
+                                android:background="@color/fragment_background_color"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:id="@+id/text_expandable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:maxLines="2"
+                                    android:padding="5dp"
+                                    android:textAllCaps="true"
+                                    android:text="@{expandabletext}"
+                                    android:textColor="@color/white"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:textSize="@dimen/font_medium" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/movie_detail_ll_margin_left"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/shareWith"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/share_margin_top"
+                                android:clickable="true"
+                                android:drawableTop="@drawable/share"
+                                android:drawablePadding="7dp"
+                                android:focusable="true"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="@string/share"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/font_medium" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/view_height"
+                        android:layout_marginTop="@dimen/view_margin_top"
+                        android:background="@color/home_screen_seperator"
+                        android:visibility="invisible" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/my_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/recycleview_margin_top"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"
+                            tools:targetApi="lollipop" />
+
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/no_connection_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/connection"
+                layout="@layout/no_connection" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:enabled="true"
+
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/nav_home"
+        android:title="@string/title_home" />
+
+
+    <item
+        android:id="@+id/navigation_live_tv"
+        android:enabled="true"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/nav_live_tv"
+        android:title="@string/live_tv" />
+
+    <item
+        android:id="@+id/navigation_video"
+        android:enabled="true"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/nav_video"
+        android:title="@string/title_video" />
+    <item
+        android:id="@+id/navigation_viu_apps"
+        android:enabled="true"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/nav_viu"
+        android:title="@string/live_viu_tab" />
+
+
+    <item
+        android:id="@+id/navigation_more"
+        android:enabled="true"
+        android:icon="@drawable/ic_more"
+        android:title="More"
+        app:showAsAction="ifRoom" />
+
+</menu>

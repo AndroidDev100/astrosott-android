@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen80dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_margin="@dimen/dimen5dp"
+        android:weightSum="2">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".6">
+            <ImageView
+                android:id="@+id/imvChannelLogo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/splash_icon1"
+                android:paddingTop="@dimen/dimen5dp"
+                android:paddingStart="@dimen/dimen5dp"
+                android:paddingBottom="@dimen/dimen5dp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+            <TextView
+                android:id="@+id/txtChannelTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="@dimen/sp18"
+                android:maxLines="1"
+                android:layout_marginStart="@dimen/dimen20dp"/>
+            <TextView
+                android:id="@+id/txtChannelDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/search_edit_text_color"
+                android:fontFamily="@font/roboto_regular"
+                android:maxLines="1"
+                android:textSize="@dimen/sp18"
+                android:layout_marginStart="@dimen/dimen20dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:layout_marginEnd="5dp">
+            <ImageView
+                android:id="@+id/imvDelete"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/delete_icon_dtv"
+                android:paddingTop="@dimen/dimen8dp"
+                android:paddingStart="@dimen/dimen5dp"
+                android:paddingBottom="@dimen/dimen8dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

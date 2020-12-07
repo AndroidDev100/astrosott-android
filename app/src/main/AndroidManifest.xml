@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.dialog.dialoggo">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <application
+        android:name=".ApplicationMain"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:resizeableActivity="false"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:theme="@style/MyMaterialTheme"
+        android:usesCleartextTraffic="true"
+        android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
+        tools:replace="android:allowBackup">
+        <activity android:name=".activities.changePaymentMethod.ui.UpdatePaymentMethod"
+            android:screenOrientation="locked"></activity>
+        <activity android:name=".activities.myPlans.ui.MyPlansActivity"
+            android:screenOrientation="locked"/>
+        <activity android:name=".activities.changePaymentMethod.ui.ChangePaymentMethodActivity"
+            android:screenOrientation="locked"/>
+        <activity android:name=".activities.subscriptionActivity.ui.SubscriptionAndMyPlanActivity"
+            android:screenOrientation="locked"/>
+        <activity
+            android:name=".activities.subscription.ui.AddDTVAccountActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation" />
+        <activity
+            android:name=".activities.mbbaccount.ui.AddMBBAccountActivity"
+            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustPan|adjustResize" />
+        <activity
+            android:name=".activities.subscription.ui.DtvAccountActivity"
+            android:screenOrientation="locked"
+            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustPan|adjustResize" />
+        <activity
+            android:name=".activities.subscription.ui.SubscriptionActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.subscription.ui.SingleLiveChannelSubscriptionActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.mbbaccount.ui.MBBAccountActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.parentalControl.ui.ViewingRestrictionActivity"
+            android:screenOrientation="locked" /> <!-- <activity -->
+        <!-- android:name=".activities.SelectAccount.UI.SelectDtvAccountActivity" -->
+        <!-- android:screenOrientation="locked" /> -->
+        <activity android:name=".activities.crWebViewActivity.CrWebViewActivity" />
+        <activity
+            android:name=".activities.addDTVAccountNumber.UI.addDTVAccountNumberActivity"
+            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustPan|adjustResize" />
+        <activity
+            android:name=".activities.dtvActivity.UI.dtvActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.SelectAccount.UI.SelectDtvAccountActivity"
+            android:screenOrientation="locked" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <receiver
+            android:name="com.appsflyer.MultipleInstallBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".activities.parentalControl.ui.ParentalControl" />
+        <activity
+            android:name=".activities.myplaylist.ui.MultiplePlaylistActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.splash.ui.SplashActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="locked"
+            android:theme="@style/splashtheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <data
+                    android:host="open"
+                    android:scheme="viu" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+
+            <!-- Branch App Links (optional) -->
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="go.viu.lk"
+                    android:scheme="https"
+                    />
+                <!-- <data -->
+                <!-- android:host="www.watcho.com" -->
+                <!-- android:scheme="https" /> -->
+
+                <data
+                    android:host="nx3e.test-app.link"
+                    android:scheme="https" />
+                <!-- <data -->
+                <!-- android:host="lets.watcho.com" -->
+                <!-- android:scheme="https" /> -->
+
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.moreListing.ui.ListingActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.moreListing.ui.DetailListingActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.moreListing.ui.ContinueWatchingActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.notificationSetting.ui.NotificationSettingActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.notification.ui.NotificationActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.home.HomeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.search.ui.ActivitySearch"
+            android:screenOrientation="locked"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".activities.search.ui.ResultActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.webSeriesDescription.ui.WebSeriesDescriptionActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.catchUpRails.ui.CatchupActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.forwardEPG.ForwardedEPGActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.liveChannel.ui.LiveChannel"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.appSettings.ui.TabletAppSettingsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.movieDescription.ui.MovieDescriptionActivity"
+            android:screenOrientation="locked" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="a7aeb763e54688f03f8c53dd891bed7107e7d7d2" />
+        <meta-data
+            android:name="io.branch.sdk.BranchKey"
+            android:value="@string/branch_key" />
+        <!--
+<meta-data
+            android:name="io.branch.sdk.BranchKey.test"
+            android:value="key_test_dpMilXzvM21SxylARpBHDecaAufZATMO" />
+        -->
+        <meta-data
+            android:name="io.branch.sdk.BranchKey.test"
+            android:value="key_test_kkKkZ0b009gmqvDPdtM6npigEtkTW343" /> <!-- Branch testing (TestMode "true" to simulate fresh installs on dev environment) -->
+        <meta-data
+            android:name="io.branch.sdk.TestMode"
+            android:value="false" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/noti_icon" />
+<!--        <meta-data-->
+<!--            android:name="com.google.firebase.messaging.default_notification_color"-->
+<!--            android:resource="@color/colorPrimary" />-->
+
+        <receiver
+            android:name="io.branch.referral.InstallListener"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".thirdParty.fcm.DialogFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".thirdParty.fcm.WatchoFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".activities.appSettings.ui.AppSettingsActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.videoQuality.ui.VideoQualityActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.loginActivity.LoginActivity"
+            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustPan|adjustResize" />
+        <activity
+            android:name=".activities.webview.ui.WebViewActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.deviceMangment.ui.DeviceManagementActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.accountSettings.ui.AccountSettingsActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.myplaylist.ui.MyPlaylist"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.applicationSettings.ui.ApplicationSettingActivity"
+            android:screenOrientation="locked" />
+        <activity android:name=".baseModel.BaseActivity" />
+        <activity
+            android:name=".activities.contentPreference.ui.ContentPreferenceActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".player.ui.PlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensorLandscape" />
+
+        <receiver
+            android:name=".Alarm.MyReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.dialog.dialoggo.MyIntent" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true" />
+    </application>
+
+</manifest>

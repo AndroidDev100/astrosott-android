@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_single_channel_subscription_graph"
+    app:startDestination="@id/liveChannelSubcriptionFragment">
+
+    <fragment
+        android:id="@+id/paymentMethodFragment"
+        android:name="com.dialog.dialoggo.activities.subscription.fragment.PaymentMethodFragment"
+        android:label="fragment_payment_method"
+        tools:layout="@layout/fragment_payment_method" >
+        <action
+            android:id="@+id/action_paymentMethodFragment_to_billPaymentFragment"
+            app:destination="@id/billPaymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/billPaymentFragment"
+        android:name="com.dialog.dialoggo.activities.subscription.fragment.BillPaymentFragment"
+        android:label="fragment_bill_payment"
+        tools:layout="@layout/fragment_bill_payment" >
+        <action
+            android:id="@+id/action_billPaymentFragment_to_paymentSuccessFragment"
+            app:destination="@id/paymentSuccessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentSuccessFragment"
+        android:name="com.dialog.dialoggo.activities.subscription.fragment.PaymentSuccessFragment"
+        android:label="fragment_payment_success"
+        tools:layout="@layout/fragment_payment_success" />
+    <fragment
+        android:id="@+id/liveChannelSubcriptionFragment"
+        android:name="com.dialog.dialoggo.activities.subscription.fragment.LiveChannelSubcriptionFragment"
+        android:label="fragment_live_channel_subcription"
+        tools:layout="@layout/fragment_live_channel_subcription" >
+        <action
+            android:id="@+id/action_liveChannelSubcriptionFragment_to_billPaymentFragment"
+            app:destination="@id/billPaymentFragment" />
+    </fragment>
+
+</navigation>

@@ -1,0 +1,386 @@
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="movieAssestModel"
+            type="com.kaltura.client.types.Asset" />
+
+        <variable
+            name="tagText"
+            type="String" />
+
+        <variable
+            name="castValue"
+            type="String" />
+
+        <variable
+            name="crewValue"
+            type="String" />
+
+        <variable
+            name="expandabletext"
+            type="String" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:filterTouchesWhenObscured="true"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/fragment_background_color">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:id="@+id/player_layout_banner"
+                            android:layout_width="@dimen/movie_detail_rl_width"
+                            android:layout_height="@dimen/movie_detail_rl_height"
+                            android:layout_marginStart="@dimen/movie_detail_rl_margin_start"
+                            android:layout_marginTop="@dimen/movie_detail_rl_margin_top"
+                            android:layout_marginEnd="@dimen/movie_detail_rl_margin_end"
+                            app:layout_constraintDimensionRatio="H,1:1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/webseriesimage"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/ic_placeholder_360"
+                                android:contentDescription="@string/banner_image"
+                                android:scaleType="fitXY" />
+
+                            <ImageView
+                                android:id="@+id/iv_play_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginEnd="@dimen/web_series_iv_player_icon_margin_right"
+                                android:layout_marginBottom="@dimen/web_series_iv_player_icon_margin_bottom"
+                                android:background="@drawable/play_icon"
+                                android:contentDescription="@string/play_icon"
+                                android:visibility="visible" />
+                        </RelativeLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/above_dark_shadow"
+                            app:layout_constraintBottom_toBottomOf="@+id/player_layout_banner"
+                            app:layout_constraintTop_toTopOf="@+id/player_layout_banner">
+
+                        </FrameLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:descendantFocusability="blocksDescendants"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top"
+                                android:layout_marginEnd="@dimen/movie_detail_ll_margin_right">
+
+                                <TextView
+                                    android:id="@+id/movie_title"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:lineHeight="@dimen/movie_title_line_height"
+                                    android:singleLine="true"
+                                    android:text="@{movieAssestModel.name}"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/font_large"
+                                    tools:targetApi="p" />
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/movie_tag_layout_margin_top"
+                                android:layout_marginEnd="@dimen/movie_detail_ll_margin_right"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_short_description"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginEnd="@dimen/movie_metadata_tag_margin_margin_right"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/font_small" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="@dimen/movie_detail_description_layout_margin_top"
+                                android:orientation="vertical">
+
+                                <com.dialog.dialoggo.utils.helpers.ExpandableTextView
+                                    android:id="@+id/description_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/expandable_text_margin_right"
+                                    android:ellipsize="end"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:lineSpacingExtra="2dp"
+                                    android:maxLines="2"
+                                    android:text="@{movieAssestModel.description}"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/movie_metadata_expandable_text_size" />
+
+                                <com.dialog.dialoggo.utils.helpers.ExpandableCardLayout
+                                    android:id="@+id/expandable_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:layout_marginEnd="@dimen/movie_metadata_expandable_card_margin_right"
+                                    android:orientation="vertical"
+                                    app:el_expanded="false">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+
+                                        <LinearLayout
+                                            android:id="@+id/cast_lay"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/movie_detail_ll_margin_top">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto_bold"
+                                                android:text="@string/actors"
+                                                android:textColor="@color/cast_and_crew_title"
+                                                android:textSize="@dimen/font_medium" />
+
+                                            <TextView
+                                                android:id="@+id/cast_text"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto_regular"
+                                                android:text="@{castValue}"
+                                                android:textColor="@color/cast_and_crew_title"
+                                                android:textSize="@dimen/font_medium" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/crew_lay"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/movie_crew_ll_margin_top">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto_bold"
+                                                android:text="@string/directors"
+                                                android:textColor="@color/cast_and_crew_title"
+                                                android:textSize="@dimen/font_medium" />
+
+                                            <TextView
+                                                android:id="@+id/crew_text"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto_regular"
+                                                android:text="@{crewValue}"
+                                                android:textColor="@color/cast_and_crew_title"
+                                                android:textSize="@dimen/font_medium" />
+                                        </LinearLayout>
+                                    </LinearLayout>
+                                </com.dialog.dialoggo.utils.helpers.ExpandableCardLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/less_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_marginTop="@dimen/less_button_margin_top"
+                                    android:background="@color/fragment_background_color"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/text_expandable"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/roboto_bold"
+                                        android:maxLines="2"
+                                        android:paddingTop="@dimen/movie_metadata_txt_show_hide_padding_top"
+                                        android:paddingBottom="@dimen/movie_metadata_txt_show_hide_padding_bottom"
+                                        android:text="@{expandabletext}"
+                                        android:textColor="@color/primary_blue"
+                                        android:textSize="@dimen/font_medium" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/movie_detail_ll_margin_left"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/shareWith"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/share_margin_top"
+                                        android:clickable="true"
+                                        android:drawableTop="@drawable/share"
+                                        android:drawablePadding="7dp"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:text="@string/share"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/font_medium"
+                                        android:focusable="true" />
+
+                                    <TextView
+                                        android:id="@+id/watchList"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="40dp"
+                                        android:layout_marginTop="@dimen/share_margin_top"
+                                        android:clickable="true"
+                                        android:drawableTop="@drawable/play_list"
+                                        android:drawablePadding="7dp"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:text="@string/playlist"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/font_medium"
+                                        android:focusable="true" />
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:id="@+id/download"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="40dp"
+                                    android:orientation="vertical"
+                                    android:visibility="gone">
+
+                                    <TextView
+                                        android:id="@+id/textdownload"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/watchlist_margin_top"
+                                        android:clickable="true"
+                                        android:drawableTop="@drawable/download_icon"
+                                        android:drawablePadding="7dp"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:text="@string/download"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/font_medium"
+                                        android:focusable="true" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/trailor_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="40dp"
+                                    android:orientation="vertical"
+                                    android:visibility="gone">
+                                    <TextView
+                                        android:id="@+id/textTrailer"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/watchlist_margin_top"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:text="@string/trailer"
+                                        android:textColor="@color/white"
+                                        android:drawableTop="@drawable/trailor_button"
+                                        android:drawablePadding="7dp"
+                                        android:textSize="@dimen/font_medium" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <fragment
+                            android:id="@+id/rail_fragment"
+                            android:name="com.dialog.dialoggo.baseModel.RailBaseFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/rail_base_fragment_margin_top" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/drop_shadow"
+                    android:padding="@dimen/trailor_btn_top">
+
+                    <ImageView
+                        android:id="@+id/back_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/player_imageview_margin_left"
+                        android:background="@drawable/back_icon"
+                        android:contentDescription="@string/back_icon"
+                        android:padding="@dimen/movie_detail_ll_margin_left" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </ScrollView>
+
+        <FrameLayout
+            android:id="@+id/no_connection_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/connection"
+                layout="@layout/no_connection" />
+        </FrameLayout>
+    </RelativeLayout>
+</layout>

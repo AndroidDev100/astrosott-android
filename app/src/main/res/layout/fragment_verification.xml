@@ -1,0 +1,200 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dialog_verfication_padding"
+        android:filterTouchesWhenObscured="true"
+        android:background="@color/fragment_background_color"
+        android:clickable="true"
+        >
+
+        <TextView
+            android:id="@+id/sign_up_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/sign_up_title_margin_left"
+            android:layout_marginTop="@dimen/sign_up_title_margin_top"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/verification"
+            android:textColor="@color/sign_up_title"
+            android:textSize="@dimen/font_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_phone_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/sign_up_title_margin_left"
+            android:layout_marginTop="@dimen/enter_text_margin_top"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/enter_pin"
+            android:textColor="@color/sign_up_sub_title"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up_text" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/number_edit_text_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sign_up_title_margin_left"
+            android:layout_marginTop="@dimen/exclusive_tab_height"
+            android:layout_marginRight="@dimen/sign_up_title_margin_left"
+            android:theme="@style/TextLabel"
+            app:errorEnabled="true"
+            app:errorTextAppearance="@style/ErrorAppearance"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_phone_no">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_pin"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="@string/pin"
+                android:imeOptions="actionDone"
+                android:inputType="numberPassword"
+                android:maxLength="6"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_medium"
+                >
+                <requestFocus />
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_phone_no"
+            android:padding="@dimen/dimen16dp"
+            android:layout_marginLeft="@dimen/dimen270dp"
+            android:layout_marginTop="@dimen/dimen32dp"
+            android:layout_marginRight="@dimen/sign_up_title_margin_left">
+            <ImageView
+                android:id="@+id/imgNotieEye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/notie_eye_selector"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+        <!--<View-->
+        <!--android:id="@+id/edit_text_underline"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/edit_text_underline_height"-->
+        <!--android:layout_marginLeft="@dimen/sign_up_title_margin_left"-->
+        <!--android:layout_marginTop="@dimen/verification_edit_text_underline_margin_top"-->
+        <!--android:layout_marginRight="@dimen/sign_up_title_margin_left"-->
+        <!--android:background="@color/white"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/enter_Text"></View>-->
+
+        <TextView
+            android:id="@+id/tv_resend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:enabled="false"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="4dp"
+            android:text="@string/resend_text"
+            android:textColor="@color/cancel_text"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/number_edit_text_layout" />
+
+        <TextView
+            android:id="@+id/tv_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:enabled="false"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_regular"
+            android:text=""
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_resend"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/cancel_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_bold"
+            android:padding="4dp"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/cancel_text"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/continue_Text"
+            app:layout_constraintTop_toBottomOf="@+id/tv_counter"
+            app:layout_constraintVertical_bias="0.466"
+            android:layout_marginTop="@dimen/dialog_base_padding"/>
+
+        <TextView
+            android:id="@+id/continue_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/sign_up_title_margin_left"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_bold"
+            android:padding="4dp"
+            android:text="@string/continue_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_counter"
+            android:layout_marginTop="@dimen/dialog_base_padding"/>
+
+        <include
+            android:id="@+id/include_progressbar"
+            layout="@layout/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/include_progressbar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_bold"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="@string/signing_you_up"
+            android:visibility="gone"
+            android:textSize="@dimen/font_medium_large"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

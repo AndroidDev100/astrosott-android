@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:filterTouchesWhenObscured="true"
+        android:layout_height="match_parent"
+        android:background="@color/fragment_background_color"
+        tools:context=".activities.accountSettings.ui.AccountSettingsActivity"
+        >
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/toolbar_back_arrow"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/account_setting_margin_left"
+            android:layout_marginRight="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:text="@string/phone_no"
+            android:textColor="@color/more_item_title"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/include" />
+
+        <TextView
+            android:id="@+id/tv_phone_no"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textColor="@color/more_item_title"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/include" />
+
+        <TextView
+            android:id="@+id/tv_dtv_account"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/account_setting_margin_left"
+            android:layout_marginRight="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:text="@string/dtv_text"
+            android:textColor="@color/more_item_title"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/switch_push"
+            app:layout_constraintTop_toBottomOf="@id/tv_phone"
+            />
+
+        <TextView
+            android:id="@+id/tv_mbb_account"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/account_setting_margin_left"
+            android:layout_marginRight="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:text="@string/mbb_text"
+            android:textColor="@color/more_item_title"
+            android:textSize="@dimen/font_medium_large"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/switch_push"
+            app:layout_constraintTop_toBottomOf="@id/tv_dtv_account"
+            />
+
+        <TextView
+            android:id="@+id/tv_parental_control"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/account_setting_margin_left"
+            android:layout_marginRight="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:text="@string/parental_control"
+            android:textColor="@color/more_item_title"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/switch_push"
+            app:layout_constraintTop_toBottomOf="@id/tv_mbb_account"
+            />
+
+        <TextView
+            android:id="@+id/tv_subscription"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/account_setting_margin_left"
+            android:layout_marginRight="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:text="@string/subscription"
+            android:textColor="@color/more_item_title"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/switch_push"
+            app:layout_constraintTop_toBottomOf="@id/tv_parental_control"
+            />
+
+
+        <include
+            android:id="@+id/connection"
+            layout="@layout/no_connection"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

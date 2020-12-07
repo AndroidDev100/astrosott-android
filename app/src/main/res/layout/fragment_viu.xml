@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:filterTouchesWhenObscured="true"
+        android:background="@color/fragment_background_color"
+        android:clipToPadding="false"
+        android:paddingBottom="12dp"
+        android:scrollbars="none">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_papare"
+                android:layout_width="@dimen/viu_item_width"
+                android:layout_height="@dimen/viu_item_height"
+                android:layout_marginLeft="@dimen/viu_apps_margin"
+                android:layout_marginTop="@dimen/viu_apps_margin"
+                android:layout_marginRight="@dimen/viu_apps_margin"
+                android:clickable="true"
+                android:elevation="8dp"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toStartOf="@+id/iv_zee"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/partner_icon"
+                android:focusable="true"
+                tools:targetApi="lollipop"
+                />
+
+            <!--android:id="@+id/iv_alt_balaji"-->
+
+            <!--            <ImageView-->
+            <!--            android:id="@+id/iv_iflix"-->
+            <!--            android:layout_width="@dimen/viu_item_width"-->
+            <!--            android:layout_height="@dimen/viu_item_height"-->
+            <!--            android:layout_marginLeft="@dimen/viu_apps_margin"-->
+            <!--            android:layout_marginTop="@dimen/viu_apps_margin"-->
+            <!--            android:layout_marginRight="@dimen/viu_apps_margin"-->
+            <!--            android:clickable="true"-->
+            <!--            android:elevation="4dp"-->
+            <!--            android:scaleType="fitXY"-->
+            <!--                android:visibility="gone"-->
+            <!--            app:layout_constraintEnd_toStartOf="@+id/iv_zee"-->
+            <!--            app:layout_constraintHorizontal_bias="0.5"-->
+            <!--            app:layout_constraintStart_toEndOf="@+id/iv_papare"-->
+            <!--            app:layout_constraintTop_toTopOf="parent"-->
+            <!--            android:contentDescription="@string/partner_icon"-->
+            <!--            android:focusable="true"-->
+            <!--            tools:targetApi="lollipop"-->
+            <!--            />-->
+
+            <!--iv_dialog_mytv-->
+            <ImageView
+                android:id="@+id/iv_zee"
+                android:layout_width="@dimen/viu_item_width"
+                android:layout_height="@dimen/viu_item_height"
+                android:layout_marginLeft="@dimen/viu_apps_margin"
+                android:layout_marginTop="@dimen/viu_apps_margin"
+                android:layout_marginRight="@dimen/viu_apps_margin"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toStartOf="@+id/iv_alt_balaji"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/iv_papare"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/partner_icon"
+                android:focusable="true"
+                tools:targetApi="lollipop"
+                />
+
+
+
+            <ImageView
+                android:id="@+id/iv_alt_balaji"
+                android:layout_width="@dimen/viu_item_width"
+                android:layout_height="@dimen/viu_item_height"
+                android:layout_marginLeft="@dimen/viu_apps_margin"
+                android:layout_marginTop="@dimen/viu_apps_margin"
+                android:layout_marginRight="@dimen/viu_apps_margin"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/iv_zee"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/partner_icon"
+                android:focusable="true"
+                tools:targetApi="lollipop"
+                />
+
+
+            <ImageView
+                android:id="@+id/iv_eros_now"
+                android:layout_width="@dimen/viu_item_width"
+                android:layout_height="@dimen/viu_item_height"
+                android:layout_marginLeft="@dimen/viu_apps_margin"
+                android:layout_marginTop="@dimen/viu_apps_margin"
+                android:layout_marginRight="@dimen/viu_apps_margin"
+                android:clickable="true"
+                android:contentDescription="@string/partner_icon"
+                android:elevation="4dp"
+                android:focusable="true"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toStartOf="@+id/iv_yupp_tv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_papare"
+                tools:targetApi="lollipop" />
+            <ImageView
+                android:id="@+id/iv_yupp_tv"
+                android:layout_width="@dimen/viu_item_width"
+                android:layout_height="@dimen/viu_item_height"
+                android:layout_marginLeft="@dimen/viu_apps_margin"
+                android:layout_marginTop="@dimen/viu_apps_margin"
+                android:layout_marginRight="@dimen/viu_apps_margin"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:scaleType="fitXY"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toStartOf="@+id/iv_guru"
+                app:layout_constraintStart_toEndOf="@+id/iv_eros_now"
+                app:layout_constraintTop_toBottomOf="@+id/iv_zee"
+                android:contentDescription="@string/partner_icon"
+                android:focusable="true"
+                tools:targetApi="lollipop" />
+
+
+
+            <ImageView
+                android:id="@+id/iv_guru"
+                android:layout_width="@dimen/viu_item_width"
+                android:layout_height="@dimen/viu_item_height"
+                android:layout_marginLeft="@dimen/viu_apps_margin"
+                android:layout_marginTop="@dimen/viu_apps_margin"
+                android:layout_marginRight="@dimen/viu_apps_margin"
+                android:clickable="true"
+                android:contentDescription="@string/partner_icon"
+                android:elevation="4dp"
+                android:focusable="true"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_yupp_tv"
+                app:layout_constraintTop_toBottomOf="@+id/iv_alt_balaji"
+                tools:targetApi="lollipop" />
+
+
+            <ImageView
+                android:id="@+id/iv_hungama"
+                android:layout_width="@dimen/viu_item_width"
+                android:layout_height="@dimen/viu_item_height"
+                android:layout_marginTop="@dimen/viu_apps_margin"
+                android:layout_marginRight="@dimen/viu_apps_margin"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:scaleType="fitXY"
+                app:layout_constraintStart_toStartOf="@+id/iv_eros_now"
+                app:layout_constraintTop_toBottomOf="@+id/iv_eros_now"
+                android:contentDescription="@string/partner_icon"
+                android:focusable="true"
+                tools:targetApi="lollipop"
+                />
+    <!--        <ImageView
+                android:id="@+id/iv_music_safari"
+                android:layout_width="@dimen/viu_item_width"
+                android:layout_height="@dimen/viu_item_height"
+                android:layout_marginLeft="@dimen/viu_apps_margin"
+                android:layout_marginTop="@dimen/viu_apps_margin"
+                android:visibility="invisible"
+                android:layout_marginRight="@dimen/viu_apps_margin"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/iv_hungama"
+                app:layout_constraintTop_toBottomOf="@+id/iv_vandana"
+                android:contentDescription="@string/partner_icon"
+                android:focusable="true"
+                tools:targetApi="lollipop"
+                />-->
+
+        <!--    <ImageView
+                android:id="@+id/iv_bongo"
+                android:layout_width="@dimen/viu_item_width"
+                android:layout_height="@dimen/viu_item_height"
+                android:layout_marginLeft="@dimen/viu_apps_margin"
+                android:layout_marginTop="@dimen/viu_apps_margin"
+                android:layout_marginRight="@dimen/viu_apps_margin"
+                android:clickable="true"
+                android:visibility="invisible"
+                android:contentDescription="@string/partner_icon"
+                android:elevation="4dp"
+                android:focusable="true"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toStartOf="@+id/iv_spectrum"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_guru"
+                tools:targetApi="lollipop"
+                />
+            <ImageView
+                android:id="@+id/iv_spectrum"
+                android:layout_width="@dimen/viu_item_width"
+                android:layout_height="@dimen/viu_item_height"
+                android:layout_marginLeft="@dimen/viu_apps_margin"
+                android:layout_marginTop="@dimen/viu_apps_margin"
+                android:layout_marginRight="@dimen/viu_apps_margin"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:scaleType="fitXY"
+                android:visibility="invisible"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/iv_bongo"
+                app:layout_constraintTop_toBottomOf="@+id/iv_hungama"
+                app:layout_constraintEnd_toStartOf="@+id/iv_music_safari1"
+                android:contentDescription="@string/partner_icon"
+                android:focusable="true"
+                tools:targetApi="lollipop"
+                />-->
+            <ImageView
+                android:id="@+id/iv_music_safari1"
+                android:layout_width="@dimen/viu_item_width"
+                android:layout_height="@dimen/viu_item_height"
+                android:layout_marginLeft="@dimen/viu_apps_margin"
+                android:layout_marginTop="@dimen/viu_apps_margin"
+                android:layout_marginRight="@dimen/viu_apps_margin"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/iv_spectrum"
+                app:layout_constraintTop_toBottomOf="@+id/iv_music_safari"
+                android:contentDescription="@string/partner_icon"
+                android:focusable="true"
+                android:visibility="invisible"
+                tools:targetApi="lollipop"
+                />
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_music_safari"-->
+            <!--android:layout_width="@dimen/viu_item_width"-->
+            <!--android:layout_height="@dimen/viu_item_height"-->
+            <!--android:layout_marginLeft="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginTop="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginRight="@dimen/viu_apps_margin"-->
+            <!--android:clickable="true"-->
+            <!--android:elevation="4dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintHorizontal_bias="0.5"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/iv_zee"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/iv_guru"-->
+            <!--android:contentDescription="@string/partner_icon"-->
+            <!--android:focusable="true"-->
+            <!--tools:targetApi="lollipop" />-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_kiki"-->
+            <!--android:layout_width="@dimen/viu_item_width"-->
+            <!--android:layout_height="@dimen/viu_item_height"-->
+            <!--android:layout_marginLeft="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginTop="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginRight="@dimen/viu_apps_margin"-->
+            <!--android:clickable="true"-->
+            <!--android:elevation="4dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/iv_vandana"-->
+            <!--app:layout_constraintHorizontal_bias="0.5"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/iv_iflix"-->
+            <!--android:contentDescription="@string/partner_icon"-->
+            <!--android:focusable="true"-->
+            <!--tools:targetApi="lollipop" />-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_vandana"-->
+            <!--android:layout_width="@dimen/viu_item_width"-->
+            <!--android:layout_height="@dimen/viu_item_height"-->
+            <!--android:layout_marginLeft="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginTop="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginRight="@dimen/viu_apps_margin"-->
+            <!--android:clickable="true"-->
+            <!--android:elevation="4dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/iv_viu_tube"-->
+            <!--app:layout_constraintHorizontal_bias="0.5"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/iv_kiki"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/iv_iflix"-->
+            <!--android:contentDescription="@string/partner_icon"-->
+            <!--android:focusable="true"-->
+            <!--tools:targetApi="lollipop" />-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_viu_tube"-->
+            <!--android:layout_width="@dimen/viu_item_width"-->
+            <!--android:layout_height="@dimen/viu_item_height"-->
+            <!--android:layout_marginLeft="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginTop="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginRight="@dimen/viu_apps_margin"-->
+            <!--android:clickable="true"-->
+            <!--android:elevation="4dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintHorizontal_bias="0.5"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/iv_vandana"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/iv_iflix"-->
+            <!--android:contentDescription="@string/partner_icon"-->
+            <!--android:focusable="true"-->
+            <!--tools:targetApi="lollipop" />-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_yupp_tv"-->
+            <!--android:layout_width="@dimen/viu_item_width"-->
+            <!--android:layout_height="@dimen/viu_item_height"-->
+            <!--android:layout_marginLeft="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginTop="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginRight="@dimen/viu_apps_margin"-->
+            <!--android:clickable="true"-->
+            <!--android:elevation="8dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/iv_test1"-->
+            <!--app:layout_constraintHorizontal_bias="0.5"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/iv_kiki"-->
+            <!--android:contentDescription="@string/partner_icon"-->
+            <!--android:focusable="true"-->
+            <!--tools:targetApi="lollipop" />-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_test1"-->
+            <!--android:layout_width="@dimen/viu_item_width"-->
+            <!--android:layout_height="@dimen/viu_item_height"-->
+            <!--android:layout_marginLeft="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginTop="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginRight="@dimen/viu_apps_margin"-->
+            <!--android:clickable="true"-->
+            <!--android:elevation="8dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:visibility="invisible"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/iv_test2"-->
+            <!--app:layout_constraintHorizontal_bias="0.5"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/iv_yupp_tv"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/iv_kiki"-->
+            <!--android:contentDescription="@string/partner_icon"-->
+            <!--android:focusable="true"-->
+            <!--tools:targetApi="lollipop" />-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_test2"-->
+            <!--android:layout_width="@dimen/viu_item_width"-->
+            <!--android:layout_height="@dimen/viu_item_height"-->
+            <!--android:layout_marginLeft="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginTop="@dimen/viu_apps_margin"-->
+            <!--android:layout_marginRight="@dimen/viu_apps_margin"-->
+            <!--android:clickable="true"-->
+            <!--android:elevation="8dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:visibility="invisible"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintHorizontal_bias="0.5"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/iv_test1"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/iv_kiki"-->
+            <!--android:contentDescription="@string/partner_icon"-->
+            <!--android:focusable="true"-->
+            <!--tools:targetApi="lollipop" />-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/my_recycler_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:clipToPadding="false"-->
+        <!--android:padding="@dimen/item_offset">-->
+
+        <!--</android.support.v7.widget.RecyclerView>-->
+
+
+        <!--<GridView-->
+        <!--android:id="@+id/gv_viu_apps"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:horizontalSpacing="10dp"-->
+        <!--android:numColumns="3"-->
+        <!--android:stretchMode="columnWidth"-->
+        <!--android:verticalSpacing="10dp" />-->
+
+        <!--<LinearLayout-->
+        <!--android:id="@+id/no_connection_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/white"-->
+        <!--android:visibility="gone">-->
+
+        <!--<include-->
+        <!--android:id="@+id/connection"-->
+        <!--layout="@layout/no_connection">-->
+
+        <!--</include>-->
+
+        <!--</LinearLayout>-->
+    </ScrollView>
+
+</layout>

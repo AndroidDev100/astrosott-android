@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/rl_connection"
+        android:layout_width="match_parent"
+        android:filterTouchesWhenObscured="true"
+        android:layout_height="match_parent"
+        android:background="@color/fragment_background_color">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+
+            <LinearLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include
+                    android:id="@+id/include"
+                    layout="@layout/toolbar_back_arrow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/no_connection_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:visibility="gone">
+
+                <include
+                    android:id="@+id/connection"
+                    layout="@layout/no_connection" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        android:visibility="gone"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <include
+            android:id="@+id/include_progressbar"
+            layout="@layout/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/add_dtv_account"
+            android:layout_centerInParent="true"
+            android:visibility="gone">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/plus_image"
+                android:layout_gravity="center"
+                android:background="@drawable/plus_icon"/>
+
+            <TextView
+                android:id="@+id/empty_img"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/add_dtv_account"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/account_setting_margin_left"
+                android:textSize="@dimen/account_setting_margin_left"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

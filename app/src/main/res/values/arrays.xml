@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="more_list">
+        <item>Playlist</item>
+        <item>Account settings</item>
+        <item>App settings</item>
+        <item>Device management</item>
+        <item>Terms &amp; conditions</item>
+        <item>Help</item>
+        <item>Logout</item>
+
+    </string-array>
+    <string-array name="more_list_with_login">
+        <item>Playlist</item>
+        <item>Account settings</item>
+        <item>App settings</item>
+        <item>Device management</item>
+        <item>Terms &amp; conditions</item>
+        <item>Help</item>
+
+
+    </string-array>
+    <string-array name="application_setting_options">
+        <item>Video Quality</item>
+        <item>Download Settings</item>
+        <item>Notifications</item>
+        <item>Content Preferences</item>
+    </string-array>
+
+
+</resources>

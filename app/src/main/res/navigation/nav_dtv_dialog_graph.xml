@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_dtv_dialog_graph"
+    app:startDestination="@id/premiumDtvAccountDialogFragment">
+
+    <fragment
+        android:id="@+id/premiumDtvAccountDialogFragment"
+        android:name="com.dialog.dialoggo.activities.subscription.dialog.PremiumDtvAccountDialogFragment"
+        android:label="PremiumDtvAccountDialogFragment"
+        tools:layout="@layout/fragment_premium_dtv_account">
+
+        <action
+            android:id="@+id/action_premiumDtvAccountDialogFragment_to_premiumOtpDialogFragment"
+            app:destination="@id/premiumOtpDialogFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/premiumOtpDialogFragment"
+        android:name="com.dialog.dialoggo.activities.subscription.dialog.PremiumOtpDialogFragment"
+        android:label="fragment_premium_dtv_account"
+        tools:layout="@layout/fragment_premium_otp">
+        <action
+            android:id="@+id/action_premiumOtpDialogFragment_to_premiumSuccessDialogFragment"
+            app:destination="@id/premiumSuccessDialogFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/premiumSuccessDialogFragment"
+        android:name="com.dialog.dialoggo.activities.subscription.dialog.PremiumSuccessDialogFragment"
+        android:label="PremiumSuccessDialogFragment"
+        tools:layout="@layout/fragment_premium_success" />
+</navigation>

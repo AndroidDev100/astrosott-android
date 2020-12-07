@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/mainlayoutautoplay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:filterTouchesWhenObscured="true"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/assetImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@color/blackColor" />
+
+            <ImageButton
+                android:id="@+id/close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/auto_play_close_margin"
+                android:background="@null"
+                android:clickable="true"
+                android:contentDescription="@string/image_description"
+                android:padding="@dimen/auto_play_close_margin"
+                android:src="@drawable/close_icon"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/replayvideo"
+                android:layout_width="@dimen/auto_replay_icon_height"
+                android:layout_height="@dimen/auto_replay_icon_height"
+                android:layout_centerInParent="true"
+                android:background="@drawable/replay_button"
+                android:contentDescription="@string/image_description"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <LinearLayout
+                android:id="@+id/playNextEpisode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/next_episode_right_margin"
+                android:layout_marginBottom="@dimen/next_episode_bottom_margin"
+                android:background="@drawable/play_next_round"
+                android:orientation="horizontal"
+                android:padding="@dimen/next_episode_padding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <ImageView
+                    android:layout_width="@dimen/next_episode_play_height"
+                    android:layout_height="@dimen/next_episode_play_width"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/auto_play_next_right_margin"
+                    android:fontFamily="@font/roboto_regular"
+                    android:src="@drawable/play" />
+
+                <TextView
+                    android:id="@+id/upnext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_vertical"
+                    android:text="Next episode in"
+                    android:textAllCaps="true"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/auto_play_next_episode_text_size" />
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

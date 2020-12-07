@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:filterTouchesWhenObscured="true"
+    android:windowSoftInputMode="adjustPan"
+    tools:context="com.dialog.dialoggo.activities.subscription.fragment.AddDTVFragment">
+
+    <LinearLayout
+        android:layout_width="@dimen/fragment_width"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/fragment_background_color"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DTV account"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp20"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_marginStart="@dimen/dimen10dp"
+            android:layout_marginTop="@dimen/dimen20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add your DTV account"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp20"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_marginStart="@dimen/dimen10dp"
+            android:layout_marginTop="@dimen/dimen20dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="DTV account number"
+            android:textColorHint="@color/white"
+            android:textCursorDrawable="@color/white"
+            android:textSize="@dimen/dimen20sp"
+            android:inputType="number"
+            android:layout_marginStart="@dimen/dimen10dp"
+            android:layout_marginEnd="@dimen/dimen10dp"
+            android:fontFamily="@font/roboto_light"
+            android:layout_marginTop="@dimen/dimen40dp"
+            android:textColor="@color/white"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginStart="@dimen/dimen10dp"
+            android:layout_marginEnd="@dimen/dimen10dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/white"/>
+
+        <TextView
+            android:id="@+id/txtDontAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Don't have DTV account?"
+            android:textColor="@color/blue_brand_color"
+            android:textSize="@dimen/sp20"
+            android:fontFamily="@font/roboto_light"
+            android:layout_marginStart="@dimen/dimen10dp"
+            android:layout_marginTop="@dimen/dimen50dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen50dp"
+            android:layout_marginEnd="@dimen/dimen20dp"
+            android:layout_gravity="right">
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CANCEL"
+                android:textColor="@color/cancel_text"
+                android:textSize="@dimen/sp20"
+                android:gravity="start"
+                android:background="@color/transparentColor"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_marginStart="@dimen/dimen10dp" />
+            <Button
+                android:id="@+id/btnContinue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Continue"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp20"
+                android:background="@color/transparentColor"
+                android:fontFamily="@font/roboto_bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

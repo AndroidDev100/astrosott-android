@@ -1,0 +1,23 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@color/transparentColor"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="25dp"
+        android:visibility="visible"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleview"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:overScrollMode="never"
+            android:layout_marginBottom="10dp">
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+</layout>

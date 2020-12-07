@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:filterTouchesWhenObscured="true"
+        android:layout_height="wrap_content"
+        android:background="@color/fragment_background_color">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/app_toolbar"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/player_layout"
+                        android:layout_width="@dimen/movie_detail_rl_width"
+                        android:layout_height="@dimen/movie_detail_rl_height"
+                        android:layout_marginStart="@dimen/movie_detail_rl_margin_start"
+                        android:layout_marginTop="@dimen/movie_detail_rl_margin_top"
+                        android:layout_marginEnd="@dimen/movie_detail_rl_margin_end"
+                        app:layout_constraintDimensionRatio="H,16:9"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+                        <ImageView
+                            android:id="@+id/back_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:ignore="ContentDescription"
+                            android:src="@drawable/ic_arrow_back_black_24dp"
+                            android:elevation="@dimen/dp2"
+                            android:contentDescription="@string/back_icon"
+                            tools:targetApi="lollipop"
+                            android:padding="10dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"/>
+                        <ImageView
+                            android:id="@+id/player_image"
+                            android:layout_width="match_parent"
+                            tools:ignore="ContentDescription"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/landscape"
+                            android:scaleType="fitXY"
+                            android:contentDescription="@string/player_image" />
+
+                        <ImageView
+                            android:id="@+id/iv_play_icon"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            tools:ignore="ContentDescription"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="@dimen/web_series_iv_player_icon_margin_right"
+                            android:layout_marginBottom="@dimen/web_series_iv_player_icon_margin_bottom"
+                            android:background="@drawable/play_icon"
+                            android:visibility="visible"
+                            android:contentDescription="@string/play_icon" />
+                        <ImageView
+                            android:id="@+id/hungama"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/playpurple"
+                            android:layout_margin="2dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_gravity="bottom|left"
+                            android:visibility="gone"></ImageView>
+                    </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:baselineAligned="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/linear_channel_ll_height"
+                    android:layout_weight="1"
+                    app:tabBackground="@color/colorPrimaryDark"
+                    app:tabGravity="fill"
+                    app:tabIndicatorColor="@color/primary_blue"
+                    app:tabSelectedTextColor="@color/white"
+                    app:tabTextAppearance="@style/MineCustomTabText"
+                    app:tabTextColor="@color/colorAccent"
+
+                    />
+            </LinearLayout>
+            <!-- View pager to swipe views -->
+            <com.dialog.dialoggo.utils.helpers.LiveTvViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/no_connection_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/connection"
+                layout="@layout/no_connection"/>
+        </LinearLayout>
+
+        <include
+            android:id="@+id/include_progressbar"
+            layout="@layout/play_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+
+</layout>

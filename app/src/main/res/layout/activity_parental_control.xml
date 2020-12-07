@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:filterTouchesWhenObscured="true"
+    android:layout_height="match_parent"
+    tools:context=".activities.parentalControl.ui.ParentalControl"
+    android:background="@color/fragment_background_color">
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar_back_arrow"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tv_parental_control"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="center_vertical"
+        android:text="@string/parental_restriction"
+        android:textColor="@color/more_item_title"
+        android:textSize="@dimen/font_medium_large"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/switch_push"
+        app:layout_constraintTop_toBottomOf="@id/include"
+        />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_push"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:theme="@style/SwitchCompatTheme"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include"
+        />
+
+    <TextView
+        android:id="@+id/tv_view_restriction"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="center_vertical"
+        android:text="@string/view_restriction"
+        android:textColor="@color/more_item_title"
+        android:textSize="@dimen/font_medium_large"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/switch_push"
+        app:layout_constraintTop_toBottomOf="@id/tv_parental_control" />
+
+
+
+    <TextView
+        android:id="@+id/tv_change_pin"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="center_vertical"
+        android:text="@string/change_pin"
+        android:textColor="@color/more_item_title"
+        android:textSize="@dimen/font_medium_large"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/switch_push"
+        app:layout_constraintTop_toBottomOf="@id/tv_view_restriction" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#E6000000"
+        android:visibility="gone"/>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:indeterminateTint="@color/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

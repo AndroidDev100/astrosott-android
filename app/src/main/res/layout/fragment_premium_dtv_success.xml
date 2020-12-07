@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparentColor"
+    android:filterTouchesWhenObscured="true"
+    tools:context="com.dialog.dialoggo.activities.subscription.fragment.PremiumDtvSuccessFragment">
+
+    <LinearLayout
+        android:layout_width="@dimen/fragment_width"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/fragment_background_color"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="@dimen/dimen50dp"
+            android:layout_height="@dimen/dimen50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/premium_success"
+            android:layout_marginTop="@dimen/dimen20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Success"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_marginTop="@dimen/dimen10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="DTV number added successfully"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="@dimen/sp20"
+            android:layout_marginTop="@dimen/dimen30dp"
+            android:textColor="@color/search_edit_text_color"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen30dp"
+            android:layout_marginEnd="@dimen/dimen20dp"
+            android:gravity="right">
+
+            <Button
+                android:id="@+id/btnOk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ok"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp20"
+                android:gravity="end"
+                android:background="@color/transparentColor"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_marginStart="@dimen/dimen10dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

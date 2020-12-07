@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/main_lay"
+        android:filterTouchesWhenObscured="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fragment_background_color"
+        android:clipChildren="false">
+
+
+
+
+
+        <LinearLayout
+            android:id="@+id/toolbar_layout"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar_back_arrow" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar_layout"
+            android:orientation="vertical">
+
+
+            <com.dialog.dialoggo.utils.helpers.CustomSwipeToRefresh xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/swipe_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/setting_rv_margin_left"
+                    android:layout_marginTop="5dp"
+                    android:overScrollMode="never" />
+
+            </com.dialog.dialoggo.utils.helpers.CustomSwipeToRefresh>
+        </LinearLayout>
+
+        <include
+            android:id="@+id/include_progressbar"
+            layout="@layout/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/empty_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/fragment_background_color"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/left_right_margin"
+                android:layout_marginTop="@dimen/margin_top"
+                android:layout_marginRight="@dimen/left_right_margin"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:text="@string/playlist_empty_message"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_medium_large" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/transparent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/no_connection_layout"
+            android:layout_width="match_parent"
+            android:layout_below="@id/toolbar_layout"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/connection"
+                layout="@layout/no_connection" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</layout>

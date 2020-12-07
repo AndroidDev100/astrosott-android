@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#EC1C24</color>
+    <color name="splash_back">#ec1c24</color>
+    <color name="shimmer_background_color">#2C2C2C</color>
+    <color name="colorPrimaryDark">#333333</color>
+    <color name="colorAccent">#757575</color>
+    <color name="primary_red">#C62828</color>
+    <color name="white">#ffffff</color>
+    <color name="primary_blue">#EC1C24</color>
+    <color name="indicator_unselected">#cccccc</color>
+    <color name="support_01">#D50000</color>
+    <color name="support_02">#49AE51</color>
+    <color name="blue_brand_color">#1E88E5</color>
+    <color name="blue">#1E88E5</color>
+    <color name="support_03">#178dE7</color>
+    <color name="lineGreyColor">#515151</color>
+    <color name="support_04">#71BFFB</color>
+    <color name="support_05">#E4AF18</color>
+    <color name="transparentColor">#00000000</color>
+    <color name="blackColor">#000000</color>
+    <color name="cancel_text">#bcbcbc</color>
+    <color name="fragment_background_color">#1a1a1a</color>
+    <color name="more_item_title">#adadad</color>
+    <color name="more_icon_color_normal">#adadad</color>
+    <color name="gray">#BDBEC2</color>
+    <color name="titleColor">#303434</color>
+    <color name="search_toolbar_background">#212121</color>
+    <color name="red_live">#ff0000</color>
+    <color name="sharetitle">#4d4d4d</color>
+    <color name="sign_up_title">#eeeeee</color>
+    <color name="sign_up_sub_title">#d1d1d1</color>
+    <color name="half_transparent">#41000000</color>
+    <color name="alert_dialog_background">#343434</color>
+
+    <color name="cast_and_crew_title">#a19e9e</color>
+    <color name="dark_grey">#303434</color>
+
+    //
+    <color name="black_two">#2b2a2a</color>
+    <color name="lipstick">#e7195a</color>
+    <color name="schedule_description">#6b6b6b</color>
+    <color name="schedule_live_background">#d8232a</color>
+    <color name="black">#000000</color>
+    <color name="schedule_title">#474747</color>
+    <color name="time_color">#e7195a</color>
+    <color name="schedule_livenow">#224ba3</color>
+
+    <color name="toast_text">#ffffff</color>
+    <color name="shimmer_color">#212121</color>
+    <!--<color name="shimmer_color">#00000000</color>-->
+    <color name="trending_title_color">#303434</color>
+    <color name="shimmer_back">#dedede</color>
+
+    <color name="search_underline_editext">#62dfffff</color>
+    <color name="search_edit_text_color">#a5a5a5</color>
+    <color name="lightgray">#F0F0F0</color>
+    <color name="search_edit_underline_color">#454545</color>
+    <color name="moretitlecolor">#224ba3</color>
+    <color name="schedule_live_item_background">#f1ece9</color>
+    <color name="black_three">#171717</color>
+    <color name="exclusive_tag">#fa0050</color>
+    <color name="darkGreyProfile">#5B5A5A</color>
+    <color name="search_item_title_color">#2B2A2A</color>
+
+    <color name="search_header_title">#2B2A2A</color>
+
+    <color name="subtitlecolor">#2b2a2a</color>
+    <color name="home_screen_seperator">#12575757</color>
+    <color name="search_sub_title">#adadad</color>
+    <color name="genre_unselected">#FFD8D8D8</color>
+    <color name="genre_unselected_text">#393939</color>
+    <color name="warm_grey">#999999</color>
+
+    <color name="transparent_progress_bg">#9A000000</color>
+
+    <color name="cod_gray">#1A1A1A</color>
+    <color name="monarch">#8D0D16</color>
+    <color name="torch_red">#F50007</color>
+    <color name="silver_chalice">#AFAFAF</color>
+    <color name="catchup_date_time_bg">#28000000</color>
+    <color name="primaryColorDarkBlack">#141414</color>
+    <color name="sapphire">#224ba3</color>
+
+</resources>

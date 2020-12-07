@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="@color/fragment_background_color">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/radio_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center"
+            android:button="@drawable/radio_button_selector"
+            android:clickable="false"
+             />
+
+        <TextView
+            android:id="@+id/playlist_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            />
+
+
+    </LinearLayout>
+</layout>

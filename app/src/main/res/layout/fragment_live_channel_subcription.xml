@@ -1,0 +1,173 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cod_gray"
+        tools:context="com.dialog.dialoggo.activities.subscription.fragment.LiveChannelSubcriptionFragment">
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/lnChannelTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height150dp"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginLeft="@dimen/dimen18dp"
+            android:layout_marginRight="@dimen/dimen18dp"
+            android:layout_marginTop="@dimen/dimen10dp"
+            android:weightSum="2">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_height="@dimen/height150dp"
+                android:layout_weight=".8"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/imvChannelLogo"
+                    android:layout_width="@dimen/dimen100dp"
+                    android:layout_height="@dimen/height150dp"
+                    android:src="@drawable/placeholder_square" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.3"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txtChannelTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/marginTop15dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen20sp" />
+                <TextView
+                    android:id="@+id/txtChannelGenre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_marginTop="@dimen/marginTop5dp"
+                    android:textColor="@color/search_edit_text_color"
+                    android:textSize="@dimen/sp15"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/txtChannelDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_marginTop="@dimen/marginTop5dp"
+                    android:textColor="@color/search_edit_text_color"
+                    android:lineSpacingExtra="1dp"
+                    android:textSize="@dimen/sp15" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <RelativeLayout
+            android:id="@+id/lnPackageDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lnChannelTitle"
+            android:layout_marginTop="@dimen/dimen10dp"
+            android:layout_marginStart="@dimen/dimen8dp"
+            android:layout_marginEnd="@dimen/dimen15dp"
+            android:layout_above="@id/lnButton">
+
+            <TextView
+                android:id="@+id/txtSelectPlan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="@string/select_your_desired_package"
+                android:layout_marginStart="@dimen/dimen5dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp20" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/packageRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtSelectPlan"
+                android:layout_marginTop="@dimen/dimen5dp" />
+
+
+            <include
+                android:id="@+id/include_progressbar"
+                layout="@layout/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/lnButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/dp50"
+            android:layout_marginRight="@dimen/dp50"
+            android:layout_marginBottom="@dimen/marginBottom15dp">
+            <Button
+                android:id="@+id/btnBuy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen5dp"
+                android:background="@drawable/rounded_red_button"
+                android:fontFamily="@font/roboto_bold"
+                android:padding="@dimen/dimen10dp"
+                android:text="@string/continue_btn_txt"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp18" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/no_connection_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/connection"
+                layout="@layout/no_connection" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/no_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/cod_gray"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/sorry_content_cannot_be_played_now_error_xxx"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textSize="@dimen/sp20"
+                android:fontFamily="@font/roboto_bold"/>
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+
+</layout>

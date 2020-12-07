@@ -1,0 +1,1099 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 219676672 bytes for committing reserved memory.
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Unscaled Compressed Oops mode in which the Java heap is
+#     placed in the first 4GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 4GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_linux.cpp:2753), pid=31262, tid=0x00007ff08c1af700
+#
+# JRE version: OpenJDK Runtime Environment (8.0_202) (build 1.8.0_202-release-1483-b49-5587405)
+# Java VM: OpenJDK 64-Bit Server VM (25.202-b49-5587405 mixed mode linux-amd64 compressed oops)
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007ff0a4081800):  VMThread [stack: 0x00007ff08c0af000,0x00007ff08c1b0000] [id=31274]
+
+Stack: [0x00007ff08c0af000,0x00007ff08c1b0000],  sp=0x00007ff08c1ae590,  free space=1021k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [libjvm.so+0xa08b78]  VMError::report_and_die()+0x148
+V  [libjvm.so+0x4d412a]  report_vm_out_of_memory(char const*, int, unsigned long, VMErrorType, char const*)+0x8a
+V  [libjvm.so+0x870478]  os::pd_commit_memory(char*, unsigned long, unsigned long, bool)+0xd8
+V  [libjvm.so+0x867f9f]  os::commit_memory(char*, unsigned long, unsigned long, bool)+0x1f
+V  [libjvm.so+0x8e14eb]  PSVirtualSpace::expand_by(unsigned long)+0x5b
+V  [libjvm.so+0x8d234b]  PSOldGen::expand_by(unsigned long) [clone .part.109]+0x1b
+V  [libjvm.so+0x8d250b]  PSOldGen::expand(unsigned long) [clone .part.111]+0xdb
+V  [libjvm.so+0x8d2de8]  PSOldGen::resize(unsigned long)+0x188
+V  [libjvm.so+0x8d83cc]  PSParallelCompact::invoke_no_policy(bool)+0x94c
+V  [libjvm.so+0x8df48d]  PSScavenge::invoke()+0x17d
+V  [libjvm.so+0x893763]  ParallelScavengeHeap::failed_mem_allocate(unsigned long)+0x63
+V  [libjvm.so+0xa0a644]  VM_ParallelGCFailedAllocation::doit()+0x84
+V  [libjvm.so+0xa0ea17]  VM_Operation::evaluate()+0x47
+V  [libjvm.so+0xa0d498]  VMThread::evaluate_operation(VM_Operation*)+0x218
+V  [libjvm.so+0xa0d8d1]  VMThread::loop()+0x1f1
+V  [libjvm.so+0xa0dd02]  VMThread::run()+0x72
+V  [libjvm.so+0x86d652]  java_start(Thread*)+0xf2
+
+VM_Operation (0x00007ff07c7fa1e0): ParallelGCFailedAllocation, mode: safepoint, requested by thread 0x00007ff030004800
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x00007ff008065800 JavaThread "RMI RenewClean-[127.0.0.1:37943,org.jetbrains.kotlin.daemon.common.LoopbackNetworkInterface$ClientLoopbackSocketFactory@3e8915b6]" daemon [_thread_blocked, id=16142, stack(0x00007ff085f9f000,0x00007ff0860a0000)]
+  0x00007ff030004800 JavaThread "RMI TCP Connection(24)-127.0.0.1" daemon [_thread_blocked, id=16141, stack(0x00007ff07c6fe000,0x00007ff07c7ff000)]
+  0x00007ff0240d4000 JavaThread "RMI RenewClean-[127.0.0.1:37943,org.jetbrains.kotlin.daemon.common.LoopbackNetworkInterface$ClientLoopbackSocketFactory@587df3d8]" daemon [_thread_blocked, id=16130, stack(0x00007ff077462000,0x00007ff077563000)]
+  0x00007ff030003000 JavaThread "RMI TCP Connection(idle)" daemon [_thread_blocked, id=16129, stack(0x00007ff0864a2000,0x00007ff0865a3000)]
+  0x00007ff030001000 JavaThread "RMI TCP Connection(idle)" daemon [_thread_blocked, id=16127, stack(0x00007ff08445a000,0x00007ff08455b000)]
+  0x00007ff01400b800 JavaThread "RMI RenewClean-[127.0.0.1:37943,org.jetbrains.kotlin.daemon.common.LoopbackNetworkInterface$ClientLoopbackSocketFactory@500aac6b]" daemon [_thread_blocked, id=11932, stack(0x00007ff0779dc000,0x00007ff077add000)]
+  0x00007ff004001800 JavaThread "RMI RenewClean-[127.0.0.1:37943,org.jetbrains.kotlin.daemon.common.LoopbackNetworkInterface$ClientLoopbackSocketFactory@2f6f96cb]" daemon [_thread_blocked, id=11925, stack(0x00007ff077add000,0x00007ff077bde000)]
+  0x00007ff024014000 JavaThread "RMI RenewClean-[127.0.0.1:37943,org.jetbrains.kotlin.daemon.common.LoopbackNetworkInterface$ClientLoopbackSocketFactory@67a332e4]" daemon [_thread_blocked, id=9520, stack(0x00007ff0860a0000,0x00007ff0861a1000)]
+  0x00007ff024012800 JavaThread "RMI Scheduler(0)" daemon [_thread_blocked, id=31295, stack(0x00007ff0861a1000,0x00007ff0862a2000)]
+  0x00007ff0a400c000 JavaThread "DestroyJavaVM" [_thread_blocked, id=31265, stack(0x00007ff0abffc000,0x00007ff0ac0fd000)]
+  0x00007ff0a4372800 JavaThread "GC Daemon" daemon [_thread_blocked, id=31291, stack(0x00007ff0865a3000,0x00007ff0866a4000)]
+  0x00007ff0a436f800 JavaThread "RMI Reaper" [_thread_blocked, id=31290, stack(0x00007ff0866a4000,0x00007ff0867a5000)]
+  0x00007ff0a4307000 JavaThread "Timer-0" daemon [_thread_blocked, id=31288, stack(0x00007ff086932000,0x00007ff086a33000)]
+  0x00007ff0a4305000 JavaThread "RMI TCP Accept-17013" daemon [_thread_in_native, id=31287, stack(0x00007ff086a33000,0x00007ff086b34000)]
+  0x00007ff0a40d4000 JavaThread "Service Thread" daemon [_thread_blocked, id=31282, stack(0x00007ff086e39000,0x00007ff086f3a000)]
+  0x00007ff0a40c9000 JavaThread "C1 CompilerThread3" daemon [_thread_blocked, id=31281, stack(0x00007ff086f3a000,0x00007ff08703b000)]
+  0x00007ff0a40c7000 JavaThread "C2 CompilerThread2" daemon [_thread_blocked, id=31280, stack(0x00007ff08703b000,0x00007ff08713c000)]
+  0x00007ff0a40c5000 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=31279, stack(0x00007ff08713c000,0x00007ff08723d000)]
+  0x00007ff0a40c2000 JavaThread "C2 CompilerThread0" daemon [_thread_blocked, id=31278, stack(0x00007ff08723d000,0x00007ff08733e000)]
+  0x00007ff0a40c0800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=31277, stack(0x00007ff08733e000,0x00007ff08743f000)]
+  0x00007ff0a408e000 JavaThread "Finalizer" daemon [_thread_blocked, id=31276, stack(0x00007ff087dfe000,0x00007ff087eff000)]
+  0x00007ff0a408b800 JavaThread "Reference Handler" daemon [_thread_blocked, id=31275, stack(0x00007ff087eff000,0x00007ff088000000)]
+
+Other Threads:
+=>0x00007ff0a4081800 VMThread [stack: 0x00007ff08c0af000,0x00007ff08c1b0000] [id=31274]
+  0x00007ff0a40d6800 WatcherThread [stack: 0x00007ff086d38000,0x00007ff086e39000] [id=31283]
+
+VM state:at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x00007ff0a4007e20] ExpandHeap_lock - owner thread: 0x00007ff0a4081800
+[0x00007ff0a40084a0] Threads_lock - owner thread: 0x00007ff0a4081800
+[0x00007ff0a40089a0] Heap_lock - owner thread: 0x00007ff030004800
+
+heap address: 0x00000000a0000000, size: 1536 MB, Compressed Oops mode: 32-bit
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 3
+Compressed class space size: 1073741824 Address: 0x0000000100000000
+
+Heap:
+ PSYoungGen      total 349696K, used 0K [0x00000000e0000000, 0x0000000100000000, 0x0000000100000000)
+  eden space 175104K, 0% used [0x00000000e0000000,0x00000000e0000000,0x00000000eab00000)
+  from space 174592K, 0% used [0x00000000f5580000,0x00000000f5580000,0x0000000100000000)
+  to   space 174592K, 0% used [0x00000000eab00000,0x00000000eab00000,0x00000000f5580000)
+ ParOldGen       total 834048K, used 724393K [0x00000000a0000000, 0x00000000d2e80000, 0x00000000e0000000)
+  object space 834048K, 86% used [0x00000000a0000000,0x00000000cc36a550,0x00000000d2e80000)
+ Metaspace       used 91409K, capacity 93585K, committed 96408K, reserved 1134592K
+  class space    used 10760K, capacity 11211K, committed 11696K, reserved 1048576K
+
+Card table byte_map: [0x00007ff0a95d6000,0x00007ff0a98d7000] byte_map_base: 0x00007ff0a90d6000
+
+Marking Bits: (ParMarkBitMap*) 0x00007ff0ab6f3920
+ Begin Bits: [0x00007ff08d000000, 0x00007ff08e800000)
+ End Bits:   [0x00007ff08e800000, 0x00007ff090000000)
+
+Polling page: 0x00007ff0ac122000
+
+CodeCache: size=245760Kb used=55463Kb max_used=55467Kb free=190296Kb
+ bounds [0x00007ff095000000, 0x00007ff098680000, 0x00007ff0a4000000]
+ total_blobs=15412 nmethods=14807 adapters=517
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 8405.463 Thread 0x00007ff0a40c7000 nmethod 20011 0x00007ff096148cd0 code [0x00007ff096148e40, 0x00007ff096148fb8]
+Event: 8405.463 Thread 0x00007ff0a40c2000 nmethod 20009 0x00007ff09711f810 code [0x00007ff09711f980, 0x00007ff09711fb18]
+Event: 8405.466 Thread 0x00007ff0a40c5000 20015       4       com.sun.tools.javac.jvm.ClassReader::fillIn (592 bytes)
+Event: 8405.491 Thread 0x00007ff0a40c5000 nmethod 20015 0x00007ff09864d790 code [0x00007ff09864daa0, 0x00007ff09864e8f0]
+Event: 8405.551 Thread 0x00007ff0a40c9000 20016       3       com.sun.tools.javac.comp.Attr::attribIdentAsEnumType (69 bytes)
+Event: 8405.552 Thread 0x00007ff0a40c9000 nmethod 20016 0x00007ff09864cb50 code [0x00007ff09864cd20, 0x00007ff09864d3d8]
+Event: 8405.707 Thread 0x00007ff0a40c9000 20017       3       com.sun.tools.javac.comp.Attr::visitWildcard (84 bytes)
+Event: 8405.709 Thread 0x00007ff0a40c9000 nmethod 20017 0x00007ff095f51e10 code [0x00007ff095f520a0, 0x00007ff095f52f18]
+Event: 8405.709 Thread 0x00007ff0a40c9000 20018       3       com.sun.tools.javac.code.Type$WildcardType::withTypeVar (20 bytes)
+Event: 8405.709 Thread 0x00007ff0a40c9000 nmethod 20018 0x00007ff09864c690 code [0x00007ff09864c800, 0x00007ff09864cab0]
+
+GC Heap History (10 events):
+Event: 8387.250 GC heap after
+Heap after GC invocations=42 (full 8):
+ PSYoungGen      total 356352K, used 50366K [0x00000000e0000000, 0x00000000ff800000, 0x0000000100000000)
+  eden space 188416K, 0% used [0x00000000e0000000,0x00000000e0000000,0x00000000eb800000)
+  from space 167936K, 29% used [0x00000000f5380000,0x00000000f84afbf0,0x00000000ff780000)
+  to   space 159232K, 0% used [0x00000000eb800000,0x00000000eb800000,0x00000000f5380000)
+ ParOldGen       total 834048K, used 570156K [0x00000000a0000000, 0x00000000d2e80000, 0x00000000e0000000)
+  object space 834048K, 68% used [0x00000000a0000000,0x00000000c2ccb2a8,0x00000000d2e80000)
+ Metaspace       used 88037K, capacity 90439K, committed 90648K, reserved 1128448K
+  class space    used 10389K, capacity 10939K, committed 11056K, reserved 1048576K
+}
+Event: 8393.444 GC heap before
+{Heap before GC invocations=43 (full 8):
+ PSYoungGen      total 356352K, used 238782K [0x00000000e0000000, 0x00000000ff800000, 0x0000000100000000)
+  eden space 188416K, 100% used [0x00000000e0000000,0x00000000eb800000,0x00000000eb800000)
+  from space 167936K, 29% used [0x00000000f5380000,0x00000000f84afbf0,0x00000000ff780000)
+  to   space 159232K, 0% used [0x00000000eb800000,0x00000000eb800000,0x00000000f5380000)
+ ParOldGen       total 834048K, used 570156K [0x00000000a0000000, 0x00000000d2e80000, 0x00000000e0000000)
+  object space 834048K, 68% used [0x00000000a0000000,0x00000000c2ccb2a8,0x00000000d2e80000)
+ Metaspace       used 90291K, capacity 92689K, committed 92952K, reserved 1130496K
+  class space    used 10646K, capacity 11199K, committed 11312K, reserved 1048576K
+Event: 8393.511 GC heap after
+Heap after GC invocations=43 (full 8):
+ PSYoungGen      total 347648K, used 132132K [0x00000000e0000000, 0x0000000100000000, 0x0000000100000000)
+  eden space 188416K, 0% used [0x00000000e0000000,0x00000000e0000000,0x00000000eb800000)
+  from space 159232K, 82% used [0x00000000eb800000,0x00000000f3909398,0x00000000f5380000)
+  to   space 174592K, 0% used [0x00000000f5580000,0x00000000f5580000,0x0000000100000000)
+ ParOldGen       total 834048K, used 570164K [0x00000000a0000000, 0x00000000d2e80000, 0x00000000e0000000)
+  object space 834048K, 68% used [0x00000000a0000000,0x00000000c2ccd2a8,0x00000000d2e80000)
+ Metaspace       used 90291K, capacity 92689K, committed 92952K, reserved 1130496K
+  class space    used 10646K, capacity 11199K, committed 11312K, reserved 1048576K
+}
+Event: 8402.263 GC heap before
+{Heap before GC invocations=44 (full 8):
+ PSYoungGen      total 347648K, used 320548K [0x00000000e0000000, 0x0000000100000000, 0x0000000100000000)
+  eden space 188416K, 100% used [0x00000000e0000000,0x00000000eb800000,0x00000000eb800000)
+  from space 159232K, 82% used [0x00000000eb800000,0x00000000f3909398,0x00000000f5380000)
+  to   space 174592K, 0% used [0x00000000f5580000,0x00000000f5580000,0x0000000100000000)
+ ParOldGen       total 834048K, used 570164K [0x00000000a0000000, 0x00000000d2e80000, 0x00000000e0000000)
+  object space 834048K, 68% used [0x00000000a0000000,0x00000000c2ccd2a8,0x00000000d2e80000)
+ Metaspace       used 93507K, capacity 95993K, committed 96408K, reserved 1134592K
+  class space    used 11016K, capacity 11575K, committed 11696K, reserved 1048576K
+Event: 8402.392 GC heap after
+Heap after GC invocations=44 (full 8):
+ PSYoungGen      total 353792K, used 35694K [0x00000000e0000000, 0x0000000100000000, 0x0000000100000000)
+  eden space 179200K, 0% used [0x00000000e0000000,0x00000000e0000000,0x00000000eaf00000)
+  from space 174592K, 20% used [0x00000000f5580000,0x00000000f785b958,0x0000000100000000)
+  to   space 170496K, 0% used [0x00000000eaf00000,0x00000000eaf00000,0x00000000f5580000)
+ ParOldGen       total 834048K, used 700363K [0x00000000a0000000, 0x00000000d2e80000, 0x00000000e0000000)
+  object space 834048K, 83% used [0x00000000a0000000,0x00000000cabf2fd0,0x00000000d2e80000)
+ Metaspace       used 93507K, capacity 95993K, committed 96408K, reserved 1134592K
+  class space    used 11016K, capacity 11575K, committed 11696K, reserved 1048576K
+}
+Event: 8405.168 GC heap before
+{Heap before GC invocations=45 (full 8):
+ PSYoungGen      total 353792K, used 214894K [0x00000000e0000000, 0x0000000100000000, 0x0000000100000000)
+  eden space 179200K, 100% used [0x00000000e0000000,0x00000000eaf00000,0x00000000eaf00000)
+  from space 174592K, 20% used [0x00000000f5580000,0x00000000f785b958,0x0000000100000000)
+  to   space 170496K, 0% used [0x00000000eaf00000,0x00000000eaf00000,0x00000000f5580000)
+ ParOldGen       total 834048K, used 700363K [0x00000000a0000000, 0x00000000d2e80000, 0x00000000e0000000)
+  object space 834048K, 83% used [0x00000000a0000000,0x00000000cabf2fd0,0x00000000d2e80000)
+ Metaspace       used 93518K, capacity 95993K, committed 96408K, reserved 1134592K
+  class space    used 11016K, capacity 11575K, committed 11696K, reserved 1048576K
+Event: 8405.242 GC heap after
+Heap after GC invocations=45 (full 8):
+ PSYoungGen      total 349696K, used 134410K [0x00000000e0000000, 0x0000000100000000, 0x0000000100000000)
+  eden space 179200K, 0% used [0x00000000e0000000,0x00000000e0000000,0x00000000eaf00000)
+  from space 170496K, 78% used [0x00000000eaf00000,0x00000000f3242880,0x00000000f5580000)
+  to   space 174592K, 0% used [0x00000000f5580000,0x00000000f5580000,0x0000000100000000)
+ ParOldGen       total 834048K, used 700371K [0x00000000a0000000, 0x00000000d2e80000, 0x00000000e0000000)
+  object space 834048K, 83% used [0x00000000a0000000,0x00000000cabf4fd0,0x00000000d2e80000)
+ Metaspace       used 93518K, capacity 95993K, committed 96408K, reserved 1134592K
+  class space    used 11016K, capacity 11575K, committed 11696K, reserved 1048576K
+}
+Event: 8405.710 GC heap before
+{Heap before GC invocations=46 (full 8):
+ PSYoungGen      total 349696K, used 313610K [0x00000000e0000000, 0x0000000100000000, 0x0000000100000000)
+  eden space 179200K, 100% used [0x00000000e0000000,0x00000000eaf00000,0x00000000eaf00000)
+  from space 170496K, 78% used [0x00000000eaf00000,0x00000000f3242880,0x00000000f5580000)
+  to   space 174592K, 0% used [0x00000000f5580000,0x00000000f5580000,0x0000000100000000)
+ ParOldGen       total 834048K, used 700371K [0x00000000a0000000, 0x00000000d2e80000, 0x00000000e0000000)
+  object space 834048K, 83% used [0x00000000a0000000,0x00000000cabf4fd0,0x00000000d2e80000)
+ Metaspace       used 93531K, capacity 95993K, committed 96408K, reserved 1134592K
+  class space    used 11016K, capacity 11575K, committed 11696K, reserved 1048576K
+Event: 8405.816 GC heap after
+Heap after GC invocations=46 (full 8):
+ PSYoungGen      total 349696K, used 60490K [0x00000000e0000000, 0x0000000100000000, 0x0000000100000000)
+  eden space 175104K, 0% used [0x00000000e0000000,0x00000000e0000000,0x00000000eab00000)
+  from space 174592K, 34% used [0x00000000f5580000,0x00000000f90928b8,0x0000000100000000)
+  to   space 174592K, 0% used [0x00000000eab00000,0x00000000eab00000,0x00000000f5580000)
+ ParOldGen       total 834048K, used 786432K [0x00000000a0000000, 0x00000000d2e80000, 0x00000000e0000000)
+  object space 834048K, 94% used [0x00000000a0000000,0x00000000d0000240,0x00000000d2e80000)
+ Metaspace       used 93531K, capacity 95993K, committed 96408K, reserved 1134592K
+  class space    used 11016K, capacity 11575K, committed 11696K, reserved 1048576K
+}
+Event: 8405.856 GC heap before
+{Heap before GC invocations=47 (full 9):
+ PSYoungGen      total 349696K, used 60490K [0x00000000e0000000, 0x0000000100000000, 0x0000000100000000)
+  eden space 175104K, 0% used [0x00000000e0000000,0x00000000e0000000,0x00000000eab00000)
+  from space 174592K, 34% used [0x00000000f5580000,0x00000000f90928b8,0x0000000100000000)
+  to   space 174592K, 0% used [0x00000000eab00000,0x00000000eab00000,0x00000000f5580000)
+ ParOldGen       total 834048K, used 786432K [0x00000000a0000000, 0x00000000d2e80000, 0x00000000e0000000)
+  object space 834048K, 94% used [0x00000000a0000000,0x00000000d0000240,0x00000000d2e80000)
+ Metaspace       used 93531K, capacity 95993K, committed 96408K, reserved 1134592K
+  class space    used 11016K, capacity 11575K, committed 11696K, reserved 1048576K
+
+Deoptimization events (10 events):
+Event: 8399.213 Thread 0x00007ff030004800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007ff0986297a8 method=android.databinding.tool.ext.LazyExt.getValue(Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object; @ 26
+Event: 8399.213 Thread 0x00007ff030004800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007ff0986297a8 method=android.databinding.tool.ext.LazyExt.getValue(Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object; @ 26
+Event: 8399.213 Thread 0x00007ff030004800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007ff0986297a8 method=android.databinding.tool.ext.LazyExt.getValue(Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object; @ 26
+Event: 8399.213 Thread 0x00007ff030004800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007ff0986297a8 method=android.databinding.tool.ext.LazyExt.getValue(Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object; @ 26
+Event: 8399.330 Thread 0x00007ff030004800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007ff095bd6c80 method=android.databinding.tool.writer.KCode$Companion.indent(I)Ljava/lang/String; @ 7
+Event: 8404.929 Thread 0x00007ff030004800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007ff096a14fa8 method=android.databinding.tool.reflection.SdkUtil$ApiChecker.buildFullLookup()V @ 49
+Event: 8405.332 Thread 0x00007ff030004800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007ff0960e9020 method=java.util.TreeMap.getEntry(Ljava/lang/Object;)Ljava/util/TreeMap$Entry; @ 26
+Event: 8405.332 Thread 0x00007ff030004800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007ff0960e9020 method=java.util.TreeMap.getEntry(Ljava/lang/Object;)Ljava/util/TreeMap$Entry; @ 26
+Event: 8405.332 Thread 0x00007ff030004800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007ff0960e9020 method=java.util.TreeMap.getEntry(Ljava/lang/Object;)Ljava/util/TreeMap$Entry; @ 26
+Event: 8405.332 Thread 0x00007ff030004800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007ff0960e9020 method=java.util.TreeMap.getEntry(Ljava/lang/Object;)Ljava/util/TreeMap$Entry; @ 26
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (10 events):
+Event: 6776.205 Thread 0x00007ff030004800 Exception <a 'java/lang/ClassNotFoundException': com/sun/org/glassfish/hk2/osgiresourcelocator/ServiceLoader> (0x00000000e41ed7d8) thrown at [/usr/local/google/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/classfile/systemDictionary.cpp
+Event: 6780.400 Thread 0x00007ff01400b800 Exception <a 'java/lang/InterruptedException'> (0x00000000e5061cb0) thrown at [/usr/local/google/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/runtime/objectMonitor.cpp, line 1680]
+Event: 6785.615 Thread 0x00007ff030005800 Exception <a 'java/io/FileNotFoundException'> (0x00000000e399be98) thrown at [/usr/local/google/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/prims/jni.cpp, line 710]
+Event: 6785.615 Thread 0x00007ff030005800 Exception <a 'sun/nio/fs/UnixException'> (0x00000000e399d550) thrown at [/usr/local/google/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/prims/jni.cpp, line 710]
+Event: 6785.615 Thread 0x00007ff030005800 Exception <a 'sun/nio/fs/UnixException'> (0x00000000e39a22b0) thrown at [/usr/local/google/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/prims/jni.cpp, line 710]
+Event: 6785.615 Thread 0x00007ff030005800 Exception <a 'java/io/FileNotFoundException'> (0x00000000e39a3cb8) thrown at [/usr/local/google/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/prims/jni.cpp, line 710]
+Event: 6785.615 Thread 0x00007ff030005800 Exception <a 'java/io/FileNotFoundException'> (0x00000000e39a54f0) thrown at [/usr/local/google/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/prims/jni.cpp, line 710]
+Event: 8350.836 Thread 0x00007ff0240d4000 Exception <a 'java/lang/InterruptedException'> (0x00000000e5441e40) thrown at [/usr/local/google/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/runtime/objectMonitor.cpp, line 1680]
+Event: 8366.364 Thread 0x00007ff008065800 Exception <a 'java/lang/InterruptedException'> (0x00000000e4702100) thrown at [/usr/local/google/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/runtime/objectMonitor.cpp, line 1680]
+Event: 8397.787 Thread 0x00007ff030004800 Exception <a 'java/lang/ClassNotFoundException': com/sun/org/glassfish/hk2/osgiresourcelocator/ServiceLoader> (0x00000000e1154958) thrown at [/usr/local/google/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/classfile/systemDictionary.cpp
+
+Events (10 events):
+Event: 8405.332 Thread 0x00007ff030004800 Uncommon trap: trap_request=0xffffffde fr.pc=0x00007ff0960e9020
+Event: 8405.332 Thread 0x00007ff030004800 DEOPT PACKING pc=0x00007ff0960e9020 sp=0x00007ff07c7f9ec0
+Event: 8405.332 Thread 0x00007ff030004800 DEOPT UNPACKING pc=0x00007ff09504547a sp=0x00007ff07c7f9e08 mode 2
+Event: 8405.332 Thread 0x00007ff030004800 Uncommon trap: trap_request=0xffffffde fr.pc=0x00007ff0960e9020
+Event: 8405.332 Thread 0x00007ff030004800 DEOPT PACKING pc=0x00007ff0960e9020 sp=0x00007ff07c7f9ec0
+Event: 8405.332 Thread 0x00007ff030004800 DEOPT UNPACKING pc=0x00007ff09504547a sp=0x00007ff07c7f9e08 mode 2
+Event: 8405.332 Thread 0x00007ff030004800 Uncommon trap: trap_request=0xffffffde fr.pc=0x00007ff0960e9020
+Event: 8405.332 Thread 0x00007ff030004800 DEOPT PACKING pc=0x00007ff0960e9020 sp=0x00007ff07c7f9ec0
+Event: 8405.332 Thread 0x00007ff030004800 DEOPT UNPACKING pc=0x00007ff09504547a sp=0x00007ff07c7f9e08 mode 2
+Event: 8405.710 Executing VM operation: ParallelGCFailedAllocation
+
+
+Dynamic libraries:
+00400000-00401000 r-xp 00000000 08:01 50464063                           /home/archana/Desktop/android-studio/jre/jre/bin/java
+00401000-00402000 rw-p 00000000 08:01 50464063                           /home/archana/Desktop/android-studio/jre/jre/bin/java
+01d91000-01db2000 rw-p 00000000 00:00 0                                  [heap]
+a0000000-d2e80000 rw-p 00000000 00:00 0 
+e0000000-100000000 rw-p 00000000 00:00 0 
+100000000-100b6c000 rw-p 00000000 00:00 0 
+100b6c000-140000000 ---p 00000000 00:00 0 
+7feff8000000-7feff8021000 rw-p 00000000 00:00 0 
+7feff8021000-7feffc000000 ---p 00000000 00:00 0 
+7ff000000000-7ff000021000 rw-p 00000000 00:00 0 
+7ff000021000-7ff004000000 ---p 00000000 00:00 0 
+7ff004000000-7ff00490a000 rw-p 00000000 00:00 0 
+7ff00490a000-7ff008000000 ---p 00000000 00:00 0 
+7ff008000000-7ff0089e3000 rw-p 00000000 00:00 0 
+7ff0089e3000-7ff00c000000 ---p 00000000 00:00 0 
+7ff00c000000-7ff00c14d000 rw-p 00000000 00:00 0 
+7ff00c14d000-7ff010000000 ---p 00000000 00:00 0 
+7ff010000000-7ff010024000 rw-p 00000000 00:00 0 
+7ff010024000-7ff014000000 ---p 00000000 00:00 0 
+7ff014000000-7ff014255000 rw-p 00000000 00:00 0 
+7ff014255000-7ff018000000 ---p 00000000 00:00 0 
+7ff018000000-7ff018021000 rw-p 00000000 00:00 0 
+7ff018021000-7ff01c000000 ---p 00000000 00:00 0 
+7ff01c000000-7ff01d31f000 rw-p 00000000 00:00 0 
+7ff01d31f000-7ff020000000 ---p 00000000 00:00 0 
+7ff020000000-7ff020021000 rw-p 00000000 00:00 0 
+7ff020021000-7ff024000000 ---p 00000000 00:00 0 
+7ff024000000-7ff024a88000 rw-p 00000000 00:00 0 
+7ff024a88000-7ff028000000 ---p 00000000 00:00 0 
+7ff028000000-7ff028e23000 rw-p 00000000 00:00 0 
+7ff028e23000-7ff02c000000 ---p 00000000 00:00 0 
+7ff02c000000-7ff02c021000 rw-p 00000000 00:00 0 
+7ff02c021000-7ff030000000 ---p 00000000 00:00 0 
+7ff030000000-7ff030021000 rw-p 00000000 00:00 0 
+7ff030021000-7ff034000000 ---p 00000000 00:00 0 
+7ff034000000-7ff034021000 rw-p 00000000 00:00 0 
+7ff034021000-7ff038000000 ---p 00000000 00:00 0 
+7ff038000000-7ff038021000 rw-p 00000000 00:00 0 
+7ff038021000-7ff03c000000 ---p 00000000 00:00 0 
+7ff03c000000-7ff03c021000 rw-p 00000000 00:00 0 
+7ff03c021000-7ff040000000 ---p 00000000 00:00 0 
+7ff040000000-7ff041af2000 rw-p 00000000 00:00 0 
+7ff041af2000-7ff044000000 ---p 00000000 00:00 0 
+7ff044000000-7ff045092000 rw-p 00000000 00:00 0 
+7ff045092000-7ff048000000 ---p 00000000 00:00 0 
+7ff048000000-7ff0498fc000 rw-p 00000000 00:00 0 
+7ff0498fc000-7ff04c000000 ---p 00000000 00:00 0 
+7ff04c000000-7ff04df9b000 rw-p 00000000 00:00 0 
+7ff04df9b000-7ff050000000 ---p 00000000 00:00 0 
+7ff050000000-7ff050021000 rw-p 00000000 00:00 0 
+7ff050021000-7ff054000000 ---p 00000000 00:00 0 
+7ff054000000-7ff054021000 rw-p 00000000 00:00 0 
+7ff054021000-7ff058000000 ---p 00000000 00:00 0 
+7ff058000000-7ff05857c000 rw-p 00000000 00:00 0 
+7ff05857c000-7ff05c000000 ---p 00000000 00:00 0 
+7ff05c000000-7ff05c021000 rw-p 00000000 00:00 0 
+7ff05c021000-7ff060000000 ---p 00000000 00:00 0 
+7ff060000000-7ff060021000 rw-p 00000000 00:00 0 
+7ff060021000-7ff064000000 ---p 00000000 00:00 0 
+7ff064000000-7ff064021000 rw-p 00000000 00:00 0 
+7ff064021000-7ff068000000 ---p 00000000 00:00 0 
+7ff068000000-7ff068021000 rw-p 00000000 00:00 0 
+7ff068021000-7ff06c000000 ---p 00000000 00:00 0 
+7ff070000000-7ff070021000 rw-p 00000000 00:00 0 
+7ff070021000-7ff074000000 ---p 00000000 00:00 0 
+7ff07524f000-7ff07530f000 rw-p 00000000 00:00 0 
+7ff07530f000-7ff07544f000 ---p 00000000 00:00 0 
+7ff07544f000-7ff07564f000 rw-p 00000000 00:00 0 
+7ff07564f000-7ff075770000 r--s 02b7d000 08:01 50599243                   /home/archana/Android/Sdk/platforms/android-28/android.jar
+7ff075770000-7ff075970000 rw-p 00000000 00:00 0 
+7ff075970000-7ff075b70000 rw-p 00000000 00:00 0 
+7ff075b70000-7ff075d70000 rw-p 00000000 00:00 0 
+7ff075dcd000-7ff075dcf000 r--s 00003000 08:01 48760332                   /home/archana/Android/Sdk/build-tools/28.0.3/core-lambda-stubs.jar
+7ff075dcf000-7ff075dda000 r--s 0003f000 08:01 50599247                   /home/archana/Android/Sdk/platforms/android-28/optional/org.apache.http.legacy.jar
+7ff075dda000-7ff075ddc000 r--s 00012000 08:01 56754224                   /home/archana/.gradle/caches/transforms-2/files-2.1/17d3398ba3d2859696f3e9bdb406cd9a/jars/classes.jar
+7ff075ddc000-7ff075df0000 r--s 000ea000 08:01 56754216                   /home/archana/.gradle/caches/transforms-2/files-2.1/96c3ed4b489a127af5f9d4a48715c007/jars/classes.jar
+7ff075df0000-7ff075df1000 r--s 00004000 08:01 48760628                   /home/archana/.gradle/caches/modules-2/files-2.1/com.github.bumptech.glide/disklrucache/4.9.0/cbb185635e8f265d6391c7d43118d3856574dc3a/disklrucache-4.9.0.jar
+7ff075df1000-7ff075df3000 r--s 00000000 08:01 56624577                   /home/archana/.gradle/caches/transforms-2/files-2.1/b999259f152a4557c0d1549fc2aee362/jars/classes.jar
+7ff075df3000-7ff075df5000 r--s 0001c000 08:01 48759304                   /home/archana/.gradle/caches/modules-2/files-2.1/androidx.constraintlayout/constraintlayout-solver/1.1.3/54abe9ffb22cc9019b0b6fcc10f185cc4e67b34e/constraintlayout-solver-1.1.3.jar
+7ff075df5000-7ff075df6000 r--s 00001000 08:01 48759558                   /home/archana/.gradle/caches/modules-2/files-2.1/com.google.auto.value/auto-value-annotations/1.6.5/c3dad10377f0e2242c9a4b88e9704eaf79103679/auto-value-annotations-1.6.5.jar
+7ff075df6000-7ff075df7000 r--s 00000000 08:01 48759049                   /home/archana/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar
+7ff075df7000-7ff075df9000 r--s 00007000 08:01 48763028                   /home/archana/.gradle/caches/modules-2/files-2.1/com.google.dagger/dagger/2.27/7bee2792b10523e298a7de508635c6eed0c309be/dagger-2.27.jar
+7ff075df9000-7ff075dfa000 r--s 00001000 08:01 8262310                    /home/archana/.gradle/caches/transforms-2/files-2.1/491dfef711e804b8e3434a25e4024d85/jars/classes.jar
+7ff075dfa000-7ff075e15000 r--s 00138000 08:01 56624556                   /home/archana/.gradle/caches/transforms-2/files-2.1/0964afff991c9e394da0f05984773517/jetified-interactivemedia-3.11.2.jar
+7ff075e15000-7ff075e1a000 r--s 00036000 08:01 48759042                   /home/archana/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.5/f645ed69d595b24d4cf8b3fbb64cc505bede8829/gson-2.8.5.jar
+7ff075e1a000-7ff075e1c000 r--s 00009000 08:01 56624544                   /home/archana/.gradle/caches/transforms-2/files-2.1/bc0b729837924b745308c215dc27cf28/jars/classes.jar
+7ff075e1c000-7ff075e1e000 r--s 00014000 08:01 48760411                   /home/archana/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.15.0/bc28b5a964c8f5721eb58ee3f3c47a9bcbf4f4d8/okio-1.15.0.jar
+7ff075e1e000-7ff075e24000 r--s 00062000 08:01 48760388                   /home/archana/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.12.1/dc6d02e4e68514eff5631963e28ca7742ac69efe/okhttp-3.12.1.jar
+7ff075e24000-7ff075e47000 r--s 001d8000 08:01 56624245                   /home/archana/.gradle/caches/transforms-2/files-2.1/605e5250f5037433385365450909e7d5/jars/classes.jar
+7ff075e47000-7ff075e49000 r--s 00003000 08:01 48762722                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/15.0/d40ab99147584cf6cfb5245be67b3fee2c7220f9/annotations-15.0.jar
+7ff075e49000-7ff075e4a000 r--s 00006000 08:01 56101907                   /home/archana/.gradle/caches/transforms-2/files-2.1/01b6f9062c691b5a75c1ecf1fa866c4a/jars/classes.jar
+7ff075e4a000-7ff075e4c000 r--s 00005000 08:01 48761921                   /home/archana/.gradle/caches/modules-2/files-2.1/androidx.annotation/annotation/1.1.0/e3a6fb2f40e3a3842e6b7472628ba4ce416ea4c8/annotation-1.1.0.jar
+7ff075e4c000-7ff075e4d000 r--s 00003000 08:01 56624182                   /home/archana/.gradle/caches/transforms-2/files-2.1/f10520cfe991f0ddec1703e4ca4f5388/jars/classes.jar
+7ff075e4d000-7ff075e4e000 r--s 00001000 08:01 56624179                   /home/archana/.gradle/caches/transforms-2/files-2.1/42df9dd6dccbf895b35956e4d24264f2/jars/classes.jar
+7ff075e4e000-7ff075e4f000 r--s 00002000 08:01 56624186                   /home/archana/.gradle/caches/transforms-2/files-2.1/810ce987a23fc655d6db7fd220fb5455/jars/classes.jar
+7ff075e4f000-7ff075e50000 r--s 00001000 08:01 56624166                   /home/archana/.gradle/caches/transforms-2/files-2.1/c11a527b6bc1289a2df93a124bafe461/jars/classes.jar
+7ff075e50000-7ff075e52000 r--s 0000a000 08:01 56623741                   /home/archana/.gradle/caches/transforms-2/files-2.1/895c01a04879a93bda9a1db4eae5d032/jars/classes.jar
+7ff075e52000-7ff075e53000 r--s 00004000 08:01 56623733                   /home/archana/.gradle/caches/transforms-2/files-2.1/fbdd633e7a86ea6d93f56908ffe5d164/jars/classes.jar
+7ff075e53000-7ff075e54000 r--s 00002000 08:01 48761919                   /home/archana/.gradle/caches/modules-2/files-2.1/androidx.arch.core/core-common/2.1.0/b3152fc64428c9354344bd89848ecddc09b6f07e/core-common-2.1.0.jar
+7ff075e54000-7ff075e55000 r--s 00001000 08:01 56624130                   /home/archana/.gradle/caches/transforms-2/files-2.1/fc5f305e16ad11db478db4d3a2d3aa66/jars/classes.jar
+7ff075e55000-7ff075e56000 r--s 00002000 08:01 56624159                   /home/archana/.gradle/caches/transforms-2/files-2.1/f0e0c692251309c656b720cf44a64793/jars/classes.jar
+7ff075e56000-7ff075e58000 r--s 00003000 08:01 8262428                    /home/archana/.gradle/caches/transforms-2/files-2.1/8fffd42343ed40191eb2810a88ecb862/jars/classes.jar
+7ff075e58000-7ff075e5e000 r--s 00022000 08:01 8262418                    /home/archana/.gradle/caches/transforms-2/files-2.1/3ebf22e030ea8dc6f07e2482f2023e59/jars/classes.jar
+7ff075e5e000-7ff075e60000 r--s 0000a000 08:01 8262400                    /home/archana/.gradle/caches/transforms-2/files-2.1/9ca1bd2017e4cac7dcc2498821ddf12e/jars/classes.jar
+7ff075e60000-7ff075e62000 r--s 00008000 08:01 8262437                    /home/archana/.gradle/caches/transforms-2/files-2.1/381ddd262826075125966f330ee05e64/jars/classes.jar
+7ff075e62000-7ff075e63000 r--s 0000a000 08:01 48761917                   /home/archana/.gradle/caches/modules-2/files-2.1/androidx.collection/collection/1.1.0/1f27220b47669781457de0d600849a5de0e89909/collection-1.1.0.jar
+7ff075e63000-7ff075e64000 r--s 00007000 08:01 56624193                   /home/archana/.gradle/caches/transforms-2/files-2.1/7ffc7047e84023cd95bcfad904c4fb40/jars/classes.jar
+7ff075e64000-7ff075e66000 r--s 00004000 08:01 48761918                   /home/archana/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common/2.1.0/c67e7807d9cd6c329b9d0218b2ec4e505dd340b7/lifecycle-common-2.1.0.jar
+7ff075e66000-7ff075e67000 r--s 00002000 08:01 56624141                   /home/archana/.gradle/caches/transforms-2/files-2.1/9aa9ff9f9c630f1fbb97ad2f5c14121e/jars/classes.jar
+7ff075e67000-7ff075e69000 r--s 00001000 08:01 56624126                   /home/archana/.gradle/caches/transforms-2/files-2.1/3317547b7adfd26d56c6df2bea9a3148/jars/classes.jar
+7ff075e69000-7ff075e6a000 r--s 00002000 08:01 56624115                   /home/archana/.gradle/caches/transforms-2/files-2.1/2f6547d74fdbdeb4fcfe4296ddbd9b2b/jars/classes.jar
+7ff075e6a000-7ff075e6b000 r--s 00002000 08:01 56623377                   /home/archana/.gradle/caches/transforms-2/files-2.1/51a44addb0c2ecd04c43aa31291ab7e2/jars/classes.jar
+7ff075e6b000-7ff075e6c000 r--s 00000000 08:01 56624153                   /home/archana/.gradle/caches/transforms-2/files-2.1/fff2f34bd999d9ecfb696e41f0e9e796/jars/classes.jar
+7ff075e6c000-7ff075e6d000 r--s 00001000 08:01 56624148                   /home/archana/.gradle/caches/transforms-2/files-2.1/0b73d610b46558816f396a239552b42e/jars/classes.jar
+7ff075e6d000-7ff075e79000 r--s 00099000 08:01 56623666                   /home/archana/.gradle/caches/transforms-2/files-2.1/5c2bb072e43b7d375912d66da0ccbaaf/jars/classes.jar
+7ff075e79000-7ff075e7a000 r--s 00001000 08:01 56623650                   /home/archana/.gradle/caches/transforms-2/files-2.1/fee3342bb6474076e1b997335689c08a/jars/classes.jar
+7ff075e7a000-7ff075e7c000 r--s 00007000 08:01 56623655                   /home/archana/.gradle/caches/transforms-2/files-2.1/b9afca8dbd90b7f0d6a8229541e6d5a3/jars/classes.jar
+7ff075e7c000-7ff075e7e000 r--s 00007000 08:01 56623477                   /home/archana/.gradle/caches/transforms-2/files-2.1/da928215e410d0618294c5e2deefe3a0/jars/classes.jar
+7ff075e7e000-7ff075e7f000 r--s 00005000 08:01 56623466                   /home/archana/.gradle/caches/transforms-2/files-2.1/b5989a74ebebef0ed2505c7780580f9e/jars/classes.jar
+7ff075e7f000-7ff075e81000 r--s 00009000 08:01 56623462                   /home/archana/.gradle/caches/transforms-2/files-2.1/6ca43e16f03dc14975d66f95f5d0099c/jars/classes.jar
+7ff075e81000-7ff075e83000 r--s 0000c000 08:01 56623450                   /home/archana/.gradle/caches/transforms-2/files-2.1/9c92428f14b87eac97eede5a22e3c147/jars/classes.jar
+7ff075e83000-7ff075e85000 r--s 0000b000 08:01 56623722                   /home/archana/.gradle/caches/transforms-2/files-2.1/8a067c87ec65e037ff90b36d4d608278/jars/classes.jar
+7ff075e85000-7ff075e8d000 r--s 00050000 08:01 56623399                   /home/archana/.gradle/caches/transforms-2/files-2.1/4b12e7c83b395962b0359738fc11f8f5/jars/classes.jar
+7ff075e8d000-7ff075e91000 r--s 00029000 08:01 56623372                   /home/archana/.gradle/caches/transforms-2/files-2.1/3af0fd1b5435735fcf61325992c12b32/jars/classes.jar
+7ff075e91000-7ff076091000 rw-p 00000000 00:00 0 
+7ff076091000-7ff076291000 rw-p 00000000 00:00 0 
+7ff076291000-7ff076491000 rw-p 00000000 00:00 0 
+7ff076491000-7ff076492000 r--s 00007000 08:01 56623438                   /home/archana/.gradle/caches/transforms-2/files-2.1/6ab594c6adaa3d958fa9aaab8274445e/jars/classes.jar
+7ff076492000-7ff076493000 r--s 00000000 08:01 56623339                   /home/archana/.gradle/caches/transforms-2/files-2.1/8bd7225e426d9e0bb0134953f8fd1c69/jars/classes.jar
+7ff076493000-7ff076495000 r--s 0000b000 08:01 48762078                   /home/archana/.gradle/caches/modules-2/files-2.1/com.auth0/java-jwt/3.8.3/b418d6028e3499671a0eb017907d9e29e265e503/java-jwt-3.8.3.jar
+7ff076495000-7ff076497000 r--s 00002000 08:01 56623232                   /home/archana/.gradle/caches/transforms-2/files-2.1/6c856d53ec4655d48d6c254250d49a2f/jars/classes.jar
+7ff076497000-7ff07649c000 r--s 00041000 08:01 56623219                   /home/archana/.gradle/caches/transforms-2/files-2.1/ef22b0eb442ef8f538a4a1276ccf7fa1/jars/classes.jar
+7ff07649c000-7ff07649d000 r--s 00003000 08:01 56623205                   /home/archana/.gradle/caches/transforms-2/files-2.1/eb7656c01f74c865a9b84834b0f5e4a8/jars/classes.jar
+7ff07649d000-7ff07649e000 r--s 00001000 08:01 56623184                   /home/archana/.gradle/caches/transforms-2/files-2.1/06781da1a39ee1ee61ae5404622841d8/jars/classes.jar
+7ff07649e000-7ff0764a5000 r--s 00064000 08:01 48762074                   /home/archana/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.4/5fe28b9518e58819180a43a850fbc0dd24b7c050/commons-lang3-3.4.jar
+7ff0764a5000-7ff0764a7000 r--s 00001000 08:01 48759268                   /home/archana/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/logging-interceptor/3.9.1/36e71ab9e903fc4d1b4a58d80572a91d9fd60caf/logging-interceptor-3.9.1.jar
+7ff0764a7000-7ff0764ac000 r--s 0004c000 08:01 48759858                   /home/archana/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.7.5/7a15a7db50f86c4b64aa3367424a60e3a325b8f1/okhttp-2.7.5.jar
+7ff0764ac000-7ff0764b1000 r--s 00048000 08:01 56498897                   /home/archana/.gradle/caches/transforms-2/files-2.1/a1c9271cf6fc22899c789f67192321ed/jars/classes.jar
+7ff0764b1000-7ff0764b4000 ---p 00000000 00:00 0 
+7ff0764b4000-7ff0767b2000 rw-p 00000000 00:00 0 
+7ff0767b2000-7ff0769b2000 rw-p 00000000 00:00 0 
+7ff0769b2000-7ff076bb2000 rw-p 00000000 00:00 0 
+7ff076bb2000-7ff076db2000 rw-p 00000000 00:00 0 
+7ff076db2000-7ff076fb2000 rw-p 00000000 00:00 0 
+7ff076fb2000-7ff0771b2000 rw-p 00000000 00:00 0 
+7ff0771b2000-7ff0773b2000 rw-p 00000000 00:00 0 
+7ff0773b2000-7ff0773b3000 r--s 00000000 08:01 56498889                   /home/archana/.gradle/caches/transforms-2/files-2.1/7cf10acf9a861d15e98627e3c75e7c29/jars/classes.jar
+7ff0773b3000-7ff0773b4000 r--s 00001000 08:01 56498881                   /home/archana/.gradle/caches/transforms-2/files-2.1/fbc4267a884575fa9212d194b07750f0/jars/classes.jar
+7ff0773b4000-7ff0773b8000 r--s 00023000 08:01 56498866                   /home/archana/.gradle/caches/transforms-2/files-2.1/71bdcd3b066cb8cd69aae7f36b5279bb/jetified-analytics-4.3.1.jar
+7ff0773b8000-7ff0773b9000 r--s 00001000 08:01 56498841                   /home/archana/.gradle/caches/transforms-2/files-2.1/4c93e492981709f2e67e90cbd07a0814/jars/classes.jar
+7ff0773b9000-7ff0773ba000 r--s 00006000 08:01 56498792                   /home/archana/.gradle/caches/transforms-2/files-2.1/2830fcfe0d7051f436ad95b6bfa7e266/jars/classes.jar
+7ff0773ba000-7ff0773f3000 r--s 001b5000 08:01 56233716                   /home/archana/.gradle/caches/transforms-2/files-2.1/648dc1861fd73de75bb74c8c0d63ff51/jars/classes.jar
+7ff0773f3000-7ff0773f4000 r--s 00001000 08:01 56232968                   /home/archana/.gradle/caches/transforms-2/files-2.1/3e10db4f80f1e28af58aaf2c810d1b74/jars/classes.jar
+7ff0773f4000-7ff0773f6000 r--s 00001000 08:01 56232957                   /home/archana/.gradle/caches/transforms-2/files-2.1/6d93d3f6718ad85e9979955475f69fd2/jars/classes.jar
+7ff0773f6000-7ff0773f8000 r--s 00007000 08:01 56498864                   /home/archana/.gradle/caches/transforms-2/files-2.1/f83bf0fa57d7cc400110ac27fce0eb01/jars/classes.jar
+7ff0773f8000-7ff0773f9000 r--s 00000000 08:01 56498830                   /home/archana/.gradle/caches/transforms-2/files-2.1/cd263d0c073f22256be766b460d56011/jars/classes.jar
+7ff0773f9000-7ff0773fa000 r--s 00005000 08:01 56498847                   /home/archana/.gradle/caches/transforms-2/files-2.1/53b7bca3737348a3fef6cbb82d58029a/jars/classes.jar
+7ff0773fa000-7ff0773fb000 r--s 00002000 08:01 56498821                   /home/archana/.gradle/caches/transforms-2/files-2.1/3440e46b7d5f6acb792a261e4bc31a9a/jars/classes.jar
+7ff0773fb000-7ff0773fd000 r--s 00002000 08:01 56498853                   /home/archana/.gradle/caches/transforms-2/files-2.1/73e9eaaa28889b1ddcffaf4f4f87f5d5/jars/classes.jar
+7ff0773fd000-7ff077400000 r--s 00028000 08:01 56232949                   /home/archana/.gradle/caches/transforms-2/files-2.1/af73363dfe11118c5f3f50216e2cfcd1/jars/classes.jar
+7ff077400000-7ff077408000 r--s 00041000 08:01 56230416                   /home/archana/.gradle/caches/transforms-2/files-2.1/7b46f5361d63df1aacad415265c99c65/jars/classes.jar
+7ff077408000-7ff07740e000 r--s 00038000 08:01 8262407                    /home/archana/.gradle/caches/transforms-2/files-2.1/527e96322da66dec1643c19e2c72a785/jars/classes.jar
+7ff07740e000-7ff077410000 r--s 00009000 08:01 8262362                    /home/archana/.gradle/caches/transforms-2/files-2.1/64b0d410d491bb9c9e476453daca9d30/jars/classes.jar
+7ff077410000-7ff077412000 r--s 00002000 08:01 8262375                    /home/archana/.gradle/caches/transforms-2/files-2.1/7197dbebc17688353dd5f78435bf29ad/jars/classes.jar
+7ff077412000-7ff077413000 r--s 00000000 08:01 8262303                    /home/archana/.gradle/caches/transforms-2/files-2.1/9af680eda27033a5c66b92e2420d00dc/jars/classes.jar
+7ff077413000-7ff077415000 r--s 00007000 08:01 55580104                   /home/archana/.gradle/caches/transforms-2/files-2.1/55d0403299888261e85e399f8cf030fe/jars/classes.jar
+7ff077415000-7ff07741f000 r--s 00068000 08:01 56232976                   /home/archana/.gradle/caches/transforms-2/files-2.1/166df08dc25afcc77edba81ee13c1ec2/jars/classes.jar
+7ff07741f000-7ff077421000 r--s 00005000 08:01 56232932                   /home/archana/.gradle/caches/transforms-2/files-2.1/80a21a0b088b5dcbc1df59805ac68b48/jars/classes.jar
+7ff077421000-7ff077422000 r--s 00000000 08:01 8262332                    /home/archana/.gradle/caches/transforms-2/files-2.1/db2a4fce0a82bacf1075eee9c341d95a/jars/classes.jar
+7ff077422000-7ff077423000 r--s 00001000 08:01 8262292                    /home/archana/.gradle/caches/transforms-2/files-2.1/b66f3c1d3f0e5b127ddd7c7da65384e4/jars/classes.jar
+7ff077423000-7ff077425000 r--s 00008000 08:01 8262322                    /home/archana/.gradle/caches/transforms-2/files-2.1/9d70708ebb48f101ee735b5d9866771a/jars/classes.jar
+7ff077425000-7ff077427000 r--s 0000c000 08:01 4589141                    /home/archana/.gradle/caches/transforms-2/files-2.1/7e267d6889fbed6acd49ad403b047a10/jars/classes.jar
+7ff077427000-7ff077428000 r--s 00000000 08:01 4589206                    /home/archana/.gradle/caches/transforms-2/files-2.1/f81840daf83b31788c7dcad153f1cb58/jars/classes.jar
+7ff077428000-7ff077429000 r--s 00001000 08:01 8262342                    /home/archana/.gradle/caches/transforms-2/files-2.1/2e7f81efc01ba9aaa508401d1cbd80e6/jars/classes.jar
+7ff077429000-7ff077434000 r--s 0005c000 08:01 8262389                    /home/archana/.gradle/caches/transforms-2/files-2.1/7f7b8580cb4fd3a39a5ae0cb5bf9fe28/jars/classes.jar
+7ff077434000-7ff077435000 r--s 00002000 08:01 8262349                    /home/archana/.gradle/caches/transforms-2/files-2.1/7f93412c82bb564f185942ab8b44f6a2/jars/classes.jar
+7ff077435000-7ff077438000 r--s 00034000 08:01 8262376                    /home/archana/.gradle/caches/transforms-2/files-2.1/6099af1f2ed402e781cccef72a003843/jars/classes.jar
+7ff077438000-7ff077441000 r--s 0005f000 08:01 55184309                   /home/archana/.gradle/caches/transforms-2/files-2.1/15919f0900579e0459770a497c8263d6/jars/classes.jar
+7ff077441000-7ff077448000 r--s 0003a000 08:01 56232940                   /home/archana/.gradle/caches/transforms-2/files-2.1/abfc182164865d96904e813a2566c3c6/jars/classes.jar
+7ff077448000-7ff07744b000 r--s 0000c000 08:01 56230406                   /home/archana/.gradle/caches/transforms-2/files-2.1/adc3257bc90998484abdf2612c1b6c99/jars/classes.jar
+7ff07744b000-7ff07744e000 r--s 00013000 08:01 4589197                    /home/archana/.gradle/caches/transforms-2/files-2.1/ae8c0fe983ec73154f96ac4fabf8f862/jars/classes.jar
+7ff07744e000-7ff077450000 r--s 00005000 08:01 8262273                    /home/archana/.gradle/caches/transforms-2/files-2.1/cb14dec8f8b211425dc28c9b899a8e00/jars/classes.jar
+7ff077450000-7ff077451000 r--s 00000000 08:01 8262253                    /home/archana/.gradle/caches/transforms-2/files-2.1/e1d247c899fa32a84fbb6ceb6d55f111/jars/classes.jar
+7ff077451000-7ff07745e000 r--s 00069000 08:01 8262244                    /home/archana/.gradle/caches/transforms-2/files-2.1/d7f7db8ff50cd497df45b470ec82d302/jars/classes.jar
+7ff07745e000-7ff07745f000 r--s 00000000 08:01 56230335                   /home/archana/.gradle/caches/transforms-2/files-2.1/82c278efe7159c7e6f7a9789da1b60ca/jars/classes.jar
+7ff07745f000-7ff077460000 r--s 0000c000 08:01 56230108                   /home/archana/.gradle/caches/transforms-2/files-2.1/32a357fda39ab71d6e4ac0b9cdcf94e5/jars/classes.jar
+7ff077460000-7ff077462000 r--s 00008000 08:01 56230078                   /home/archana/.gradle/caches/transforms-2/files-2.1/b464a26580f932a0a0df7851cf920794/jars/classes.jar
+7ff077462000-7ff077465000 ---p 00000000 00:00 0 
+7ff077465000-7ff077763000 rw-p 00000000 00:00 0 
+7ff077763000-7ff07795d000 rw-p 00000000 00:00 0 
+7ff07795d000-7ff077963000 ---p 00000000 00:00 0 
+7ff077963000-7ff077964000 r--s 00004000 08:01 56230065                   /home/archana/.gradle/caches/transforms-2/files-2.1/a5ef34e38b3eee6df275be2b23833407/jars/classes.jar
+7ff077964000-7ff077965000 r--s 00003000 08:01 56230038                   /home/archana/.gradle/caches/transforms-2/files-2.1/21c7023eb0e3615ad5ae8f7e9f151cae/jars/classes.jar
+7ff077965000-7ff077966000 r--s 00000000 08:01 56230031                   /home/archana/.gradle/caches/transforms-2/files-2.1/563ed6fd56f10412caf1df6975033ebc/jars/classes.jar
+7ff077966000-7ff077968000 r--s 00004000 08:01 56230019                   /home/archana/.gradle/caches/transforms-2/files-2.1/b695a7857bca7ff194f3f653e12a13f1/jars/classes.jar
+7ff077968000-7ff07796e000 r--s 00057000 08:01 56230009                   /home/archana/.gradle/caches/transforms-2/files-2.1/8eec6f2059c6661a424bb7fccb9f818a/jars/classes.jar
+7ff07796e000-7ff077971000 r--s 00018000 08:01 48760572                   /home/archana/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.5.0/713ce36037bf24a76a3974c05cb85c3f754b1cc3/retrofit-2.5.0.jar
+7ff077971000-7ff077972000 r--s 00001000 08:01 48760570                   /home/archana/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.5.0/1c96fc5d0230f57d36cd09e2541d10829a3352a7/converter-gson-2.5.0.jar
+7ff077972000-7ff077973000 r--s 00000000 08:01 56101901                   /home/archana/.gradle/caches/transforms-2/files-2.1/95a4dcba77ab4b9d27ae818921de21a6/jars/classes.jar
+7ff077973000-7ff07798a000 r--s 000df000 08:01 56101894                   /home/archana/.gradle/caches/transforms-2/files-2.1/129f0788c948c72609bf67c6c06304be/jars/classes.jar
+7ff07798a000-7ff07798b000 r--s 00004000 08:01 56101168                   /home/archana/.gradle/caches/transforms-2/files-2.1/4399d758c1b0f8df413f58c4bfbf0e5e/jars/classes.jar
+7ff07798b000-7ff07798d000 r--s 00007000 08:01 56101154                   /home/archana/.gradle/caches/transforms-2/files-2.1/1260bb35961fd2bd33aba032a71ff641/jars/classes.jar
+7ff07798d000-7ff07798f000 r--s 00007000 08:01 56101147                   /home/archana/.gradle/caches/transforms-2/files-2.1/10ff5fa29ffe922260b10442092e9b4b/jars/classes.jar
+7ff07798f000-7ff07799e000 r--s 00096000 08:01 56101136                   /home/archana/.gradle/caches/transforms-2/files-2.1/902f0299ef44eeea19d2de6147c7054b/jars/classes.jar
+7ff07799e000-7ff07799f000 r--s 00001000 08:01 56100862                   /home/archana/.gradle/caches/transforms-2/files-2.1/dfa07e680c25f68c648d8517ad101b0a/jars/classes.jar
+7ff07799f000-7ff0779a1000 r--s 0000e000 08:01 56100893                   /home/archana/.gradle/caches/transforms-2/files-2.1/7132fe98b4df9dda82e3080a73b35f02/jars/classes.jar
+7ff0779a1000-7ff0779a2000 r--s 00003000 08:01 56100852                   /home/archana/.gradle/caches/transforms-2/files-2.1/8fd3eae5fc7e04376a17427cbdf2fb82/jars/classes.jar
+7ff0779a2000-7ff0779a5000 r--s 00026000 08:01 56100845                   /home/archana/.gradle/caches/transforms-2/files-2.1/0ed7407f81c1c07b8cffe6195526c8e2/jars/classes.jar
+7ff0779a5000-7ff0779a7000 r--s 0000e000 08:01 55315336                   /home/archana/.gradle/caches/transforms-2/files-2.1/78dcbcaa059bff14e346f453d67b7640/jars/classes.jar
+7ff0779a7000-7ff0779b1000 r--s 0009d000 08:01 55970639                   /home/archana/.gradle/caches/transforms-2/files-2.1/41f1812c2318e8261391977a6178b9c5/jars/classes.jar
+7ff0779b1000-7ff0779b7000 r--s 0003f000 08:01 55969165                   /home/archana/.gradle/caches/transforms-2/files-2.1/53e2291d4d52c65d4a80a63527333bee/jars/classes.jar
+7ff0779b7000-7ff0779c7000 r--s 000a0000 08:01 55972661                   /home/archana/.gradle/caches/transforms-2/files-2.1/e3ea0e016dc96dbb3fe374e5dc1b252e/jars/classes.jar
+7ff0779c7000-7ff0779d0000 r--s 00052000 08:01 55840773                   /home/archana/.gradle/caches/transforms-2/files-2.1/a9d8b225f3c8bb88f8d38a0a88c046ef/jars/classes.jar
+7ff0779d0000-7ff0779d2000 r--s 00014000 08:01 55837503                   /home/archana/.gradle/caches/transforms-2/files-2.1/7817edacd33bc2e679e408fd58ab799e/jars/classes.jar
+7ff0779d2000-7ff0779dc000 r--s 00077000 08:01 55314738                   /home/archana/.gradle/caches/transforms-2/files-2.1/6b546f61bc6403b6badaf078933a20f6/jars/classes.jar
+7ff0779dc000-7ff0779df000 ---p 00000000 00:00 0 
+7ff0779df000-7ff077add000 rw-p 00000000 00:00 0 
+7ff077add000-7ff077ae0000 ---p 00000000 00:00 0 
+7ff077ae0000-7ff077bde000 rw-p 00000000 00:00 0 
+7ff077bde000-7ff077bf5000 r-xp 00000000 08:01 24646343                   /lib/x86_64-linux-gnu/libresolv-2.23.so
+7ff077bf5000-7ff077df5000 ---p 00017000 08:01 24646343                   /lib/x86_64-linux-gnu/libresolv-2.23.so
+7ff077df5000-7ff077df6000 r--p 00017000 08:01 24646343                   /lib/x86_64-linux-gnu/libresolv-2.23.so
+7ff077df6000-7ff077df7000 rw-p 00018000 08:01 24646343                   /lib/x86_64-linux-gnu/libresolv-2.23.so
+7ff077df7000-7ff077df9000 rw-p 00000000 00:00 0 
+7ff077df9000-7ff077dfe000 r-xp 00000000 08:01 24646288                   /lib/x86_64-linux-gnu/libnss_dns-2.23.so
+7ff077dfe000-7ff077ffe000 ---p 00005000 08:01 24646288                   /lib/x86_64-linux-gnu/libnss_dns-2.23.so
+7ff077ffe000-7ff077fff000 r--p 00005000 08:01 24646288                   /lib/x86_64-linux-gnu/libnss_dns-2.23.so
+7ff077fff000-7ff078000000 rw-p 00006000 08:01 24646288                   /lib/x86_64-linux-gnu/libnss_dns-2.23.so
+7ff078000000-7ff078021000 rw-p 00000000 00:00 0 
+7ff078021000-7ff07c000000 ---p 00000000 00:00 0 
+7ff07c000000-7ff07c001000 r--s 00005000 08:01 55837491                   /home/archana/.gradle/caches/transforms-2/files-2.1/66e9c99d538767c898424ea518aaa824/jars/classes.jar
+7ff07c001000-7ff07c002000 r--s 00003000 08:01 55184304                   /home/archana/.gradle/caches/transforms-2/files-2.1/50fb7d771e5fbb65c400a5815ec16764/jars/classes.jar
+7ff07c002000-7ff07c004000 r--s 00004000 08:01 55446189                   /home/archana/.gradle/caches/transforms-2/files-2.1/eb7b2f1bd88dca40f83f91eaa91d2718/jars/classes.jar
+7ff07c004000-7ff07c005000 r--s 00003000 08:01 55313969                   /home/archana/.gradle/caches/transforms-2/files-2.1/e6b098e112f46453e446665de0d81f29/jars/classes.jar
+7ff07c005000-7ff07c006000 r--s 00000000 08:01 4588995                    /home/archana/.gradle/caches/transforms-2/files-2.1/f2c8f72e61446d329e31447370d81290/jars/classes.jar
+7ff07c006000-7ff07c008000 r--s 0000f000 08:01 4073394                    /home/archana/.gradle/caches/transforms-2/files-2.1/f14c41306508cca6849a11fa02df2a3a/jars/classes.jar
+7ff07c008000-7ff07c00a000 r--s 00007000 08:01 55183723                   /home/archana/.gradle/caches/transforms-2/files-2.1/06df8c7ef1747e35e16b1aa380a72792/jars/classes.jar
+7ff07c00a000-7ff07c00b000 r--s 00003000 08:01 55183551                   /home/archana/.gradle/caches/transforms-2/files-2.1/ddd3bcfa981d8b92f908a7ccd6b40071/jars/classes.jar
+7ff07c00b000-7ff07c00d000 r--s 00009000 08:01 55183480                   /home/archana/.gradle/caches/transforms-2/files-2.1/550e201d4b1fd605304855cba060e327/jars/classes.jar
+7ff07c00d000-7ff07c00f000 r--s 00010000 08:01 55183473                   /home/archana/.gradle/caches/transforms-2/files-2.1/8108cb28693c612ea2fc92eaaa6faa0b/jars/classes.jar
+7ff07c00f000-7ff07c011000 r--s 00008000 08:01 55183463                   /home/archana/.gradle/caches/transforms-2/files-2.1/7d681b6f81355bf9530906d30f2553c2/jars/classes.jar
+7ff07c011000-7ff07c017000 r--s 0002b000 08:01 55183435                   /home/archana/.gradle/caches/transforms-2/files-2.1/ea6af8b33a077e5043ccf81986e014b3/jars/classes.jar
+7ff07c017000-7ff07c01e000 r--s 00057000 08:01 55183420                   /home/archana/.gradle/caches/transforms-2/files-2.1/6957ec2105ca2982157c5c9349473189/jars/classes.jar
+7ff07c01e000-7ff07c020000 r--s 0000f000 08:01 55183395                   /home/archana/.gradle/caches/transforms-2/files-2.1/e78075d1d8235eb9b1763d7af18644a4/jars/classes.jar
+7ff07c020000-7ff07c023000 r--s 00011000 08:01 55183378                   /home/archana/.gradle/caches/transforms-2/files-2.1/749ecb40dfee1e52dfccfeedc9de1890/jars/classes.jar
+7ff07c023000-7ff07c02b000 r--s 0006a000 08:01 55183053                   /home/archana/.gradle/caches/transforms-2/files-2.1/23b363632e3736378cec84ef1c8ca911/jars/classes.jar
+7ff07c02b000-7ff07c033000 r--s 00020000 08:01 48760632                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.31/20c34a04ea25cb1ef0139598bd67c764562cb170/kotlin-stdlib-common-1.3.31.jar
+7ff07c033000-7ff07c035000 r--s 00001000 08:01 48759082                   /home/archana/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/ed28ded51a8b1c6b112568def5f4b455e6809019/j2objc-annotations-1.1.jar
+7ff07c035000-7ff07c03f000 r--s 00026000 08:01 48759081                   /home/archana/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/2.5.2/cea74543d5904a30861a61b4643a5f2bb372efc4/checker-qual-2.5.2.jar
+7ff07c03f000-7ff07c052000 r--s 00126000 08:01 48760630                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.31/11289d20fd95ae219333f3456072be9f081c30cc/kotlin-stdlib-1.3.31.jar
+7ff07c052000-7ff07c084000 r--s 0026c000 08:01 48761160                   /home/archana/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/26.0-jre/6a806eff209f36f635f943e16d97491f00f6bfab/guava-26.0-jre.jar
+7ff07c084000-7ff07c09b000 r--s 00154000 08:01 48759062                   /home/archana/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4/4.5.3/f35db7e4b2446e4174ba6a73db7bd6b3e6bb5da1/antlr4-4.5.3.jar
+7ff07c09b000-7ff07c09d000 r-xp 00000000 08:01 24646296                   /lib/x86_64-linux-gnu/libnss_mdns4_minimal.so.2
+7ff07c09d000-7ff07c29c000 ---p 00002000 08:01 24646296                   /lib/x86_64-linux-gnu/libnss_mdns4_minimal.so.2
+7ff07c29c000-7ff07c29d000 r--p 00001000 08:01 24646296                   /lib/x86_64-linux-gnu/libnss_mdns4_minimal.so.2
+7ff07c29d000-7ff07c29e000 rw-p 00002000 08:01 24646296                   /lib/x86_64-linux-gnu/libnss_mdns4_minimal.so.2
+7ff07c29e000-7ff07c49e000 rw-p 00000000 00:00 0 
+7ff07c49e000-7ff07c4b4000 r-xp 00000000 08:01 24646229                   /lib/x86_64-linux-gnu/libgcc_s.so.1
+7ff07c4b4000-7ff07c6b3000 ---p 00016000 08:01 24646229                   /lib/x86_64-linux-gnu/libgcc_s.so.1
+7ff07c6b3000-7ff07c6b4000 rw-p 00015000 08:01 24646229                   /lib/x86_64-linux-gnu/libgcc_s.so.1
+7ff07c6b4000-7ff07c6e6000 r-xp 00000000 08:01 50463986                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libsunec.so
+7ff07c6e6000-7ff07c6ed000 rw-p 00031000 08:01 50463986                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libsunec.so
+7ff07c6ed000-7ff07c6fe000 rw-p 00000000 00:00 0 
+7ff07c6fe000-7ff07c701000 ---p 00000000 00:00 0 
+7ff07c701000-7ff07c9ff000 rw-p 00000000 00:00 0 
+7ff07c9ff000-7ff07cbff000 rw-p 00000000 00:00 0 
+7ff07cbff000-7ff07cdff000 rw-p 00000000 00:00 0 
+7ff07cdff000-7ff07cfff000 rw-p 00000000 00:00 0 
+7ff07cfff000-7ff080000000 rw-p 00000000 00:00 0 
+7ff080000000-7ff080021000 rw-p 00000000 00:00 0 
+7ff080021000-7ff084000000 ---p 00000000 00:00 0 
+7ff084000000-7ff084001000 r--s 00001000 08:01 55183409                   /home/archana/.gradle/caches/transforms-2/files-2.1/f820130fec2fb51e6467a70dbbc89567/jars/classes.jar
+7ff084001000-7ff084003000 r--s 00002000 08:01 48761887                   /home/archana/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.1.3/39b109f2cd352b2d71b52a3b5a1a9850e1dc304b/error_prone_annotations-2.1.3.jar
+7ff084003000-7ff084005000 r--s 00003000 08:01 48759078                   /home/archana/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar
+7ff084005000-7ff084007000 r--s 00001000 08:01 48761809                   /home/archana/.gradle/caches/modules-2/files-2.1/com.android.tools/annotations/26.4.1/68e90a2f48445f4f2003640c539e0cbe02fdcb5a/annotations-26.4.1.jar
+7ff084007000-7ff08400c000 r--s 00034000 08:01 48759469                   /home/archana/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/c4ba5371a29ac9b2ad6129b1d39ea38750043eff/gson-2.8.0.jar
+7ff08400c000-7ff08400e000 r--s 0001d000 08:01 48759021                   /home/archana/.gradle/caches/modules-2/files-2.1/com.android.tools.build.jetifier/jetifier-core/1.0.0-beta04/92ae18564fc833685f30f5a20297dd32349a9f6e/jetifier-core-1.0.0-beta04.jar
+7ff08400e000-7ff084010000 r--s 00015000 08:01 48759064                   /home/archana/.gradle/caches/modules-2/files-2.1/com.squareup/javapoet/1.8.0/e858dc62ef484048540d27d36f3ec2177a3fa9b1/javapoet-1.8.0.jar
+7ff084010000-7ff084017000 r--s 0003f000 08:01 48759087                   /home/archana/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/4b95f4897fa13f2cd904aee711aeafc0c5295cd8/commons-codec-1.10.jar
+7ff084017000-7ff08401b000 r--s 0002a000 08:01 48759061                   /home/archana/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/b1b6ea3b7e4aa4f492509a4952029cd8e48019ad/commons-io-2.4.jar
+7ff08401b000-7ff084022000 r--s 00053000 08:01 48761797                   /home/archana/.gradle/caches/modules-2/files-2.1/androidx.databinding/databinding-compiler-common/3.4.1/f18b37dd0306f680e4ebec6f508beb66bc10f5f8/databinding-compiler-common-3.4.1.jar
+7ff084022000-7ff084035000 r--s 00345000 08:01 50464009                   /home/archana/Desktop/android-studio/jre/jre/lib/resources.jar
+7ff084035000-7ff08403a000 r--s 0003c000 08:01 50463961                   /home/archana/Desktop/android-studio/jre/jre/lib/ext/sunjce_provider.jar
+7ff08403a000-7ff08423a000 rw-p 00000000 00:00 0 
+7ff08423a000-7ff08443a000 rw-p 00000000 00:00 0 
+7ff08443a000-7ff08443b000 r--s 00000000 08:01 48759483                   /home/archana/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.14/775b7e22fb10026eed3f86e8dc556dfafe35f2d5/animal-sniffer-annotations-1.14.jar
+7ff08443b000-7ff08443d000 r--s 00008000 08:01 50463957                   /home/archana/Desktop/android-studio/jre/jre/lib/ext/sunec.jar
+7ff08443d000-7ff08443f000 r--s 00016000 08:01 50464016                   /home/archana/Desktop/android-studio/jre/jre/lib/jce.jar
+7ff08443f000-7ff084442000 r--s 00033000 08:01 48759063                   /home/archana/.gradle/caches/modules-2/files-2.1/com.googlecode.juniversalchardet/juniversalchardet/1.0.3/cd49678784c46aa8789c060538e0154013bb421b/juniversalchardet-1.0.3.jar
+7ff084442000-7ff084444000 r--s 00002000 08:01 48760790                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.3.31/21edc5a6b2e39bc4dc2860346fd778e27503d6cb/kotlin-stdlib-jdk8-1.3.31.jar
+7ff084444000-7ff084446000 r--s 00000000 08:01 48759479                   /home/archana/.gradle/caches/modules-2/files-2.1/io.realm/realm-annotations/5.4.0/5de328896289e8870c751d42b442b2928076f2a6/realm-annotations-5.4.0.jar
+7ff084446000-7ff084453000 r--s 0010e000 08:01 48758805                   /home/archana/.gradle/caches/modules-2/files-2.1/androidx.databinding/databinding-compiler/3.4.1/487f87d30950cb6af23589405d652dc363b84989/databinding-compiler-3.4.1.jar
+7ff084453000-7ff08445a000 r--s 0003d000 08:01 10229352                   /home/archana/.gradle/caches/transforms-2/files-2.1/bc6f9dcbbcb36a32144cbab8e39df09d/jetified-compiler-4.9.0.jar
+7ff08445a000-7ff08445d000 ---p 00000000 00:00 0 
+7ff08445d000-7ff08475b000 rw-p 00000000 00:00 0 
+7ff08475b000-7ff08495b000 rw-p 00000000 00:00 0 
+7ff08495b000-7ff084b5b000 rw-p 00000000 00:00 0 
+7ff084b5b000-7ff084d5b000 rw-p 00000000 00:00 0 
+7ff084d5b000-7ff084f5b000 rw-p 00000000 00:00 0 
+7ff084f5b000-7ff084f5c000 r--s 00000000 08:01 48760580                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.3.31/e652770b6416c6d85934086899ffed3eccd35813/kotlin-stdlib-jdk7-1.3.31.jar
+7ff084f5c000-7ff084f5e000 r--s 00018000 08:01 48762989                   /home/archana/.gradle/caches/modules-2/files-2.1/io.realm/realm-annotations-processor/5.4.0/a56d5948749e3e8fc082c27756fe12814ddfd462/realm-annotations-processor-5.4.0.jar
+7ff084f5e000-7ff084f63000 r--s 00034000 08:01 56624552                   /home/archana/.gradle/caches/transforms-2/files-2.1/e7a391ac8ab3be66d1a18d1541eac572/jars/classes.jar
+7ff084f63000-7ff084f6b000 r--s 00022000 08:01 48759885                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.61/65abb71d5afb850b68be03987b08e2c864ca3110/kotlin-stdlib-common-1.3.61.jar
+7ff084f6b000-7ff084f7f000 r--s 00131000 08:01 48759883                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.61/4702105e97f7396ae41b113fdbdc180ec1eb1e36/kotlin-stdlib-1.3.61.jar
+7ff084f7f000-7ff084f8c000 r--s 000bb000 08:01 48759073                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.1.1/3d2b7321cdef9ebf9cb7729ea4f75a6f6457df86/kotlinx-coroutines-core-1.1.1.jar
+7ff084f8c000-7ff084f8e000 r--s 00004000 08:01 56623702                   /home/archana/.gradle/caches/transforms-2/files-2.1/dff3839642adea19b03693d05bbfd600/jars/classes.jar
+7ff084f8e000-7ff084f90000 r--s 00002000 08:01 56230055                   /home/archana/.gradle/caches/transforms-2/files-2.1/04802f337ed2b1bd55efd0bc608f41f4/jars/classes.jar
+7ff084f90000-7ff085190000 rw-p 00000000 00:00 0 
+7ff085190000-7ff085390000 rw-p 00000000 00:00 0 
+7ff085390000-7ff085590000 rw-p 00000000 00:00 0 
+7ff085590000-7ff085790000 rw-p 00000000 00:00 0 
+7ff085790000-7ff085797000 r--s 00050000 08:01 48763424                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-annotation-processing-gradle/1.3.20/34b6ca42fa3beff47b58a972f32255e2594cdec3/kotlin-annotation-processing-gradle-1.3.20.jar
+7ff085797000-7ff08579f000 r--s 0004d000 08:01 48763427                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-android-extensions/1.3.20/b1016507a951b0cfaae431079ec0ac6847d56d8c/kotlin-android-extensions-1.3.20.jar
+7ff08579f000-7ff08599f000 rw-p 00000000 00:00 0 
+7ff08599f000-7ff085b9f000 rw-p 00000000 00:00 0 
+7ff085b9f000-7ff085d9f000 rw-p 00000000 00:00 0 
+7ff085d9f000-7ff085f9f000 rw-p 00000000 00:00 0 
+7ff085f9f000-7ff085fa2000 ---p 00000000 00:00 0 
+7ff085fa2000-7ff0860a0000 rw-p 00000000 00:00 0 
+7ff0860a0000-7ff0860a3000 ---p 00000000 00:00 0 
+7ff0860a3000-7ff0861a1000 rw-p 00000000 00:00 0 
+7ff0861a1000-7ff0861a4000 ---p 00000000 00:00 0 
+7ff0861a4000-7ff0864a2000 rw-p 00000000 00:00 0 
+7ff0864a2000-7ff0864a5000 ---p 00000000 00:00 0 
+7ff0864a5000-7ff0865a3000 rw-p 00000000 00:00 0 
+7ff0865a3000-7ff0865a6000 ---p 00000000 00:00 0 
+7ff0865a6000-7ff0866a4000 rw-p 00000000 00:00 0 
+7ff0866a4000-7ff0866a7000 ---p 00000000 00:00 0 
+7ff0866a7000-7ff0867a5000 rw-p 00000000 00:00 0 
+7ff0867a5000-7ff08681f000 r--s 01102000 08:01 50463886                   /home/archana/Desktop/android-studio/jre/lib/tools.jar
+7ff08681f000-7ff086826000 r--s 0001f000 08:01 48762817                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.20/7d7934e26ce34da1a0a8d00e38038d7cf3375e89/kotlin-stdlib-common-1.3.20.jar
+7ff086826000-7ff086831000 r--s 00081000 08:01 48759071                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.intellij.deps/trove4j/1.0.20181211/216c2e14b070f334479d800987affe4054cd563f/trove4j-1.0.20181211.jar
+7ff086831000-7ff086834000 ---p 00000000 00:00 0 
+7ff086834000-7ff086932000 rw-p 00000000 00:00 0 
+7ff086932000-7ff086935000 ---p 00000000 00:00 0 
+7ff086935000-7ff086a33000 rw-p 00000000 00:00 0 
+7ff086a33000-7ff086a36000 ---p 00000000 00:00 0 
+7ff086a36000-7ff086b34000 rw-p 00000000 00:00 0 
+7ff086b34000-7ff086b3e000 r--s 00116000 08:01 50463962                   /home/archana/Desktop/android-studio/jre/jre/lib/ext/localedata.jar
+7ff086b3e000-7ff086b59000 r--s 00394000 08:01 50463964                   /home/archana/Desktop/android-studio/jre/jre/lib/ext/cldrdata.jar
+7ff086b59000-7ff086d38000 r--s 01b18000 08:01 48763425                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-embeddable/1.3.20/ee2efe0fdd12b607e3ac01dd79da99a168ac85c5/kotlin-compiler-embeddable-1.3.20.jar
+7ff086d38000-7ff086d39000 ---p 00000000 00:00 0 
+7ff086d39000-7ff086e39000 rw-p 00000000 00:00 0 
+7ff086e39000-7ff086e3c000 ---p 00000000 00:00 0 
+7ff086e3c000-7ff086f3a000 rw-p 00000000 00:00 0 
+7ff086f3a000-7ff086f3d000 ---p 00000000 00:00 0 
+7ff086f3d000-7ff08703b000 rw-p 00000000 00:00 0 
+7ff08703b000-7ff08703e000 ---p 00000000 00:00 0 
+7ff08703e000-7ff08713c000 rw-p 00000000 00:00 0 
+7ff08713c000-7ff08713f000 ---p 00000000 00:00 0 
+7ff08713f000-7ff08723d000 rw-p 00000000 00:00 0 
+7ff08723d000-7ff087240000 ---p 00000000 00:00 0 
+7ff087240000-7ff08733e000 rw-p 00000000 00:00 0 
+7ff08733e000-7ff087341000 ---p 00000000 00:00 0 
+7ff087341000-7ff08743f000 rw-p 00000000 00:00 0 
+7ff08743f000-7ff087dfe000 r--p 00000000 08:01 40114964                   /usr/lib/locale/locale-archive
+7ff087dfe000-7ff087e01000 ---p 00000000 00:00 0 
+7ff087e01000-7ff087eff000 rw-p 00000000 00:00 0 
+7ff087eff000-7ff087f02000 ---p 00000000 00:00 0 
+7ff087f02000-7ff088000000 rw-p 00000000 00:00 0 
+7ff088000000-7ff088021000 rw-p 00000000 00:00 0 
+7ff088021000-7ff08c000000 ---p 00000000 00:00 0 
+7ff08c000000-7ff08c001000 r--s 00003000 08:01 48761815                   /home/archana/.gradle/caches/modules-2/files-2.1/com.android.databinding/baseLibrary/3.4.1/8a7549a34011f871310f4a16d45e70c83289b75/baseLibrary-3.4.1.jar
+7ff08c001000-7ff08c006000 r--s 00013000 08:01 48762960                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-common/1.1.1/7ed04382bdf0c89c5d87ac462aa4935ae8e85243/kotlinx-coroutines-core-common-1.1.1.jar
+7ff08c006000-7ff08c01c000 r-xp 00000000 08:01 50463985                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libnet.so
+7ff08c01c000-7ff08c01d000 rw-p 00016000 08:01 50463985                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libnet.so
+7ff08c01d000-7ff08c02d000 r-xp 00000000 08:01 50464006                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libnio.so
+7ff08c02d000-7ff08c02e000 rw-p 00010000 08:01 50464006                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libnio.so
+7ff08c02e000-7ff08c036000 r-xp 00000000 08:01 50463982                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libmanagement.so
+7ff08c036000-7ff08c037000 rw-p 00007000 08:01 50463982                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libmanagement.so
+7ff08c037000-7ff08c06e000 r--s 00255000 08:01 48762820                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.3.20/cd49eec32cf964333faf59e04b4085eac7008477/kotlin-reflect-1.3.20.jar
+7ff08c06e000-7ff08c0af000 rw-p 00000000 00:00 0 
+7ff08c0af000-7ff08c0b0000 ---p 00000000 00:00 0 
+7ff08c0b0000-7ff090000000 rw-p 00000000 00:00 0 
+7ff090000000-7ff090021000 rw-p 00000000 00:00 0 
+7ff090021000-7ff094000000 ---p 00000000 00:00 0 
+7ff094000000-7ff094001000 r--s 00003000 08:01 48761812                   /home/archana/.gradle/caches/modules-2/files-2.1/androidx.databinding/databinding-common/3.4.1/f43d4dc7b8af8e7f9a72e972f104572f9ecd3630/databinding-common-3.4.1.jar
+7ff094001000-7ff094002000 r--s 00000000 08:01 48759882                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.3.61/70dffc5f8ac5ea7c34f30deac5b9d8b1d48af066/kotlin-stdlib-jdk7-1.3.61.jar
+7ff094002000-7ff094003000 r--s 00001000 08:01 56498806                   /home/archana/.gradle/caches/transforms-2/files-2.1/85d45fd853636c1303a065bdf7112baa/jars/classes.jar
+7ff094003000-7ff094005000 r--s 00001000 08:01 56230095                   /home/archana/.gradle/caches/transforms-2/files-2.1/95255e4bc04e2a32f8fe760636f49d8f/jars/classes.jar
+7ff094005000-7ff094006000 r--s 00000000 08:01 48760619                   /home/archana/.gradle/caches/modules-2/files-2.1/com.github.bumptech.glide/annotations/4.9.0/ccdd6bc8b4f3c001fbddec29ecddd515a13203c4/annotations-4.9.0.jar
+7ff094006000-7ff094db8000 rw-p 00000000 00:00 0 
+7ff094db8000-7ff094f8a000 r--s 03cad000 08:01 50464022                   /home/archana/Desktop/android-studio/jre/jre/lib/rt.jar
+7ff094f8a000-7ff095000000 rw-p 00000000 00:00 0 
+7ff095000000-7ff098680000 rwxp 00000000 00:00 0 
+7ff098680000-7ff0a4000000 ---p 00000000 00:00 0 
+7ff0a4000000-7ff0a4442000 rw-p 00000000 00:00 0 
+7ff0a4442000-7ff0a8000000 ---p 00000000 00:00 0 
+7ff0a8000000-7ff0a8001000 r--s 00003000 08:01 48762819                   /home/archana/.gradle/caches/modules-2/files-2.1/com.squareup/javawriter/2.5.1/54c87b3d91238e5b58e1a436d4916eee680ec959/javawriter-2.5.1.jar
+7ff0a8001000-7ff0a8002000 r--s 00004000 08:01 56369297                   /home/archana/.gradle/caches/transforms-2/files-2.1/4d34b22961c81fb0cc935ed31ce039ec/jetified-kotlinx-coroutines-android-1.1.1.jar
+7ff0a8002000-7ff0a8004000 r--s 00003000 08:01 48759075                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar
+7ff0a8004000-7ff0a88ce000 rw-p 00000000 00:00 0 
+7ff0a88ce000-7ff0a8bce000 rw-p 00000000 00:00 0 
+7ff0a8bce000-7ff0a8bcf000 ---p 00000000 00:00 0 
+7ff0a8bcf000-7ff0a8ccf000 rw-p 00000000 00:00 0 
+7ff0a8ccf000-7ff0a8cd0000 ---p 00000000 00:00 0 
+7ff0a8cd0000-7ff0a8dd0000 rw-p 00000000 00:00 0 
+7ff0a8dd0000-7ff0a8dd1000 ---p 00000000 00:00 0 
+7ff0a8dd1000-7ff0a8ed1000 rw-p 00000000 00:00 0 
+7ff0a8ed1000-7ff0a8ed2000 ---p 00000000 00:00 0 
+7ff0a8ed2000-7ff0a8fd2000 rw-p 00000000 00:00 0 
+7ff0a8fd2000-7ff0a8fd3000 ---p 00000000 00:00 0 
+7ff0a8fd3000-7ff0a90d3000 rw-p 00000000 00:00 0 
+7ff0a90d3000-7ff0a90d4000 ---p 00000000 00:00 0 
+7ff0a90d4000-7ff0a91d4000 rw-p 00000000 00:00 0 
+7ff0a91d4000-7ff0a91d5000 ---p 00000000 00:00 0 
+7ff0a91d5000-7ff0a92d5000 rw-p 00000000 00:00 0 
+7ff0a92d5000-7ff0a92d6000 ---p 00000000 00:00 0 
+7ff0a92d6000-7ff0a956e000 rw-p 00000000 00:00 0 
+7ff0a956e000-7ff0a95d6000 ---p 00000000 00:00 0 
+7ff0a95d6000-7ff0a976e000 rw-p 00000000 00:00 0 
+7ff0a976e000-7ff0a97d6000 ---p 00000000 00:00 0 
+7ff0a97d6000-7ff0a98d6000 rw-p 00000000 00:00 0 
+7ff0a98d6000-7ff0a99b1000 rw-p 00000000 00:00 0 
+7ff0a99b1000-7ff0a9c97000 ---p 00000000 00:00 0 
+7ff0a9c97000-7ff0a9ca2000 r-xp 00000000 08:01 24646290                   /lib/x86_64-linux-gnu/libnss_files-2.23.so
+7ff0a9ca2000-7ff0a9ea1000 ---p 0000b000 08:01 24646290                   /lib/x86_64-linux-gnu/libnss_files-2.23.so
+7ff0a9ea1000-7ff0a9ea2000 r--p 0000a000 08:01 24646290                   /lib/x86_64-linux-gnu/libnss_files-2.23.so
+7ff0a9ea2000-7ff0a9ea3000 rw-p 0000b000 08:01 24646290                   /lib/x86_64-linux-gnu/libnss_files-2.23.so
+7ff0a9ea3000-7ff0a9ea9000 rw-p 00000000 00:00 0 
+7ff0a9ea9000-7ff0a9eb4000 r-xp 00000000 08:01 24646300                   /lib/x86_64-linux-gnu/libnss_nis-2.23.so
+7ff0a9eb4000-7ff0aa0b3000 ---p 0000b000 08:01 24646300                   /lib/x86_64-linux-gnu/libnss_nis-2.23.so
+7ff0aa0b3000-7ff0aa0b4000 r--p 0000a000 08:01 24646300                   /lib/x86_64-linux-gnu/libnss_nis-2.23.so
+7ff0aa0b4000-7ff0aa0b5000 rw-p 0000b000 08:01 24646300                   /lib/x86_64-linux-gnu/libnss_nis-2.23.so
+7ff0aa0b5000-7ff0aa0cb000 r-xp 00000000 08:01 24646284                   /lib/x86_64-linux-gnu/libnsl-2.23.so
+7ff0aa0cb000-7ff0aa2ca000 ---p 00016000 08:01 24646284                   /lib/x86_64-linux-gnu/libnsl-2.23.so
+7ff0aa2ca000-7ff0aa2cb000 r--p 00015000 08:01 24646284                   /lib/x86_64-linux-gnu/libnsl-2.23.so
+7ff0aa2cb000-7ff0aa2cc000 rw-p 00016000 08:01 24646284                   /lib/x86_64-linux-gnu/libnsl-2.23.so
+7ff0aa2cc000-7ff0aa2ce000 rw-p 00000000 00:00 0 
+7ff0aa2ce000-7ff0aa2d6000 r-xp 00000000 08:01 24646286                   /lib/x86_64-linux-gnu/libnss_compat-2.23.so
+7ff0aa2d6000-7ff0aa4d5000 ---p 00008000 08:01 24646286                   /lib/x86_64-linux-gnu/libnss_compat-2.23.so
+7ff0aa4d5000-7ff0aa4d6000 r--p 00007000 08:01 24646286                   /lib/x86_64-linux-gnu/libnss_compat-2.23.so
+7ff0aa4d6000-7ff0aa4d7000 rw-p 00008000 08:01 24646286                   /lib/x86_64-linux-gnu/libnss_compat-2.23.so
+7ff0aa4d7000-7ff0aa4de000 r-xp 00000000 08:01 24646345                   /lib/x86_64-linux-gnu/librt-2.23.so
+7ff0aa4de000-7ff0aa6dd000 ---p 00007000 08:01 24646345                   /lib/x86_64-linux-gnu/librt-2.23.so
+7ff0aa6dd000-7ff0aa6de000 r--p 00006000 08:01 24646345                   /lib/x86_64-linux-gnu/librt-2.23.so
+7ff0aa6de000-7ff0aa6df000 rw-p 00007000 08:01 24646345                   /lib/x86_64-linux-gnu/librt-2.23.so
+7ff0aa6df000-7ff0aa7e7000 r-xp 00000000 08:01 24646261                   /lib/x86_64-linux-gnu/libm-2.23.so
+7ff0aa7e7000-7ff0aa9e6000 ---p 00108000 08:01 24646261                   /lib/x86_64-linux-gnu/libm-2.23.so
+7ff0aa9e6000-7ff0aa9e7000 r--p 00107000 08:01 24646261                   /lib/x86_64-linux-gnu/libm-2.23.so
+7ff0aa9e7000-7ff0aa9e8000 rw-p 00108000 08:01 24646261                   /lib/x86_64-linux-gnu/libm-2.23.so
+7ff0aa9e8000-7ff0ab60e000 r-xp 00000000 08:01 50463999                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/server/libjvm.so
+7ff0ab60e000-7ff0ab6de000 rw-p 00c26000 08:01 50463999                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/server/libjvm.so
+7ff0ab6de000-7ff0ab722000 rw-p 00000000 00:00 0 
+7ff0ab722000-7ff0ab8e2000 r-xp 00000000 08:01 24646191                   /lib/x86_64-linux-gnu/libc-2.23.so
+7ff0ab8e2000-7ff0abae2000 ---p 001c0000 08:01 24646191                   /lib/x86_64-linux-gnu/libc-2.23.so
+7ff0abae2000-7ff0abae6000 r--p 001c0000 08:01 24646191                   /lib/x86_64-linux-gnu/libc-2.23.so
+7ff0abae6000-7ff0abae8000 rw-p 001c4000 08:01 24646191                   /lib/x86_64-linux-gnu/libc-2.23.so
+7ff0abae8000-7ff0abaec000 rw-p 00000000 00:00 0 
+7ff0abaec000-7ff0abaef000 r-xp 00000000 08:01 24646215                   /lib/x86_64-linux-gnu/libdl-2.23.so
+7ff0abaef000-7ff0abcee000 ---p 00003000 08:01 24646215                   /lib/x86_64-linux-gnu/libdl-2.23.so
+7ff0abcee000-7ff0abcef000 r--p 00002000 08:01 24646215                   /lib/x86_64-linux-gnu/libdl-2.23.so
+7ff0abcef000-7ff0abcf0000 rw-p 00003000 08:01 24646215                   /lib/x86_64-linux-gnu/libdl-2.23.so
+7ff0abcf0000-7ff0abd08000 r-xp 00000000 08:01 24646337                   /lib/x86_64-linux-gnu/libpthread-2.23.so
+7ff0abd08000-7ff0abf07000 ---p 00018000 08:01 24646337                   /lib/x86_64-linux-gnu/libpthread-2.23.so
+7ff0abf07000-7ff0abf08000 r--p 00017000 08:01 24646337                   /lib/x86_64-linux-gnu/libpthread-2.23.so
+7ff0abf08000-7ff0abf09000 rw-p 00018000 08:01 24646337                   /lib/x86_64-linux-gnu/libpthread-2.23.so
+7ff0abf09000-7ff0abf0d000 rw-p 00000000 00:00 0 
+7ff0abf0d000-7ff0abf33000 r-xp 00000000 08:01 24646163                   /lib/x86_64-linux-gnu/ld-2.23.so
+7ff0abf33000-7ff0abf34000 r--s 00001000 08:01 56498800                   /home/archana/.gradle/caches/transforms-2/files-2.1/f4d40930864d9bec12fb3959fa08ade0/jars/classes.jar
+7ff0abf34000-7ff0abf36000 r--s 00009000 08:01 48763437                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.3.20/312febd3c42137fcc5477e6666d6eec16631b176/kotlin-script-runtime-1.3.20.jar
+7ff0abf36000-7ff0abf3a000 r--s 000a1000 08:01 50464037                   /home/archana/Desktop/android-studio/jre/jre/lib/jsse.jar
+7ff0abf3a000-7ff0abf4d000 r--s 0010f000 08:01 48762818                   /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.20/eb2a232734e09fcd1b958a5c7520a93c6de38b32/kotlin-stdlib-1.3.20.jar
+7ff0abf4d000-7ff0abfb4000 rw-p 00000000 00:00 0 
+7ff0abfb4000-7ff0abfcf000 r-xp 00000000 08:01 50463981                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libzip.so
+7ff0abfcf000-7ff0abfd0000 rw-p 0001a000 08:01 50463981                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libzip.so
+7ff0abfd0000-7ff0abffa000 r-xp 00000000 08:01 50463989                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libjava.so
+7ff0abffa000-7ff0abffc000 rw-p 0002a000 08:01 50463989                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libjava.so
+7ff0abffc000-7ff0abfff000 ---p 00000000 00:00 0 
+7ff0abfff000-7ff0ac101000 rw-p 00000000 00:00 0 
+7ff0ac101000-7ff0ac117000 r-xp 00000000 08:01 50463969                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/jli/libjli.so
+7ff0ac117000-7ff0ac118000 rw-p 00015000 08:01 50463969                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/jli/libjli.so
+7ff0ac118000-7ff0ac119000 rw-p 00000000 00:00 0 
+7ff0ac119000-7ff0ac121000 rw-s 00000000 08:01 49676380                   /tmp/hsperfdata_archana/31262
+7ff0ac121000-7ff0ac122000 rw-p 00000000 00:00 0 
+7ff0ac122000-7ff0ac123000 ---p 00000000 00:00 0 
+7ff0ac123000-7ff0ac130000 r-xp 00000000 08:01 50463977                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libverify.so
+7ff0ac130000-7ff0ac132000 rw-p 0000c000 08:01 50463977                   /home/archana/Desktop/android-studio/jre/jre/lib/amd64/libverify.so
+7ff0ac132000-7ff0ac133000 r--p 00025000 08:01 24646163                   /lib/x86_64-linux-gnu/ld-2.23.so
+7ff0ac133000-7ff0ac134000 rw-p 00026000 08:01 24646163                   /lib/x86_64-linux-gnu/ld-2.23.so
+7ff0ac134000-7ff0ac135000 rw-p 00000000 00:00 0 
+7ffcf0fb1000-7ffcf0fd3000 rw-p 00000000 00:00 0                          [stack]
+7ffcf0ff5000-7ffcf0ff8000 r--p 00000000 00:00 0                          [vvar]
+7ffcf0ff8000-7ffcf0ff9000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+
+VM Arguments:
+jvm_args: -Djava.awt.headless=true -Djava.rmi.server.hostname=127.0.0.1 -Xmx1536M -Dkotlin.environment.keepalive 
+java_command: org.jetbrains.kotlin.daemon.KotlinCompileDaemon --daemon-runFilesPath /home/archana/.local/share/kotlin/daemon --daemon-autoshutdownIdleSeconds=7200 --daemon-compilerClasspath /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-embeddable/1.3.20/ee2efe0fdd12b607e3ac01dd79da99a168ac85c5/kotlin-compiler-embeddable-1.3.20.jar:/home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.3.20/cd49eec32cf964333faf59e04b4085eac7008477/kotlin-reflect-1.3.20.jar:/home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.20/eb2a232734e09fcd1b958a5c7520a93c6de38b32/kotlin-stdlib-1.3.20.jar:/home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.3.20/312febd3c42137fcc5477e6666d6eec16631b176/kotlin-script-runtime-1.3.20.jar:/home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.intellij.deps/trove4j/1.0.20181211/216c2e14b070f334479d800987affe4054cd563f/trove4j-1.0.20181211.jar:/home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.20/7d7934e26ce34da1a0a8d00e38038d7cf3375e89/kotlin-stdlib-common-1.3.20.jar:/home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar:/home/archana/Desktop/android-studio/jre/lib/tools.jar
+java_class_path (initial): /home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-embeddable/1.3.20/ee2efe0fdd12b607e3ac01dd79da99a168ac85c5/kotlin-compiler-embeddable-1.3.20.jar:/home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.3.20/cd49eec32cf964333faf59e04b4085eac7008477/kotlin-reflect-1.3.20.jar:/home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.20/eb2a232734e09fcd1b958a5c7520a93c6de38b32/kotlin-stdlib-1.3.20.jar:/home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.3.20/312febd3c42137fcc5477e6666d6eec16631b176/kotlin-script-runtime-1.3.20.jar:/home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.intellij.deps/trove4j/1.0.20181211/216c2e14b070f334479d800987affe4054cd563f/trove4j-1.0.20181211.jar:/home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.20/7d7934e26ce34da1a0a8d00e38038d7cf3375e89/kotlin-stdlib-common-1.3.20.jar:/home/archana/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar:/home/archana/Desktop/android-studio/jre/lib/tools.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+PATH=/home/archana/bin:/home/archana/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+SHELL=/bin/bash
+DISPLAY=:0
+
+Signal Handlers:
+SIGSEGV: [libjvm.so+0xa09650], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGBUS: [libjvm.so+0xa09650], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGFPE: [libjvm.so+0x86bc60], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGPIPE: [libjvm.so+0x86bc60], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGXFSZ: [libjvm.so+0x86bc60], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGILL: [libjvm.so+0x86bc60], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGUSR1: SIG_DFL, sa_mask[0]=00000000000000000000000000000000, sa_flags=none
+SIGUSR2: [libjvm.so+0x86bb30], sa_mask[0]=00100000000000000000000000000000, sa_flags=SA_RESTART|SA_SIGINFO
+SIGHUP: [libjvm.so+0x86bd20], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGINT: [libjvm.so+0x86bd20], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGTERM: [libjvm.so+0x86bd20], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGQUIT: [libjvm.so+0x86bd20], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+
+
+---------------  S Y S T E M  ---------------
+
+OS:DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=16.04
+DISTRIB_CODENAME=xenial
+DISTRIB_DESCRIPTION="Ubuntu 16.04.6 LTS"
+
+uname:Linux 5.0.10-050010-generic #201904270832 SMP Sat Apr 27 08:34:43 UTC 2019 x86_64
+libc:glibc 2.23 NPTL 2.23 
+rlimit: STACK 8192k, CORE 0k, NPROC 47420, NOFILE 1048576, AS infinity
+load average:3.08 3.27 2.73
+
+/proc/meminfo:
+MemTotal:       12201148 kB
+MemFree:          161864 kB
+MemAvailable:      84912 kB
+Buffers:            9460 kB
+Cached:           347504 kB
+SwapCached:        36624 kB
+Active:         10624484 kB
+Inactive:        1107920 kB
+Active(anon):   10587520 kB
+Inactive(anon):  1053544 kB
+Active(file):      36964 kB
+Inactive(file):    54376 kB
+Unevictable:        1352 kB
+Mlocked:              80 kB
+SwapTotal:        999420 kB
+SwapFree:             32 kB
+Dirty:               688 kB
+Writeback:             0 kB
+AnonPages:      11340768 kB
+Mapped:           255172 kB
+Shmem:            265112 kB
+KReclaimable:      66944 kB
+Slab:             132364 kB
+SReclaimable:      66944 kB
+SUnreclaim:        65420 kB
+KernelStack:       17248 kB
+PageTables:        73268 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     7099992 kB
+Committed_AS:   17049876 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:           0 kB
+VmallocChunk:          0 kB
+Percpu:             2144 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+CmaTotal:              0 kB
+CmaFree:               0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+Hugetlb:               0 kB
+DirectMap4k:      235124 kB
+DirectMap2M:     8060928 kB
+DirectMap1G:     4194304 kB
+
+container (cgroup) information:
+container_type: cgroupv1
+cpu_cpuset_cpus: 0-7
+cpu_memory_nodes: 0
+active_processor_count: 8
+cpu_quota: -1
+cpu_period: 100000
+cpu_shares: -1
+memory_limit_in_bytes: -1
+memory_and_swap_limit_in_bytes: -2
+memory_soft_limit_in_bytes: -1
+memory_usage_in_bytes: 12005179392
+memory_max_usage_in_bytes: 131686400
+
+
+CPU:total 8 (initial active 8) (4 cores per cpu, 2 threads per core) family 6 model 142 stepping 10, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx
+
+/proc/cpuinfo:
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 142
+model name	: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+stepping	: 10
+microcode	: 0xca
+cpu MHz		: 800.010
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 8
+core id		: 0
+cpu cores	: 4
+apicid		: 0
+initial apicid	: 0
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 22
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp flush_l1d
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf
+bogomips	: 3600.00
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 1
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 142
+model name	: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+stepping	: 10
+microcode	: 0xca
+cpu MHz		: 800.011
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 8
+core id		: 1
+cpu cores	: 4
+apicid		: 2
+initial apicid	: 2
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 22
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp flush_l1d
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf
+bogomips	: 3600.00
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 2
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 142
+model name	: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+stepping	: 10
+microcode	: 0xca
+cpu MHz		: 800.085
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 8
+core id		: 2
+cpu cores	: 4
+apicid		: 4
+initial apicid	: 4
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 22
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp flush_l1d
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf
+bogomips	: 3600.00
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 3
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 142
+model name	: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+stepping	: 10
+microcode	: 0xca
+cpu MHz		: 800.085
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 8
+core id		: 3
+cpu cores	: 4
+apicid		: 6
+initial apicid	: 6
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 22
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp flush_l1d
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf
+bogomips	: 3600.00
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 4
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 142
+model name	: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+stepping	: 10
+microcode	: 0xca
+cpu MHz		: 800.012
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 8
+core id		: 0
+cpu cores	: 4
+apicid		: 1
+initial apicid	: 1
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 22
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp flush_l1d
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf
+bogomips	: 3600.00
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 5
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 142
+model name	: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+stepping	: 10
+microcode	: 0xca
+cpu MHz		: 800.015
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 8
+core id		: 1
+cpu cores	: 4
+apicid		: 3
+initial apicid	: 3
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 22
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp flush_l1d
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf
+bogomips	: 3600.00
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 6
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 142
+model name	: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+stepping	: 10
+microcode	: 0xca
+cpu MHz		: 800.048
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 8
+core id		: 2
+cpu cores	: 4
+apicid		: 5
+initial apicid	: 5
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 22
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp flush_l1d
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf
+bogomips	: 3600.00
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 7
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 142
+model name	: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+stepping	: 10
+microcode	: 0xca
+cpu MHz		: 800.043
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 8
+core id		: 3
+cpu cores	: 4
+apicid		: 7
+initial apicid	: 7
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 22
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp flush_l1d
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf
+bogomips	: 3600.00
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+
+
+Memory: 4k page, physical 12201148k(161856k free), swap 999420k(32k free)
+
+vm_info: OpenJDK 64-Bit Server VM (25.202-b49-5587405) for linux-amd64 JRE (1.8.0_202-release-1483-b49-5587405), built by "android-build" with gcc 4.8
+
+time: Mon May 25 15:55:33 2020
+timezone: IST
+elapsed time: 8410 seconds (0d 2h 20m 10s)
+

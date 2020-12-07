@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dtv_item_height"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="12dp"
+        android:id="@+id/main_lay"
+        android:background="@color/colorPrimaryDark">
+
+
+        <TextView
+            android:id="@+id/tv_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/radio_selector"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Add to my 110054664"
+            android:layout_marginLeft="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/sign_up_sub_title"
+            android:textSize="18sp"
+            android:layout_toLeftOf="@+id/tv_change"/>
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_change"-->
+<!--            android:layout_width="@dimen/viu_item_width"-->
+<!--            android:layout_height="@dimen/exclusive_tab_height"-->
+<!--            android:clickable="true"-->
+<!--            android:fontFamily="@font/roboto_regular"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@string/change"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:layout_marginRight="16dp"-->
+<!--            android:textSize="14sp"-->
+<!--            android:background="@drawable/rounded_red_button"/>-->
+    </RelativeLayout>
+
+
+</layout>

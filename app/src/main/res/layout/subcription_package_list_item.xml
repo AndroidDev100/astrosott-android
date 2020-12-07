@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/dimen10dp"
+        android:background="@color/colorPrimaryDark">
+        <TextView
+            android:id="@+id/active_icon"
+            android:layout_width="@dimen/dimen50dp"
+            android:layout_height="wrap_content"
+            android:text="@string/active"
+            android:textColor="@color/white"
+            android:background="@color/schedule_live_background"
+            android:padding="@dimen/dimen1dp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="@dimen/sp10"/>
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dimen5dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="@dimen/sp20"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <TextView
+                android:id="@+id/txtCharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="@dimen/sp25"/>
+            <TextView
+                android:id="@+id/txtCharge1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="@dimen/sp25"
+                android:layout_marginStart="@dimen/dimen8dp"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/txtPackageDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dimen5dp"
+            android:textColor="@color/search_edit_text_color"
+            android:fontFamily="@font/roboto_light"
+            android:textSize="@dimen/sp18"
+            android:layout_marginRight="@dimen/dimen8dp"
+            android:layout_marginLeft="@dimen/dimen8dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:text="@string/expiry_date"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="@dimen/sp18"/>
+            <TextView
+                android:id="@+id/txtExpiryDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="@dimen/sp18"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/txtViewAllChannel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/transparentColor"
+            android:layout_below="@id/txtPackageDescription"
+            android:text="@string/plan_details"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/schedule_live_background"
+            android:textAllCaps="false"
+            android:textSize="@dimen/sp15" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel_subscription"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="@dimen/dp14"
+            android:padding="6dp"
+
+            android:layout_marginBottom="@dimen/dimen20dp"/>
+    </LinearLayout>
+
+</LinearLayout>
+</layout>

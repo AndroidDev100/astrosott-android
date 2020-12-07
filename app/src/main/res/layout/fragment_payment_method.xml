@@ -1,0 +1,107 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.dialog.dialoggo.activities.subscription.fragment.PaymentMethodFragment">
+
+        <ImageView
+            android:id="@+id/imvLogo"
+            android:layout_width="@dimen/image200dp"
+            android:layout_height="@dimen/image200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/imagePadding80dp"
+            android:src="@drawable/payment" />
+
+        <LinearLayout
+            android:id="@+id/lnPaymentDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imvLogo"
+            android:layout_marginTop="@dimen/imagePadding90dp"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/dimen20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/payment_method_title"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_light"
+                android:text="@string/payment_description"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/dimen15dp"
+                android:lineSpacingExtra="@dimen/dimen3dp"
+                android:textSize="@dimen/sp15"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lnButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/dimen60dp"
+            android:layout_marginRight="@dimen/dimen60dp"
+            android:layout_marginBottom="@dimen/dimen40dp"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDialogConnection"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/dimen5dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_red_button"
+                android:fontFamily="@font/roboto_bold"
+                android:padding="@dimen/dimen10dp"
+                android:text="@string/dialog_connection"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp18" />
+
+<!--            <androidx.appcompat.widget.AppCompatButton-->
+<!--                android:id="@+id/btn"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_marginLeft="@dimen/dimen5dp"-->
+<!--                android:layout_marginTop="@dimen/dimen10dp"-->
+<!--                android:layout_marginRight="@dimen/dimen5dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="@drawable/grey_button"-->
+<!--                android:fontFamily="@font/roboto_regular"-->
+<!--                android:padding="@dimen/padding10dp"-->
+<!--                android:text="@string/sign_in_with_different_account"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="@dimen/sp18" />-->
+<!--            <androidx.appcompat.widget.AppCompatButton-->
+<!--                android:id="@+id/btnDtv"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_marginLeft="@dimen/dimen5dp"-->
+<!--                android:layout_marginTop="@dimen/dimen10dp"-->
+<!--                android:layout_marginRight="@dimen/dimen5dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="@drawable/grey_button"-->
+<!--                android:fontFamily="@font/roboto_regular"-->
+<!--                android:padding="@dimen/padding10dp"-->
+<!--                android:text="@string/sign_in_with_different_account"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="@dimen/sp18" />-->
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

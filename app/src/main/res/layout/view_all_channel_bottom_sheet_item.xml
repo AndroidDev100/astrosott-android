@@ -1,0 +1,24 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <LinearLayout
+            android:id="@+id/bottom_sheet"
+            android:layout_width="@dimen/dimen90dp"
+            android:layout_height="@dimen/dimen90dp"
+            android:background="@color/transparentColor"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginStart="@dimen/dimen5dp"
+            android:layout_marginEnd="@dimen/dimen10dp"
+            android:layout_marginBottom="@dimen/dimen2dp">
+
+            <ImageView
+                android:id="@+id/imvChannelLogo"
+                android:layout_width="@dimen/dimen80dp"
+                android:layout_height="@dimen/dimen80dp"
+                android:src="@drawable/wallet_logo"
+                android:scaleType="fitXY"/>
+        </LinearLayout>
+
+</layout>

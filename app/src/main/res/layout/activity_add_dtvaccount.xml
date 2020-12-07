@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dialog.dialoggo.activities.subscription.ui.AddDTVAccountActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/containerFragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="@dimen/fragment_width"
+            android:layout_height="@dimen/fragment_height"
+            android:fillViewport="false"
+            app:defaultNavHost="false"
+            app:navGraph="@navigation/nav_dtv_fragment"/>
+    </RelativeLayout>
+
+</RelativeLayout>

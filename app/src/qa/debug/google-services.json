@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "193518972656",
+    "firebase_url": "https://dialog-staging-28c53.firebaseio.com",
+    "project_id": "dialog-staging-28c53",
+    "storage_bucket": "dialog-staging-28c53.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:193518972656:android:d5f6be4ecb1a9e92",
+        "android_client_info": {
+          "package_name": "com.dialog.dialoggo.qa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "193518972656-322hj013vqc3arlovmf5p85m3j46qarb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTGxsjP8otu40s2HjehA0mm4DMo7My_5E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "193518972656-322hj013vqc3arlovmf5p85m3j46qarb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "193518972656-8qignvvisfn59lamv7fgna1nr589asgn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "lk.inova.ios.viu.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

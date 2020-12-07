@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="title"
+            type="com.kaltura.client.types.InboxMessage" />
+
+    </data>
+
+
+    <com.chauthai.swipereveallayout.SwipeRevealLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dragEdge="right"
+        app:mode="same_level">
+
+        <FrameLayout
+            android:id="@+id/fl_delete_notification"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@color/colorPrimary">
+
+
+            <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                tools:ignore="ContentDescription"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="@string/delete_icon" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/notificationrow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="@dimen/notification_image_width"
+                    android:layout_height="@dimen/notification_image_height"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/notification_row_margin_left"
+                    android:background="@drawable/notification_icon"
+                    android:visibility="visible"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+
+                <TextView
+                    android:id="@+id/title_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center_vertical"
+                    android:maxLines="2"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="@{title.message}"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/uploaded_title_text_size" />
+
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+    </com.chauthai.swipereveallayout.SwipeRevealLayout>
+
+
+</layout>

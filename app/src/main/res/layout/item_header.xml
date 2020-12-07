@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/title_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/headerTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/toolbar_title_text_size"
+                    android:background="?attr/selectableItemBackground"
+                    android:fontFamily="@font/roboto_bold"/>
+
+                <TextView
+                    android:id="@+id/more_text"
+                    android:layout_width="wrap_content"
+                    android:clickable="true"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:fontFamily="@font/roboto_regular"
+                    android:textAllCaps="false"
+                    android:textColor="@color/sign_up_sub_title"
+                    android:textSize="15sp"
+                    android:layout_marginTop="@dimen/margin_top"/>
+                <!--<LinearLayout-->
+                <!--android:id="@+id/more_text"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<FrameLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="@dimen/_5sdp"-->
+                <!--android:layout_marginBottom="@dimen/_5sdp">-->
+
+                <!--<ImageView-->
+                <!--android:layout_width="@dimen/_40sdp"-->
+                <!--android:layout_height="@dimen/_15sdp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="@drawable/more_arrow_icon"-->
+
+                <!--android:contentDescription="@string/image_description" />-->
+
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:fontFamily="@font/rubik_medium"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingLeft="@dimen/_6sdp"-->
+                <!--android:text="@string/title_more"-->
+                <!--android:textAllCaps="false"-->
+                <!--android:textColor="@color/moretitlecolor"-->
+                <!--android:textSize="@dimen/_10sdp" />-->
+                <!--</FrameLayout>-->
+                <!--</LinearLayout>-->
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <!--<com.watcho.utils.helpers.shimmer.ShimmerRecyclerView-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/recycler_view_list4"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:paddingTop="@dimen/_5sdp"-->
+        <!--android:clipToPadding="false"-->
+        <!--android:nestedScrollingEnabled="false"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:paddingLeft="@dimen/_6sdp"-->
+        <!--android:paddingRight="@dimen/_6sdp"-->
+        <!--android:paddingBottom="@dimen/_5sdp"-->
+        <!--android:contentDescription="@string/Recyclerview_list4_content_description"-->
+        <!--app:shimmer_demo_angle="20"-->
+        <!--app:shimmer_demo_layout="@layout/shimmer_potrait_item"-->
+        <!--app:shimmer_demo_layout_manager_type="linear_horizontal" />-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:layout_marginTop="@dimen/margin_top"/>
+
+    </LinearLayout>
+</layout>

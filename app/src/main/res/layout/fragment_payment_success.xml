@@ -1,0 +1,183 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ScrollView
+        android:id="@+id/ScrollView01"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/dp8"
+        tools:context="com.dialog.dialoggo.activities.subscription.fragment.PaymentSuccessFragment">
+        <ImageView
+            android:id="@+id/imvLogo"
+            android:layout_width="@dimen/image200dp"
+            android:layout_height="@dimen/image180dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/imageMargin60dp"
+            android:src="@drawable/paymentsuccess" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/imagePadding80dp"
+            android:layout_below="@id/imvLogo">
+
+            <TextView
+                android:id="@+id/txtPaymentTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:text="@string/payment_successful"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txtPaymentDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtPaymentTitle"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:layout_marginTop="15dp"
+                android:text=""
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:id="@+id/lnPaymentDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtPaymentDescription"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/dimen20dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.3"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:padding="@dimen/dimen3dp"
+                        android:text="@string/amount_paid"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dimen3dp"
+                        android:text="@string/payment_method"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_light"/>
+
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:padding="@dimen/dimen3dp"-->
+<!--                        android:text="@string/transaction_id"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:fontFamily="@font/roboto_light"/>-->
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/dimen3dp"
+                        android:text=":"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/dimen3dp"
+                        android:text=":"
+                        android:textColor="@color/white" />
+
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:gravity="center"-->
+<!--                        android:padding="@dimen/dimen3dp"-->
+<!--                        android:text=":"-->
+<!--                        android:textColor="@color/white" />-->
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1.3"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtAmmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:padding="@dimen/dimen3dp"
+                        android:text=""
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/txtPaymentMethod"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:padding="@dimen/dimen3dp"
+                        android:text=""
+                        android:textColor="@color/white" />
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtTranscationId"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:fontFamily="@font/roboto_bold"-->
+<!--                        android:padding="@dimen/dimen3dp"-->
+<!--                        android:text=""-->
+<!--                        android:textColor="@color/white" />-->
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSuccess"
+                android:layout_width="@dimen/dimen250dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lnPaymentDetail"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen20dp"
+                android:background="@drawable/rounded_red_button"
+                android:text="@string/done"
+                android:fontFamily="@font/roboto_bold"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    </ScrollView>
+</layout>

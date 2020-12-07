@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dtv_item_height"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="12dp"
+        android:id="@+id/main_lay"
+        android:background="@color/colorPrimaryDark">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/radio_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="16dp"
+            android:button="@drawable/radio_button_selector"
+            android:clickable="false"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:id="@+id/headerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@+id/radio_selector"
+            android:fontFamily="@font/roboto_bold"
+            android:text=""
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/sign_up_sub_title"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/dtv_acc_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/margin_top"
+            android:clickable="true"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center"
+            android:text=""
+            android:textAllCaps="false"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:textColor="@color/sign_up_sub_title"
+            android:layout_marginRight="16dp"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+
+</layout>

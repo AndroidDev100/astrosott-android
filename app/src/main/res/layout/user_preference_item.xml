@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/notificationrow"-->
+    <!--android:gravity="center"-->
+    <!--android:layout_marginLeft="@dimen/genre_ll_margin_left"-->
+    <!--android:layout_marginRight="@dimen/genre_ll_margin_right"-->
+    <!--android:layout_marginTop="@dimen/genre_ll_margin_top"-->
+    <!--android:background="@drawable/genre_unselected">-->
+
+    <!--<TextView-->
+    <!--android:layout_marginRight="@dimen/uploaded_cl_padding_left"-->
+    <!--android:layout_marginLeft="@dimen/uploaded_cl_padding_left"-->
+    <!--android:layout_marginTop="@dimen/uploaded_cl_padding_top"-->
+    <!--android:layout_marginBottom="@dimen/uploaded_cl_padding_top"-->
+    <!--android:id="@+id/title_text"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textColor="@color/genre_unselected_text"-->
+    <!--android:textSize="@dimen/genre_item_text_size"-->
+    <!--android:fontFamily="@font/ubuntu_regular"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:text="Ankur Yadav"-->
+    <!--/>-->
+
+
+    <!--</LinearLayout>-->
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/genre_ll_margin_left"
+        android:layout_marginTop="@dimen/genre_ll_margin_top"
+        android:layout_marginEnd="@dimen/genre_ll_margin_right"
+        android:background="@drawable/genre_unselected"
+        android:fontFamily="@font/roboto_regular"
+        android:paddingLeft="@dimen/uploaded_cl_padding_left"
+        android:paddingTop="@dimen/uploaded_cl_padding_top"
+        android:paddingRight="@dimen/uploaded_cl_padding_left"
+        android:paddingBottom="@dimen/uploaded_cl_padding_top"
+        android:text=""
+        android:textColor="@color/genre_unselected_text"
+        android:textSize="@dimen/genre_item_text_size" />
+
+
+</layout>

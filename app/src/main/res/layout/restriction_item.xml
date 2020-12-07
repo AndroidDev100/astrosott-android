@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10"
+        android:background="@color/fragment_background_color">
+
+        <ImageView
+            android:id="@+id/radio_selector"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:clickable="false"
+            />
+
+        <TextView
+            android:id="@+id/restriction_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textSize="@dimen/font_medium_large"
+            android:text=""
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/more_item_title"
+            />
+
+
+
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/restriction_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:paddingRight="12dp"
+        android:textSize="@dimen/font_medium"
+        android:text=""
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:fontFamily="@font/roboto_regular"
+        android:textColor="@color/more_item_title"
+        />
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#757575"
+            android:layout_marginTop="60dp"/>
+
+</RelativeLayout>
+
+</layout>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparentColor"
+    android:windowSoftInputMode="adjustPan"
+    android:filterTouchesWhenObscured="true"
+    tools:context="com.dialog.dialoggo.activities.subscription.fragment.PremiumOTPDtvFragment">
+
+    <LinearLayout
+        android:layout_width="@dimen/fragment_width"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/fragment_background_color"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter OTP"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp20"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_marginTop="@dimen/dimen20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter the verfication code sent to+9477XXXXX12"
+            android:textColor="@color/search_edit_text_color"
+            android:textSize="@dimen/sp20"
+            android:fontFamily="@font/roboto_light"
+            android:layout_marginStart="@dimen/dimen10dp"
+            android:layout_marginTop="@dimen/dimen20dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="PIN"
+            android:textColorHint="@color/white"
+            android:layout_marginStart="@dimen/dimen10dp"
+            android:layout_marginEnd="@dimen/dimen10dp"
+            android:inputType="numberPassword"
+            android:layout_marginTop="@dimen/dimen40dp"
+            android:textColor="@color/white"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/dimen10dp"
+            android:layout_marginEnd="@dimen/dimen10dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:text="Resend PIN"
+            android:textColor="@color/schedule_live_background"
+            android:textSize="@dimen/sp19"
+            android:padding="4dp"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_marginTop="@dimen/dimen20dp"/>
+
+        <TextView
+            android:id="@+id/txtCounter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp18"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_marginTop="@dimen/dimen10dp"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen20dp"
+            android:layout_marginEnd="@dimen/dimen10dp"
+            android:gravity="right">
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CANCEL"
+                android:textColor="@color/cancel_text"
+                android:textSize="@dimen/sp20"
+                android:gravity="end"
+                android:background="@color/transparentColor"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_marginStart="@dimen/dimen10dp" />
+            <Button
+                android:id="@+id/btnOk"
+                android:layout_width="@dimen/dimen30dp"
+                android:layout_height="wrap_content"
+                android:text="ok"
+                android:gravity="end"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp20"
+                android:background="@color/transparentColor"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_marginEnd="@dimen/dimen10dp"
+                android:layout_marginStart="@dimen/dimen10dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

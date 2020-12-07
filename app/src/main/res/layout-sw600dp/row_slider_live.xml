@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/fragment_background_color"
+    android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="wrap_content"
+           >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="330dp">
+
+                <ImageView
+                    android:id="@+id/sliderImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="330dp"
+                    android:contentDescription="@string/slide_image"
+                    android:background="@color/fragment_background_color"
+                    android:scaleType="fitXY"
+                    tools:ignore="ContentDescription" />
+                <ImageView
+                    android:id="@+id/hungama"
+                    android:layout_width="60dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/playpurple"
+                    android:layout_margin="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:visibility="gone"></ImageView>
+
+                <ImageView
+                    android:layout_width="@dimen/play_icon_width"
+                    android:layout_height="@dimen/play_icon_height"
+                    android:visibility="invisible"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/play_icon"
+                    android:contentDescription="@string/play_icon"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/slider_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/shadow"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/crousel_title_margin_left"
+                    android:layout_marginEnd="@dimen/crousel_title_margin_right"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_medium"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_large" />
+
+                <LinearLayout
+                    android:id="@+id/shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/shadow_height"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/above_shado"
+                    android:orientation="vertical" />
+
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
