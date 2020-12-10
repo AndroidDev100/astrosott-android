@@ -510,4 +510,8 @@
     <dimen name="creator_name_size">18dp</dimen>
     <dimen name="creator_separator">1dp</dimen>
 
+    <dimen name="portrait_listing_width">180dp</dimen>
+    <dimen name="portrait_listing_height">280dp</dimen>
+    <dimen name="landscape_listing_height">120dp</dimen>
+
 </resources>

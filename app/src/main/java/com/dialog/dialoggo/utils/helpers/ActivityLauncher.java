@@ -32,6 +32,7 @@ import com.dialog.dialoggo.activities.mbbaccount.ui.MBBAccountActivity;
 import com.dialog.dialoggo.activities.moreListing.ui.ContinueWatchingActivity;
 import com.dialog.dialoggo.activities.moreListing.ui.DetailListingActivity;
 import com.dialog.dialoggo.activities.moreListing.ui.ListingActivity;
+import com.dialog.dialoggo.activities.moreListing.ui.ListingActivityNew;
 import com.dialog.dialoggo.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.dialog.dialoggo.activities.myPlans.ui.MyPlansActivity;
 import com.dialog.dialoggo.activities.myplaylist.ui.MultiplePlaylistActivity;
@@ -119,6 +120,13 @@ public class ActivityLauncher {
 
 
     public void portraitListing(Activity source, Class<ListingActivity> destination, String type, AssetCommonBean assetCommonBean) {
+        Intent intent = new Intent(source, destination);
+        intent.putExtra(AppLevelConstants.LAYOUT_TYPE, type);
+        intent.putExtra(AppLevelConstants.ASSET_COMMON_BEAN, assetCommonBean);
+        activity.startActivity(intent);
+    }
+
+    public void listingActivityNew(Activity source, Class<ListingActivityNew> destination, String type, AssetCommonBean assetCommonBean) {
         Intent intent = new Intent(source, destination);
         intent.putExtra(AppLevelConstants.LAYOUT_TYPE, type);
         intent.putExtra(AppLevelConstants.ASSET_COMMON_BEAN, assetCommonBean);

@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
 
+import com.dialog.dialoggo.baseModel.DeepSearchLayer;
 import com.dialog.dialoggo.beanModel.ksBeanmodel.AssetCommonBean;
 import com.dialog.dialoggo.beanModel.ksBeanmodel.RailCommonData;
 import com.dialog.dialoggo.repositories.moreListing.ListingRepository;
@@ -34,5 +35,9 @@ public class ListingViewModel extends AndroidViewModel {
 
     public LiveData<List<RailCommonData>> getSimmilarMovies(AssetCommonBean assetCommonBean, Asset object, String layout, int listingType, boolean isScrolling, int counter) {
         return ListingRepository.getInstance().loadSimillarMovieData(getApplication().getApplicationContext(),assetCommonBean,getApplication().getApplicationContext(),object,layout,listingType,isScrolling,counter);
+    }
+
+    public LiveData<List<RailCommonData>> getLiveSearchedData(int assetId, List<String> list, String filterValue, int counter, String layout, boolean isScrolling,int pageSize) {
+        return DeepSearchLayer.getInstance().loadSearchedData(getApplication().getApplicationContext(),assetId, filterValue,list,counter,layout,isScrolling,pageSize);
     }
 }

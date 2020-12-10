@@ -139,6 +139,12 @@
             android:name=".activities.moreListing.ui.ListingActivity"
             android:launchMode="singleTask"
             android:screenOrientation="locked" />
+
+        <activity
+            android:name=".activities.moreListing.ui.ListingActivityNew"
+            android:launchMode="singleTask"
+            android:screenOrientation="locked" />
+
         <activity
             android:name=".activities.moreListing.ui.DetailListingActivity"
             android:launchMode="singleTask"

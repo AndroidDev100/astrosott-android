@@ -522,7 +522,7 @@ public class AppCommonMethods {
             case AppLevelConstants.TYPE2:
 
                 if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
-                    if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
+                    if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16:9")) {
                         String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
                         String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.circle_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.circle_image_height) + AppLevelConstants.QUALITY;
                         PrintLogging.printLog("AppCommonMethods", "", "imageCondition" + image_url + AppLevelConstants.WIDTH + context.getResources().getDimension(R.dimen.circle_image_width) + AppLevelConstants.HEIGHT + context.getResources().getDimension(R.dimen.circle_image_height) + AppLevelConstants.QUALITY);

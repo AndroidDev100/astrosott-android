@@ -1,9 +1,12 @@
 package com.dialog.dialoggo.adapter;
 
 import android.app.Activity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import android.os.SystemClock;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +15,12 @@ import android.view.ViewGroup;
 import com.dialog.dialoggo.R;
 import com.dialog.dialoggo.beanModel.ksBeanmodel.AssetCommonImages;
 import com.dialog.dialoggo.beanModel.ksBeanmodel.RailCommonData;
+import com.dialog.dialoggo.callBacks.commonCallBacks.ContinueWatchingRemove;
 import com.dialog.dialoggo.callBacks.commonCallBacks.DetailRailClick;
 import com.dialog.dialoggo.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.dialog.dialoggo.databinding.LandscapeItemBinding;
+import com.dialog.dialoggo.modelClasses.dmsResponse.MediaTypes;
+import com.dialog.dialoggo.modelClasses.dmsResponse.ResponseDmsModel;
 import com.dialog.dialoggo.utils.commonMethods.AppCommonMethods;
 import com.dialog.dialoggo.utils.helpers.ActivityLauncher;
 import com.dialog.dialoggo.utils.helpers.AssetContent;
@@ -41,8 +47,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<CommonLandscape
 
 
 
-    public CommonLandscapeAdapter(Activity context,
-                                  List<RailCommonData> itemsList, int type) {
+    public CommonLandscapeAdapter(Activity context, List<RailCommonData> itemsList, int type, ContinueWatchingRemove callBack, int cwIndex, String railName, boolean isContinueWatchingRail) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
@@ -52,6 +57,42 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<CommonLandscape
             throw new ClassCastException("Activity must implement AdapterCallback.");
         }
     }
+
+    public CommonLandscapeAdapter(Activity context, List<RailCommonData> itemsList, int type) {
+        this.itemsList = itemsList;
+        this.mContext = context;
+        this.layoutType = type;
+        try {
+            this.detailRailClick = ((DetailRailClick) context);
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement AdapterCallback.");
+        }
+    }
+
+
+    ResponseDmsModel responseDmsModel;
+    private int continueWatchingIndex = -1;
+    private boolean isContinueWatchingRail;
+    private String strRailName;
+    MediaTypes mediaTypes;
+    public CommonLandscapeAdapter(Activity context, List<RailCommonData> itemsList, int type, String railName) {
+        this.itemsList = itemsList;
+        this.mContext = context;
+        this.layoutType = type;
+        String name = mContext.getClass().getSimpleName();
+        strRailName = railName;
+        this.isContinueWatchingRail = false;
+        try {
+            responseDmsModel = AppCommonMethods.callpreference(mContext);
+            mediaTypes = responseDmsModel.getParams().getMediaTypes();
+            this.detailRailClick = ((DetailRailClick) context);
+
+
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement AdapterCallback.");
+        }
+    }
+
 
     @NonNull
     @Override
@@ -65,7 +106,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<CommonLandscape
     @Override
     public void onBindViewHolder(@NonNull SingleItemRowHolder holder, int i) {
         RailCommonData singleItem = itemsList.get(i);
-PrintLogging.printLog(CommonLandscapeAdapter.class,"",itemsList.get(0).getType()+"assettypeassest");
+        PrintLogging.printLog(CommonLandscapeAdapter.class,"",itemsList.get(0).getType()+"assettypeassest");
         try {
 
             boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());

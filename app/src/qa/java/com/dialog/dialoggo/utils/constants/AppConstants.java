@@ -291,6 +291,11 @@ public interface AppConstants {
     public static final String WATCHLIST_PARTNER_TYPE = "1";
     public static final String FOLLOW_USER_PARTNER_TYPE = "2";
     public static final int INDICATOR_BOTTOM = 25;
+    public static String SORT_VALUE = "";
+    public static final int PORTRAIT_SPACING = 6;
+    public static final int LANSCAPE_SPACING = 8;
+    public static final int SPAN_COUNT_PORTRAIT = 3;
+    public static final int SPAN_COUNT_LANDSCAPE = 2;
 
 
 }

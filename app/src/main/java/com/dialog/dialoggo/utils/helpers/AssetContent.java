@@ -469,6 +469,25 @@ public class AssetContent {
         return trailorURL;
     }
 
+    public static String getGenredata(List<String> genreList) {
+        String genre;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= genreList.size() - 1; i++) {
+            stringBuilder.append("Genre='" + genreList.get(i) + "'").append(" ");
+        }
+        if (stringBuilder.length() > 0) {
+            genre = stringBuilder.toString();
+            PrintLogging.printLog("", "genrefromAssetIs" + genre);
+            genre = genre.substring(0, genre.length() - 1);
+
+        } else {
+            genre = "";
+        }
+
+        return genre;
+    }
+
+
     public static LiveData<String> getGenredata(Map<String, MultilingualStringValueArray> map) {
         final MutableLiveData<String> connection = new MutableLiveData<>();
         String genre;

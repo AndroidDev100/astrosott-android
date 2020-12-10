@@ -39,7 +39,7 @@ public class MediaTypeConstant {
 
     public static int getLinear(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getLinear());
+        return 558;
 
     }
 

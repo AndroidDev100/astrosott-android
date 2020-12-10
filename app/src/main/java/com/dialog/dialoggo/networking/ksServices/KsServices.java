@@ -96,6 +96,7 @@ import com.dialog.dialoggo.callBacks.otpCallbacks.DTVAccountCallback;
 import com.dialog.dialoggo.callBacks.otpCallbacks.OtpCallback;
 import com.dialog.dialoggo.callBacks.otpCallbacks.OtpVerificationCallback;
 import com.dialog.dialoggo.fragments.dialog.AlertDialogSingleButtonFragment;
+import com.dialog.dialoggo.fragments.viu.ui.ViuFragment;
 import com.dialog.dialoggo.modelClasses.DTVContactInfoModel;
 import com.dialog.dialoggo.modelClasses.OtpModel;
 import com.dialog.dialoggo.modelClasses.dmsResponse.ParentalDescription;
@@ -400,6 +401,107 @@ public class KsServices {
         };
         new Thread(runnable).start();
     }
+
+    private List<VIUChannel> dtChannelList;
+    public void callDeepSearchAssetListing(long l, List<VIUChannel> list, String ksql, String filterValue, int counter, int pageSize, HomechannelCallBack callBack) {
+        clientSetupKs();
+        homechannelCallBack = callBack;
+        this.dtChannelList = list;
+        listAssetBuilders = new ArrayList<>();
+        responseList = new ArrayList<Response<ListResponse<Asset>>>();
+
+        for (int i = 0; i < dtChannelList.size(); i++) {
+            long idd = dtChannelList.get(i).getId();
+            //  Log.w("idsssoftiles", idd + " " + counter);
+            int iid = (int) idd;
+            ChannelFilter channelFilter = new ChannelFilter();
+            channelFilter.setIdEqual(iid);
+            String name = "";
+
+            String KsqlValue = forDeepSearch(ksql, filterValue);
+            PrintLogging.printLog("", "genreValueIs" + KsqlValue);
+
+
+            channelFilter.setKSql(KsqlValue);
+            if (AppConstants.SORT_VALUE.equalsIgnoreCase("")) {
+
+            } else {
+                channelFilter.setOrderBy(AppConstants.SORT_VALUE);
+            }
+
+
+            PrintLogging.printLog("", "sortvalueIS" + AppConstants.SORT_VALUE);
+            // PersonalListSearchFilter
+
+
+            FilterPager filterPager = new FilterPager();
+            filterPager.setPageIndex(counter);
+            if (pageSize <= 0)
+                filterPager.setPageSize(25);
+            else
+                filterPager.setPageSize(pageSize);
+
+            AssetService.ListAssetBuilder builder = AssetService.list(channelFilter, filterPager).setCompletion(result -> {
+                //   Log.w("homeListing", result.isSuccess() + "");
+                if (result.isSuccess()) {
+                    responseList.add(result);
+                    count++;
+                    //   Log.w("countValues", count + "");
+                    if (count == listAssetBuilders.size()) {
+                        int totalCount = result.results.getTotalCount();
+                        if (totalCount != 0) {
+                            Log.w("countValues in", count + "");
+                            if (result.results != null && result.results.getObjects() != null) {
+                                if (result.results.getObjects().size() > 0) {
+                                    homechannelCallBack.response(true, responseList, dtChannelList);
+                                } else {
+                                    homechannelCallBack.response(false, responseList, dtChannelList);
+                                }
+                            } else {
+                                homechannelCallBack.response(false, responseList, dtChannelList);
+                            }
+
+                        } else {
+                            homechannelCallBack.response(false, responseList, dtChannelList);
+                        }
+
+                    }
+
+                } else {
+                   /* ErrorHandling.checkErrorType(result.error, (code, status) -> {
+                        if (code.equalsIgnoreCase(AppConstants.KS_EXPIRE) && status) {
+                            callDeepSearchAssetListing(l, list, ksql, filterValue, counter, pageSize, callBack);
+                        } else {
+                            homechannelCallBack.response(false, responseList, dtChannelList);
+                        }
+                    });*/
+                }
+
+
+            });
+            listAssetBuilders.add(builder);
+        }
+        // count=listAssetBuilders.size();
+
+       /* MultiRequestBuilder multiRequestBuilder=new MultiRequestBuilder();
+
+        for (int j=0;j<listAssetBuilders.size();j++){
+            multiRequestBuilder = multiRequestBuilder.add(listAssetBuilders.get(j));
+        }*/
+        getRequestQueue().queue(listAssetBuilders.get(0).build(client));
+
+    }
+
+    public static String forDeepSearch(String ksql, String name) {
+        String one = "(and name ~'";
+        String two = name;
+        String third = "' (or " + ksql + "))";
+        String KSQL = one + two + third;
+        return KSQL;
+
+    }
+
+
 
     public void callAssetListing(long l, List<VIUChannel> list, int counter, HomechannelCallBack callBack) {
         clientSetupKs();

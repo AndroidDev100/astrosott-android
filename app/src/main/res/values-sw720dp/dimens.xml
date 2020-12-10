@@ -456,4 +456,8 @@
     <dimen name="catchup_item_height">150dp</dimen>
     <dimen name="sp12">12sp</dimen>
     <dimen name="dimen18dp">18dp</dimen>
+
+    <dimen name="portrait_listing_width">240dp</dimen>
+    <dimen name="portrait_listing_height">380dp</dimen>
+    <dimen name="landscape_listing_height">140dp</dimen>
 </resources>

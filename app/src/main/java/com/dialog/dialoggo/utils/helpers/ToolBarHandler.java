@@ -12,6 +12,7 @@ import com.dialog.dialoggo.R;
 import com.dialog.dialoggo.activities.moreListing.ui.ContinueWatchingActivity;
 import com.dialog.dialoggo.activities.moreListing.ui.DetailListingActivity;
 import com.dialog.dialoggo.activities.moreListing.ui.ListingActivity;
+import com.dialog.dialoggo.activities.moreListing.ui.ListingActivityNew;
 import com.dialog.dialoggo.beanModel.ksBeanmodel.AssetCommonBean;
 
 public class ToolBarHandler {
@@ -41,7 +42,7 @@ public class ToolBarHandler {
             }
             lastClickTime = SystemClock.elapsedRealtime();
 
-            new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, type, assetCommonBean1);
+            new ActivityLauncher(activity).listingActivityNew(activity, ListingActivityNew.class, assetCommonBean.getRailDetail().getCategory().getContentImageType(), assetCommonBean1);
         });
     }
 
@@ -63,7 +64,7 @@ public class ToolBarHandler {
             }
             lastClickTime = SystemClock.elapsedRealtime();
 
-            new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, type, assetCommonBean1);
+            new ActivityLauncher(activity).listingActivityNew(activity, ListingActivityNew.class, assetCommonBean.getRailDetail().getCategory().getContentImageType(), assetCommonBean1);
         });
     }
 

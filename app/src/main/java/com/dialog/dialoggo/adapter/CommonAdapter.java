@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dialog.dialoggo.R;
+import com.dialog.dialoggo.activities.home.HomeActivity;
 import com.dialog.dialoggo.activities.loginActivity.LoginActivity;
 import com.dialog.dialoggo.adapter.experiencemng.CommonCircleAdapter;
 import com.dialog.dialoggo.adapter.experiencemng.CommonHeroRailAdapter;
@@ -57,6 +58,7 @@ import com.dialog.dialoggo.utils.helpers.carousel.model.Slide;
 import com.dialog.dialoggo.utils.ksPreferenceKey.KsPreferenceKey;
 import com.enveu.Enum.LandingPageType;
 import com.enveu.Enum.PDFTarget;
+import com.enveu.Enum.PredefinePlaylistType;
 import com.facebook.ads.AudienceNetworkAds;
 
 import java.util.ArrayList;
@@ -562,17 +564,17 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     }
-
+    CommonLandscapeAdapter commonLandscapeAdapter;
     private void landscapeDataLogic(LandscapeHolder holder, List<AssetCommonBean> dataList, int position) {
         /*int totalCount = dataList.get(position).getTotalCount();
         if (totalCount > 20) {*/
-        new ToolBarHandler(activity).setMoreListener(holder.landscapeRecyclerItemBinding.moreText, AppLevelConstants.TYPE5, dataList.get(position));
-        holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
+       // new ToolBarHandler(activity).setMoreListener(holder.landscapeRecyclerItemBinding.moreText, AppLevelConstants.TYPE5, dataList.get(position));
+      //  holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
        /* } else {
             holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.GONE);
         }*/
 
-        holder.landscapeRecyclerItemBinding.headerTitle.setText(dataList.get(position).getTitle());
+       /* holder.landscapeRecyclerItemBinding.headerTitle.setText(dataList.get(position).getTitle());
         holder.landscapeRecyclerItemBinding.shimmerTitleLayout.setVisibility(View.GONE);
         holder.landscapeRecyclerItemBinding.shimmerTitleLayout.setVisibility(View.GONE);
         holder.landscapeRecyclerItemBinding.headerTitleLayout.setVisibility(View.VISIBLE);
@@ -580,6 +582,71 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         List<RailCommonData> singleSectionItems = dataList.get(position).getRailAssetList();
         CommonLandscapeAdapter commonLandscapeAdapter = new CommonLandscapeAdapter(activity, singleSectionItems, AppLevelConstants.Rail5);
         holder.landscapeRecyclerItemBinding.recyclerViewList4.setAdapter(commonLandscapeAdapter);
+
+
+
+*/
+        int totalCount = dataList.get(position).getTotalCount();
+        new ToolBarHandler(activity).setMoreListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
+
+        //new ToolBarHandler(activity).setMoreListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
+        ((LandscapeHolder) holder).landscapeRecyclerItemBinding.headerTitle.setText(dataList.get(position).getTitle());
+        ((LandscapeHolder) holder).landscapeRecyclerItemBinding.shimmerTitleLayout.setVisibility(View.GONE);
+      //  ((LandscapeHolder) holder).landscapeRecyclerItemBinding.titleLayout.setVisibility(View.VISIBLE);
+
+        boolean isContinueRail = false;
+        if (dataList.get(position).getRailDetail().getPredefPlaylistType() != null)
+            isContinueRail = dataList.get(position).getRailDetail().getPredefPlaylistType().equalsIgnoreCase(PredefinePlaylistType.CON_W.name());
+
+        List<RailCommonData> singleSectionItems = dataList.get(position).getRailAssetList();
+
+
+        if (isContinueRail) {
+            cwIndex = position;
+            commonLandscapeAdapter = new CommonLandscapeAdapter(activity, singleSectionItems, AppConstants.Rail5, new ContinueWatchingRemove() {
+                @Override
+                public void remove(Long assetID, int position, int continueWatchingIndex, int listSize) {
+                    if (continueWatchingIndex != -1) {
+                       // removeAssetApi2(assetID, singleSectionItems, commonLandscapeAdapter, continueWatchingRemove, listSize, position, continueWatchingIndex);
+                    }
+                }
+            }, position, dataList.get(position).getTitle(), isContinueRail);
+        } else {
+            commonLandscapeAdapter = new CommonLandscapeAdapter(activity, singleSectionItems, AppConstants.Rail5, dataList.get(position).getTitle());
+
+        }
+
+        //  setRecyclerProperties(((LandscapeHolder) holder).landscapeRecyclerItemBinding.recyclerViewList3, true);
+        ((LandscapeHolder) holder).landscapeRecyclerItemBinding.recyclerViewList4.setAdapter(commonLandscapeAdapter);
+        setHeaderAndMoreVisibility(holder.landscapeRecyclerItemBinding.headerTitle, holder.landscapeRecyclerItemBinding.moreText, dataList.get(position));
+        if (dataList.get(position).getMoreType() == LIVE_CHANNEL_LIST || dataList.get(position).getMoreType() == SIMILLAR_UGC_VIDEOS || dataList.get(position).getMoreType() == YOU_MAY_LIKE) {
+            holder.landscapeRecyclerItemBinding.headerTitle.setVisibility(View.VISIBLE);
+            if (dataList.get(position).getMoreType() == SIMILLAR_UGC_VIDEOS){
+                if (totalCount >5)
+                    holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
+            }else {
+                if (totalCount > 20)
+                    holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
+            }
+
+        } else if (isContinueRail) {
+            if (activity instanceof HomeActivity) {
+                if (totalCount >= 20) {
+                    new ToolBarHandler(activity).setContinueWatchingListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
+                } else {
+                    ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
+                }
+            } else {
+                if (totalCount >= 10) {
+                    new ToolBarHandler(activity).setContinueWatchingListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
+                } else {
+                    ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
+                }
+            }
+
+        }
+
+
     }
 
     private void squareDataLogic(SquareHolder holder, List<AssetCommonBean> dataList, int position) {
@@ -922,6 +989,21 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void setHeaderAndMoreVisibility(TextView header, TextView moreTextView, AssetCommonBean data) {
+        if (data.getRailDetail() != null)
+            if (data.getRailDetail().isShowHeader())
+                header.setVisibility(View.VISIBLE);
+            else
+                header.setVisibility(View.GONE);
+        if (data.getRailDetail() != null)
+            if (data.getRailDetail().isContentShowMoreButton())
+                moreTextView.setVisibility(View.VISIBLE);
+            else
+                moreTextView.setVisibility(View.GONE);
+
+
+    }
+
+    public void setHeaderAndMoreVisibility(TextView header, LinearLayout moreTextView, AssetCommonBean data) {
         if (data.getRailDetail() != null)
             if (data.getRailDetail().isShowHeader())
                 header.setVisibility(View.VISIBLE);

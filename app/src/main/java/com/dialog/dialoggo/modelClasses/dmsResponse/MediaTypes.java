@@ -6,6 +6,19 @@ import com.google.gson.annotations.SerializedName;
 
 public class MediaTypes {
 
+    @SerializedName("SpotlightEpisode")
+    @Expose
+    private String spotlightEpisode;
+
+    @SerializedName("UGCVideo")
+    @Expose
+    private String uGCVideo;
+
+    @SerializedName("Clips")
+    @Expose
+    private String clips;
+
+
     @SerializedName("Movie")
     @Expose
     private String movie;
@@ -37,6 +50,22 @@ public class MediaTypes {
     @SerializedName("Promo")
     @Expose
     private String promo;
+
+    @SerializedName("WebSeries")
+    @Expose
+    private String webSeries;
+
+    @SerializedName("WebEpisode")
+    @Expose
+    private String webEpisode;
+
+    @SerializedName("UGCCreator")
+    @Expose
+    private String uGCCreator;
+
+    @SerializedName("ShortFilm")
+    @Expose
+    private String shortFilm;
 
     public String getPromo(){
         return promo;
@@ -118,4 +147,61 @@ public class MediaTypes {
     public void setSpotlightSeries(String spotlightSeries) {
         this.spotlightSeries = spotlightSeries;
     }
+
+    public String getWebSeries() {
+        return webSeries;
+    }
+
+    public void setWebSeries(String webSeries) {
+        this.webSeries = webSeries;
+    }
+
+    public String getWebEpisode() {
+        return webEpisode;
+    }
+
+    public void setWebEpisode(String webEpisode) {
+        this.webEpisode = webEpisode;
+    }
+
+    public String getUGCCreator() {
+        return uGCCreator;
+    }
+
+    public void setUGCCreator(String uGCCreator) {
+        this.uGCCreator = uGCCreator;
+    }
+
+    public String getShortFilm() {
+        return shortFilm;
+    }
+
+    public void setShortFilm(String shortFilm) {
+        this.shortFilm = shortFilm;
+    }
+
+    public String getSpotlightEpisode() {
+        return spotlightEpisode;
+    }
+
+    public void setSpotlightEpisode(String spotlightEpisode) {
+        this.spotlightEpisode = spotlightEpisode;
+    }
+
+    public String getClip() {
+        return clips;
+    }
+
+    public void setClip(String clip) {
+        this.clips = clip;
+    }
+
+    public String getUGCVideo() {
+        return uGCVideo;
+    }
+
+    public void setUGCVideo(String uGCVideo) {
+        this.uGCVideo = uGCVideo;
+    }
+
 }

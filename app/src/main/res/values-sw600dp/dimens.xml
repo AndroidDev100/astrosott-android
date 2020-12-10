@@ -455,4 +455,8 @@
     <dimen name="liveamountmargin10dp">10dp</dimen>
     <dimen name="dimen1dp">1dp</dimen>
     <dimen name="dimen18dp">18dp</dimen>
+
+    <dimen name="portrait_listing_width">180dp</dimen>
+    <dimen name="portrait_listing_height">280dp</dimen>
+    <dimen name="landscape_listing_height">120dp</dimen>
 </resources>

@@ -125,12 +125,12 @@ public class CommonCircleAdapter extends RecyclerView.Adapter<CommonCircleAdapte
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
         try {
             RailCommonData singleItem = itemsList.get(i);
-            //PrintLogging.printLog("",singleItem.getObject().getId()+"fhjdsbfjsjfjsvfjh");
+            PrintLogging.printLog("circleAdapter ",singleItem.getObject().getId()+"");
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 PrintLogging.printLog("", assetCommonImages.getImageUrl());
                 // holder.circularItemBinding.setImage(assetCommonImages);
-//                ImageHelper.getInstance(holder.circularItemBinding.itemImage.getContext()).loadCircleImageTo(holder.circularItemBinding.itemImage, assetCommonImages.getImageUrl());
+                ImageHelper.getInstance(holder.circularItemBinding.itemImage.getContext()).loadImageTo(holder.circularItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.square1);
 
 
                ImageHelper.getInstance(mContext).setImageDescription(holder.circularItemBinding.itemImage,assetCommonImages.getImageUrl());
