@@ -6,7 +6,7 @@
 
         <variable
             name="rowItem"
-            type="com.dialog.dialoggo.db.search.SearchedKeywords" />
+            type="com.astro.sott.db.search.SearchedKeywords" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -122,12 +122,12 @@
 #///////////////////////////////////////////////
 #Common Model Proguard
 -keep public class * extends android.app.AndroidViewModel {*;}
--keep public class com.dialog.dialoggo.modelClasses.** {*;}
--keep public class com.dialog.dialoggo.baseModel.** {*;}
--keep public class com.dialog.dialoggo.callBacks.** {*;}
--keep public class com.dialog.dialoggo.activities.** {*;}
--keep public class com.dialog.dialoggo.networking.ksServices.** {*;}
--keep public class com.dialog.dialoggo.repositories.** {*;}
+-keep public class com.astro.sott.modelClasses.** {*;}
+-keep public class com.astro.sott.baseModel.** {*;}
+-keep public class com.astro.sott.callBacks.** {*;}
+-keep public class com.astro.sott.activities.** {*;}
+-keep public class com.astro.sott.networking.ksServices.** {*;}
+-keep public class com.astro.sott.repositories.** {*;}
 
 -dontwarn com.dialog.dialoggo.repositories.**
 -dontwarn com.dialog.dialoggo.networking.ksServices.**
@@ -160,15 +160,15 @@
 -keep class org.apache.commons.logging.** {*;}
 -keep class com.kaltura.** {*;}
 -keep public class kotlin.reflect.jvm.internal.impl.builtins.* { public *; }
--keep class com.dialog.dialoggo.player.UI.** {*;}
--keep class  com.dialog.dialoggo.repositories.playerRepo.** {*;}
+-keep class com.astro.sott.player.UI.** {*;}
+-keep class  com.astro.sott.repositories.playerRepo.** {*;}
 -keep interface android.support.** { *; }
 -keep class android.support.** { *; }
 -dontwarn android.support.design.**
 -keep class android.support.design.** { *; }
 -keep interface android.support.design.** { *; }
 -keep public class android.support.design.R$* { *; }
--keep public class com.dialog.dialoggo.ApplicationMain.** {*;}
+-keep public class com.astro.sott.ApplicationMain.** {*;}
 -keep public class * extends android.app.AppCompatActivity {*;}
 
 

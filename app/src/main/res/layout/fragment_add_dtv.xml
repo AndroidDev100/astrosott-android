@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:filterTouchesWhenObscured="true"
     android:windowSoftInputMode="adjustPan"
-    tools:context="com.dialog.dialoggo.activities.subscription.fragment.AddDTVFragment">
+    tools:context="com.astro.sott.com.astro.dialoggo.activities.subscription.fragment.AddDTVFragment">
 
     <LinearLayout
         android:layout_width="@dimen/fragment_width"

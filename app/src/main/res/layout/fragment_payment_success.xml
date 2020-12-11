@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/dp8"
-        tools:context="com.dialog.dialoggo.activities.subscription.fragment.PaymentSuccessFragment">
+        tools:context="com.astro.sott.com.astro.dialoggo.activities.subscription.fragment.PaymentSuccessFragment">
         <ImageView
             android:id="@+id/imvLogo"
             android:layout_width="@dimen/image200dp"

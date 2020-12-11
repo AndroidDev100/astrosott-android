@@ -4,7 +4,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.dialog.dialoggo.activities.subscription.fragment.PaymentMethodFragment">
+        tools:context="com.astro.sott.com.astro.dialoggo.activities.subscription.fragment.PaymentMethodFragment">
 
         <ImageView
             android:id="@+id/imvLogo"

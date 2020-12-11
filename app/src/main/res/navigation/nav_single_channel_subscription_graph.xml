@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/paymentMethodFragment"
-        android:name="com.dialog.dialoggo.activities.subscription.fragment.PaymentMethodFragment"
+        android:name="com.astro.sott.activities.subscription.fragment.PaymentMethodFragment"
         android:label="fragment_payment_method"
         tools:layout="@layout/fragment_payment_method" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/billPaymentFragment"
-        android:name="com.dialog.dialoggo.activities.subscription.fragment.BillPaymentFragment"
+        android:name="com.astro.sott.activities.subscription.fragment.BillPaymentFragment"
         android:label="fragment_bill_payment"
         tools:layout="@layout/fragment_bill_payment" >
         <action
@@ -25,12 +25,12 @@
     </fragment>
     <fragment
         android:id="@+id/paymentSuccessFragment"
-        android:name="com.dialog.dialoggo.activities.subscription.fragment.PaymentSuccessFragment"
+        android:name="com.astro.sott.activities.subscription.fragment.PaymentSuccessFragment"
         android:label="fragment_payment_success"
         tools:layout="@layout/fragment_payment_success" />
     <fragment
         android:id="@+id/liveChannelSubcriptionFragment"
-        android:name="com.dialog.dialoggo.activities.subscription.fragment.LiveChannelSubcriptionFragment"
+        android:name="com.astro.sott.activities.subscription.fragment.LiveChannelSubcriptionFragment"
         android:label="fragment_live_channel_subcription"
         tools:layout="@layout/fragment_live_channel_subcription" >
         <action

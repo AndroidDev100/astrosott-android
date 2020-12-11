@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dialog.dialoggo.fragments.moreLikeThisFragment.MoreLikeThisFragment">
+    tools:context="com.astro.sott.com.astro.dialoggo.fragments.moreLikeThisFragment.MoreLikeThisFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

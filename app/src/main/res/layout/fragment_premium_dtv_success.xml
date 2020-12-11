@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/transparentColor"
     android:filterTouchesWhenObscured="true"
-    tools:context="com.dialog.dialoggo.activities.subscription.fragment.PremiumDtvSuccessFragment">
+    tools:context="com.astro.sott.com.astro.dialoggo.activities.subscription.fragment.PremiumDtvSuccessFragment">
 
     <LinearLayout
         android:layout_width="@dimen/fragment_width"

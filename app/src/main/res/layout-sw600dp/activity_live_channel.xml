@@ -139,7 +139,7 @@
 
                         </LinearLayout>
                         <!-- View pager to swipe views -->
-                        <com.dialog.dialoggo.utils.helpers.LiveTvViewPager
+                        <com.astro.sott.utils.helpers.LiveTvViewPager
                             android:id="@+id/pager"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />

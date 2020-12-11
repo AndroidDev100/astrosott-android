@@ -151,7 +151,7 @@
                                 android:layout_marginTop="@dimen/movie_detail_description_layout_margin_top"
                                 android:orientation="vertical">
 
-                                <com.dialog.dialoggo.utils.helpers.ExpandableTextView
+                                <com.astro.sott.utils.helpers.ExpandableTextView
                                     android:id="@+id/description_text"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/font_medium" />
 
-                                <com.dialog.dialoggo.utils.helpers.ExpandableCardLayout
+                                <com.astro.sott.utils.helpers.ExpandableCardLayout
                                     android:id="@+id/expandable_layout"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -226,7 +226,7 @@
                                                 android:textSize="@dimen/font_medium" />
                                         </LinearLayout>
                                     </LinearLayout>
-                                </com.dialog.dialoggo.utils.helpers.ExpandableCardLayout>
+                                </com.astro.sott.utils.helpers.ExpandableCardLayout>
 
                                 <LinearLayout
                                     android:id="@+id/less_button"

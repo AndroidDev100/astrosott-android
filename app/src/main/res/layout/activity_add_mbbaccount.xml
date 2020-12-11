@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
         android:filterTouchesWhenObscured="true"
-        tools:context=".activities.mbbaccount.ui.AddMBBAccountActivity">
+        tools:context="com.astro.sott.activities.mbbaccount.ui.AddMBBAccountActivity">
 
         <LinearLayout
             android:id="@+id/no_connection_layout"

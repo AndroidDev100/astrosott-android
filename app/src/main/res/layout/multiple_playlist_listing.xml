@@ -7,11 +7,11 @@
 
         <variable
             name="title"
-            type="com.dialog.dialoggo.beanModel.ksBeanmodel.RailCommonData" />
+            type="com.astro.sott.beanModel.ksBeanmodel.RailCommonData" />
 
         <variable
             name="image"
-            type="com.dialog.dialoggo.beanModel.ksBeanmodel.AssetCommonImages" />
+            type="com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages" />
 
     </data>
 

@@ -17,7 +17,7 @@
                 android:id="@+id/connection"
                 layout="@layout/no_connection" />
         </LinearLayout>
-        <com.dialog.dialoggo.utils.helpers.CustomViewPager
+        <com.astro.sott.utils.helpers.CustomViewPager
             android:id="@+id/viewPager"
             android:layout_width="@dimen/fragment_width"
             android:layout_height="@dimen/fragment_height"
@@ -27,7 +27,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        </com.dialog.dialoggo.utils.helpers.CustomViewPager>
+        </com.astro.sott.utils.helpers.CustomViewPager>
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="@dimen/fragment_width"

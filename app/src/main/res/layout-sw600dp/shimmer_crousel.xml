@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/shimmer_crousel_padding">
 
-        <com.dialog.dialoggo.utils.helpers.shimmer.ShimmerRecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.astro.sott.utils.helpers.shimmer.ShimmerRecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/recycler_view_list1"
             android:layout_width="match_parent"
             android:layout_height="350dp"

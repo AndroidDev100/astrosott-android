@@ -383,7 +383,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
-        <com.dialog.dialoggo.utils.helpers.CustomListView
+        <com.astro.sott.utils.helpers.CustomListView
             android:id="@+id/list_view_settings"
             android:layout_width="140dp"
             android:layout_height="wrap_content"

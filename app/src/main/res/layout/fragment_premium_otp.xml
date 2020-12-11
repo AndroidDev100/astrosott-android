@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/fragment_background_color"
-        tools:context="com.dialog.dialoggo.activities.subscription.dialog.PremiumOtpDialogFragment">
+        tools:context="com.astro.sott.com.astro.dialoggo.activities.subscription.dialog.PremiumOtpDialogFragment">
 
 
         <RelativeLayout

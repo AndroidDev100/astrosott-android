@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.dialog.dialoggo">
+    package="com.astro.sott">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,7 +13,7 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
-        android:name=".ApplicationMain"
+        android:name="com.astro.sott.ApplicationMain"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -26,50 +26,50 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.changePaymentMethod.ui.UpdatePaymentMethod"
+        <activity android:name="com.astro.sott.activities.changePaymentMethod.ui.UpdatePaymentMethod"
             android:screenOrientation="locked"></activity>
-        <activity android:name=".activities.myPlans.ui.MyPlansActivity"
+        <activity android:name="com.astro.sott.activities.myPlans.ui.MyPlansActivity"
             android:screenOrientation="locked"/>
-        <activity android:name=".activities.changePaymentMethod.ui.ChangePaymentMethodActivity"
+        <activity android:name="com.astro.sott.activities.changePaymentMethod.ui.ChangePaymentMethodActivity"
             android:screenOrientation="locked"/>
-        <activity android:name=".activities.subscriptionActivity.ui.SubscriptionAndMyPlanActivity"
+        <activity android:name="com.astro.sott.activities.subscriptionActivity.ui.SubscriptionAndMyPlanActivity"
             android:screenOrientation="locked"/>
         <activity
-            android:name=".activities.subscription.ui.AddDTVAccountActivity"
+            android:name="com.astro.sott.activities.subscription.ui.AddDTVAccountActivity"
             android:configChanges="keyboard|keyboardHidden|orientation" />
         <activity
-            android:name=".activities.mbbaccount.ui.AddMBBAccountActivity"
+            android:name="com.astro.sott.activities.mbbaccount.ui.AddMBBAccountActivity"
             android:theme="@style/Theme.AppCompat.Transparent.NoActionBar"
             android:windowSoftInputMode="stateAlwaysVisible|adjustPan|adjustResize" />
         <activity
-            android:name=".activities.subscription.ui.DtvAccountActivity"
+            android:name="com.astro.sott.activities.subscription.ui.DtvAccountActivity"
             android:screenOrientation="locked"
             android:theme="@style/Theme.AppCompat.Transparent.NoActionBar"
             android:windowSoftInputMode="stateAlwaysVisible|adjustPan|adjustResize" />
         <activity
-            android:name=".activities.subscription.ui.SubscriptionActivity"
+            android:name="com.astro.sott.activities.subscription.ui.SubscriptionActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.subscription.ui.SingleLiveChannelSubscriptionActivity"
+            android:name="com.astro.sott.activities.subscription.ui.SingleLiveChannelSubscriptionActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.mbbaccount.ui.MBBAccountActivity"
+            android:name="com.astro.sott.activities.mbbaccount.ui.MBBAccountActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.parentalControl.ui.ViewingRestrictionActivity"
+            android:name="com.astro.sott.activities.parentalControl.ui.ViewingRestrictionActivity"
             android:screenOrientation="locked" /> <!-- <activity -->
         <!-- android:name=".activities.SelectAccount.UI.SelectDtvAccountActivity" -->
         <!-- android:screenOrientation="locked" /> -->
-        <activity android:name=".activities.crWebViewActivity.CrWebViewActivity" />
+        <activity android:name="com.astro.sott.activities.crWebViewActivity.CrWebViewActivity" />
         <activity
-            android:name=".activities.addDTVAccountNumber.UI.addDTVAccountNumberActivity"
+            android:name="com.astro.sott.activities.addDTVAccountNumber.UI.addDTVAccountNumberActivity"
             android:theme="@style/Theme.AppCompat.Transparent.NoActionBar"
             android:windowSoftInputMode="stateAlwaysVisible|adjustPan|adjustResize" />
         <activity
-            android:name=".activities.dtvActivity.UI.dtvActivity"
+            android:name="com.astro.sott.activities.dtvActivity.UI.dtvActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.SelectAccount.UI.SelectDtvAccountActivity"
+            android:name="com.astro.sott.activities.SelectAccount.UI.SelectDtvAccountActivity"
             android:screenOrientation="locked" />
 
         <uses-library
@@ -84,12 +84,12 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activities.parentalControl.ui.ParentalControl" />
+        <activity android:name="com.astro.sott.activities.parentalControl.ui.ParentalControl" />
         <activity
-            android:name=".activities.myplaylist.ui.MultiplePlaylistActivity"
+            android:name="com.astro.sott.activities.myplaylist.ui.MultiplePlaylistActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.splash.ui.SplashActivity"
+            android:name="com.astro.sott.activities.splash.ui.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="locked"
@@ -136,63 +136,63 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.moreListing.ui.ListingActivity"
+            android:name="com.astro.sott.activities.moreListing.ui.ListingActivity"
             android:launchMode="singleTask"
             android:screenOrientation="locked" />
 
         <activity
-            android:name=".activities.moreListing.ui.ListingActivityNew"
+            android:name="com.astro.sott.activities.moreListing.ui.ListingActivityNew"
             android:launchMode="singleTask"
             android:screenOrientation="locked" />
 
         <activity
-            android:name=".activities.moreListing.ui.DetailListingActivity"
+            android:name="com.astro.sott.activities.moreListing.ui.DetailListingActivity"
             android:launchMode="singleTask"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.moreListing.ui.ContinueWatchingActivity"
+            android:name="com.astro.sott.activities.moreListing.ui.ContinueWatchingActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.notificationSetting.ui.NotificationSettingActivity"
+            android:name="com.astro.sott.activities.notificationSetting.ui.NotificationSettingActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.notification.ui.NotificationActivity"
+            android:name="com.astro.sott.activities.notification.ui.NotificationActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.home.HomeActivity"
+            android:name="com.astro.sott.activities.home.HomeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.search.ui.ActivitySearch"
+            android:name="com.astro.sott.activities.search.ui.ActivitySearch"
             android:screenOrientation="locked"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".activities.search.ui.ResultActivity"
+            android:name="com.astro.sott.activities.search.ui.ResultActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.webSeriesDescription.ui.WebSeriesDescriptionActivity"
+            android:name="com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.catchUpRails.ui.CatchupActivity"
+            android:name="com.astro.sott.activities.catchUpRails.ui.CatchupActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity"
+            android:name="com.astro.sott.activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.forwardEPG.ForwardedEPGActivity"
+            android:name="com.astro.sott.activities.forwardEPG.ForwardedEPGActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.liveChannel.ui.LiveChannel"
+            android:name="com.astro.sott.activities.liveChannel.ui.LiveChannel"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.appSettings.ui.TabletAppSettingsActivity"
+            android:name="com.astro.sott.activities.appSettings.ui.TabletAppSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.movieDescription.ui.MovieDescriptionActivity"
+            android:name="com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity"
             android:screenOrientation="locked" />
 
         <meta-data
@@ -230,54 +230,54 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".thirdParty.fcm.DialogFirebaseMessagingService">
+        <service android:name="com.astro.sott.thirdParty.fcm.DialogFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".thirdParty.fcm.WatchoFirebaseInstanceIdService">
+        <service android:name="com.astro.sott.thirdParty.fcm.WatchoFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
         <activity
-            android:name=".activities.appSettings.ui.AppSettingsActivity"
+            android:name="com.astro.sott.activities.appSettings.ui.AppSettingsActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.videoQuality.ui.VideoQualityActivity"
+            android:name="com.astro.sott.activities.videoQuality.ui.VideoQualityActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.loginActivity.LoginActivity"
+            android:name="com.astro.sott.activities.loginActivity.LoginActivity"
             android:theme="@style/Theme.AppCompat.Transparent.NoActionBar"
             android:windowSoftInputMode="stateAlwaysVisible|adjustPan|adjustResize" />
         <activity
-            android:name=".activities.webview.ui.WebViewActivity"
+            android:name="com.astro.sott.activities.webview.ui.WebViewActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.deviceMangment.ui.DeviceManagementActivity"
+            android:name="com.astro.sott.activities.deviceMangment.ui.DeviceManagementActivity"
             android:launchMode="singleTask"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.accountSettings.ui.AccountSettingsActivity"
+            android:name="com.astro.sott.activities.accountSettings.ui.AccountSettingsActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.myplaylist.ui.MyPlaylist"
+            android:name="com.astro.sott.activities.myplaylist.ui.MyPlaylist"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.applicationSettings.ui.ApplicationSettingActivity"
+            android:name="com.astro.sott.activities.applicationSettings.ui.ApplicationSettingActivity"
             android:screenOrientation="locked" />
-        <activity android:name=".baseModel.BaseActivity" />
+        <activity android:name="com.astro.sott.baseModel.BaseActivity" />
         <activity
-            android:name=".activities.contentPreference.ui.ContentPreferenceActivity"
+            android:name="com.astro.sott.activities.contentPreference.ui.ContentPreferenceActivity"
             android:screenOrientation="locked" />
         <activity
-            android:name=".player.ui.PlayerActivity"
+            android:name="com.astro.sott.player.ui.PlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="sensorLandscape" />
 
         <receiver
-            android:name=".Alarm.MyReceiver"
+            android:name="com.astro.sott.Alarm.MyReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

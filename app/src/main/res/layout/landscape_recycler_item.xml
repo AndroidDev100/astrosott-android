@@ -85,7 +85,7 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <com.dialog.dialoggo.utils.helpers.shimmer.ShimmerRecyclerView
+        <com.astro.sott.utils.helpers.shimmer.ShimmerRecyclerView
             android:id="@+id/recycler_view_list4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

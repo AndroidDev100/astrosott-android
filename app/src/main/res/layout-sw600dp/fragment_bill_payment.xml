@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/cod_gray"
-        tools:context="com.dialog.dialoggo.activities.subscription.fragment.BillPaymentFragment">
+        tools:context="com.astro.sott.com.astro.dialoggo.activities.subscription.fragment.BillPaymentFragment">
 
 
         <RelativeLayout

@@ -15,7 +15,7 @@
 
                 <fragment
                     android:id="@+id/player_fragment"
-                    android:name="com.dialog.dialoggo.player.ui.DTPlayer"
+                    android:name="com.astro.sott.player.ui.DTPlayer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </RelativeLayout>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:filterTouchesWhenObscured="true"
     android:layout_height="match_parent"
-    tools:context="com.dialog.dialoggo.DTPlayerActivity">
+    tools:context="com.astro.sott.DTPlayerActivity">
 
 </RelativeLayout>
 </layout>

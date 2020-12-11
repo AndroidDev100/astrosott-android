@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/premiumDtvAccountDialogFragment"
-        android:name="com.dialog.dialoggo.activities.subscription.dialog.PremiumDtvAccountDialogFragment"
+        android:name="com.astro.sott.activities.subscription.dialog.PremiumDtvAccountDialogFragment"
         android:label="PremiumDtvAccountDialogFragment"
         tools:layout="@layout/fragment_premium_dtv_account">
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/premiumOtpDialogFragment"
-        android:name="com.dialog.dialoggo.activities.subscription.dialog.PremiumOtpDialogFragment"
+        android:name="com.astro.sott.activities.subscription.dialog.PremiumOtpDialogFragment"
         android:label="fragment_premium_dtv_account"
         tools:layout="@layout/fragment_premium_otp">
         <action
@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/premiumSuccessDialogFragment"
-        android:name="com.dialog.dialoggo.activities.subscription.dialog.PremiumSuccessDialogFragment"
+        android:name="com.astro.sott.activities.subscription.dialog.PremiumSuccessDialogFragment"
         android:label="PremiumSuccessDialogFragment"
         tools:layout="@layout/fragment_premium_success" />
 </navigation>

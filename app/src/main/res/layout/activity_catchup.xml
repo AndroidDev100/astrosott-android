@@ -60,7 +60,7 @@
 
                         <fragment
                             android:id="@+id/player_fragment"
-                            android:name="com.dialog.dialoggo.player.ui.DTPlayer"
+                            android:name="com.astro.sott.player.ui.DTPlayer"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
                     </RelativeLayout>
@@ -238,7 +238,7 @@
                             android:layout_marginTop="@dimen/movie_detail_ll_margin_top"
                             android:orientation="vertical">
 
-                            <com.dialog.dialoggo.utils.helpers.ExpandableTextView
+                            <com.astro.sott.utils.helpers.ExpandableTextView
                                 android:id="@+id/description_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -250,7 +250,7 @@
                                 android:textColor="@color/subtitlecolor"
                                 android:textSize="@dimen/movie_metadata_expandable_text_size" />
 
-                            <com.dialog.dialoggo.utils.helpers.ExpandableCardLayout
+                            <com.astro.sott.utils.helpers.ExpandableCardLayout
                                 android:id="@+id/expandable_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -284,7 +284,7 @@
                                             android:textColor="@color/subtitlecolor"
                                             android:textSize="@dimen/movie_metadata_cast_text_size" />
                                     </LinearLayout>
-                            </com.dialog.dialoggo.utils.helpers.ExpandableCardLayout>
+                            </com.astro.sott.utils.helpers.ExpandableCardLayout>
 
                             <LinearLayout
                                 android:id="@+id/less_button"

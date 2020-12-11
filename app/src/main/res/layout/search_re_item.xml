@@ -5,7 +5,7 @@
 
         <variable
             name="headerValue"
-            type="com.dialog.dialoggo.beanModel.commonBeanModel.SearchModel" />
+            type="com.astro.sott.beanModel.commonBeanModel.SearchModel" />
     </data>
 
 

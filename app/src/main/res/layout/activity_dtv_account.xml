@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        tools:context="com.dialog.dialoggo.activities.subscription.ui.DtvAccountActivity">
+        tools:context="com.astro.sott.com.astro.dialoggo.activities.subscription.ui.DtvAccountActivity">
 
         <fragment
             android:id="@+id/containerFragmentAAA"

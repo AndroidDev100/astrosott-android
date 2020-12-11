@@ -6,7 +6,7 @@
     app:startDestination="@id/addDTVFragment">
     <fragment
         android:id="@+id/addDTVFragment"
-        android:name="com.dialog.dialoggo.activities.subscription.fragment.AddDTVFragment"
+        android:name="com.astro.sott.activities.subscription.fragment.AddDTVFragment"
         android:label="fragment_add_dtv"
         tools:layout="@layout/fragment_add_dtv" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/premiumOTPDtvFragment"
-        android:name="com.dialog.dialoggo.activities.subscription.fragment.PremiumOTPDtvFragment"
+        android:name="com.astro.sott.activities.subscription.fragment.PremiumOTPDtvFragment"
         android:label="fragment_premium_otpdtv"
         tools:layout="@layout/fragment_premium_otpdtv" >
         <action
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/premiumDtvSuccessFragment"
-        android:name="com.dialog.dialoggo.activities.subscription.fragment.PremiumDtvSuccessFragment"
+        android:name="com.astro.sott.activities.subscription.fragment.PremiumDtvSuccessFragment"
         android:label="fragment_premium_dtv_success"
         tools:layout="@layout/fragment_premium_dtv_success" />
 

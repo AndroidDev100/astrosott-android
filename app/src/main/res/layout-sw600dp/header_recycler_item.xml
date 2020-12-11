@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
 
                 android:orientation="vertical">
-                <com.dialog.dialoggo.utils.helpers.carousel.Slider
+                <com.astro.sott.utils.helpers.carousel.Slider
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/slider"
                     android:layout_width="match_parent"

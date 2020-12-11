@@ -5,7 +5,7 @@
 
         <variable
             name="tile"
-            type="com.dialog.dialoggo.beanModel.ksBeanmodel.RailCommonData" />
+            type="com.astro.sott.beanModel.ksBeanmodel.RailCommonData" />
 
     </data>
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:filterTouchesWhenObscured="true"
     android:layout_height="match_parent"
-    tools:context=".activities.parentalControl.ui.ParentalControl"
+    tools:context="com.astro.sott.activities.parentalControl.ui.ParentalControl"
     android:background="@color/fragment_background_color">
     <include
         android:id="@+id/include"

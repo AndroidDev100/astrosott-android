@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.dialog.dialoggo.utils.helpers.ResultAllXmlUtils" />
+        <import type="com.astro.sott.utils.helpers.ResultAllXmlUtils" />
 
         <variable
             name="singleItem"
@@ -13,7 +13,7 @@
 
         <variable
             name="presenter"
-            type="com.dialog.dialoggo.activities.search.adapter.ResultAdapterAll" />
+            type="com.astro.sott.activities.search.adapter.ResultAdapterAll" />
 
 
     </data>
