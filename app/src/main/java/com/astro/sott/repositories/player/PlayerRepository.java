@@ -716,8 +716,8 @@ public class PlayerRepository {
 
 
 
-            PKPluginConfigs youboraconfig = YouboraManager.createYouboraPlugin(context, asset, deviceid);
-            playerPluginConfig.setPluginConfig(YouboraPlugin.factory.getName(), youboraconfig.getPluginConfig(YouboraPlugin.factory.getName()));
+            //PKPluginConfigs youboraconfig = YouboraManager.createYouboraPlugin(context, asset, deviceid);
+            //playerPluginConfig.setPluginConfig(YouboraPlugin.factory.getName(), youboraconfig.getPluginConfig(YouboraPlugin.factory.getName()));
             playerPluginConfig.setPluginConfig(PhoenixAnalyticsPlugin.factory.getName(), phoenixPluginConfig.toJson());
 
             if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
@@ -747,7 +747,7 @@ public class PlayerRepository {
                     setRetainBackBufferFromKeyframe(true);
             player.getSettings().setPlayerBuffers(loadControlBuffers);
 
-            subscribeToYouboraReportEvent();
+            //subscribeToYouboraReportEvent();
             subscribePhoenixAnalyticsReportEvent();
 
 //            player.getSettings().setABRSettings(new ABRSettings().setMinVideoBitrate(200000).setInitialBitrateEstimate(150000));
@@ -913,7 +913,7 @@ public class PlayerRepository {
     private void registerPlugins(Context context, Asset asset) {
         PlayKitManager.registerPlugins(context, KavaAnalyticsPlugin.factory);
         PlayKitManager.registerPlugins(context, PhoenixAnalyticsPlugin.factory);
-        PlayKitManager.registerPlugins(context, YouboraPlugin.factory);
+        //PlayKitManager.registerPlugins(context, YouboraPlugin.factory);
         if (asset.getType() == MediaTypeConstant.getLinear(context) || asset.getType() == MediaTypeConstant.getProgram(context)) {
 
         } else {
