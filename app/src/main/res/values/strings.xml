@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">ViU</string>
+    <string name="app_name">SOTT</string>
     <string name="title_home">Home</string>
     <string name="live_tv">Live TV</string>
     <string name="title_video">Video</string>
-    <string name="live_viu_tab">ViU Apps</string>
+    <string name="live_viu_tab">SOTT Apps</string>
     <string name="title_more">MORE</string>
 
     <string name="no_internet_title">You are offline. Check your internet connection</string>
@@ -89,7 +89,7 @@
     <string name="removed_from_watchlist">removed from your playlist</string>
     <string name="playlist_removed">Video removed from your playlist</string>
     <string name="checkout">Checkout</string>
-    <string name="on_Dialog">on Dialog ViU!</string>
+    <string name="on_Dialog">on Dialog SOTT!</string>
     <string name="added_to_watchlist">added to your playlist</string>
 
 
@@ -153,7 +153,7 @@
     <string name="verification">Verification</string>
     <string name="enter_phone">Enter your phone number</string>
     <string name="enter_pin">Please enter the PIN sent to your phone number</string>
-    <string name="already_user">Already a ViU user ? </string>
+    <string name="already_user">Already a SOTT user ? </string>
     <string name="dont_have_account">Don’t have an account ?</string>
     <string name="resend_text">Resend PIN</string>
     <string name="phone_number">Phone Number</string>
@@ -248,7 +248,7 @@
     <string name="square_placeholder">Square Placeholder</string>
     <string name="close_icon">Close Icon</string>
     <string name="title_icon">Title Icon</string>
-    <string name="viu_image">VIU image</string>
+    <string name="viu_image">SOTT image</string>
     <string name="share_icon">Share Icon</string>
     <string name="bullet_symbol">\u2022</string>
     <string name="device_icon">Device Icon</string>

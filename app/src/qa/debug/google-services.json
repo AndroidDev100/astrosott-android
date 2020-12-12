@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "193518972656",
-    "firebase_url": "https://dialog-staging-28c53.firebaseio.com",
-    "project_id": "dialog-staging-28c53",
-    "storage_bucket": "dialog-staging-28c53.appspot.com"
+    "project_number": "929669716426",
+    "firebase_url": "https://astro-sott.firebaseio.com",
+    "project_id": "astro-sott",
+    "storage_bucket": "astro-sott.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:193518972656:android:d5f6be4ecb1a9e92",
+        "mobilesdk_app_id": "1:929669716426:android:fea5557289ff80bea6d733",
         "android_client_info": {
           "package_name": "com.astro.stagingsott"
         }
       },
       "oauth_client": [
         {
-          "client_id": "193518972656-322hj013vqc3arlovmf5p85m3j46qarb.apps.googleusercontent.com",
+          "client_id": "929669716426-2edlh3qb5v6djphufaqn65e832m2j40p.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDTGxsjP8otu40s2HjehA0mm4DMo7My_5E"
+          "current_key": "AIzaSyDLKC6w2CTpSe7DU6oJDLdwxBBEW8LyoTc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "193518972656-322hj013vqc3arlovmf5p85m3j46qarb.apps.googleusercontent.com",
+              "client_id": "929669716426-2edlh3qb5v6djphufaqn65e832m2j40p.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "193518972656-8qignvvisfn59lamv7fgna1nr589asgn.apps.googleusercontent.com",
+              "client_id": "929669716426-t0e2dptu4o87ltum5rs7kevr8qc9f3up.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "lk.inova.ios.viu.dev"
+                "bundle_id": "com.astro.sott.qa"
               }
             }
           ]
