@@ -70,8 +70,8 @@ public class ApplicationMain extends MultiDexApplication {
 //        ApplicationMain.context = getApplicationContext();
         MultiDex.install(this);
         // Branch logging for debugging
-        Branch.enableLogging();
-        Branch.getAutoInstance(this, true);
+        //Branch.enableLogging();
+        //Branch.getAutoInstance(this, true);
 
         // Branch object initialization
         AsyncTask.execute(new Runnable() {
@@ -87,8 +87,8 @@ public class ApplicationMain extends MultiDexApplication {
                     SharedPrefHelper.getInstance(getApplicationContext()).setString(AppLevelConstants.FCM_TOKEN, token);
                 });
                // AudienceNetworkAds.initialize(getApplicationContext());
-                AppsFlyerLib.getInstance().init(AppConstants.AF_DEV_KEY, conversionDataListener, getApplicationContext());
-                AppsFlyerLib.getInstance().startTracking(ApplicationMain.this, AppConstants.AF_DEV_KEY);
+                //AppsFlyerLib.getInstance().init(AppConstants.AF_DEV_KEY, conversionDataListener, getApplicationContext());
+                //AppsFlyerLib.getInstance().startTracking(ApplicationMain.this, AppConstants.AF_DEV_KEY);
 
                 FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
                     String token = instanceIdResult.getToken();

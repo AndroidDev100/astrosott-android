@@ -403,7 +403,7 @@ public class AppCommonMethods {
 
 
     public static void openShareDialog(final Activity activity, final Asset asset, Context context) {
-        WeakReference<Activity> mActivity = new WeakReference<>(activity);
+        /*WeakReference<Activity> mActivity = new WeakReference<>(activity);
         BranchUniversalObject buo = new BranchUniversalObject()
                 .setTitle(asset.getName())
                 .setContentDescription(asset.getDescription())
@@ -429,7 +429,7 @@ public class AppCommonMethods {
 
                 Log.i("BRANCH SDK", "got my Branch link to share: " + sharingURL);
             }
-        });
+        });*/
     }
 
 

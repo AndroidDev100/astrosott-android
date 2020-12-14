@@ -383,7 +383,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     @Override
     protected void onStart() {
         super.onStart();
-        Branch.sessionBuilder(this).withCallback(branchReferralInitListener).withData(getIntent() != null ? getIntent().getData() : null).init();
+//        Branch.sessionBuilder(this).withCallback(branchReferralInitListener).withData(getIntent() != null ? getIntent().getData() : null).init();
 
     }
 

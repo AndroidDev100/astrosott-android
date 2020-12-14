@@ -39,7 +39,6 @@ import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
-import com.npaw.youbora.lib6.YouboraLog;
 
 public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack {
     private final String TAG = this.getClass().getSimpleName();
@@ -129,7 +128,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         super.onCreate(savedInstanceState);
         setSupportActionBar((Toolbar) getBinding().toolbar);
 
-        YouboraLog.setDebugLevel(YouboraLog.Level.VERBOSE);
 
         ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
         // Before starting an update, register a listener for updates.

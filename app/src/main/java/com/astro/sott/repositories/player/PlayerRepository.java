@@ -19,7 +19,6 @@ import com.astro.sott.R;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.player.adapter.TrackItem;
-import com.astro.sott.thirdParty.youbora.YouboraManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
@@ -53,8 +52,6 @@ import com.kaltura.playkit.plugins.ott.PhoenixAnalyticsEvent;
 import com.kaltura.playkit.plugins.ott.PhoenixAnalyticsPlugin;
 import com.kaltura.playkit.plugins.playback.KalturaPlaybackRequestAdapter;
 import com.kaltura.playkit.plugins.playback.KalturaUDRMLicenseRequestAdapter;
-import com.kaltura.playkit.plugins.youbora.YouboraEvent;
-import com.kaltura.playkit.plugins.youbora.YouboraPlugin;
 import com.kaltura.playkit.providers.MediaEntryProvider;
 
 import java.util.ArrayList;
@@ -586,14 +583,14 @@ public class PlayerRepository {
         return booleanMutableLiveData;
     }
 
-    private void subscribeToYouboraReportEvent() {
+    /*private void subscribeToYouboraReportEvent() {
         player.addListener(this, YouboraEvent.reportSent, event -> {
             String reportedEventName = event.reportedEventName;
             Log.i(TAG, "Youbora report sent. Reported event name: " + reportedEventName);
 
 
         });
-    }
+    }*/
 
     public void releasePlayer() {
         if (player != null) {
