@@ -36,7 +36,7 @@
         android:id="@+id/navigation_more"
         android:enabled="true"
         android:icon="@drawable/ic_more"
-        android:title="More"
+        android:title="@string/title_more"
         app:showAsAction="ifRoom" />
 
 </menu>

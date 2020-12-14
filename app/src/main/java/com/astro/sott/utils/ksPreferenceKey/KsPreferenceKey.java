@@ -76,6 +76,13 @@ public class KsPreferenceKey {
     public void setQualityName(String qualityName) {
         session.setString("video_quality_name", qualityName);
     }
+    public String getAppLangName() {
+        return session.getString("app_lang", "");
+    }
+
+    public void setAppLangName(String appLangName) {
+        session.setString("app_lang", appLangName);
+    }
 
     public String getCatchUpId() {
         return session.getString("catchup_id", "");

@@ -2,13 +2,19 @@ package com.astro.sott.activities.appSettings.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.astro.sott.activities.SelectAccount.UI.SelectDtvAccountActivity;
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.notificationSetting.ui.NotificationSettingActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
@@ -42,6 +48,7 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
 //        getBinding().tvVideoQuality.setOnClickListener(this);
         getBinding().tvNotificationSettings.setOnClickListener(this);
         getBinding().tvContentPreferences.setOnClickListener(this);
+        getBinding().language.setOnClickListener(this);
         if (BuildConfig.FLAVOR.equalsIgnoreCase("prod"))
             getBinding().flavorTxt.setText(getResources().getString(R.string.version) + " " + BuildConfig.VERSION_NAME);
         else
@@ -68,11 +75,31 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
                 startActivity(intent);
 
                 break;
+
+            case R.id.language:
+                changeLanguage();
+                break;
             default:
 
                 break;
         }
 
+    }
+
+    private void changeLanguage() {
+        try {
+            String selectedLanguage = new KsPreferenceKey(AppSettingsActivity.this).getAppLangName();
+
+            if (selectedLanguage.equalsIgnoreCase("en")||selectedLanguage.equalsIgnoreCase("")) {
+                AppCommonMethods.updateLanguage("ms", this);
+            } else {
+                AppCommonMethods.updateLanguage("en", this);
+            }
+            new ActivityLauncher(AppSettingsActivity.this).homeScreen(AppSettingsActivity.this, HomeActivity.class);
+
+            finish();
+        } catch (Exception exc) {
+        }
     }
 
     @Override

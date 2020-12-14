@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_home">Rumah</string>
+    <string name="live_tv">Siaran langsung TV</string>
+    <string name="title_video">Video</string>
+    <string name="live_viu_tab">DI BAWAH Aplikasi</string>
+    <string name="title_more">LAGI</string>
+</resources>

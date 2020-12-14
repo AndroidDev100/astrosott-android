@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.provider.Settings;
@@ -31,6 +32,7 @@ import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrefConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.ksPreferenceKey.SubCategoriesPrefs;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -105,6 +107,20 @@ public class AppCommonMethods {
         return getTimeStamp(formattedDate, type);
     }
 
+    public static void updateLanguage(String language, Context context) {
+        try {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Resources res = context.getResources();
+            Configuration config = new Configuration(res.getConfiguration());
+            config.locale = locale;
+            res.updateConfiguration(config, res.getDisplayMetrics());
+            new KsPreferenceKey(context).setAppLangName(language);
+        } catch (Exception exc) {
+
+        }
+    }
+
     public static String setTime(Asset asset, int type) {
         String programTime = "";
         Long _time;
@@ -130,9 +146,9 @@ public class AppCommonMethods {
 
     public static Calendar getDate(Asset asset) {
         String programTime = "";
-        String  month = "";
-        String  dd = "";
-        String  year = "";
+        String month = "";
+        String dd = "";
+        String year = "";
         Calendar c = null;
         StringBuilder stringBuilder = new StringBuilder();
         Long _time;
@@ -140,7 +156,7 @@ public class AppCommonMethods {
 
             _time = asset.getStartDate();
             Date date = new Date(_time * 1000L);
-             c = Calendar.getInstance();
+            c = Calendar.getInstance();
             c.setTime(date);
 //
 //           month = checkDigit(c.get(Calendar.MONTH));
@@ -247,8 +263,8 @@ public class AppCommonMethods {
             if (Integer.parseInt(progTimeHour) < Integer.parseInt(currTimeHour)) {
                 if (Integer.parseInt(progTimeHour) == 00) {
                     progTimeHour = "24";
-                }else {
-                    progTimeHour = String.valueOf(24+Integer.parseInt(progTimeHour));
+                } else {
+                    progTimeHour = String.valueOf(24 + Integer.parseInt(progTimeHour));
                 }
 
                 if (Integer.parseInt(progTimeMin) == 00) {
@@ -265,7 +281,7 @@ public class AppCommonMethods {
                 int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hours)) / (1000 * 60);
 
                 if (min > 0) {
-                   // hours = hours - 1;
+                    // hours = hours - 1;
                 }
 
                 hours = (hours < 0 ? 0 : hours);
@@ -741,14 +757,14 @@ public class AppCommonMethods {
     }
 
     public static ArrayList<Long> getContinueWatchingIDsPreferences(Context applicationContext) {
-        try{
+        try {
             SharedPrefHelper sharedPrefHelper = SharedPrefHelper.getInstance((applicationContext));
             Gson gson = new Gson();
             String json = sharedPrefHelper.getString(AppLevelConstants.C_W_IDS_PREFERENCES, "");
             Type type = new TypeToken<ArrayList<Long>>() {
             }.getType();
             return gson.fromJson(json, type);
-        }catch(Exception e){
+        } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);
             return null;
         }
@@ -786,7 +802,7 @@ public class AppCommonMethods {
 
     public static void setImages(RailCommonData railCommonData, Context context, ImageView webseriesimage) {
         try {
-            if(railCommonData == null){
+            if (railCommonData == null) {
                 return;
             }
             if (railCommonData.getObject().getImages().size() > 0) {
@@ -798,7 +814,7 @@ public class AppCommonMethods {
                     }
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             PrintLogging.printLog("Exception", "" + e);
         }
 
@@ -917,7 +933,7 @@ public class AppCommonMethods {
             Algorithm publicKeyAlgo = Algorithm.RSA256(publicKey, null);
             JWTVerifier verifier = JWT.require(publicKeyAlgo).withIssuer(AppLevelConstants.JWT_ISSUER).build();
             jwt = verifier.verify(token);
-            Log.e("JWT TOKEN",token);
+            Log.e("JWT TOKEN", token);
         } catch (InvalidKeySpecException ignored) {
             Log.e("VERIFICATION NI HUA", ignored.getMessage());
             ignored.printStackTrace();
@@ -1044,7 +1060,6 @@ public class AppCommonMethods {
 
         return mDetailList;
     }
-
 
 
 }
