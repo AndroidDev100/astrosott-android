@@ -107,6 +107,13 @@ public class AppCommonMethods {
         return getTimeStamp(formattedDate, type);
     }
 
+
+    public static void getLanguage(){
+
+
+
+    }
+
     public static void updateLanguage(String language, Context context) {
         try {
             Locale locale = new Locale(language);

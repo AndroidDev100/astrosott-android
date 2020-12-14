@@ -95,9 +95,9 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
             } else {
                 AppCommonMethods.updateLanguage("en", this);
             }
-            new ActivityLauncher(AppSettingsActivity.this).homeScreen(AppSettingsActivity.this, HomeActivity.class);
+           // new ActivityLauncher(AppSettingsActivity.this).homeScreen(AppSettingsActivity.this, HomeActivity.class);
 
-            finish();
+          //  finish();
         } catch (Exception exc) {
         }
     }
