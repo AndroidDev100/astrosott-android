@@ -12,6 +12,8 @@ public class KsPreferenceKey {
     private static final String DEFAULT_ENTITLEMENT = "DefaultEntitlement";
     private static final String ATBPAYMENTGATEWAYID ="ATBpaymentGatewayId";
     public static final String  SUBSCRIPTION_OFFER = "SubscriptionOffer";
+    private static final String DOWNLOAD_OVER_WIFI = "downloadOverWifi";
+
     private static KsPreferenceKey mInstance;
     private SharedPrefHelper session;
     private static final String REMINDER_ID="reminder_id";
@@ -110,6 +112,13 @@ public class KsPreferenceKey {
 
     public void setFCMToken(String s) {
         session.setString("fcmRefreshToken", s);
+    }
+    public boolean getDownloadOverWifi() {
+        return session.getBoolean(DOWNLOAD_OVER_WIFI, true);
+    }
+
+    public void setDownloadOverWifi(boolean status) {
+        session.setBoolean(DOWNLOAD_OVER_WIFI, status);
     }
 
     public int getContinueWatchingIndex() {
