@@ -2,6 +2,7 @@ package com.astro.sott.activities.home;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 
 import com.astro.sott.activities.search.ui.ActivitySearch;
@@ -14,10 +15,12 @@ import com.astro.sott.fragments.viu.ui.ViuFragment;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.widget.Toolbar;
@@ -48,6 +51,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private LiveTvFragment liveTvFragment;
     private ViuFragment viuAppsFragment;
     private Fragment moreFragment;
+    private String oldLang, newLang;
     private Fragment active;
     private FragmentManager fragmentManager;
     private NativeAd nativeAd;
@@ -126,6 +130,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        oldLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
         setSupportActionBar((Toolbar) getBinding().toolbar);
 
 
@@ -267,7 +272,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         toolbarTitle = getBinding().toolbar.findViewById(R.id.toolbar_text);
 
         ImageView searchIcon = getBinding().toolbar.findViewById(R.id.search_icon);
-       // ImageView notification_Icon = getBinding().toolbar.findViewById(R.id.notification_icon);
+        // ImageView notification_Icon = getBinding().toolbar.findViewById(R.id.notification_icon);
         ImageView appsLaunchIcon = getBinding().toolbar.findViewById(R.id.apps_launch_icon);
         ImageView homeIcon = getBinding().toolbar.findViewById(R.id.home_icon);
 //        if(KsPreferenceKey.getInstance(this).getUserActive())
@@ -372,6 +377,12 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     @Override
     protected void onResume() {
         super.onResume();
+
+        newLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
+        if (!oldLang.equals(newLang)) {
+            finish();
+            startActivity(getIntent());
+        }
         // Checks that the update is not stalled during 'onResume()'.
         // However, you should execute this check at all entry points into the app.
         ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {

@@ -106,7 +106,42 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_content_preferences" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
 
+            app:layout_constraintTop_toBottomOf="@id/language"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/download_over_wifi_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/notification_textview_margin_left"
+                android:layout_marginRight="16dp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center_vertical"
+                android:text="Download over Wifi"
+                android:textColor="@color/more_item_title"
+                android:textSize="16sp" />
+
+
+            <Switch
+                android:id="@+id/switch_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="64dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:theme="@style/SwitchTheme" />
+
+
+        </LinearLayout>
         <TextView
             android:id="@+id/flavor_txt"
             android:layout_width="wrap_content"

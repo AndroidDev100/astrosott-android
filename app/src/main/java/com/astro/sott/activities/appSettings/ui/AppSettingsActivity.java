@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import com.astro.sott.activities.SelectAccount.UI.SelectDtvAccountActivity;
 import com.astro.sott.activities.home.HomeActivity;
@@ -33,7 +34,11 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
         super.onCreate(savedInstanceState);
 
 //        new ToolBarHandler(this).setAppSettingAction(this, getBinding().toolbar);
-
+        if (!new KsPreferenceKey(this).getDownloadOverWifi()) {
+            getBinding().switchTheme.setChecked(false);
+        } else {
+            getBinding().switchTheme.setChecked(true);
+        }
 
         setSupportActionBar(getBinding().include.toolbar);
 
@@ -42,7 +47,7 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
+        setClicks();
 //        setTextViewDrawableColor(getBinding().tvNotificationSettings, this);
 
 //        getBinding().tvVideoQuality.setOnClickListener(this);
@@ -56,6 +61,19 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
 
         if (!KsPreferenceKey.getInstance(this).getUserActive())
             getBinding().tvNotificationSettings.setVisibility(View.GONE);
+    }
+
+    private void setClicks() {
+        getBinding().switchTheme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (getBinding().switchTheme.isChecked()) {
+                    new KsPreferenceKey(getApplicationContext()).setDownloadOverWifi(true);
+                } else {
+                    new KsPreferenceKey(getApplicationContext()).setDownloadOverWifi(false);
+                }
+            }
+        });
     }
 
     @Override
@@ -90,14 +108,14 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
         try {
             String selectedLanguage = new KsPreferenceKey(AppSettingsActivity.this).getAppLangName();
 
-            if (selectedLanguage.equalsIgnoreCase("en")||selectedLanguage.equalsIgnoreCase("")) {
+            if (selectedLanguage.equalsIgnoreCase("en") || selectedLanguage.equalsIgnoreCase("")) {
                 AppCommonMethods.updateLanguage("ms", this);
             } else {
                 AppCommonMethods.updateLanguage("en", this);
             }
-            new ActivityLauncher(AppSettingsActivity.this).homeScreen(AppSettingsActivity.this, HomeActivity.class);
+            // new ActivityLauncher(AppSettingsActivity.this).homeScreen(AppSettingsActivity.this, HomeActivity.class);
 
-            finish();
+            //  finish();
         } catch (Exception exc) {
         }
     }

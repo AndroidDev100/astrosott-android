@@ -1,10 +1,12 @@
 package com.astro.sott.activities.movieDescription.ui;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -14,11 +16,15 @@ import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import androidx.fragment.app.FragmentManager;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
@@ -183,7 +189,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
                 callProgressBar();
                 playerChecks(railData);
-            }else {
+            } else {
                 DialogHelper.showLoginDialog(MovieDescriptionActivity.this);
             }
 
@@ -240,20 +246,20 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 defaultParentalRating = responseDmsModel.getParams().getDefaultParentalLevel();
                 userSelectedParentalRating = KsPreferenceKey.getInstance(getApplicationContext()).getUserSelectedRating();
                 if (!userSelectedParentalRating.equalsIgnoreCase("")) {
-                    assetKey = AssetContent.getAssetKey(asset.getTags(),userSelectedParentalRating, getApplicationContext());
-                    if(assetKey){
+                    assetKey = AssetContent.getAssetKey(asset.getTags(), userSelectedParentalRating, getApplicationContext());
+                    if (assetKey) {
                         assetRuleErrorCode = AppLevelConstants.NO_ERROR;
                         checkOnlyDevice(railData);
-                    }else {
+                    } else {
                         validateParentalPin(railData);
                     }
 
                 } else {
-                    assetKey = AssetContent.getAssetKey(asset.getTags(),defaultParentalRating, getApplicationContext());
-                    if(assetKey){
+                    assetKey = AssetContent.getAssetKey(asset.getTags(), defaultParentalRating, getApplicationContext());
+                    if (assetKey) {
                         assetRuleErrorCode = AppLevelConstants.NO_ERROR;
                         checkOnlyDevice(railData);
-                    }else {
+                    } else {
                         validateParentalPin(railData);
                     }
                 }
@@ -310,7 +316,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 } else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
                         new RefreshKS(MovieDescriptionActivity.this).refreshKS(response -> checkDevice(railData));
-                    }else {
+                    } else {
                         callProgressBar();
                         showDialog(commonResponse.getMessage());
                     }
@@ -320,26 +326,67 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         });
     }
 
+
     private void startPlayer() {
-        try{
+        try {
             callProgressBar();
-            Intent intent = new Intent(MovieDescriptionActivity.this, PlayerActivity.class);
-            intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
-            startActivity(intent);
-        }catch (Exception e){
+            boolean wifiConnected = NetworkConnectivity.isWifiConnected(this);
+            boolean connectionPreference = new KsPreferenceKey(this).getDownloadOverWifi();
+            if (connectionPreference && !wifiConnected) {
+                showWifiDialog();
+            } else {
+                Intent intent = new Intent(MovieDescriptionActivity.this, PlayerActivity.class);
+                intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
+                startActivity(intent);
+            }
+
+        } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);
         }
     }
 
+    private void showWifiDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.wifi_dialog, null);
+        TextView btn_update = (TextView) view.findViewById(R.id.btn_update);
+        Switch switch_download = (Switch) view.findViewById(R.id.switch_download);
+        builder.setView(view);
+        builder.setCancelable(false);
+        AlertDialog alert = builder.create();
+        alert.show();
+        if (!new KsPreferenceKey(this).getDownloadOverWifi()) {
+            switch_download.setChecked(false);
+        } else {
+            switch_download.setChecked(true);
+        }
+        switch_download.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (switch_download.isChecked()) {
+                new KsPreferenceKey(this).setDownloadOverWifi(true);
+            } else {
+                new KsPreferenceKey(this).setDownloadOverWifi(false);
+            }
+        });
+        btn_update.setOnClickListener(view1 -> {
+            alert.dismiss();
+            if (!new KsPreferenceKey(this).getDownloadOverWifi()) {
+                Intent intent = new Intent(MovieDescriptionActivity.this, PlayerActivity.class);
+                intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
+                startActivity(intent);
+            }
+        });
+    }
+
     private void playerChecks(final RailCommonData railData) {
-        new GeoBlockingCheck().aseetAvailableOrNot(MovieDescriptionActivity.this, railData.getObject(), (status, response, totalCount,errorcode,message) -> {
+        new GeoBlockingCheck().aseetAvailableOrNot(MovieDescriptionActivity.this, railData.getObject(), (status, response, totalCount, errorcode, message) -> {
             if (status) {
                 if (totalCount != 0) {
                     checkBlockingErrors(response);
                 } else {
                     checkEntitleMent(railData);
                 }
-            }else {
+            } else {
                 callProgressBar();
                 showDialog(message);
             }
@@ -370,56 +417,56 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-            AssetContent.getVideoResolution(asset.getTags()).observe(MovieDescriptionActivity.this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String videoResolution) {
-                String fileId = "";
-                if (videoResolution.equals(AppConstants.HD)) {
-                    fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject(), AppConstants.HD);
-                    AllChannelManager.getInstance().setChannelId(fileId);
-                } else {
-                    fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject(), AppConstants.SD);
-                    AllChannelManager.getInstance().setChannelId(fileId);
-                }
-                if (fileId.equals("")) {
-                    playerChecksCompleted = true;
-                    errorCode = AppLevelConstants.NO_MEDIA_FILE;
-                    checkErrors();
-                } else {
-                    new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
-                        if (status) {
-                            playerChecksCompleted = true;
-                            if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
-                                errorCode = AppLevelConstants.NO_ERROR;
-                                railData = railCommonData;
-                                checkErrors();
-                            } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
-                                if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                                    isDtvAccountAdded(railCommonData);
-                                } else {
-                                    errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
-                                    checkErrors();
-                                }
-                            } else {
-                                if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                                   isDtvAccountAdded(railCommonData);
-                                } else {
-                                    errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
-                                    checkErrors();
-                                    //not play
-                                }
-                            }
-                        }else {
-                            callProgressBar();
-                            if (message!="")
-                                showDialog(message);
+                AssetContent.getVideoResolution(asset.getTags()).observe(MovieDescriptionActivity.this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String videoResolution) {
+                        String fileId = "";
+                        if (videoResolution.equals(AppConstants.HD)) {
+                            fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject(), AppConstants.HD);
+                            AllChannelManager.getInstance().setChannelId(fileId);
+                        } else {
+                            fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject(), AppConstants.SD);
+                            AllChannelManager.getInstance().setChannelId(fileId);
                         }
-                    });
-                }
+                        if (fileId.equals("")) {
+                            playerChecksCompleted = true;
+                            errorCode = AppLevelConstants.NO_MEDIA_FILE;
+                            checkErrors();
+                        } else {
+                            new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
+                                if (status) {
+                                    playerChecksCompleted = true;
+                                    if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
+                                        errorCode = AppLevelConstants.NO_ERROR;
+                                        railData = railCommonData;
+                                        checkErrors();
+                                    } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
+                                        if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                                            isDtvAccountAdded(railCommonData);
+                                        } else {
+                                            errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
+                                            checkErrors();
+                                        }
+                                    } else {
+                                        if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                                            isDtvAccountAdded(railCommonData);
+                                        } else {
+                                            errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
+                                            checkErrors();
+                                            //not play
+                                        }
+                                    }
+                                } else {
+                                    callProgressBar();
+                                    if (message != "")
+                                        showDialog(message);
+                                }
+                            });
+                        }
 //                playerChecksCompleted = true;
 
-            }
-        });
+                    }
+                });
 
             }
         });
@@ -441,16 +488,16 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                                     isDtvAdded = false;
                                     callProgressBar();
 
-                                    checkForSubscription(isDtvAdded,railCommonData);
+                                    checkForSubscription(isDtvAdded, railCommonData);
 
                                 } else if (dtvAccount.equalsIgnoreCase("")) {
                                     isDtvAdded = false;
                                     callProgressBar();
-                                    checkForSubscription(isDtvAdded,railCommonData);
+                                    checkForSubscription(isDtvAdded, railCommonData);
                                 } else {
                                     isDtvAdded = true;
                                     callProgressBar();
-                                    checkForSubscription(isDtvAdded,railCommonData);
+                                    checkForSubscription(isDtvAdded, railCommonData);
                                 }
 
                             } else {
@@ -458,8 +505,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                                 callProgressBar();
                                 showDialog(getString(R.string.something_went_wrong_try_again));
                             }
-                        }catch (Exception e){
-                            Log.e("ExceptionIs",e.toString());
+                        } catch (Exception e) {
+                            Log.e("ExceptionIs", e.toString());
                         }
                     }
                 });
@@ -470,29 +517,29 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
     private void checkForSubscription(boolean isDtvAdded, RailCommonData railCommonData) {
         //***** Mobile + Non-Dialog + Non-DTV *************//
-        if(KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded==false){
-            runOnUiThread(() ->DialogHelper.openDialougeFornonDialog(MovieDescriptionActivity.this,false));
+        if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == false) {
+            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(MovieDescriptionActivity.this, false));
         }
         //********** Mobile + Non-Dialog + DTV ******************//
-        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded==true){
-            runOnUiThread(() ->DialogHelper.openDialougeFornonDialog(MovieDescriptionActivity.this,false));
+        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == true) {
+            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(MovieDescriptionActivity.this, false));
         }
         //*********** Mobile + Dialog + Non-DTV *****************//
-        else if(KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded==false){
-            if(AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(),railCommonData.getObject(),MovieDescriptionActivity.this)){
-                runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(MovieDescriptionActivity.this, true,false));
-            }else {
-                runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(MovieDescriptionActivity.this, false,false));
+        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == false) {
+            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), MovieDescriptionActivity.this)) {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(MovieDescriptionActivity.this, true, false));
+            } else {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(MovieDescriptionActivity.this, false, false));
             }
         }
         //************ Mobile + Dialog + DTV ********************//
-        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded==true){
-            if(AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(),railCommonData.getObject(),MovieDescriptionActivity.this)){
-                runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(MovieDescriptionActivity.this, true,false));
-            }else {
-                runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(MovieDescriptionActivity.this, false,false));
+        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == true) {
+            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), MovieDescriptionActivity.this)) {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(MovieDescriptionActivity.this, true, false));
+            } else {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(MovieDescriptionActivity.this, false, false));
             }
-        }else {
+        } else {
             showDialog(getString(R.string.something_went_wrong_try_again));
         }
     }
@@ -505,7 +552,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 } else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
                         new RefreshKS(MovieDescriptionActivity.this).refreshKS(response -> checkDevice(railData));
-                    }else {
+                    } else {
                         callProgressBar();
                         showDialog(commonResponse.getMessage());
                     }
@@ -637,7 +684,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             openShareDialouge();
         });
         setWatchlist();
-         // setRailFragment();
+        // setRailFragment();
         setRailBaseFragment();
 
         setHungamaTag(asset);
@@ -645,9 +692,9 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
     private void setHungamaTag(Asset asset) {
         boolean isProviderAvailable = AssetContent.getHungamaTag(asset.getTags());
-        if (isProviderAvailable){
+        if (isProviderAvailable) {
             getBinding().hungama.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             getBinding().hungama.setVisibility(View.GONE);
         }
     }
@@ -845,7 +892,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                                     getBinding().playlist.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.play_list), null, null);
                                     getBinding().playlist.setTextColor(getResources().getColor(R.color.white));
                                 } else {
-                                      showDialog(aBoolean.getMessage());
+                                    showDialog(aBoolean.getMessage());
                                 }
 
                             }
@@ -857,7 +904,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         } else {
             viewModel.listAllwatchList(id).observe(this, commonResponse -> {
                 if (commonResponse.getStatus()) {
-                    if(commonResponse!=null) {
+                    if (commonResponse != null) {
                         idfromAssetWatchlist = commonResponse.getAssetID();
                         isAdded = true;
                         getBinding().playlist.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.playlist_added_check_icon), null, null);
@@ -1114,7 +1161,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private void checkAddedCondition(CommonResponse s) {
         if (s.getStatus()) {
             if (assetType == MediaTypeConstant.getMovie(getApplicationContext())) {
-                showAlertDialog( getApplicationContext().getResources().getString(R.string.movie_text) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
+                showAlertDialog(getApplicationContext().getResources().getString(R.string.movie_text) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
             } else {
                 showAlertDialog(getApplicationContext().getResources().getString(R.string.short_video_text) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
 
@@ -1243,11 +1290,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
     }
 
-    private void callProgressBar(){
+    private void callProgressBar() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(getBinding().includeProgressbar.progressBar.getVisibility() == View.VISIBLE){
+                if (getBinding().includeProgressbar.progressBar.getVisibility() == View.VISIBLE) {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 } else {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
