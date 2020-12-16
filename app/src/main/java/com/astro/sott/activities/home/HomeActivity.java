@@ -379,7 +379,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     @Override
     protected void onResume() {
         super.onResume();
-
+        updateLang();
 
         // Checks that the update is not stalled during 'onResume()'.
         // However, you should execute this check at all entry points into the app.
@@ -401,7 +401,18 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private void updateLang() {
         newLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
         if (!oldLang.equals(newLang)) {
-            navigation.inflateMenu(R.menu.navigation);
+            oldLang = newLang;
+            if (newLang.equalsIgnoreCase("ms")) {
+                navigation.getMenu().getItem(0).setTitle("Rumah");
+                navigation.getMenu().getItem(1).setTitle("Siaran langsung TV");
+                navigation.getMenu().getItem(3).setTitle("DI BAWAH Aplikasi");
+                navigation.getMenu().getItem(4).setTitle("LAGI");
+            }else {
+                navigation.getMenu().getItem(0).setTitle("Home");
+                navigation.getMenu().getItem(1).setTitle("Live TV");
+                navigation.getMenu().getItem(3).setTitle("SOTT Apps");
+                navigation.getMenu().getItem(4).setTitle("MORE");
+            }
 
 
         }
