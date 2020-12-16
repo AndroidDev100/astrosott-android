@@ -23,7 +23,7 @@ public class MediaTypeConstant {
     public static int getDrama(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
 
-        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getDrama());
+        return 0;
 
     }
 

@@ -79,7 +79,7 @@ public class KsPreferenceKey {
         session.setString("video_quality_name", qualityName);
     }
     public String getAppLangName() {
-        return session.getString("app_lang", "");
+        return session.getString("app_lang", "en");
     }
 
     public void setAppLangName(String appLangName) {

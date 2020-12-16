@@ -18,6 +18,14 @@
         <item>Device management</item>
         <item>Terms &amp; conditions</item>
         <item>Help</item>
+    </string-array>
+    <string-array name="more_list_with_login_lang">
+        <item>Senarai main</item>
+        <item>Tetapan akaun</item>
+        <item>App settings</item>
+        <item>Device management</item>
+        <item>Terms &amp; conditions</item>
+        <item>Help</item>
 
 
     </string-array>

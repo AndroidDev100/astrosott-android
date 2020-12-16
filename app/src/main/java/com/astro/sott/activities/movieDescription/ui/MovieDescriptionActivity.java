@@ -186,12 +186,20 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
             });
 
-            if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+            boolean wifiConnected = NetworkConnectivity.isWifiConnected(this);
+            boolean connectionPreference = new KsPreferenceKey(this).getDownloadOverWifi();
+            if (connectionPreference && !wifiConnected) {
+                showWifiDialog();
+            }else {
                 callProgressBar();
                 playerChecks(railData);
-            } else {
-                DialogHelper.showLoginDialog(MovieDescriptionActivity.this);
             }
+
+           /* if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {*/
+
+           /* } else {
+                DialogHelper.showLoginDialog(MovieDescriptionActivity.this);
+            }*/
 
 
         });
@@ -330,15 +338,10 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private void startPlayer() {
         try {
             callProgressBar();
-            boolean wifiConnected = NetworkConnectivity.isWifiConnected(this);
-            boolean connectionPreference = new KsPreferenceKey(this).getDownloadOverWifi();
-            if (connectionPreference && !wifiConnected) {
-                showWifiDialog();
-            } else {
+
                 Intent intent = new Intent(MovieDescriptionActivity.this, PlayerActivity.class);
                 intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
                 startActivity(intent);
-            }
 
         } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);

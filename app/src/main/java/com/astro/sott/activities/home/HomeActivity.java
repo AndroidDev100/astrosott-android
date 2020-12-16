@@ -380,11 +380,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     protected void onResume() {
         super.onResume();
 
-        newLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
-        if (!oldLang.equals(newLang)) {
-            finish();
-            startActivity(getIntent());
-        }
+
         // Checks that the update is not stalled during 'onResume()'.
         // However, you should execute this check at all entry points into the app.
         ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
@@ -400,6 +396,15 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().unregisterListener(listener);
             }
         });
+    }
+
+    private void updateLang() {
+        newLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
+        if (!oldLang.equals(newLang)) {
+            navigation.inflateMenu(R.menu.navigation);
+
+
+        }
     }
 
     @Override

@@ -2,9 +2,11 @@ package com.astro.sott.repositories.moreTab;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.login.CommonResponse;
@@ -33,8 +35,13 @@ public class MoreFragmentRepository {
             labels = context.getResources().getStringArray(R.array.more_list);
 
         } else {
-            labels = context.getResources().getStringArray(R.array.more_list_with_login
-            );
+            if (new KsPreferenceKey(context).getAppLangName().equalsIgnoreCase("en")) {
+                labels = context.getResources().getStringArray(R.array.more_list_with_login);
+
+            } else {
+                labels = context.getResources().getStringArray(R.array.more_list_with_login_lang);
+
+            }
 
         }
         try {
