@@ -190,16 +190,15 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             boolean connectionPreference = new KsPreferenceKey(this).getDownloadOverWifi();
             if (connectionPreference && !wifiConnected) {
                 showWifiDialog();
-            }else {
-                callProgressBar();
-                playerChecks(railData);
+            } else {
+                if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                    callProgressBar();
+                    playerChecks(railData);
+                } else {
+                    DialogHelper.showLoginDialog(MovieDescriptionActivity.this);
+                }
+
             }
-
-           /* if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {*/
-
-           /* } else {
-                DialogHelper.showLoginDialog(MovieDescriptionActivity.this);
-            }*/
 
 
         });
@@ -339,9 +338,9 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         try {
             callProgressBar();
 
-                Intent intent = new Intent(MovieDescriptionActivity.this, PlayerActivity.class);
-                intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
-                startActivity(intent);
+            Intent intent = new Intent(MovieDescriptionActivity.this, PlayerActivity.class);
+            intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
+            startActivity(intent);
 
         } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);
@@ -374,9 +373,12 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         btn_update.setOnClickListener(view1 -> {
             alert.dismiss();
             if (!new KsPreferenceKey(this).getDownloadOverWifi()) {
-                Intent intent = new Intent(MovieDescriptionActivity.this, PlayerActivity.class);
-                intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
-                startActivity(intent);
+                if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                    callProgressBar();
+                    playerChecks(railData);
+                } else {
+                    DialogHelper.showLoginDialog(MovieDescriptionActivity.this);
+                }
             }
         });
     }

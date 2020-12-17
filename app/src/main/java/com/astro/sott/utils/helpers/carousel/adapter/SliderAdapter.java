@@ -91,7 +91,7 @@ public class SliderAdapter extends PagerAdapter {
             }else {
                 ImageHelper.getInstance(context).loadImageToCarousal(sliderImage, items.get(position).getImageFromUrl(), R.drawable.square1);
             }
-            sliderImage.setOnClickListener(v -> itemClickListener.onItemClick(null, container.getRootView(), position, 0));
+            sliderImage.setOnClickListener(v -> itemClickListener.onItemClick(null, container.getRootView(), position, carouselPosition));
 
             container.addView(view);
             return view;

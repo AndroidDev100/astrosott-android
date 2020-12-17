@@ -797,7 +797,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 //                    PrintLogging.printLog("", "mediatypeClick-->>" + slides.get(i).getRailCommonData().getObject().getType() + "");
                     int pos = (int) l;
-                    if (dataList.get(pos).getSlides().get(i).getRailCommonData().getObject().getType() == MediaTypeConstant.getIFP(activity)) {
+                    if (dataList.get(pos).getSlides()!=null&&dataList.get(pos).getSlides().get(i).getRailCommonData().getObject().getType() == MediaTypeConstant.getIFP(activity)) {
                         /*boolean status = new KsPreferenceKeys(activity).getUserActive();
                         if (status) {
                             new ActivityLauncher(activity).ifpActivity(activity, IFPActivity.class);
