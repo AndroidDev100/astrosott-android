@@ -37,7 +37,7 @@
                 android:fontFamily="@font/roboto_bold"
                 android:gravity="center_horizontal"
                 android:text="waiting for wifi"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="15sp" />
 
             <TextView
@@ -50,7 +50,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center_vertical"
                 android:text="Your Video will begin once you come on WiFi. Or you can change the setting below:"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="13sp" />
 
             <LinearLayout
@@ -70,7 +70,7 @@
                     android:fontFamily="@font/roboto_bold"
                     android:gravity="center_vertical"
                     android:text="Play over wifi"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
 
                 <Switch
@@ -118,8 +118,8 @@
                 android:padding="@dimen/_5sdp"
                 android:singleLine="true"
                 android:text=""
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
                 android:textSize="15sp"
                 android:visibility="gone"
                 tools:ignore="Autofill" />
