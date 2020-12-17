@@ -126,7 +126,7 @@
                 android:layout_marginRight="16dp"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center_vertical"
-                android:text="Download over Wifi"
+                android:text="Play over Wifi"
                 android:textColor="@color/more_item_title"
                 android:textSize="16sp" />
 

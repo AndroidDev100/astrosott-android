@@ -55,6 +55,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private  MoreFragmentViewModel viewModel;
+    private String oldLang, newLang;
 
     private OnFragmentInteractionListener mListener;
     private HomeActivity homeActivity;
@@ -86,6 +87,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
     @Override
     public void onResume() {
         super.onResume();
+
         connectionObserver();
     }
 
@@ -95,7 +97,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
         modelCall();
         UIinitialization();
         connectionObserver();
-
+        oldLang = new KsPreferenceKey(getActivity()).getAppLangName();
         getBinding().myRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(homeActivity, getBinding().myRecyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {

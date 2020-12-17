@@ -377,12 +377,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     @Override
     protected void onResume() {
         super.onResume();
+        updateLang();
 
-        newLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
-        if (!oldLang.equals(newLang)) {
-            finish();
-            startActivity(getIntent());
-        }
         // Checks that the update is not stalled during 'onResume()'.
         // However, you should execute this check at all entry points into the app.
         ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
@@ -398,6 +394,26 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().unregisterListener(listener);
             }
         });
+    }
+
+    private void updateLang() {
+        newLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
+        if (!oldLang.equals(newLang)) {
+            oldLang = newLang;
+            if (newLang.equalsIgnoreCase("ms")) {
+                navigation.getMenu().getItem(0).setTitle("Rumah");
+                navigation.getMenu().getItem(1).setTitle("Siaran langsung TV");
+                navigation.getMenu().getItem(3).setTitle("DI BAWAH Aplikasi");
+                navigation.getMenu().getItem(4).setTitle("LAGI");
+            }else {
+                navigation.getMenu().getItem(0).setTitle("Home");
+                navigation.getMenu().getItem(1).setTitle("Live TV");
+                navigation.getMenu().getItem(3).setTitle("SOTT Apps");
+                navigation.getMenu().getItem(4).setTitle("MORE");
+            }
+
+
+        }
     }
 
     @Override
