@@ -2957,7 +2957,7 @@ public class KsServices {
         requestParam.addProperty("clientVersion", BuildConfig.KALTURA_CLIENT_VERSION);
         requestParam.addProperty("platform", BuildConfig.KALTURA_PLATFORM);
         requestParam.addProperty("udid", UDID.getDeviceId(activity, activity.getContentResolver()));
-        requestParam.addProperty("tag", "");
+        requestParam.addProperty("tag", "AstroQA");
         requestParam.addProperty("partnerId", BuildConfig.KALTURA_PARTNER_ID);
         Log.e("REQUEST", requestParam.toString());
         Call<ResponseDmsModel> call = endpoint.getDMS(requestParam);

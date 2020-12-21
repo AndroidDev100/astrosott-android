@@ -106,7 +106,7 @@ public interface AppLevelConstants {
     String KSQL_GENRE = "Genre='";
     //
     String KEY_SERIES_ID = "SeriesId";
-    int PARTNER_ID = 487;
+    int PARTNER_ID = 3209;
 
     String HLS = "HLS_Main";
     String KEY_GENRE = "Genre";
@@ -131,7 +131,6 @@ public interface AppLevelConstants {
     String KEY_PROVIDER = "Provider";
     String KEY_PROVIDER_EXTERNAL_CONTENT_ID = "ProviderExternalContentID";
 
-    String ACCOUNT_TYPE = BuildConfig.YOUBORA_ACCOUNT_TYPE;
 
     String TYPE1 = "CAROUSEL";
     String TYPE2 = "CIRCLE";

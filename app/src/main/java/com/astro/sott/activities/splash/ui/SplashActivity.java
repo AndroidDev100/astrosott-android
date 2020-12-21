@@ -1,10 +1,15 @@
 package com.astro.sott.activities.splash.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +65,8 @@ import com.kaltura.playkit.player.MediaSupport;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Set;
 
@@ -98,11 +105,31 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(this)) {
+            printHashKey();
             connectionValidation(true);
         } else {
             connectionValidation(false);
         }
     }
+
+    private String keyHash = "";
+    private void printHashKey() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.astro.stagingsott",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                PrintLogging.printLog("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            PrintLogging.printLog("Exception", "" + e);
+        } catch (NoSuchAlgorithmException e) {
+            PrintLogging.printLog("Exception", "" + e);
+        }
+    }
+
 
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {

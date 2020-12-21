@@ -74,18 +74,17 @@ android {
             applicationId "com.astro.stagingsott"
             buildConfigField "String", "KALTURA_BASE_URL", "\"https://rest-sgs1.ott.kaltura.com/api_v3/service/\""
             buildConfigField "int", "KAVA_PARTNER_ID", "2407831"
-            buildConfigField "String", "YOUBORA_ACCOUNT_TYPE", "\"dishindiadev\""
 
-            buildConfigField "String", "KALTURA_API_VERSION", "\"4.82.4.19258\""
-            buildConfigField "String", "KALTURA_APPLICATION_NAME", "\"com.kaltura.dishtv.app\""
-            buildConfigField "String", "KALTURA_CLIENT_VERSION", "\"0.0.3\""
+            buildConfigField "String", "KALTURA_API_VERSION", "\"5.8.0\""
+            buildConfigField "String", "KALTURA_APPLICATION_NAME", "\"com.kaltura.astro.mobile\""
+            buildConfigField "String", "KALTURA_CLIENT_VERSION", "\"0.0.1\""
             buildConfigField "String", "KALTURA_PLATFORM", "\"android\""
-            buildConfigField "String", "KALTURA_PARTNER_ID", "\"487\""
+            buildConfigField "String", "KALTURA_PARTNER_ID", "\"3209\""
 
             buildConfigField "String", "PHOEINIX_BASE_URL", "\"https://rest-sgs1.ott.kaltura.com/api_v3\""
 
 
-            buildConfigField "String", "KALTURA_TAG", "\"dialogQA\""
+            buildConfigField "String", "KALTURA_TAG", "\"AstroQA\""
             buildConfigField "String", "SMS_BASE_URL", "\"https://sus8scm21a.execute-api.ap-southeast-1.amazonaws.com/QA/\""
             buildConfigField "String", "VERIFY_BASE_URL", "\" https://mo98wsla9h.execute-api.ap-southeast-1.amazonaws.com/QA/\""
             buildConfigField "String", "TOKEN_BASE_URL", "\"https://ro840hb5x0.execute-api.ap-southeast-1.amazonaws.com/\""
@@ -258,6 +257,9 @@ dependencies {
     implementation 'androidx.browser:browser:1.2.0' // Chrome Tab matching
     implementation 'com.google.android.gms:play-services-ads:18.3.0' // GAID matching
     implementation 'com.google.firebase:firebase-appindexing:19.0.0'// App indexing
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    implementation 'com.facebook.android:facebook-login:5.1.0'
+    implementation 'com.facebook.android:audience-network-sdk:5.6.1'
 
 
 
