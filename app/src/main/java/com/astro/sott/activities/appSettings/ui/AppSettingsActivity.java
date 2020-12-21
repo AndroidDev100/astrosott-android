@@ -16,6 +16,7 @@ import com.astro.sott.activities.notificationSetting.ui.NotificationSettingActiv
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
@@ -110,8 +111,10 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
 
             if (selectedLanguage.equalsIgnoreCase("en") || selectedLanguage.equalsIgnoreCase("")) {
                 AppCommonMethods.updateLanguage("ms", this);
+                ToastHandler.show("Language changed to Malay",getApplication().getApplicationContext());
             } else {
                 AppCommonMethods.updateLanguage("en", this);
+                ToastHandler.show("Language changed to English",getApplication().getApplicationContext());
             }
             // new ActivityLauncher(AppSettingsActivity.this).homeScreen(AppSettingsActivity.this, HomeActivity.class);
 
