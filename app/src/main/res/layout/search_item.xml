@@ -60,8 +60,8 @@
             <ImageView
                 android:id="@+id/itemImage"
                 setImageUrlSearch="@{singleItem.images.size() > 0 ? singleItem.images.get(0) : null}"
-                android:layout_width="@dimen/search_item_image_width"
-                android:layout_height="@dimen/search_item_image_height"
+                android:layout_width="@dimen/list_lds_width"
+                android:layout_height="@dimen/list_lds_height"
                 android:contentDescription="@string/banner_image"
                 android:scaleType="fitXY"
                 tools:ignore="ContentDescription" />

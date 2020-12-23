@@ -257,7 +257,8 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     private void setMediaType() {
         mediaList = new ArrayList<>();
         mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_MOVIE, String.valueOf(MediaTypeConstant.getMovie(ActivitySearch.this))));
-        //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_WEBEPISODE, String.valueOf(MediaTypeConstant.getDrama(ActivitySearch.this))));
+        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SERIES, String.valueOf(MediaTypeConstant.getSeries(ActivitySearch.this))));
+        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_EPISODE, String.valueOf(MediaTypeConstant.getEpisode(ActivitySearch.this))));
         //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))));
         //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_SHORTFILM, String.valueOf(MediaTypeConstant.getShortFilm(ActivitySearch.this))));
 
@@ -408,6 +409,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         if (NetworkConnectivity.isOnline(ActivitySearch.this)) {
             if (itemValue.getKeyWords().length() > 0) {
                 getBinding().toolbar.searchText.setText(itemValue.getKeyWords());
+                counter = 0;
                 callViewModel(itemValue.getKeyWords());
             }
         } else
@@ -431,16 +433,12 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             getRailCommonData(itemValue);
             new ActivityLauncher(this).detailActivity(this, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);
 
-        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getShortFilm(ActivitySearch.this)) {
-            getRailCommonData(itemValue);
-            if (railCommonData.getImages().size() == itemValue.getImages().size())
-                new ActivityLauncher(this).detailActivity(this, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);
-        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getWebEpisode(ActivitySearch.this)) {
+        }  else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getEpisode(ActivitySearch.this)) {
             getRailCommonData(itemValue);
 
             new ActivityLauncher(this).webEpisodeActivity(this, WebEpisodeDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
 
-        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getDrama(ActivitySearch.this)) {
+        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getSeries(ActivitySearch.this)) {
             getRailCommonData(itemValue);
             new ActivityLauncher(this).webSeriesActivity(this, WebSeriesDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
         } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getLinear(ActivitySearch.this)) {

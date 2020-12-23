@@ -218,14 +218,12 @@ public class SearchRepository {
                 if (status) {
                     ksServices.searchKeyword(context, modifyString, list,counter, (status1, result, remarks) -> {
                         if (status1) {
-                            try {
+
                                 if (remarks.equalsIgnoreCase(AppLevelConstants.NO_RESULT_FOUND)) {
                                     connection.postValue(new ArrayList<>());
                                 } else
                                     connection.postValue(sortMediaTypeList(context, result));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+
                         }
                     });
                 }
@@ -290,9 +288,9 @@ public class SearchRepository {
 
         //please do not break sequence
         SearchModel Movie = new SearchModel();
-        SearchModel WebSeries = new SearchModel();
-        SearchModel Linear = new SearchModel();
-        SearchModel ShortFilm = new SearchModel();
+        SearchModel Series = new SearchModel();
+        SearchModel Episode = new SearchModel();
+
 
 
         for (int i = 0; i < list.size(); i++) {
@@ -303,14 +301,11 @@ public class SearchRepository {
             if (checkId.equals(String.valueOf(MediaTypeConstant.getMovie(context)))) {
                 Movie = list.get(i);
 
-            } else if (checkId.equals(String.valueOf(MediaTypeConstant.getDrama(context)))) {
-                WebSeries = list.get(i);
+            } else if (checkId.equals(String.valueOf(MediaTypeConstant.getEpisode(context)))) {
+                Episode = list.get(i);
 
-            } else if (checkId.equals(String.valueOf(MediaTypeConstant.getLinear(context)))) {
-                Linear = list.get(i);
-
-            } else if (checkId.equals(String.valueOf(MediaTypeConstant.getShortFilm(context)))) {
-                ShortFilm = list.get(i);
+            } else if (checkId.equals(String.valueOf(MediaTypeConstant.getSeries(context)))) {
+                Series = list.get(i);
 
             }
         }
@@ -319,20 +314,15 @@ public class SearchRepository {
             allSampleData.add(Movie);
         }
 
-        if (WebSeries.getAllItemsInSection().size() > 0) {
-            WebSeries.setHeaderTitle(SearchModel.MEDIATYPE_SEARCH_WEBSERIES);
-            allSampleData.add(WebSeries);
+        if (Series.getAllItemsInSection().size() > 0) {
+            Series.setHeaderTitle(SearchModel.MEDIATYPE_SEARCH_WEBSERIES);
+            allSampleData.add(Series);
         }
 
 
-        if (Linear.getAllItemsInSection().size() > 0) {
-            Linear.setHeaderTitle(SearchModel.MEDIATYPE_SEARCH_LIVE_CHANNELS);
-            allSampleData.add(Linear);
-        }
-
-        if (ShortFilm.getAllItemsInSection().size() > 0) {
-            ShortFilm.setHeaderTitle(SearchModel.MEDIATYPE_SEARCH_SHORTFILM);
-            allSampleData.add(ShortFilm);
+        if (Episode.getAllItemsInSection().size() > 0) {
+            Episode.setHeaderTitle(SearchModel.MEDIATYPE_SEARCH_SHORTFILM);
+            allSampleData.add(Episode);
         }
 
 

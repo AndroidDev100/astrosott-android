@@ -118,6 +118,8 @@ public interface AppLevelConstants {
     String KEY_DIRECTOR = "Director";
     String WATCHLIST_PARTNER_TYPE = "1";
     String MEDIATYPE_SEARCH_MOVIE = "Movie";
+    String MEDIATYPE_SERIES = "Series";
+    String MEDIATYPE_EPISODE = "Episode";
     String MEDIATYPE_SEARCH_WEBEPISODE = "WebEpisode";
     String MEDIATYPE_SEARCH_LINEAR = "Linear";
     String MEDIATYPE_SEARCH_SHORTFILM = "ShortFilm";

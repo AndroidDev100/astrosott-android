@@ -6,83 +6,33 @@ import com.google.gson.annotations.SerializedName;
 
 public class MediaTypes {
 
-    @SerializedName("SpotlightEpisode")
-    @Expose
-    private String spotlightEpisode;
-
-    @SerializedName("UGCVideo")
-    @Expose
-    private String uGCVideo;
-
-    @SerializedName("Clips")
-    @Expose
-    private String clips;
-
-
-    @SerializedName("Movie")
-    @Expose
-    private String movie;
     @SerializedName("Linear")
     @Expose
     private String linear;
-    @SerializedName("ShortVideos")
+    @SerializedName("Movie")
     @Expose
-    private String shortVideos;
-    @SerializedName("Trailer")
-    @Expose
-    private String trailer;
+    private String movie;
     @SerializedName("Episode")
     @Expose
     private String episode;
-    @SerializedName("Drama")
+    @SerializedName("Series")
     @Expose
-    private String drama;
-    @SerializedName("Genre")
+    private String series;
+    @SerializedName("Season")
     @Expose
-    private String genre;
+    private String season;
+    @SerializedName("Trailer")
+    @Expose
+    private String trailer;
+    @SerializedName("Highlight")
+    @Expose
+    private String highlight;
+    @SerializedName("Collection")
+    @Expose
+    private String collection;
     @SerializedName("Program")
     @Expose
     private String program;
-    @SerializedName("SpotlightSeries")
-    @Expose
-    private String spotlightSeries;
-
-    @SerializedName("Promo")
-    @Expose
-    private String promo;
-
-    @SerializedName("WebSeries")
-    @Expose
-    private String webSeries;
-
-    @SerializedName("WebEpisode")
-    @Expose
-    private String webEpisode;
-
-    @SerializedName("UGCCreator")
-    @Expose
-    private String uGCCreator;
-
-    @SerializedName("ShortFilm")
-    @Expose
-    private String shortFilm;
-
-    public String getPromo(){
-        return promo;
-    }
-
-    public void setPromo(String promo){
-        this.promo = promo;
-    }
-
-
-    public String getMovie() {
-        return movie;
-    }
-
-    public void setMovie(String movie) {
-        this.movie = movie;
-    }
 
     public String getLinear() {
         return linear;
@@ -92,20 +42,12 @@ public class MediaTypes {
         this.linear = linear;
     }
 
-    public String getShortVideos() {
-        return shortVideos;
+    public String getMovie() {
+        return movie;
     }
 
-    public void setShortVideos(String shortVideos) {
-        this.shortVideos = shortVideos;
-    }
-
-    public String getTrailer() {
-        return trailer;
-    }
-
-    public void setTrailer(String trailer) {
-        this.trailer = trailer;
+    public void setMovie(String movie) {
+        this.movie = movie;
     }
 
     public String getEpisode() {
@@ -116,20 +58,44 @@ public class MediaTypes {
         this.episode = episode;
     }
 
-    public String getDrama() {
-        return drama;
+    public String getSeries() {
+        return series;
     }
 
-    public void setDrama(String drama) {
-        this.drama = drama;
+    public void setSeries(String series) {
+        this.series = series;
     }
 
-    public String getGenre() {
-        return genre;
+    public String getSeason() {
+        return season;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setSeason(String season) {
+        this.season = season;
+    }
+
+    public String getTrailer() {
+        return trailer;
+    }
+
+    public void setTrailer(String trailer) {
+        this.trailer = trailer;
+    }
+
+    public String getHighlight() {
+        return highlight;
+    }
+
+    public void setHighlight(String highlight) {
+        this.highlight = highlight;
+    }
+
+    public String getCollection() {
+        return collection;
+    }
+
+    public void setCollection(String collection) {
+        this.collection = collection;
     }
 
     public String getProgram() {
@@ -138,70 +104,6 @@ public class MediaTypes {
 
     public void setProgram(String program) {
         this.program = program;
-    }
-
-    public String getSpotlightSeries() {
-        return spotlightSeries;
-    }
-
-    public void setSpotlightSeries(String spotlightSeries) {
-        this.spotlightSeries = spotlightSeries;
-    }
-
-    public String getWebSeries() {
-        return webSeries;
-    }
-
-    public void setWebSeries(String webSeries) {
-        this.webSeries = webSeries;
-    }
-
-    public String getWebEpisode() {
-        return webEpisode;
-    }
-
-    public void setWebEpisode(String webEpisode) {
-        this.webEpisode = webEpisode;
-    }
-
-    public String getUGCCreator() {
-        return uGCCreator;
-    }
-
-    public void setUGCCreator(String uGCCreator) {
-        this.uGCCreator = uGCCreator;
-    }
-
-    public String getShortFilm() {
-        return shortFilm;
-    }
-
-    public void setShortFilm(String shortFilm) {
-        this.shortFilm = shortFilm;
-    }
-
-    public String getSpotlightEpisode() {
-        return spotlightEpisode;
-    }
-
-    public void setSpotlightEpisode(String spotlightEpisode) {
-        this.spotlightEpisode = spotlightEpisode;
-    }
-
-    public String getClip() {
-        return clips;
-    }
-
-    public void setClip(String clip) {
-        this.clips = clip;
-    }
-
-    public String getUGCVideo() {
-        return uGCVideo;
-    }
-
-    public void setUGCVideo(String uGCVideo) {
-        this.uGCVideo = uGCVideo;
     }
 
 }

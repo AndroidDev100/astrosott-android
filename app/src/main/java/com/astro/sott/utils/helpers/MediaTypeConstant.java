@@ -29,13 +29,7 @@ public class MediaTypeConstant {
 
 
 
-    public static int getPromo(Context context) {
-        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        if (responseDmsModel.getParams().getMediaTypes().getPromo() != null)
-            return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getPromo());
-        else
-            return -1;
-    }
+
 
     public static int getLinear(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
@@ -47,12 +41,20 @@ public class MediaTypeConstant {
     public static int getGenre(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
 
-        if (TextUtils.isEmpty(responseDmsModel.getParams().getMediaTypes().getGenre())) {
-            return 0;
-        } else {
 
-            return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getGenre());
-        }
+
+            return 0;
+
+
+    }
+
+    public static int getPromo(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+
+
+
+        return 0;
+
 
     }
 
@@ -90,7 +92,17 @@ public class MediaTypeConstant {
     }
 
 
+    public static int getSeries(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getSeries());
 
+    }
+
+    public static int getEpisode(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getEpisode());
+
+    }
 
 
     public static int getWebSeries(Context context) {
@@ -148,11 +160,6 @@ public class MediaTypeConstant {
         return 595;
     }
 
-    public static int getSeries(Context context) {
-        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        return 604;
-
-    }
 
     public static int getUGCVideo(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);

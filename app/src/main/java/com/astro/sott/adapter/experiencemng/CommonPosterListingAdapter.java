@@ -82,14 +82,13 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
 
     private void mediaTypeCondition(int position, PosterlistingItemBinding potraitItemBinding) {
         if (Integer.parseInt(mediaTypes.getMovie()) == itemsList.get(0).getType()
-                || Integer.parseInt(mediaTypes.getWebSeries()) == itemsList.get(0).getType()
-                || Integer.parseInt(mediaTypes.getSpotlightSeries()) == itemsList.get(0).getType()) {
+                || Integer.parseInt(mediaTypes.getSeries()) == itemsList.get(0).getType()) {
             getPremimumMark(position, potraitItemBinding);
             potraitItemBinding.exclusiveLayout.timmingLayout.setVisibility(View.GONE);
             potraitItemBinding.mediaTypeLayout.metaLayout.setVisibility(View.GONE);
 
-        } else if (Integer.parseInt(mediaTypes.getWebEpisode()) == itemsList.get(0).getType()
-                || Integer.parseInt(mediaTypes.getSpotlightSeries()) == itemsList.get(0).getType()) {
+        } else if (Integer.parseInt(mediaTypes.getEpisode()) == itemsList.get(0).getType()
+               ) {
             potraitItemBinding.mediaTypeLayout.lineOne.setText("E" + 1 + " | " + itemsList.get(position).getName());
             potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);
             potraitItemBinding.exclusiveLayout.flExclusive.setVisibility(View.GONE);
@@ -100,39 +99,11 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
 
 
             episodeNumber(position, potraitItemBinding);
-        } else if (Integer.parseInt(mediaTypes.getShortFilm()) == itemsList.get(0).getType()) {
-            getPremimumMark(position, potraitItemBinding);
-            if (itemsList.get(position).getUrls().size() > 0)
-                potraitItemBinding.exclusiveLayout.durationTxt.setText(itemsList.get(position).getUrls().get(0).getDuration() + "");
-            else
-                potraitItemBinding.exclusiveLayout.durationTxt.setText("0 sec");
-
-
-            PrintLogging.printLog("", itemsList.get(position).getUrls().get(0).getDuration() + "dnfjdjfdjfbdsf");
-
-            potraitItemBinding.mediaTypeLayout.metaLayout.setVisibility(View.GONE);
-        } else if (Integer.parseInt(mediaTypes.getLinear()) == itemsList.get(0).getType()
+        }  else if (Integer.parseInt(mediaTypes.getLinear()) == itemsList.get(0).getType()
                 || Integer.parseInt(mediaTypes.getTrailer()) == itemsList.get(0).getType()) {
             potraitItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
             potraitItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(position).getName());
             potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);
-        } else if (Integer.parseInt(mediaTypes.getUGCCreator()) == itemsList.get(0).getType()) {
-            potraitItemBinding.mediaTypeLayout.lineOne.setText("Creator Name" + " | " + itemsList.get(position).getName());
-            potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);
-            potraitItemBinding.exclusiveLayout.flExclusive.setVisibility(View.GONE);
-            if (itemsList.get(position).getUrls().size() > 0)
-                potraitItemBinding.exclusiveLayout.durationTxt.setText(itemsList.get(position).getUrls().get(0).getDuration() + "");
-            else
-                potraitItemBinding.exclusiveLayout.durationTxt.setText("0 sec");
-
-
-
-        } else if (Integer.parseInt(mediaTypes.getUGCCreator()) == itemsList.get(0).getType()) {
-
-            potraitItemBinding.mediaTypeLayout.lineOne.setText("Creator Name" + " | " + itemsList.get(position).getName());
-            potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);
-            potraitItemBinding.exclusiveLayout.flExclusive.setVisibility(View.GONE);
-            potraitItemBinding.exclusiveLayout.timmingLayout.setVisibility(View.GONE);
         }
     }
 

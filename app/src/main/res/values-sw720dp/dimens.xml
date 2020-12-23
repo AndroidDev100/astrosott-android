@@ -460,4 +460,7 @@
     <dimen name="portrait_listing_width">240dp</dimen>
     <dimen name="portrait_listing_height">380dp</dimen>
     <dimen name="landscape_listing_height">140dp</dimen>
+
+    <dimen name="list_lds_width">142dp</dimen>
+    <dimen name="list_lds_height">80dp</dimen>
 </resources>

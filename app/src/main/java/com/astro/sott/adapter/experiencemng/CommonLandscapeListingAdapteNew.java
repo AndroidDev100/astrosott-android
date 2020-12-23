@@ -167,14 +167,14 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
 
     private void mediaTypeCondition(int position,   LandscapeListingNewBinding potraitItemBinding) {
         if (Integer.parseInt(mediaTypes.getMovie()) == itemsList.get(0).getType()
-                || Integer.parseInt(mediaTypes.getWebSeries()) == itemsList.get(0).getType()
-                || Integer.parseInt(mediaTypes.getSpotlightSeries()) == itemsList.get(0).getType()) {
+                || Integer.parseInt(mediaTypes.getSeries()) == itemsList.get(0).getType()
+                ) {
             getPremimumMark(position, potraitItemBinding);
             potraitItemBinding.exclusiveLayout.timmingLayout.setVisibility(View.GONE);
             potraitItemBinding.mediaTypeLayout.metaLayout.setVisibility(View.GONE);
 
-        } else if (Integer.parseInt(mediaTypes.getWebEpisode()) == itemsList.get(0).getType()
-                || Integer.parseInt(mediaTypes.getSpotlightEpisode()) == itemsList.get(0).getType()) {
+        } else if (Integer.parseInt(mediaTypes.getEpisode()) == itemsList.get(0).getType()
+                ) {
             getPremimumMark(position, potraitItemBinding);
             potraitItemBinding.mediaTypeLayout.lineOne.setText("E" + 1 + " | " + itemsList.get(position).getName());
             potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);
@@ -185,32 +185,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
                 potraitItemBinding.exclusiveLayout.durationTxt.setText("0 sec");
 
             episodeNumber(position, potraitItemBinding);
-        } else if (Integer.parseInt(mediaTypes.getShortFilm()) == itemsList.get(0).getType()) {
-            getPremimumMark(position, potraitItemBinding);
-            if (itemsList.get(position).getUrls().size() > 0)
-                potraitItemBinding.exclusiveLayout.durationTxt.setText(itemsList.get(position).getUrls().get(0).getDuration() + "");
-            else
-                potraitItemBinding.exclusiveLayout.durationTxt.setText("0 sec");
-
-            potraitItemBinding.mediaTypeLayout.metaLayout.setVisibility(View.GONE);
-        } else if (Integer.parseInt(mediaTypes.getLinear()) == itemsList.get(0).getType()
-                || Integer.parseInt(mediaTypes.getTrailer()) == itemsList.get(0).getType() ||
-                Integer.parseInt(mediaTypes.getClip()) == itemsList.get(0).getType()) {
-            potraitItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
-            potraitItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(position).getName());
-            potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);
-        } else if (Integer.parseInt(mediaTypes.getUGCCreator()) == itemsList.get(0).getType()) {
-            potraitItemBinding.mediaTypeLayout.lineOne.setText("Creator Name" + " | " + itemsList.get(position).getName());
-            potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);
-            potraitItemBinding.exclusiveLayout.flExclusive.setVisibility(View.GONE);
-            // potraitItemBinding.exclusiveLayout.durationTxt.setText(itemsList.get(position).getUrls().get(0).getDuration()+"");
-        } else if (Integer.parseInt(mediaTypes.getUGCCreator()) == itemsList.get(0).getType()) {
-            potraitItemBinding.mediaTypeLayout.lineOne.setText("Creator Name" + " | " + itemsList.get(position).getName());
-
-            potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);
-            potraitItemBinding.exclusiveLayout.flExclusive.setVisibility(View.GONE);
-            potraitItemBinding.exclusiveLayout.timmingLayout.setVisibility(View.GONE);
-        } else if (Integer.parseInt(mediaTypes.getProgram()) == itemsList.get(0).getType()) {
+        }  else if (Integer.parseInt(mediaTypes.getProgram()) == itemsList.get(0).getType()) {
             potraitItemBinding.mediaTypeLayout.metaLayout.setVisibility(View.VISIBLE);
             potraitItemBinding.exclusiveLayout.exclLay.setVisibility(View.VISIBLE);
             potraitItemBinding.exclusiveLayout.flExclusive.setVisibility(View.GONE);
@@ -241,13 +216,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
             }
 
 
-        } else if (Integer.parseInt(mediaTypes.getUGCVideo()) == itemsList.get(0).getType()) {
-            getPremimumMark(position, potraitItemBinding);
-            potraitItemBinding.exclusiveLayout.timmingLayout.setVisibility(View.GONE);
-            potraitItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(position).getName());
-            potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);
-            //potraitItemBinding.mediaTypeLayout.lineTwo.setText(AssetContent.getSeriesName(itemsList.get(position).getObject().getTags()));
-        } else if (itemsList.get(0).getType() == AppConstants.Rail7) {
+        }  else if (itemsList.get(0).getType() == AppConstants.Rail7) {
             potraitItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(position).getName());
             /*potraitItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
             potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);*/
