@@ -191,12 +191,12 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             if (connectionPreference && !wifiConnected) {
                 showWifiDialog();
             } else {
-                if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+              //  if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
                     callProgressBar();
                     playerChecks(railData);
-                } else {
+               /* } else {
                     DialogHelper.showLoginDialog(MovieDescriptionActivity.this);
-                }
+                }*/
 
             }
 
@@ -206,6 +206,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
     private void checkErrors() {
+        errorCode = AppLevelConstants.NO_ERROR;
         if (playerChecksCompleted) {
             if (assetRuleErrorCode == AppLevelConstants.GEO_LOCATION_ERROR) {
                 runOnUiThread(() -> DialogHelper.openDialougeforGeoLocation(1, MovieDescriptionActivity.this));

@@ -1833,11 +1833,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         map = asset.getTags();
         boolean isProviderAvailable = AssetContent.getHungamaTag(map);
-        if (isProviderAvailable){
+       /* if (isProviderAvailable){
             String providerExternalId = AssetContent.getProviderExternalContentId(map);
             getHungamaUrlToPlayContent(providerExternalId);
 
-        }else {
+        }else {*/
             OnMediaLoadCompletion playLoadedEntry = response -> {
                 if (baseActivity != null) {
                     baseActivity.runOnUiThread(() -> {
@@ -1868,7 +1868,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             };
             startDishOttMediaLoadingProd(playLoadedEntry, asset);
-        }
+        /*}*/
     }
 
     private void getHungamaUrlToPlayContent(String providerExternalContentId) {
@@ -1997,7 +1997,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             @Override
             public int partnerId() {
-                return AppLevelConstants.PARTNER_ID;
+                return 487;
             }
         };
 
@@ -2014,11 +2014,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         AssetContent.getVideoResolution(asset.getTags()).observe(this, videoResolution -> {
             String format;
 
-            if (videoResolution.equals(AppConstants.HD)) {
+            /*if (videoResolution.equals(AppConstants.HD)) {
                 format = AppConstants.Mobile_Dash_HD;
             } else {
                 format = AppConstants.Mobile_Dash_SD;
-            }
+            }*/
+
+            format="DASH_Main";
             MediaEntryProvider mediaProvider;
             if (asset.getType() == MediaTypeConstant.getLinear(baseActivity)) {
                 if (!isLivePlayer) {
@@ -2043,7 +2045,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             } else if (asset.getType() == MediaTypeConstant.getProgram(baseActivity)) {
                 mediaProvider = new PhoenixMediaProvider()
                         .setSessionProvider(ksSessionProvider)
-                        .setAssetId(mediaId)
+                        .setAssetId("318441")
                         .setProtocol(PhoenixMediaProvider.HttpProtocol.Https)
                         .setContextType(APIDefines.PlaybackContextType.Catchup)
                         .setAssetType(APIDefines.KalturaAssetType.Epg)
@@ -2068,10 +2070,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void onMediaLoaded(PKMediaEntry mediaEntry) {
         try {
-            if (dvrEnabled) {
+          /*  if (dvrEnabled) {
                 mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.DvrLive);
             }
-
+*/
             if (getActivity() != null && getActivity().getSystemService(Context.AUDIO_SERVICE) != null) {
                 mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
             }
