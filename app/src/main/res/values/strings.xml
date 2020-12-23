@@ -148,6 +148,7 @@
     <string name="notification_settings">Notification settings</string>
     <string name="content_preferences">Content preferences</string>
     <string name="app_settings">App settings</string>
+    <string name="change_language">Change Language</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="verification">Verification</string>

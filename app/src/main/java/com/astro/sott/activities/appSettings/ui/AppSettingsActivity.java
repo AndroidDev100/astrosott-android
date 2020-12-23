@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 
 import com.astro.sott.activities.SelectAccount.UI.SelectDtvAccountActivity;
 import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.activities.language.ui.ChangeLanguageActivity;
 import com.astro.sott.activities.notificationSetting.ui.NotificationSettingActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
@@ -96,7 +97,8 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
                 break;
 
             case R.id.language:
-                changeLanguage();
+                Intent intent1 = new Intent(this, ChangeLanguageActivity.class);
+                startActivity(intent1);
                 break;
             default:
 
@@ -111,10 +113,10 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
 
             if (selectedLanguage.equalsIgnoreCase("en") || selectedLanguage.equalsIgnoreCase("")) {
                 AppCommonMethods.updateLanguage("ms", this);
-                ToastHandler.show("Language changed to Malay",getApplication().getApplicationContext());
+                ToastHandler.show("Language changed to Malay", getApplication().getApplicationContext());
             } else {
                 AppCommonMethods.updateLanguage("en", this);
-                ToastHandler.show("Language changed to English",getApplication().getApplicationContext());
+                ToastHandler.show("Language changed to English", getApplication().getApplicationContext());
             }
             // new ActivityLauncher(AppSettingsActivity.this).homeScreen(AppSettingsActivity.this, HomeActivity.class);
 
