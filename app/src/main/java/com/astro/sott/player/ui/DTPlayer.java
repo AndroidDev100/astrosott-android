@@ -1997,7 +1997,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             @Override
             public int partnerId() {
-                return 487;
+                return AppLevelConstants.PARTNER_ID;
             }
         };
 
@@ -2020,7 +2020,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 format = AppConstants.Mobile_Dash_SD;
             }*/
 
-            format="DASH_Main";
+            format="Dash_widevine";
             MediaEntryProvider mediaProvider;
             if (asset.getType() == MediaTypeConstant.getLinear(baseActivity)) {
                 if (!isLivePlayer) {
@@ -2045,7 +2045,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             } else if (asset.getType() == MediaTypeConstant.getProgram(baseActivity)) {
                 mediaProvider = new PhoenixMediaProvider()
                         .setSessionProvider(ksSessionProvider)
-                        .setAssetId("318441")
+                        .setAssetId(mediaId)
                         .setProtocol(PhoenixMediaProvider.HttpProtocol.Https)
                         .setContextType(APIDefines.PlaybackContextType.Catchup)
                         .setAssetType(APIDefines.KalturaAssetType.Epg)
