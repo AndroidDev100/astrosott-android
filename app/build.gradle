@@ -240,6 +240,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.4.0'
 
     // Add the Firebase SDK for Crashlytics.
+    implementation 'com.google.firebase:firebase-perf:19.0.8'
     implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
     implementation project(':enveusdk')
 
@@ -255,4 +256,5 @@ dependencies {
 
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.firebase-perf'
 GoogleServicesPlugin.config.disableVersionCheck = true
