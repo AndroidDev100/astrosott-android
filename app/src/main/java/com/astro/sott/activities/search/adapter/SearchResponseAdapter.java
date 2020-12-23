@@ -127,11 +127,11 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
             if (railCommonData.getImages().size() == itemValue.getImages().size())
                 new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);
-        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getDrama(activity)) {
+        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getSeries(activity)) {
             getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
             if (railCommonData.getImages().size() == itemValue.getImages().size())
                 new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
-        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getWebEpisode(activity)) {
+        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getEpisode(activity)) {
             getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
             if (railCommonData.getImages().size() == itemValue.getImages().size())
                 new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);

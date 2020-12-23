@@ -665,7 +665,9 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<ActivityW
 
 //        StringBuilderHolder.getInstance().clear();
         StringBuilderHolder.getInstance().append(getResources().getString(R.string.episode_no) + " ");
-        StringBuilderHolder.getInstance().append("" + episodeNumber.getValue().intValue());
+        if (episodeNumber!=null && episodeNumber.getValue()!=null){
+            StringBuilderHolder.getInstance().append("" + episodeNumber.getValue().intValue());
+        }
         StringBuilderHolder.getInstance().append(" | ");
 
 //        getBinding().episodeNumber.setText(StringBuilderHolder.getInstance().getText());
