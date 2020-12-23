@@ -53,21 +53,25 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         SearchReItemBinding binding;
         binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
                 R.layout.search_re_item, parent, false);
         if (viewType == MediaTypeConstant.getMovie(activity)) {
+            PrintLogging.printLog(this.getClass(), "", "checkSearchId" + viewType);
             return new MovieTypeViewHolder(binding);
-        } else if (viewType == MediaTypeConstant.getProgram(activity)) {
+        } /*else if (viewType == MediaTypeConstant.getProgram(activity)) {
             return new ProgramTypeViewHolder(binding);
         } else if (viewType == MediaTypeConstant.getShortFilm(activity)) {
             return new SeasonTypeViewHolder(binding);
-        } else if (viewType == MediaTypeConstant.getDrama(activity)) {
+        }*/ else if (viewType == MediaTypeConstant.getSeries(activity)) {
+            PrintLogging.printLog(this.getClass(), "", "checkSearchId" + viewType);
             return new SeriesTypeViewHolder(binding);
-        } else if (viewType == MediaTypeConstant.getLinear(activity)) {
+        } /*else if (viewType == MediaTypeConstant.getLinear(activity)) {
             return new LinearTypeViewHolder(binding);
-        } else {
+        }*/ else {
+            PrintLogging.printLog(this.getClass(), "", "checkSearchId" + viewType);
             return new EpisodeTypeViewHolder(binding);
         }
 
@@ -83,6 +87,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 heading = dataList.get(i).getHeaderTitle();
 
                 count = dataList.get(i).getTotalCount();
+                PrintLogging.printLog(this.getClass(), "", "headerTitles" + heading);
             }
         }
 
@@ -208,7 +213,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (viewHolder instanceof EpisodeTypeViewHolder) {
             setRecyclerProperties(((EpisodeTypeViewHolder) viewHolder).binding.recyclerView);
             ((EpisodeTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
-            setHeaderData(((EpisodeTypeViewHolder) viewHolder).binding.headerTitleSearch, MediaTypeConstant.getWebEpisode(activity), ((EpisodeTypeViewHolder) viewHolder).binding.tvShowAll);
+            setHeaderData(((EpisodeTypeViewHolder) viewHolder).binding.headerTitleSearch, MediaTypeConstant.getEpisode(activity), ((EpisodeTypeViewHolder) viewHolder).binding.tvShowAll);
             ((EpisodeTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));
 
         } else if (viewHolder instanceof SeasonTypeViewHolder) {
@@ -221,7 +226,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         } else if (viewHolder instanceof SeriesTypeViewHolder) {
             setRecyclerProperties(((SeriesTypeViewHolder) viewHolder).binding.recyclerView);
-            setHeaderData(((SeriesTypeViewHolder) viewHolder).binding.headerTitleSearch, MediaTypeConstant.getDrama(activity), ((SeriesTypeViewHolder) viewHolder).binding.tvShowAll);
+            setHeaderData(((SeriesTypeViewHolder) viewHolder).binding.headerTitleSearch, MediaTypeConstant.getSeries(activity), ((SeriesTypeViewHolder) viewHolder).binding.tvShowAll);
 
             ((SeriesTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
             ((SeriesTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));

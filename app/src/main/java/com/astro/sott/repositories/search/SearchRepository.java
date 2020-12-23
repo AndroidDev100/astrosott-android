@@ -315,13 +315,13 @@ public class SearchRepository {
         }
 
         if (Series.getAllItemsInSection().size() > 0) {
-            Series.setHeaderTitle(SearchModel.MEDIATYPE_SEARCH_WEBSERIES);
+            Series.setHeaderTitle(SearchModel.MEDIATYPE_SERIES);
             allSampleData.add(Series);
         }
 
 
         if (Episode.getAllItemsInSection().size() > 0) {
-            Episode.setHeaderTitle(SearchModel.MEDIATYPE_SEARCH_SHORTFILM);
+            Episode.setHeaderTitle(SearchModel.MEDIATYPE_EPISODE);
             allSampleData.add(Episode);
         }
 

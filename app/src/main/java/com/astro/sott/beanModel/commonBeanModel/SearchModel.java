@@ -28,6 +28,8 @@ public class SearchModel implements Parcelable {
     public static final String MEDIATYPE_SEARCH_SPOTLIGHT_SERIES = "Spotlight Series";
     public static final String MEDIATYPE_SEARCH_SPOTLIGHT_EPISODE = "Spotlight Episode";
 
+    public static final String MEDIATYPE_SERIES = "Serie";
+    public static final String MEDIATYPE_EPISODE = "Episode";
 
     public String getSearchString() {
         return searchString;
