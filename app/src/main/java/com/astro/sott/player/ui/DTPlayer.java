@@ -1976,7 +1976,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     return KsPreferenceKey.getInstance(baseActivity).getKalturaPhoenixUrl();
                 } else {
                     Log.d("LoadedUrlIs", "QA");
-                    return "https://rest-sgs1.ott.kaltura.com/api_v3/";
+                    return "https://rest-sgs1.ott.kaltura.com/api_v3/";//AppLevelConstants.QA_PHOENIX_URL;
                 }
 
 
