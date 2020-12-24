@@ -4,6 +4,10 @@
     <string name="title_home">Rumah</string>
     <string name="live_tv">Siaran langsung TV</string>
     <string name="title_video">Video</string>
+    <string name="device_management">Pengurusan peranti</string>
+    <string name="app_settings">Tetapan aplikasi</string>
+    <string name="content_preferences">Pilihan kandungan</string>
+
     <string name="live_viu_tab">DI BAWAH Aplikasi</string>
     <string name="title_more">LAGI</string>
 </resources>

@@ -42,6 +42,7 @@ class ChangeLanguageActivity : AppCompatActivity() {
 
 
         } else {
+            supportActionBar!!.title = "Tukar bahasa"
             activityChangeLanguageBinding!!.malayTick.visibility = View.VISIBLE
             activityChangeLanguageBinding!!.secondTitleText.text = "Bahasa Inggeris"
             activityChangeLanguageBinding!!.malaySecondTitleText.text = "Bahasa Melayu"
@@ -73,6 +74,7 @@ class ChangeLanguageActivity : AppCompatActivity() {
                 activityChangeLanguageBinding!!.englishTick.visibility = View.GONE
                 activityChangeLanguageBinding!!.malayTick.visibility = View.VISIBLE
                 activityChangeLanguageBinding!!.secondTitleText.text = "Bahasa Inggeris"
+                supportActionBar!!.title = "Tukar bahasa"
                 activityChangeLanguageBinding!!.malaySecondTitleText.text = "Bahasa Melayu"
 
                 ToastHandler.show("Language changed to Malay", application.applicationContext)
@@ -80,6 +82,7 @@ class ChangeLanguageActivity : AppCompatActivity() {
                 activityChangeLanguageBinding!!.englishTick.visibility = View.VISIBLE
                 activityChangeLanguageBinding!!.malayTick.visibility = View.GONE
                 activityChangeLanguageBinding!!.secondTitleText.text = "English"
+                supportActionBar!!.title = resources.getString(R.string.change_language)
                 activityChangeLanguageBinding!!.malaySecondTitleText.text = "Malay"
 
                 AppCommonMethods.updateLanguage("en", this)
