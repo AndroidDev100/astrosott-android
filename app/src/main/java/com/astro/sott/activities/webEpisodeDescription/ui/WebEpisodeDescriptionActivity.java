@@ -647,7 +647,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<ActivityW
         StringBuilderHolder.getInstance().clear();
         for (int i = 0; i < asset.getImages().size(); i++) {
 
-            if (asset.getImages().get(i).getRatio().equals("1:1")) {
+            if (asset.getImages().get(i).getRatio().equals("16x9")) {
                 StringBuilderHolder.getInstance().append(asset.getImages().get(i).getUrl());
                 StringBuilderHolder.getInstance().append(AppLevelConstants.WIDTH);
                 StringBuilderHolder.getInstance().append("" + (int) getResources().getDimension(R.dimen.carousel_image_width));
@@ -665,7 +665,9 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<ActivityW
 
 //        StringBuilderHolder.getInstance().clear();
         StringBuilderHolder.getInstance().append(getResources().getString(R.string.episode_no) + " ");
-        StringBuilderHolder.getInstance().append("" + episodeNumber.getValue().intValue());
+        if (episodeNumber!=null && episodeNumber.getValue()!=null){
+            StringBuilderHolder.getInstance().append("" + episodeNumber.getValue().intValue());
+        }
         StringBuilderHolder.getInstance().append(" | ");
 
 //        getBinding().episodeNumber.setText(StringBuilderHolder.getInstance().getText());
