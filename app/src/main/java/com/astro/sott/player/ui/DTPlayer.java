@@ -1976,7 +1976,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     return KsPreferenceKey.getInstance(baseActivity).getKalturaPhoenixUrl();
                 } else {
                     Log.d("LoadedUrlIs", "QA");
-                    return AppLevelConstants.QA_PHOENIX_URL;
+                    return "https://rest-sgs1.ott.kaltura.com/api_v3/";//AppLevelConstants.QA_PHOENIX_URL;
                 }
 
 
@@ -2020,7 +2020,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 format = AppConstants.Mobile_Dash_SD;
             }*/
 
-            format="Dash_widevine";
+            format="dash_widevine";
             MediaEntryProvider mediaProvider;
             if (asset.getType() == MediaTypeConstant.getLinear(baseActivity)) {
                 if (!isLivePlayer) {
