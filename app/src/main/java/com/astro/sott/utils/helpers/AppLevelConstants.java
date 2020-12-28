@@ -3,7 +3,7 @@ package com.astro.sott.utils.helpers;
 import com.astro.sott.BuildConfig;
 
 public interface AppLevelConstants {
-    String VOLTE =  "VOLTE";
+    String VOLTE = "VOLTE";
     String HBB = "HBB";
     String MOBILE_MBB = "MOBILE";
     String MBB = "MBB";
@@ -42,7 +42,7 @@ public interface AppLevelConstants {
     String BROAD_BAND_HBB = "Home Broadband";
     String BROAD_BAND_HBB_ACCOUNT = "Home Broadband Account";
     String MOBILE_ACCOUNT = "Mobile Account";
-
+    String DASH_WIDEVINE = "Dash_widevine";
     int TAB_HOME = 0;
     int TAB_LIVE = 1;
     int TAB_VIDEO = 2;

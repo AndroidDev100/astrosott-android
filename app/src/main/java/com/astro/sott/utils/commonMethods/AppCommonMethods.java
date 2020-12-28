@@ -108,8 +108,7 @@ public class AppCommonMethods {
     }
 
 
-    public static void getLanguage(){
-
+    public static void getLanguage() {
 
 
     }
@@ -495,19 +494,11 @@ public class AppCommonMethods {
 
         for (int i = 0; i < asset.getMediaFiles().size(); i++) {
             String assetUrl = asset.getMediaFiles().get(i).getType();
-            if (videoResolution.equals(AppConstants.HD)) {
-                if (assetUrl.equals(AppConstants.Mobile_Dash_HD)) {
-                    PrintLogging.printLog("AppCommonMethods HD", "", "fileidToplaycontent" + asset.getMediaFiles().get(i).getUrl());
-                    fileId = asset.getMediaFiles().get(i).getId().toString();
-                    PrintLogging.printLog("AppCommonMethods HD", "", "playerurl>>>" + fileId);
-                }
-            } else {
-                if (assetUrl.equals(AppConstants.Mobile_Dash_SD)) {
-                    PrintLogging.printLog("AppCommonMethods SD", "", "fileidToplaycontent" + asset.getMediaFiles().get(i).getUrl());
-                    fileId = asset.getMediaFiles().get(i).getId().toString();
-                    PrintLogging.printLog("AppCommonMethods SD", "", "playerurl>>>" + fileId);
-                }
+            if (assetUrl.equals(AppLevelConstants.DASH_WIDEVINE)) {
+                fileId = asset.getMediaFiles().get(i).getId().toString();
+                PrintLogging.printLog("AppCommonMethods HD", "", "playerurl>>>" + fileId);
             }
+
         }
         return fileId;
     }
