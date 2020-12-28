@@ -278,12 +278,14 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<ActivityW
             });
 //            runOnUiThread(() -> DialogHelper.openDialougeForSubscription(WebEpisodeDescriptionActivity.this));
 
-            if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+            callProgressBar();
+            playerChecks(railData);
+            /*if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
                 callProgressBar();
                 playerChecks(railData);
             }else {
                 DialogHelper.showLoginDialog(WebEpisodeDescriptionActivity.this);
-            }
+            }*/
 
         });
     }
@@ -477,10 +479,10 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<ActivityW
             public void onChanged(@Nullable String videoResolution) {
                 String fileId = "";
                 if (videoResolution.equals(AppConstants.HD)) {
-                    fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject(), AppConstants.HD);
+                    fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject(), "Dash_widevine");
                     AllChannelManager.getInstance().setChannelId(fileId);
                 } else {
-                    fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject(), AppConstants.SD);
+                    fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject(), "Dash_widevine");
                     AllChannelManager.getInstance().setChannelId(fileId);
                 }
                 if (fileId.equals("")) {
