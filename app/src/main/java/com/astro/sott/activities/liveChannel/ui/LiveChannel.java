@@ -257,9 +257,6 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             } else if (errorCode == AppLevelConstants.USER_ACTIVE_ERROR) {
                 runOnUiThread(() -> DialogHelper.openDialougeForEntitleMent(LiveChannel.this));
                 callProgressBar();
-            } else if (errorCode == AppLevelConstants.NO_MEDIA_FILE) {
-                showDialog(getString(R.string.no_media_file));
-                callProgressBar();
             }
 //            else if (assetRuleErrorCode == AppLevelConstants.PARENTAL_BLOCK) {
 //                isParentalLocked = true;
@@ -439,66 +436,41 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     }
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
+      String  fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+        new EntitlementCheck().checkAssetType(LiveChannel.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
+            if (status) {
+                playerChecksCompleted = true;
+                if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
+                    errorCode = AppLevelConstants.NO_ERROR;
+                    railData = railCommonData;
+                    checkErrors();
+                } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                AssetContent.getVideoResolution(asset.getTags()).observe(LiveChannel.this, new Observer<String>() {
-                    @Override
-                    public void onChanged(@Nullable String videoResolution) {
-                        String fileId = "";
-                        if (videoResolution.equals(AppConstants.HD)) {
-                            fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject(), AppConstants.HD);
-                            AllChannelManager.getInstance().setChannelId(fileId);
-                        } else {
-                            fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject(), AppConstants.SD);
-                            AllChannelManager.getInstance().setChannelId(fileId);
-                        }
-                        if (fileId.equals("")) {
-                            playerChecksCompleted = true;
-                            errorCode = AppLevelConstants.NO_MEDIA_FILE;
-                            checkErrors();
-                        } else {
-                            new EntitlementCheck().checkAssetType(LiveChannel.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
-                                if (status) {
-                                    playerChecksCompleted = true;
-                                    if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
-                                        errorCode = AppLevelConstants.NO_ERROR;
-                                        railData = railCommonData;
-                                        checkErrors();
-                                    } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
-
-                                        if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                                            isDtvAccountAdded(railCommonData);
-                                            //check Dtv Account Added or Not
-                                        } else {
-                                            errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
-                                            checkErrors();
-                                        }
-                                    } else {
-                                        if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                                          isDtvAccountAdded(railCommonData);
-                                            //check Dtv Account Added or Not
-                                        } else {
-                                            errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
-                                            checkErrors();
-                                            //not play
-                                        }
-
-                                    }
-                                }else {
-                                    callProgressBar();
-                                    if (message!="")
-                                        showDialog(message);
-                                }
-                            });
-                        }
-                      //  playerChecksCompleted = true;
+                    if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                        isDtvAccountAdded(railCommonData);
+                        //check Dtv Account Added or Not
+                    } else {
+                        errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
+                        checkErrors();
                     }
-                });
+                } else {
+                    if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                        isDtvAccountAdded(railCommonData);
+                        //check Dtv Account Added or Not
+                    } else {
+                        errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
+                        checkErrors();
+                        //not play
+                    }
 
+                }
+            }else {
+                callProgressBar();
+                if (message!="")
+                    showDialog(message);
             }
         });
+
 
 
     }

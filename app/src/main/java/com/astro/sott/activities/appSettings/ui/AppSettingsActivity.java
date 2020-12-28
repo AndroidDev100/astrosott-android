@@ -1,6 +1,7 @@
 package com.astro.sott.activities.appSettings.ui;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.widget.CompoundButton;
 
 import com.astro.sott.activities.SelectAccount.UI.SelectDtvAccountActivity;
 import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.activities.language.ui.ChangeLanguageActivity;
 import com.astro.sott.activities.notificationSetting.ui.NotificationSettingActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
@@ -23,7 +25,10 @@ import com.astro.sott.R;
 import com.astro.sott.activities.contentPreference.ui.ContentPreferenceActivity;
 import com.astro.sott.databinding.AppSettingsBinding;
 
+import java.util.Locale;
+
 public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding> implements View.OnClickListener {
+    private String oldLang, newLang;
 
     @Override
     public AppSettingsBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -31,9 +36,26 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        newLang = new KsPreferenceKey(this).getAppLangName();
+        if (!oldLang.equals(newLang)) {
+            oldLang = newLang;
+            if (newLang.equalsIgnoreCase("ms")) {
+                getSupportActionBar().setTitle("Tetapan aplikasi");
+
+            } else {
+                getSupportActionBar().setTitle(getResources().getString(R.string.app_settings));
+
+            }
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        oldLang = new KsPreferenceKey(this).getAppLangName();
 //        new ToolBarHandler(this).setAppSettingAction(this, getBinding().toolbar);
         if (!new KsPreferenceKey(this).getDownloadOverWifi()) {
             getBinding().switchTheme.setChecked(false);
@@ -42,7 +64,7 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
         }
 
         setSupportActionBar(getBinding().include.toolbar);
-
+       // String c = Resources.getConfiguration().locale.getLanguage();
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getResources().getString(R.string.app_settings));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -96,7 +118,8 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
                 break;
 
             case R.id.language:
-                changeLanguage();
+                Intent intent1 = new Intent(this, ChangeLanguageActivity.class);
+                startActivity(intent1);
                 break;
             default:
 
@@ -111,10 +134,10 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
 
             if (selectedLanguage.equalsIgnoreCase("en") || selectedLanguage.equalsIgnoreCase("")) {
                 AppCommonMethods.updateLanguage("ms", this);
-                ToastHandler.show("Language changed to Malay",getApplication().getApplicationContext());
+                ToastHandler.show("Language changed to Malay", getApplication().getApplicationContext());
             } else {
                 AppCommonMethods.updateLanguage("en", this);
-                ToastHandler.show("Language changed to English",getApplication().getApplicationContext());
+                ToastHandler.show("Language changed to English", getApplication().getApplicationContext());
             }
             // new ActivityLauncher(AppSettingsActivity.this).homeScreen(AppSettingsActivity.this, HomeActivity.class);
 

@@ -556,9 +556,6 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             } else if (errorCode == AppLevelConstants.USER_ACTIVE_ERROR) {
                 getActivity().runOnUiThread(() -> DialogHelper.openDialougeForEntitleMent(getActivity()));
                 callProgressBar();
-            } else if (errorCode == AppLevelConstants.NO_MEDIA_FILE) {
-                showDialog(getString(R.string.no_media_file));
-                callProgressBar();
             }
 //            else if (assetRuleErrorCode == AppLevelConstants.PARENTAL_BLOCK) {
 //                if (KsPreferenceKey.getInstance(getActivity()).getUserActive())
@@ -713,72 +710,49 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     }
 
     private void checkEntitleMent(final Asset asset) {
-
-        if (baseActivity != null) {
-            baseActivity.runOnUiThread(() -> {
-
-                AssetContent.getVideoResolution(asset.getTags()).observe(this, videoResolution -> {
-                    String fileId = "";
-                    if (videoResolution.equals(AppConstants.HD)) {
-                        fileId = AppCommonMethods.getFileIdOfAssest(asset, AppConstants.HD);
-                        AllChannelManager.getInstance().setChannelId(fileId);
-                    } else {
-                        fileId = AppCommonMethods.getFileIdOfAssest(asset, AppConstants.SD);
-                        AllChannelManager.getInstance().setChannelId(fileId);
-                    }
-                    if (fileId.equals("")) {
-                        playerChecksCompleted = true;
-                        errorCode = AppLevelConstants.NO_MEDIA_FILE;
+       String fileId = AppCommonMethods.getFileIdOfAssest(asset);
+        new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey, errorCode1, message) -> {
+            if (status) {
+                playerChecksCompleted = true;
+                try {
+                    if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
+                        errorCode = AppLevelConstants.NO_ERROR;
                         checkErrors(asset);
-                    } else {
-                        new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey, errorCode1, message) -> {
-                            if (status) {
-                                playerChecksCompleted = true;
-                                try {
-                                    if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
-                                        errorCode = AppLevelConstants.NO_ERROR;
-                                        checkErrors(asset);
-                                    } else if (purchaseKey.equals(getResources().getString(R.string.FOR_PURCHASED))) {
+                    } else if (purchaseKey.equals(getResources().getString(R.string.FOR_PURCHASED))) {
 //                                    errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
 //                                    checkErrors(asset);
-                                        if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
-                                            isDtvAccountAdded(asset);
-                                            //check Dtv Account Added or Not
+                        if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
+                            isDtvAccountAdded(asset);
+                            //check Dtv Account Added or Not
 
-                                        } else {
-                                            errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
-                                            checkErrors(asset);
-                                        }
+                        } else {
+                            errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
+                            checkErrors(asset);
+                        }
 
-                                    } else {
-                                        if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
-                                           isDtvAccountAdded(asset);
-                                            //check Dtv Account Added or Not
-                                        } else {
-                                            errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
-                                            checkErrors(asset);
-                                            //not play
-                                        }
+                    } else {
+                        if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
+                            isDtvAccountAdded(asset);
+                            //check Dtv Account Added or Not
+                        } else {
+                            errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
+                            checkErrors(asset);
+                            //not play
+                        }
 //                                    errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
 //                                    checkErrors(asset);
-                                    }
-                                } catch (Exception e) {
-                                    PrintLogging.printLog("Exception", "", "" + e);
-                                }
-                            }else {
-                                callProgressBar();
-                                if (message!="")
-                                    showDialog(message);
-                            }
-//                            playerChecksCompleted = true;
-                        });
                     }
-                   // playerChecksCompleted = true;
-                });
+                } catch (Exception e) {
+                    PrintLogging.printLog("Exception", "", "" + e);
+                }
+            }else {
+                callProgressBar();
+                if (message!="")
+                    showDialog(message);
+            }
+//                            playerChecksCompleted = true;
+        });
 
-            });
-
-        }
     }
 
     private void isDtvAccountAdded(Asset asset) {

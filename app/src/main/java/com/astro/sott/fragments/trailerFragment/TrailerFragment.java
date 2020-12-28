@@ -146,53 +146,32 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     }
 
     private void checkEntitleMent(final Asset railCommonData) {
-        if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> {
-                AssetContent.getVideoResolution(railCommonData.getTags()).observe(this, new Observer<String>() {
-                    @Override
-                    public void onChanged(@Nullable String videoResolution) {
-                        String fileId = "";
-                        if (videoResolution.equals(AppConstants.HD)) {
-                            fileId = AppCommonMethods.getFileIdOfAssest(railCommonData, AppConstants.HD);
-                          //  AllChannelManager.getInstance().setChannelId(fileId);
-                        } else {
-                            fileId = AppCommonMethods.getFileIdOfAssest(railCommonData, AppConstants.SD);
-                           // AllChannelManager.getInstance().setChannelId(fileId);
-                        }
-                        if (fileId.equals("")) {
-                            playerChecksCompleted = true;
-                            errorCode = AppLevelConstants.NO_MEDIA_FILE;
-                            checkErrors(railCommonData);
-                        } else {
-                            new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey,  errorCode1, message) -> {
-                                if (status) {
-                                    playerChecksCompleted = true;
-                                    if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
-                                        errorCode = AppLevelConstants.NO_ERROR;
-                                        checkErrors(railCommonData);
-                                    } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
-                                        errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
-                                        checkErrors(railCommonData);
-                                        //not play
-                                    } else {
-                                        errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
-                                        checkErrors(railCommonData);
-                                        //not play
-                                    }
-                                }else {
-                                    callProgressBar();
-                                    if (message!="")
-                                        showDialog(message);
-                                }
+      String  fileId = AppCommonMethods.getFileIdOfAssest(railCommonData);
+
+        new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey,  errorCode1, message) -> {
+            if (status) {
+                playerChecksCompleted = true;
+                if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
+                    errorCode = AppLevelConstants.NO_ERROR;
+                    checkErrors(railCommonData);
+                } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
+                    errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
+                    checkErrors(railCommonData);
+                    //not play
+                } else {
+                    errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
+                    checkErrors(railCommonData);
+                    //not play
+                }
+            }else {
+                callProgressBar();
+                if (message!="")
+                    showDialog(message);
+            }
 
 
-                            });
-                        }
-                       // playerChecksCompleted = true;
-                    }
-                });
-            });
-        }
+        });
+
     }
 
     private void isDtvAccountAdded() {
@@ -284,9 +263,6 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
                 callProgressBar();
             } else if (errorCode == AppLevelConstants.USER_ACTIVE_ERROR) {
                 getActivity().runOnUiThread(() -> DialogHelper.openDialougeForEntitleMent(getActivity()));
-                callProgressBar();
-            } else if (errorCode == AppLevelConstants.NO_MEDIA_FILE) {
-                showDialog(getString(R.string.no_media_file));
                 callProgressBar();
             }
 //            else if (assetRuleErrorCode == AppLevelConstants.PARENTAL_BLOCK) {

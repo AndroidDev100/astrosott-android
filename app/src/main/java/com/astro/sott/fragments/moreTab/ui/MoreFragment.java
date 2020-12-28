@@ -87,7 +87,6 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
     @Override
     public void onResume() {
         super.onResume();
-
         connectionObserver();
     }
 
@@ -103,7 +102,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
             public void onClick(View view, int position) {
                 isLogin = KsPreferenceKey.getInstance(homeActivity).getUserActive();
 
-                if (alList.get(position).equalsIgnoreCase(AppLevelConstants.APP_SETTINGS)) {
+                if (alList.get(position).equalsIgnoreCase(AppLevelConstants.APP_SETTINGS)||alList.get(position).equalsIgnoreCase("Tetapan aplikasi")) {
                     if(!getResources().getBoolean(R.bool.isTablet)) {
                         Intent intent = new Intent(homeActivity, AppSettingsActivity.class);
                         startActivity(intent);
@@ -111,7 +110,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
                         Intent intent = new Intent(homeActivity, TabletAppSettingsActivity.class);
                         startActivity(intent);
                     }
-                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.DEVICE_MANAGEMENT)) {
+                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.DEVICE_MANAGEMENT)||alList.get(position).equalsIgnoreCase("Pengurusan peranti")) {
 
                     if (isLogin) {
                         startActivity(new Intent(homeActivity, DeviceManagementActivity.class).putExtra("from", ""));
@@ -125,15 +124,15 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
                 } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.LOGIN)) {
                     new ActivityLauncher(getActivity()).loginActivity(getActivity(), LoginActivity.class, 0, "");
 //                    forceLogin();
-                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.TNC)) {
+                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.TNC)||alList.get(position).equalsIgnoreCase("Syarat & syarat")) {
                     Intent intent = new Intent(homeActivity, WebViewActivity.class);
                     intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC);
                     startActivity(intent);
-                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.HELP)) {
+                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.HELP)||alList.get(position).equalsIgnoreCase("Tolonglah")) {
                     Intent intent = new Intent(homeActivity, WebViewActivity.class);
                     intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
                     startActivity(intent);
-                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.ACCOUNT_SETTINGS)) {
+                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.ACCOUNT_SETTINGS)||alList.get(position).equalsIgnoreCase("Tetapan akaun")) {
                     if (isLogin) {
                         new ActivityLauncher(getActivity()).accountSetting(getActivity(), AccountSettingsActivity.class);
                     } else {
@@ -141,7 +140,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
                     }
 
 
-                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.PLAYLIST)) {
+                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.PLAYLIST)||alList.get(position).equalsIgnoreCase("Senarai main")) {
 
                     if (isLogin) {
                         new ActivityLauncher(getActivity()).multipleplaylistActivity(getActivity(), MultiplePlaylistActivity.class);

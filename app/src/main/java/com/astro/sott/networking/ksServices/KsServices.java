@@ -171,6 +171,8 @@ import com.kaltura.client.types.HouseholdPaymentMethod;
 import com.kaltura.client.types.InboxMessage;
 import com.kaltura.client.types.InboxMessageFilter;
 import com.kaltura.client.types.KeyValue;
+import com.kaltura.client.types.Language;
+import com.kaltura.client.types.LanguageFilter;
 import com.kaltura.client.types.LicensedUrlBaseRequest;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.LoginResponse;

@@ -489,7 +489,7 @@ public class AppCommonMethods {
         return deviceName;
     }
 
-    public static String getFileIdOfAssest(Asset asset, String videoResolution) {
+    public static String getFileIdOfAssest(Asset asset) {
         String fileId = "";
 
         for (int i = 0; i < asset.getMediaFiles().size(); i++) {
@@ -805,7 +805,7 @@ public class AppCommonMethods {
             }
             if (railCommonData.getObject().getImages().size() > 0) {
                 for (int i = 0; i < railCommonData.getObject().getImages().size(); i++) {
-                    if (railCommonData.getObject().getImages().get(i).getRatio().equals("1:1")) {
+                    if (railCommonData.getObject().getImages().get(i).getRatio().equals("16x9")) {
                         String image_url = railCommonData.getObject().getImages().get(i).getUrl();
                         String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.detail_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.carousel_image_height) + AppLevelConstants.QUALITY;
                         ImageHelper.getInstance(webseriesimage.getContext()).loadImageToPotrait(webseriesimage, final_url, R.drawable.square1);

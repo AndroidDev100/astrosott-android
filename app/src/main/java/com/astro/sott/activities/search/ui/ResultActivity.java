@@ -163,14 +163,14 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
                             new ActivityLauncher(ResultActivity.this).detailActivity(ResultActivity.this, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
 //                        new ActivityLauncher(ResultActivity.this).detailActivity(ResultActivity.this, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);
 
-                    } else if (itemValue.getType() == MediaTypeConstant.getDrama(ResultActivity.this)) {
+                    } else if (itemValue.getType() == MediaTypeConstant.getSeries(ResultActivity.this)) {
                         getRailCommonData(itemValue);
                         //new ToastHandler(activity).show("Short Film");
                         if (railCommonData.getImages().size() == itemValue.getImages().size())
                             new ActivityLauncher(ResultActivity.this).webSeriesActivity(ResultActivity.this, WebSeriesDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
 //                        new ActivityLauncher(ResultActivity.this).detailActivity(ResultActivity.this, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);
 
-                    } else if (itemValue.getType() == MediaTypeConstant.getWebEpisode(ResultActivity.this)) {
+                    } else if (itemValue.getType() == MediaTypeConstant.getEpisode(ResultActivity.this)) {
                         getRailCommonData(itemValue);
                         //  new ToastHandler(this).show(allResult.getHeaderTitle());
                         new ActivityLauncher(ResultActivity.this).webEpisodeActivity(ResultActivity.this, WebEpisodeDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
