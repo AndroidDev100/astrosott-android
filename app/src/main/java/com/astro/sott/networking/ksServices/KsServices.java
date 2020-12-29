@@ -3143,6 +3143,7 @@ public class KsServices {
             config.setEndpoint(BuildConfig.KALTURA_BASE_URL);
         }
         client = new Client(config);
+        //client.setLanguage("may");
         // client.setKs(ks);
         if (KsPreferenceKey.getInstance(activity).getUserActive()) {
             client.setKs(KsPreferenceKey.getInstance(activity).getStartSessionKs());
