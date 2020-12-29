@@ -512,13 +512,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
 
-                if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
                     callProgressBar();
                     playerChecks(railCommonData);
 
-                }else {
-                    DialogHelper.showLoginDialog(WebSeriesDescriptionActivity.this);
-                }
 
 
 
@@ -528,12 +524,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
 
-                if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
                     callProgressBar();
                     playerChecks(railCommonData);
-                }else {
-                    new ActivityLauncher(WebSeriesDescriptionActivity.this).loginActivity(WebSeriesDescriptionActivity.this, LoginActivity.class, 0, "");
-                }
+
 
 
             }
@@ -542,16 +535,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         });
 
 
-        AssetContent.getVideoResolution(asset.getTags()).observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String videoResolution) {
-                if (videoResolution.equals(AppConstants.HD)) {
-                    fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject(), AppConstants.HD);
-                } else {
-                    fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject(), AppConstants.SD);
-                }
-            }
-        });
+
+                    fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
+
        // playerChecks(railCommonData);
     }
 
@@ -565,9 +551,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 callProgressBar();
             } else if (errorCode == AppLevelConstants.USER_ACTIVE_ERROR) {
                 runOnUiThread(() -> DialogHelper.openDialougeForEntitleMent(WebSeriesDescriptionActivity.this));
-                callProgressBar();
-            } else if (errorCode == AppLevelConstants.NO_MEDIA_FILE) {
-                showDialog(getString(R.string.no_media_file));
                 callProgressBar();
             }
 //            else if (assetRuleErrorCode == AppLevelConstants.PARENTAL_BLOCK) {
@@ -1002,64 +985,36 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-            AssetContent.getVideoResolution(asset.getTags()).observe(WebSeriesDescriptionActivity.this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String videoResolution) {
-                String fileId = "";
-                if (videoResolution.equals(AppConstants.HD)) {
-                    fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject(), AppConstants.HD);
-                    AllChannelManager.getInstance().setChannelId(fileId);
-
-                } else {
-                    fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject(), AppConstants.SD);
-                    AllChannelManager.getInstance().setChannelId(fileId);
-
-                }
-                if (fileId.equals("")) {
-                    playerChecksCompleted = true;
-                    errorCode = AppLevelConstants.NO_MEDIA_FILE;
+       String fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
+        new EntitlementCheck().checkAssetType(WebSeriesDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
+            if (status) {
+                playerChecksCompleted = true;
+                if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
+                    errorCode = AppLevelConstants.NO_ERROR;
                     checkErrors(railCommonData);
-                } else {
-                    new EntitlementCheck().checkAssetType(WebSeriesDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
-                        if (status) {
-                            playerChecksCompleted = true;
-                            if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
-                                errorCode = AppLevelConstants.NO_ERROR;
-                                checkErrors(railCommonData);
-                            } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
-                                if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                                     isDtvAccountAdded(railCommonData);
-                                    //check Dtv Account Added or Not
+                } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
+                    if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                        isDtvAccountAdded(railCommonData);
+                        //check Dtv Account Added or Not
 
-                                } else {
-                                    errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
-                                    checkErrors(railCommonData);
-                                }
-                            } else {
-                                if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                                    isDtvAccountAdded(railCommonData);
-                                    //check Dtv Account Added or Not
-                                } else {
-                                    errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
-                                    checkErrors(railCommonData);
-                                    //not play
-                                }
-                            }
-                        }else {
-                            callProgressBar();
-                            if (message!="")
-                                showDialog(message);
-                        }
-                    });
+                    } else {
+                        errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
+                        checkErrors(railCommonData);
+                    }
+                } else {
+                    if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                        isDtvAccountAdded(railCommonData);
+                        //check Dtv Account Added or Not
+                    } else {
+                        errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
+                        checkErrors(railCommonData);
+                        //not play
+                    }
                 }
-               // playerChecksCompleted = true;
-            }
-        });
+            }else {
+                callProgressBar();
+                if (message!="")
+                    showDialog(message);
             }
         });
 
@@ -1192,16 +1147,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 //                });
 //            }, 2000);
 
-            AssetContent.getVideoResolution(railCommonData.getObject().getTags()).observe(this, new Observer<String>() {
-                @Override
-                public void onChanged(@Nullable String videoResolution) {
-                    if (videoResolution.equals(AppConstants.HD)) {
-                        fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject(), AppConstants.HD);
-                    } else {
-                        fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject(), AppConstants.SD);
-                    }
-                }
-            });
+
+                        fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
+
            // playerChecks(railCommonData);
         }
 

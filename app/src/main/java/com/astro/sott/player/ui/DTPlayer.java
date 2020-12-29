@@ -684,7 +684,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 } else {
                     checkEntitleMent(asset);
                 }
-            }else {
+            } else {
                 showDialog(message);
             }
         });
@@ -832,7 +832,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     } else {
                         if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
                             new RefreshKS(getActivity()).refreshKS(response -> checkDevice(asset));
-                        }else {
+                        } else {
                             showDialog(commonResponse.getMessage());
                         }
                     }
@@ -855,7 +855,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 } else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
                         new RefreshKS(getActivity()).refreshKS(response -> checkDevice(asset));
-                    }else {
+                    } else {
                         showDialog(commonResponse.getMessage());
                     }
                 }
@@ -891,63 +891,44 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void checkEntitleMent(final Asset asset) {
+
+
         try {
-            if (baseActivity != null && getActivity() != null) {
-                baseActivity.runOnUiThread(() -> {
 
-                    AssetContent.getVideoResolution(asset.getTags()).observe(this, videoResolution -> {
-                        String fileId = "";
-                        if (videoResolution.equals(AppConstants.HD)) {
-                            fileId = AppCommonMethods.getFileIdOfAssest(asset, AppConstants.HD);
-                            AllChannelManager.getInstance().setChannelId(fileId);
+            String   fileId = AppCommonMethods.getFileIdOfAssest(asset);
 
-                        } else {
-                            fileId = AppCommonMethods.getFileIdOfAssest(asset, AppConstants.SD);
-                            AllChannelManager.getInstance().setChannelId(fileId);
+            if (getActivity() != null) {
+                new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey, errorCode1, message) -> {
+                    if (status) {
+                        playerChecksCompleted = true;
+                        if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
+                            errorCode = AppLevelConstants.NO_ERROR;
+                        } else if (purchaseKey.equals(getResources().getString(R.string.FOR_PURCHASED))) {
+                            if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
+                                isDtvAccountAdded(asset);
+                                //check Dtv Account Added or Not
 
-                        }
-                        if (fileId.equals("")) {
-                            playerChecksCompleted = true;
-                            errorCode = AppLevelConstants.NO_MEDIA_FILE;
-                        } else {
-                            if(getActivity() != null){
-                                new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey, errorCode1, message) -> {
-                                    if (status) {
-                                        playerChecksCompleted = true;
-                                        if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
-                                            errorCode = AppLevelConstants.NO_ERROR;
-                                        } else if (purchaseKey.equals(getResources().getString(R.string.FOR_PURCHASED))) {
-                                            if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
-                                                isDtvAccountAdded(asset);
-                                                //check Dtv Account Added or Not
+                            } else {
+                                errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
 
-                                            } else {
-                                                errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
-
-                                            }
-                                        } else {
-                                            if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
-                                                 isDtvAccountAdded(asset);
-                                                //check Dtv Account Added or Not
-                                            } else {
-                                                errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
-                                                //not play
-                                            }
-
-
-                                        }
-                                    }else {
-                                        if (message!="")
-                                            showDialog(message);
-                                    }
-//                                    playerChecksCompleted = true;
-                                });
                             }
+                        } else {
+                            if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
+                                isDtvAccountAdded(asset);
+                                //check Dtv Account Added or Not
+                            } else {
+                                errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
+                                //not play
+                            }
+
+
                         }
-                    });
-
+                    } else {
+                        if (message != "")
+                            showDialog(message);
+                    }
+//                                    playerChecksCompleted = true;
                 });
-
             }
         } catch (Exception e) {
 
@@ -965,15 +946,15 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             if (dtvAccount != null) {
                                 if (dtvAccount.equalsIgnoreCase("0")) {
                                     isDtvAdded = false;
-                                    checkForSubscription(isDtvAdded,asset);
+                                    checkForSubscription(isDtvAdded, asset);
 
                                 } else if (dtvAccount.equalsIgnoreCase("")) {
                                     isDtvAdded = false;
-                                    checkForSubscription(isDtvAdded,asset);
+                                    checkForSubscription(isDtvAdded, asset);
 
                                 } else {
                                     isDtvAdded = true;
-                                    checkForSubscription(isDtvAdded,asset);
+                                    checkForSubscription(isDtvAdded, asset);
 
                                 }
 
@@ -982,8 +963,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                                 showDialog(getString(R.string.something_went_wrong_try_again));
                             }
-                        }catch (Exception e){
-                            Log.e("ExceptionIs",e.toString());
+                        } catch (Exception e) {
+                            Log.e("ExceptionIs", e.toString());
                         }
                     }
                 });
@@ -995,35 +976,35 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void checkForSubscription(boolean isDtvAdded, Asset asset) {
         //***** Mobile + Non-Dialog + Non-DTV *************//
-        if(KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded==false){
-            getActivity().runOnUiThread(() ->DialogHelper.openDialougeFornonDialog(getActivity(),isLiveChannel));
+        if (KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == false) {
+            getActivity().runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(getActivity(), isLiveChannel));
             getActivity().finish();
         }
         //********** Mobile + Non-Dialog + DTV ******************//
-        else if (KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded==true){
-            getActivity().runOnUiThread(() ->DialogHelper.openDialougeFornonDialog(getActivity(),isLiveChannel));
+        else if (KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == true) {
+            getActivity().runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(getActivity(), isLiveChannel));
             getActivity().finish();
         }
         //*********** Mobile + Dialog + Non-DTV *****************//
-        else if(KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded==false){
-            if(AssetContent.isPurchaseAllowed(asset.getMetas(), asset,getActivity())){
-                getActivity().runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(getActivity(), true,isLiveChannel));
+        else if (KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == false) {
+            if (AssetContent.isPurchaseAllowed(asset.getMetas(), asset, getActivity())) {
+                getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), true, isLiveChannel));
                 getActivity().finish();
-            }else {
-                getActivity().runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(getActivity(), false,isLiveChannel));
+            } else {
+                getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), false, isLiveChannel));
                 getActivity().finish();
             }
         }
         //************ Mobile + Dialog + DTV ********************//
-        else if (KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded==true){
-            if(AssetContent.isPurchaseAllowed(asset.getMetas(), asset,getActivity())){
-                getActivity().runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(getActivity(), true,isLiveChannel));
+        else if (KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == true) {
+            if (AssetContent.isPurchaseAllowed(asset.getMetas(), asset, getActivity())) {
+                getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), true, isLiveChannel));
                 getActivity().finish();
-            }else {
-                getActivity().runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(getActivity(), false,isLiveChannel));
+            } else {
+                getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), false, isLiveChannel));
                 getActivity().finish();
             }
-        }else {
+        } else {
             showDialog(getString(R.string.something_went_wrong_try_again));
             getActivity().finish();
         }
@@ -1766,7 +1747,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 }
 
-            }else {
+            } else {
                 RailCommonData currentRailCommonData = new RailCommonData();
 
                 currentRailCommonData.setObject(object);
@@ -1797,14 +1778,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         Long stTime = railCommonDataPrevious.get(i).getObject().getStartDate();
                         Long endTime = railCommonDataPrevious.get(i).getObject().getEndDate();
 
-                    //    Long currentTime = Integer.parseInt(getDateTimeStamp(System.currentTimeMillis()));
+                        //    Long currentTime = Integer.parseInt(getDateTimeStamp(System.currentTimeMillis()));
 
 
-                        String currentTime =  AppCommonMethods.getCurrentTimeStamp();
-                       // Long currentTime = System.currentTimeMillis();
-                        if (Long.valueOf(currentTime)>stTime && Long.valueOf(currentTime)<endTime) {
+                        String currentTime = AppCommonMethods.getCurrentTimeStamp();
+                        // Long currentTime = System.currentTimeMillis();
+                        if (Long.valueOf(currentTime) > stTime && Long.valueOf(currentTime) < endTime) {
                             new KsPreferenceKey(getActivity()).setLiveCatchUpId(railCommonDataPrevious.get(i).getObject().getId().toString(), true);
-                        }else {
+                        } else {
                             new KsPreferenceKey(getActivity()).setLiveCatchUpId(railCommonDataPrevious.get(i).getObject().getId().toString(), false);
                         }
                     }
@@ -1832,54 +1813,48 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private void startPhoenixInit() {
 
         map = asset.getTags();
-        boolean isProviderAvailable = AssetContent.getHungamaTag(map);
-       /* if (isProviderAvailable){
-            String providerExternalId = AssetContent.getProviderExternalContentId(map);
-            getHungamaUrlToPlayContent(providerExternalId);
 
-        }else {*/
-            OnMediaLoadCompletion playLoadedEntry = response -> {
-                if (baseActivity != null) {
-                    baseActivity.runOnUiThread(() -> {
-                        if (response != null) {
-                            if (response.isSuccess()) {
+        OnMediaLoadCompletion playLoadedEntry = response -> {
+            if (baseActivity != null) {
+                baseActivity.runOnUiThread(() -> {
+                    if (response != null) {
+                        if (response.isSuccess()) {
 
-                                onMediaLoaded(response.getResponse());
+                            onMediaLoaded(response.getResponse());
+                        } else {
+                            /*handling 601 error code for session token expire*/
+                            isError = true;
+                            if (response.getError().getCode().equalsIgnoreCase("601")) {
+                                DialogHelper.showLoginDialog(getActivity());
                             } else {
-                                /*handling 601 error code for session token expire*/
-                                isError = true;
-                                if (response.getError().getCode().equalsIgnoreCase("601")) {
-                                    DialogHelper.showLoginDialog(getActivity());
-                                } else {
-                                    //showDialog(response.getError().getMessage());
-                                    if (baseActivity != null && !baseActivity.isFinishing()) {
-                                        if (response.getError().getCode().equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
-                                            loggedOutMessage();
-                                        } else {
-                                            showDialog(new ErrorCallBack().ErrorMessage(response.getError().getCode(), response.getError().getMessage()));
-                                        }
+                                //showDialog(response.getError().getMessage());
+                                if (baseActivity != null && !baseActivity.isFinishing()) {
+                                    if (response.getError().getCode().equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                                        loggedOutMessage();
+                                    } else {
+                                        showDialog(new ErrorCallBack().ErrorMessage(response.getError().getCode(), response.getError().getMessage()));
                                     }
                                 }
                             }
                         }
+                    }
 
-                    });
-                }
+                });
+            }
 
-            };
-            startDishOttMediaLoadingProd(playLoadedEntry, asset);
-        /*}*/
+        };
+        startDishOttMediaLoadingProd(playLoadedEntry, asset);
     }
 
     private void getHungamaUrlToPlayContent(String providerExternalContentId) {
         viewModel.getHungamaUrl(providerExternalContentId).observe(this, new Observer<String>() {
             @Override
             public void onChanged(String contentUrl) {
-                if (contentUrl!=null){
-                    Log.d("asasasasaasa",contentUrl);
+                if (contentUrl != null) {
+                    Log.d("asasasasaasa", contentUrl);
                     PKMediaEntry mediaEntry = createMediaEntry(contentUrl);
                     onMediaLoaded(mediaEntry);
-                }else {
+                } else {
                     isError = true;
                     showDialog(getString(R.string.something_went_wrong_try_again));
                 }
@@ -1894,7 +1869,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         //Set id for the entry.
         mediaEntry.setId(String.valueOf(asset.getId()));
         mediaEntry.setName(asset.getName());
-       // mediaEntry.setDuration(881000);
+        // mediaEntry.setDuration(881000);
         //Set media entry type. It could be Live,Vod or Unknown.
         //In this sample we use Vod.
         mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.Vod);
@@ -1961,7 +1936,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             bn.setTextColor(ContextCompat.getColor(baseActivity, R.color.blue));
             Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
             bp.setTextColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary));
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
     }
@@ -1976,7 +1951,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     return KsPreferenceKey.getInstance(baseActivity).getKalturaPhoenixUrl();
                 } else {
                     Log.d("LoadedUrlIs", "QA");
-                    return "https://rest-sgs1.ott.kaltura.com/api_v3/";//AppLevelConstants.QA_PHOENIX_URL;
+                    return "https://rest-sgs1.ott.kaltura.com/api_v3/";
                 }
 
 
@@ -2012,15 +1987,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         String mediaId = asset.getId().toString();
         AssetContent.getVideoResolution(asset.getTags()).observe(this, videoResolution -> {
-            String format;
-
-            /*if (videoResolution.equals(AppConstants.HD)) {
-                format = AppConstants.Mobile_Dash_HD;
-            } else {
-                format = AppConstants.Mobile_Dash_SD;
-            }*/
-
-            format="Dash_widevine";
+            String format = AppLevelConstants.DASH_WIDEVINE;
             MediaEntryProvider mediaProvider;
             if (asset.getType() == MediaTypeConstant.getLinear(baseActivity)) {
                 if (!isLivePlayer) {
@@ -2070,10 +2037,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void onMediaLoaded(PKMediaEntry mediaEntry) {
         try {
-          /*  if (dvrEnabled) {
+            if (dvrEnabled) {
                 mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.DvrLive);
             }
-*/
+
             if (getActivity() != null && getActivity().getSystemService(Context.AUDIO_SERVICE) != null) {
                 mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
             }
@@ -2087,7 +2054,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 startPlayer(mediaEntry);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -2102,7 +2069,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         });*/
         Log.e("DTPlayer", "DTPlayer assetPosition" + assetPosition);
-        try{
+        try {
             viewModel.startPlayerBookmarking(mediaEntry, UDID.getDeviceId(baseActivity, baseActivity.getContentResolver()), asset, isPurchased, assetPosition).observe(this, player -> {
                 if (player != null) {
                     adsCallBackHandling(player);
@@ -2119,10 +2086,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             PrintLogging.printLog("Exception", e.toString());
         }
-
 
 
     }
@@ -2788,7 +2754,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
 
 
-            getBinding().lockIcon.setOnClickListener(view -> {
+        getBinding().lockIcon.setOnClickListener(view -> {
             if (lockEnable) {
                 if (timeHandler != null && timer) {
                     timeHandler.removeCallbacks(myRunnable);
@@ -2907,7 +2873,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().forward.setOnClickListener(view -> {
             getBinding().pBar.setVisibility(View.VISIBLE);
             final LiveData<Boolean> booleanLiveData = viewModel.seekPlayerForward();
-            if(booleanLiveData == null || baseActivity == null){
+            if (booleanLiveData == null || baseActivity == null) {
                 return;
             }
             booleanLiveData.observe(baseActivity, aBoolean -> {
@@ -2931,7 +2897,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().goLive.setOnClickListener(view -> {
             getBinding().pBar.setVisibility(View.VISIBLE);
             final LiveData<Boolean> booleanLiveData = viewModel.seekToDuration();
-            if(booleanLiveData == null || baseActivity == null){
+            if (booleanLiveData == null || baseActivity == null) {
                 return;
             }
             booleanLiveData.observe(baseActivity, aBoolean -> {
@@ -2954,7 +2920,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().backward.setOnClickListener(view -> {
             getBinding().pBar.setVisibility(View.VISIBLE);
             final LiveData<Boolean> booleanLiveData = viewModel.seekPlayerBackward();
-            if(booleanLiveData == null || baseActivity == null){
+            if (booleanLiveData == null || baseActivity == null) {
                 return;
             }
             booleanLiveData.observe(baseActivity, aBoolean -> {
@@ -3434,13 +3400,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     viewModel.getResumeState().observe(this, aBoolean -> {
                         if (aBoolean != null && aBoolean) {
                             if (runningPlayer != null) {
-                              //  runningPlayer.play();
+                                //  runningPlayer.play();
                                 hidePlayerWigetOnResume();
                                 if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
-                                  //  runningPlayer.play();
+                                    //  runningPlayer.play();
                                     getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
                                 } else {
-                                 //   runningPlayer.play();
+                                    //   runningPlayer.play();
                                     getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
                                 }
                             }

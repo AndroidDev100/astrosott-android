@@ -191,12 +191,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             if (connectionPreference && !wifiConnected) {
                 showWifiDialog();
             } else {
-              //  if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                    callProgressBar();
-                    playerChecks(railData);
-               /* } else {
-                    DialogHelper.showLoginDialog(MovieDescriptionActivity.this);
-                }*/
+                callProgressBar();
+                playerChecks(railData);
 
             }
 
@@ -206,7 +202,6 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
     private void checkErrors() {
-        errorCode = AppLevelConstants.NO_ERROR;
         if (playerChecksCompleted) {
             if (assetRuleErrorCode == AppLevelConstants.GEO_LOCATION_ERROR) {
                 runOnUiThread(() -> DialogHelper.openDialougeforGeoLocation(1, MovieDescriptionActivity.this));
@@ -216,9 +211,6 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 callProgressBar();
             } else if (errorCode == AppLevelConstants.USER_ACTIVE_ERROR) {
                 runOnUiThread(() -> DialogHelper.openDialougeForEntitleMent(MovieDescriptionActivity.this));
-                callProgressBar();
-            } else if (errorCode == AppLevelConstants.NO_MEDIA_FILE) {
-                showDialog(getString(R.string.no_media_file));
                 callProgressBar();
             }
 //            else if (assetRuleErrorCode == AppLevelConstants.PARENTAL_BLOCK) {
@@ -374,12 +366,9 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         btn_update.setOnClickListener(view1 -> {
             alert.dismiss();
             if (!new KsPreferenceKey(this).getDownloadOverWifi()) {
-                if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
                     callProgressBar();
                     playerChecks(railData);
-                } else {
-                    DialogHelper.showLoginDialog(MovieDescriptionActivity.this);
-                }
+
             }
         });
     }
@@ -419,61 +408,37 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
+        String fileId = "";
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                AssetContent.getVideoResolution(asset.getTags()).observe(MovieDescriptionActivity.this, new Observer<String>() {
-                    @Override
-                    public void onChanged(@Nullable String videoResolution) {
-                        String fileId = "";
-                        if (videoResolution.equals(AppConstants.HD)) {
-                            fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject(), AppConstants.HD);
-                            AllChannelManager.getInstance().setChannelId(fileId);
-                        } else {
-                            fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject(), AppConstants.SD);
-                            AllChannelManager.getInstance().setChannelId(fileId);
-                        }
-                        if (fileId.equals("")) {
-                            playerChecksCompleted = true;
-                            errorCode = AppLevelConstants.NO_MEDIA_FILE;
-                            checkErrors();
-                        } else {
-                            new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
-                                if (status) {
-                                    playerChecksCompleted = true;
-                                    if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
-                                        errorCode = AppLevelConstants.NO_ERROR;
-                                        railData = railCommonData;
-                                        checkErrors();
-                                    } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
-                                        if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                                            isDtvAccountAdded(railCommonData);
-                                        } else {
-                                            errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
-                                            checkErrors();
-                                        }
-                                    } else {
-                                        if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                                            isDtvAccountAdded(railCommonData);
-                                        } else {
-                                            errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
-                                            checkErrors();
-                                            //not play
-                                        }
-                                    }
-                                } else {
-                                    callProgressBar();
-                                    if (message != "")
-                                        showDialog(message);
-                                }
-                            });
-                        }
-//                playerChecksCompleted = true;
+        fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
 
+        new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
+            if (status) {
+                playerChecksCompleted = true;
+                if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
+                    errorCode = AppLevelConstants.NO_ERROR;
+                    railData = railCommonData;
+                    checkErrors();
+                } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
+                    if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                        isDtvAccountAdded(railCommonData);
+                    } else {
+                        errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
+                        checkErrors();
                     }
-                });
-
+                } else {
+                    if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                        isDtvAccountAdded(railCommonData);
+                    } else {
+                        errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
+                        checkErrors();
+                        //not play
+                    }
+                }
+            } else {
+                callProgressBar();
+                if (message != "")
+                    showDialog(message);
             }
         });
 
