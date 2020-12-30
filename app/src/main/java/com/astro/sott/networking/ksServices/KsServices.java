@@ -77,12 +77,20 @@ import com.astro.sott.callBacks.otpCallbacks.DTVAccountCallback;
 import com.astro.sott.callBacks.otpCallbacks.OtpCallback;
 import com.astro.sott.callBacks.otpCallbacks.OtpVerificationCallback;
 import com.astro.sott.modelClasses.DTVContactInfoModel;
+import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
+import com.astro.sott.modelClasses.dmsResponse.FilterValues;
+import com.astro.sott.modelClasses.dmsResponse.ParentalDescription;
+import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
+import com.astro.sott.modelClasses.dmsResponse.ParentalMapping;
+import com.astro.sott.modelClasses.dmsResponse.ParentalRatingLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.modelClasses.dmsResponse.SubtitleLanguages;
 import com.astro.sott.networking.refreshToken.RefreshKS;
 import com.astro.sott.networking.retrofit.ApiInterface;
 import com.astro.sott.networking.retrofit.RequestConfig;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
+import com.astro.sott.utils.helpers.FileFormatHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
@@ -2959,7 +2967,7 @@ public class KsServices {
         requestParam.addProperty("clientVersion", BuildConfig.KALTURA_CLIENT_VERSION);
         requestParam.addProperty("platform", BuildConfig.KALTURA_PLATFORM);
         requestParam.addProperty("udid", UDID.getDeviceId(activity, activity.getContentResolver()));
-        requestParam.addProperty("tag", "AstroQA");
+        requestParam.addProperty("tag", BuildConfig.KALTURA_TAG);
         requestParam.addProperty("partnerId", BuildConfig.KALTURA_PARTNER_ID);
         Log.e("REQUEST", requestParam.toString());
         Call<ResponseDmsModel> call = endpoint.getDMS(requestParam);
@@ -2982,15 +2990,63 @@ public class KsServices {
                 }
                 SharedPrefHelper sharedPrefHelper = SharedPrefHelper.getInstance(activity);
                 Gson gson = new Gson();
-              //  ArrayList<String> parentalList = new ArrayList<>();
+
+
+                if(responseDmsModel == null){
+                    return;
+                }
+                ArrayList<AudioLanguages> audioLanguageList = new ArrayList<>();
+                for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getAudioLanguages().entrySet()) {
+                    AudioLanguages levels = new AudioLanguages();
+                    levels.setKey(entry.getKey());
+                    levels.setValue(entry.getValue().getAsString());
+                    audioLanguageList.add(levels);
+                }
+
+                responseDmsModel.setAudioLanguageList(audioLanguageList);
+
+                ArrayList<SubtitleLanguages> subtitleLanguageList = new ArrayList<>();
+                for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
+                    SubtitleLanguages levels = new SubtitleLanguages();
+                    levels.setKey(entry.getKey());
+                    levels.setValue(entry.getValue().getAsString());
+                    subtitleLanguageList.add(levels);
+                }
+
+                responseDmsModel.setSubtitleLanguageList(subtitleLanguageList);
+                Log.w("SubtitleLanguage",new Gson().toJson(subtitleLanguageList));
+
+
+                ArrayList<FilterValues> filterValuesList = new ArrayList<>();
+                for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
+                    FilterValues levels = new FilterValues();
+                    levels.setKey(entry.getKey());
+                    levels.setValue(entry.getValue().getAsString());
+                    filterValuesList.add(levels);
+                }
+
+                responseDmsModel.setFilterValuesList(filterValuesList);
+                Log.w("searchValues->>",new Gson().toJson(filterValuesList));
+
+                ArrayList<ParentalRatingLevels> parentalRatingLevels = new ArrayList<>();
+
+                for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getParentalRatingLevels().entrySet()) {
+                    ParentalRatingLevels levels = new ParentalRatingLevels();
+                    levels.setKey(entry.getKey());
+                    levels.setValue(entry.getValue().getAsInt());
+                    parentalRatingLevels.add(levels);
+
+                }
+                responseDmsModel.setParentalRatingLevels(parentalRatingLevels);
+                Log.d("ParentalLevel",new Gson().toJson(parentalRatingLevels));
+
+
                /* ArrayList<ParentalLevels> parentalLevels = new ArrayList<>();
                 ArrayList<ParentalDescription> descriptions = new ArrayList<>();
                 ArrayList<ParentalMapping> parentalMappingArray = new ArrayList<>();
 
 
-                    if(responseDmsModel == null){
-                        return;
-                    }
+
                     responseDmsModel.getParams().setDefaultParentalLevel(responseDmsModel.getParams().getParentalRatings().get(AppLevelConstants.DEFAULT_PARENTAL_LEVEL).getAsString());
                     for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getParentalRatings().getAsJsonObject(AppLevelConstants.PARENTAL_LEVEL).entrySet()) {
                         ParentalLevels levels = new ParentalLevels();
@@ -3020,8 +3076,9 @@ public class KsServices {
 
                     responseDmsModel.setParentalLevels(parentalLevels);
                     responseDmsModel.setParentalDescriptions(descriptions);
-                    responseDmsModel.setMappingArrayList(parentalMappingArray);
-*/
+                    responseDmsModel.setMappingArrayList(parentalMappingArray);*/
+
+                //responseDmsModel.setParentalLevels(parentalLevels);
                     String json = gson.toJson(responseDmsModel);
                     sharedPrefHelper.setString(AppLevelConstants.DMS_RESPONSE, json);
                     sharedPrefHelper.setString("DMS_Date", "" + System.currentTimeMillis());
@@ -3030,6 +3087,7 @@ public class KsServices {
                     KsPreferenceKey.getInstance(activity).setATBpaymentGatewayId(responseDmsModel.getParams().getATBpaymentGatewayId());
                     KsPreferenceKey.getInstance(activity).setSubscriptionOffer(responseDmsModel.getParams().getSubscriptionOffer());
                     KsPreferenceKey.getInstance(activity).setRoot(responseDmsModel.getParams().getCategories().getRoot());*/
+                    Log.d("ParentalLevel", FileFormatHelper.getDash_widevine(activity));
                     callBack.configuration(true);
 
 
@@ -3143,6 +3201,7 @@ public class KsServices {
             config.setEndpoint(BuildConfig.KALTURA_BASE_URL);
         }
         client = new Client(config);
+        //client.setLanguage("may");
         // client.setKs(ks);
         if (KsPreferenceKey.getInstance(activity).getUserActive()) {
             client.setKs(KsPreferenceKey.getInstance(activity).getStartSessionKs());

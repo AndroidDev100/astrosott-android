@@ -6,24 +6,24 @@ import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 
 public class FileFormatHelper {
-    public static String getDashSD(Context context)
+    public static String getHss_playready(Context context)
     {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        return responseDmsModel.getParams().getFilesFormat().getDashSD();
+        return responseDmsModel.getParams().getFilesFormat().getSS();
     }
-    public static String getDashHD(Context context)
+    public static String getDash_playready(Context context)
     {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        return responseDmsModel.getParams().getFilesFormat().getDashHD();
+        return responseDmsModel.getParams().getFilesFormat().getDASH();
     }
-    public static String getHLSSD(Context context)
+    public static String getDash_widevine(Context context)
     {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        return responseDmsModel.getParams().getFilesFormat().getHlsSD();
+        return responseDmsModel.getParams().getFilesFormat().getDASHWV();
     }
-    public static String getHLSHD(Context context)
+    public static String getHls_fairplay(Context context)
     {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        return responseDmsModel.getParams().getFilesFormat().getHlsHD();
+        return responseDmsModel.getParams().getFilesFormat().getHLS();
     }
 }

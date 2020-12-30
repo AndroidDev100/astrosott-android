@@ -16,6 +16,18 @@ public class Params {
     @Expose
     private Gateways gateways;
 
+    @SerializedName("AudioLanguages")
+    @Expose
+    private JsonObject AudioLanguages;
+
+    @SerializedName("SubtitleLanguages")
+    @Expose
+    private JsonObject SubtitleLanguages;
+
+    @SerializedName("FilterValues")
+    @Expose
+    private JsonObject FilterValues;
+
     public String getATBpaymentGatewayId() {
         return ATBpaymentGatewayId;
     }
@@ -47,6 +59,18 @@ public class Params {
         SubscriptionOffer = subscriptionOffer;
     }
 
+    @SerializedName("download_limit_days")
+    @Expose
+    private String download_limit_days;
+
+    public void setDownload_limit_days(String download_limit_days) {
+        this.download_limit_days = download_limit_days;
+    }
+
+    public String getDownload_limit_days() {
+        return download_limit_days;
+    }
+
     @SerializedName("MediaTypes")
     @Expose
     private MediaTypes mediaTypes;
@@ -62,6 +86,19 @@ public class Params {
     @SerializedName("ParentalRating")
     @Expose
     private JsonObject parentalRatings;
+
+
+    @SerializedName("ParentalRatingLevels")
+    @Expose
+    private JsonObject ParentalRatingLevels;
+
+    public void setParentalRatingLevels(JsonObject parentalRatingLevels) {
+        ParentalRatingLevels = parentalRatingLevels;
+    }
+
+    public JsonObject getParentalRatingLevels() {
+        return ParentalRatingLevels;
+    }
 
     public JsonObject getParentalRatings() {
         return parentalRatings;
@@ -139,5 +176,29 @@ public class Params {
 
     public void setParentalDefaultRule(ParentalDefaultRule parentalDefaultRule) {
         this.ParentalDefaultRule = parentalDefaultRule;
+    }
+
+    public JsonObject getAudioLanguages() {
+        return AudioLanguages;
+    }
+
+    public void setAudioLanguages(JsonObject parentalDefaultRule) {
+        this.AudioLanguages = parentalDefaultRule;
+    }
+
+    public void setSubtitleLanguages(JsonObject subtitleLanguages) {
+        SubtitleLanguages = subtitleLanguages;
+    }
+
+    public JsonObject getSubtitleLanguages() {
+        return SubtitleLanguages;
+    }
+
+    public void setFilterValues(JsonObject filterValues) {
+        FilterValues = filterValues;
+    }
+
+    public JsonObject getFilterValues() {
+        return FilterValues;
     }
 }

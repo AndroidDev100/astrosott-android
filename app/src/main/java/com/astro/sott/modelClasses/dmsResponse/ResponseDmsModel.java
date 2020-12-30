@@ -28,6 +28,11 @@ public class ResponseDmsModel {
     private ArrayList<ParentalDescription> parentalDescriptions;
     private ArrayList<ParentalMapping> mappingArrayList;
 
+    ArrayList<AudioLanguages> audioLanguageList;
+    ArrayList<SubtitleLanguages> subtitleLanguageList;
+    ArrayList<FilterValues> filterValuesList;
+    ArrayList<ParentalRatingLevels> parentalRatingLevels;
+
     public ArrayList<ParentalMapping> getMappingArrayList() {
         return mappingArrayList;
     }
@@ -102,4 +107,35 @@ public class ResponseDmsModel {
         this.params = params;
     }
 
+    public void setAudioLanguageList(ArrayList<AudioLanguages> audioLanguageList) {
+        this.audioLanguageList = audioLanguageList;
+    }
+
+    public ArrayList<AudioLanguages> getAudioLanguageList() {
+        return audioLanguageList;
+    }
+
+    public void setSubtitleLanguageList(ArrayList<SubtitleLanguages> subtitleLanguageList) {
+        this.subtitleLanguageList = subtitleLanguageList;
+    }
+
+    public ArrayList<SubtitleLanguages> getSubtitleLanguageList() {
+        return subtitleLanguageList;
+    }
+
+    public void setFilterValuesList(ArrayList<FilterValues> filterValuesList) {
+        this.filterValuesList = filterValuesList;
+    }
+
+    public ArrayList<FilterValues> getFilterValuesList() {
+        return filterValuesList;
+    }
+
+    public void setParentalRatingLevels(ArrayList<ParentalRatingLevels> parentalRatingLevels) {
+        this.parentalRatingLevels = parentalRatingLevels;
+    }
+
+    public ArrayList<ParentalRatingLevels> getParentalRatingLevels() {
+        return parentalRatingLevels;
+    }
 }

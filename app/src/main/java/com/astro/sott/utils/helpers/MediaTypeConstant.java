@@ -8,28 +8,57 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 
 public class MediaTypeConstant {
 
-//    Context context;
 
-//    public MediaTypeConstant(Context base) {
-//        super(base);
-//        context = base;
-//    }
 
     public static int getMovie(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
         return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getMovie());
     }
 
-    public static int getDrama(Context context) {
+    public static int getSeries(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getSeries());
 
-        return 559;
+    }
 
+    public static int getEpisode(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getEpisode());
+
+    }
+
+    public static int getSeason(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getSeason());
+    }
+
+    public static int getTrailor(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getTrailer());
+    }
+
+    public static int getHighlight(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getHighlight());
+    }
+
+    public static int getCollection(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getCollection());
+    }
+
+    public static int getProgram(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getProgram());
     }
 
 
 
 
+    public static int getDrama(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return 559;
+    }
 
     public static int getLinear(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
@@ -40,22 +69,12 @@ public class MediaTypeConstant {
 
     public static int getGenre(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-
-
-
-            return 0;
-
-
+        return 0;
     }
 
     public static int getPromo(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-
-
-
         return 0;
-
-
     }
 
     public static int getTrailer(Context context) {
@@ -67,17 +86,7 @@ public class MediaTypeConstant {
     public static int getClip() {
 //        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference();
 //        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getClip());
-
         return -1;
-
-    }
-
-
-
-    public static int getProgram(Context context) {
-        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getProgram());
-
     }
 
 
@@ -92,17 +101,6 @@ public class MediaTypeConstant {
     }
 
 
-    public static int getSeries(Context context) {
-        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getSeries());
-
-    }
-
-    public static int getEpisode(Context context) {
-        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getEpisode());
-
-    }
 
 
     public static int getWebSeries(Context context) {

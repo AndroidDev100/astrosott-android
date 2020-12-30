@@ -6,48 +6,48 @@ import com.google.gson.annotations.SerializedName;
 
 public class FilesFormat {
 
-    @SerializedName("HLS_SD")
+    @SerializedName("SS")
     @Expose
-    private String hlsSD;
-    @SerializedName("HLS_HD")
+    private String sS;
+    @SerializedName("DASH")
     @Expose
-    private String hlsHD;
-    @SerializedName("DASH_SD")
+    private String dASH;
+    @SerializedName("DASH_WV")
     @Expose
-    private String dashSD;
-    @SerializedName("DASH_HD")
+    private String dASHWV;
+    @SerializedName("HLS")
     @Expose
-    private String dashHD;
+    private String hLS;
 
-    public String getHlsSD() {
-        return hlsSD;
+    public String getSS() {
+        return sS;
     }
 
-    public void setHlsSD(String hlsSD) {
-        this.hlsSD = hlsSD;
+    public void setSS(String sS) {
+        this.sS = sS;
     }
 
-    public String getHlsHD() {
-        return hlsHD;
+    public String getDASH() {
+        return dASH;
     }
 
-    public void setHlsHD(String hlsHD) {
-        this.hlsHD = hlsHD;
+    public void setDASH(String dASH) {
+        this.dASH = dASH;
     }
 
-    public String getDashSD() {
-        return dashSD;
+    public String getDASHWV() {
+        return dASHWV;
     }
 
-    public void setDashSD(String dashSD) {
-        this.dashSD = dashSD;
+    public void setDASHWV(String dASHWV) {
+        this.dASHWV = dASHWV;
     }
 
-    public String getDashHD() {
-        return dashHD;
+    public String getHLS() {
+        return hLS;
     }
 
-    public void setDashHD(String dashHD) {
-        this.dashHD = dashHD;
+    public void setHLS(String hLS) {
+        this.hLS = hLS;
     }
 }

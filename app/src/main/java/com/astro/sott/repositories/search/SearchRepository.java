@@ -162,7 +162,7 @@ public class SearchRepository {
     public LiveData<List<Asset>> hitApiPopularSearch(final Context context) {
         final KsServices ksServices = new KsServices(context);
         final MutableLiveData<List<Asset>> connection = new MutableLiveData<>();
-        AppCommonMethods.checkDMS(context, status -> {
+      /*  AppCommonMethods.checkDMS(context, status -> {
             if (status) {
                 ksServices.popularSearch(context, (status1, result) -> {
                     if (status1) {
@@ -192,7 +192,8 @@ public class SearchRepository {
                 });
             }
 
-        });
+        });*/
+        connection.postValue(null);
         return connection;
 
     }
