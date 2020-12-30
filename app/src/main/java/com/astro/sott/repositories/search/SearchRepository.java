@@ -291,6 +291,7 @@ public class SearchRepository {
         SearchModel Movie = new SearchModel();
         SearchModel Series = new SearchModel();
         SearchModel Episode = new SearchModel();
+        SearchModel Collection = new SearchModel();
 
 
 
@@ -309,6 +310,10 @@ public class SearchRepository {
                 Series = list.get(i);
 
             }
+            else if (checkId.equals(String.valueOf(MediaTypeConstant.getCollection(context)))) {
+                Collection = list.get(i);
+
+            }
         }
         if (Movie.getAllItemsInSection().size() > 0) {
             Movie.setHeaderTitle(SearchModel.MEDIATYPE_SEARCH_MOVIE);
@@ -324,6 +329,11 @@ public class SearchRepository {
         if (Episode.getAllItemsInSection().size() > 0) {
             Episode.setHeaderTitle(SearchModel.MEDIATYPE_EPISODE);
             allSampleData.add(Episode);
+        }
+
+        if (Collection.getAllItemsInSection().size() > 0) {
+            Collection.setHeaderTitle(SearchModel.MEDIATYPE_COLLECTION);
+            allSampleData.add(Collection);
         }
 
 

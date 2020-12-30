@@ -728,8 +728,8 @@ public class PlayerRepository {
             player = PlayKitManager.loadPlayer(context, playerPluginConfig);
             playerMutableLiveData.postValue(player);
 
-            KalturaPlaybackRequestAdapter.install(player, "com.dialog"); // in case app developer wants to give customized referrer instead the default referrer in the playmanifest
-            KalturaUDRMLicenseRequestAdapter.install(player, "com.dialog");
+            KalturaPlaybackRequestAdapter.install(player, "com.astro.sott"); // in case app developer wants to give customized referrer instead the default referrer in the playmanifest
+            KalturaUDRMLicenseRequestAdapter.install(player, "com.astro.sott");
 
             player.getSettings().allowClearLead(true);
             player.getSettings().setSecureSurface(true);

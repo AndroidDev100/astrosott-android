@@ -121,6 +121,7 @@ public interface AppLevelConstants {
     String MEDIATYPE_SEARCH_MOVIE = "Movie";
     String MEDIATYPE_SERIES = "Series";
     String MEDIATYPE_EPISODE = "Episode";
+    String MEDIATYPE_COLLECTION = "Collection";
     String MEDIATYPE_SEARCH_WEBEPISODE = "WebEpisode";
     String MEDIATYPE_SEARCH_LINEAR = "Linear";
     String MEDIATYPE_SEARCH_SHORTFILM = "ShortFilm";

@@ -3004,6 +3004,7 @@ public class KsServices {
                 }
 
                 responseDmsModel.setAudioLanguageList(audioLanguageList);
+                Log.w("SubtitleLanguage",responseDmsModel.getAudioLanguageList().get(0).getKey());
 
                 ArrayList<SubtitleLanguages> subtitleLanguageList = new ArrayList<>();
                 for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
@@ -3014,7 +3015,7 @@ public class KsServices {
                 }
 
                 responseDmsModel.setSubtitleLanguageList(subtitleLanguageList);
-                Log.w("SubtitleLanguage",new Gson().toJson(subtitleLanguageList));
+                Log.w("SubtitleLanguage",responseDmsModel.getSubtitleLanguageList().get(0).getKey());
 
 
                 ArrayList<FilterValues> filterValuesList = new ArrayList<>();
