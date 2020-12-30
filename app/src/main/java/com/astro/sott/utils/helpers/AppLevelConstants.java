@@ -12,6 +12,7 @@ public interface AppLevelConstants {
     String HBB_ACCOUNT_DESCRIPTION = "HBB account";
     String HBB_ACCOUNT = "HBB";
     String PARENTAL_LEVEL = "ParentalLevels";
+    String AUDIO_LANGUAGE = "AudioLanguages";
     String ALL = "All";
     String THIRTEEN_PLUS = "13+";
     String EIGHTEEN_PLUS = "18+";
