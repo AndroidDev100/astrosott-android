@@ -2106,14 +2106,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         }
                     } else {
                         if (trackItems.length >= 1) {
-                            for (int i = 0; i < trackItems.length; i++) {
+                           /* for (int i = 0; i < trackItems.length; i++) {
                                 String trackLang = trackItems[i].getTrackName().trim();
                                 String lang = new KsPreferenceKey(baseActivity).getAudioLanguage().trim();
                                 if (trackLang.equalsIgnoreCase(lang)) {
                                     viewModel.changeAudioTrack(trackItems[i].getUniqueId());
                                     break;
                                 }
-                            }
+                            }*/
                             isAudioTracks = true;
                         } else {
                             isAudioTracks = false;
@@ -3144,14 +3144,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (textTracks != null && textTracks.size() > 0) {
                 viewModel.getTextTrackItems().observe(baseActivity, trackItems -> {
                     if (trackItems != null && trackItems.length > 0) {
-                        for (int i = 0; i < trackItems.length; i++) {
+                        /*for (int i = 0; i < trackItems.length; i++) {
                             String trackLang = trackItems[i].getTrackName().trim();
                             String lang = new KsPreferenceKey(baseActivity).getSubtitleLanguage().trim();
                             if (trackLang.equalsIgnoreCase(lang)) {
                                 viewModel.changeAudioTrack(trackItems[i].getUniqueId());
                                 break;
                             }
-                        }
+                        }*/
 
                         isCaption = true;
                     } else {
