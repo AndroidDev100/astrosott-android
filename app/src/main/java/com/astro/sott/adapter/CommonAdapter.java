@@ -222,10 +222,10 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 HeroAdsLayoutBinding heroAdsLayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.hero_ads_layout, parent, false);
                 return new HeroAdsHolder(heroAdsLayoutBinding);
             default:
-                SquareRecyclerItemBinding squareRecyclerItemBindings = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.square_recycler_item, parent, false);
-                SquareHolder squreHolders = new SquareHolder(squareRecyclerItemBindings);
-                setRecyclerProperties(squreHolders.squareRecyclerItemBinding.recyclerViewList4);
-                return squreHolders;
+                LandscapeRecyclerItemBinding landscapeRecyclerItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.landscape_recycler_item, parent, false);
+                LandscapeHolder landscapeHolder1 = new LandscapeHolder(landscapeRecyclerItemBinding);
+                setRecyclerProperties(landscapeHolder1.landscapeRecyclerItemBinding.recyclerViewList4);
+                return landscapeHolder1;
 
 
         }

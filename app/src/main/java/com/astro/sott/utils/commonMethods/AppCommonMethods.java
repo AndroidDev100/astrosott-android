@@ -535,7 +535,7 @@ public class AppCommonMethods {
             case AppLevelConstants.TYPE2:
 
                 if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
-                    if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16:9")) {
+                    if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9")) {
                         String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
                         String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.circle_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.circle_image_height) + AppLevelConstants.QUALITY;
                         PrintLogging.printLog("AppCommonMethods", "", "imageCondition" + image_url + AppLevelConstants.WIDTH + context.getResources().getDimension(R.dimen.circle_image_width) + AppLevelConstants.HEIGHT + context.getResources().getDimension(R.dimen.circle_image_height) + AppLevelConstants.QUALITY);
@@ -570,14 +570,14 @@ public class AppCommonMethods {
 
                 if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
                     if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context)) {
-                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16:9") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
                             String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
                             String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
                             assetCommonImages.setImageUrl(final_url);
                             imagesList.add(assetCommonImages);
                         }
                     } else {
-                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16:9")) {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9")) {
                             String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
                             String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
                             assetCommonImages.setImageUrl(final_url);

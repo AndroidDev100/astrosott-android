@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.astro.sott.adapter.CommonAdapter;
 import com.astro.sott.adapter.CommonLandscapeAdapter;
 import com.astro.sott.adapter.CommonPotraitAdapter;
 import com.astro.sott.adapter.CommonSquareAapter;
@@ -71,11 +72,15 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
             return childHolder;
         } else {
 
+            LandscapeRecyclerItemBinding landscapeRecyclerItemBinding1 = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.landscape_recycler_item, parent, false);
+            LandscapeHolder landscapeHolder = new LandscapeHolder(landscapeRecyclerItemBinding1);
+            setRecyclerProperties(landscapeHolder.landscapeRecyclerItemBinding.recyclerViewList4);
+            return landscapeHolder;
 
-            SquareRecyclerItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.square_recycler_item, parent, false);
+          /*  SquareRecyclerItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.square_recycler_item, parent, false);
             SquareHolder landscapeHolder = new SquareHolder(binding);
             setRecyclerProperties(landscapeHolder.squareRecyclerItemBinding.recyclerViewList4);
-            return landscapeHolder;
+            return landscapeHolder;*/
 
         }
     }

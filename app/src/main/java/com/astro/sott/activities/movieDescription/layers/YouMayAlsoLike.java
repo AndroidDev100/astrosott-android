@@ -110,7 +110,7 @@ public class YouMayAlsoLike {
         assetCommonBean.setStatus(true);
         long id=1;
         assetCommonBean.setID(id);
-        assetCommonBean.setRailType(AppLevelConstants.Rail3);
+        assetCommonBean.setRailType(AppLevelConstants.Rail5);
         assetCommonBean.setMoreType(AppLevelConstants.YOU_MAY_LIKE);
         assetCommonBean.setMoreID(assetID);
         assetCommonBean.setMoreGenre(genreskl);
@@ -124,7 +124,7 @@ public class YouMayAlsoLike {
 
     private void setRailData(Context context, List<Response<ListResponse<Asset>>> list,
                              AssetCommonBean assetCommonBean) {
-        String tileType = AppLevelConstants.TYPE3;
+        String tileType = AppLevelConstants.TYPE5;
         int totalCount = responseList.get(0).results.getTotalCount();
         if (totalCount != 0) {
             List<RailCommonData> railList = new ArrayList<>();

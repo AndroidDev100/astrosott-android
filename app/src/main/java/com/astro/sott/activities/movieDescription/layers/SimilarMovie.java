@@ -108,7 +108,7 @@ public class SimilarMovie {
         assetCommonBean.setStatus(true);
         long id=1;
         assetCommonBean.setID(id);
-        assetCommonBean.setRailType(AppLevelConstants.Rail3);
+        assetCommonBean.setRailType(AppLevelConstants.Rail5);
         assetCommonBean.setMoreType(AppLevelConstants.SIMILAR_MOVIES);
         assetCommonBean.setMoreID(assetID);
         assetCommonBean.setMoreGenre(genreskl);
@@ -137,7 +137,7 @@ public class SimilarMovie {
 
                     AssetCommonImages assetCommonImages = new AssetCommonImages();
 
-                    AppCommonMethods.getImageList(context, AppLevelConstants.TYPE3, 0, j, k, list, assetCommonImages, imagesList);
+                    AppCommonMethods.getImageList(context, AppLevelConstants.TYPE5, 0, j, k, list, assetCommonImages, imagesList);
                 }
 
                 List<AssetCommonUrls> urlList = new ArrayList<>();
