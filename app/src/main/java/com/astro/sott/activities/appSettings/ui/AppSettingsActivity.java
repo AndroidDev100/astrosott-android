@@ -12,9 +12,11 @@ import android.view.View;
 import android.widget.CompoundButton;
 
 import com.astro.sott.activities.SelectAccount.UI.SelectDtvAccountActivity;
+import com.astro.sott.activities.audio.ui.AudioLanguageActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.language.ui.ChangeLanguageActivity;
 import com.astro.sott.activities.notificationSetting.ui.NotificationSettingActivity;
+import com.astro.sott.activities.subtitle.ui.SubtitleLanguageActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -77,6 +79,8 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
         getBinding().tvNotificationSettings.setOnClickListener(this);
         getBinding().tvContentPreferences.setOnClickListener(this);
         getBinding().language.setOnClickListener(this);
+        getBinding().audioLanguage.setOnClickListener(this);
+        getBinding().subtitleLanguage.setOnClickListener(this);
         if (BuildConfig.FLAVOR.equalsIgnoreCase("prod"))
             getBinding().flavorTxt.setText(getResources().getString(R.string.version) + " " + BuildConfig.VERSION_NAME);
         else
@@ -121,6 +125,14 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
                 Intent intent1 = new Intent(this, ChangeLanguageActivity.class);
                 startActivity(intent1);
                 break;
+            case R.id.audio_language:
+                Intent audioIntent = new Intent(this, AudioLanguageActivity.class);
+                startActivity(audioIntent);
+                break;
+            case R.id.subtitle_language:
+                Intent subtitleIntent = new Intent(this, SubtitleLanguageActivity.class);
+                startActivity(subtitleIntent);
+                break;
             default:
 
                 break;
@@ -160,13 +172,4 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
         return super.onOptionsItemSelected(item);
     }
 
-//    private void setTextViewDrawableColor(TextView textView, Context context) {
-//        for (Drawable drawable : textView.getCompoundDrawables()) {
-//            if (drawable != null) {
-//                drawable.setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(context, R.color.more_item_title), PorterDuff.Mode.SRC_IN));
-//
-////                DrawableCompat.setTint(myImageView.getDrawable(), ContextCompat.getColor(context, R.color.another_nice_color));
-//            }
-//        }
-//    }
 }

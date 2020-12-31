@@ -13,6 +13,10 @@ public class KsPreferenceKey {
     private static final String ATBPAYMENTGATEWAYID ="ATBpaymentGatewayId";
     public static final String  SUBSCRIPTION_OFFER = "SubscriptionOffer";
     private static final String DOWNLOAD_OVER_WIFI = "downloadOverWifi";
+    private static final String AUDIO_LANGUAGE = "audio_language_astr";
+    private static final String SUBTITLE_LANGUAGE = "subtitle_language_astr";
+
+
 
     private static KsPreferenceKey mInstance;
     private SharedPrefHelper session;
@@ -46,7 +50,18 @@ public class KsPreferenceKey {
     public void setHouseHoldId(String houseHoldId) {
         session.setString("household_id", houseHoldId);
     }
-
+    public String getSubtitleLanguage(){
+        return session.getString(SUBTITLE_LANGUAGE, "");
+    }
+    public void setSubtitleLanguage(String userType) {
+        session.setString(SUBTITLE_LANGUAGE, userType);
+    }
+    public void setAudioLanguage(String userType) {
+        session.setString(AUDIO_LANGUAGE, userType);
+    }
+    public String getAudioLanguage(){
+        return session.getString(AUDIO_LANGUAGE, "");
+    }
     public String getUserType(){
         return session.getString("userType", "");
     }

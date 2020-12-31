@@ -26,7 +26,9 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.language.ui.ChangeLanguageActivity"></activity>
+        <activity android:name=".activities.subtitle.ui.SubtitleLanguageActivity"></activity>
+        <activity android:name=".activities.audio.ui.AudioLanguageActivity" />
+        <activity android:name=".activities.language.ui.ChangeLanguageActivity" />
         <activity
             android:name=".activities.changePaymentMethod.ui.UpdatePaymentMethod"
             android:screenOrientation="locked" />
