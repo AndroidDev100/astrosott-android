@@ -13,7 +13,7 @@
             android:layout_width="@dimen/splash_icon_width"
             android:layout_height="@dimen/splash_icon_height"
             android:layout_centerInParent="true"
-            android:background="@drawable/splash_icon1"
+            android:background="@drawable/astro_logo"
             android:contentDescription=""
             tools:ignore="ContentDescription" />
 

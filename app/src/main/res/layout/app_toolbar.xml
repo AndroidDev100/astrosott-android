@@ -16,7 +16,7 @@
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_gravity="center"
-            android:background="@drawable/home_icon1"
+            android:background="@drawable/astro_logo"
             android:contentDescription="@string/home_icon"
             tools:ignore="ContentDescription" />
 
