@@ -91,7 +91,7 @@ public class MoreLikeThisFragment extends BaseBindingFragment<FragmentMoreLikeTh
             Log.e("ERROR", e.getMessage());
         }
 
-        modelCall();
+       /* modelCall();
         railCommonData = getArguments().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
         layoutType = AppLevelConstants.Rail3;
         if (railCommonData != null && railCommonData.getObject() != null)
@@ -106,7 +106,7 @@ public class MoreLikeThisFragment extends BaseBindingFragment<FragmentMoreLikeTh
         } else if (asset.getType() == MediaTypeConstant.getMovie(getActivity()) || asset.getType() == MediaTypeConstant.getShortFilm(getActivity())) {
             setRailFragment();
 
-        }
+        }*/
     }
 
     private void setRecyclerProperty() {
