@@ -747,7 +747,7 @@ public class CategoryRails {
             int railType = list.get(position).results.getObjects().get(j).getType();
             for (int i = 0; i < imageSize; i++) {
                 if (railType == MediaTypeConstant.getLinear(context)) {
-                    if (list.get(position).results.getObjects().get(j).getImages().get(i).getRatio().equals("1:1")) {
+                    if (list.get(position).results.getObjects().get(j).getImages().get(i).getRatio().equals("16x9")) {
                         String image_url = AppConstants.WEBP_URL+list.get(position).results.getObjects().get(j).getImages().get(i).getUrl();
                         String final_url = image_url + AppConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.carousel_image_width) + AppConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.carousel_image_height) + AppConstants.QUALITY;
                         slide.setImageFromUrl(final_url);
@@ -781,7 +781,7 @@ public class CategoryRails {
         String squareUrl = "";
         if (asset.getImages().size() > 0) {
             for (int i = 0; i < asset.getImages().size(); i++) {
-                if (asset.getImages().get(i).getRatio().equals("16:9")) {
+                if (asset.getImages().get(i).getRatio().equals("16x9")) {
                     String image_url =AppConstants.WEBP_URL+ asset.getImages().get(i).getUrl();
                     landscapeUrl = image_url + AppConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.carousel_image_width) + AppConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.carousel_image_height) + AppConstants.QUALITY;
                 }

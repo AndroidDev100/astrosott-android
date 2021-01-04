@@ -87,9 +87,9 @@ public class SliderAdapter extends PagerAdapter {
 
             //title_text.setText(items.get(position).getTitle());
             if (items.get(position).getType() == MediaTypeConstant.getLinear(context)) {
-                ImageHelper.getInstance(context).loadImageTo(sliderImage, items.get(position).getImageFromUrl(), R.drawable.square1);
+                ImageHelper.getInstance(context).loadImageTo(sliderImage, items.get(position).getImageFromUrl(), R.drawable.landscape);
             }else {
-                ImageHelper.getInstance(context).loadImageToCarousal(sliderImage, items.get(position).getImageFromUrl(), R.drawable.square1);
+                ImageHelper.getInstance(context).loadImageToCarousal(sliderImage, items.get(position).getImageFromUrl(), R.drawable.landscape);
             }
             sliderImage.setOnClickListener(v -> itemClickListener.onItemClick(null, container.getRootView(), position, carouselPosition));
 

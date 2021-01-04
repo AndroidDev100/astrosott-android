@@ -447,6 +447,11 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             new ActivityLauncher(this).liveChannelActivity(this, LiveChannel.class, railCommonData);
 
         }
+        else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getCollection(ActivitySearch.this)) {
+            getRailCommonData(itemValue);
+            new ActivityLauncher(this).webSeriesActivity(this, WebSeriesDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
+        }
+
     }
 
     private void getRailCommonData(Asset itemValue) {
