@@ -12,6 +12,7 @@ import com.astro.sott.callBacks.AppUpdateCallBack;
 import com.astro.sott.fragments.moreTab.ui.MoreFragment;
 import com.astro.sott.fragments.video.ui.VideoFragment;
 import com.astro.sott.fragments.viu.ui.ViuFragment;
+import com.astro.sott.fragments.viu.ui.ViuFragmentNew;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.PrintLogging;
@@ -49,7 +50,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private HomeFragment homeFragment;
     private VideoFragment videoFragment;
     private LiveTvFragment liveTvFragment;
-    private ViuFragment viuAppsFragment;
+    private ViuFragmentNew viuAppsFragment;
     private Fragment moreFragment;
     private String oldLang, newLang;
     private Fragment active;
@@ -87,7 +88,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                     return true;
                 case R.id.navigation_viu_apps:
                     if (viuAppsFragment == null) {
-                        viuAppsFragment = new ViuFragment();
+                        viuAppsFragment = new ViuFragmentNew();
                         fragmentManager.beginTransaction().add(R.id.content_frame, viuAppsFragment, "4").hide(viuAppsFragment).commitAllowingStateLoss();
                         switchToViuFragment();
 
