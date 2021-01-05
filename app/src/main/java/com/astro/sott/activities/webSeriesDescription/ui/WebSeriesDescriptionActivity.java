@@ -336,7 +336,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
 
             });
-            getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             modelCall();
             intentValues();
             setExpandable();
@@ -411,9 +411,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     }
                 }
             });
-            setRailBaseFragment();
+            //setRailBaseFragment();
 
-            //  loadDataFromModel();
+            //loadDataFromModel();
 
         } else {
             noConnectionLayout();
@@ -673,7 +673,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void loadDataFromModel() {
-        if (asset.getType() == MediaTypeConstant.getDrama(WebSeriesDescriptionActivity.this)) {
+        if (asset.getType() == MediaTypeConstant.getSeries(WebSeriesDescriptionActivity.this)) {
             viewModel.getChannelList(AppLevelConstants.TAB_DRAMA_DETAILS).observe(this, assetCommonBean -> {
                 if (assetCommonBean != null && assetCommonBean.getStatus()) {
                     dtChannelsList = assetCommonBean.getDTChannelList();
@@ -751,6 +751,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     });
                 }
             }
+        }else {
+            callProgressBar();
         }
     }
 
