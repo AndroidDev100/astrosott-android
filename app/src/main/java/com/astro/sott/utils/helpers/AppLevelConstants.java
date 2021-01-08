@@ -141,8 +141,11 @@ public interface AppLevelConstants {
     String TYPE3 = "PORTRAIT";
     String TYPE4 = "SQUARE";
     String TYPE5 = "LANDSCAPE";
+    String TYPELDS = "LDS";
     String TYPE6 = "CONTINUE_WATCHING";
     String TYPE7 = "RECOMMENDED";
+    String TYPEPOSTER = "POSTER";
+    String TYPEPR2 = "PR2";
     int Rail1 = 0;
     int Rail2 = 1;
     int Rail3 = 2;

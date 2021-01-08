@@ -2,6 +2,7 @@ package com.astro.sott.adapter.experiencemng;
 
 import android.app.Activity;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,8 +123,9 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<CommonPosterAdapte
 
         RailCommonData singleItem = itemsList.get(i);
         try {
+            Log.w("listSizee-->>", "listSizee" + singleItem.getImages().size());
             if (singleItem.getImages().size() > 0) {
-                PrintLogging.printLog("", "imageCommining" + singleItem.getImages().get(0).getImageUrl());
+                Log.w("", "imageCommining" + singleItem.getImages().get(0).getImageUrl());
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 //holder.potraitItemBinding.setImage(assetCommonImages);
 
@@ -140,7 +142,7 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<CommonPosterAdapte
 
         }
         //holder.potraitItemBinding.setTile(singleItem);
-        try {
+       /* try {
             if (isContinueWatchingRail) {
                 checkContinueWatching(i, holder.itemBinding);
             }else{
@@ -150,7 +152,7 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<CommonPosterAdapte
             holder.itemBinding.mediaTypeLayout.metaLayout.setVisibility(View.GONE);
             holder.itemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
 
-        }
+        }*/
 
     }
 

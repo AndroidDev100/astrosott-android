@@ -16,7 +16,6 @@
     <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="@dimen/_95sdp"
         android:layout_height="wrap_content"
-        card_view:cardBackgroundColor="?attr/backgroundColor"
         card_view:cardCornerRadius="@dimen/_2sdp"
         card_view:cardElevation="1dp"
         card_view:cardMaxElevation="1dp"
@@ -42,12 +41,14 @@
                     />
 
                 <include
+                    android:visibility="gone"
                     android:id="@+id/exclusive_layout"
                     layout="@layout/exclusive_item" />
 
             </RelativeLayout>
 
             <include
+                android:visibility="gone"
                 android:id="@+id/media_type_layout"
                 layout="@layout/mediatype_item"></include>
         </LinearLayout>

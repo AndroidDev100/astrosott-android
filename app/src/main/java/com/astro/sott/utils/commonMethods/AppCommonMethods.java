@@ -531,6 +531,7 @@ public class AppCommonMethods {
     }
 
     public static void getImageList(Context context, String tileType, int position, int j, int k, List<Response<ListResponse<Asset>>> list, AssetCommonImages assetCommonImages, List<AssetCommonImages> imagesList) {
+        Log.w("imageType-->>",tileType);
         switch (tileType) {
             case AppLevelConstants.TYPE2:
 
@@ -580,6 +581,81 @@ public class AppCommonMethods {
                         if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9")) {
                             String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
                             String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    }
+                }
+
+
+                break;
+
+            case AppLevelConstants.TYPELDS:
+
+                if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
+                    if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context)) {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    } else {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9")) {
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    }
+                }
+
+
+                break;
+
+            case AppLevelConstants.TYPEPOSTER:
+                Log.w("ImageRatio-->>",list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
+                    if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context)) {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    } else {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("2x3")) {
+                            Log.w("ImageRatio-->>in",list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.poster_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.poster_image_height) + AppLevelConstants.QUALITY;
+                            Log.w("FinalUrl-->>in",final_url);
+                            Log.w("ImageUrl-->>in",image_url);
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    }
+                }
+
+
+                break;
+
+            case AppLevelConstants.TYPEPR2:
+                Log.w("ImageRatio-->>",list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
+                    if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context)) {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    } else {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("2x3")) {
+                            Log.w("ImageRatio-->>in",list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.poster_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.poster_image_height) + AppLevelConstants.QUALITY;
+                            Log.w("FinalUrl-->>in",final_url);
+                            Log.w("ImageUrl-->>in",image_url);
                             assetCommonImages.setImageUrl(final_url);
                             imagesList.add(assetCommonImages);
                         }

@@ -3,17 +3,22 @@ package com.astro.sott.utils.helpers;
 import android.app.Activity;
 import android.content.Context;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.astro.sott.activities.moreListing.ui.ContinueWatchingActivity;
+import com.astro.sott.activities.moreListing.ui.GridListingActivity;
 import com.astro.sott.activities.moreListing.ui.ListingActivity;
 import com.astro.sott.R;
 import com.astro.sott.activities.moreListing.ui.DetailListingActivity;
 import com.astro.sott.activities.moreListing.ui.ListingActivityNew;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
+import com.enveu.Enum.ListingLayoutType;
 
 public class ToolBarHandler {
     private final Activity activity;
@@ -26,7 +31,7 @@ public class ToolBarHandler {
 
     public void setMoreListener(LinearLayout more, final String type, final AssetCommonBean assetCommonBean) {
 
-        more.setOnClickListener(view -> {
+        /*more.setOnClickListener(view -> {
             AssetCommonBean assetCommonBean1 = new AssetCommonBean();
             assetCommonBean1.setID(assetCommonBean.getID());
             assetCommonBean1.setTitle(assetCommonBean.getTitle());
@@ -43,12 +48,63 @@ public class ToolBarHandler {
             lastClickTime = SystemClock.elapsedRealtime();
 
             new ActivityLauncher(activity).listingActivityNew(activity, ListingActivityNew.class, assetCommonBean.getRailDetail().getCategory().getContentImageType(), assetCommonBean1);
+        });*/
+        BaseCategory data = assetCommonBean.getRailDetail().getCategory();
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (data.getContentListinglayout() != null && !data.getContentListinglayout().equalsIgnoreCase("") && data.getContentListinglayout().equalsIgnoreCase(ListingLayoutType.LST.name())) {
+                    try {
+                        Log.e("getRailData", "LST");
+                        AssetCommonBean assetCommonBean1 = new AssetCommonBean();
+                        assetCommonBean1.setID(assetCommonBean.getID());
+                        assetCommonBean1.setTitle(assetCommonBean.getTitle());
+                        assetCommonBean1.setMoreType(assetCommonBean.getMoreType());
+                        assetCommonBean1.setAsset(assetCommonBean.getRailAssetList().get(0).getObject());
+                        assetCommonBean1.setMoreID(assetCommonBean.getMoreID());
+                        assetCommonBean1.setMoreSeriesID(assetCommonBean.getMoreSeriesID());
+                        assetCommonBean1.setMoreAssetType(assetCommonBean.getMoreAssetType());
+                        assetCommonBean1.setMoreGenre(assetCommonBean.getMoreGenre());
+                        assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
+                        new ActivityLauncher(activity).gridListing(activity, GridListingActivity.class, data.getContentImageType(), assetCommonBean1);
+
+                    } catch (Exception e) {
+
+                    }
+
+
+                } else if (data.getContentListinglayout() != null && !data.getContentListinglayout().equalsIgnoreCase("") && data.getContentListinglayout().equalsIgnoreCase(ListingLayoutType.GRD.name())) {
+
+                    AssetCommonBean assetCommonBean1 = new AssetCommonBean();
+                    assetCommonBean1.setID(assetCommonBean.getID());
+                    assetCommonBean1.setTitle(assetCommonBean.getTitle());
+                    assetCommonBean1.setMoreType(assetCommonBean.getMoreType());
+                    assetCommonBean1.setAsset(assetCommonBean.getRailAssetList().get(0).getObject());
+                    assetCommonBean1.setMoreID(assetCommonBean.getMoreID());
+                    assetCommonBean1.setMoreSeriesID(assetCommonBean.getMoreSeriesID());
+                    assetCommonBean1.setMoreAssetType(assetCommonBean.getMoreAssetType());
+                    assetCommonBean1.setMoreGenre(assetCommonBean.getMoreGenre());
+                    assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
+                    assetCommonBean1.setCategory(assetCommonBean.getRailDetail().getCategory());
+                    // dont get confused with name as potrait its for grid
+                    new ActivityLauncher(activity).listListing(activity, ListingActivityNew.class, data.getContentImageType(), assetCommonBean1);
+
+
+                } else {
+                    Log.e("getRailData", "PDF");
+                    if (data.getName() != null) {
+                    } else {
+                    }
+                }
+
+            }
         });
+
     }
 
     public void setMoreListener(TextView more, final String type, final AssetCommonBean assetCommonBean) {
 
-        more.setOnClickListener(view -> {
+        /*more.setOnClickListener(view -> {
             AssetCommonBean assetCommonBean1 = new AssetCommonBean();
             assetCommonBean1.setID(assetCommonBean.getID());
             assetCommonBean1.setTitle(assetCommonBean.getTitle());
@@ -65,7 +121,57 @@ public class ToolBarHandler {
             lastClickTime = SystemClock.elapsedRealtime();
 
             new ActivityLauncher(activity).listingActivityNew(activity, ListingActivityNew.class, assetCommonBean.getRailDetail().getCategory().getContentImageType(), assetCommonBean1);
+        });*/
+        BaseCategory data = assetCommonBean.getRailDetail().getCategory();
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (data.getContentListinglayout() != null && !data.getContentListinglayout().equalsIgnoreCase("") && data.getContentListinglayout().equalsIgnoreCase(ListingLayoutType.LST.name())) {
+                    try {
+                        Log.e("getRailData", "LST");
+                        AssetCommonBean assetCommonBean1 = new AssetCommonBean();
+                        assetCommonBean1.setID(assetCommonBean.getID());
+                        assetCommonBean1.setTitle(assetCommonBean.getTitle());
+                        assetCommonBean1.setMoreType(assetCommonBean.getMoreType());
+                        assetCommonBean1.setAsset(assetCommonBean.getRailAssetList().get(0).getObject());
+                        assetCommonBean1.setMoreID(assetCommonBean.getMoreID());
+                        assetCommonBean1.setMoreSeriesID(assetCommonBean.getMoreSeriesID());
+                        assetCommonBean1.setMoreAssetType(assetCommonBean.getMoreAssetType());
+                        assetCommonBean1.setMoreGenre(assetCommonBean.getMoreGenre());
+                        assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
+                        new ActivityLauncher(activity).gridListing(activity, GridListingActivity.class, data.getContentImageType(), assetCommonBean1);
+
+                    } catch (Exception e) {
+
+                    }
+
+
+                } else if (data.getContentListinglayout() != null && !data.getContentListinglayout().equalsIgnoreCase("") && data.getContentListinglayout().equalsIgnoreCase(ListingLayoutType.GRD.name())) {
+
+                    AssetCommonBean assetCommonBean1 = new AssetCommonBean();
+                    assetCommonBean1.setID(assetCommonBean.getID());
+                    assetCommonBean1.setTitle(assetCommonBean.getTitle());
+                    assetCommonBean1.setMoreType(assetCommonBean.getMoreType());
+                    assetCommonBean1.setAsset(assetCommonBean.getRailAssetList().get(0).getObject());
+                    assetCommonBean1.setMoreID(assetCommonBean.getMoreID());
+                    assetCommonBean1.setMoreSeriesID(assetCommonBean.getMoreSeriesID());
+                    assetCommonBean1.setMoreAssetType(assetCommonBean.getMoreAssetType());
+                    assetCommonBean1.setMoreGenre(assetCommonBean.getMoreGenre());
+                    assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
+                    assetCommonBean1.setCategory(assetCommonBean.getRailDetail().getCategory());
+                    new ActivityLauncher(activity).listListing(activity, ListingActivityNew.class, data.getContentImageType(), assetCommonBean1);
+
+
+                } else {
+                    Log.e("getRailData", "PDF");
+                    if (data.getName() != null) {
+                    } else {
+                    }
+                }
+            }
         });
+
+
     }
 
 

@@ -460,8 +460,9 @@ public class CategoryRails {
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE4);
-                assetCommonBean1.setRailType(AppConstants.Rail4);
+                setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.POSTER);
+                assetCommonBean1.setRailType(AppConstants.Rail12);
+                break;
             case HORIZONTAL_SQUARE:
                 assetCommonBean1.setStatus(true);
                 assetCommonBean1.setRailDetail(dtChannel);

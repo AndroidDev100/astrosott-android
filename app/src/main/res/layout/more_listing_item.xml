@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="title"
+            type="com.kaltura.client.types.Asset" />
+
+        <variable
+            name="image"
+            type="com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages" />
+
+        <variable
+            name="mUrl"
+            type="String" />
+        <variable
+            name="isDark"
+            type="Boolean" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <FrameLayout
+            android:id="@+id/searchItemImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/search_toolbar_padding_right"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/search_item_margin_right">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/itemImageCircular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_gravity="center" />
+                <LinearLayout
+                    android:id="@+id/creator_lay"
+                    android:layout_width="@dimen/_74sdp"
+                    android:layout_height="@dimen/_74sdp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/creator_name_background"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:id="@+id/creator_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/creator_name_size" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/itemImage"
+                    android:layout_width="@dimen/listing_item_image_width"
+                    android:layout_height="@dimen/listing_item_image_height"
+                    android:background="@drawable/landscape"
+                    android:contentDescription="@string/image_description"
+                    android:scaleType="fitXY" />
+            </FrameLayout>
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/search_item_margin_top"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/search_toolbar_padding_right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/searchItemImage"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_regular"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/search_show_all_text_size" />
+
+            <TextView
+                android:id="@+id/tvEpisode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="@dimen/search_item_card_view_corner"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_regular"
+                android:maxLines="1"
+                android:textSize="@dimen/search_show_all_text_size" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:layout_marginTop="@dimen/rail_top_margin"
+                android:layout_marginBottom="@dimen/search_item_card_view_corner"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_regular"
+                android:maxLines="1"
+                android:text="@{title.description}"
+                android:textColor="@color/search_sub_title"
+                android:textSize="@dimen/search_item_margin_top" />
+
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_item_seperator_width"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

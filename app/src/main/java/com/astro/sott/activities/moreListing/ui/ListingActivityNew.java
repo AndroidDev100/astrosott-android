@@ -158,7 +158,11 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-               // progressDialog.call();
+              if (getBinding().progressBar.getVisibility()==View.VISIBLE){
+                  getBinding().progressBar.setVisibility(View.GONE);
+              }else {
+                  getBinding().progressBar.setVisibility(View.VISIBLE);
+              }
             }
         });
 
@@ -215,7 +219,14 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
             title = assetCommonBean.getTitle();
             long idAsset = assetCommonBean.getID();
             assetId = (int) idAsset;
-            //getBinding().toolbar.titleText.setText(title + "");
+            getBinding().toolbar.tvSearchResultHeader.setText(title + "");
+
+            getBinding().toolbar.homeIconBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
 
             VIUChannel category = (VIUChannel) getIntent().getExtras().getParcelable("baseCategory");
             this.isShowFilter = getIntent().getExtras().getBoolean("hasFilter");
