@@ -73,6 +73,10 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             PrintLogging.printLog(this.getClass(), "", "checkSearchId" + viewType);
             return new CollectionTypeViewHolder(binding);
         }
+        else if (viewType == MediaTypeConstant.getLinear(activity)) {
+            PrintLogging.printLog(this.getClass(), "", "checkSearchId" + viewType);
+            return new LinearTypeViewHolder(binding);
+        }
         /*else if (viewType == MediaTypeConstant.getLinear(activity)) {
             return new LinearTypeViewHolder(binding);
         }*/ else {
@@ -103,7 +107,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             StringBuilderHolder.getInstance().append(" " + activity.getResources().getString(R.string.result));
 
         } else {
-            StringBuilderHolder.getInstance().append(heading + "s");
+            StringBuilderHolder.getInstance().append(heading);
             StringBuilderHolder.getInstance().append(" - " + count);
             StringBuilderHolder.getInstance().append(" " + activity.getResources().getString(R.string.results));
 
@@ -235,6 +239,16 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ((CollectionTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));
 
         }
+
+        else if (viewHolder instanceof LinearTypeViewHolder) {
+
+            setRecyclerProperties(((LinearTypeViewHolder) viewHolder).binding.recyclerView);
+            setHeaderData(((LinearTypeViewHolder) viewHolder).binding.headerTitleSearch, MediaTypeConstant.getLinear(activity), ((LinearTypeViewHolder) viewHolder).binding.tvShowAll);
+
+            ((LinearTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
+            ((LinearTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));
+        }
+
         else if (viewHolder instanceof SeasonTypeViewHolder) {
             setRecyclerProperties(((SeasonTypeViewHolder) viewHolder).binding.recyclerView);
             setHeaderData(((SeasonTypeViewHolder) viewHolder).binding.headerTitleSearch, MediaTypeConstant.getShortFilm(activity), ((SeasonTypeViewHolder) viewHolder).binding.tvShowAll);
@@ -257,13 +271,6 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ((ProgramTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
             ((ProgramTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));
 
-        } else if (viewHolder instanceof LinearTypeViewHolder) {
-
-            setRecyclerProperties(((LinearTypeViewHolder) viewHolder).binding.recyclerView);
-            setHeaderData(((LinearTypeViewHolder) viewHolder).binding.headerTitleSearch, MediaTypeConstant.getLinear(activity), ((LinearTypeViewHolder) viewHolder).binding.tvShowAll);
-
-            ((LinearTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
-            ((LinearTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));
         }
     }
 

@@ -162,7 +162,7 @@ public class SearchRepository {
     public LiveData<List<Asset>> hitApiPopularSearch(final Context context) {
         final KsServices ksServices = new KsServices(context);
         final MutableLiveData<List<Asset>> connection = new MutableLiveData<>();
-      /*  AppCommonMethods.checkDMS(context, status -> {
+        AppCommonMethods.checkDMS(context, status -> {
             if (status) {
                 ksServices.popularSearch(context, (status1, result) -> {
                     if (status1) {
@@ -192,8 +192,7 @@ public class SearchRepository {
                 });
             }
 
-        });*/
-        connection.postValue(null);
+        });
         return connection;
 
     }
@@ -292,6 +291,7 @@ public class SearchRepository {
         SearchModel Series = new SearchModel();
         SearchModel Episode = new SearchModel();
         SearchModel Collection = new SearchModel();
+        SearchModel Linear = new SearchModel();
 
 
 
@@ -312,6 +312,10 @@ public class SearchRepository {
             }
             else if (checkId.equals(String.valueOf(MediaTypeConstant.getCollection(context)))) {
                 Collection = list.get(i);
+
+            }
+            else if (checkId.equals(String.valueOf(MediaTypeConstant.getLinear(context)))) {
+                Linear = list.get(i);
 
             }
         }
@@ -336,6 +340,10 @@ public class SearchRepository {
             allSampleData.add(Collection);
         }
 
+        if (Linear.getAllItemsInSection().size() > 0) {
+            Linear.setHeaderTitle(SearchModel.MEDIATYPE_LINEAR);
+            allSampleData.add(Linear);
+        }
 
         return allSampleData;
     }

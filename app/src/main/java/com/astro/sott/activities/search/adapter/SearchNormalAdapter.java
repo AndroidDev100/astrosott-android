@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class SearchNormalAdapter extends RecyclerView.Adapter<SearchNormalAdapte
             viewHolder.searchItemBinding.hungama.setVisibility(View.GONE);
         }
 
-        if (itemsList.get(position).getType() == MediaTypeConstant.getLinear(activity)) {
+        if (itemsList.get(position).getType() == MediaTypeConstant.getWebEpisode(activity)) {
             Drawable background = viewHolder.searchItemBinding.creatorLay.getBackground();
             if (background instanceof GradientDrawable) {
                 GradientDrawable shapeDrawable = (GradientDrawable) background;
@@ -63,17 +64,24 @@ public class SearchNormalAdapter extends RecyclerView.Adapter<SearchNormalAdapte
             }
             for (MediaImage image :
                     itemsList.get(position).getImages()) {
-                if (image.getRatio().equals("1:1")) {
+                if (image.getRatio().equals("16x9")) {
                     String image_url = image.getUrl();
-                    String final_url = image_url + AppLevelConstants.WIDTH + (int) activity.getResources().getDimension(R.dimen.square_image_width) + AppLevelConstants.HEIGHT + (int) activity.getResources().getDimension(R.dimen.square_image_height) + AppLevelConstants.QUALITY;
+                    String final_url = image_url + AppLevelConstants.WIDTH + (int) activity.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) activity.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                    Log.w("imageUrl",image_url);
+                    Log.w("imageUrl",final_url);
                     itemsList.get(position).getImages().get(0).setUrl(final_url);
                     imageAvailable = true;
                 }
             }
-            if (!imageAvailable) {
-                if(itemsList.get(0).getImages().size()>0 && itemsList.size()>0)
-                itemsList.get(position).getImages().get(0).setUrl("");
+            try {
+                if (!imageAvailable) {
+                    if(itemsList.get(0).getImages().size()>0 && itemsList.size()>0)
+                        itemsList.get(position).getImages().get(0).setUrl("");
+                }
+            }catch (Exception e){
+
             }
+
 
             viewHolder.searchItemBinding.itemImage.setVisibility(View.VISIBLE);
             viewHolder.searchItemBinding.creatorLay.setVisibility(View.GONE);

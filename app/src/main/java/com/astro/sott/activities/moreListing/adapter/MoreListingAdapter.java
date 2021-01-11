@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.astro.sott.ApplicationMain;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.ItemClickListener;
@@ -159,7 +160,7 @@ public class MoreListingAdapter extends RecyclerView.Adapter<MoreListingAdapter.
                 if (type.equalsIgnoreCase("LDS")){
                     if (asset.getImages().get(i).getRatio().equals("16x9")) {
                         String image_url =asset.getImages().get(i).getUrl();
-                        landscapeUrl = image_url;//image_url + AppConstants.WIDTH + (int) ApplicationMain.getAppContext().getResources().getDimension(R.dimen.landscape_image_width) + AppConstants.HEIGHT + (int) ApplicationMain.getAppContext().getResources().getDimension(R.dimen.landscape_image_height) + AppConstants.QUALITY;
+                        landscapeUrl = image_url + AppConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.landscape_image_width) + AppConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.landscape_image_height) + AppConstants.QUALITY;
                     }
                 }
                 if (type.equalsIgnoreCase("PR2")){

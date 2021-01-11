@@ -191,13 +191,16 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
             });
 
-            if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+            /*if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
                 callProgressBar();
                 programName = Constants.programName;
                 playerChecks(railData);
             }else {
                 DialogHelper.showLoginDialog(LiveChannel.this);
-            }
+            }*/
+            callProgressBar();
+            programName = Constants.programName;
+            playerChecks(railData);
 
 
         });

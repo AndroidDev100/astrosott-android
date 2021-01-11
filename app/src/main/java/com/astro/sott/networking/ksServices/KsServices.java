@@ -2801,7 +2801,7 @@ public class KsServices {
         assetFilter.setKSql(keyToSearch);
         assetFilter.setTypeIn(currentMediaTypes.get(count).getId());
 
-        AssetService.ListAssetBuilder assetService = AssetService.list(assetFilter, filterPager).setCompletion(result -> {
+        AssetService.ListAssetBuilder assetService = AssetService.list(assetFilter, filterPager).setLanguage("may").setCompletion(result -> {
             if (result.isSuccess()) {
                 if (result.results.getTotalCount() > 0) {
                     if (result.results.getObjects() != null) {
@@ -2867,7 +2867,7 @@ public class KsServices {
         popularCallBack = CallBack;
 
         final ChannelFilter channelFilter = new ChannelFilter();
-        channelFilter.setIdEqual(SubCategoriesPrefs.getInstance(context).getPopularSearchId());
+        channelFilter.setIdEqual(333171);
 
         Runnable runnable = () -> {
             clientSetupKs();

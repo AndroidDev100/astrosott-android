@@ -27,6 +27,20 @@ public class MediaTypeConstant {
 
     }
 
+    public static int getLinear(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getLinear());
+
+    }
+
+    public static int getCollection(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getCollection());
+    }
+
+
+
+
     public static int getSeason(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
         return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getSeason());
@@ -42,11 +56,6 @@ public class MediaTypeConstant {
         return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getHighlight());
     }
 
-    public static int getCollection(Context context) {
-        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getCollection());
-    }
-
     public static int getProgram(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
         return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getProgram());
@@ -58,12 +67,6 @@ public class MediaTypeConstant {
     public static int getDrama(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
         return 559;
-    }
-
-    public static int getLinear(Context context) {
-        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getLinear());
-
     }
 
 

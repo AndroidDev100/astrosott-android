@@ -260,6 +260,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SERIES, String.valueOf(MediaTypeConstant.getSeries(ActivitySearch.this))));
         mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_EPISODE, String.valueOf(MediaTypeConstant.getEpisode(ActivitySearch.this))));
         mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_COLLECTION, String.valueOf(MediaTypeConstant.getCollection(ActivitySearch.this))));
+        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))));
         //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))));
         //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_SHORTFILM, String.valueOf(MediaTypeConstant.getShortFilm(ActivitySearch.this))));
 
