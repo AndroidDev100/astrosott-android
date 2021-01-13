@@ -44,6 +44,7 @@ public interface AppConstants {
     String TAB_LIVE_TV_DETAILS_KEY = "Live TV Detail";
     String TAB_FORWARDED_EPG_DETAIL_KEY = "Forward EPG Detail";
     String DASH = "DASH_Main";
+    String CON_VIVA_CUSTOMER_KEY = "1fad96d91f4f519fc79753650a57dad992c44af2";
 
     String FB_PLACEMENT_ID = "367519410486408_367519577153058";
     String SL_COUNTRY_CODE = "94";

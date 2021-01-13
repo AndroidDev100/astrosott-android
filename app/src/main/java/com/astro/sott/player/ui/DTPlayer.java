@@ -71,6 +71,7 @@ import com.astro.sott.networking.refreshToken.RefreshKS;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
 import com.astro.sott.player.viewModel.DTPlayerViewModel;
+import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
@@ -105,6 +106,7 @@ import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PhoneStateListenerHelper;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.UDID;
+import com.conviva.sdk.ConvivaSdkConstants;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.kaltura.client.types.Asset;
@@ -141,6 +143,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -1822,6 +1825,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                             onMediaLoaded(response.getResponse());
                         } else {
+                            ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackFailed(response.getError().toString());
                             /*handling 601 error code for session token expire*/
                             isError = true;
                             if (response.getError().getCode().equalsIgnoreCase("601")) {
@@ -2145,6 +2149,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             //In order to get access to this object you need first cast event to
             //the object it belongs to. You can learn more about this kind of objects in
             //our documentation.
+            //  ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric("ADS STARTED");
+
             if (isFirstAd) {
                 new Handler().postDelayed(() -> {
                     haveAudioOrNot();
@@ -2189,8 +2195,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
         player.addListener(this, AdEvent.adBreakStarted, event -> {
+            // ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakStarted(ConvivaSdkConstants.AdPlayer.CONTENT, ConvivaSdkConstants.AdType.CLIENT_SIDE);
             Log.d(TAG, "AD_BREAK_STARTED");
             showAdsView();
+        });
+        player.addListener(this, AdEvent.adBreakEnded, event -> {
+            //  ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
         });
 
         player.addListener(this, AdEvent.cuepointsChanged, event -> {
@@ -2201,8 +2211,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             hasMidRoll = cuePointsList.cuePoints.hasMidRoll();
 
         });
+        player.addListener(this, PlayerEvent.stopped, event -> {
+            ConvivaManager.convivaPlayerStoppedReportRequest();
+
+        });
         player.addListener(this, PlayerEvent.playing, event -> {
             if (player != null) {
+                ConvivaManager.convivaPlayerPlayReportRequest();
                 AdController adController = player.getController(AdController.class);
                 if (adController != null) {
                     if (adController.isAdDisplayed()) {
@@ -2228,12 +2243,21 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
 
         player.addListener(this, AdEvent.loaded, event -> {
+            Map<String, Object> contentInfo = new HashMap<String, Object>();
+            contentInfo.put(ConvivaSdkConstants.ASSET_NAME, playerAsset.getName());
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdLoaded(contentInfo);
+
             AdEvent.AdLoadedEvent adLoadedEvent = event;
             showAdsView();
         });
 
         player.addListener(this, AdEvent.started, event -> {
             AdEvent.AdStartedEvent adStartedEvent = event;
+            Map<String, Object> contentInfo = new HashMap<String, Object>();
+            contentInfo.put(ConvivaSdkConstants.ASSET_NAME, playerAsset.getName());
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdStarted(contentInfo);
+
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.BITRATE, 1024);
             showAdsView();
             Log.d(TAG, "AD_STARTED w/h - " + adStartedEvent.adInfo.getAdWidth() + "/" + adStartedEvent.adInfo.getAdHeight());
         });
@@ -2267,6 +2291,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         player.addListener(this, AdEvent.completed, event -> {
             Log.d(TAG, "AD_COMPLETED");
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
+            // ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
             if (isPlayerEnded && isWaitingBinge) {
                 allAdsCompleted = true;
                 checkPostBinge(player);
@@ -2357,7 +2383,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
 
         player.addListener(this, PlayerEvent.error, event -> {
-
             Log.e(TAG, "PLAYER ERROR " + event.error.message);
         });
     }
@@ -3358,6 +3383,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     @Override
     public void onStartTrackingTouch(final SeekBar seekBar) {
         viewModel.removeCallBack();
+        ConvivaManager.convivaPlayerSeekStartedReportRequest(baseActivity);
         if (timer) {
             timeHandler.removeCallbacks(myRunnable);
         }
@@ -3375,6 +3401,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
+        ConvivaManager.convivaPlayerSeekStoppedReportRequest(baseActivity);
         getBinding().pBar.setVisibility(View.VISIBLE);
         viewModel.getPlayerView(seekBar);
         callHandler();
@@ -3500,8 +3527,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         super.onPause();
 
         Log.d("PlayerPauseCalled", "Pause");
-
-        // Toast.makeText(getActivity(), "onPause", Toast.LENGTH_LONG).show();
 
         if (getActivity() != null) {
             PowerManager powerManager = (PowerManager) getActivity().getSystemService(POWER_SERVICE);
@@ -3744,6 +3769,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (PlayerRepository.getInstance() != null) {
                 PlayerRepository.getInstance().destroCallBacks();
             }
+            ConvivaManager.convivaPlayerStoppedReportRequest();
+            ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackEnded();
+            ConvivaManager.removeConvivaSession();
             if (powerManager != null) {
                 if (wakeLock != null) {
                     wakeLock.release();

@@ -2,16 +2,21 @@ package com.astro.sott.repositories.player;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
+
 import androidx.core.content.ContextCompat;
+
 import android.util.Log;
 import android.widget.Button;
 import android.widget.SeekBar;
 
+import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.BuildConfig;
@@ -130,7 +135,7 @@ public class PlayerRepository {
         player.addListener(this, PlayerEvent.Type.LOADED_METADATA, event -> {
             Constants.duration = stringForTime(player.getDuration());
             playerMutableLiveData.postValue(Constants.duration);
-           // player.seekTo(progress * 1000);
+            // player.seekTo(progress * 1000);
             //    player.play();
 
         });
@@ -211,13 +216,13 @@ public class PlayerRepository {
 
     public LiveData<Boolean> playPauseControl(Context context) {
         final MutableLiveData<Boolean> playPause = new MutableLiveData<>();
-        if(player!=null) {
+        if (player != null) {
             if (player.isPlaying()) {
-
+                ConvivaManager.convivaPlayerPauseReportRequest();
                 playPause.postValue(false);
                 player.pause();
 
-              //  mHandler.removeCallbacks(updateTimeTask);
+                //  mHandler.removeCallbacks(updateTimeTask);
             } else {
                 if (NetworkConnectivity.isOnline(context)) {
                     playPause.postValue(true);
@@ -253,13 +258,13 @@ public class PlayerRepository {
     }
 
     private ArrayList<TrackItem> buildVideoTrackItems(List<VideoTrack> videoTracks, Context context) {
-         int lowBitrate =-1;
-         int highBitrate = -1;
+        int lowBitrate = -1;
+        int highBitrate = -1;
         ArrayList<TrackItem> arrayList = new ArrayList<>();
 
         for (int i = 0; i < videoTracks.size(); i++) {
             VideoTrack videoTrackInfo = videoTracks.get(i);
-            Log.e("tracksVideo",videoTracks.get(i).getBitrate()+"");
+            Log.e("tracksVideo", videoTracks.get(i).getBitrate() + "");
             if (videoTrackInfo.isAdaptive()) {
                 arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
             } else {
@@ -437,6 +442,7 @@ public class PlayerRepository {
 
         return booleanMutableLiveData;
     }
+
     private void trackListener(MutableLiveData<Boolean> booleanLiveData) {
         player.addListener(this, PlayerEvent.videoTrackChanged, event -> {
             booleanLiveData.postValue(true);
@@ -575,7 +581,7 @@ public class PlayerRepository {
         MutableLiveData<Boolean> booleanMutableLiveData = new MutableLiveData<>();
         if (player != null) {
             player.onApplicationResumed();
-            if(mHandler!=null) {
+            if (mHandler != null) {
                 mHandler.postDelayed(updateTimeTask, 100);
             }
             booleanMutableLiveData.postValue(true);
@@ -609,7 +615,7 @@ public class PlayerRepository {
     }
 
     public LiveData<Boolean> seekPlayerBackward() {
-        if(player!=null) {
+        if (player != null) {
             MutableLiveData<Boolean> booleanMutableLiveData = new MutableLiveData<>();
             long duration = player.getCurrentPosition();
             stringForTime(duration);
@@ -632,10 +638,13 @@ public class PlayerRepository {
                     break;
                 case READY:
                     booleanMutableLiveData.postValue(true);
+                    ConvivaManager.convivaPlayerPlayReportRequest();
+
                     //  log.d("StateChange Ready");
                     //  mPlayerControlsView.setProgressBarVisibility(false);
                     break;
                 case BUFFERING:
+                    ConvivaManager.convivaPlayerBufferReportRequest();
                     // log.e("StateChange Buffering");
                     // mPlayerControlsView.setProgressBarVisibility(true);
                     // booleanMutableLiveData.postValue(false);
@@ -692,7 +701,7 @@ public class PlayerRepository {
 
             PKMediaConfig mediaConfig;
 
-            if(mediaEntry.getMediaType()!= PKMediaEntry.MediaEntryType.Vod){
+            if (mediaEntry.getMediaType() != PKMediaEntry.MediaEntryType.Vod) {
 //                mediaConfig = new PKMediaConfig().setMediaEntry(mediaEntry).setStartPosition(null);
                 mediaConfig = new PKMediaConfig().setMediaEntry(mediaEntry).setStartPosition(null);
             } else if (assetPosition > 0) {
@@ -712,13 +721,12 @@ public class PlayerRepository {
             addKavaPluginConfig(context, playerPluginConfig, asset);
 
 
-
             //PKPluginConfigs youboraconfig = YouboraManager.createYouboraPlugin(context, asset, deviceid);
             //playerPluginConfig.setPluginConfig(YouboraPlugin.factory.getName(), youboraconfig.getPluginConfig(YouboraPlugin.factory.getName()));
             playerPluginConfig.setPluginConfig(PhoenixAnalyticsPlugin.factory.getName(), phoenixPluginConfig.toJson());
 
             if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
-                   PrintLogging.printLog("ValueIS","0");
+                PrintLogging.printLog("ValueIS", "0");
             } else {
                 if (AppCommonMethods.isAdsEnable)
                     addIMAConfig(playerPluginConfig);
@@ -769,7 +777,7 @@ public class PlayerRepository {
             if (asset.getType() != MediaTypeConstant.getProgram(context)) {
                 entryId = mediaAsset.getEntryId();
             }
-            if(KsPreferenceKey.getInstance(context).getUserActive()) {
+            if (KsPreferenceKey.getInstance(context).getUserActive()) {
 
                 kavaAnalyticsConfig = new KavaAnalyticsConfig()
                         .setApplicationVersion(BuildConfig.VERSION_NAME)
@@ -777,7 +785,7 @@ public class PlayerRepository {
                         .setUserId(KsPreferenceKey.getInstance(context).getUser().getId())
                         .setEntryId(entryId);
                 pluginConfigs.setPluginConfig(KavaAnalyticsPlugin.factory.getName(), kavaAnalyticsConfig);
-            }else {
+            } else {
                 kavaAnalyticsConfig = new KavaAnalyticsConfig()
                         .setApplicationVersion(BuildConfig.VERSION_NAME)
                         .setPartnerId(BuildConfig.KAVA_PARTNER_ID)
@@ -930,7 +938,7 @@ public class PlayerRepository {
         final MutableLiveData<String> stringMutableLiveData = new MutableLiveData<>();
         KsServices ksServices = new KsServices(context);
 
-        ksServices.getAssetPurchaseStatus(fileId, (status, response, s,  errorCode1, message) -> {
+        ksServices.getAssetPurchaseStatus(fileId, (status, response, s, errorCode1, message) -> {
             if (status) {
                 stringMutableLiveData.postValue(response.results.getObjects().get(0).getPurchaseStatus().toString());
             }
@@ -960,7 +968,7 @@ public class PlayerRepository {
         final MutableLiveData<Integer> stringMutableLiveData = new MutableLiveData<>();
         KsServices ksServices = new KsServices(context);
 
-        ksServices.assetRuleApi(assetId, (status, response, i,errorcode,message) -> {
+        ksServices.assetRuleApi(assetId, (status, response, i, errorcode, message) -> {
             if (status) {
                 int totalCount = response.results.getTotalCount();
                 stringMutableLiveData.postValue(totalCount);
@@ -1066,12 +1074,12 @@ public class PlayerRepository {
 
     public LiveData<Boolean> seekToDuration() {
         MutableLiveData<Boolean> booleanMutableLiveData = new MutableLiveData<>();
-      //  long duration = player.getDuration();
-       // PrintLogging.printLog(this.getClass(), "", "durationplayer" + duration);
-       // stringForTime(duration);
+        //  long duration = player.getDuration();
+        // PrintLogging.printLog(this.getClass(), "", "durationplayer" + duration);
+        // stringForTime(duration);
 
-        if(player != null){
-            player.seekTo(player.getDuration()-5000);
+        if (player != null) {
+            player.seekTo(player.getDuration() - 5000);
             getPlayerState(booleanMutableLiveData);
         }
         return booleanMutableLiveData;

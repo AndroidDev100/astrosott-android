@@ -71,7 +71,7 @@ import io.branch.referral.util.LinkProperties;
 
 public class AppCommonMethods {
     private static String progDuration;
-    public static boolean isAdsEnable = false;
+    public static boolean isAdsEnable = true;
     private static Long _time;
     public static boolean isTablet = false;
 

@@ -27,7 +27,7 @@ public interface AppConstants {
     String Mobile_Dash_HD = "Mobile_Dash_HD";
     String Mobile_Dash_SD = "Mobile_Dash_SD";
 
-
+    String CON_VIVA_CUSTOMER_KEY = "4d9d8829a9c54ef1b4457fab9508f3e779ba38dd";
     String AF_DEV_KEY = "";
     String TAB_HOME_KEY = "HOME_V1";
     String TAB_HOME_KEY_IGNORE = "Home";

@@ -798,7 +798,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
             }
         }
 
-        AppCommonMethods.isAdsEnable = false;
+        AppCommonMethods.isAdsEnable = true;
         callViewModel();
         showAnimation();
 

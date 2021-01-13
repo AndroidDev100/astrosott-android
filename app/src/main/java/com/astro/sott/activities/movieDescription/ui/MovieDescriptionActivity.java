@@ -14,7 +14,9 @@ import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionView
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
+import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.conviva.sdk.ConvivaSdkConstants;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import androidx.fragment.app.FragmentManager;
@@ -74,6 +76,7 @@ import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -331,6 +334,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         try {
             callProgressBar();
 
+            ConvivaManager.initConvivaAnalytics(this);
+            ConvivaManager.setreportPlaybackRequested(this, railData,duraton);
             Intent intent = new Intent(MovieDescriptionActivity.this, PlayerActivity.class);
             intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
             startActivity(intent);
@@ -366,8 +371,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         btn_update.setOnClickListener(view1 -> {
             alert.dismiss();
             if (!new KsPreferenceKey(this).getDownloadOverWifi()) {
-                    callProgressBar();
-                    playerChecks(railData);
+                callProgressBar();
+                playerChecks(railData);
 
             }
         });
@@ -771,8 +776,10 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         });
     }
 
+    private String duraton;
+
     private void getDuration() {
-        String duraton = AppCommonMethods.getURLDuration(asset);
+        duraton = AppCommonMethods.getURLDuration(asset);
 
         if (!TextUtils.isEmpty(duraton)) {
 
