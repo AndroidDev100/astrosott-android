@@ -260,6 +260,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SERIES, String.valueOf(MediaTypeConstant.getSeries(ActivitySearch.this))));
         mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_EPISODE, String.valueOf(MediaTypeConstant.getEpisode(ActivitySearch.this))));
         mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_COLLECTION, String.valueOf(MediaTypeConstant.getCollection(ActivitySearch.this))));
+        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))));
         //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))));
         //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_SHORTFILM, String.valueOf(MediaTypeConstant.getShortFilm(ActivitySearch.this))));
 
@@ -447,6 +448,11 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             new ActivityLauncher(this).liveChannelActivity(this, LiveChannel.class, railCommonData);
 
         }
+        else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getCollection(ActivitySearch.this)) {
+            getRailCommonData(itemValue);
+            new ActivityLauncher(this).webSeriesActivity(this, WebSeriesDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
+        }
+
     }
 
     private void getRailCommonData(Asset itemValue) {

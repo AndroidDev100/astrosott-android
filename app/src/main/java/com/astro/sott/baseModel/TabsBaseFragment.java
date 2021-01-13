@@ -445,9 +445,9 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
             screenID = String.valueOf(AppConstants.TAB_FIRST);
             //screenID = "14";
         } else if (viewModel instanceof LiveTvViewModel) {
-            screenID = String.valueOf(AppConstants.TAB_SECOND);
+            screenID = String.valueOf(AppConstants.TAB_FIRST);
         } else if (viewModel instanceof VideoViewModel) {
-            screenID = String.valueOf(AppConstants.TAB_FOUR);
+            screenID = String.valueOf(AppConstants.TAB_FIRST);
         }  else {
             screenID = String.valueOf(AppConstants.TAB_FIRST);
         }

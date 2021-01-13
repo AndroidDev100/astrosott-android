@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.activities.catchUpRails.ui.CatchupActivity;
+import com.astro.sott.activities.moreListing.ui.GridListingActivity;
 import com.astro.sott.activities.myplaylist.ui.MyPlaylist;
 import com.astro.sott.R;
 import com.astro.sott.activities.SelectAccount.UI.SelectDtvAccountActivity;
@@ -54,6 +55,7 @@ import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.kaltura.client.types.Asset;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -74,6 +76,34 @@ public class ActivityLauncher {
 
     private void callViewModel() {
         myViewModel = ViewModelProviders.of((FragmentActivity) activity).get(SplashViewModel.class);
+    }
+
+    public void gridListing(Activity source, Class<GridListingActivity> destination, String type, AssetCommonBean assetCommonBean) {
+        Intent intent = new Intent(source, GridListingActivity.class);
+        intent.putExtra("layouttype", type);
+        intent.putExtra("assetCommonBean", assetCommonBean);
+        intent.putExtra("baseCategory", assetCommonBean.getRailDetail());
+        boolean hasFilter = false;
+        if (assetCommonBean.getRailDetail() != null && assetCommonBean.getRailDetail().getFilter() != null) {
+            if (((ArrayList) assetCommonBean.getRailDetail().getFilter()).size() > 0)
+                hasFilter = true;
+        }
+        intent.putExtra("hasFilter", hasFilter);
+        activity.startActivity(intent);
+    }
+
+    public void listListing(Activity source, Class<ListingActivityNew> destination, String type, AssetCommonBean assetCommonBean) {
+        Intent intent = new Intent(source, destination);
+        intent.putExtra("layouttype", type);
+        intent.putExtra("assetCommonBean", assetCommonBean);
+        intent.putExtra("baseCategory", assetCommonBean.getRailDetail());
+        boolean hasFilter = false;
+        if (assetCommonBean.getRailDetail() != null && assetCommonBean.getRailDetail().getFilter() != null) {
+            if (((ArrayList) assetCommonBean.getRailDetail().getFilter()).size() > 0)
+                hasFilter = true;
+        }
+        intent.putExtra("hasFilter", hasFilter);
+        activity.startActivity(intent);
     }
 
     public void continueWatchingListing(Activity source, Class<ContinueWatchingActivity> destination, String type, AssetCommonBean assetCommonBean) {
@@ -361,7 +391,7 @@ public class ActivityLauncher {
     }
 
     private void mediaTypeCheck(RailCommonData itemsList, int layoutType) {
-        if (itemsList.getObject().getType() == MediaTypeConstant.getDrama(activity)) {
+        if (itemsList.getObject().getType() == MediaTypeConstant.getSeries(activity) || itemsList.getObject().getType() == MediaTypeConstant.getCollection(activity)) {
             new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getMovie(activity)) {
             new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, itemsList, layoutType);
@@ -369,7 +399,7 @@ public class ActivityLauncher {
             new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getLinear(activity)) {
             new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, itemsList);
-        } else if (itemsList.getObject().getType() == MediaTypeConstant.getWebEpisode(activity)) {
+        } else if (itemsList.getObject().getType() == MediaTypeConstant.getEpisode(activity)) {
             new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getTrailer(activity)) {
             new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, itemsList, layoutType);

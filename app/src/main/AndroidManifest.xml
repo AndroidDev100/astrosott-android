@@ -150,6 +150,10 @@
             android:launchMode="singleTask"
             android:screenOrientation="locked" />
         <activity
+            android:name=".activities.moreListing.ui.GridListingActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="locked" />
+        <activity
             android:name=".activities.moreListing.ui.DetailListingActivity"
             android:launchMode="singleTask"
             android:screenOrientation="locked" />

@@ -251,6 +251,7 @@ public interface AppConstants {
     public static final String TYPE9 = "FAN";
     public static final String TYPE10 = "SERIESBANNER";
     public static final String TYPE11 = "DFP_BANNER";
+    public static String POSTER = "POSTER";
 
     public static final int Rail1 = 0;
     public static final int Rail2 = 1;
@@ -263,6 +264,7 @@ public interface AppConstants {
     public static final int Rail9 = 8;
     public static final int Rail10 = 9;
     public static final int Rail11 = 10;
+    public static final int Rail12 = 11;
 
     public static String WIDTH = "/width/";
     public static String HEIGHT = "/height/";
@@ -281,11 +283,16 @@ public interface AppConstants {
     public static final int LIVE_CHANNEL_LIST = 9;
     public static final int SIMILLAR_CHANNEL_LIST = 10;
 
-    public static String OVP_API_KEY = "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1NjUzNjMwNzMsInN1YiI6IkFwcC1ob2VqbWNncGRvIiwiaXNzIjoiU1lTVEVNIn0.fL3BzqDsIQK98rUr0m5DSGkLbXP-G0p2xPP9MvuebHSGnpT_K5wsQA16MvflOpjGxJg0Y3zxjNkIVtOebZfNLA";
+    /*public static String OVP_API_KEY = "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1NjUzNjMwNzMsInN1YiI6IkFwcC1ob2VqbWNncGRvIiwiaXNzIjoiU1lTVEVNIn0.fL3BzqDsIQK98rUr0m5DSGkLbXP-G0p2xPP9MvuebHSGnpT_K5wsQA16MvflOpjGxJg0Y3zxjNkIVtOebZfNLA";
     public static String BASE_URL = "https://167yl6nndd.execute-api.ap-south-1.amazonaws.com/Prod/";
     public static String OVP_BASE_URL = "";
     public static String SUBSCRIPTION_BASE_URL = "";
-    public static String API_KEY_MOB = "CqZXGMdFAE1vnBnR3IAycaDGmYlKZa5I2aa6ol0F";
+    public static String API_KEY_MOB = "CqZXGMdFAE1vnBnR3IAycaDGmYlKZa5I2aa6ol0F";*/
+    public static String OVP_API_KEY = "emrdlkycyjzwzzsgeeeliudfcthlzeiabrogpiwf";
+    public static String BASE_URL = "https://i8ms0qd7f5.execute-api.ap-south-1.amazonaws.com/qa/";
+    public static String OVP_BASE_URL = "";
+    public static String SUBSCRIPTION_BASE_URL = "";
+    public static String API_KEY_MOB = "emrdlkycyjzwzzsgeeeliudfcthlzeiabrogpiwf";
     public static String API_KEY_TAB = "YYjn66CkRAl4uTAA7Jq99ri4LjCqrfl65tIzbts6";
     public static final String KS_EXPIRE = "500016";
     public static final String WATCHLIST_PARTNER_TYPE = "1";

@@ -44,6 +44,7 @@
                         android:scaleType="fitXY" />
 
                     <include
+                        android:visibility="gone"
                         android:id="@+id/exclusive_layout"
                         layout="@layout/exclusive_item" />
 
@@ -115,7 +116,7 @@
                 android:textSize="12sp" />
 
             <include
-
+                android:visibility="gone"
                 android:id="@+id/media_type_layout"
                 layout="@layout/mediatype_item"></include>
 

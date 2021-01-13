@@ -15,8 +15,11 @@
                 android:id="@+id/title_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_9sdp"
-                android:layout_marginRight="@dimen/_9sdp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -26,9 +29,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/roboto_light"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/font_large" />
 
                 <TextView
                     android:id="@+id/more_text"
@@ -37,12 +40,12 @@
                     android:clickable="true"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
-                    android:text="@string/show_all"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/title_more"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textSize="@dimen/font_medium" />
 
             </LinearLayout>
 
@@ -83,7 +86,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:paddingTop="@dimen/_5sdp"
             android:clipToPadding="false"
             android:nestedScrollingEnabled="false"
             android:orientation="horizontal"

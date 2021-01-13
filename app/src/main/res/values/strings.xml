@@ -57,7 +57,7 @@
     <string name="deviceconfirmation">5 Devices already added !</string>
     <string name="notification_message">No new notifications</string>
     <string name="remove_watchlist_item">Do you want to remove this video from your playlist?</string>
-    <string name="search_dialog">Search Dialog</string>
+    <string name="search_dialog">Search Astro</string>
     <string name="geo_location_dialouge">Sorry, this is not available in your area or country</string>
     <string name="purchase_dialouge">Please login to view this content.</string>
     <string name="live_tag">LIVE</string>

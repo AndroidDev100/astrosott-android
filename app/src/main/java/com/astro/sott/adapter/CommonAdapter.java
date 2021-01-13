@@ -480,6 +480,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     CommonPosterAdapter commonPosterAdapter;
     private void posterDataLogic(PosterHolder holder, List<AssetCommonBean> dataList, int position) {
+        Log.w("ImageListSize-->>",dataList.get(position).getRailAssetList().get(0).getImages().size()+"");
         int totalCount = dataList.get(position).getTotalCount();
         new ToolBarHandler(activity).setMoreListener(holder.itemBinding.moreText, AppConstants.TYPE3, dataList.get(position));
 
@@ -566,6 +567,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
     CommonLandscapeAdapter commonLandscapeAdapter;
     private void landscapeDataLogic(LandscapeHolder holder, List<AssetCommonBean> dataList, int position) {
+
         /*int totalCount = dataList.get(position).getTotalCount();
         if (totalCount > 20) {*/
        // new ToolBarHandler(activity).setMoreListener(holder.landscapeRecyclerItemBinding.moreText, AppLevelConstants.TYPE5, dataList.get(position));

@@ -80,13 +80,13 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
         RailCommonData singleItem = itemsList.get(i);
         try {
-            if (singleItem.getImages().size() > 0) {
+            /*if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 // holder.landscapeItemBinding.setImage(assetCommonImages);
                 PrintLogging.printLog("", "TRTWorld-->>" + singleItem.getImages().get(0));
                 ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTo(holder.landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.landscape);
 
-            }
+            }*/
             if (singleItem.getObject().getImages().size() > 0) {
                 setImageUrl(singleItem.getObject());
                 if (landscapeUrl != null)
@@ -112,9 +112,6 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
         }
 
         holder.landscapeItemBinding.setTile(singleItem);
-       /* if (layoutType == AppConstants.Rail7) {
-            recommendedCondition(i, holder.landscapeItemBinding);
-        } else {*/
 
         try {
             mediaTypeCondition(i, holder.landscapeItemBinding);
@@ -123,8 +120,6 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
             holder.landscapeItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
 
         }
-        // }
-
 
     }
 
@@ -138,7 +133,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
         if (asset.getImages().size() > 0) {
             isImage = true;
             for (int i = 0; i < asset.getImages().size(); i++) {
-                if (asset.getImages().get(i).getRatio().equals("16:9")) {
+                if (asset.getImages().get(i).getRatio().equals("16x9")) {
                     String image_url = AppConstants.WEBP_URL+asset.getImages().get(i).getUrl();
                     landscapeUrl = image_url + AppConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.landscape_image_width) + AppConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.landscape_image_height) + AppConstants.QUALITY;
                 }

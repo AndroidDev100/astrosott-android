@@ -656,7 +656,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         });
         setWatchlist();
         // setRailFragment();
-        setRailBaseFragment();
+        //setRailBaseFragment();
 
         setHungamaTag(asset);
     }
