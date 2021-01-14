@@ -7,6 +7,11 @@
     <string name="device_management">Pengurusan peranti</string>
     <string name="app_settings">Tetapan aplikasi</string>
     <string name="content_preferences">Pilihan kandungan</string>
+    <string name="change_language">Tukar bahasa</string>
+    <string name="audio_language">Bahasa audio</string>
+    <string name="subtitle_language">Bahasa sari kata</string>
+
+    <string name="play_over_wifi">Mainkan wifi</string>
 
     <string name="live_viu_tab">DI BAWAH Aplikasi</string>
     <string name="title_more">LAGI</string>
