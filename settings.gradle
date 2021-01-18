@@ -1,1 +1,2 @@
+include ':usermanagment'
 include ':app', ':enveusdk'
