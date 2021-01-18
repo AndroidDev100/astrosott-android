@@ -19,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import com.astro.sott.activities.forgotPassword.ForgotPasswordActivity;
+import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.R;
@@ -27,7 +29,6 @@ import com.astro.sott.activities.myplaylist.ui.MultiplePlaylistActivity;
 import com.astro.sott.activities.accountSettings.ui.AccountSettingsActivity;
 import com.astro.sott.activities.appSettings.ui.AppSettingsActivity;
 import com.astro.sott.activities.deviceMangment.helper.RecyclerTouchListener;
-import com.astro.sott.activities.deviceMangment.ui.DeviceManagementActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.adapter.moreTab.MoreListAdapter;
@@ -111,13 +112,15 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
                         startActivity(intent);
                     }
                 } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.DEVICE_MANAGEMENT)||alList.get(position).equalsIgnoreCase("Pengurusan peranti")) {
+                    Intent intent=new Intent(getActivity(), VerificationActivity.class);
+                    startActivity(intent);
+                   /* if (isLogin) {
 
-                    if (isLogin) {
-                        startActivity(new Intent(homeActivity, DeviceManagementActivity.class).putExtra("from", ""));
+                       // startActivity(new Intent(homeActivity, DeviceManagementActivity.class).putExtra("from", ""));
 
                     } else {
                         new ActivityLauncher(getActivity()).loginActivity(getActivity(), LoginActivity.class, 0, "");
-                    }
+                    }*/
                 } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.LOGOUT)) {
                     //logout
                     confirmDeletion();
