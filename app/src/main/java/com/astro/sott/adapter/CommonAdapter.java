@@ -251,7 +251,9 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         .getDefaultDisplay()
                         .getMetrics(displayMetrics);
                 int width = displayMetrics.widthPixels;
-                ((PotraitCarouselHolder) holder).headerRecyclerItemBinding.slider.addSlides(dataList.get(position).getSlides(), dataList.get(position).getWidgetType(), dataList.get(position).getRailDetail(), position, width);
+                KsPreferenceKey.getInstance(activity).setAutoDuration(dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration() == null ? 0 : dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration());
+                KsPreferenceKey.getInstance(activity).setAutoRotation(dataList.get(position).getRailDetail().getCategory().getAutoRotate() == null ? true : dataList.get(position).getRailDetail().getCategory().getAutoRotate());
+                ((PotraitCarouselHolder) holder).headerRecyclerItemBinding.slider.addSlides(dataList.get(position).getSlides(), dataList.get(position).getWidgetType(), dataList.get(position).getRailDetail(), position, width,dataList.get(position).getRailDetail().getCategory().getAutoRotate() == null ? true : dataList.get(position).getRailDetail().getCategory().getAutoRotate(),dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration() == null ? 0 : dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration());
                 setHeaderAndMoreVisibility(((PotraitCarouselHolder) holder).headerRecyclerItemBinding.headerTitle, ((HeaderHolder) holder).headerRecyclerItemBinding.moreText, dataList.get(position));
                 ((PotraitCarouselHolder) holder).headerRecyclerItemBinding.moreText.setVisibility(View.GONE);
             } catch (Exception e) {
@@ -267,7 +269,9 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 ((HeaderHolder) holder).headerRecyclerItemBinding.shimmerTitleLayout.setVisibility(View.GONE);
                 ((HeaderHolder) holder).headerRecyclerItemBinding.slider.getRootView();
-                ((HeaderHolder) holder).headerRecyclerItemBinding.slider.addSlides(dataList.get(position).getSlides(), dataList.get(position).getWidgetType(), dataList.get(position).getRailDetail(), position);
+                KsPreferenceKey.getInstance(activity).setAutoDuration(dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration() == null ? 0 : dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration());
+                KsPreferenceKey.getInstance(activity).setAutoRotation(dataList.get(position).getRailDetail().getCategory().getAutoRotate() == null ? true : dataList.get(position).getRailDetail().getCategory().getAutoRotate());
+                ((HeaderHolder) holder).headerRecyclerItemBinding.slider.addSlides(dataList.get(position).getSlides(), dataList.get(position).getWidgetType(), dataList.get(position).getRailDetail(), position,dataList.get(position).getRailDetail().getCategory().getAutoRotate() == null ? true : dataList.get(position).getRailDetail().getCategory().getAutoRotate(),dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration() == null ? 0 : dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration());
                 setHeaderAndMoreVisibility(((HeaderHolder) holder).headerRecyclerItemBinding.headerTitle, ((HeaderHolder) holder).headerRecyclerItemBinding.moreText, dataList.get(position));
 
             } catch (Exception e) {
