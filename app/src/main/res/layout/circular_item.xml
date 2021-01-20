@@ -76,6 +76,7 @@
             android:visibility="gone" />
 
         <include
+            android:visibility="gone"
             android:id="@+id/media_type_layout"
             layout="@layout/cw_mediatype_item" />
 

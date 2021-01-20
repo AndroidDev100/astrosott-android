@@ -190,6 +190,14 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } catch (Exception ignored) {
 
         }
+
+        try {
+            AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory);
+            itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
+            itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+        }catch (Exception ignored){
+
+        }
         //holder.potraitItemBinding.setTile(singleItem);
        /* try {
             if (isContinueWatchingRail) {
@@ -223,6 +231,14 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             }
         } catch (Exception ignored) {
+
+        }
+
+        try {
+            AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory);
+            itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
+            itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+        }catch (Exception ignored){
 
         }
         //holder.potraitItemBinding.setTile(singleItem);
@@ -260,6 +276,15 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } catch (Exception ignored) {
 
         }
+
+        try {
+            AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory);
+            itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
+            itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+        }catch (Exception ignored){
+
+        }
+
         //holder.potraitItemBinding.setTile(singleItem);
        /* try {
             if (isContinueWatchingRail) {

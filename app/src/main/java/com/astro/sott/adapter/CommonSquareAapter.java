@@ -136,6 +136,15 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 squareItemBinding.progressBar.setVisibility(View.GONE);
             }
+
+            try {
+                AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory);
+                squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
+                squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            }catch (Exception ignored){
+
+            }
+
             getPremimumMark(i, squareItemBinding.exclusiveLayout);
 
         } catch (Exception e) {
@@ -170,6 +179,15 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 squareItemBinding.progressBar.setVisibility(View.GONE);
             }
+
+            try {
+                AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory);
+                squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
+                squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            }catch (Exception ignored){
+
+            }
+
             getPremimumMark(i, squareItemBinding.exclusiveLayout);
 
         } catch (Exception e) {
@@ -204,6 +222,15 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 squareItemBinding.progressBar.setVisibility(View.GONE);
             }
+
+            try {
+                AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory);
+                squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
+                squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            }catch (Exception ignored){
+
+            }
+
             getPremimumMark(i, squareItemBinding.exclusiveLayout);
 
         } catch (Exception e) {

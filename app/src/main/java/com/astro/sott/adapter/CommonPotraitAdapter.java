@@ -140,6 +140,15 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
             } else {
                 potraitItemBinding.progressBar.setVisibility(View.GONE);
             }
+
+            try {
+                AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory);
+                potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
+                potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            }catch (Exception ignored){
+
+            }
+
             getPremimumMark(i, potraitItemBinding.exclusiveLayout);
 
         } catch (Exception e) {
@@ -177,6 +186,15 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
             } else {
                 potraitItemBinding.progressBar.setVisibility(View.GONE);
             }
+
+            try {
+                AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory);
+                potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
+                potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            }catch (Exception ignored){
+
+            }
+
             getPremimumMark(i, potraitItemBinding.exclusiveLayout);
 
         } catch (Exception e) {
@@ -208,6 +226,15 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPlaceholder(potraitItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.portrait, potraitItemBinding.itemImage), R.drawable.portrait);
 
             }
+
+            try {
+                AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory);
+                potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
+                potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            }catch (Exception ignored){
+
+            }
+
             if (singleItem.getPosition() > 0) {
                 potraitItemBinding.progressBar.setVisibility(View.VISIBLE);
                 potraitItemBinding.progressBar.setProgress(singleItem.getPosition());

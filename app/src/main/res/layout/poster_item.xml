@@ -13,6 +13,7 @@
         android:layout_width="@dimen/_90sdp"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardBackgroundColor="@color/blackColor"
         card_view:cardElevation="1dp"
         card_view:cardMaxElevation="1dp"
         card_view:cardPreventCornerOverlap="false"
