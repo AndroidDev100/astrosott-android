@@ -12,9 +12,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.astro.sott.adapter.CommonPotraitAdapter;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.ContinueWatchingRemove;
+import com.astro.sott.databinding.PosterItemLargeBinding;
+import com.astro.sott.databinding.PosterItemSmallBinding;
 import com.astro.sott.modelClasses.dmsResponse.MediaTypes;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
@@ -27,6 +30,8 @@ import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.R;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.databinding.PosterItemBinding;
+import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
+import com.enveu.enums.RailCardSize;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.Value;
@@ -36,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class CommonPosterAdapter extends RecyclerView.Adapter<CommonPosterAdapter.SingleItemRowHolder>{
+public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final List<RailCommonData> itemsList;
     private final Activity mContext;
@@ -51,13 +56,14 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<CommonPosterAdapte
     private ContinueWatchingRemove watchingRemove;
     private int continueWatchingIndex = -1;
     private int position;
-
-    public CommonPosterAdapter(Activity context, List<RailCommonData> itemsList, int type, ContinueWatchingRemove callBack, int cwIndex, String railName, boolean isContinueWatchingRail) {
+    BaseCategory baseCategory;
+    public CommonPosterAdapter(Activity context, List<RailCommonData> itemsList, int type, ContinueWatchingRemove callBack, int cwIndex, String railName, boolean isContinueWatchingRail, BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
         continueWatchingIndex = cwIndex;
         strRailName = railName;
+        this.baseCategory=baseCat;
         this.isContinueWatchingRail = isContinueWatchingRail;
         try {
             this.watchingRemove = callBack;
@@ -83,12 +89,13 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<CommonPosterAdapte
 
 
     public CommonPosterAdapter(Activity context,
-                               List<RailCommonData> itemsList, int type, String railName) {
+                               List<RailCommonData> itemsList, int type, String railName,BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
         strRailName = railName;
         this.isContinueWatchingRail=false;
+        this.baseCategory=baseCat;
         try {
             responseDmsModel = AppCommonMethods.callpreference(mContext);
             mediaTypes = responseDmsModel.getParams().getMediaTypes();
@@ -111,16 +118,58 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<CommonPosterAdapte
     }
 
     @Override
-    public CommonPosterAdapter.SingleItemRowHolder onCreateViewHolder(ViewGroup parent, int i) {
-        PosterItemBinding binding = DataBindingUtil.inflate(
-                LayoutInflater.from(parent.getContext()),
-                R.layout.poster_item, parent, false);
-        return new CommonPosterAdapter.SingleItemRowHolder(binding);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+        if (baseCategory!=null && baseCategory.getRailCardSize()!=null) {
+            if (baseCategory.getRailCardSize().equalsIgnoreCase(RailCardSize.NORMAL.name())) {
+                PosterItemBinding binding = DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.getContext()),
+                        R.layout.poster_item, parent, false);
+                return new NormalHolder(binding);
+            }
+            else if (baseCategory.getRailCardSize().equalsIgnoreCase(RailCardSize.SMALL.name())) {
+                PosterItemSmallBinding binding = DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.getContext()),
+                        R.layout.poster_item_small, parent, false);
+                return new SmallHolder(binding);
+            }
+            else if (baseCategory.getRailCardSize().equalsIgnoreCase(RailCardSize.LARGE.name())) {
+                PosterItemLargeBinding binding = DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.getContext()),
+                        R.layout.poster_item_large, parent, false);
+                return new LargeHolder(binding);
+            }
+            else {
+                PosterItemBinding binding = DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.getContext()),
+                        R.layout.poster_item, parent, false);
+                return new NormalHolder(binding);
+            }
+        }else {
+            PosterItemBinding binding = DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.getContext()),
+                    R.layout.poster_item, parent, false);
+            return new NormalHolder(binding);
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(CommonPosterAdapter.SingleItemRowHolder holder, int i) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int i) {
 
+        if (holder instanceof NormalHolder) {
+            setNormalValues(((NormalHolder) holder).itemBinding,i);
+        }
+        else if (holder instanceof SmallHolder) {
+            setSmallValues(((SmallHolder) holder).itemBinding,i);
+        }
+        else if (holder instanceof LargeHolder) {
+            setLargeValues(((LargeHolder) holder).itemBinding,i);
+        }
+
+
+    }
+
+    private void setLargeValues(PosterItemLargeBinding itemBinding, int i) {
         RailCommonData singleItem = itemsList.get(i);
         try {
             Log.w("listSizee-->>", "listSizee" + singleItem.getImages().size());
@@ -129,7 +178,77 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<CommonPosterAdapte
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 //holder.potraitItemBinding.setImage(assetCommonImages);
 
-                ImageHelper.getInstance(holder.itemBinding.itemImage.getContext()).loadImageTo(holder.itemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.portrait);
+                ImageHelper.getInstance(itemBinding.itemImage.getContext()).loadImageTo(itemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.portrait);
+            } else {
+                /*if (new KsPreferenceKeys(mContext).getCurrentTheme().equalsIgnoreCase(AppConstants.LIGHT_THEME)) {
+                    ImageHelper.getInstance(holder.itemBinding.itemImage.getContext()).loadImageTo(holder.itemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.shimmer_portrait, holder.itemBinding.itemImage));
+                } else {
+                    ImageHelper.getInstance(holder.itemBinding.itemImage.getContext()).loadImageTo(holder.itemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.portrait_dark, holder.itemBinding.itemImage));
+                }*/
+
+            }
+        } catch (Exception ignored) {
+
+        }
+        //holder.potraitItemBinding.setTile(singleItem);
+       /* try {
+            if (isContinueWatchingRail) {
+                checkContinueWatching(i, holder.itemBinding);
+            }else{
+                mediaTypeCondition(i, holder.itemBinding);
+            }
+        } catch (Exception e) {
+            holder.itemBinding.mediaTypeLayout.metaLayout.setVisibility(View.GONE);
+            holder.itemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
+
+        }*/
+    }
+
+    private void setSmallValues(PosterItemSmallBinding itemBinding, int i) {
+        RailCommonData singleItem = itemsList.get(i);
+        try {
+            Log.w("listSizee-->>", "listSizee" + singleItem.getImages().size());
+            if (singleItem.getImages().size() > 0) {
+                Log.w("", "imageCommining" + singleItem.getImages().get(0).getImageUrl());
+                AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
+                //holder.potraitItemBinding.setImage(assetCommonImages);
+
+                ImageHelper.getInstance(itemBinding.itemImage.getContext()).loadImageTo(itemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.portrait);
+            } else {
+                /*if (new KsPreferenceKeys(mContext).getCurrentTheme().equalsIgnoreCase(AppConstants.LIGHT_THEME)) {
+                    ImageHelper.getInstance(holder.itemBinding.itemImage.getContext()).loadImageTo(holder.itemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.shimmer_portrait, holder.itemBinding.itemImage));
+                } else {
+                    ImageHelper.getInstance(holder.itemBinding.itemImage.getContext()).loadImageTo(holder.itemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.portrait_dark, holder.itemBinding.itemImage));
+                }*/
+
+            }
+        } catch (Exception ignored) {
+
+        }
+        //holder.potraitItemBinding.setTile(singleItem);
+       /* try {
+            if (isContinueWatchingRail) {
+                checkContinueWatching(i, holder.itemBinding);
+            }else{
+                mediaTypeCondition(i, holder.itemBinding);
+            }
+        } catch (Exception e) {
+            holder.itemBinding.mediaTypeLayout.metaLayout.setVisibility(View.GONE);
+            holder.itemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
+
+        }*/
+    }
+
+    private void setNormalValues(PosterItemBinding itemBinding, int i) {
+        RailCommonData singleItem = itemsList.get(i);
+        try {
+            Log.w("listSizee-->>", "listSizee" + singleItem.getImages().size());
+            if (singleItem.getImages().size() > 0) {
+                Log.w("", "imageCommining" + singleItem.getImages().get(0).getImageUrl());
+                AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
+                //holder.potraitItemBinding.setImage(assetCommonImages);
+
+                ImageHelper.getInstance(itemBinding.itemImage.getContext()).loadImageTo(itemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.portrait);
             } else {
                 /*if (new KsPreferenceKeys(mContext).getCurrentTheme().equalsIgnoreCase(AppConstants.LIGHT_THEME)) {
                     ImageHelper.getInstance(holder.itemBinding.itemImage.getContext()).loadImageTo(holder.itemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.shimmer_portrait, holder.itemBinding.itemImage));
@@ -268,11 +387,11 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<CommonPosterAdapte
         return (null != itemsList ? itemsList.size() : 0);
     }
 
-    public class SingleItemRowHolder extends RecyclerView.ViewHolder {
+    public class NormalHolder extends RecyclerView.ViewHolder {
 
         final PosterItemBinding itemBinding;
 
-        SingleItemRowHolder(PosterItemBinding potraitItemBind) {
+        NormalHolder(PosterItemBinding potraitItemBind) {
             super(potraitItemBind.getRoot());
             itemBinding = potraitItemBind;
             final String name = mContext.getClass().getSimpleName();
@@ -288,6 +407,80 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<CommonPosterAdapte
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
                // GAManager.getInstance().setEvent(GAManager.BROWSING, GAManager.RAIL_ASSET_CLICKED, GAManager.RAIL_NAVIGATION, GAManager.zero);
+
+                new ActivityLauncher(mContext).railClickCondition(strMenuNavigationName, strRailName, name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType,itemsList, (_url, position, type, commonData) -> {
+                    if (NetworkConnectivity.isOnline(mContext)) {
+                        detailRailClick.detailItemClicked(_url, position, type, commonData);
+                    } else {
+                        ToastHandler.show(mContext.getResources().getString(R.string.no_internet_connection), mContext);
+                    }
+
+                });
+
+
+            });
+        }
+
+    }
+
+
+    public class SmallHolder extends RecyclerView.ViewHolder {
+
+        final PosterItemSmallBinding itemBinding;
+
+        SmallHolder(PosterItemSmallBinding potraitItemBind) {
+            super(potraitItemBind.getRoot());
+            itemBinding = potraitItemBind;
+            final String name = mContext.getClass().getSimpleName();
+            itemBinding.mediaTypeLayout.deleteIcon.setOnClickListener(view -> {
+                position = getLayoutPosition();
+                // showAlertDialog(mContext.getResources().getString(R.string.remove_continue_watching_item), mContext.getResources().getString(R.string.yes), mContext.getResources().getString(R.string.no));
+            });
+
+
+            itemBinding.getRoot().setOnClickListener(view -> {
+                if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                    return;
+                }
+                lastClickTime = SystemClock.elapsedRealtime();
+                // GAManager.getInstance().setEvent(GAManager.BROWSING, GAManager.RAIL_ASSET_CLICKED, GAManager.RAIL_NAVIGATION, GAManager.zero);
+
+                new ActivityLauncher(mContext).railClickCondition(strMenuNavigationName, strRailName, name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType,itemsList, (_url, position, type, commonData) -> {
+                    if (NetworkConnectivity.isOnline(mContext)) {
+                        detailRailClick.detailItemClicked(_url, position, type, commonData);
+                    } else {
+                        ToastHandler.show(mContext.getResources().getString(R.string.no_internet_connection), mContext);
+                    }
+
+                });
+
+
+            });
+        }
+
+    }
+
+
+    public class LargeHolder extends RecyclerView.ViewHolder {
+
+        final PosterItemLargeBinding itemBinding;
+
+        LargeHolder(PosterItemLargeBinding potraitItemBind) {
+            super(potraitItemBind.getRoot());
+            itemBinding = potraitItemBind;
+            final String name = mContext.getClass().getSimpleName();
+            itemBinding.mediaTypeLayout.deleteIcon.setOnClickListener(view -> {
+                position = getLayoutPosition();
+                // showAlertDialog(mContext.getResources().getString(R.string.remove_continue_watching_item), mContext.getResources().getString(R.string.yes), mContext.getResources().getString(R.string.no));
+            });
+
+
+            itemBinding.getRoot().setOnClickListener(view -> {
+                if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                    return;
+                }
+                lastClickTime = SystemClock.elapsedRealtime();
+                // GAManager.getInstance().setEvent(GAManager.BROWSING, GAManager.RAIL_ASSET_CLICKED, GAManager.RAIL_NAVIGATION, GAManager.zero);
 
                 new ActivityLauncher(mContext).railClickCondition(strMenuNavigationName, strRailName, name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType,itemsList, (_url, position, type, commonData) -> {
                     if (NetworkConnectivity.isOnline(mContext)) {

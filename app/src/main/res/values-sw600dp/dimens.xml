@@ -25,8 +25,22 @@
 
     <dimen name="landscape_item_width">220dp</dimen>
     <dimen name="landscape_item_height">124dp</dimen>
+
+    <dimen name="landscape_item_width_small">146dp</dimen>
+    <dimen name="landscape_item_height_small">82dp</dimen>
+
+    <dimen name="landscape_item_width_large">293dp</dimen>
+    <dimen name="landscape_item_height_large">165dp</dimen>
+
     <dimen name="square_item_height">170dp</dimen>
     <dimen name="square_item_width">170dp</dimen>
+
+    <dimen name="square_item_height_small">113dp</dimen>
+    <dimen name="square_item_width_small">113dp</dimen>
+
+    <dimen name="square_item_height_large">226dp</dimen>
+    <dimen name="square_item_width_large">226dp</dimen>
+
     <dimen name="listing_Recycler_margin_left">15dp</dimen>
 
     <dimen name="crousel_title_margin_left">16dp</dimen>

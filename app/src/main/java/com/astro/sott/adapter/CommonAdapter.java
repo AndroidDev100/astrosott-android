@@ -430,11 +430,11 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         removeAssetApi(assetID, singleSectionItems, continueWatchingAdapter, continueWatchingRemove, listSize, position, continueWatchingIndex);
                     }
                 }
-            }, position, dataList.get(position).getTitle(), isContinueRail);
+            }, position, dataList.get(position).getTitle(), isContinueRail,dataList.get(position).getCategory());
 
 
         } else {
-            commonCircleAdapter = new CommonCircleAdapter(activity, singleSectionItems, AppConstants.Rail2, dataList.get(position).getTitle());
+            commonCircleAdapter = new CommonCircleAdapter(activity, singleSectionItems, AppConstants.Rail2, dataList.get(position).getTitle(),dataList.get(position).getCategory());
         }
         // setRecyclerProperties(((CircleHolder) holder).circularRecyclerItemBinding.recyclerViewList1,false);
         ((CircleHolder) holder).circularRecyclerItemBinding.recyclerViewList1.setAdapter(commonCircleAdapter);
@@ -504,11 +504,11 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         removeAssetApi(assetID, singleSectionItems, continueWatchingAdapter, continueWatchingRemove, listSize, position, continueWatchingIndex);
                     }
                 }
-            }, position, dataList.get(position).getTitle(), isContinueRail);
+            }, position, dataList.get(position).getTitle(), isContinueRail,dataList.get(position).getCategory());
 
 
         } else {
-            commonPosterAdapter = new CommonPosterAdapter(activity, singleSectionItems, AppConstants.Rail3, dataList.get(position).getTitle());
+            commonPosterAdapter = new CommonPosterAdapter(activity, singleSectionItems, AppConstants.Rail3, dataList.get(position).getTitle(),dataList.get(position).getCategory());
         }
 
         holder.itemBinding.recyclerViewList4.setAdapter(commonPosterAdapter);
@@ -616,9 +616,9 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                        // removeAssetApi2(assetID, singleSectionItems, commonLandscapeAdapter, continueWatchingRemove, listSize, position, continueWatchingIndex);
                     }
                 }
-            }, position, dataList.get(position).getTitle(), isContinueRail);
+            }, position, dataList.get(position).getTitle(), isContinueRail,dataList.get(position).getRailDetail().getCategory());
         } else {
-            commonLandscapeAdapter = new CommonLandscapeAdapter(activity, singleSectionItems, AppConstants.Rail5, dataList.get(position).getTitle());
+            commonLandscapeAdapter = new CommonLandscapeAdapter(activity, singleSectionItems, AppConstants.Rail5, dataList.get(position).getTitle(),dataList.get(position).getRailDetail().getCategory());
 
         }
 
@@ -671,7 +671,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         List<RailCommonData> singleSectionItems = dataList.get(position).getRailAssetList();
 
-        CommonSquareAapter commonSquareAapter = new CommonSquareAapter(activity, singleSectionItems, AppLevelConstants.Rail4);
+        CommonSquareAapter commonSquareAapter = new CommonSquareAapter(activity, singleSectionItems, AppLevelConstants.Rail4,dataList.get(position).getCategory());
         holder.squareRecyclerItemBinding.recyclerViewList4.setAdapter(commonSquareAapter);
     }
 
@@ -692,7 +692,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         List<RailCommonData> singleSectionItems = dataList.get(position).getRailAssetList();
 
-        CommonPotraitAdapter commonPotraitAdapter = new CommonPotraitAdapter(activity, singleSectionItems, AppLevelConstants.Rail3);
+        CommonPotraitAdapter commonPotraitAdapter = new CommonPotraitAdapter(activity, singleSectionItems, AppLevelConstants.Rail3,dataList.get(position).getRailDetail().getCategory());
         holder.potraitRecyclerItemBinding.recyclerViewList4.setAdapter(commonPotraitAdapter);
     }
 

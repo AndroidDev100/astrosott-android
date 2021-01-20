@@ -135,7 +135,7 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
         holder.landscapeRecyclerItemBinding.shimmerTitleLayout.setVisibility(View.GONE);
         //holder.landscapeRecyclerItemBinding.headerTitleLayout.setVisibility(View.VISIBLE);
         List<RailCommonData> singleSectionItems = dataList.get(position).getRailAssetList();
-        CommonPotraitAdapter commonSquareAapter = new CommonPotraitAdapter(activity, singleSectionItems, AppLevelConstants.Rail4);
+        CommonPotraitAdapter commonSquareAapter = new CommonPotraitAdapter(activity, singleSectionItems, AppLevelConstants.Rail4,dataList.get(position).getCategory());
 
         holder.landscapeRecyclerItemBinding.recyclerViewList4.setAdapter(commonSquareAapter);
     }
@@ -151,7 +151,7 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
         holder.landscapeRecyclerItemBinding.headerTitle.setText(dataList.get(position).getTitle());
         holder.landscapeRecyclerItemBinding.shimmerTitleLayout.setVisibility(View.GONE);
         List<RailCommonData> singleSectionItems = dataList.get(position).getRailAssetList();
-        CommonLandscapeAdapter commonLandscapeAdapter = new CommonLandscapeAdapter(activity, singleSectionItems, AppLevelConstants.Rail5);
+        CommonLandscapeAdapter commonLandscapeAdapter = new CommonLandscapeAdapter(activity, singleSectionItems, AppLevelConstants.Rail5,dataList.get(position).getCategory());
         holder.landscapeRecyclerItemBinding.recyclerViewList4.setAdapter(commonLandscapeAdapter);
     }
 
@@ -166,7 +166,7 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
         holder.squareRecyclerItemBinding.headerTitle.setText(dataList.get(position).getTitle());
         holder.squareRecyclerItemBinding.shimmerTitleLayout.setVisibility(View.GONE);
         List<RailCommonData> singleSectionItems = dataList.get(position).getRailAssetList();
-        CommonSquareAapter commonSquareAapter = new CommonSquareAapter(activity, singleSectionItems, AppLevelConstants.Rail4);
+        CommonSquareAapter commonSquareAapter = new CommonSquareAapter(activity, singleSectionItems, AppLevelConstants.Rail4,dataList.get(position).getCategory());
         holder.squareRecyclerItemBinding.recyclerViewList4.setAdapter(commonSquareAapter);
     }
 
@@ -182,7 +182,7 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
         }*/
         holder.potraitRecyclerItemBinding.shimmerTitleLayout.setVisibility(View.GONE);
         List<RailCommonData> singleSectionItems = dataList.get(position).getRailAssetList();
-        CommonPotraitAdapter commonPotraitAdapter = new CommonPotraitAdapter(activity, singleSectionItems, AppLevelConstants.Rail3);
+        CommonPotraitAdapter commonPotraitAdapter = new CommonPotraitAdapter(activity, singleSectionItems, AppLevelConstants.Rail3,dataList.get(position).getCategory());
         holder.potraitRecyclerItemBinding.recyclerViewList4.setAdapter(commonPotraitAdapter);
     }
 
