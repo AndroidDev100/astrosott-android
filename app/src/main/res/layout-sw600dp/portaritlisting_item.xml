@@ -42,7 +42,7 @@
                     />
 
                 <include
-
+                    android:visibility="gone"
                     android:id="@+id/exclusive_layout"
                     layout="@layout/exclusive_item" />
 

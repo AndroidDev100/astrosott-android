@@ -50,14 +50,15 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
         super(context);
     }
 
+    AttributeSet attrset;
     public Slider(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        parseCustomAttributes(attrs);
+        attrset=attrs;
     }
 
     public Slider(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        parseCustomAttributes(attrs);
+        attrset=attrs;
     }
 
     private void parseCustomAttributes(AttributeSet attributeSet) {
@@ -70,7 +71,7 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
                     unSelectedSlideIndicator = typedArray.getDrawable(R.styleable.BannerSlider_unselected_slideIndicator);
                     defaultIndicator = typedArray.getInt(R.styleable.BannerSlider_defaultIndicators, IndicatorShape.CIRCLE);
                     mustAnimateIndicators = typedArray.getBoolean(R.styleable.BannerSlider_animateIndicators, true);
-                    mustLoopSlides = typedArray.getBoolean(R.styleable.BannerSlider_loopSlides, false);
+                    mustLoopSlides = typedArray.getBoolean(R.styleable.BannerSlider_loopSlides, true);
                     hideIndicators = typedArray.getBoolean(R.styleable.BannerSlider_hideIndicators, false);
                     int slideShowIntervalSecond = typedArray.getInt(R.styleable.BannerSlider_intervalSecond, 5);
                     slideShowInterval = slideShowIntervalSecond * 1000;
@@ -86,8 +87,10 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
         }
     }
 
-
-    public void addSlides(ArrayList<Slide> slideList, int type, VIUChannel indicators, int position) {
+    boolean autoRotate=true;
+    int autoRotateDuration=0;
+    public void addSlides(ArrayList<Slide> slideList, int type, VIUChannel indicators, int position,boolean auto,int rotateDuration) {
+        parseCustomAttributes(attrset);
         if (slideList == null || slideList.size() == 0)
             return;
 
@@ -114,6 +117,8 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
 
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        autoRotate=auto;
+        autoRotateDuration=rotateDuration;
         if (tabletSize) {
             viewPager.setPadding(getViewPagerPadding(type), 5, getViewPagerPadding(type), 10);
         } else {
@@ -140,8 +145,12 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
             slideIndicatorsGroup.setBackgroundColor(getContext().getResources().getColor(R.color.transparentColor));
         }
 
-        if (slideCount > 1)
-            setupTimer();
+        if (slideCount > 1){
+            if (autoRotate){
+                setupTimer();
+            }
+        }
+
     }
 
     @Override
@@ -170,7 +179,10 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
                 handler.removeCallbacksAndMessages(null);
                 break;
             case ViewPager.SCROLL_STATE_IDLE:
-                setupTimer();
+                if (autoRotate){
+                    setupTimer();
+                }
+
                 break;
         }
     }

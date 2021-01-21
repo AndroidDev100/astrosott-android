@@ -56,15 +56,15 @@ public class SliderPotrait extends RelativeLayout implements ViewPager.OnPageCha
     public SliderPotrait(@NonNull Context context) {
         super(context);
     }
-
+    AttributeSet attrset;
     public SliderPotrait(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        parseCustomAttributes(attrs);
+        attrset=attrs;
     }
 
     public SliderPotrait(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        parseCustomAttributes(attrs);
+        attrset=attrs;
     }
 
     private void parseCustomAttributes(AttributeSet attributeSet) {
@@ -77,7 +77,7 @@ public class SliderPotrait extends RelativeLayout implements ViewPager.OnPageCha
                     unSelectedSlideIndicator = typedArray.getDrawable(R.styleable.BannerSlider_unselected_slideIndicator);
                     defaultIndicator = typedArray.getInt(R.styleable.BannerSlider_defaultIndicators, IndicatorShape.CIRCLE);
                     mustAnimateIndicators = typedArray.getBoolean(R.styleable.BannerSlider_animateIndicators, true);
-                    mustLoopSlides = typedArray.getBoolean(R.styleable.BannerSlider_loopSlides, false);
+                    mustLoopSlides = typedArray.getBoolean(R.styleable.BannerSlider_loopSlides, true);
                     hideIndicators = typedArray.getBoolean(R.styleable.BannerSlider_hideIndicators, false);
                     int slideShowIntervalSecond = typedArray.getInt(R.styleable.BannerSlider_intervalSecond, 3);
                     slideShowInterval = slideShowIntervalSecond * 1000;
@@ -95,7 +95,10 @@ public class SliderPotrait extends RelativeLayout implements ViewPager.OnPageCha
     }
 
     SliderAdapter adapter;
-    public void addSlides(ArrayList<Slide> slideList, int type, VIUChannel indicators, int position, int width) {
+    boolean autoRotate=true;
+    int autoRotateDuration=0;
+    public void addSlides(ArrayList<Slide> slideList, int type, VIUChannel indicators, int position, int width,boolean auto,int rotateDuration) {
+        parseCustomAttributes(attrset);
         if (slideList == null || slideList.size() == 0)
             return;
 
@@ -120,6 +123,9 @@ public class SliderPotrait extends RelativeLayout implements ViewPager.OnPageCha
         viewPager.setCurrentItem(1);
         viewPager.setClipToPadding(false);
         int mMargin = indicatorSize * 3;
+
+        autoRotate=auto;
+        autoRotateDuration=rotateDuration;
 
         int paddingVal = -1;
 

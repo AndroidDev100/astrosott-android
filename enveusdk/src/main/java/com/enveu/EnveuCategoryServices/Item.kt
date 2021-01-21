@@ -15,11 +15,23 @@ data class Item(
         @field:SerializedName("listingLayout")
         val listingLayout: String? = null,
 
+        @field:SerializedName("railCardType")
+        val railCardType: String? = null,
+
+        @field:SerializedName("railCardSize")
+        val railCardSize: String? = null,
+
         @field:SerializedName("showHeader")
         val showHeader: Boolean? = null,
 
+        @field:SerializedName("autoRotate")
+        val autoRotate: Boolean? = null,
+
         @field:SerializedName("listingLayoutContentSize")
         val listingLayoutContentSize: Int? = null,
+
+        @field:SerializedName("autoRotateDuration")
+        val autoRotateDuration: Int? = null,
 
         @field:SerializedName("pageSize")
         val pageSize: Int? = null,
@@ -59,5 +71,6 @@ data class Item(
 
         @field:SerializedName("adUnitInfo")
         val adUnitInfo: AdUnitInfo? = null
+
 
 )

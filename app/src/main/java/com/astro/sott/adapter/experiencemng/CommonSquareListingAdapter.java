@@ -16,6 +16,7 @@ import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.databinding.SquarelistingNewBinding;
+import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.Value;
@@ -40,12 +41,13 @@ public class CommonSquareListingAdapter extends RecyclerView.Adapter<CommonSquar
     private String strRailName;
     ResponseDmsModel responseDmsModel;
     MediaTypes mediaTypes;
-
-    public CommonSquareListingAdapter(Activity context, List<RailCommonData> itemsList, int type, String railName) {
+    BaseCategory baseCategory;
+    public CommonSquareListingAdapter(Activity context, List<RailCommonData> itemsList, int type, String railName, BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
         strRailName = railName;
+        this.baseCategory=baseCat;
         try {
             this.detailRailClick = ((DetailRailClick) context);
             responseDmsModel = AppCommonMethods.callpreference(mContext);
@@ -76,8 +78,18 @@ public class CommonSquareListingAdapter extends RecyclerView.Adapter<CommonSquar
 
         }
 
+
+            try {
+                AppCommonMethods.handleTitleDesc(holder.squareItemBinding.mediaTypeLayout.metaLayout,holder.squareItemBinding.mediaTypeLayout.lineOne,holder.squareItemBinding.mediaTypeLayout.lineTwo,baseCategory);
+                holder.squareItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
+                holder.squareItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
+            }catch (Exception ignored){
+
+            }
+
+
         holder.squareItemBinding.setTile(singleItem);
-        mediaTypeCondition(i, holder.squareItemBinding);
+       // mediaTypeCondition(i, holder.squareItemBinding);
     }
 
     private void mediaTypeCondition(int position, SquarelistingNewBinding potraitItemBinding) {

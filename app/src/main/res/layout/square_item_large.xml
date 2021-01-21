@@ -4,7 +4,7 @@
 
     <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         style="@style/Custom.Widget.CardView"
-        android:layout_width="@dimen/square_item_width"
+        android:layout_width="@dimen/square_item_height_large"
         android:layout_height="wrap_content"
         android:elevation="0dp"
         card_view:cardBackgroundColor="@color/transparentColor"
@@ -20,9 +20,9 @@
 
         <RelativeLayout
             android:id="@+id/titleLayout"
-            android:layout_width="@dimen/square_item_width"
+            android:layout_width="@dimen/square_item_width_large"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/square_item_height"
+            android:layout_marginTop="@dimen/square_item_height_large"
             android:background="@color/search_toolbar_background"
             android:visibility="visible">
 

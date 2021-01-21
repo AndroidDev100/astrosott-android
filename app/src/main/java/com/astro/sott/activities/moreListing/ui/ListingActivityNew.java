@@ -173,23 +173,23 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
             PrintLogging.printLog("", "layoutType-->>" + layout);
             mIsLoading = true;
             if (layout.equalsIgnoreCase(ImageType.PR1.name())) {
-                commonPotraitListingAdapter = new CommonPotraitListingAdapter(this, railList, AppConstants.Rail3, assetCommonBean.getTitle());
+                commonPotraitListingAdapter = new CommonPotraitListingAdapter(this, railList, AppConstants.Rail3, assetCommonBean.getTitle(),category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonPotraitListingAdapter);
             } else if (layout.equalsIgnoreCase(ImageType.PR2.name())) {
-                commonPosterListingAdapter = new CommonPosterListingAdapter(this, railList, AppConstants.Rail3, assetCommonBean.getTitle());
+                commonPosterListingAdapter = new CommonPosterListingAdapter(this, railList, AppConstants.Rail3, assetCommonBean.getTitle(),category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonPosterListingAdapter);
             } else if (layout.equalsIgnoreCase(ImageType.SQR.name())) {
-                commonSquareListingAdapter = new CommonSquareListingAdapter(this, railList, AppConstants.Rail4, assetCommonBean.getTitle());
+                commonSquareListingAdapter = new CommonSquareListingAdapter(this, railList, AppConstants.Rail4, assetCommonBean.getTitle(),category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonSquareListingAdapter);
             } else if (layout.equalsIgnoreCase(ImageType.CIR.name())) {
                 Log.e("IMAGE", String.valueOf(railList.size()));
                 commonCircleAdapter = new CommonCircleListingAdapter(this, railList, AppConstants.Rail2, assetCommonBean.getTitle());
                 getBinding().listRecyclerview.setAdapter(commonCircleAdapter);
             } else if (layout.equalsIgnoreCase(ImageType.LDS.name())) {
-                commonLandscapeListingAdapter = new CommonLandscapeListingAdapteNew(this, railList, AppConstants.Rail7, assetCommonBean.getTitle());
+                commonLandscapeListingAdapter = new CommonLandscapeListingAdapteNew(this, railList, AppConstants.Rail7, assetCommonBean.getTitle(),category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonLandscapeListingAdapter);
             } else {
-                commonLandscapeListingAdapter = new CommonLandscapeListingAdapteNew(this, railList, AppConstants.Rail5, assetCommonBean.getTitle());
+                commonLandscapeListingAdapter = new CommonLandscapeListingAdapteNew(this, railList, AppConstants.Rail5, assetCommonBean.getTitle(),category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonLandscapeListingAdapter);
             }
 
@@ -208,7 +208,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
 
 
     }
-
+    VIUChannel category;
     private void getIntentValue() {
         try {
             layout = getIntent().getExtras().getString("layouttype");
@@ -228,7 +228,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
                 }
             });
 
-            VIUChannel category = (VIUChannel) getIntent().getExtras().getParcelable("baseCategory");
+            category = (VIUChannel) getIntent().getExtras().getParcelable("baseCategory");
             this.isShowFilter = getIntent().getExtras().getBoolean("hasFilter");
             this.isSortable = category.isSortable();
             this.pageSize = category.getMorePageSize();

@@ -15,6 +15,8 @@ public class KsPreferenceKey {
     private static final String DOWNLOAD_OVER_WIFI = "downloadOverWifi";
     private static final String AUDIO_LANGUAGE = "audio_language_astr";
     private static final String SUBTITLE_LANGUAGE = "subtitle_language_astr";
+    public static final String AUTO_ROTATE = "auto_rotate";
+    public static final String AUTO_DURATION = "auto_rotate_duration";
 
 
 
@@ -335,5 +337,21 @@ public class KsPreferenceKey {
 
     public int getCWListSize() {
         return session.getInt("cw_list_size", 0);
+    }
+
+    public int getAutoDuration() {
+        return session.getInt(AUTO_DURATION, 0);
+    }
+
+    public void setAutoDuration(int value) {
+        session.setInt(AUTO_DURATION, value);
+    }
+
+    public boolean getAutoRotation() {
+        return session.getBoolean(AUTO_ROTATE, true);
+    }
+
+    public void setAutoRotation(boolean value) {
+        session.setBoolean(AUTO_ROTATE, value);
     }
 }

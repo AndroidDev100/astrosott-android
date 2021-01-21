@@ -19,6 +19,7 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.bumptech.glide.Glide;
 import com.astro.sott.databinding.LandscapeListingNewBinding;
 import com.astro.sott.utils.constants.AppConstants;
+import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
@@ -45,12 +46,13 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
     DisplayMetrics displaymetrics;
     boolean isTablet = false;
 
-
-    public CommonLandscapeListingAdapteNew(Activity context, List<RailCommonData> itemsList, int type, String railName) {
+   BaseCategory baseCategory;
+    public CommonLandscapeListingAdapteNew(Activity context, List<RailCommonData> itemsList, int type, String railName, BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
         strRailName = railName;
+        this.baseCategory=baseCat;
         try {
             displaymetrics = new DisplayMetrics();
             mContext.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -87,6 +89,14 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
                 ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTo(holder.landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.landscape);
 
             }*/
+            try {
+                AppCommonMethods.handleTitleDesc(holder.landscapeItemBinding.mediaTypeLayout.metaLayout,holder.landscapeItemBinding.mediaTypeLayout.lineOne,holder.landscapeItemBinding.mediaTypeLayout.lineTwo,baseCategory);
+                holder.landscapeItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
+                holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
+            }catch (Exception ignored){
+
+            }
+
             if (singleItem.getObject().getImages().size() > 0) {
                 setImageUrl(singleItem.getObject());
                 if (landscapeUrl != null)
@@ -114,7 +124,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
         holder.landscapeItemBinding.setTile(singleItem);
 
         try {
-            mediaTypeCondition(i, holder.landscapeItemBinding);
+           // mediaTypeCondition(i, holder.landscapeItemBinding);
         } catch (Exception e) {
             holder.landscapeItemBinding.mediaTypeLayout.metaLayout.setVisibility(View.GONE);
             holder.landscapeItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);

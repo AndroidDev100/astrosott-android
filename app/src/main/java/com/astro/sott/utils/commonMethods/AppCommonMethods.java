@@ -16,6 +16,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,6 +43,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.astro.sott.R;
 import com.astro.sott.utils.constants.AppConstants;
+import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
+import com.enveu.enums.RailCardType;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kaltura.client.types.Asset;
@@ -1135,5 +1140,69 @@ public class AppCommonMethods {
         return mDetailList;
     }
 
+
+    public static void handleTitleDesc(RelativeLayout titleLayout, TextView tvTitle, TextView tvDescription, BaseCategory baseCategory) {
+        try {
+            if (baseCategory!=null){
+                if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())){
+                    titleLayout.setVisibility(View.VISIBLE);
+                }else {
+                    //titleLayout.setVisibility(View.VISIBLE);
+                    if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE.name())){
+                        titleLayout.setVisibility(View.VISIBLE);
+                        tvTitle.setVisibility(View.VISIBLE);
+                    }else {
+                        if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE_DESC.name())){
+                            titleLayout.setVisibility(View.VISIBLE);
+                            tvTitle.setVisibility(View.VISIBLE);
+                            tvDescription.setVisibility(View.VISIBLE);
+                        }else {
+                            titleLayout.setVisibility(View.GONE);
+                            tvTitle.setVisibility(View.GONE);
+                            tvDescription.setVisibility(View.GONE);
+                        }
+                    }
+
+                }
+
+            }
+        }catch (Exception ignored){
+            titleLayout.setVisibility(View.GONE);
+            tvTitle.setVisibility(View.GONE);
+            tvDescription.setVisibility(View.GONE);
+        }
+    }
+
+    public static void handleTitleDesc(LinearLayout titleLayout, TextView tvTitle, TextView tvDescription, BaseCategory baseCategory) {
+        try {
+            if (baseCategory!=null){
+                if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())){
+                    titleLayout.setVisibility(View.VISIBLE);
+                }else {
+                    //titleLayout.setVisibility(View.VISIBLE);
+                    if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE.name())){
+                        titleLayout.setVisibility(View.VISIBLE);
+                        tvTitle.setVisibility(View.VISIBLE);
+                    }else {
+                        if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE_DESC.name())){
+                            titleLayout.setVisibility(View.VISIBLE);
+                            tvTitle.setVisibility(View.VISIBLE);
+                            tvDescription.setVisibility(View.VISIBLE);
+                        }else {
+                            titleLayout.setVisibility(View.GONE);
+                            tvTitle.setVisibility(View.GONE);
+                            tvDescription.setVisibility(View.GONE);
+                        }
+                    }
+
+                }
+
+            }
+        }catch (Exception ignored){
+            titleLayout.setVisibility(View.GONE);
+            tvTitle.setVisibility(View.GONE);
+            tvDescription.setVisibility(View.GONE);
+        }
+    }
 
 }
