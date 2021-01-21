@@ -1,11 +1,13 @@
 package com.astro.sott.fragments.moreTab.ui;
 
 import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -19,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -54,7 +57,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private  MoreFragmentViewModel viewModel;
+    private MoreFragmentViewModel viewModel;
     private String oldLang, newLang;
 
     private OnFragmentInteractionListener mListener;
@@ -102,16 +105,16 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
             public void onClick(View view, int position) {
                 isLogin = KsPreferenceKey.getInstance(homeActivity).getUserActive();
 
-                if (alList.get(position).equalsIgnoreCase(AppLevelConstants.APP_SETTINGS)||alList.get(position).equalsIgnoreCase("Tetapan aplikasi")) {
-                    if(!getResources().getBoolean(R.bool.isTablet)) {
+                if (alList.get(position).equalsIgnoreCase(AppLevelConstants.APP_SETTINGS) || alList.get(position).equalsIgnoreCase("Tetapan aplikasi")) {
+                    if (!getResources().getBoolean(R.bool.isTablet)) {
                         Intent intent = new Intent(homeActivity, AppSettingsActivity.class);
                         startActivity(intent);
-                    }else{
+                    } else {
                         Intent intent = new Intent(homeActivity, TabletAppSettingsActivity.class);
                         startActivity(intent);
                     }
-                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.DEVICE_MANAGEMENT)||alList.get(position).equalsIgnoreCase("Pengurusan peranti")) {
-                    Intent intent=new Intent(getActivity(), VerificationActivity.class);
+                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.DEVICE_MANAGEMENT) || alList.get(position).equalsIgnoreCase("Pengurusan peranti")) {
+                    Intent intent = new Intent(getActivity(), AstrLoginActivity.class);
                     startActivity(intent);
                    /* if (isLogin) {
 
@@ -126,15 +129,15 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
                 } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.LOGIN)) {
                     new ActivityLauncher(getActivity()).loginActivity(getActivity(), LoginActivity.class, 0, "");
 //                    forceLogin();
-                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.TNC)||alList.get(position).equalsIgnoreCase("Syarat & syarat")) {
+                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.TNC) || alList.get(position).equalsIgnoreCase("Syarat & syarat")) {
                     Intent intent = new Intent(homeActivity, WebViewActivity.class);
                     intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC);
                     startActivity(intent);
-                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.HELP)||alList.get(position).equalsIgnoreCase("Tolonglah")) {
+                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.HELP) || alList.get(position).equalsIgnoreCase("Tolonglah")) {
                     Intent intent = new Intent(homeActivity, WebViewActivity.class);
                     intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
                     startActivity(intent);
-                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.ACCOUNT_SETTINGS)||alList.get(position).equalsIgnoreCase("Tetapan akaun")) {
+                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.ACCOUNT_SETTINGS) || alList.get(position).equalsIgnoreCase("Tetapan akaun")) {
                     if (isLogin) {
                         new ActivityLauncher(getActivity()).accountSetting(getActivity(), AccountSettingsActivity.class);
                     } else {
@@ -142,7 +145,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
                     }
 
 
-                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.PLAYLIST)||alList.get(position).equalsIgnoreCase("Senarai main")) {
+                } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.PLAYLIST) || alList.get(position).equalsIgnoreCase("Senarai main")) {
 
                     if (isLogin) {
                         new ActivityLauncher(getActivity()).multipleplaylistActivity(getActivity(), MultiplePlaylistActivity.class);
@@ -157,7 +160,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
             private void confirmDeletion() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(homeActivity, R.style.AlertDialogStyle);
                 builder.setTitle(getResources().getString(R.string.dialog));
-                if(getActivity() !=null) {
+                if (getActivity() != null) {
                     builder.setMessage(getActivity().getResources().getString(R.string.logout_confirmation_message))
                             .setCancelable(true)
                             .setPositiveButton(getResources().getString(R.string.yes), (dialog, id) -> {
@@ -262,13 +265,13 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
         getBinding().myRecyclerView.hasFixedSize();
         getBinding().myRecyclerView.setNestedScrollingEnabled(false);
         getBinding().myRecyclerView.setLayoutManager(new LinearLayoutManager(homeActivity, RecyclerView.VERTICAL, false));
-      if(getResources().getBoolean(R.bool.isTablet)){
+        if (getResources().getBoolean(R.bool.isTablet)) {
 
-      }else {
+        } else {
 
-          DividerItemDecoration itemDecor = new DividerItemDecoration(homeActivity, LinearLayoutManager.VERTICAL);
-          getBinding().myRecyclerView.addItemDecoration(itemDecor);
-      }
+            DividerItemDecoration itemDecor = new DividerItemDecoration(homeActivity, LinearLayoutManager.VERTICAL);
+            getBinding().myRecyclerView.addItemDecoration(itemDecor);
+        }
 
 
     }
