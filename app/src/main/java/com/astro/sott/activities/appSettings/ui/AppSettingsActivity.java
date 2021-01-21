@@ -44,13 +44,13 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
         newLang = new KsPreferenceKey(this).getAppLangName();
         if (!oldLang.equals(newLang)) {
             oldLang = newLang;
-            if (newLang.equalsIgnoreCase("ms")) {
+           /* if (newLang.equalsIgnoreCase("ms")) {
                 getSupportActionBar().setTitle("Tetapan aplikasi");
 
-            } else {
+            } else {*/
                 getSupportActionBar().setTitle(getResources().getString(R.string.app_settings));
 
-            }
+           // }
         }
     }
 

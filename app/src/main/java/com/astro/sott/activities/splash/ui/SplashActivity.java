@@ -95,7 +95,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     private Long value;
     private String programScreenValue = null;
     private JSONObject branchObject;
-  //  Branch.BranchReferralInitListener branchReferralInitListener;
+    //  Branch.BranchReferralInitListener branchReferralInitListener;
 
 
     @Override
@@ -113,6 +113,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     private String keyHash = "";
+
     private void printHashKey() {
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
@@ -138,12 +139,24 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 SharedPrefHelper.getInstance(getApplication()).setString("DMS_Date", "mDate");
                 SharedPrefHelper.getInstance(getApplication()).setBoolean("isFirstTime", true);
             }
+            updateLanguage();
             initDrm();
             DMSCall();
             // versionStatus();
         } else {
             setConnectionLayout();
         }
+    }
+
+    private void updateLanguage() {
+        String selectedLanguage = new KsPreferenceKey(this).getAppLangName();
+        if (selectedLanguage.equalsIgnoreCase("ms")) {
+            AppCommonMethods.updateLanguage("ms", this);
+        } else {
+            AppCommonMethods.updateLanguage("en", this);
+
+        }
+
     }
 
     private void callViewModel() {
@@ -424,19 +437,20 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         Branch.sessionBuilder(this).withCallback(branchReferralInitListener).reInit();
 
     }
+
     private Branch.BranchReferralInitListener branchReferralInitListener = new Branch.BranchReferralInitListener() {
         @Override
         public void onInitFinished(JSONObject linkProperties, BranchError error) {
             // do stuff with deep link data (nav to page, display content, etc)
-            Log.d("asasasasasasa",new Gson().toJson(linkProperties));
+            Log.d("asasasasasasa", new Gson().toJson(linkProperties));
             if (error == null) {
                 if (linkProperties.has("assetId")) {
                     try {
                         branchObject = new JSONObject(linkProperties.toString());
-                    }catch (JSONException e){
+                    } catch (JSONException e) {
 
                     }
-                  //  redirectionCondition(linkProperties);
+                    //  redirectionCondition(linkProperties);
                 } else {
                     branchObject = null;
 //                    PrintLogging.printLog("", "c a");
@@ -446,8 +460,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 branchObject = null;
                 //DialogHelper.showAlertDialog(getApplicationContext(), getString(R.string.something_went_wrong_try_again), getString(R.string.ok), SplashActivity.this);
             }
-
-
 
 
         }
@@ -462,8 +474,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
                 if (via.equalsIgnoreCase("firebase_screen")) {
 
-                  //  name = intent.getStringExtra(AppLevelConstants.Title);
-                   // description = intent.getStringExtra(AppLevelConstants.DESCRIPTION);
+                    //  name = intent.getStringExtra(AppLevelConstants.Title);
+                    // description = intent.getStringExtra(AppLevelConstants.DESCRIPTION);
                     Id = intent.getLongExtra(AppLevelConstants.ID, 0);
                     screen_name = intent.getStringExtra(AppLevelConstants.SCREEN_NAME);
 
@@ -507,17 +519,15 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
 //            }
 //        },6000);
-        if(branchObject != null){
-            if(branchObject.has("assetId")){
+        if (branchObject != null) {
+            if (branchObject.has("assetId")) {
                 redirectionCondition(branchObject);
-            }else {
+            } else {
                 new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
             }
-        }else {
+        } else {
             new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
         }
-
-
 
 
 //            branchReferralInitListener = new Branch.BranchReferralInitListener() {
@@ -542,7 +552,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //
 //                }
 //            };
-        }
+    }
 
 
 //        Branch.getInstance().initSession((referringParams, error) -> {
@@ -561,7 +571,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //                DialogHelper.showAlertDialog(this, getString(R.string.something_went_wrong_try_again), getString(R.string.ok), this);
 //            }
 //        }, this.getIntent().getData(), this);
-
 
 
     //redirection of pages after deeplink
@@ -774,15 +783,15 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 try {
 
                     if (via.equalsIgnoreCase("firebase_screen")) {
-                       // name = bundle.getString(AppLevelConstants.Title);
-                      //  description = bundle.getString(AppLevelConstants.DESCRIPTION);
+                        // name = bundle.getString(AppLevelConstants.Title);
+                        //  description = bundle.getString(AppLevelConstants.DESCRIPTION);
                         Id = value;
                         screen_name = programScreenValue;
                         JsonObject jsonObject = new JsonObject();
                         jsonObject.addProperty(AppLevelConstants.SCREEN_NAME, screen_name);
                         jsonObject.addProperty("assetid", Id);
-                        if(KsPreferenceKey.getInstance(SplashActivity.this).getNotificationResponse().equalsIgnoreCase(""))
-                        KsPreferenceKey.getInstance(this).setNotificationResponse(jsonObject + "");
+                        if (KsPreferenceKey.getInstance(SplashActivity.this).getNotificationResponse().equalsIgnoreCase(""))
+                            KsPreferenceKey.getInstance(this).setNotificationResponse(jsonObject + "");
 
 
                     }

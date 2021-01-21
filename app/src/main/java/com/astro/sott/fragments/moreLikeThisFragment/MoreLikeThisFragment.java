@@ -2,8 +2,10 @@ package com.astro.sott.fragments.moreLikeThisFragment;
 
 
 import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,6 +20,7 @@ import android.view.View;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.webSeriesDescription.viewModel.WebSeriesDescriptionViewModel;
 import com.astro.sott.baseModel.RailBaseFragment;
+import com.astro.sott.baseModel.RecommendationRailFragment;
 import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
@@ -84,11 +87,11 @@ public class MoreLikeThisFragment extends BaseBindingFragment<FragmentMoreLikeTh
 
         try {
             this.moreLikeThis = (MoreLikeThis) getActivity();
-        }catch (Exception e){
-            Log.e("ERROR",e.getMessage());
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage());
         }
 
-        modelCall();
+       /* modelCall();
         railCommonData = getArguments().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
         layoutType = AppLevelConstants.Rail3;
         if (railCommonData != null && railCommonData.getObject() != null)
@@ -103,7 +106,7 @@ public class MoreLikeThisFragment extends BaseBindingFragment<FragmentMoreLikeTh
         } else if (asset.getType() == MediaTypeConstant.getMovie(getActivity()) || asset.getType() == MediaTypeConstant.getShortFilm(getActivity())) {
             setRailFragment();
 
-        }
+        }*/
     }
 
     private void setRecyclerProperty() {
@@ -117,18 +120,23 @@ public class MoreLikeThisFragment extends BaseBindingFragment<FragmentMoreLikeTh
         FragmentManager manager = getActivity().getSupportFragmentManager();
         handler = new Handler();
 
-        RailBaseFragment railBaseFragment = new RailBaseFragment();
-        manager.beginTransaction().add(R.id.rail_fragment1, railBaseFragment).commit();
+        RecommendationRailFragment railBaseFragment = new RecommendationRailFragment();
         runnable = new Runnable() {
             @Override
             public void run() {
                 if (railBaseFragment != null) {
-                    railBaseFragment.setViewModel(MovieDescriptionViewModel.class);
-                    if (asset.getType() == MediaTypeConstant.getShortFilm(getActivity()))
-                        railBaseFragment.callRailAPI((int) assetId, 1, asset.getType(), map, layoutType, AppLevelConstants.TAB_SHORTFILM_DESCRIPTION, asset);
-                    else
-                        railBaseFragment.callRailAPI((int) assetId, 1, asset.getType(), map, layoutType, AppLevelConstants.TAB_MOVIE_DESCRIPTION, asset);
+                    // railBaseFragment.setViewModel(MovieDescriptionViewModel.class);
+
+                    Bundle args = new Bundle();
+                    args.putInt("BUNDLE_TAB_ID", 0);
+                    args.putInt("MEDIA_TYPE", asset.getType());
+                    args.putInt("LAYOUT_TYPE", layoutType);
+                    args.putParcelable("ASSET_OBJ", asset);
+                    railBaseFragment.setArguments(args);
+                    manager.beginTransaction().add(R.id.rail_fragment1, railBaseFragment).commit();
+
                 }
+
             }
         };
         handler.postDelayed(runnable, 1000);
@@ -246,7 +254,7 @@ public class MoreLikeThisFragment extends BaseBindingFragment<FragmentMoreLikeTh
 
         moreLikeThis.moreLikeThisClicked(railCommonData);
 
-     //   fdgdgdfgdfgdg
+        //   fdgdgdfgdfgdg
        /* mHandler.postDelayed(() -> {
             getBinding().ivPlayIcon.setClickable(true);
             getBinding().ivPlayIcon.setOnClickListener(view -> {

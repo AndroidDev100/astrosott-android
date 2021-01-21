@@ -1987,7 +1987,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         String mediaId = asset.getId().toString();
         AssetContent.getVideoResolution(asset.getTags()).observe(this, videoResolution -> {
-            String format = AppLevelConstants.DASH_WIDEVINE;
+            String format = "";
+            if (AppCommonMethods.callpreference(baseActivity) != null && AppCommonMethods.callpreference(baseActivity).getParams() != null && AppCommonMethods.callpreference(baseActivity).getParams().getFilesFormat() != null && AppCommonMethods.callpreference(baseActivity).getParams().getFilesFormat().getDASHWV() != null) {
+                format = AppCommonMethods.callpreference(baseActivity).getParams().getFilesFormat().getDASHWV();
+            } else {
+                format = AppLevelConstants.DASH_WIDEVINE;
+            }
             MediaEntryProvider mediaProvider;
             if (asset.getType() == MediaTypeConstant.getLinear(baseActivity)) {
                 if (!isLivePlayer) {

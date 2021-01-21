@@ -238,7 +238,7 @@ public class KsServices {
     private KsStartSessionCallBack ksStartSessionCallBack;
     private String keyHash = "";
     private int houseHold_limitation_id;
-    private int deviceLimit=5;
+    private int deviceLimit = 5;
     private long tabID;
     private int recommendedIndex = -1;
     private SearchResultCallBack searchResultCallBack;
@@ -400,6 +400,7 @@ public class KsServices {
     }
 
     private List<VIUChannel> dtChannelList;
+
     public void callDeepSearchAssetListing(long l, List<VIUChannel> list, String ksql, String filterValue, int counter, int pageSize, HomechannelCallBack callBack) {
         clientSetupKs();
         homechannelCallBack = callBack;
@@ -497,7 +498,6 @@ public class KsServices {
         return KSQL;
 
     }
-
 
 
     public void callAssetListing(long l, List<VIUChannel> list, int counter, HomechannelCallBack callBack) {
@@ -954,7 +954,7 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        callSeasonEpisodes(counter,seriesId,assetType,results,seasonCounter,callBack);
+                                        callSeasonEpisodes(counter, seriesId, assetType, results, seasonCounter, callBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         similarMovieCallBack.response(false, commonResponse);
@@ -972,8 +972,8 @@ public class KsServices {
                 }
             });
             getRequestQueue().queue(builder.build(client));
-        }catch (Exception e){
-            PrintLogging.printLog(this.getClass(), "Exception", "" +e);
+        } catch (Exception e) {
+            PrintLogging.printLog(this.getClass(), "Exception", "" + e);
 
         }
 
@@ -2497,9 +2497,9 @@ public class KsServices {
                 if (result.isSuccess()) {
                     if (result.results != null) {
                         if (result.results.getObjects() != null) {
-                            assetRuleCallback.getAssetrule(true, result, 0,"","");
+                            assetRuleCallback.getAssetrule(true, result, 0, "", "");
                         } else {
-                            assetRuleCallback.getAssetrule(false, result, 0,"",activity.getResources().getString(R.string.something_went_wrong));
+                            assetRuleCallback.getAssetrule(false, result, 0, "", activity.getResources().getString(R.string.something_went_wrong));
                         }
                     }
                 } else {
@@ -2513,21 +2513,21 @@ public class KsServices {
                                     if (response.getStatus()) {
                                         assetRuleApi(assetId, callback);
                                     } else {
-                                        assetRuleCallback.getAssetrule(false, result, 0,"",activity.getResources().getString(R.string.something_went_wrong));
+                                        assetRuleCallback.getAssetrule(false, result, 0, "", activity.getResources().getString(R.string.something_went_wrong));
                                     }
                                 }
                             });
 
                         } else {
-                            assetRuleCallback.getAssetrule(false, result, 0,result.error.getCode(),result.error.getMessage());
+                            assetRuleCallback.getAssetrule(false, result, 0, result.error.getCode(), result.error.getMessage());
                         }
                     } else {
-                        assetRuleCallback.getAssetrule(false, result, 0,"",activity.getResources().getString(R.string.something_went_wrong));
+                        assetRuleCallback.getAssetrule(false, result, 0, "", activity.getResources().getString(R.string.something_went_wrong));
                     }
                     //channelCallBack.response(false, commonResponse);
                 }
             } else {
-                assetRuleCallback.getAssetrule(false, null, 0,"",activity.getResources().getString(R.string.something_went_wrong));
+                assetRuleCallback.getAssetrule(false, null, 0, "", activity.getResources().getString(R.string.something_went_wrong));
             }
         });
         getRequestQueue().queue(ruleBuilder.build(client));
@@ -2547,9 +2547,9 @@ public class KsServices {
                 if (result.isSuccess()) {
                     if (result.results != null) {
                         if (result.results.getObjects() != null) {
-                            productPriceCallBack.getProductprice(true, result, "","","");
+                            productPriceCallBack.getProductprice(true, result, "", "", "");
                         } else {
-                            productPriceCallBack.getProductprice(false, result, "","",activity.getResources().getString(R.string.something_went_wrong));
+                            productPriceCallBack.getProductprice(false, result, "", "", activity.getResources().getString(R.string.something_went_wrong));
                         }
                     }
                 } else {
@@ -2568,16 +2568,16 @@ public class KsServices {
                                 }
                             });
                         } else {
-                            productPriceCallBack.getProductprice(false, result, "",result.error.getCode(),result.error.getMessage());
+                            productPriceCallBack.getProductprice(false, result, "", result.error.getCode(), result.error.getMessage());
                         }
                     } else {
-                        productPriceCallBack.getProductprice(false, result, "","",activity.getResources().getString(R.string.something_went_wrong));
+                        productPriceCallBack.getProductprice(false, result, "", "", activity.getResources().getString(R.string.something_went_wrong));
                     }
 
 
                 }
             } else {
-                productPriceCallBack.getProductprice(false, null, "","",activity.getResources().getString(R.string.something_went_wrong));
+                productPriceCallBack.getProductprice(false, null, "", "", activity.getResources().getString(R.string.something_went_wrong));
             }
 
         });
@@ -2981,7 +2981,7 @@ public class KsServices {
                 PrintLogging.printLog(this.getClass(), "", "DMS" + "--" + response.isSuccessful());
                 ResponseDmsModel responseDmsModel = response.body();
                 if (responseDmsModel != null && response.body() != null) {
-                    if(response.body().getParams().getGateways() != null){
+                    if (response.body().getParams().getGateways() != null) {
                         StringBuilder stringBuilder = new StringBuilder(response.body().getParams().getGateways().getJsonGW());
                         stringBuilder.append(activity.getString(R.string.suffix_api_v3));
                         Log.e("Phonex Base Url", stringBuilder.toString());
@@ -2992,7 +2992,7 @@ public class KsServices {
                 Gson gson = new Gson();
 
 
-                if(responseDmsModel == null){
+                if (responseDmsModel == null) {
                     return;
                 }
                 ArrayList<AudioLanguages> audioLanguageList = new ArrayList<>();
@@ -3004,7 +3004,7 @@ public class KsServices {
                 }
 
                 responseDmsModel.setAudioLanguageList(audioLanguageList);
-                Log.w("SubtitleLanguage",responseDmsModel.getAudioLanguageList().get(0).getKey());
+                Log.w("SubtitleLanguage", responseDmsModel.getAudioLanguageList().get(0).getKey());
 
                 ArrayList<SubtitleLanguages> subtitleLanguageList = new ArrayList<>();
                 for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
@@ -3015,7 +3015,7 @@ public class KsServices {
                 }
 
                 responseDmsModel.setSubtitleLanguageList(subtitleLanguageList);
-                Log.w("SubtitleLanguage",responseDmsModel.getSubtitleLanguageList().get(0).getKey());
+                Log.w("SubtitleLanguage", responseDmsModel.getSubtitleLanguageList().get(0).getKey());
 
 
                 ArrayList<FilterValues> filterValuesList = new ArrayList<>();
@@ -3027,7 +3027,7 @@ public class KsServices {
                 }
 
                 responseDmsModel.setFilterValuesList(filterValuesList);
-                Log.w("searchValues->>",new Gson().toJson(filterValuesList));
+                Log.w("searchValues->>", new Gson().toJson(filterValuesList));
 
                 ArrayList<ParentalRatingLevels> parentalRatingLevels = new ArrayList<>();
 
@@ -3039,7 +3039,7 @@ public class KsServices {
 
                 }
                 responseDmsModel.setParentalRatingLevels(parentalRatingLevels);
-                Log.d("ParentalLevel",new Gson().toJson(parentalRatingLevels));
+                Log.d("ParentalLevel", new Gson().toJson(parentalRatingLevels));
 
 
                /* ArrayList<ParentalLevels> parentalLevels = new ArrayList<>();
@@ -3080,16 +3080,16 @@ public class KsServices {
                     responseDmsModel.setMappingArrayList(parentalMappingArray);*/
 
                 //responseDmsModel.setParentalLevels(parentalLevels);
-                    String json = gson.toJson(responseDmsModel);
-                    sharedPrefHelper.setString(AppLevelConstants.DMS_RESPONSE, json);
-                    sharedPrefHelper.setString("DMS_Date", "" + System.currentTimeMillis());
+                String json = gson.toJson(responseDmsModel);
+                sharedPrefHelper.setString(AppLevelConstants.DMS_RESPONSE, json);
+                sharedPrefHelper.setString("DMS_Date", "" + System.currentTimeMillis());
 
                    /* KsPreferenceKey.getInstance(activity).setDefaultEntitlement(responseDmsModel.getParams().getDefaultEntitlement());
                     KsPreferenceKey.getInstance(activity).setATBpaymentGatewayId(responseDmsModel.getParams().getATBpaymentGatewayId());
                     KsPreferenceKey.getInstance(activity).setSubscriptionOffer(responseDmsModel.getParams().getSubscriptionOffer());
                     KsPreferenceKey.getInstance(activity).setRoot(responseDmsModel.getParams().getCategories().getRoot());*/
-                    Log.d("ParentalLevel", FileFormatHelper.getDash_widevine(activity));
-                    callBack.configuration(true);
+                Log.d("ParentalLevel", FileFormatHelper.getDash_widevine(activity));
+                callBack.configuration(true);
 
 
             }
@@ -3125,12 +3125,12 @@ public class KsServices {
         Configuration config = new Configuration();
         config.setConnectTimeout(30000);
         if (responseDmsModel != null) {
-          //  config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
+            //  config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
 
             if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
                 //config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
                 config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            }else {
+            } else {
                 config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
             }
 
@@ -3138,6 +3138,7 @@ public class KsServices {
             config.setEndpoint(AppConstants.END_POINT);
         }
         client = new Client(config);
+
     }
 
     private RequestQueue getRequestQueue() {
@@ -3167,7 +3168,6 @@ public class KsServices {
 
         }
     }
-
 
 
     private void clientSetupKs() {
@@ -3202,8 +3202,11 @@ public class KsServices {
             config.setEndpoint(BuildConfig.KALTURA_BASE_URL);
         }
         client = new Client(config);
-        //client.setLanguage("may");
-        // client.setKs(ks);
+        if (new KsPreferenceKey(activity).getAppLangName().equalsIgnoreCase("ms")) {
+            client.setLanguage("may");
+        } else {
+            client.setLanguage("en");
+        }
         if (KsPreferenceKey.getInstance(activity).getUserActive()) {
             client.setKs(KsPreferenceKey.getInstance(activity).getStartSessionKs());
         } else {
@@ -3218,12 +3221,12 @@ public class KsServices {
         Configuration config = new Configuration();
         config.setConnectTimeout(30000);
         if (responseDmsModel != null) {
-           // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
+            // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
 
             if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
-               // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
+                // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
                 config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            }else {
+            } else {
                 config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
             }
 
@@ -3339,7 +3342,7 @@ public class KsServices {
         filterPager.setPageSize(100);
 
         AssetService.ListAssetBuilder builder = AssetService.list(relatedFilter, filterPager).setCompletion(result -> {
-            try{
+            try {
                 if (result.isSuccess()) {
                     if (result.results != null) {
                         if (result.results.getObjects() != null) {
@@ -3388,10 +3391,9 @@ public class KsServices {
                     }
 
 
-
                 }
-            }catch(Exception e){
-                PrintLogging.printLog(this.getClass(), "Exception", "" +e);
+            } catch (Exception e) {
+                PrintLogging.printLog(this.getClass(), "Exception", "" + e);
 
             }
 
@@ -3996,7 +3998,6 @@ public class KsServices {
                     }
 
 
-
                 }
             }
         });
@@ -4187,7 +4188,7 @@ public class KsServices {
             public void onResponse(@NonNull Call<OtpModel> otpModel, @NonNull retrofit2.Response<OtpModel> response) {
                 Log.e("Response Code", String.valueOf(response.code()));
                 if (response.code() == 201 || response.code() == 200) {
-                    try{
+                    try {
                         DecodedJWT decodedJWT = AppCommonMethods.jwtVerification(response.body().getToken());
                         String txnId = decodedJWT.getClaim("txnId").asString();
 
@@ -4196,9 +4197,9 @@ public class KsServices {
                             otpModel1.setTxnId(txnId);
                             otpCallback.smsReceived(otpModel1);
                         } else {
-                            otpCallback.smsError(new Throwable("Something went Wrong... Please Try again."),1);
+                            otpCallback.smsError(new Throwable("Something went Wrong... Please Try again."), 1);
                         }
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         PrintLogging.printLog(this.getClass(), "", "Exception" + e.getMessage());
                     }
 
@@ -4209,8 +4210,8 @@ public class KsServices {
 
             @Override
             public void onFailure(@NonNull Call<OtpModel> call, @NonNull Throwable t) {
-               // otpCallback.smsError(t);
-                otpCallback.smsError(new Throwable("Something went Wrong... Please Try again."),2);
+                // otpCallback.smsError(t);
+                otpCallback.smsError(new Throwable("Something went Wrong... Please Try again."), 2);
             }
         });
     }
@@ -4681,7 +4682,6 @@ public class KsServices {
     }
 
 
-
     public void getAssetDetailEpg(VIUChannel channel, List<VIUChannel> list) {
 
         clientSetupKs();
@@ -4744,7 +4744,6 @@ public class KsServices {
         });
         getRequestQueue().queue(builder.build(client));
     }
-
 
 
     public void simillarMovieListing(String genreSkl, int assetType, int id, int counter, SimilarMovieCallBack callBack) {
@@ -5010,7 +5009,7 @@ public class KsServices {
     }
 
     public void getSubCategories(Context context, SubCategoryCallBack subCategoryCallBack) {
-        try{
+        try {
             String rootCategory = KsPreferenceKey.getInstance(context).getRoot();
             clientSetupKs();
             OttCategoryService.GetOttCategoryBuilder builder = OttCategoryService.get(Integer.parseInt(rootCategory)).setCompletion(result -> {
@@ -5085,7 +5084,7 @@ public class KsServices {
             });
 
             getRequestQueue().queue(builder.build(client));
-        }catch(Exception e){
+        } catch (Exception e) {
             PrintLogging.printLog(this.getClass(), "", "Exception" + e.getMessage());
         }
     }
@@ -5130,11 +5129,11 @@ public class KsServices {
 
     }
 
-    private int getTokenExpiryDate(){
+    private int getTokenExpiryDate() {
         Calendar currentDate = Calendar.getInstance();
         currentDate.setTime(new Date());
-        currentDate.add(Calendar.YEAR,2);
-        return (int)(currentDate.getTimeInMillis() / 1000);
+        currentDate.add(Calendar.YEAR, 2);
+        return (int) (currentDate.getTimeInMillis() / 1000);
     }
 
 
@@ -5143,12 +5142,12 @@ public class KsServices {
         Configuration config = new Configuration();
         config.setConnectTimeout(30000);
         if (responseDmsModel != null) {
-          //  config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
+            //  config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
 
             if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
-              //  config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
+                //  config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
                 config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            }else {
+            } else {
                 config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
             }
 
@@ -5377,12 +5376,12 @@ public class KsServices {
         config.setParam("timestamp", System.currentTimeMillis());
         config.setConnectTimeout(30000);
         if (responseDmsModel != null) {
-           // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
+            // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
 
             if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
-               // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
+                // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
                 config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            }else {
+            } else {
                 config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
             }
 
@@ -5469,16 +5468,16 @@ public class KsServices {
             call.enqueue(new Callback<JsonElement>() {
                 @Override
                 public void onResponse(Call<JsonElement> call, retrofit2.Response<JsonElement> response) {
-                    if (response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         try {
                             JSONObject json = new JSONObject(response.body().toString());
                             hungamaResponse.onSuccess(json.get("stream_url").toString());
 
-                        }catch (JSONException e){
+                        } catch (JSONException e) {
                             hungamaResponse.onFailureFailure();
                         }
 
-                    }else {
+                    } else {
                         hungamaResponse.onFailureFailure();
                     }
                 }
@@ -5489,7 +5488,7 @@ public class KsServices {
                 }
             });
 
-        }catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             PrintLogging.printLog(this.getClass(), "", "Exception" + e.getMessage());
         }
     }
@@ -5578,7 +5577,7 @@ public class KsServices {
                             });
 
                         } else {
-                            subscriptionResponseCallBack.response(false, "", "",null);
+                            subscriptionResponseCallBack.response(false, "", "", null);
                         }
                     } else {
                         subscriptionResponseCallBack.response(false, "", "", null);
@@ -5791,8 +5790,8 @@ public class KsServices {
         EntitlementService.CancelRenewalEntitlementBuilder builder = (EntitlementService.CancelRenewalEntitlementBuilder) EntitlementService.cancelRenewal(id).setCompletion(new OnCompletion<Response<Void>>() {
             @Override
             public void onComplete(Response<Void> result) {
-                if(result.isSuccess()){
-                    cancelRenewalResponseCallBack.response(true, "","");
+                if (result.isSuccess()) {
+                    cancelRenewalResponseCallBack.response(true, "", "");
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
@@ -5802,18 +5801,18 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        callCancelSubscriptionApi(id,callBack);
+                                        callCancelSubscriptionApi(id, callBack);
                                     } else {
-                                        cancelRenewalResponseCallBack.response(false, result.error.getCode(),result.error.getMessage());
+                                        cancelRenewalResponseCallBack.response(false, result.error.getCode(), result.error.getMessage());
                                     }
                                 }
                             });
 
                         } else {
-                            cancelRenewalResponseCallBack.response(false, result.error.getCode(),result.error.getMessage());
+                            cancelRenewalResponseCallBack.response(false, result.error.getCode(), result.error.getMessage());
                         }
                     } else {
-                        cancelRenewalResponseCallBack.response(false, "",activity.getResources().getString(R.string.something_went_wrong));
+                        cancelRenewalResponseCallBack.response(false, "", activity.getResources().getString(R.string.something_went_wrong));
                     }
 
                 }
@@ -6096,8 +6095,8 @@ public class KsServices {
 
 
         List<PaymentItemDetail> paymentItemDetails = AllChannelManager.getInstance().getPaymentItemDetails();
-        for (int i = 0; i<paymentItemDetails.size(); i++){
-            if (paymentItemDetails.get(i).getPackageId().equalsIgnoreCase(productId)){
+        for (int i = 0; i < paymentItemDetails.size(); i++) {
+            if (paymentItemDetails.get(i).getPackageId().equalsIgnoreCase(productId)) {
                 adapterId = paymentItemDetails.get(i).getAdapterId();
                 break;
             }
@@ -6115,15 +6114,15 @@ public class KsServices {
         purchase.setAdapterData(adapterId);
 
         TransactionService.PurchaseTransactionBuilder builder = TransactionService.purchase(purchase).setCompletion(result -> {
-            if (result.isSuccess()){
+            if (result.isSuccess()) {
                 if (result.results.getFailReasonCode() == 0) {
                     purchaseSubscriptionCallBack.response(true, "", "", result.results.getPaymentGatewayReferenceId());
-                }else if(result.results.getFailReasonCode()==20){
+                } else if (result.results.getFailReasonCode() == 20) {
                     purchaseSubscriptionCallBack.response(false, "", activity.getResources().getString(R.string.insufficient_balance), "");
-                }else {
+                } else {
                     purchaseSubscriptionCallBack.response(false, "", activity.getResources().getString(R.string.something_went_wrong), "");
                 }
-            }else {
+            } else {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("ksExipreCheckUser", errorCode);
@@ -6132,18 +6131,18 @@ public class KsServices {
                             @Override
                             public void response(CommonResponse response) {
                                 if (response.getStatus()) {
-                                    callPurchaseApi(paymentMethodId,context, productId, currency, price, callBack);
+                                    callPurchaseApi(paymentMethodId, context, productId, currency, price, callBack);
                                 } else {
-                                    purchaseSubscriptionCallBack.response(false,"",result.error.getMessage(),"");
+                                    purchaseSubscriptionCallBack.response(false, "", result.error.getMessage(), "");
                                 }
                             }
                         });
 
                     } else {
-                        purchaseSubscriptionCallBack.response(false,result.error.getCode(),result.error.getMessage(),"");
+                        purchaseSubscriptionCallBack.response(false, result.error.getCode(), result.error.getMessage(), "");
                     }
                 } else {
-                    purchaseSubscriptionCallBack.response(false,"",activity.getResources().getString(R.string.something_went_wrong),"");
+                    purchaseSubscriptionCallBack.response(false, "", activity.getResources().getString(R.string.something_went_wrong), "");
                 }
             }
         });
@@ -6152,15 +6151,14 @@ public class KsServices {
     }
 
     public void callInvokeApi(String accountType, String accountNumber, Context context, InvokeApiCallBack callBack) {
-        this.invokeApiCallBack  = callBack;
+        this.invokeApiCallBack = callBack;
         clientSetupKsInvoke();
         List<KeyValue> keyValue = new ArrayList<>();
         KeyValue value = new KeyValue();
         value.setKey("AccountDomain");
         if (accountType.equalsIgnoreCase(AppLevelConstants.DIALOG_TV)) {
             value.setValue("DTV");
-        }
-        else {
+        } else {
             value.setValue("GSM");
         }
         keyValue.add(value);
@@ -6170,12 +6168,12 @@ public class KsServices {
         keyValue.add(value1);
 
 
-        HouseholdPaymentGatewayService.InvokeHouseholdPaymentGatewayBuilder builder = HouseholdPaymentGatewayService.invoke(Integer.parseInt(KsPreferenceKey.getInstance(context).getATBpaymentGatewayId()),"setPaymentMethod",keyValue).setCompletion(new OnCompletion<Response<PaymentGatewayConfiguration>>() {
+        HouseholdPaymentGatewayService.InvokeHouseholdPaymentGatewayBuilder builder = HouseholdPaymentGatewayService.invoke(Integer.parseInt(KsPreferenceKey.getInstance(context).getATBpaymentGatewayId()), "setPaymentMethod", keyValue).setCompletion(new OnCompletion<Response<PaymentGatewayConfiguration>>() {
             @Override
             public void onComplete(Response<PaymentGatewayConfiguration> result) {
                 if (result.isSuccess()) {
-                    invokeApiCallBack.result(true,"","");
-                }else {
+                    invokeApiCallBack.result(true, "", "");
+                } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("ksExipreCheckUser", errorCode);
@@ -6184,18 +6182,18 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        callInvokeApi(accountType,accountNumber,context,callBack);
+                                        callInvokeApi(accountType, accountNumber, context, callBack);
                                     } else {
-                                        invokeApiCallBack.result(false,result.error.getCode(),result.error.getMessage());
+                                        invokeApiCallBack.result(false, result.error.getCode(), result.error.getMessage());
                                     }
                                 }
                             });
 
                         } else {
-                            invokeApiCallBack.result(false,result.error.getCode(),result.error.getMessage());
+                            invokeApiCallBack.result(false, result.error.getCode(), result.error.getMessage());
                         }
                     } else {
-                        invokeApiCallBack.result(false,"",activity.getResources().getString(R.string.something_went_wrong));
+                        invokeApiCallBack.result(false, "", activity.getResources().getString(R.string.something_went_wrong));
                     }
                 }
 
@@ -6220,6 +6218,11 @@ public class KsServices {
             config.setEndpoint(AppConstants.END_POINT);
         }
         client = new Client(config);
+        if (new KsPreferenceKey(activity).getAppLangName().equalsIgnoreCase("ms")) {
+            client.setLanguage("may");
+        } else {
+            client.setLanguage("en");
+        }
         if (KsPreferenceKey.getInstance(activity).getUserActive()) {
             client.setKs(KsPreferenceKey.getInstance(activity).getStartSessionKs());
         } else {
@@ -6227,15 +6230,15 @@ public class KsServices {
         }
     }
 
-    public void callRemoveApi(int id,Context context, RemovePaymentCallBack callBack) {
+    public void callRemoveApi(int id, Context context, RemovePaymentCallBack callBack) {
         this.removePaymentCallBack = callBack;
         clientSetupKs();
-        HouseholdPaymentMethodService.RemoveHouseholdPaymentMethodBuilder builder = HouseholdPaymentMethodService.remove(Integer.parseInt(KsPreferenceKey.getInstance(context).getATBpaymentGatewayId()),id).setCompletion(new OnCompletion<Response<Boolean>>() {
+        HouseholdPaymentMethodService.RemoveHouseholdPaymentMethodBuilder builder = HouseholdPaymentMethodService.remove(Integer.parseInt(KsPreferenceKey.getInstance(context).getATBpaymentGatewayId()), id).setCompletion(new OnCompletion<Response<Boolean>>() {
             @Override
             public void onComplete(Response<Boolean> result) {
-                if (result.isSuccess()){
-                    removePaymentCallBack.response(true,"","");
-                }else {
+                if (result.isSuccess()) {
+                    removePaymentCallBack.response(true, "", "");
+                } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("ksExipreCheckUser", errorCode);
@@ -6244,18 +6247,18 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        callRemoveApi(id,context,callBack);
+                                        callRemoveApi(id, context, callBack);
                                     } else {
-                                        removePaymentCallBack.response(false,result.error.getMessage(),result.error.getCode());
+                                        removePaymentCallBack.response(false, result.error.getMessage(), result.error.getCode());
                                     }
                                 }
                             });
 
                         } else {
-                            removePaymentCallBack.response(false,result.error.getMessage(),result.error.getCode());
+                            removePaymentCallBack.response(false, result.error.getMessage(), result.error.getCode());
                         }
                     } else {
-                        removePaymentCallBack.response(false,result.error.getMessage(),result.error.getCode());
+                        removePaymentCallBack.response(false, result.error.getMessage(), result.error.getCode());
                     }
                 }
             }
@@ -6270,12 +6273,12 @@ public class KsServices {
         subscriptionEntitlement.setPaymentGatewayId(Integer.parseInt(KsPreferenceKey.getInstance(context).getATBpaymentGatewayId()));
         subscriptionEntitlement.setPaymentMethodId(newPaymentMethodId);
 
-        EntitlementService.UpdateEntitlementBuilder builder = EntitlementService.update(id,subscriptionEntitlement).setCompletion(new OnCompletion<Response<Entitlement>>() {
+        EntitlementService.UpdateEntitlementBuilder builder = EntitlementService.update(id, subscriptionEntitlement).setCompletion(new OnCompletion<Response<Entitlement>>() {
             @Override
             public void onComplete(Response<Entitlement> result) {
-                if (result.isSuccess()){
-                    updatePaymentMethodCallBack.response(true,"","");
-                }else {
+                if (result.isSuccess()) {
+                    updatePaymentMethodCallBack.response(true, "", "");
+                } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("ksExipreCheckUser", errorCode);
@@ -6284,18 +6287,18 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        updatePaymentMethod(id,newPaymentMethodId,context,callBack);
+                                        updatePaymentMethod(id, newPaymentMethodId, context, callBack);
                                     } else {
-                                        updatePaymentMethodCallBack.response(false,result.error.getMessage(),result.error.getCode());
+                                        updatePaymentMethodCallBack.response(false, result.error.getMessage(), result.error.getCode());
                                     }
                                 }
                             });
 
                         } else {
-                            updatePaymentMethodCallBack.response(false,result.error.getMessage(),result.error.getCode());
+                            updatePaymentMethodCallBack.response(false, result.error.getMessage(), result.error.getCode());
                         }
                     } else {
-                        updatePaymentMethodCallBack.response(false,result.error.getMessage(),result.error.getCode());
+                        updatePaymentMethodCallBack.response(false, result.error.getMessage(), result.error.getCode());
                     }
                 }
             }
@@ -6321,9 +6324,9 @@ public class KsServices {
         AssetService.ListAssetBuilder builder = AssetService.list(channelFilter, filterPager).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
             @Override
             public void onComplete(Response<ListResponse<Asset>> result) {
-                if (result.isSuccess()){
-                    subscriptionAssetListResponse.response(true,"",result.results.getObjects());
-                }else {
+                if (result.isSuccess()) {
+                    subscriptionAssetListResponse.response(true, "", result.results.getObjects());
+                } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
@@ -6343,7 +6346,7 @@ public class KsServices {
                             subscriptionAssetListResponse.response(false, "", null);
                         }
                     } else {
-                        subscriptionAssetListResponse.response(false,  "", null);
+                        subscriptionAssetListResponse.response(false, "", null);
                     }
                 }
             }
@@ -6352,6 +6355,7 @@ public class KsServices {
     }
 
     private DeleteFromFollowlistCallBack deleteFromFollowlistCallBack;
+
     public void removeCWAPI(Long assetID, DeleteFromFollowlistCallBack callBack) {
         deleteFromFollowlistCallBack = callBack;
         clientSetupKs();
