@@ -19,6 +19,7 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.databinding.PosterlistingItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.Value;
@@ -38,13 +39,14 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
     private String strRailName;
     ResponseDmsModel responseDmsModel;
     MediaTypes mediaTypes;
-
+    BaseCategory baseCategory;
     public CommonPosterListingAdapter(Activity context,
-                                      List<RailCommonData> itemsList, int type, String railName) {
+                                      List<RailCommonData> itemsList, int type, String railName, BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
         strRailName = railName;
+        this.baseCategory=baseCat;
         try {
             this.detailRailClick = ((DetailRailClick) context);
             responseDmsModel = AppCommonMethods.callpreference(mContext);
@@ -76,8 +78,15 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
         } catch (Exception ignored) {
 
         }
+
+
+            AppCommonMethods.handleTitleDesc(holder.potraitItemBinding.mediaTypeLayout.metaLayout,holder.potraitItemBinding.mediaTypeLayout.lineOne,holder.potraitItemBinding.mediaTypeLayout.lineTwo,baseCategory);
+            holder.potraitItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
+            holder.potraitItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
+
+
         //holder.potraitItemBinding.setTile(singleItem);
-        mediaTypeCondition(i, holder.potraitItemBinding);
+       // mediaTypeCondition(i, holder.potraitItemBinding);
     }
 
     private void mediaTypeCondition(int position, PosterlistingItemBinding potraitItemBinding) {

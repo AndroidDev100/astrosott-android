@@ -232,7 +232,7 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
                         .getDefaultDisplay()
                         .getMetrics(displayMetrics);
                 int width = displayMetrics.widthPixels;
-                ((PotraitCarouselHolder) holder).headerRecyclerItemBinding.slider.addSlides(dataList.get(position).getSlides(), dataList.get(position).getWidgetType(), dataList.get(position).getRailDetail(), position, width);
+                ((PotraitCarouselHolder) holder).headerRecyclerItemBinding.slider.addSlides(dataList.get(position).getSlides(), dataList.get(position).getWidgetType(), dataList.get(position).getRailDetail(), position, width,dataList.get(position).getRailDetail().getCategory().getAutoRotate() == null ? true : dataList.get(position).getRailDetail().getCategory().getAutoRotate(),dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration() == null ? 0 : dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration());
                 setHeaderAndMoreVisibility(((PotraitCarouselHolder) holder).headerRecyclerItemBinding.headerTitle, ((HeaderHolder) holder).headerRecyclerItemBinding.moreText, dataList.get(position));
                 ((PotraitCarouselHolder) holder).headerRecyclerItemBinding.moreText.setVisibility(View.GONE);
             } catch (Exception e) {
@@ -248,7 +248,7 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
 
                 ((HeaderHolder) holder).headerRecyclerItemBinding.shimmerTitleLayout.setVisibility(View.GONE);
                 ((HeaderHolder) holder).headerRecyclerItemBinding.slider.getRootView();
-                ((HeaderHolder) holder).headerRecyclerItemBinding.slider.addSlides(dataList.get(position).getSlides(), dataList.get(position).getWidgetType(), dataList.get(position).getRailDetail(), position);
+                ((HeaderHolder) holder).headerRecyclerItemBinding.slider.addSlides(dataList.get(position).getSlides(), dataList.get(position).getWidgetType(), dataList.get(position).getRailDetail(), position,dataList.get(position).getRailDetail().getCategory().getAutoRotate() == null ? true : dataList.get(position).getRailDetail().getCategory().getAutoRotate(),dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration() == null ? 0 : dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration());
                 setHeaderAndMoreVisibility(((HeaderHolder) holder).headerRecyclerItemBinding.headerTitle, ((HeaderHolder) holder).headerRecyclerItemBinding.moreText, dataList.get(position));
 
             } catch (Exception e) {
@@ -407,11 +407,11 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
                         removeAssetApi(assetID, singleSectionItems, continueWatchingAdapter, continueWatchingRemove, listSize, position, continueWatchingIndex);
                     }
                 }
-            }, position, dataList.get(position).getTitle(), isContinueRail);
+            }, position, dataList.get(position).getTitle(), isContinueRail,dataList.get(position).getCategory());
 
 
         } else {
-            commonCircleAdapter = new CommonCircleAdapter(activity, singleSectionItems, AppConstants.Rail2, dataList.get(position).getTitle());
+            commonCircleAdapter = new CommonCircleAdapter(activity, singleSectionItems, AppConstants.Rail2, dataList.get(position).getTitle(),dataList.get(position).getCategory());
         }
         // setRecyclerProperties(((CircleHolder) holder).circularRecyclerItemBinding.recyclerViewList1,false);
         ((CircleHolder) holder).circularRecyclerItemBinding.recyclerViewList1.setAdapter(commonCircleAdapter);
@@ -480,11 +480,11 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
                         removeAssetApi(assetID, singleSectionItems, continueWatchingAdapter, continueWatchingRemove, listSize, position, continueWatchingIndex);
                     }
                 }
-            }, position, dataList.get(position).getTitle(), isContinueRail);
+            }, position, dataList.get(position).getTitle(), isContinueRail,dataList.get(position).getCategory());
 
 
         } else {
-            commonPosterAdapter = new CommonPosterAdapter(activity, singleSectionItems, AppConstants.Rail3, dataList.get(position).getTitle());
+            commonPosterAdapter = new CommonPosterAdapter(activity, singleSectionItems, AppConstants.Rail3, dataList.get(position).getTitle(),dataList.get(position).getCategory());
         }
 
         holder.itemBinding.recyclerViewList4.setAdapter(commonPosterAdapter);
@@ -591,9 +591,9 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
                         // removeAssetApi2(assetID, singleSectionItems, commonLandscapeAdapter, continueWatchingRemove, listSize, position, continueWatchingIndex);
                     }
                 }
-            }, position, dataList.get(position).getTitle(), isContinueRail);
+            }, position, dataList.get(position).getTitle(), isContinueRail,dataList.get(position).getCategory());
         } else {
-            commonLandscapeAdapter = new CommonLandscapeAdapter(activity, singleSectionItems, AppConstants.Rail5, dataList.get(position).getTitle());
+            commonLandscapeAdapter = new CommonLandscapeAdapter(activity, singleSectionItems, AppConstants.Rail5, dataList.get(position).getTitle(),dataList.get(position).getCategory());
 
         }
 
@@ -646,7 +646,7 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
 
         List<RailCommonData> singleSectionItems = dataList.get(position).getRailAssetList();
 
-        CommonSquareAapter commonSquareAapter = new CommonSquareAapter(activity, singleSectionItems, AppLevelConstants.Rail4);
+        CommonSquareAapter commonSquareAapter = new CommonSquareAapter(activity, singleSectionItems, AppLevelConstants.Rail4,dataList.get(position).getCategory());
         holder.squareRecyclerItemBinding.recyclerViewList4.setAdapter(commonSquareAapter);
     }
 
@@ -667,7 +667,7 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
 
         List<RailCommonData> singleSectionItems = dataList.get(position).getRailAssetList();
 
-        CommonPotraitAdapter commonPotraitAdapter = new CommonPotraitAdapter(activity, singleSectionItems, AppLevelConstants.Rail3);
+        CommonPotraitAdapter commonPotraitAdapter = new CommonPotraitAdapter(activity, singleSectionItems, AppLevelConstants.Rail3,dataList.get(position).getCategory());
         holder.potraitRecyclerItemBinding.recyclerViewList4.setAdapter(commonPotraitAdapter);
     }
 

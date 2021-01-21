@@ -16,6 +16,7 @@ import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.databinding.PortaritlistingItemBinding;
+import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.Value;
@@ -40,13 +41,14 @@ public class CommonPotraitListingAdapter extends RecyclerView.Adapter<  CommonPo
     private String strRailName;
     ResponseDmsModel responseDmsModel;
     MediaTypes mediaTypes;
-
+    BaseCategory baseCategory;
     public CommonPotraitListingAdapter(Activity context,
-                                       List<RailCommonData> itemsList, int type, String railName) {
+                                       List<RailCommonData> itemsList, int type, String railName,BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
         strRailName = railName;
+        this.baseCategory=baseCat;
         try {
             this.detailRailClick = ((DetailRailClick) context);
             responseDmsModel = AppCommonMethods.callpreference(mContext);
@@ -76,11 +78,20 @@ public class CommonPotraitListingAdapter extends RecyclerView.Adapter<  CommonPo
                 //holder.potraitItemBinding.setImage(assetCommonImages);
                 ImageHelper.getInstance(holder.potraitItemBinding.itemImage.getContext()).loadImageTo(holder.potraitItemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.portrait);
             }
+
+            try {
+                AppCommonMethods.handleTitleDesc(holder.potraitItemBinding.mediaTypeLayout.metaLayout,holder.potraitItemBinding.mediaTypeLayout.lineOne,holder.potraitItemBinding.mediaTypeLayout.lineTwo,baseCategory);
+                holder.potraitItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
+                holder.potraitItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
+            }catch (Exception ignored){
+
+            }
+
         } catch (Exception ignored) {
 
         }
         //holder.potraitItemBinding.setTile(singleItem);
-        mediaTypeCondition(i, holder.potraitItemBinding);
+      //  mediaTypeCondition(i, holder.potraitItemBinding);
     }
 
     private void mediaTypeCondition(int position, PortaritlistingItemBinding potraitItemBinding) {

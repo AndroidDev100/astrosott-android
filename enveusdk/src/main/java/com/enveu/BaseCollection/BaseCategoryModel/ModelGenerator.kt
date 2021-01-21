@@ -31,7 +31,7 @@ class ModelGenerator{
             cat.contentID=i?.item?.playlist?.kalturaChannelId
            /* cat.widgetImageType=i?.widgetImageType*/
 
-            cat.layout=i?.layout
+            /*cat.layout=i?.layout
             cat.referenceName=i?.item?.playlist?.referenceName
             cat.adPlatformType=i?.item?.platform
             cat.adPlatformType=i?.item?.platform
@@ -40,6 +40,25 @@ class ModelGenerator{
             cat.contentImageType=i?.item?.imageType
             cat.showHeader=i?.item?.showHeader
             cat.contentSize=i?.item?.listingLayoutContentSize
+            cat.contentShowMoreButton=i?.item?.showMoreButton
+            cat.contentListinglayout=i?.item?.listingLayout
+            cat.contentPlayListType=i?.item?.playlist?.type
+            cat.imageSource=i?.item?.imageSource
+            cat.imageURL=i?.item?.imageURL
+            cat.manualImageAssetId=i?.item?.assetId*/
+            cat.layout=i?.layout
+            cat.referenceName=i?.item?.playlist?.referenceName
+            cat.adPlatformType=i?.item?.platform
+            cat.adPlatformType=i?.item?.platform
+            cat.adID=i?.item?.adUnitInfo?.adId
+            cat.displayOrder=i?.displayOrder
+            cat.contentImageType=i?.item?.imageType
+            cat.showHeader=i?.item?.showHeader
+            cat.autoRotate=i?.item?.autoRotate
+            cat.contentSize=i?.item?.listingLayoutContentSize
+            cat.railCardType=i?.item?.railCardType
+            cat.railCardSize=i?.item?.railCardSize
+            cat.autoRotateDuration=i?.item?.autoRotateDuration
             cat.contentShowMoreButton=i?.item?.showMoreButton
             cat.contentListinglayout=i?.item?.listingLayout
             cat.contentPlayListType=i?.item?.playlist?.type
