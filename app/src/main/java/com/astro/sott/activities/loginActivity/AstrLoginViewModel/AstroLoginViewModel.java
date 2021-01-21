@@ -17,6 +17,6 @@ public class AstroLoginViewModel extends AndroidViewModel {
     }
 
     public LiveData<EvergentCommonResponse> searchAccountV2() {
-        return AstrLoginRepository.getInstance().searchAccountV2();
+        return AstrLoginRepository.getInstance().searchAccountV2(getApplication());
     }
 }

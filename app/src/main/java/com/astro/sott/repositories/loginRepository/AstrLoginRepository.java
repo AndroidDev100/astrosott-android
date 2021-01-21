@@ -1,5 +1,8 @@
 package com.astro.sott.repositories.loginRepository;
 
+import android.app.Application;
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -20,10 +23,10 @@ public class AstrLoginRepository {
         return astrLoginRepository;
     }
 
-    public LiveData<EvergentCommonResponse> searchAccountV2() {
+    public LiveData<EvergentCommonResponse> searchAccountV2(Context context) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().searchAccountv2(new EvergentSearchAccountCallBack() {
+        EvergentServices.Companion.getInstance().searchAccountv2(context,new EvergentSearchAccountCallBack() {
             @Override
             public void onSuccess(@NotNull SearchAccountv2Response searchAccountv2Response) {
                 evergentCommonResponse.setStatus(true);
@@ -41,5 +44,6 @@ public class AstrLoginRepository {
         });
         return mutableLiveData;
     }
+
 
 }
