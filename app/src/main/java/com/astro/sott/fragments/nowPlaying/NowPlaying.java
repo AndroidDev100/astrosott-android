@@ -128,7 +128,7 @@ public class NowPlaying extends BaseBindingFragment<FragmentNowPlayingBinding> {
         viewModel.getLiveNowData(asset).observe(this, assetCommonBeans -> {
             //setUIComponets(assetCommonBeans);
             try {
-                if (assetCommonBeans.get(0).getStatus()) {
+               /* if (assetCommonBeans.get(0).getStatus()) {
                     setUIComponets(assetCommonBeans, tempCount, 0);
                     tempCount++;
 //                    similarRail(asset);
@@ -138,7 +138,7 @@ public class NowPlaying extends BaseBindingFragment<FragmentNowPlayingBinding> {
 //                    similarRail(asset);
                     callCategoryRailAPI(viuChannelList);
 
-                }
+                }*/
             } catch (Exception e) {
 //                similarRail(asset);
                 callCategoryRailAPI(viuChannelList);
