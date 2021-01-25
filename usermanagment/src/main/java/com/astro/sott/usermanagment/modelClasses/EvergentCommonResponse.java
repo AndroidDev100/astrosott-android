@@ -1,5 +1,9 @@
 package com.astro.sott.usermanagment.modelClasses;
 
+import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse;
+import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
+import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse;
+import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse;
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response;
 
 public class EvergentCommonResponse {
@@ -7,6 +11,45 @@ public class EvergentCommonResponse {
     private String errorMessage;
     private boolean status;
     private SearchAccountv2Response searchAccountv2Response;
+
+    private CreateOtpResponse createOtpResponse;
+    private ConfirmOtpResponse confirmOtpResponse;
+
+    private ResetPasswordResponse resetPasswordResponse;
+    private CreateUserResponse createUserResponse;
+
+
+    public void setCreateUserResponse(CreateUserResponse createUserResponse) {
+        this.createUserResponse = createUserResponse;
+    }
+
+    public CreateUserResponse getCreateUserResponse() {
+        return createUserResponse;
+    }
+
+    public void setResetPasswordResponse(ResetPasswordResponse resetPasswordResponse) {
+        this.resetPasswordResponse = resetPasswordResponse;
+    }
+
+    public ResetPasswordResponse getResetPasswordResponse() {
+        return resetPasswordResponse;
+    }
+
+    public void setConfirmOtpResponse(ConfirmOtpResponse confirmOtpResponse) {
+        this.confirmOtpResponse = confirmOtpResponse;
+    }
+
+    public ConfirmOtpResponse getConfirmOtpResponse() {
+        return confirmOtpResponse;
+    }
+
+    public void setCreateOtpResponse(CreateOtpResponse createOtpResponse) {
+        this.createOtpResponse = createOtpResponse;
+    }
+
+    public CreateOtpResponse getCreateOtpResponse() {
+        return createOtpResponse;
+    }
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;

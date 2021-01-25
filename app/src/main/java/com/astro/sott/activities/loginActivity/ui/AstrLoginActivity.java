@@ -34,7 +34,18 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
     private void setClicks() {
         getBinding().loginBtn.setOnClickListener(view -> {
-            searchAccountv2();
+            //
+            // searchAccountv2();
+        createUser();
+        });
+        getBinding().google.setOnClickListener(view -> {
+            createOtp();
+        });
+        getBinding().fb.setOnClickListener(view -> {
+            confirmOtp();
+        });
+        getBinding().apple.setOnClickListener(view -> {
+            resetPassword();
         });
     }
 
@@ -43,6 +54,59 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
             if (evergentCommonResponse.isStatus()) {
                 Toast.makeText(this, evergentCommonResponse.getSearchAccountv2Response().getSearchAccountV2ResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void createOtp() {
+        astroLoginViewModel.createOtp().observe(this, evergentCommonResponse -> {
+
+            if (evergentCommonResponse.isStatus()) {
+                Toast.makeText(this, evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    String token = "";
+
+    private void confirmOtp() {
+        astroLoginViewModel.confirmOtp().observe(this, evergentCommonResponse -> {
+
+            if (evergentCommonResponse.isStatus()) {
+                Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
+                token = evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getToken();
+            } else {
+                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void resetPassword() {
+        astroLoginViewModel.resetPassword(token).observe(this, evergentCommonResponse -> {
+
+            if (evergentCommonResponse.isStatus()) {
+                Toast.makeText(this, evergentCommonResponse.getResetPasswordResponse().getResetPasswordResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void createUser() {
+        astroLoginViewModel.createUser().observe(this, evergentCommonResponse -> {
+
+            if (evergentCommonResponse.isStatus()) {
+                Toast.makeText(this, evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();

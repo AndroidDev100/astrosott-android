@@ -2,7 +2,11 @@ package com.astro.sott.usermanagment.EvergentServices
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.astro.sott.usermanagment.callBacks.EvergentSearchAccountCallBack
+import com.astro.sott.usermanagment.callBacks.*
+import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
+import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
+import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
+import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
 import com.astro.sott.usermanagment.networkManager.retrofit.EvergentApiInterface
 import com.astro.sott.usermanagment.networkManager.retrofit.EvergentNetworkClass
@@ -18,15 +22,23 @@ class EvergentServices {
         val instance = EvergentServices()
     }
 
+    private val CHANNEL_PARTNER_ID: String = "channelPartnerID"
+    private val CHANNEL_PARTNER_ID_VALUE: String = "ASTRO"
+    private val API_USER_VALUE: String = "astrosottapiuser"
 
-    fun searchAccountv2(context: Context,searchAccountCallBack: EvergentSearchAccountCallBack) {
+    private val API_USER: String = "apiUser"
+    private val API_PASSWORD: String = "apiPassword"
+
+
+    fun searchAccountv2(context: Context, searchAccountCallBack: EvergentSearchAccountCallBack) {
 
         var searchAccountJson = JsonObject()
         var json = JsonObject()
-        json.addProperty("channelPartnerID", "ASTRO")
-        json.addProperty("apiUser", "astrosottapiuser")
-        json.addProperty("apiPassword", "Gfty5$" + "dfr&")
-        json.addProperty("userName", "agarwalshalabh@gmail.com")
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        json.addProperty(API_USER, API_USER_VALUE)
+        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
+        json.addProperty("userName", "sunnykadan.1994@gmail.com")
+        json.addProperty("userName", "sunnykadan.1994@gmail.com")
 
         searchAccountJson.add("SearchAccountV2RequestMessage", json)
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
@@ -44,9 +56,211 @@ class EvergentServices {
                         searchAccountCallBack.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.searchAccountV2ResponseMessage?.failureMessage != null) {
-                            searchAccountCallBack.onFailure(EvergentErrorHandling().getErrorMessage(response.body()?.searchAccountV2ResponseMessage?.failureMessage,context))
+                            searchAccountCallBack.onFailure(EvergentErrorHandling().getErrorMessage(response.body()?.searchAccountV2ResponseMessage?.failureMessage, context))
                         } else {
                             searchAccountCallBack.onFailure("Something Went Wrong")
+                        }
+                    }
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
+
+    fun createOtp(context: Context, evergentCreateOtpCallBack: EvergentCreateOtpCallBack) {
+
+        var searchAccountJson = JsonObject()
+        var json = JsonObject()
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        json.addProperty(API_USER, API_USER_VALUE)
+        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
+        json.addProperty("country", "MY")
+        var type = "email"
+        if (type.equals("email", true)) {
+            json.addProperty("email", "sunnykadan.1994@gmail.com")
+
+        } else {
+            json.addProperty("mobileNumber", "6395097327")
+
+        }
+        searchAccountJson.add("CreateOTPRequestMessage", json)
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.createOtp(searchAccountJson)
+        call?.enqueue(object : Callback<CreateOtpResponse?> {
+            override fun onFailure(call: Call<CreateOtpResponse?>, t: Throwable) {
+                evergentCreateOtpCallBack.onFailure("Something Went Wrong")
+
+            }
+
+            override fun onResponse(call: Call<CreateOtpResponse?>, response: Response<CreateOtpResponse?>) {
+                if (response.body() != null && response.body()?.createOTPResponseMessage != null && response.body()?.createOTPResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.createOTPResponseMessage?.responseCode.equals("1", true)) {
+                        evergentCreateOtpCallBack.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.createOTPResponseMessage?.failureMessage != null) {
+                            evergentCreateOtpCallBack.onFailure(EvergentErrorHandling().getErrorMessage(response.body()?.createOTPResponseMessage?.failureMessage, context))
+                        } else {
+                            evergentCreateOtpCallBack.onFailure("Something Went Wrong")
+                        }
+                    }
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
+
+    fun confirmOtp(context: Context, evergentConfirmOtpCallBack: EvergentConfirmOtpCallBack) {
+
+        var searchAccountJson = JsonObject()
+        var json = JsonObject()
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        json.addProperty(API_USER, API_USER_VALUE)
+        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
+        json.addProperty("country", "MY")
+        var type = "email"
+        if (type.equals("email", true)) {
+            json.addProperty("email", "sunnykadan.1994@gmail.com")
+
+        } else {
+            json.addProperty("mobileNumber", "6395097327")
+
+        }
+        json.addProperty("otp", "123456")
+        json.addProperty("isGenerateToken", "true")
+        searchAccountJson.add("ConfirmOTPRequestMessage", json)
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.confirmOtp(searchAccountJson)
+        call?.enqueue(object : Callback<ConfirmOtpResponse?> {
+            override fun onFailure(call: Call<ConfirmOtpResponse?>, t: Throwable) {
+                evergentConfirmOtpCallBack.onFailure("Something Went Wrong")
+
+            }
+
+            override fun onResponse(call: Call<ConfirmOtpResponse?>, response: Response<ConfirmOtpResponse?>) {
+                if (response.body() != null && response.body()?.confirmOTPResponseMessage != null && response.body()?.confirmOTPResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.confirmOTPResponseMessage?.responseCode.equals("1", true)) {
+                        evergentConfirmOtpCallBack.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.confirmOTPResponseMessage?.failureMessage != null) {
+                            evergentConfirmOtpCallBack.onFailure(EvergentErrorHandling().getErrorMessage(response.body()?.confirmOTPResponseMessage?.failureMessage, context))
+                        } else {
+                            evergentConfirmOtpCallBack.onFailure("Something Went Wrong")
+                        }
+                    }
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
+
+    fun resetPassword(token: String, context: Context, evergentResetPasswordCallBack: EvergentResetPasswordCallBack) {
+
+        var searchAccountJson = JsonObject()
+        var json = JsonObject()
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        json.addProperty(API_USER, API_USER_VALUE)
+        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
+        json.addProperty("contactPassword", "veryeasy1@")
+        json.addProperty("userToken", token)
+        searchAccountJson.add("ResetPasswordRequestMessage", json)
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.resetPassword(searchAccountJson)
+        call?.enqueue(object : Callback<ResetPasswordResponse?> {
+            override fun onFailure(call: Call<ResetPasswordResponse?>, t: Throwable) {
+                evergentResetPasswordCallBack.onFailure("Something Went Wrong")
+
+            }
+
+            override fun onResponse(call: Call<ResetPasswordResponse?>, response: Response<ResetPasswordResponse?>) {
+                if (response.body() != null && response.body()?.resetPasswordResponseMessage != null && response.body()?.resetPasswordResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.resetPasswordResponseMessage?.responseCode.equals("1", true)) {
+                        evergentResetPasswordCallBack.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.resetPasswordResponseMessage?.failureMessage != null) {
+                            evergentResetPasswordCallBack.onFailure(EvergentErrorHandling().getErrorMessage(response.body()?.resetPasswordResponseMessage?.failureMessage, context))
+                        } else {
+                            evergentResetPasswordCallBack.onFailure("Something Went Wrong")
+                        }
+                    }
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
+    fun createUser(context: Context, evergentCreateUserCallback: EvergentCreateUserCallback) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        var devicejson = JsonObject()
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        json.addProperty(API_USER, API_USER_VALUE)
+        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
+        var type = "mobile"
+        if (type.equals("email", true)) {
+            json.addProperty("email", "sunnykadan.1994@gmail.com")
+            json.addProperty("customerUsername", "sunnykadan.1994@gmail.com")
+            json.addProperty("customerPassword", "veryeasy1@")
+
+        } else if (type.equals("mobile", true)) {
+            json.addProperty("mobileNumber", "6395097327")
+            json.addProperty("alternateUserName", "6395097327")
+            json.addProperty("customerPassword", "veryeasy1@")
+
+        } else if (type.equals("social", true)) {
+            json.addProperty("socialLoginID", "")
+            json.addProperty("socialLoginType", "")
+        }
+
+        devicejson.addProperty("serialNo", "QER-GHi445678455-980988-8668H83583")
+        devicejson.addProperty("deviceName", "Samsung Note")
+        devicejson.addProperty("deviceType", "Android")
+        devicejson.addProperty("modelNo", "5Sk Se6ries")
+        devicejson.addProperty("os", "Android")
+        json.add("deviceMessage", devicejson)
+        createUserJson.add("CreateUserRequestMessage", json)
+
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.createUser(createUserJson)
+        call?.enqueue(object : Callback<CreateUserResponse?> {
+            override fun onFailure(call: Call<CreateUserResponse?>, t: Throwable) {
+                evergentCreateUserCallback.onFailure("Something Went Wrong")
+
+            }
+
+            override fun onResponse(call: Call<CreateUserResponse?>, response: Response<CreateUserResponse?>) {
+                if (response.body() != null && response.body()?.createUserResponseMessage != null && response.body()?.createUserResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.createUserResponseMessage?.responseCode.equals("1", true)) {
+                        evergentCreateUserCallback.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.createUserResponseMessage?.failureMessage != null) {
+                            evergentCreateUserCallback.onFailure(EvergentErrorHandling().getErrorMessage(response.body()?.createUserResponseMessage?.failureMessage, context))
+                        } else {
+                            evergentCreateUserCallback.onFailure("Something Went Wrong")
                         }
                     }
 
