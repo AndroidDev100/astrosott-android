@@ -103,7 +103,6 @@ public class ConvivaManager {
             ConvivaManager.getConvivaAdAnalytics(mcontext).release();
             convivaAdAnalytics = null;
         }
-        ConvivaAnalytics.release();
     }
 
     public static void convivaUserWaitStarted() {

@@ -334,7 +334,6 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         try {
             callProgressBar();
 
-            ConvivaManager.initConvivaAnalytics(this);
             ConvivaManager.setreportPlaybackRequested(this, railData,duraton);
             Intent intent = new Intent(MovieDescriptionActivity.this, PlayerActivity.class);
             intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);

@@ -2195,7 +2195,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
         player.addListener(this, AdEvent.adBreakStarted, event -> {
-            // ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakStarted(ConvivaSdkConstants.AdPlayer.CONTENT, ConvivaSdkConstants.AdType.CLIENT_SIDE);
             Log.d(TAG, "AD_BREAK_STARTED");
             showAdsView();
         });
@@ -2246,8 +2245,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             Map<String, Object> contentInfo = new HashMap<String, Object>();
             contentInfo.put(ConvivaSdkConstants.ASSET_NAME, playerAsset.getName());
             ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdLoaded(contentInfo);
-
-            AdEvent.AdLoadedEvent adLoadedEvent = event;
             showAdsView();
         });
 
@@ -2255,6 +2252,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             AdEvent.AdStartedEvent adStartedEvent = event;
             Map<String, Object> contentInfo = new HashMap<String, Object>();
             contentInfo.put(ConvivaSdkConstants.ASSET_NAME, playerAsset.getName());
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdLoaded(contentInfo);
+
+
             ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdStarted(contentInfo);
 
             ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.BITRATE, 1024);
