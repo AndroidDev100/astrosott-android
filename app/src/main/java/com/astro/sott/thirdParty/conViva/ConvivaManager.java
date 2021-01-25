@@ -99,6 +99,10 @@ public class ConvivaManager {
             ConvivaManager.getConvivaVideoAnalytics(mcontext).release();
             convivaVideoAnalytics = null;
         }
+
+    }
+
+    public static void removeConvivaAdsSession() {
         if (ConvivaManager.getConvivaAdAnalytics(mcontext) != null) {
             ConvivaManager.getConvivaAdAnalytics(mcontext).release();
             convivaAdAnalytics = null;

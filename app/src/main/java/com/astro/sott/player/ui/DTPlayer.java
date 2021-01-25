@@ -2243,32 +2243,44 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         player.addListener(this, AdEvent.loaded, event -> {
             Map<String, Object> contentInfo = new HashMap<String, Object>();
-            contentInfo.put(ConvivaSdkConstants.ASSET_NAME, playerAsset.getName());
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdLoaded(contentInfo);
+            contentInfo.put(ConvivaSdkConstants.POD_INDEX, event.adInfo.getPodIndex());
+            contentInfo.put(ConvivaSdkConstants.POD_DURATION, event.adInfo.getAdDuration());
+            ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakStarted(ConvivaSdkConstants.AdPlayer.CONTENT, ConvivaSdkConstants.AdType.CLIENT_SIDE, contentInfo);
             showAdsView();
         });
 
         player.addListener(this, AdEvent.started, event -> {
             AdEvent.AdStartedEvent adStartedEvent = event;
             Map<String, Object> contentInfo = new HashMap<String, Object>();
-            contentInfo.put(ConvivaSdkConstants.ASSET_NAME, playerAsset.getName());
+            contentInfo.put(ConvivaSdkConstants.ASSET_NAME, adStartedEvent.adInfo.getAdTitle());
+            contentInfo.put(ConvivaSdkConstants.IS_LIVE, ConvivaSdkConstants.StreamType.VOD);
+            contentInfo.put(ConvivaSdkConstants.STREAM_URL, "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=");
             ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdLoaded(contentInfo);
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdStarted();
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
 
 
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdStarted(contentInfo);
-
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.BITRATE, 1024);
             showAdsView();
             Log.d(TAG, "AD_STARTED w/h - " + adStartedEvent.adInfo.getAdWidth() + "/" + adStartedEvent.adInfo.getAdHeight());
         });
 
+        player.addListener(this, AdEvent.adBreakReady, event -> {
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
+            Log.d(TAG, "PLay");
+        });
+
+
         player.addListener(this, AdEvent.resumed, event -> {
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
+
             adRunning = true;
             showAdsView();
-            Log.d(TAG, "AD_RESUMED");
+            Log.d(TAG, "PLAY");
         });
 
         player.addListener(this, AdEvent.paused, event -> {
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PAUSED);
+
             isAdPause = true;
             Log.d(TAG, "AD_PAUSED");
         });
@@ -2279,6 +2291,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
         player.addListener(this, PlayerEvent.ended, event -> {
             isPlayerEnded = true;
+
 
         });
 
@@ -2291,7 +2304,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         player.addListener(this, AdEvent.completed, event -> {
             Log.d(TAG, "AD_COMPLETED");
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
             ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
+            ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
+            ConvivaManager.removeConvivaAdsSession();
+
+
             // ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
             if (isPlayerEnded && isWaitingBinge) {
                 allAdsCompleted = true;
