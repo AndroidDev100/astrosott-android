@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.audio.ui.AudioLanguageActivity;
+import com.astro.sott.activities.subtitle.ui.SubtitleLanguageActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityLanguageSettingsBinding;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
@@ -37,6 +39,20 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
                 startActivity(intent1);
             }
         });
+        getBinding().rlAudioLang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(LanguageSettingsActivity.this, AudioLanguageActivity.class);
+                startActivity(intent1);
+            }
+        });
+        getBinding().rlSubtitleLang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(LanguageSettingsActivity.this, SubtitleLanguageActivity.class);
+                startActivity(intent1);
+            }
+        });
         getBinding().backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,10 +67,10 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
             oldLang = newLang;
             if (newLang.equalsIgnoreCase("ms")) {
                 getBinding().title.setText("Pemilihan Bahasa");
-                  getBinding().tvAppLanguage.setText("Bahasa Aplikasi");
-                  getBinding().tvAudioLanguage.setText("Bahasa Audio");
-                  getBinding().tvSubtitleLanguage.setText("Bahasa Sari kata");
-            }else {
+                getBinding().tvAppLanguage.setText("Bahasa Aplikasi");
+                getBinding().tvAudioLanguage.setText("Bahasa Audio");
+                getBinding().tvSubtitleLanguage.setText("Bahasa Sari kata");
+            } else {
                 getBinding().title.setText("Language Selection");
                 getBinding().tvAppLanguage.setText("App Language");
                 getBinding().tvAudioLanguage.setText("Audio Language");
@@ -63,6 +79,7 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
             }
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
