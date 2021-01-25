@@ -33,5 +33,9 @@
     <string name="help">Tolonglah</string>
     <string name="logout">Log keluar</string>
     <string name="manage_payments">Urus Pembayaran</string>
+    <string name="language_selection">Pemilihan Bahasa</string>
+    <string name="App_language">Bahasa Aplikasi</string>
+    <string name="Audio_language">Bahasa Audio</string>
+    <string name="Subtitle_language">Bahasa Sari kata</string>
 
 </resources>

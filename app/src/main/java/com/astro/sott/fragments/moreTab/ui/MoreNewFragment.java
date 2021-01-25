@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.astro.sott.R;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.language.ui.ChangeLanguageActivity;
+import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
@@ -125,7 +126,7 @@ public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBind
         getBinding().rlLanguageSelection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent1 = new Intent(getActivity(), ChangeLanguageActivity.class);
+                Intent intent1 = new Intent(getActivity(), LanguageSettingsActivity.class);
                 startActivity(intent1);
             }
         });
