@@ -26,7 +26,8 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.signUp.ui.SignUpActivity"></activity>
+        <activity android:name=".activities.language.ui.LanguageSettingsActivity"></activity>
+        <activity android:name=".activities.signUp.ui.SignUpActivity" />
         <activity android:name=".activities.loginActivity.ui.AstrLoginActivity" />
         <activity android:name=".activities.forgotPassword.ui.ForgotPasswordActivity" />
         <activity android:name=".activities.verification.VerificationActivity" />
