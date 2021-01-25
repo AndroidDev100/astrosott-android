@@ -41,7 +41,6 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
             @Override
             public void onClick(View view) {
                 onBackPressed();
-                updateLang();
             }
         });
     }
@@ -63,5 +62,10 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
 
             }
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateLang();
     }
 }
