@@ -15,4 +15,6 @@
 
     <string name="live_viu_tab">DI BAWAH Aplikasi</string>
     <string name="title_more">LAGI</string>
+    <string name="profile_txt">Profil</string>
+    <string name="live_home">Live</string>
 </resources>
