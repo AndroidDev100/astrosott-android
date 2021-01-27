@@ -452,6 +452,27 @@
     <string name="txx1">excluding taxes)</string>
     <string name="non_dialog_user_live_chamnel_message">To watch this channel, activate a daily pack for 5/- (+ tax) or a monthly pack for Rs.150/- (+ tax). Click to activate.</string>
 
+    <string name="version_more">Version1.045b</string>
+    <string name="siginup_more">Sign In/Sign Up</string>
+    <string name="guest_user">Guest user</string>
+    <string name="partner_billing">Partner Billing</string>
+    <string name="subscribe_more">Subscribe</string>
+    <string name="manage_subscription_more">Manage Subscription</string>
+    <string name="renew_date">Renew on 22/2/21</string>
+    <string name="transac_history">Transaction History</string>
+    <string name="lang_selection">Language Selection</string>
+    <string name="downloads">Downloads</string>
+    <string name="mannage_device">Manage Device</string>
+    <string name="content_pref">Content Preferences</string>
+    <string name="coupon_redem">Coupon Redemption</string>
+    <string name="help">Help</string>
+    <string name="logout">Logout</string>
+    <string name="manage_payments">Manage Payments</string>
+    <string name="language_selection">Language Selection</string>
+    <string name="App_language">App Language</string>
+    <string name="Audio_language">Audio Language</string>
+    <string name="Subtitle_language">Subtitle Language</string>
+
     <string name="profile_txt">Profile</string>
     <string name="live_home">Live</string>
 </resources>

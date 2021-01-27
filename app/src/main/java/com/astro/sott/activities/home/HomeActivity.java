@@ -11,6 +11,7 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.AppUpdateCallBack;
 import com.astro.sott.fragments.home.ui.ViewPagerFragmentAdapter;
 import com.astro.sott.fragments.moreTab.ui.MoreFragment;
+import com.astro.sott.fragments.moreTab.ui.MoreNewFragment;
 import com.astro.sott.fragments.video.ui.VideoFragment;
 import com.astro.sott.fragments.viu.ui.ViuFragment;
 import com.astro.sott.fragments.viu.ui.ViuFragmentNew;
@@ -55,6 +56,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private LiveTvFragment liveTvFragment;
     private ViuFragmentNew viuAppsFragment;
     private Fragment moreFragment;
+    private MoreNewFragment moreNewFragment;
     private String oldLang, newLang;
     private Fragment active;
     private FragmentManager fragmentManager;
@@ -103,13 +105,23 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
                     return true;*/
 
+//                case R.id.navigation_more:
+//                    if (moreFragment == null) {
+//                        moreFragment = new MoreFragment();
+//                        fragmentManager.beginTransaction().add(R.id.content_frame, moreFragment, "5").hide(moreFragment).commitAllowingStateLoss();
+//                        switchToMoreFragment();
+//                    } else {
+//                        switchToMoreFragment();
+//                    }
+//
+//                    return true;
                 case R.id.navigation_more:
-                    if (moreFragment == null) {
-                        moreFragment = new MoreFragment();
-                        fragmentManager.beginTransaction().add(R.id.content_frame, moreFragment, "5").hide(moreFragment).commitAllowingStateLoss();
-                        switchToMoreFragment();
+                    if (moreNewFragment == null) {
+                        moreNewFragment = new MoreNewFragment();
+                        fragmentManager.beginTransaction().add(R.id.content_frame,moreNewFragment, "5").hide(moreNewFragment).commitAllowingStateLoss();
+                        switchToNewMoreFragment();
                     } else {
-                        switchToMoreFragment();
+                        switchToNewMoreFragment();
                     }
 
                     return true;
@@ -384,9 +396,13 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
 
-    private void switchToMoreFragment() {
-        fragmentManager.beginTransaction().hide(active).show(moreFragment).commit();
-        active = moreFragment;
+//    private void switchToMoreFragment() {
+//        fragmentManager.beginTransaction().hide(active).show(moreFragment).commit();
+//        active = moreFragment;
+//    }
+private void switchToNewMoreFragment() {
+        fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
+        active = moreNewFragment;
     }
 
     public void setToHome() {

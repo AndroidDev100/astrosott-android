@@ -15,6 +15,29 @@
 
     <string name="live_viu_tab">DI BAWAH Aplikasi</string>
     <string name="title_more">LAGI</string>
+
+
+    <string name="version_more">Versi1.045b</string>
+    <string name="siginup_more">Log masuk / Daftar</string>
+    <string name="guest_user">Pengguna tetamu</string>
+    <string name="partner_billing">Bil Rakan Kongsi</string>
+    <string name="subscribe_more">Langgan</string>
+    <string name="manage_subscription_more">Urus Langganan</string>
+    <string name="renew_date">Diperbaharui pada 22/2/21</string>
+    <string name="transac_history">sejarah transaksi</string>
+    <string name="lang_selection">Pemilihan Bahasa</string>
+    <string name="downloads">Muat turun</string>
+    <string name="mannage_device">Urus Peranti</string>
+    <string name="content_pref">Keutamaan Kandungan</string>
+    <string name="coupon_redem">Penebusan Kupon</string>
+    <string name="help">Tolonglah</string>
+    <string name="logout">Log keluar</string>
+    <string name="manage_payments">Urus Pembayaran</string>
+    <string name="language_selection">Pemilihan Bahasa</string>
+    <string name="App_language">Bahasa Aplikasi</string>
+    <string name="Audio_language">Bahasa Audio</string>
+    <string name="Subtitle_language">Bahasa Sari kata</string>
+
     <string name="profile_txt">Profil</string>
     <string name="live_home">Live</string>
 </resources>
