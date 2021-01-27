@@ -88,7 +88,7 @@ public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBind
 //                mBinding.tvEmail.setVisibility(View.VISIBLE);
 //                mBinding.tvName.setVisibility(View.VISIBLE);
 //                mBinding.edit.setVisibility(View.VISIBLE);
-//                mBinding.tvLogout.setVisibility(View.VISIBLE);
+//                mBinding.rlLogout.setVisibility(View.VISIBLE);
 //            }
 //        });
 //       getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +101,7 @@ public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBind
 //
 //            }
 //        });
-//        mBinding.tvLogout.setOnClickListener(new View.OnClickListener() {
+//        getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
 //                mBinding.tvLogout.setVisibility(View.GONE);

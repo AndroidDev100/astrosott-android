@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_three"
+        tools:context=".activities.profile.ui.EditProfileActivity">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/search_item_title_color"
+            android:id="@+id/toolbar">
+            <ImageView
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:id="@+id/back_button"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/_8sdp"
+                android:src="@drawable/back_icon"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:id="@+id/title"
+                android:textAllCaps="false"
+                android:textAlignment="center"
+                android:textSize="@dimen/_15sdp"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:text="@string/edit_email"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp">
+            </TextView>
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_13sdp"
+            android:layout_marginEnd="@dimen/_13sdp"
+            android:layout_below="@+id/toolbar"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:orientation="vertical"
+            >
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:foregroundTint="@color/white"
+                    app:boxStrokeColor="@color/white"
+                    app:hintTextColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:id="@+id/layout_email"
+                    app:endIconTint="@color/white"
+                    >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/existing_email"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:backgroundTint="@color/white"
+                        android:maxLines="1"
+                        android:id="@+id/email"
+                        android:foregroundTint="@color/white"
+                        android:inputType="textEmailAddress"
+                        android:textCursorDrawable="@color/white"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:foregroundTint="@color/white"
+                    app:boxStrokeColor="@color/white"
+                    app:hintTextColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:id="@+id/layout_new_email"
+                    app:endIconTint="@color/white"
+                    >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/new_email"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:backgroundTint="@color/white"
+                        android:maxLines="1"
+                        android:id="@+id/new_email"
+                        android:foregroundTint="@color/white"
+                        android:inputType="textEmailAddress"
+                        android:textCursorDrawable="@color/white"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_35sdp"
+                android:layout_marginEnd="@dimen/_35sdp"
+                android:text="@string/update"
+                android:textAllCaps="true"
+                android:background="@drawable/rounded_blue_button"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

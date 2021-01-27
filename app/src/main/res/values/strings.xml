@@ -472,5 +472,19 @@
     <string name="App_language">App Language</string>
     <string name="Audio_language">Audio Language</string>
     <string name="Subtitle_language">Subtitle Language</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="change_profile_photo"><u>Change Profile Photo</u></string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="mobile_no">Mobile Number</string>
+    <string name="password">Password</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="edit_email">Edit Email</string>
+    <string name="existing_email">Existing Email</string>
+    <string name="new_email">New Email</string>
+    <string name="edit_password">Edit Password</string>
+    <string name="existing_password">Existing Password</string>
+    <string name="new_psw">New Password</string>
+
 
 </resources>
