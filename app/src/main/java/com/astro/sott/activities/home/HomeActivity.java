@@ -9,6 +9,7 @@ import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.AppUpdateCallBack;
+import com.astro.sott.fragments.home.ui.ViewPagerFragmentAdapter;
 import com.astro.sott.fragments.moreTab.ui.MoreFragment;
 import com.astro.sott.fragments.video.ui.VideoFragment;
 import com.astro.sott.fragments.viu.ui.ViuFragment;
@@ -28,6 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +41,7 @@ import com.astro.sott.fragments.home.ui.HomeFragment;
 import com.astro.sott.fragments.livetv.ui.LiveTvFragment;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
@@ -70,14 +73,15 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                     return true;
                 case R.id.navigation_live_tv:
                     if (liveTvFragment == null) {
-                        liveTvFragment = new LiveTvFragment();
-                        fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "3").hide(liveTvFragment).commitAllowingStateLoss();
-                        switchToLiveTvFragment();
+                        initFrameFragment();
+                       // liveTvFragment = new LiveTvFragment();
+                        //fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "3").hide(liveTvFragment).commitAllowingStateLoss();
+                      //  switchToLiveTvFragment();
                     } else {
                         switchToLiveTvFragment();
                     }
                     return true;
-                case R.id.navigation_video:
+                /*case R.id.navigation_video:
                     if (videoFragment == null) {
                         videoFragment = new VideoFragment();
                         fragmentManager.beginTransaction().add(R.id.content_frame, videoFragment, "2").hide(videoFragment).commitAllowingStateLoss();
@@ -97,7 +101,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
                     }
 
-                    return true;
+                    return true;*/
 
                 case R.id.navigation_more:
                     if (moreFragment == null) {
@@ -113,8 +117,20 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             return false;
         }
     };
-    private BottomNavigationView navigation;
 
+    private void initFrameFragment() {
+        getBinding().tabs.setVisibility(View.GONE);
+        getBinding().viewPager.setVisibility(View.GONE);
+        getBinding().mainLayout.setVisibility(View.VISIBLE);
+        liveTvFragment = new LiveTvFragment();
+        active = liveTvFragment;
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "1").hide(liveTvFragment).commit();
+        fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commit();
+        active = liveTvFragment;
+    }
+
+    private BottomNavigationView navigation;
     @SuppressLint("RestrictedApi")
     private static void removeNavigationShiftMode(BottomNavigationView view) {
 
@@ -292,7 +308,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
         searchIcon.setOnClickListener(view -> new ActivityLauncher(HomeActivity.this).searchActivity(HomeActivity.this, ActivitySearch.class));
         appsLaunchIcon.setOnClickListener(view -> {
-            navigation.setSelectedItemId(R.id.navigation_viu_apps);
+           // navigation.setSelectedItemId(R.id.navigation_viu_apps);
         });
     }
 
@@ -301,13 +317,18 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     }
 
+    // tab titles
+    private String[] titles = new String[]{"TV SHOWS", "MOVIES", "SPORTS"};
+
     private void initialFragment(HomeActivity homeActivity) {
-        homeFragment = new HomeFragment();
-        active = homeFragment;
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.content_frame, homeFragment, "1").hide(homeFragment).commit();
-        fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
-        active = homeFragment;
+        getBinding().viewPager.setUserInputEnabled(false);
+        getBinding().viewPager.setAdapter(new ViewPagerFragmentAdapter(this,titles));
+
+        // attaching tab mediator
+        new TabLayoutMediator(getBinding().tabs, getBinding().viewPager,
+                (tab, position) -> tab.setText(titles[position])).attach();
+
+
         UIinitialization();
         navigation.setSelectedItemId(R.id.navigation_home);
 
@@ -331,9 +352,15 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     private void switchToHomeFragment() {
-        fragmentManager.beginTransaction().hide(active).show(homeFragment).commitAllowingStateLoss();
-        checkSameClick();
-        active = homeFragment;
+        /*if (homeFragment!=null){
+            fragmentManager.beginTransaction().hide(active).show(homeFragment).commitAllowingStateLoss();
+            checkSameClick();
+            active = homeFragment;
+        }*/
+        getBinding().mainLayout.setVisibility(View.GONE);
+        getBinding().tabs.setVisibility(View.VISIBLE);
+        getBinding().viewPager.setVisibility(View.VISIBLE);
+
     }
 
     private void switchToViuFragment() {
@@ -342,6 +369,9 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     private void switchToLiveTvFragment() {
+        getBinding().tabs.setVisibility(View.GONE);
+        getBinding().viewPager.setVisibility(View.GONE);
+        getBinding().mainLayout.setVisibility(View.VISIBLE);
         fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commitAllowingStateLoss();
         checkSameClick();
         active = liveTvFragment;

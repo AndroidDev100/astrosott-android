@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:clipToPadding="false"
-            android:nestedScrollingEnabled="false"
+
             android:orientation="horizontal"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"

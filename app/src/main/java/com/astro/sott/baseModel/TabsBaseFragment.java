@@ -122,7 +122,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         swipeToRefresh();
         getBinding().myRecyclerView.setHasFixedSize(true);
         getBinding().myRecyclerView.setItemViewCacheSize(20);
-        getBinding().myRecyclerView.setNestedScrollingEnabled(false);
+       // getBinding().myRecyclerView.setNestedScrollingEnabled(false);
         getBinding().myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         CustomShimmerAdapter adapter = new CustomShimmerAdapter(getActivity(), new ShimmerDataModel(getActivity()).getList(0), new ShimmerDataModel(getActivity()).getSlides());
         getBinding().myRecyclerView.setAdapter(adapter);

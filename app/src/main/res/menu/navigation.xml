@@ -16,9 +16,9 @@
         android:enabled="true"
         app:showAsAction="ifRoom"
         android:icon="@drawable/nav_live_tv"
-        android:title="@string/live_tv" />
+        android:title="@string/live_home" />
 
-    <item
+   <!-- <item
         android:id="@+id/navigation_video"
         android:enabled="true"
         app:showAsAction="ifRoom"
@@ -29,14 +29,14 @@
         android:enabled="true"
         app:showAsAction="ifRoom"
         android:icon="@drawable/nav_viu"
-        android:title="@string/live_viu_tab" />
+        android:title="@string/live_viu_tab" />-->
 
 
     <item
         android:id="@+id/navigation_more"
         android:enabled="true"
         android:icon="@drawable/ic_more"
-        android:title="@string/title_more"
+        android:title="@string/profile_txt"
         app:showAsAction="ifRoom" />
 
 </menu>

@@ -2,62 +2,117 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:filterTouchesWhenObscured="true"
-        android:orientation="vertical"
-        android:id="@+id/main_layout">
-
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/app_toolbar"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.facebook.ads.NativeAdLayout
-                android:id="@+id/native_ad_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </ScrollView>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            android:layout_width="match_parent"
+            android:fitsSystemWindows="true">
 
-            <FrameLayout
-                android:id="@+id/content_frame"
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            >
+
+
+
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/app_toolbar"
+                    android:layout_width="match_parent"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    android:background="@color/white"
+                    android:layout_height="?attr/actionBarSize"
+                    android:minHeight="?attr/actionBarSize"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabTextColor="@color/tabUnselectedColor"
+                    app:tabSelectedTextColor="@color/white"
+                    android:background="@drawable/tab_background">
+
+
+                </com.google.android.material.tabs.TabLayout>
+
+
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_height="match_parent">
+
+            </androidx.viewpager2.widget.ViewPager2>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/navigation"
-                android:background="@color/white" />
+                android:visibility="visible"
+                android:background="@color/black"
+                android:filterTouchesWhenObscured="true"
+                android:layout_marginBottom="?attr/actionBarSize"
+                android:orientation="vertical"
+                android:id="@+id/main_layout">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_above="@id/navigation"
-                android:background="@drawable/grey_above_shadow"
-                android:visibility="gone" />
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.facebook.ads.NativeAdLayout
+                        android:id="@+id/native_ad_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </ScrollView>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <FrameLayout
+                        android:id="@+id/content_frame"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@drawable/grey_above_shadow"
+                        android:visibility="gone" />
+
+
+                </RelativeLayout>
+
+
+
+            </LinearLayout>
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/navigation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
                 android:background="@color/search_toolbar_background"
                 app:itemIconTint="@color/bottom_navigation_selected"
                 app:itemTextColor="@color/bottom_navigation_selected"
                 app:labelVisibilityMode="unlabeled"
                 app:menu="@menu/navigation" />
-        </RelativeLayout>
-    </LinearLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
 </layout>

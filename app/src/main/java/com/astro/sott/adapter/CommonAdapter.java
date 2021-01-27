@@ -697,7 +697,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private void setRecyclerProperties(RecyclerView rView) {
-        rView.setNestedScrollingEnabled(false);
+       // rView.setNestedScrollingEnabled(false);
         rView.setHasFixedSize(true);
         rView.addItemDecoration(new SpacingItemDecoration(20, SpacingItemDecoration.HORIZONTAL));
 

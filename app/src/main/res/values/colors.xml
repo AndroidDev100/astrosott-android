@@ -82,4 +82,13 @@
     <color name="primaryColorDarkBlack">#141414</color>
     <color name="sapphire">#224ba3</color>
 
+
+   <!-- Astro colors-->
+    <color name="toolbarColor">#1C1827</color>
+    <color name="tabBarColor">#382C57</color>
+    <color name="tabUnselectedColor">#9086A0</color>
+
+
+
+
 </resources>

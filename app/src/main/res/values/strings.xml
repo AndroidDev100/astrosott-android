@@ -452,4 +452,6 @@
     <string name="txx1">excluding taxes)</string>
     <string name="non_dialog_user_live_chamnel_message">To watch this channel, activate a daily pack for 5/- (+ tax) or a monthly pack for Rs.150/- (+ tax). Click to activate.</string>
 
+    <string name="profile_txt">Profile</string>
+    <string name="live_home">Live</string>
 </resources>
