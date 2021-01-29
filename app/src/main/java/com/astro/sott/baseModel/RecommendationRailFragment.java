@@ -233,13 +233,18 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
                         setSimilarUIComponent(assetCommonBeans);
                         // getBaseCategoryRail();
                     } else {
-                        getBaseCategoryRail();
+                        getBinding().upcoming.setVisibility(View.VISIBLE);
+                      //  getBaseCategoryRail();
                     }
                 } else {
-                    getBaseCategoryRail();
+                    getBinding().upcoming.setVisibility(View.VISIBLE);
+
+                    //   getBaseCategoryRail();
                 }
             } catch (Exception e) {
-                getBaseCategoryRail();
+                getBinding().upcoming.setVisibility(View.VISIBLE);
+
+                //  getBaseCategoryRail();
             }
 
 
