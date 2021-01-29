@@ -29,6 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -114,6 +115,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 case R.id.navigation_more:
                     if (moreNewFragment == null) {
                         moreNewFragment = new MoreNewFragment();
+                        getBinding().toolbar.setVisibility(View.GONE);
                         fragmentManager.beginTransaction().add(R.id.content_frame,moreNewFragment, "5").hide(moreNewFragment).commitAllowingStateLoss();
                         switchToNewMoreFragment();
                     } else {

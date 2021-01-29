@@ -5,29 +5,30 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_three"
+        android:background="@color/blue_bg"
         tools:context=".activities.profile.ui.EditProfileActivity">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/search_item_title_color"
+            android:background="@color/toolbar_bg"
             android:id="@+id/toolbar">
             <ImageView
                 android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_height="@dimen/_23sdp"
                 android:id="@+id/back_button"
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
                 android:layout_margin="@dimen/_8sdp"
-                android:src="@drawable/back_icon"/>
+                android:src="@drawable/ic_baseline_arrow_back"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:id="@+id/title"
-                android:textAllCaps="false"
+                android:textAllCaps="true"
                 android:textAlignment="center"
-                android:textSize="@dimen/_15sdp"
+                android:textSize="14sp"
+                android:letterSpacing="0.09"
                 android:layout_gravity="center"
                 android:layout_centerInParent="true"
                 android:text="@string/edit_email"
@@ -42,7 +43,7 @@
             android:layout_marginStart="@dimen/_13sdp"
             android:layout_marginEnd="@dimen/_13sdp"
             android:layout_below="@+id/toolbar"
-            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:orientation="vertical"
             >
 
@@ -51,11 +52,9 @@
                     android:layout_height="wrap_content"
                     android:foregroundTint="@color/white"
                     app:boxStrokeColor="@color/white"
-                    app:hintTextColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    app:hintTextColor="@color/grey"
+                    android:textColorHint="@color/grey"
                     android:id="@+id/layout_email"
-                    app:endIconTint="@color/white"
                     >
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -65,6 +64,8 @@
                         android:textColorHint="@color/white"
                         android:backgroundTint="@color/white"
                         android:maxLines="1"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/heebo_regular"
                         android:id="@+id/email"
                         android:foregroundTint="@color/white"
                         android:inputType="textEmailAddress"
@@ -78,11 +79,10 @@
                     android:layout_height="wrap_content"
                     android:foregroundTint="@color/white"
                     app:boxStrokeColor="@color/white"
-                    app:hintTextColor="@color/white"
-                    android:textColorHint="@color/white"
+                    app:hintTextColor="@color/grey"
+                    android:textColorHint="@color/grey"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:id="@+id/layout_new_email"
-                    app:endIconTint="@color/white"
                     >
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -91,6 +91,8 @@
                         android:textColor="@color/white"
                         android:textColorHint="@color/white"
                         android:backgroundTint="@color/white"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/heebo_regular"
                         android:maxLines="1"
                         android:id="@+id/new_email"
                         android:foregroundTint="@color/white"
@@ -103,11 +105,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_30sdp"
-                android:layout_marginStart="@dimen/_35sdp"
-                android:layout_marginEnd="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_45sdp"
+                android:layout_marginEnd="@dimen/_45sdp"
                 android:text="@string/update"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/heebo_medium"
                 android:textAllCaps="true"
-                android:background="@drawable/rounded_blue_button"/>
+                android:background="@drawable/gradient_button"/>
 
         </LinearLayout>
     </RelativeLayout>
