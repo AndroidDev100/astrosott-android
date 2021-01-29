@@ -3,30 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rlFooter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="visible">
 
-        <View
-            android:id="@+id/sepYouMayLike"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_height"
-            android:layout_marginTop="@dimen/view_margin_top"
-            android:background="@color/home_screen_seperator"
-            android:visibility="gone" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="match_parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

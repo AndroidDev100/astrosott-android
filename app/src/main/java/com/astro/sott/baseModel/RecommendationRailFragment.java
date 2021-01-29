@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +26,7 @@ import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.callBacks.commonCallBacks.HeroItemClickListner;
 import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
 import com.astro.sott.databinding.DetailFooterFragmentBinding;
+import com.astro.sott.fragments.detailRailFragment.adapter.SimilarAdapter;
 import com.astro.sott.fragments.home.viewModel.HomeFragmentViewModel;
 import com.astro.sott.repositories.homeTab.HomeFragmentRepository;
 import com.astro.sott.utils.constants.AppConstants;
@@ -86,6 +88,8 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
             loadedList = new ArrayList<>();
             modelCall();
             iscalled = true;
+            UIinitialization();
+
             getVideoRails();
         } catch (Exception e) {
             Log.w("", e + "");
@@ -127,7 +131,6 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
-            UIinitialization();
             if (context instanceof WebSeriesDescriptionActivity) {
                 getBaseCategoryRail();
             } else
@@ -142,7 +145,7 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
     public void setRecyclerProperties(RecyclerView recyclerView) {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setLayoutManager(mLayoutManager);
     }
 
@@ -225,8 +228,10 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
                 if (assetCommonBeans.size() > 0) {
                     if (assetCommonBeans.get(0).getStatus()) {
                         channelList = dtChannelsList;
-                        setUIComponets(assetCommonBeans);
-                        getBaseCategoryRail();
+                        //  setUIComponets(assetCommonBeans);
+
+                        setSimilarUIComponent(assetCommonBeans);
+                        // getBaseCategoryRail();
                     } else {
                         getBaseCategoryRail();
                     }
@@ -239,6 +244,12 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
 
         });
+
+    }
+
+    private void setSimilarUIComponent(List<AssetCommonBean> assetCommonBeans) {
+        SimilarAdapter similarAdapter = new SimilarAdapter(assetCommonBeans.get(0).getRailAssetList());
+        getBinding().recyclerView.setAdapter(similarAdapter);
 
     }
 
@@ -290,7 +301,7 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
                 if (channelList.size() > 3) {
                     if (loadedList.size() >= 1) {
                         if (context instanceof WebSeriesDescriptionActivity) {
-                            adapter = new MovieDescriptionCommonAdapter((WebSeriesDescriptionActivity) context,loadedList);
+                            adapter = new MovieDescriptionCommonAdapter((WebSeriesDescriptionActivity) context, loadedList);
                         } else if (context instanceof MovieDescriptionActivity) {
                             adapter = new MovieDescriptionCommonAdapter((MovieDescriptionActivity) context, loadedList);
                             // ((MovieDescriptionActivity) context).showTabs();

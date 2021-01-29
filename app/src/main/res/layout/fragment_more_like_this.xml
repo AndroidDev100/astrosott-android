@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context="com.astro.sott.com.astro.dialoggo.fragments.moreLikeThisFragment.MoreLikeThisFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <FrameLayout
         android:id="@+id/rail_fragment1"

@@ -113,9 +113,9 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
     private void viewPagerSetup() {
         try {
-            DetailPagerAdapter detailPagerAdapter = new DetailPagerAdapter(getChildFragmentManager(), getActivity(), railCommonData, isTrailerCount);
+            DetailPagerAdapter detailPagerAdapter = new DetailPagerAdapter(getChildFragmentManager(), getActivity(), railCommonData, 2);
             getBinding().pager.setAdapter(detailPagerAdapter);
-            getBinding().pager.disableScroll(true);
+           getBinding().pager.disableScroll(true);
             getBinding().tabLayout.setupWithViewPager(getBinding().pager);
             getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
@@ -125,7 +125,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
                 @Override
                 public void onPageSelected(int i) {
-                    getBinding().pager.reMeasureCurrentPage(i);
+                   getBinding().pager.reMeasureCurrentPage(i);
                 }
 
                 @Override

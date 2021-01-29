@@ -634,7 +634,7 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
 
        /* int totalCount = dataList.get(position).getTotalCount();
         if (totalCount > 20) {*/
-        new ToolBarHandler(activity).setMoreListener(holder.squareRecyclerItemBinding.moreText, AppLevelConstants.TYPE4, dataList.get(position));
+       // new ToolBarHandler(activity).setMoreListener(holder.squareRecyclerItemBinding.moreText, AppLevelConstants.TYPE4, dataList.get(position));
         holder.squareRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
        /* } else {
             holder.squareRecyclerItemBinding.moreText.setVisibility(View.GONE);

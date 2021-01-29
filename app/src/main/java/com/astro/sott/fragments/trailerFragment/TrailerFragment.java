@@ -91,12 +91,12 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
         railCommonData = getArguments().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
        // AllChannelManager.getInstance().setRailCommonData(railCommonData);
 
-        if (railCommonData != null && railCommonData.getObject() != null)
+       /* if (railCommonData != null && railCommonData.getObject() != null)
             asset = railCommonData.getObject();
             map = asset.getTags();
         parentalLevels = new ArrayList<>();
         modelCall();
-        getRefId(asset.getType(), asset.getTags());
+        getRefId(asset.getType(), asset.getTags());*/
 
     }
 
