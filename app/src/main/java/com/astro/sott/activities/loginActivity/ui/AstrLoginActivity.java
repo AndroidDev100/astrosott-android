@@ -36,7 +36,6 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         getBinding().loginBtn.setOnClickListener(view -> {
             //
             // searchAccountv2();
-        createUser();
         });
         getBinding().google.setOnClickListener(view -> {
             createOtp();
@@ -102,15 +101,5 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     }
 
 
-    private void createUser() {
-        astroLoginViewModel.createUser().observe(this, evergentCommonResponse -> {
 
-            if (evergentCommonResponse.isStatus()) {
-                Toast.makeText(this, evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
-
-            } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }

@@ -75,6 +75,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/description">
 
                 <EditText
+                    android:id="@+id/mobile_email_edt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="18dp"
@@ -91,6 +92,16 @@
                     android:textColorHint="@color/gray" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/error_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:visibility="gone"
+                android:textColor="@color/red_live"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/email"></TextView>
+
             <LinearLayout
                 android:id="@+id/password"
 
@@ -100,12 +111,13 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="18dp"
                 android:background="@color/black"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/email">
 
                 <EditText
+                    android:id="@+id/password_edt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="18dp"
@@ -120,6 +132,14 @@
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textColorHint="@color/gray" />
+
+                <ImageView
+                    android:id="@+id/eye_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="18dp"
+                    android:background="@drawable/ic_outline_visibility_light"></ImageView>
             </LinearLayout>
 
             <CheckBox
@@ -133,15 +153,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:layout_marginTop="25dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
                 android:text="I agree to the Term and Conditions."
+                android:textColor="@color/white"
                 app:layout_constraintLeft_toRightOf="@id/checkbox"
                 app:layout_constraintTop_toBottomOf="@id/password"></TextView>
 
             <TextView
-                android:id="@+id/login_btn"
+                android:id="@+id/next_btn"
                 android:layout_width="230dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="25dp"
@@ -169,7 +189,7 @@
                 android:textSize="18dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_btn"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/next_btn"></TextView>
 
 
             <TextView

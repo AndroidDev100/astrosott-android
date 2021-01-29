@@ -125,10 +125,10 @@ public class AstrLoginRepository {
     }
 
 
-    public LiveData<EvergentCommonResponse> createUser(Context context) {
+    public LiveData<EvergentCommonResponse> createUser(Context context, String type, String emailMobile, String password) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().createUser(context, new EvergentCreateUserCallback() {
+        EvergentServices.Companion.getInstance().createUser(context,type,emailMobile,password, new EvergentCreateUserCallback() {
 
 
             @Override

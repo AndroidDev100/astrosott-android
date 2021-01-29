@@ -76,9 +76,9 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 case R.id.navigation_live_tv:
                     if (liveTvFragment == null) {
                         initFrameFragment();
-                       // liveTvFragment = new LiveTvFragment();
+                        // liveTvFragment = new LiveTvFragment();
                         //fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "3").hide(liveTvFragment).commitAllowingStateLoss();
-                      //  switchToLiveTvFragment();
+                        //  switchToLiveTvFragment();
                     } else {
                         switchToLiveTvFragment();
                     }
@@ -117,9 +117,18 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //                    return true;
                 case R.id.navigation_more:
                     if (moreNewFragment == null) {
+                        getBinding().tabs.setVisibility(View.GONE);
+                        getBinding().viewPager.setVisibility(View.GONE);
+                        getBinding().mainLayout.setVisibility(View.VISIBLE);
                         moreNewFragment = new MoreNewFragment();
-                        fragmentManager.beginTransaction().add(R.id.content_frame,moreNewFragment, "5").hide(moreNewFragment).commitAllowingStateLoss();
-                        switchToNewMoreFragment();
+                        active = moreNewFragment;
+
+                        fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction().add(R.id.content_frame, moreNewFragment, "1").show(moreNewFragment).commit();
+
+                        // fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
+                        active = moreNewFragment;
+                        //  switchToNewMoreFragment();
                     } else {
                         switchToNewMoreFragment();
                     }
@@ -143,6 +152,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     private BottomNavigationView navigation;
+
     @SuppressLint("RestrictedApi")
     private static void removeNavigationShiftMode(BottomNavigationView view) {
 
@@ -320,7 +330,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
         searchIcon.setOnClickListener(view -> new ActivityLauncher(HomeActivity.this).searchActivity(HomeActivity.this, ActivitySearch.class));
         appsLaunchIcon.setOnClickListener(view -> {
-           // navigation.setSelectedItemId(R.id.navigation_viu_apps);
+            // navigation.setSelectedItemId(R.id.navigation_viu_apps);
         });
     }
 
@@ -334,7 +344,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void initialFragment(HomeActivity homeActivity) {
         getBinding().viewPager.setUserInputEnabled(false);
-        getBinding().viewPager.setAdapter(new ViewPagerFragmentAdapter(this,titles));
+        getBinding().viewPager.setAdapter(new ViewPagerFragmentAdapter(this, titles));
 
         // attaching tab mediator
         new TabLayoutMediator(getBinding().tabs, getBinding().viewPager,
@@ -396,13 +406,18 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
 
-//    private void switchToMoreFragment() {
+    //    private void switchToMoreFragment() {
 //        fragmentManager.beginTransaction().hide(active).show(moreFragment).commit();
 //        active = moreFragment;
 //    }
-private void switchToNewMoreFragment() {
+    private void switchToNewMoreFragment() {
+        getBinding().tabs.setVisibility(View.GONE);
+        getBinding().viewPager.setVisibility(View.GONE);
+        getBinding().mainLayout.setVisibility(View.VISIBLE);
         fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
         active = moreNewFragment;
+
+
     }
 
     public void setToHome() {
@@ -452,7 +467,7 @@ private void switchToNewMoreFragment() {
                 navigation.getMenu().getItem(1).setTitle("Siaran langsung TV");
                 navigation.getMenu().getItem(3).setTitle("DI BAWAH Aplikasi");
                 navigation.getMenu().getItem(4).setTitle("LAGI");
-            }else {
+            } else {
                 navigation.getMenu().getItem(0).setTitle("Home");
                 navigation.getMenu().getItem(1).setTitle("Live TV");
                 navigation.getMenu().getItem(3).setTitle("SOTT Apps");

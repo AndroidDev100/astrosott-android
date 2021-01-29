@@ -69,7 +69,7 @@ class EvergentErrorHandling {
             "eV2516" -> message = context.resources.getString(R.string.passward_given)
             "eV2517" -> message = context.resources.getString(R.string.password_character)
             "eV1733" -> message = context.resources.getString(R.string.device_dont_exist)
-
+            else -> message = errorBody?.get(0)?.errorMessage.toString()
         }
 
 

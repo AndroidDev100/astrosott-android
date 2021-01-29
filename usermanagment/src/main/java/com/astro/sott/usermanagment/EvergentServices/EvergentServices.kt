@@ -210,7 +210,7 @@ class EvergentServices {
 
     }
 
-    fun createUser(context: Context, evergentCreateUserCallback: EvergentCreateUserCallback) {
+    fun createUser(context: Context, type: String, emailMobile: String, password: String, evergentCreateUserCallback: EvergentCreateUserCallback) {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
@@ -218,16 +218,15 @@ class EvergentServices {
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty(API_USER, API_USER_VALUE)
         json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
-        var type = "mobile"
         if (type.equals("email", true)) {
-            json.addProperty("email", "sunnykadan.1994@gmail.com")
-            json.addProperty("customerUsername", "sunnykadan.1994@gmail.com")
-            json.addProperty("customerPassword", "veryeasy1@")
+            json.addProperty("email", emailMobile)
+            json.addProperty("customerUsername", emailMobile)
+            json.addProperty("customerPassword", password)
 
         } else if (type.equals("mobile", true)) {
-            json.addProperty("mobileNumber", "6395097327")
-            json.addProperty("alternateUserName", "6395097327")
-            json.addProperty("customerPassword", "veryeasy1@")
+            json.addProperty("mobileNumber", emailMobile)
+            json.addProperty("alternateUserName", emailMobile)
+            json.addProperty("customerPassword", password)
 
         } else if (type.equals("social", true)) {
             json.addProperty("socialLoginID", "")

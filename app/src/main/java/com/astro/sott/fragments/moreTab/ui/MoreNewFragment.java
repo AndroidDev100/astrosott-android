@@ -15,6 +15,7 @@ import com.astro.sott.R;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.language.ui.ChangeLanguageActivity;
 import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
@@ -81,16 +82,13 @@ public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBind
     }
 
     private void setClicks() {
-//       getBinding().loginSignupMore.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                mBinding.loginSignupMore.setVisibility(View.GONE);
-//                mBinding.tvEmail.setVisibility(View.VISIBLE);
-//                mBinding.tvName.setVisibility(View.VISIBLE);
-//                mBinding.edit.setVisibility(View.VISIBLE);
-//                mBinding.tvLogout.setVisibility(View.VISIBLE);
-//            }
-//        });
+
+        getBinding().loginSignupMore.setOnClickListener(view -> {
+
+            Intent intent=new Intent(getActivity(), SignUpActivity.class);
+            startActivity(intent);
+        });
+//
 //       getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

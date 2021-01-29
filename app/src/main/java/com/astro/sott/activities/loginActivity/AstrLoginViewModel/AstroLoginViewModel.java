@@ -6,9 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.repositories.loginRepository.AstrLoginRepository;
-import com.astro.sott.repositories.loginRepository.LoginRepository;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
 
 public class AstroLoginViewModel extends AndroidViewModel {
@@ -33,8 +31,8 @@ public class AstroLoginViewModel extends AndroidViewModel {
         return AstrLoginRepository.getInstance().resetPassword(getApplication(),token);
     }
 
-    public LiveData<EvergentCommonResponse> createUser() {
-        return AstrLoginRepository.getInstance().createUser(getApplication());
+    public LiveData<EvergentCommonResponse> createUser(String type, String emailMobile, String password) {
+        return AstrLoginRepository.getInstance().createUser(getApplication(),type,emailMobile,password);
     }
 
 }
