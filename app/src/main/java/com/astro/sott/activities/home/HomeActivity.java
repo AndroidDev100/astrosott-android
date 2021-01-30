@@ -43,6 +43,7 @@ import com.astro.sott.fragments.livetv.ui.LiveTvFragment;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
@@ -120,15 +121,14 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                         getBinding().tabs.setVisibility(View.GONE);
                         getBinding().viewPager.setVisibility(View.GONE);
                         getBinding().mainLayout.setVisibility(View.VISIBLE);
+
                         moreNewFragment = new MoreNewFragment();
                         active = moreNewFragment;
-
                         fragmentManager = getSupportFragmentManager();
-                        fragmentManager.beginTransaction().add(R.id.content_frame, moreNewFragment, "1").show(moreNewFragment).commit();
-
-                        // fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
+                        fragmentManager.beginTransaction().add(R.id.content_frame, moreNewFragment, "5").hide(moreNewFragment).commit();
+                        fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
                         active = moreNewFragment;
-                        //  switchToNewMoreFragment();
+
                     } else {
                         switchToNewMoreFragment();
                     }

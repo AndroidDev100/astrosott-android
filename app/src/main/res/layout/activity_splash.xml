@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:filterTouchesWhenObscured="true"
-        android:background="@color/blackColor">
+        android:background="@drawable/gradient_bg_splash">
 
         <ImageView
             android:id="@+id/splash_image"

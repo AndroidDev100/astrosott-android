@@ -82,6 +82,14 @@
     <color name="catchup_date_time_bg">#28000000</color>
     <color name="primaryColorDarkBlack">#141414</color>
     <color name="sapphire">#224ba3</color>
+  <color name="toolbar_bg">#303255</color>
+    <color name="blue_bg">#191a2d</color>
+    <color name="light_blue">#f2f2f7</color>
+    <color name="grey">#9b98ab</color>
+
+
+
+
 
 
    <!-- Astro colors-->

@@ -99,7 +99,7 @@ public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBind
 //
 //            }
 //        });
-//        mBinding.tvLogout.setOnClickListener(new View.OnClickListener() {
+//        getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
 //                mBinding.tvLogout.setVisibility(View.GONE);
