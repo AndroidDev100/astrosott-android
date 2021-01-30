@@ -87,6 +87,11 @@
     <color name="toolbarColor">#1C1827</color>
     <color name="tabBarColor">#382C57</color>
     <color name="tabUnselectedColor">#9086A0</color>
+    <!-- Astro colors-->
+
+    <color name="detailBGColor">#211C31</color>
+    <color name="lightBlueColor">#58BAFF</color>
+    <color name="lightGreenColor">#00F2B6</color>
 
 
 

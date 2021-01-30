@@ -1638,7 +1638,7 @@ public class KsServices {
         trailorCallBack = callBack;
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         String one = "(and asset_type='";
-        String two = "' TrailerParentRefId = '";
+        String two = "' ParentRefId = '";
         String three = "')";
         String kSQL = one + MediaTypeConstant.getTrailer(activity) + two + ref_id + three;
         PrintLogging.printLog(this.getClass(), "", "trailorKSQL" + kSQL);

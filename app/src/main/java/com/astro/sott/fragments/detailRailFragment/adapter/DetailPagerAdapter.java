@@ -52,9 +52,9 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return mContext.getString(R.string.more_like_this);//mContext.getString(R.string.more_like_this);
+                return "TRAILORS";//mContext.getString(R.string.more_like_this);
             case 1:
-                return mContext.getString(R.string.trailer_title);
+                return "RELATED";//mContext.getString(R.string.trailer_title);
             default:
                 return null;
         }
