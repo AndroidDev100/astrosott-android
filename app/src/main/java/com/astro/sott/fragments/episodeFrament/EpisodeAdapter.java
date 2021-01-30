@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
+import com.astro.sott.callBacks.commonCallBacks.EpisodeClickListener;
 import com.astro.sott.databinding.EpisodeItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ImageHelper;
@@ -28,15 +29,15 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
     private final List<RailCommonData> railList;
     private final Activity mContext;
     private int episodeNumber = 0;
-  //  EpisodeClickListener itemClickListener;
+    EpisodeClickListener itemClickListener;
     KsPreferenceKey ksPreferenceKeys;
     private long lastClickTime = 0;
     boolean isLoggedIn = false;
 
-    public EpisodeAdapter(Activity activity, List<RailCommonData> itemsList, int episodeNumber) {
+    public EpisodeAdapter(Activity activity, List<RailCommonData> itemsList, int episodeNumber, EpisodeClickListener episodeClickListener) {
         this.railList = itemsList;
         this.mContext = activity;
-      //  this.itemClickListener = listener;
+        this.itemClickListener = episodeClickListener;
         ksPreferenceKeys = new KsPreferenceKey(mContext);
         isLoggedIn = ksPreferenceKeys.getUserActive();
         this.episodeNumber = episodeNumber;
@@ -63,7 +64,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
 
             if (singleItem.getImages() != null && singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
-                ImageHelper.getInstance(viewHolder.watchlistItemBinding.itemImage.getContext()).loadImageTo(viewHolder.watchlistItemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.landscape);
+                ImageHelper.getInstance(viewHolder.watchlistItemBinding.itemImage.getContext()).loadImageTo(viewHolder.watchlistItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.landscape);
             }
             viewHolder.watchlistItemBinding.tvTitle.setText(singleItem.getName());
             viewHolder.watchlistItemBinding.tvDescription.setText(asset.getDescription());
@@ -81,7 +82,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                     railList.remove(position);
                     railList.add(position, singleItems);
                     viewHolder.watchlistItemBinding.clRoot.setVisibility(View.VISIBLE);
-                   // itemClickListener.expendedView(position);
+                    // itemClickListener.expendedView(position);
                     //AppCommonMethods.expand(viewHolder.watchlistItemBinding.clRoot,1000,200);
                 }
             }
@@ -95,8 +96,6 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
 
 
             viewHolder.watchlistItemBinding.downloadIcon.setVisibility(View.GONE);
-
-
 
 
             viewHolder.watchlistItemBinding.mainLay.setOnClickListener(new View.OnClickListener() {
@@ -120,16 +119,17 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
 
                 }
             });
-
-
-
-
+            viewHolder.watchlistItemBinding.playLay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    itemClickListener.moveToPlay(position, railList.get(position), 0);
+                }
+            });
 
         } catch (Exception e) {
             Log.w("FSEFESFSEFESFESFESFSEF", e + "");
         }
     }
-
 
 
     @Override

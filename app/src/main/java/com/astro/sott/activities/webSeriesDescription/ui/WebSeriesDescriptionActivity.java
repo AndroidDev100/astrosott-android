@@ -2,12 +2,14 @@ package com.astro.sott.activities.webSeriesDescription.ui;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
@@ -72,7 +74,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWebSeriesDescriptionBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, AlertDialogFragment.AlertDialogListener, MoreLikeThis , EpisodesFragment.FirstEpisodeCallback {
+public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWebSeriesDescriptionBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, AlertDialogFragment.AlertDialogListener, MoreLikeThis, EpisodesFragment.FirstEpisodeCallback {
     private final Handler mHandler = new Handler();
     private final List<AssetCommonBean> loadedList = new ArrayList<>();
     private Asset asset;
@@ -133,7 +135,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         layoutType = AppLevelConstants.Rail3;
         if (getIntent().getExtras() != null) {
             railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
-         //   AllChannelManager.getInstance().setRailCommonData(railData);
+            //   AllChannelManager.getInstance().setRailCommonData(railData);
             if (railData != null) {
                 asset = railData.getObject();
                 getDatafromBack();
@@ -149,16 +151,15 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             lastClickTime = SystemClock.elapsedRealtime();
 
             if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                if(commonData!=null) {
+                if (commonData != null) {
                     callProgressBar();
                     playerChecks(commonData);
                 }
-            }else {
+            } else {
                 DialogHelper.showLoginDialog(WebSeriesDescriptionActivity.this);
             }
 
         });
-
 
 
     }
@@ -184,9 +185,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void setHungamaTag(Asset asset) {
         boolean isProviderAvailable = AssetContent.getHungamaTag(asset.getTags());
-        if (isProviderAvailable){
+        if (isProviderAvailable) {
             getBinding().hungama.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             getBinding().hungama.setVisibility(View.GONE);
         }
     }
@@ -352,7 +353,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             getBinding().textwatchlist.setOnClickListener(new View.OnClickListener() {
 
 
-
                 final boolean isActive = KsPreferenceKey.getInstance(getApplicationContext()).getUserActive();
 
                 @Override
@@ -421,6 +421,11 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         }
     }
 
+    public void moveToPlay(int position, RailCommonData railCommonData, int type) {
+        callProgressBar();
+        playerChecks(railCommonData);
+    }
+
     private void setRailBaseFragment() {
         FragmentManager fm = getSupportFragmentManager();
         DetailRailFragment detailRailFragment = new DetailRailFragment();
@@ -481,7 +486,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         }
 
 
-       // Handler mHandler = new Handler();
+        // Handler mHandler = new Handler();
         RailCommonData railCommonData = assetCommonBeanList.get(0).getRailAssetList().get(0);
 //        mHandler.postDelayed(() -> {
 //            getBinding().ivPlayIcon.setClickable(true);
@@ -507,27 +512,24 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
 
             boolean isTablet = this.getResources().getBoolean(R.bool.isTablet);
-            if(isTablet){
+            if (isTablet) {
                 if (SystemClock.elapsedRealtime() - lastClickTime < 2000) {
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
 
-                    callProgressBar();
-                    playerChecks(railCommonData);
+                callProgressBar();
+                playerChecks(railCommonData);
 
 
-
-
-            }else {
+            } else {
                 if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
 
-                    callProgressBar();
-                    playerChecks(railCommonData);
-
+                callProgressBar();
+                playerChecks(railCommonData);
 
 
             }
@@ -536,10 +538,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         });
 
 
+        fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
 
-                    fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
-
-       // playerChecks(railCommonData);
+        // playerChecks(railCommonData);
     }
 
     private void checkErrors(RailCommonData railCommonData) {
@@ -575,7 +576,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     startPlayer(railCommonData);
                 }
             }
-        }else {
+        } else {
             callProgressBar();
             DialogHelper.showAlertDialog(this, getString(R.string.play_check_message), getString(R.string.ok), this);
         }
@@ -588,20 +589,20 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 defaultParentalRating = responseDmsModel.getParams().getDefaultParentalLevel();
                 userSelectedParentalRating = KsPreferenceKey.getInstance(getApplicationContext()).getUserSelectedRating();
                 if (!userSelectedParentalRating.equalsIgnoreCase("")) {
-                    assetKey = AssetContent.getAssetKey(asset.getTags(),userSelectedParentalRating, getApplicationContext());
-                    if(assetKey){
+                    assetKey = AssetContent.getAssetKey(asset.getTags(), userSelectedParentalRating, getApplicationContext());
+                    if (assetKey) {
                         assetRuleErrorCode = AppLevelConstants.NO_ERROR;
                         checkOnlyDevice(railCommonData);
-                    }else {
+                    } else {
                         validateParentalPin(railCommonData);
                     }
 
                 } else {
-                    assetKey = AssetContent.getAssetKey(asset.getTags(),defaultParentalRating, getApplicationContext());
-                    if(assetKey){
+                    assetKey = AssetContent.getAssetKey(asset.getTags(), defaultParentalRating, getApplicationContext());
+                    if (assetKey) {
                         assetRuleErrorCode = AppLevelConstants.NO_ERROR;
                         checkOnlyDevice(railCommonData);
-                    }else {
+                    } else {
                         validateParentalPin(railCommonData);
                     }
                 }
@@ -658,13 +659,13 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             if (commonResponse != null) {
                 if (commonResponse.getStatus()) {
                     runOnUiThread(() -> {
-                        Log.d("CheckOnlyDevice","True");
+                        Log.d("CheckOnlyDevice", "True");
                         startPlayer(railData);
                     });
                 } else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
                         new RefreshKS(WebSeriesDescriptionActivity.this).refreshKS(response -> checkDevice(railData));
-                    }else {
+                    } else {
                         callProgressBar();
                         showDialog(commonResponse.getMessage());
                     }
@@ -752,7 +753,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     });
                 }
             }
-        }else {
+        } else {
             callProgressBar();
         }
     }
@@ -958,7 +959,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 } else {
                     checkEntitleMent(railCommonData);
                 }
-            }else {
+            } else {
                 callProgressBar();
                 showDialog(message);
             }
@@ -988,7 +989,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
-       String fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
+        String fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
         new EntitlementCheck().checkAssetType(WebSeriesDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
             if (status) {
                 playerChecksCompleted = true;
@@ -1014,9 +1015,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         //not play
                     }
                 }
-            }else {
+            } else {
                 callProgressBar();
-                if (message!="")
+                if (message != "")
                     showDialog(message);
             }
         });
@@ -1036,16 +1037,16 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                 if (dtvAccount.equalsIgnoreCase("0")) {
                                     isDtvAdded = false;
                                     callProgressBar();
-                                    checkForSubscription(isDtvAdded,railCommonData);
+                                    checkForSubscription(isDtvAdded, railCommonData);
 
                                 } else if (dtvAccount.equalsIgnoreCase("")) {
                                     isDtvAdded = false;
                                     callProgressBar();
-                                    checkForSubscription(isDtvAdded,railCommonData);
+                                    checkForSubscription(isDtvAdded, railCommonData);
                                 } else {
                                     isDtvAdded = true;
                                     callProgressBar();
-                                    checkForSubscription(isDtvAdded,railCommonData);
+                                    checkForSubscription(isDtvAdded, railCommonData);
                                 }
 
                             } else {
@@ -1053,8 +1054,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                 callProgressBar();
                                 showDialog(getString(R.string.something_went_wrong_try_again));
                             }
-                        }catch (Exception e){
-                            Log.e("ExceptionIs",e.toString());
+                        } catch (Exception e) {
+                            Log.e("ExceptionIs", e.toString());
                         }
                     }
                 });
@@ -1065,29 +1066,29 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void checkForSubscription(boolean isDtvAdded, RailCommonData railCommonData) {
         //***** Mobile + Non-Dialog + Non-DTV *************//
-        if(KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded==false){
-            runOnUiThread(() ->DialogHelper.openDialougeFornonDialog(WebSeriesDescriptionActivity.this,false));
+        if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == false) {
+            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(WebSeriesDescriptionActivity.this, false));
         }
         //********** Mobile + Non-Dialog + DTV ******************//
-        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded==true){
-            runOnUiThread(() ->DialogHelper.openDialougeFornonDialog(WebSeriesDescriptionActivity.this,false));
+        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == true) {
+            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(WebSeriesDescriptionActivity.this, false));
         }
         //*********** Mobile + Dialog + Non-DTV *****************//
-        else if(KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded==false){
-            if(AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(),WebSeriesDescriptionActivity.this)){
-                runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(WebSeriesDescriptionActivity.this, true,false));
-            }else {
-                runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(WebSeriesDescriptionActivity.this, false,false));
+        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == false) {
+            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), WebSeriesDescriptionActivity.this)) {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(WebSeriesDescriptionActivity.this, true, false));
+            } else {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(WebSeriesDescriptionActivity.this, false, false));
             }
         }
         //************ Mobile + Dialog + DTV ********************//
-        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded==true){
-            if(AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(),WebSeriesDescriptionActivity.this)){
-                runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(WebSeriesDescriptionActivity.this, true,false));
-            }else {
-                runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(WebSeriesDescriptionActivity.this, false,false));
+        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == true) {
+            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), WebSeriesDescriptionActivity.this)) {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(WebSeriesDescriptionActivity.this, true, false));
+            } else {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(WebSeriesDescriptionActivity.this, false, false));
             }
-        }else {
+        } else {
             showDialog(getString(R.string.something_went_wrong_try_again));
         }
     }
@@ -1104,7 +1105,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 } else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
                         new RefreshKS(WebSeriesDescriptionActivity.this).refreshKS(response -> checkDevice(railData));
-                    }else {
+                    } else {
                         callProgressBar();
                         showDialog(commonResponse.getMessage());
                     }
@@ -1126,7 +1127,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             }
         });
 
-        if(railCommonData!=null && railCommonData.getObject()!=null) {
+        if (railCommonData != null && railCommonData.getObject() != null) {
 
 
             this.commonData = railCommonData;
@@ -1151,18 +1152,18 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 //            }, 2000);
 
 
-                        fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
+            fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
 
-           // playerChecks(railCommonData);
+            // playerChecks(railCommonData);
         }
 
     }
 
-    private void callProgressBar(){
+    private void callProgressBar() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(getBinding().includeProgressbar.progressBar.getVisibility() == View.VISIBLE){
+                if (getBinding().includeProgressbar.progressBar.getVisibility() == View.VISIBLE) {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 } else {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);

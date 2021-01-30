@@ -26,6 +26,7 @@ import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.ContinueWatchingRemove;
+import com.astro.sott.callBacks.commonCallBacks.EpisodeClickListener;
 import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
 import com.astro.sott.databinding.EpisodeFooterFragmentBinding;
 import com.astro.sott.utils.constants.AppConstants;
@@ -47,7 +48,7 @@ import java.util.TimerTask;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentBinding> implements ContinueWatchingRemove, RemoveAdsCallBack {
+public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentBinding> implements ContinueWatchingRemove, RemoveAdsCallBack, EpisodeClickListener {
     FirstEpisodeCallback _mClickListener;
     BottomSheetDialog dialog;
     TextView pause_download, resume_download, cancel_download, go_to_mydownload_lay;
@@ -231,7 +232,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
             checkExpiry(list);
 
-            adapter = new EpisodeAdapter(getActivity(), list, getArguments().getInt(AppConstants.EPISODE_NUMBER));
+            adapter = new EpisodeAdapter(getActivity(), list, getArguments().getInt(AppConstants.EPISODE_NUMBER),this);
             getBinding().recyclerView.setAdapter(adapter);
 
             int count = adapter.getItemCount();
@@ -553,6 +554,17 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             }
         });
 
+
+    }
+
+    @Override
+    public void onClick(int position) {
+
+    }
+
+    @Override
+    public void moveToPlay(int position, RailCommonData railCommonData, int type) {
+        ((WebSeriesDescriptionActivity) context).moveToPlay(position, railCommonData, type);
 
     }
 
