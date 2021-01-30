@@ -91,8 +91,8 @@ public interface AppLevelConstants {
     String KSQL_GENRE_END = "' Genre='";
     String PROMO_ASSET_NAME = "name";
     String PARENTAL_RATING = "Parental Rating";
-    String KEY_SEASON_NUMBER = "Season number";
-    String KEY_EPISODE_NUMBER = "Episode number";
+    String KEY_SEASON_NUMBER = "SeasonNumber";
+    String KEY_EPISODE_NUMBER = "EpisodeNumber";
 
     String KEY_EXTERNAL_URL = "External URL";
     String KEY_PROGRAM_ID = "Program Id";
@@ -106,7 +106,7 @@ public interface AppLevelConstants {
     String FORWARDED_EPG = "FORWARDED_EPG";
     String KSQL_GENRE = "Genre='";
     //
-    String KEY_SERIES_ID = "SeriesId";
+    String KEY_SERIES_ID = "SeriesID";
     int PARTNER_ID = 3209;
 
     String HLS = "HLS_Main";

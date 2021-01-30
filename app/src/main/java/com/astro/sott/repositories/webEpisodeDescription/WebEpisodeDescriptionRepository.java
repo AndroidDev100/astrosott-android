@@ -68,7 +68,7 @@ public class WebEpisodeDescriptionRepository {
         //PrintLogging.printLog("","valueAssetTye"+seriesMediaType);
         seriesNumber = 1;
         final MutableLiveData<List<AssetCommonBean>> connection = new MutableLiveData<>();
-        seriesId = AssetContent.getSeriesId(map);
+        seriesId = AssetContent.getSeriesId(asset.getMetas());
         final KsServices ksServices = new KsServices(context);
         responseList = new ArrayList<>();
         clipList = new ArrayList<>();
@@ -427,7 +427,7 @@ public class WebEpisodeDescriptionRepository {
         if (mediaType == MediaTypeConstant.getDrama(context)) {
             mediaType = MediaTypeConstant.getWebEpisode(context);
         }
-        String seriesId = AssetContent.getSeriesId(asset.getTags());
+        String seriesId = AssetContent.getSeriesId(asset.getMetas());
         if (!seriesId.equalsIgnoreCase("")) {
             ksServices.callNumberOfEpisodes(seriesId, mediaType, (status, errorCode, message, assetList) -> {
                 if (status) {

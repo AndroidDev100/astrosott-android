@@ -18,6 +18,7 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MultilingualStringValueArray;
+import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class EpisodesLayer {
     private AssetCommonBean assetCommonBean;
     private List<AssetCommonBean> assetCommonList;
 
-    public LiveData<List<AssetCommonBean>> getEpisodesList(Context context, Map<String, MultilingualStringValueArray> map,
+    public LiveData<List<AssetCommonBean>> getEpisodesList(Context context, Map<String, Value> map,
                                                            int assetType, int counter, List<Integer> seasonNumberList, int seasonCounter, int layoutType) {
 
         responseList = new ArrayList<>();
@@ -119,7 +120,7 @@ public class EpisodesLayer {
 
                         AssetCommonImages assetCommonImages = new AssetCommonImages();
 
-                        AppCommonMethods.getImageList(context, AppLevelConstants.TYPE3, position, j, k, list, assetCommonImages, imagesList);
+                        AppCommonMethods.getImageList(context, AppLevelConstants.TYPE5, position, j, k, list, assetCommonImages, imagesList);
                     }
 
                     List<AssetCommonUrls> urlList = new ArrayList<>();

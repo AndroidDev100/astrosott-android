@@ -153,7 +153,7 @@ public class MoreLikeThisFragment extends BaseBindingFragment<FragmentMoreLikeTh
                         viewModel.getClipData(Constants.assetId, Constants.counter, Constants.assetType, map, layoutType, asset.getType()).observe(this, assetCommonBeans -> clipList = assetCommonBeans);
                     }
 
-                    viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, map, layoutType, asset.getType()).observe(this, integers -> {
+                    viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, asset.getMetas(), layoutType, asset.getType()).observe(this, integers -> {
                         if (integers != null && integers.size() > 0) {
 
                             seriesNumberList = integers;
@@ -168,7 +168,7 @@ public class MoreLikeThisFragment extends BaseBindingFragment<FragmentMoreLikeTh
 
                     });
                 } else {
-                    viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, map, layoutType, asset.getType()).observe(this, integers -> {
+                    viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, asset.getMetas(), layoutType, asset.getType()).observe(this, integers -> {
                         if (integers != null && integers.size() > 0) {
                             seriesNumberList = integers;
                             callSeasonEpisodes(seriesNumberList);
@@ -193,7 +193,7 @@ public class MoreLikeThisFragment extends BaseBindingFragment<FragmentMoreLikeTh
 
     private void callSeasonEpisodes(List<Integer> seriesNumberList) {
         if (seasonCounter != seriesNumberList.size()) {
-            viewModel.callSeasonEpisodes(map, Constants.assetType, 1, seriesNumberList, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
+            viewModel.callSeasonEpisodes(asset.getMetas(), Constants.assetType, 1, seriesNumberList, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
                 if (assetCommonBeans != null && assetCommonBeans.get(0).getStatus()) {
                     getBinding().myRecyclerView.setVisibility(View.VISIBLE);
                     setUIComponets(assetCommonBeans, tempCount, 0);

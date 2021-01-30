@@ -16,6 +16,9 @@ public interface AppConstants {
     int LIVETV_DETAIL_ID = 3266;
 
     int TAB_FORWARDED_EPG_DETAIL = 3292;
+    String KEY_SEASON_NUMBER = "Season number";
+    String EPISODE_NUMBER = "EPISODE NUMBER";
+
 
     String END_POINT = "https://rest-sgs1.ott.kaltura.com/";
     String TNC_URL = "https://www.dialog.lk/browse/termsAndConditions.jsp?id=rpb4deb831863ff58e428067028c98d4b50";

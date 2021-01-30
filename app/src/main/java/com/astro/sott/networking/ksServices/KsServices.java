@@ -900,8 +900,8 @@ public class KsServices {
             long idd = results.get(seasonCounter);
             // Log.w("idsssoftiles", "idsprints" + idd + "-->>");
             int iid = (int) idd;
-            String one = "(and SeriesId='";
-            String two = "' Season number='";
+            String one = "(and SeriesID='";
+            String two = "' SeasonNumber='";
             String three = "')";
             String kSQL = one + seriesId + two + iid + three;
             // Log.w("idsssoftiles", "idsprints" + idd + "-->>" + kSQL);
@@ -917,7 +917,7 @@ public class KsServices {
 
             // searchAssetFilter.typeIn("603");
             DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
-            dynamicOrderBy.setName("Episode number");
+            dynamicOrderBy.setName("EpisodeNumber");
             dynamicOrderBy.orderBy("META_ASC");
             searchAssetFilter.setDynamicOrderBy(dynamicOrderBy);
 
@@ -1136,7 +1136,7 @@ public class KsServices {
         List<AssetGroupBy> assetGroup = new ArrayList<>();
         AssetMetaOrTagGroupBy assetGroupBy = new AssetMetaOrTagGroupBy();
 
-        assetGroupBy.setValue("Season number");
+        assetGroupBy.setValue("SeasonNumber");
         assetGroup.add(assetGroupBy);
 
         DetachedResponseProfile responseProfile = new DetachedResponseProfile();
@@ -1160,10 +1160,10 @@ public class KsServices {
         searchAssetFilter.orderBy("NAME_ASC");
         searchAssetFilter.setKSql(kSQL);
 
-        if (assetType == MediaTypeConstant.getDrama(activity)) {
-            searchAssetFilter.typeIn(MediaTypeConstant.getWebEpisode(activity) + "");
-        } else if (assetType == MediaTypeConstant.getWebEpisode(activity)) {
-            searchAssetFilter.typeIn(MediaTypeConstant.getWebEpisode(activity) + "");
+        if (assetType == MediaTypeConstant.getSeries(activity)) {
+            searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
+        } else if (assetType == MediaTypeConstant.getEpisode(activity)) {
+            searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
         }
 
         AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {

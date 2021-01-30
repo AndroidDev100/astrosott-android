@@ -31,6 +31,7 @@ import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
+import com.astro.sott.fragments.episodeFrament.EpisodesFragment;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.RefreshKS;
@@ -71,7 +72,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWebSeriesDescriptionBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, AlertDialogFragment.AlertDialogListener, MoreLikeThis {
+public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWebSeriesDescriptionBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, AlertDialogFragment.AlertDialogListener, MoreLikeThis , EpisodesFragment.FirstEpisodeCallback {
     private final Handler mHandler = new Handler();
     private final List<AssetCommonBean> loadedList = new ArrayList<>();
     private Asset asset;
@@ -411,7 +412,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     }
                 }
             });
-            //setRailBaseFragment();
+            setRailBaseFragment();
 
             //loadDataFromModel();
 
@@ -681,7 +682,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     if (Constants.assetType == MediaTypeConstant.getClip()) {
                         viewModel.getClipData(Constants.assetId, Constants.counter, Constants.assetType, map, layoutType, asset.getType()).observe(this, assetCommonBeans -> clipList = assetCommonBeans);
                     }
-                    viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, map, layoutType, asset.getType()).observe(this, integers -> {
+                    viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, asset.getMetas(), layoutType, asset.getType()).observe(this, integers -> {
                         if (integers != null && integers.size() > 0) {
                             seriesNumberList = integers;
                             callSeasonEpisodes(seriesNumberList);
@@ -692,7 +693,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
                     });
                 } else {
-                    viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, map, layoutType, asset.getType()).observe(this, integers -> {
+                    viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, asset.getMetas(), layoutType, asset.getType()).observe(this, integers -> {
                         if (integers != null && integers.size() > 0) {
                             seriesNumberList = integers;
                             callSeasonEpisodes(seriesNumberList);
@@ -708,7 +709,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void callSeasonEpisodes(List<Integer> seriesNumberList) {
         if (seasonCounter != seriesNumberList.size()) {
-            viewModel.callSeasonEpisodes(map, Constants.assetType, 1, seriesNumberList, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
+            viewModel.callSeasonEpisodes(asset.getMetas(), Constants.assetType, 1, seriesNumberList, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
                 if (assetCommonBeans != null && assetCommonBeans.get(0).getStatus()) {
                     getBinding().myRecyclerView.setVisibility(View.VISIBLE);
                     setUIComponets(assetCommonBeans, tempCount, 0);
@@ -1169,6 +1170,11 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
             }
         });
+    }
+
+    @Override
+    public void onFirstEpisodeData(List<AssetCommonBean> railCommonData) {
+
     }
 }
 

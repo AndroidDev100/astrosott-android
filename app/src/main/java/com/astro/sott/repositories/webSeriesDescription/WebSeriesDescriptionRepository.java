@@ -67,7 +67,7 @@ public class WebSeriesDescriptionRepository {
         seriesMediaType = assetType;
         seriesNumber = 1;
         final MutableLiveData<List<AssetCommonBean>> connection = new MutableLiveData<>();
-        seriesId = AssetContent.getSeriesId(map);
+        seriesId = AssetContent.getSeriesId(asset.getMetas());
         final KsServices ksServices = new KsServices(context);
         responseList = new ArrayList<>();
         clipList = new ArrayList<>();
@@ -374,7 +374,7 @@ public class WebSeriesDescriptionRepository {
         if (mediaType == MediaTypeConstant.getDrama(context)) {
             mediaType = MediaTypeConstant.getWebEpisode(context);
         }
-        String seriesId = AssetContent.getSeriesId(asset.getTags());
+        String seriesId = AssetContent.getSeriesId(asset.getMetas());
         PrintLogging.printLog(this.getClass(), "", "forNumberOfEpisode" + seriesId + " " + mediaType);
         if (seriesId.equalsIgnoreCase("")) {
             commonResponse.setStatus(true);

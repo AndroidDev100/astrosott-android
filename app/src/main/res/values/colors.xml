@@ -24,6 +24,7 @@
     <color name="more_item_title">#adadad</color>
     <color name="more_icon_color_normal">#adadad</color>
     <color name="gray">#BDBEC2</color>
+    <color name="episode_back">#2d2d2d</color>
     <color name="titleColor">#303434</color>
     <color name="search_toolbar_background">#212121</color>
     <color name="red_live">#ff0000</color>

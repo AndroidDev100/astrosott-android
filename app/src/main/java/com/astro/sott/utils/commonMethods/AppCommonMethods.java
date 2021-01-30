@@ -49,8 +49,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetHistory;
+import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MediaImage;
+import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.lang.ref.WeakReference;
@@ -67,8 +69,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import io.branch.indexing.BranchUniversalObject;
@@ -131,7 +136,26 @@ public class AppCommonMethods {
 
         }
     }
+    public static int getEpisodeNumber(Map<String, Value> metas) {
+        int episodeNumber = 0;
+        try {
+            Set keys = metas.keySet();
+            Iterator itr = keys.iterator();
 
+            String key;
+            while (itr.hasNext()) {
+                key = (String) itr.next();
+                if (key.equalsIgnoreCase("EpisodeNumber")) {
+                    DoubleValue doubleValue = (DoubleValue) metas.get(key);
+                    PrintLogging.printLog("", "metavaluess--" + key + " - " + doubleValue.getValue());
+                    episodeNumber = doubleValue.getValue().intValue();
+                }
+            }
+        } catch (Exception ignored) {
+
+        }
+        return episodeNumber;
+    }
     public static String setTime(Asset asset, int type) {
         String programTime = "";
         Long _time;

@@ -153,21 +153,15 @@ public class AssetContent {
         return seasonNumberList;
     }
 
-    public static String getSeriesId(Map<String, MultilingualStringValueArray> map) {
+    public static String getSeriesId(Map<String, Value> map) {
+        String seriesID = "";
         List<MultilingualStringValue> seriesList = new ArrayList<>();
-        MultilingualStringValueArray series_list = map.get(AppLevelConstants.KEY_SERIES_ID);
-        if (series_list != null)
-            for (MultilingualStringValue value : series_list.getObjects()) {
-                seriesList.add(value);
-                PrintLogging.printLog("AssetContent", "", "seriesID" + seriesList.get(0).getValue() + "");
-
-            }
-
-        if (seriesList.size() > 0) {
-            return seriesList.get(0).getValue();
-        } else {
-            return "";
+        StringValue series_list = (StringValue) map.get(AppLevelConstants.KEY_SERIES_ID);
+        if (series_list != null) {
+            seriesID = series_list.getValue();
         }
+
+        return seriesID;
 
     }
 
@@ -814,7 +808,7 @@ public class AssetContent {
 
             if (userType != "") {
                 KsPreferenceKey.getInstance(context).setUserType(userType);
-            }else {
+            } else {
                 KsPreferenceKey.getInstance(context).setUserType(AppLevelConstants.NON_DIALOG);
             }
 
@@ -918,7 +912,7 @@ public class AssetContent {
 
         String account = "";
         StringValue dtv_list = map.get(AppLevelConstants.DTV_ACCOUNT);
-       // StringValue mbb_list = map.get(AppLevelConstants.MBB_ACCOUNT);
+        // StringValue mbb_list = map.get(AppLevelConstants.MBB_ACCOUNT);
         if (dtv_list != null) {
             account = dtv_list.getValue();
             PrintLogging.printLog("", "", "valuesFromdtvList" + dtv_list.getValue());
@@ -945,7 +939,7 @@ public class AssetContent {
 
     }
 
-    public static LiveData<List<BillPaymentModel>> getMbbAccountDetails(Context context){
+    public static LiveData<List<BillPaymentModel>> getMbbAccountDetails(Context context) {
         final MutableLiveData<List<BillPaymentModel>> mutableLiveData = new MutableLiveData<>();
         List<BillPaymentModel> billPaymentModels = new ArrayList<>();
         List<BillPaymentDetails> billPaymentDetails = new ArrayList<>();
@@ -955,17 +949,17 @@ public class AssetContent {
         BillPaymentModel paymentModel = new BillPaymentModel();
         String mbbAccount = "";
 
-        if (KsPreferenceKey.getInstance(context).getUser().getUsername() != null){
+        if (KsPreferenceKey.getInstance(context).getUser().getUsername() != null) {
             billModel.setAccountType(AppLevelConstants.MOBILE);
             billModel.setAccountNumber(KsPreferenceKey.getInstance(context).getUser().getUsername());
             billPaymentDetails.add(billModel);
         }
 
-        if(billPaymentDetails.size()>0 && billPaymentDetails!=null) {
+        if (billPaymentDetails.size() > 0 && billPaymentDetails != null) {
             paymentModel.setHeaderTitle(AppLevelConstants.ADD_TO_BILL);
             paymentModel.setBillPaymentDetails(billPaymentDetails);
             billPaymentModels.add(paymentModel);
-        }else {
+        } else {
             billPaymentModels = null;
         }
         mutableLiveData.postValue(billPaymentModels);
@@ -1000,10 +994,10 @@ public class AssetContent {
 //                }
 //            }
 
-                if (key.equalsIgnoreCase("MBB")){
+            if (key.equalsIgnoreCase("MBB")) {
                 StringValue mbb_list = map.get(key);
-                if (mbb_list!=null){
-                    mbbAccount=mbb_list.getValue();
+                if (mbb_list != null) {
+                    mbbAccount = mbb_list.getValue();
                     billModel.setAccountType(AppLevelConstants.MOBILE);
                     billModel.setAccountNumber(mbbAccount);
                     billPaymentDetails.add(billModel);
@@ -1013,11 +1007,11 @@ public class AssetContent {
         }
 
 
-        if(billPaymentDetails.size()>0 && billPaymentDetails!=null) {
+        if (billPaymentDetails.size() > 0 && billPaymentDetails != null) {
             paymentModel.setHeaderTitle(AppLevelConstants.ADD_TO_BILL);
             paymentModel.setBillPaymentDetails(billPaymentDetails);
             billPaymentModels.add(paymentModel);
-        }else {
+        } else {
             billPaymentModels = null;
         }
         return billPaymentModels;
@@ -1040,17 +1034,17 @@ public class AssetContent {
     public static boolean isPurchaseAllowed(Map<String, Value> metas, Asset object, Activity activity) {
         boolean isPurchaseAllowed = false;
 
-        if (object.getType() == MediaTypeConstant.getLinear(activity) || object.getType() == MediaTypeConstant.getProgram(activity)){
-            if (metas!=null){
+        if (object.getType() == MediaTypeConstant.getLinear(activity) || object.getType() == MediaTypeConstant.getProgram(activity)) {
+            if (metas != null) {
                 purchaseAllowed = (BooleanValue) metas.get(AppLevelConstants.KEY_PURCHASE_ALLOWED);
             }
 
-            if(purchaseAllowed!=null){
+            if (purchaseAllowed != null) {
                 isPurchaseAllowed = purchaseAllowed.getValue();
-            }else {
-                isPurchaseAllowed  = false;
+            } else {
+                isPurchaseAllowed = false;
             }
-        }else {
+        } else {
             isPurchaseAllowed = true;
         }
 
@@ -1061,39 +1055,38 @@ public class AssetContent {
     public static String getBaseId(Map<String, Value> metas) {
         String baseId = "";
 
-        if (metas!=null) {
-                baseIdValue = (DoubleValue) metas.get(AppLevelConstants.BASE_ID);
+        if (metas != null) {
+            baseIdValue = (DoubleValue) metas.get(AppLevelConstants.BASE_ID);
 
-                if (baseIdValue!=null) {
-                    baseId = String.valueOf(baseIdValue.getValue().intValue());
+            if (baseIdValue != null) {
+                baseId = String.valueOf(baseIdValue.getValue().intValue());
 
-                }else {
-                    baseId = "";
-                }
+            } else {
+                baseId = "";
             }
-            return baseId;
+        }
+        return baseId;
     }
 
     public static void saveIdAndReasonCode(List<Asset> metas) {
         MultilingualStringValue adapterData;
-         DoubleValue Id;
-         List<PaymentItemDetail> paymentItemDetails = new ArrayList<>();
+        DoubleValue Id;
+        List<PaymentItemDetail> paymentItemDetails = new ArrayList<>();
 
-         if (metas!=null) {
-             for (int i = 0; i<metas.size(); i++) {
-                 PaymentItemDetail paymentItemDetail = new PaymentItemDetail();
-                 adapterData = (MultilingualStringValue) metas.get(i).getMetas().get(AppLevelConstants.REASEN_CODE);
-                 Id = (DoubleValue) metas.get(i).getMetas().get(AppLevelConstants.BASE_ID);
-                 if (adapterData != null && Id != null) {
-                     paymentItemDetail.setPackageId(String.valueOf(Id.getValue().intValue()));
-                     paymentItemDetail.setAdapterId(adapterData.getValue());
-                     paymentItemDetails.add(paymentItemDetail);
+        if (metas != null) {
+            for (int i = 0; i < metas.size(); i++) {
+                PaymentItemDetail paymentItemDetail = new PaymentItemDetail();
+                adapterData = (MultilingualStringValue) metas.get(i).getMetas().get(AppLevelConstants.REASEN_CODE);
+                Id = (DoubleValue) metas.get(i).getMetas().get(AppLevelConstants.BASE_ID);
+                if (adapterData != null && Id != null) {
+                    paymentItemDetail.setPackageId(String.valueOf(Id.getValue().intValue()));
+                    paymentItemDetail.setAdapterId(adapterData.getValue());
+                    paymentItemDetails.add(paymentItemDetail);
 
-                 }
-             }
-             AllChannelManager.getInstance().setPaymentItemDetails(paymentItemDetails);
-         }
-
+                }
+            }
+            AllChannelManager.getInstance().setPaymentItemDetails(paymentItemDetails);
+        }
 
 
     }
@@ -1103,10 +1096,10 @@ public class AssetContent {
 
         if (map.containsKey(AppLevelConstants.KEY_PROVIDER)) {
             MultilingualStringValueArray cast_list = map.get(AppLevelConstants.KEY_PROVIDER);
-            if (cast_list != null ) {
+            if (cast_list != null) {
                 if (cast_list.getObjects().get(0).getValue().equalsIgnoreCase("Hungama")) {
                     isHungamaTag = true;
-                }else {
+                } else {
                     isHungamaTag = false;
                 }
 
@@ -1126,8 +1119,8 @@ public class AssetContent {
         String externalId = "";
         if (map.containsKey(AppLevelConstants.KEY_PROVIDER_EXTERNAL_CONTENT_ID)) {
             MultilingualStringValueArray cast_list = map.get(AppLevelConstants.KEY_PROVIDER_EXTERNAL_CONTENT_ID);
-            if (cast_list != null ) {
-                    externalId = cast_list.getObjects().get(0).getValue();
+            if (cast_list != null) {
+                externalId = cast_list.getObjects().get(0).getValue();
 
                 // connection.postValue(AppConstants.SD);
             } else {
@@ -1142,7 +1135,7 @@ public class AssetContent {
         return externalId;
     }
 
-    public static long getTimeDifference(String startTime, String endTime){
+    public static long getTimeDifference(String startTime, String endTime) {
         long diffSeconds1 = 0;
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
@@ -1155,16 +1148,10 @@ public class AssetContent {
 
             //in milliseconds
             long diff = d2.getTime() - d1.getTime();
-             diffSeconds1 = diff / 1000;
-           
+            diffSeconds1 = diff / 1000;
 
 
-            
-
-
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
         return diffSeconds1;

@@ -3,7 +3,9 @@ package com.astro.sott.fragments.detailRailFragment;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -12,16 +14,20 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.databinding.FragmentDetailRailBinding;
 import com.astro.sott.fragments.detailRailFragment.adapter.DetailPagerAdapter;
 import com.astro.sott.fragments.trailerFragment.viewModel.TrailerFragmentViewModel;
+import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MultilingualStringValueArray;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +39,9 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     private TrailerFragmentViewModel trailerFragmentViewModel;
     private int isTrailerCount = 1;
     private Asset asset;
+    private List<Integer> seriesNumberList;
+    private int seasonCounter = 0;
+    int counter = 1;
 
 
     public DetailRailFragment() {
@@ -64,15 +73,54 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
             if (railCommonData != null)
                 asset = railCommonData.getObject();
             modelCall();
-            getRefId(asset.getType(), asset.getTags());
-        }catch (NullPointerException e){
+            if (asset.getType() == MediaTypeConstant.getSeries(getActivity())) {
+                getSeasons();
+            } else if (asset.getType() == MediaTypeConstant.getMovie(getActivity())) {
+                getRefId(asset.getType(), asset.getTags());
+            }
+        } catch (NullPointerException e) {
 
         }
 
     }
 
-    private void getRefId(final int type, Map<String, MultilingualStringValueArray> map) {
+    private void getSeasons() {
+        trailerFragmentViewModel.getSeasonsListData(asset.getId().intValue(), 1, asset.getType(), asset.getMetas(), AppConstants.Rail5, asset.getType()).observe(getActivity(), integers -> {
+            if (integers != null) {
+                if (integers.size() > 0) {
+                    seriesNumberList = integers;
+                    getEpisode(seriesNumberList);
+                } else {
+                    isTrailerCount = 1;
+                    viewPagerSetup();
 
+                }
+            } else {
+                isTrailerCount = 1;
+                viewPagerSetup();
+
+
+            }
+
+        });
+
+
+    }
+
+    private void getEpisode(List<Integer> seriesNumberList) {
+        trailerFragmentViewModel.callSeasonEpisodes(asset.getMetas(), asset.getType(), counter, seriesNumberList, seasonCounter, AppConstants.Rail5).observe(this, assetCommonBeans -> {
+            if (assetCommonBeans.get(0).getStatus()) {
+                isTrailerCount = 2;
+                viewPagerSetup();
+
+            } else {
+                isTrailerCount = 1;
+                viewPagerSetup();
+            }
+        });
+    }
+
+    private void getRefId(final int type, Map<String, MultilingualStringValueArray> map) {
 
 
         trailerFragmentViewModel.getRefIdLivedata(map).observe(this, new Observer<String>() {
@@ -84,7 +132,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                     public void run() {
                         viewPagerSetup();
                     }
-                },1000);
+                }, 1000);
 
 
                 if (!TextUtils.isEmpty(ref_id)) {
@@ -99,7 +147,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
             if (assetList != null) {
                 if (assetList.size() > 0) {
-                    isTrailerCount = 2;
+                    isTrailerCount = 1;
                 } else {
                     isTrailerCount = 1;
                 }
@@ -113,9 +161,9 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
     private void viewPagerSetup() {
         try {
-            DetailPagerAdapter detailPagerAdapter = new DetailPagerAdapter(getChildFragmentManager(), getActivity(), railCommonData, 2);
+            DetailPagerAdapter detailPagerAdapter = new DetailPagerAdapter(getChildFragmentManager(), getActivity(), railCommonData, isTrailerCount);
             getBinding().pager.setAdapter(detailPagerAdapter);
-           getBinding().pager.disableScroll(true);
+            getBinding().pager.disableScroll(true);
             getBinding().tabLayout.setupWithViewPager(getBinding().pager);
             getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
@@ -125,7 +173,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
                 @Override
                 public void onPageSelected(int i) {
-                   getBinding().pager.reMeasureCurrentPage(i);
+                    getBinding().pager.reMeasureCurrentPage(i);
                 }
 
                 @Override
@@ -133,7 +181,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
                 }
             });
-        }catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
 
         }
     }
