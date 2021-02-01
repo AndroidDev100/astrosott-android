@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_bg">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_three"
+        android:background="@color/blue_bg"
+        android:layout_marginBottom="48dp"
         tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
 
         <ImageView
@@ -30,6 +34,7 @@
                 android:id="@+id/logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
                 android:background="@mipmap/ic_launcher"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -40,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/heebo_medium"
                 android:text="Sign Up"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -53,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/roboto_regular"
+                android:fontFamily="@font/heebo_regular"
                 android:text=""
                 android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -65,10 +70,10 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginLeft="18dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="18dp"
-                android:background="@color/black"
+                android:background="@color/edit_text_blue_bg"
                 android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -82,6 +87,7 @@
                     android:layout_marginRight="18dp"
                     android:layout_weight="1.9"
                     android:background="@null"
+                    android:textSize="16sp"
                     android:fontFamily="@font/roboto_regular"
                     android:hint="Email Id / Mobile Number"
                     android:importantForAutofill="no"
@@ -89,7 +95,7 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/gray" />
+                    android:textColorHint="@color/grey" />
             </LinearLayout>
 
             <TextView
@@ -110,7 +116,7 @@
                 android:layout_marginLeft="18dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="18dp"
-                android:background="@color/black"
+                android:background="@color/edit_text_blue_bg"
                 android:orientation="horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -124,14 +130,15 @@
                     android:layout_marginRight="18dp"
                     android:layout_weight="1.9"
                     android:background="@null"
-                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/heebo_regular"
                     android:hint="Password"
                     android:importantForAutofill="no"
                     android:inputType="text|textNoSuggestions"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/gray" />
+                    android:textColorHint="@color/grey" />
 
                 <ImageView
                     android:id="@+id/eye_icon"
@@ -163,11 +170,29 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"></ProgressBar>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="13dp"
+                android:fontFamily="@font/heebo_regular"
+                android:text="@string/password_rules"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                android:visibility="gone"
+                android:id="@+id/pasw_para"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/password"></TextView>
+
+
             <CheckBox
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="25dp"
+                android:buttonTint="@color/neon_green"
+                android:gravity="center"
                 app:layout_constraintLeft_toLeftOf="@id/password"
                 app:layout_constraintTop_toBottomOf="@id/error_passsword"
                 app:layout_goneMarginTop="35dp"></CheckBox>
@@ -176,8 +201,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
-                android:text="I agree to the Term and Conditions."
+                android:layout_marginTop="29dp"
+                android:fontFamily="@font/heebo_regular"
+                android:textSize="14sp"
+                android:text="@string/terms_and_conditions"
                 android:textColor="@color/white"
                 app:layout_constraintLeft_toRightOf="@id/checkbox"
                 app:layout_constraintTop_toBottomOf="@id/error_passsword"
@@ -185,15 +212,15 @@
 
             <TextView
                 android:id="@+id/next_btn"
-                android:layout_width="230dp"
+                android:layout_width="250dp"
                 android:layout_height="45dp"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/rounded_blue_button"
-                android:fontFamily="@font/roboto_regular"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/gradient_button"
+                android:fontFamily="@font/heebo_medium"
                 android:gravity="center"
                 android:text="NEXT"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="16sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/checkbox"></TextView>
@@ -202,75 +229,102 @@
             <TextView
                 android:id="@+id/already_have_account"
                 android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:layout_marginRight="18dp"
-                android:fontFamily="@font/roboto_regular"
+                android:layout_marginStart="18dp"
+                android:fontFamily="@font/heebo_regular"
                 android:gravity="center"
-                android:text="Already have an account? Log In"
+                android:text="@string/already_have_an_account"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="16sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/next_btn"></TextView>
 
+            <View
+                android:layout_width="60dp"
+                android:layout_height="1.5dp"
+                android:layout_margin="4dp"
+                android:background="@color/white"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/or"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.705" />
+
+            <View
+                android:layout_width="60dp"
+                android:layout_height="1.5dp"
+                android:layout_margin="4dp"
+                android:background="@color/white"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/or"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.705" />
 
             <TextView
                 android:id="@+id/or"
                 android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
                 android:layout_marginRight="18dp"
-                android:fontFamily="@font/roboto_regular"
+                android:fontFamily="@font/heebo_bold"
                 android:gravity="center"
-                android:text="or Sign In With"
+                android:text="Or Sign In With"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="14sp"
+                  android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/already_have_account"></TextView>
 
             <TextView
                 android:id="@+id/google"
-                android:layout_width="230dp"
+                android:layout_width="250dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="25dp"
-                android:background="@color/blue"
-                android:fontFamily="@font/roboto_regular"
+                android:background="@color/dark_blue"
+                android:fontFamily="@font/heebo_medium"
                 android:gravity="center"
                 android:text="Sign In With Google"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="14sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/or"></TextView>
 
             <TextView
                 android:id="@+id/fb"
-                android:layout_width="230dp"
+                android:layout_width="250dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="25dp"
-                android:background="@color/blue"
-                android:fontFamily="@font/roboto_regular"
+                android:background="@color/light_blue"
+                android:fontFamily="@font/heebo_medium"
                 android:gravity="center"
                 android:text="Continue With Facebook"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="14sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/google"></TextView>
 
             <TextView
                 android:id="@+id/apple"
-                android:layout_width="230dp"
+                android:layout_width="250dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="25dp"
-                android:background="@color/blue"
-                android:fontFamily="@font/roboto_regular"
+                android:background="@color/white"
+                android:fontFamily="@font/heebo_medium"
                 android:gravity="center"
                 android:text="Sign In With Apple"
-                android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/fb"></TextView>
@@ -279,4 +333,5 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
 </layout>

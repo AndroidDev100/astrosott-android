@@ -26,7 +26,9 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.profile.ui.EditPasswordActivity"></activity>
+        <activity android:name=".activities.profile.ui.EditPasswordActivity">
+
+        </activity>
         <activity android:name=".activities.profile.ui.EditEmailActivity" />
         <activity android:name=".activities.profile.ui.EditProfileActivity">
 
