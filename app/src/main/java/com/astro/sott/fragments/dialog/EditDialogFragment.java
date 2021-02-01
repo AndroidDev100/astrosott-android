@@ -91,7 +91,7 @@ public class EditDialogFragment extends DialogFragment implements TextView.OnEdi
 
             tvTitle.setText(strTitle);
             etDialog.setText(strMessage);
-            etDialog.addTextChangedListener(new CustomTextWatcher(inputLayoutDialog));
+        //    etDialog.addTextChangedListener(new CustomTextWatcher(inputLayoutDialog));
             etDialog.setOnEditorActionListener(this);
 
 

@@ -1,5 +1,6 @@
 package com.astro.sott.activities.loginActivity.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.Toast;
@@ -8,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
-import com.astro.sott.activities.loginActivity.viewModel.LoginViewModel;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityAstrLoginBinding;
 
@@ -38,7 +39,6 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             // searchAccountv2();
         });
         getBinding().google.setOnClickListener(view -> {
-            createOtp();
         });
         getBinding().fb.setOnClickListener(view -> {
             confirmOtp();
@@ -46,10 +46,14 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         getBinding().apple.setOnClickListener(view -> {
             resetPassword();
         });
+        getBinding().signup.setOnClickListener(view -> {
+            Intent intent=new Intent(this, SignUpActivity.class);
+            startActivity(intent);
+        });
     }
 
-    private void searchAccountv2() {
-        astroLoginViewModel.searchAccountV2().observe(this, evergentCommonResponse -> {
+   /* private void searchAccountv2() {
+        astroLoginViewModel.searchAccountV2(type, emailMobile).observe(this, evergentCommonResponse -> {
 
             if (evergentCommonResponse.isStatus()) {
                 Toast.makeText(this, evergentCommonResponse.getSearchAccountv2Response().getSearchAccountV2ResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
@@ -58,11 +62,11 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }*/
 
 
-    private void createOtp() {
-        astroLoginViewModel.createOtp().observe(this, evergentCommonResponse -> {
+   /* private void createOtp() {
+        astroLoginViewModel.createOtp(type, emailMobile).observe(this, evergentCommonResponse -> {
 
             if (evergentCommonResponse.isStatus()) {
                 Toast.makeText(this, evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
@@ -71,12 +75,12 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }*/
 
     String token = "";
 
     private void confirmOtp() {
-        astroLoginViewModel.confirmOtp().observe(this, evergentCommonResponse -> {
+       /* astroLoginViewModel.confirmOtp(loginType, emailMobile).observe(this, evergentCommonResponse -> {
 
             if (evergentCommonResponse.isStatus()) {
                 Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
@@ -84,7 +88,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
 

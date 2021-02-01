@@ -15,6 +15,7 @@ import com.astro.sott.R;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.language.ui.ChangeLanguageActivity;
 import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
@@ -85,7 +86,7 @@ public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBind
 
         getBinding().loginSignupMore.setOnClickListener(view -> {
 
-            Intent intent=new Intent(getActivity(), SignUpActivity.class);
+            Intent intent=new Intent(getActivity(), AstrLoginActivity.class);
             startActivity(intent);
         });
 //

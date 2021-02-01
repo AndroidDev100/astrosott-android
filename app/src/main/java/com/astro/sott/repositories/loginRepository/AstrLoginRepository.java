@@ -31,10 +31,10 @@ public class AstrLoginRepository {
         return astrLoginRepository;
     }
 
-    public LiveData<EvergentCommonResponse> searchAccountV2(Context context) {
+    public LiveData<EvergentCommonResponse> searchAccountV2(Context context, String type, String emailMobile) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().searchAccountv2(context, new EvergentSearchAccountCallBack() {
+        EvergentServices.Companion.getInstance().searchAccountv2(context,type,emailMobile, new EvergentSearchAccountCallBack() {
             @Override
             public void onSuccess(@NotNull SearchAccountv2Response searchAccountv2Response) {
                 evergentCommonResponse.setStatus(true);
@@ -54,10 +54,10 @@ public class AstrLoginRepository {
     }
 
 
-    public LiveData<EvergentCommonResponse> createOtp(Context context) {
+    public LiveData<EvergentCommonResponse> createOtp(Context context, String type, String emailMobile) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().createOtp(context, new EvergentCreateOtpCallBack() {
+        EvergentServices.Companion.getInstance().createOtp(context,type,emailMobile, new EvergentCreateOtpCallBack() {
 
 
             @Override
@@ -77,10 +77,10 @@ public class AstrLoginRepository {
         return mutableLiveData;
     }
 
-    public LiveData<EvergentCommonResponse> confirmOtp(Context context) {
+    public LiveData<EvergentCommonResponse> confirmOtp(Context context, String loginType, String emailMobile, String otp) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().confirmOtp(context, new EvergentConfirmOtpCallBack() {
+        EvergentServices.Companion.getInstance().confirmOtp(context,loginType,emailMobile,otp, new EvergentConfirmOtpCallBack() {
 
 
             @Override

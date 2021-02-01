@@ -97,8 +97,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="18dp"
-                android:visibility="gone"
                 android:textColor="@color/red_live"
+                android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/email"></TextView>
 
@@ -108,7 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="18dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginRight="18dp"
                 android:background="@color/black"
                 android:orientation="horizontal"
@@ -142,23 +142,46 @@
                     android:background="@drawable/ic_outline_visibility_light"></ImageView>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/error_passsword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:textColor="@color/red_live"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/password"></TextView>
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></ProgressBar>
+
             <CheckBox
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 app:layout_constraintLeft_toLeftOf="@id/password"
-                app:layout_constraintTop_toBottomOf="@id/password"></CheckBox>
+                app:layout_constraintTop_toBottomOf="@id/error_passsword"
+                app:layout_goneMarginTop="35dp"></CheckBox>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:text="I agree to the Term and Conditions."
                 android:textColor="@color/white"
                 app:layout_constraintLeft_toRightOf="@id/checkbox"
-                app:layout_constraintTop_toBottomOf="@id/password"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/error_passsword"
+                app:layout_goneMarginTop="35dp"></TextView>
 
             <TextView
                 android:id="@+id/next_btn"

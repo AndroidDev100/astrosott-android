@@ -14,17 +14,17 @@ public class AstroLoginViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public LiveData<EvergentCommonResponse> searchAccountV2() {
-        return AstrLoginRepository.getInstance().searchAccountV2(getApplication());
+    public LiveData<EvergentCommonResponse> searchAccountV2(String type, String emailMobile) {
+        return AstrLoginRepository.getInstance().searchAccountV2(getApplication(),type,emailMobile);
     }
 
-    public LiveData<EvergentCommonResponse> createOtp() {
-        return AstrLoginRepository.getInstance().createOtp(getApplication());
+    public LiveData<EvergentCommonResponse> createOtp(String type, String emailMobile) {
+        return AstrLoginRepository.getInstance().createOtp(getApplication(),type,emailMobile);
     }
 
 
-    public LiveData<EvergentCommonResponse> confirmOtp() {
-        return AstrLoginRepository.getInstance().confirmOtp(getApplication());
+    public LiveData<EvergentCommonResponse> confirmOtp(String loginType, String emailMobile, String otp) {
+        return AstrLoginRepository.getInstance().confirmOtp(getApplication(),loginType,emailMobile,otp);
     }
 
     public LiveData<EvergentCommonResponse> resetPassword(String token) {

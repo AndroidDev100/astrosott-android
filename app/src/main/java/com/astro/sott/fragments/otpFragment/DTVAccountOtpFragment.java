@@ -89,7 +89,7 @@ public class DTVAccountOtpFragment extends BaseBindingFragment<FragmentOtpBindin
         }
         displayReceivedData();
         startCounter();
-        getBinding().etPin.addTextChangedListener(new CustomTextWatcher(getBinding().numberEditTextLayout));
+      //  getBinding().etPin.addTextChangedListener(new CustomTextWatcher(getBinding().numberEditTextLayout));
         getBinding().etPin.setOnEditorActionListener(this);
     }
 

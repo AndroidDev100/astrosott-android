@@ -12,10 +12,14 @@
     <string name="subtitle_language">Bahasa sari kata</string>
 
     <string name="play_over_wifi">Mainkan wifi</string>
+    <string name="email_error">Please enter a valid email address</string>
+    <string name="email_mobile_error">Please enter a valid email address or  mobile number</string>
 
     <string name="live_viu_tab">DI BAWAH Aplikasi</string>
     <string name="title_more">LAGI</string>
+    <string name="mobile_error">Please enter a valid mobile number</string>
 
+    <string name="password_error">Password doesn\'t match password complexity rules - minimum 8 characters, at least 1 number, lowercase letter and uppercase letter.</string>
 
     <string name="version_more">Versi1.045b</string>
     <string name="siginup_more">Log masuk / Daftar</string>

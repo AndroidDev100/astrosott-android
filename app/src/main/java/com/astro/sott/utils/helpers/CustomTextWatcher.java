@@ -1,53 +1,32 @@
 package com.astro.sott.utils.helpers;
 
+import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.google.android.material.textfield.TextInputLayout;
+
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-public class CustomTextWatcher implements TextWatcher/*, Cloneable */ {
+public class CustomTextWatcher implements TextWatcher {
 
-//    private static CustomTextWatcher customTextWatcher;
+    private final TextWatcherCallBack textWatcherCallBack;
 
-    private final TextInputLayout textInputLayout;
-
-
-    public CustomTextWatcher(TextInputLayout textInputLayout) {
-        this.textInputLayout = textInputLayout;
-    }
-
-//    public static synchronized CustomTextWatcher getInstance(TextInputLayout textInputLayout)
-//
-//    {
-//        if (customTextWatcher == null) {
-//            customTextWatcher = new CustomTextWatcher(textInputLayout);
-//        }
-//
-//        return customTextWatcher;
-//    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+    public CustomTextWatcher(Context applicationContext, TextWatcherCallBack callBack) {
+        textWatcherCallBack = callBack;
     }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        if (s.length() > 0) {
-            textInputLayout.setErrorEnabled(false);
-        }
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        textWatcherCallBack.beforeTextChanged(charSequence, i, i1, i2);
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
-
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        textWatcherCallBack.onTextChanged(charSequence, i, i1, i2);
     }
-//
-//    @Override
-//    protected Object clone() throws CloneNotSupportedException {
-////        return super.clone();
-//
-//        throw new CloneNotSupportedException();
-//    }
 
+    @Override
+    public void afterTextChanged(Editable editable) {
+        textWatcherCallBack.afterTextChanged(editable);
+    }
 }

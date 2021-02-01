@@ -12,6 +12,10 @@
     <string name="save_video_to">Save video to...</string>
     <string name="new_playlist">NEW PLAYLIST</string>
     <string name="done">Done</string>
+    <string name="mobile_error">Please enter a valid mobile number</string>
+    <string name="email_mobile_error">Please enter a valid email address or  mobile number</string>
+    <string name="email_error">Please enter a valid email address</string>
+    <string name="password_error">Password doesn\'t match password complexity rules - minimum 8 characters, at least 1 number, \n lowercase letter and uppercase letter.</string>
     <string name="title">Title</string>
     <string name="high">High (720p)</string>
     <string name="medium">Medium (360p)</string>
@@ -199,7 +203,7 @@
     <string name="incorrect_phone_number">Incorrect mobile number. Try again</string>
     <string name="incorrect_account_number">Oh no, that cant be right. Lets recheck the account number</string>
     <string name="incorrect_mobile_number">Oh no, that cant be right. Lets recheck the mobile number</string>
-    <string name="dialog">Dialog</string>
+    <string name="dialog">SOTT</string>
     <string name="new_version">New Version Available</string>
     <string name="pin_required">PIN cannot be blank</string>
     <string name="incorrect_pin">Incorrect PIN. Try again</string>

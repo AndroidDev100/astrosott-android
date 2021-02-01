@@ -55,7 +55,7 @@ public class AddMBBAccountFragment extends BaseBindingFragment<FragmentAddMbbAcc
 
         setClicks();
 
-        getBinding().etPhoneNo.addTextChangedListener(new CustomTextWatcher(getBinding().inputLayoutPhoneNo));
+       // getBinding().etPhoneNo.addTextChangedListener(new CustomTextWatcher(getBinding().inputLayoutPhoneNo));
         getBinding().etPhoneNo.setOnEditorActionListener(this);
         getBinding().etPhoneNo.requestFocus();
 

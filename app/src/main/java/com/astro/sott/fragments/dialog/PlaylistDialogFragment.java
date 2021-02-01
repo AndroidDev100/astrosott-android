@@ -87,7 +87,7 @@ public class PlaylistDialogFragment extends DialogFragment {
 
             tvTitle.setText(strTitle);
             etDialog.setText(strMessage);
-            etDialog.addTextChangedListener(new CustomTextWatcher(inputLayoutDialog));
+          //  etDialog.addTextChangedListener(new CustomTextWatcher(inputLayoutDialog));
            // etDialog.setOnEditorActionListener(this);
 
 

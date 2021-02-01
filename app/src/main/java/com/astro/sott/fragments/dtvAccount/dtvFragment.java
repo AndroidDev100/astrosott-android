@@ -60,7 +60,7 @@ public class dtvFragment extends BaseBindingFragment<FragmentDtvBinding> impleme
 
         setClicks();
 
-        getBinding().etPhoneNo.addTextChangedListener(new CustomTextWatcher(getBinding().inputLayoutPhoneNo));
+      //  getBinding().etPhoneNo.addTextChangedListener(new CustomTextWatcher(getBinding().inputLayoutPhoneNo));
         getBinding().etPhoneNo.setOnEditorActionListener(this);
         getBinding().etPhoneNo.requestFocus();
 

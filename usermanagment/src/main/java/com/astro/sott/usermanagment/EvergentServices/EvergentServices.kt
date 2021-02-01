@@ -25,20 +25,25 @@ class EvergentServices {
     private val CHANNEL_PARTNER_ID: String = "channelPartnerID"
     private val CHANNEL_PARTNER_ID_VALUE: String = "ASTRO"
     private val API_USER_VALUE: String = "astrosottapiuser"
+    private val MOBILE_NUMBER: String = "mobileNumber"
 
+    private val EMAIL: String = "email"
     private val API_USER: String = "apiUser"
     private val API_PASSWORD: String = "apiPassword"
 
 
-    fun searchAccountv2(context: Context, searchAccountCallBack: EvergentSearchAccountCallBack) {
+    fun searchAccountv2(context: Context, type: String, emailMobile: String, searchAccountCallBack: EvergentSearchAccountCallBack) {
 
         var searchAccountJson = JsonObject()
         var json = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty(API_USER, API_USER_VALUE)
         json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
-        json.addProperty("userName", "sunnykadan.1994@gmail.com")
-        json.addProperty("userName", "sunnykadan.1994@gmail.com")
+        json.addProperty("userName", emailMobile)
+
+        if (type.equals("mobile", true)) {
+            json.addProperty("alternateUserName", emailMobile)
+        }
 
         searchAccountJson.add("SearchAccountV2RequestMessage", json)
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
@@ -55,7 +60,9 @@ class EvergentServices {
                     if (response.body()?.searchAccountV2ResponseMessage?.responseCode.equals("1", true)) {
                         searchAccountCallBack.onSuccess(response.body()!!);
                     } else {
-                        if (response.body()?.searchAccountV2ResponseMessage?.failureMessage != null) {
+                        if (response.body()?.searchAccountV2ResponseMessage?.message == "No Accounts Found") {
+                            searchAccountCallBack.onFailure("No Accounts Found")
+                        } else if (response.body()?.searchAccountV2ResponseMessage?.failureMessage != null) {
                             searchAccountCallBack.onFailure(EvergentErrorHandling().getErrorMessage(response.body()?.searchAccountV2ResponseMessage?.failureMessage, context))
                         } else {
                             searchAccountCallBack.onFailure("Something Went Wrong")
@@ -72,7 +79,7 @@ class EvergentServices {
     }
 
 
-    fun createOtp(context: Context, evergentCreateOtpCallBack: EvergentCreateOtpCallBack) {
+    fun createOtp(context: Context, type: String, emailMobile: String, evergentCreateOtpCallBack: EvergentCreateOtpCallBack) {
 
         var searchAccountJson = JsonObject()
         var json = JsonObject()
@@ -80,12 +87,11 @@ class EvergentServices {
         json.addProperty(API_USER, API_USER_VALUE)
         json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
         json.addProperty("country", "MY")
-        var type = "email"
         if (type.equals("email", true)) {
-            json.addProperty("email", "sunnykadan.1994@gmail.com")
+            json.addProperty(EMAIL, emailMobile)
 
         } else {
-            json.addProperty("mobileNumber", "6395097327")
+            json.addProperty(MOBILE_NUMBER, emailMobile)
 
         }
         searchAccountJson.add("CreateOTPRequestMessage", json)
@@ -120,7 +126,7 @@ class EvergentServices {
     }
 
 
-    fun confirmOtp(context: Context, evergentConfirmOtpCallBack: EvergentConfirmOtpCallBack) {
+    fun confirmOtp(context: Context, type: String, emailMobile: String, otp: String, evergentConfirmOtpCallBack: EvergentConfirmOtpCallBack) {
 
         var searchAccountJson = JsonObject()
         var json = JsonObject()
@@ -128,15 +134,13 @@ class EvergentServices {
         json.addProperty(API_USER, API_USER_VALUE)
         json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
         json.addProperty("country", "MY")
-        var type = "email"
         if (type.equals("email", true)) {
-            json.addProperty("email", "sunnykadan.1994@gmail.com")
-
+            json.addProperty("email", emailMobile)
         } else {
-            json.addProperty("mobileNumber", "6395097327")
+            json.addProperty("mobileNumber", emailMobile)
 
         }
-        json.addProperty("otp", "123456")
+        json.addProperty("otp", otp)
         json.addProperty("isGenerateToken", "true")
         searchAccountJson.add("ConfirmOTPRequestMessage", json)
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)

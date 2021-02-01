@@ -80,7 +80,7 @@ public class Verification extends BaseBindingFragment<FragmentVerificationBindin
 
         viewModel = ViewModelProviders.of(loginActivity).get(LoginViewModel.class);
         startCounter();
-        getBinding().etPin.addTextChangedListener(new CustomTextWatcher(getBinding().numberEditTextLayout));
+      //  getBinding().etPin.addTextChangedListener(new CustomTextWatcher(getBinding().numberEditTextLayout));
         getBinding().etPin.setOnEditorActionListener(this);
     }
 
