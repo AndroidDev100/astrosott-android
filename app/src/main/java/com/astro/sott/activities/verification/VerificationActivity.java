@@ -108,12 +108,12 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void confirmOtp() {
         String otp = getBinding().pin.getText().toString();
-        if (!otp.equalsIgnoreCase("") || otp.length() < 6) {
+        if (!otp.equalsIgnoreCase("") && otp.length() == 6) {
             astroLoginViewModel.confirmOtp(loginType, emailMobile, otp).observe(this, evergentCommonResponse -> {
 
                 if (evergentCommonResponse.isStatus()) {
-                    Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
-                    // token = evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getToken();
+                   // Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
+                    createUser();
                 } else {
                     Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -135,4 +135,17 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             }
         });
     }
+
+    private void createUser() {
+        astroLoginViewModel.createUser(loginType, emailMobile, password).observe(this, evergentCommonResponse -> {
+            if (evergentCommonResponse.isStatus()) {
+                Toast.makeText(this, evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 }

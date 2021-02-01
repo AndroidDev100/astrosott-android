@@ -20,6 +20,15 @@ data class CreateUserResponseMessage(
         @field:SerializedName("message")
         val message: String? = null,
 
+        @field:SerializedName("externalSessionToken")
+        val externalSessionToken: String? = null,
+
+        @field:SerializedName("refreshToken")
+        val refreshToken: String? = null,
+
+        @field:SerializedName("accessToken")
+        val accessToken: String? = null,
+
         @field:SerializedName("failureMessage")
         val failureMessage: List<FailureMessageItem?>? = null,
 

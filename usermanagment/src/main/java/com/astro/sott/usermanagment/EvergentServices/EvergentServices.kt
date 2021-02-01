@@ -11,6 +11,7 @@ import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2
 import com.astro.sott.usermanagment.networkManager.retrofit.EvergentApiInterface
 import com.astro.sott.usermanagment.networkManager.retrofit.EvergentNetworkClass
 import com.astro.sott.usermanagment.utils.EvergentErrorHandling
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -219,9 +220,12 @@ class EvergentServices {
         var createUserJson = JsonObject()
         var json = JsonObject()
         var devicejson = JsonObject()
+        var accountAttributes = JsonArray();
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty(API_USER, API_USER_VALUE)
         json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
+        json.addProperty("isGenerateJWT", true)
+
         if (type.equals("email", true)) {
             json.addProperty("email", emailMobile)
             json.addProperty("customerUsername", emailMobile)
@@ -243,6 +247,13 @@ class EvergentServices {
         devicejson.addProperty("modelNo", "5Sk Se6ries")
         devicejson.addProperty("os", "Android")
         json.add("deviceMessage", devicejson)
+        var termJson = JsonObject()
+        termJson.addProperty("acceptTerms", true)
+        var privacyJson = JsonObject()
+        privacyJson.addProperty("acceptPrivacy", true)
+        accountAttributes.add(termJson)
+        accountAttributes.add(privacyJson)
+        json.add("accountAttributes", accountAttributes)
         createUserJson.add("CreateUserRequestMessage", json)
 
 
