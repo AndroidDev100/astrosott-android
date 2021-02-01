@@ -25,6 +25,7 @@ public class RailCommonData implements Parcelable {
     private int progress;
     private int position;
     private int liveAsset;
+    private boolean isExpended;
 
     private boolean isReminderEnabled;
 
@@ -137,7 +138,14 @@ public class RailCommonData implements Parcelable {
         return creatorId;
     }
 
+    public void setExpended(boolean expended) {
+        isExpended = expended;
+    }
 
+
+    public boolean getExpended() {
+        return isExpended;
+    }
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
     }

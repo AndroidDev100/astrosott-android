@@ -24,6 +24,7 @@
     <color name="more_item_title">#adadad</color>
     <color name="more_icon_color_normal">#adadad</color>
     <color name="gray">#BDBEC2</color>
+    <color name="episode_back">#2d2d2d</color>
     <color name="titleColor">#303434</color>
     <color name="search_toolbar_background">#212121</color>
     <color name="red_live">#ff0000</color>
@@ -81,6 +82,14 @@
     <color name="catchup_date_time_bg">#28000000</color>
     <color name="primaryColorDarkBlack">#141414</color>
     <color name="sapphire">#224ba3</color>
+  <color name="toolbar_bg">#303255</color>
+    <color name="blue_bg">#191a2d</color>
+    <color name="light_blue">#f2f2f7</color>
+    <color name="grey">#9b98ab</color>
+
+
+
+
 
 
    <!-- Astro colors-->

@@ -50,6 +50,7 @@
     <string name="FREE">FREE</string>
     <string name="now_playing">Now Playing</string>
     <string name="more_like_this"> MORE LIKE THIS </string>
+    <string name="related">RELATED</string>
     <string name="trailer_title">TRAILER AND MORE</string>
     <string name="schedule">Schedule</string>
     <string name="no_device_found">No device found</string>
@@ -453,7 +454,7 @@
     <string name="non_dialog_user_live_chamnel_message">To watch this channel, activate a daily pack for 5/- (+ tax) or a monthly pack for Rs.150/- (+ tax). Click to activate.</string>
 
     <string name="version_more">Version1.045b</string>
-    <string name="siginup_more">Sign In/Sign Up</string>
+    <string name="siginup_more">Sign In / Sign Up</string>
     <string name="guest_user">Guest user</string>
     <string name="partner_billing">Partner Billing</string>
     <string name="subscribe_more">Subscribe</string>
@@ -472,6 +473,22 @@
     <string name="App_language">App Language</string>
     <string name="Audio_language">Audio Language</string>
     <string name="Subtitle_language">Subtitle Language</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="change_profile_photo"><u>Change Profile Photo</u></string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="mobile_no">Mobile Number</string>
+    <string name="password">Password</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="edit_email">Edit Email</string>
+    <string name="existing_email">Existing Email</string>
+    <string name="new_email">New Email</string>
+    <string name="edit_password">Edit Password</string>
+    <string name="existing_password">Existing Password</string>
+    <string name="new_psw">New Password</string>
+    <string name="Profile">Profile</string>
+    <string name="subscibe_now">Subscribe now to remove ads</string>
+
 
     <string name="profile_txt">Profile</string>
     <string name="live_home">Live</string>

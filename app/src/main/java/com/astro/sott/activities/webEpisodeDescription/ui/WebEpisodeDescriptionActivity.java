@@ -906,7 +906,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<ActivityW
                     clipList = assetCommonBeans;
             });
         }
-        viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, map, layoutType, seriesMediaType).observe(this, integers -> {
+        viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, asset.getMetas(), layoutType, seriesMediaType).observe(this, integers -> {
             if (integers != null && integers.size() > 0) {
                 seriesNumberList = integers;
                 callSeasonEpisodes(seriesNumberList);
@@ -918,7 +918,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<ActivityW
 
     private void callSeasonEpisodes(List<Integer> seriesNumberList) {
         if (seasonCounter != seriesNumberList.size()) {
-            viewModel.callSeasonEpisodes(map, Constants.assetType, 1, seriesNumberList, seasonCounter, AppLevelConstants.Rail3).observe(this, assetCommonBeans -> {
+            viewModel.callSeasonEpisodes(asset.getMetas(), Constants.assetType, 1, seriesNumberList, seasonCounter, AppLevelConstants.Rail3).observe(this, assetCommonBeans -> {
                 if (assetCommonBeans != null && assetCommonBeans.get(0).getStatus()) {
                     getBinding().myRecyclerView.setVisibility(View.VISIBLE);
                     setUIComponets(assetCommonBeans, tempCount, 0);

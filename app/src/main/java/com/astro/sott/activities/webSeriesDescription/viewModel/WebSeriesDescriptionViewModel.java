@@ -20,6 +20,7 @@ import com.astro.sott.repositories.splash.SplashRepository;
 import com.astro.sott.repositories.webSeriesDescription.WebSeriesDescriptionRepository;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MultilingualStringValueArray;
+import com.kaltura.client.types.Value;
 
 import java.util.List;
 import java.util.Map;
@@ -56,8 +57,7 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
     public LiveData<List<Integer>> getSeasonsListData(int assetId,
                                                       int counter,
                                                       int assetType,
-                                                      Map<String,
-                                                              MultilingualStringValueArray> map,
+                                                      Map<String, Value> map,
                                                       int layoutType,
                                                       int seriesMediaTyp) {
         return SeasonsLayer.getInstance().loadData(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, seriesMediaTyp);
@@ -110,7 +110,7 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
         return WebSeriesDescriptionRepository.getInstance().getNumberOfEpisode(asset, getApplication().getApplicationContext());
     }
 
-    public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Map<String, MultilingualStringValueArray> map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType) {
+    public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Map<String, Value> map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType) {
         return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType);
     }
 

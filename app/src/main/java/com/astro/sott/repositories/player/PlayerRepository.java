@@ -1036,7 +1036,7 @@ public class PlayerRepository {
         if (mediaType == MediaTypeConstant.getWebEpisode(appContext)) {
             mediaType = MediaTypeConstant.getWebEpisode(appContext);
         }
-        String seriesId = AssetContent.getSeriesId(asset.getTags());
+        String seriesId = AssetContent.getSeriesId(asset.getMetas());
         if (seriesId.equalsIgnoreCase("")) {
 
         } else {

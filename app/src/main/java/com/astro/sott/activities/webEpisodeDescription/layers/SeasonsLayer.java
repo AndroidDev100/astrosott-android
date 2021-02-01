@@ -8,6 +8,7 @@ import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.kaltura.client.types.MultilingualStringValueArray;
+import com.kaltura.client.types.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class SeasonsLayer {
                                             final int assetId,
                                             int counter,
                                             final int assetTyp,
-                                            Map<String, MultilingualStringValueArray> map,
+                                            Map<String, Value> map,
                                             final int layoutType,
                                             final int seriesMediaTyp) {
 
