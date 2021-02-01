@@ -19,5 +19,6 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 }
