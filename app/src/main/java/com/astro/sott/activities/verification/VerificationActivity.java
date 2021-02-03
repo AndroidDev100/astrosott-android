@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
@@ -22,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> {
     private AstroLoginViewModel astroLoginViewModel;
-    private String loginType, emailMobile, password;
+    private String loginType, emailMobile, password, from, token = "";
 
     @Override
     protected ActivityVerificationBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -42,6 +44,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         loginType = getIntent().getExtras().getString("type");
         emailMobile = getIntent().getExtras().getString("emailMobile");
         password = getIntent().getExtras().getString("password");
+        from = getIntent().getExtras().getString("from");
 
     }
 
@@ -51,7 +54,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void countDownTimer() {
-        new CountDownTimer(60000, 1000) {
+        new CountDownTimer(300000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
@@ -62,13 +65,17 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 getBinding().resendOtp.setVisibility(View.GONE);
                 getBinding().otpValid.setText("OTP valid for " + String.format("%02d", minutes)
                         + ":" + String.format("%02d", seconds) + "s");
+                if (String.format("%02d", minutes).equalsIgnoreCase("03")) {
+                    getBinding().otpTitle.setVisibility(View.VISIBLE);
+                    getBinding().resendOtp.setVisibility(View.VISIBLE);
+
+                }
+
             }
 
             @Override
             public void onFinish() {
-                getBinding().otpTitle.setVisibility(View.VISIBLE);
                 getBinding().otpValid.setVisibility(View.GONE);
-                getBinding().resendOtp.setVisibility(View.VISIBLE);
 
             }
         }.start();
@@ -107,13 +114,27 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void confirmOtp() {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         String otp = getBinding().pin.getText().toString();
         if (!otp.equalsIgnoreCase("") && otp.length() == 6) {
             astroLoginViewModel.confirmOtp(loginType, emailMobile, otp).observe(this, evergentCommonResponse -> {
 
                 if (evergentCommonResponse.isStatus()) {
-                   // Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
-                    createUser();
+                    // Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
+                    if (from.equalsIgnoreCase("signIn")) {
+                        getBinding().progressBar.setVisibility(View.GONE);
+
+                        token = evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getToken();
+                        if (!token.equalsIgnoreCase("")) {
+                            Intent intent = new Intent(this, ChangePasswordActivity.class);
+                            intent.putExtra("token", token);
+                            startActivity(intent);
+                        }
+                    } else if (from.equalsIgnoreCase("signUp")) {
+                        createUser();
+
+                    }
+
                 } else {
                     Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -124,11 +145,13 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void createOtp() {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         astroLoginViewModel.createOtp(loginType, emailMobile).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus()) {
                 countDownTimer();
-                Toast.makeText(this, evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Verification code had be sent to " + emailMobile, Toast.LENGTH_SHORT).show();
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
@@ -138,8 +161,9 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void createUser() {
         astroLoginViewModel.createUser(loginType, emailMobile, password).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
-                Toast.makeText(this, evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show();
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();

@@ -151,9 +151,10 @@ class SignUpActivity : AppCompatActivity() {
 
         astroLoginViewModel!!.searchAccountV2(type, emailMobile).observe(this, Observer { evergentCommonResponse: EvergentCommonResponse ->
             if (evergentCommonResponse.isStatus) {
-                Toast.makeText(this, evergentCommonResponse.searchAccountv2Response.searchAccountV2ResponseMessage!!.message, Toast.LENGTH_SHORT).show()
+                activitySinUpBinding?.progressBar?.visibility = View.GONE
+                // Toast.makeText(this, evergentCommonResponse.searchAccountv2Response.searchAccountV2ResponseMessage!!.message, Toast.LENGTH_SHORT).show()
             } else {
-                if (evergentCommonResponse.errorMessage.equals("No Accounts Found", true)) {
+                if (evergentCommonResponse.errorMessage.equals("No Accounts Found", true) || evergentCommonResponse.errorMessage.equals("No account found with the given details", true)) {
                     createOtp(type, emailMobile, password)
 
                 } else {
@@ -169,11 +170,12 @@ class SignUpActivity : AppCompatActivity() {
             activitySinUpBinding?.progressBar?.visibility = View.GONE
 
             if (evergentCommonResponse.isStatus) {
-                Toast.makeText(this, evergentCommonResponse.createOtpResponse.createOTPResponseMessage!!.status, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Verification code had be sent to $emailMobile", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, VerificationActivity::class.java)
                 intent.putExtra("type", type)
                 intent.putExtra("emailMobile", emailMobile)
                 intent.putExtra("password", password)
+                intent.putExtra("from", "signUp")
                 startActivity(intent)
             } else {
                 Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()

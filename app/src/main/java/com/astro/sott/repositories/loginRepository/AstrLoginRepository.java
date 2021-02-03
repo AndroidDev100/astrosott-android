@@ -101,10 +101,10 @@ public class AstrLoginRepository {
     }
 
 
-    public LiveData<EvergentCommonResponse> resetPassword(Context context, String token) {
+    public LiveData<EvergentCommonResponse> resetPassword(Context context, String token, String password) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().resetPassword(token, context, new EvergentResetPasswordCallBack() {
+        EvergentServices.Companion.getInstance().resetPassword(token, context,password, new EvergentResetPasswordCallBack() {
 
 
             @Override

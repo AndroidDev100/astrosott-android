@@ -175,14 +175,14 @@ class EvergentServices {
     }
 
 
-    fun resetPassword(token: String, context: Context, evergentResetPasswordCallBack: EvergentResetPasswordCallBack) {
+    fun resetPassword(token: String, context: Context, password: String, evergentResetPasswordCallBack: EvergentResetPasswordCallBack) {
 
         var searchAccountJson = JsonObject()
         var json = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty(API_USER, API_USER_VALUE)
         json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
-        json.addProperty("contactPassword", "veryeasy1@")
+        json.addProperty("contactPassword", password)
         json.addProperty("userToken", token)
         searchAccountJson.add("ResetPasswordRequestMessage", json)
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
