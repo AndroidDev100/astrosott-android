@@ -56,13 +56,12 @@
         android:layout_height="@dimen/_75sdp"
         android:id="@+id/circular_imageView_more"
         android:src="@color/warm_grey"
-
         android:layout_centerInParent="true"
         android:layout_alignParentLeft="true"
         />
 
     <Button
-        android:layout_width="@dimen/_140sdp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/_16sdp"
@@ -71,7 +70,7 @@
         android:text="@string/siginup_more"
         android:textColor="@color/white"
         android:textSize="16sp"
-        android:padding="2dp"
+        android:padding="10dp"
         android:textAllCaps="true"
         android:textAlignment="center"
        android:fontFamily="@font/heebo_medium"

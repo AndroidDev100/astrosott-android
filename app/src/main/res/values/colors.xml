@@ -101,6 +101,9 @@
     <color name="neon_green">#13ff78</color>
     <color name="dark_blue">#3367d6</color>
     <color name="light_blue">#3975ea</color>
+    <color name="pin_view_bg">#0e0f24</color>
+    <color name="maya_blue">#5bc3ff</color>
+    <color name="radical_red">#ff2954</color>
 
 
 </resources>
