@@ -503,4 +503,6 @@
     <string name="verification_code">Please key in your Verification Code</string>
     <string name="didnt_receive_otp">Didn\'t Receive the OTP?</string>
     <string name="resend_otp"><u>Resend OTP?</u></string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="email_id">Email Id / Mobile Number</string>
 </resources>
