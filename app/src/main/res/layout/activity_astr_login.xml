@@ -6,7 +6,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_three"
+        android:background="@color/blue_bg"
         tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
 
         <ImageView
@@ -29,6 +29,7 @@
                 android:id="@+id/logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_50sdp"
                 android:background="@mipmap/ic_launcher"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -137,7 +138,7 @@
                 android:layout_width="230dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="25dp"
-                android:background="@drawable/rounded_blue_button"
+                android:background="@drawable/gradient_button"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
                 android:text="LOGIN"
