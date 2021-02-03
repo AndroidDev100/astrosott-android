@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -153,9 +154,9 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             ((LiveChannel) getActivity()).setLiveChannelCommunicator((int oldScrollX, int oldScrollY) -> {
-                if(totalProgramListCount != arrayList.size()) {
+                if (totalProgramListCount != arrayList.size()) {
                     mListener.showScrollViewProgressBarView(true);
                     onScrollListener.onScrolled(getBinding().programRecyclerview, oldScrollX, oldScrollY);
                 }
@@ -169,7 +170,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         parentalLevels = new ArrayList<>();
         connectionObserver();
         myReceiver = new MyReceiver();
-      //  progressDialog = new ProgressHandler(getActivity());
+        //  progressDialog = new ProgressHandler(getActivity());
     }
 
     @Override
@@ -182,7 +183,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser && isVisible()) {
+        if (isVisibleToUser && isVisible()) {
             createEpgDateChips();
         }
     }
@@ -190,12 +191,12 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     private void createEpgDateChips() {
         LayoutInflater inflater = (LayoutInflater) baseActivity.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        int size = 11;
+        int size = 8;
 
         for (int i = 0; i < size; i++) {
             Calendar c = Calendar.getInstance();
             c.setTime(new Date()); // Now use today date.
-            c.add(Calendar.DATE, -3); // Adding 5 days
+            c.add(Calendar.DATE, 0); // Adding 5 days
 
             String cast = getCurrentDate(i, c.getTime());
             if (cast != null && inflater != null) {
@@ -217,7 +218,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                 });
             }
         }
-        selectDate(getBinding().castsContainer.getChildAt(3));
+        selectDate(getBinding().castsContainer.getChildAt(0));
 
         customRunnable = new CustomRunnable(getBinding().castsContainer, getBinding().scrollable, baseActivity);
         getBinding().scrollable.post(customRunnable);
@@ -270,7 +271,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
-          //  intentValues();
+            //  intentValues();
             modelCall();
             getStartEndTimestamp();
 //            new Handler().postDelayed(this::getEPGChannels, 500);
@@ -304,7 +305,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         getBinding().noItem.setVisibility(View.GONE);
 
-        if(viewModel == null){
+        if (viewModel == null) {
             return;
         }
         viewModel.getEPGChannelsList(NowPlaying.EXTERNAL_IDS, startTimeStamp, endTimeStamp, 2, counter).observe(this, railCommonData -> {
@@ -320,7 +321,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                     getBinding().programRecyclerview.setVisibility(View.GONE);
                 }
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                if(mListener != null) {
+                if (mListener != null) {
                     mListener.showScrollViewProgressBarView(false);
                 }
             }
@@ -358,11 +359,11 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             adapter.updateLiveChannelCount(position);
             mListener.showScrollViewProgressBarView(false);
         } else {
-            if(mListener != null) {
-                new Handler().postDelayed(() -> mListener.showScrollViewProgressBarView(false),800);
+            if (mListener != null) {
+                new Handler().postDelayed(() -> mListener.showScrollViewProgressBarView(false), 800);
             }
 
-            if(getResources().getBoolean(R.bool.isTablet)) {
+            if (getResources().getBoolean(R.bool.isTablet)) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -371,7 +372,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                         adapter.notifyDataSetChanged();
                     }
                 }, 1000);
-            }else {
+            } else {
                 mIsLoading = adapter.getItemCount() != totalCOunt;
                 adapter.updateLiveChannelCount(position);
                 adapter.notifyDataSetChanged();
@@ -428,14 +429,11 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             Calendar c = Calendar.getInstance();
             c.setTime(startDate); // Now use today date.
             c.add(Calendar.DATE, i); // Adding 5 days
-            if (i == 2) {
-                output = "Yesterday";
-
-            } else if (i == 3) {
+            if (i == 0) {
                 output = "Today";
 
 
-            } else if (i == 4) {
+            } else if (i == 1) {
                 output = "Tomorrow";
 
             } else {
@@ -491,7 +489,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                     if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
                         callProgressBar();
                         playerChecks(railCommonData.getObject());
-                    }else {
+                    } else {
                         DialogHelper.showLoginDialog(getActivity());
                     }
 
@@ -512,7 +510,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                 } else {
                     checkEntitleMent(asset);
                 }
-            }else {
+            } else {
                 callProgressBar();
                 showDialog(message);
             }
@@ -543,7 +541,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 
 
     private void checkErrors(Asset asset) {
-        if(getActivity() == null){
+        if (getActivity() == null) {
             return;
         }
         if (playerChecksCompleted) {
@@ -569,7 +567,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                     parentalCheck(asset);
                 } else {
                     callProgressBar();
-                    if(getActivity() == null){
+                    if (getActivity() == null) {
                         return;
                     }
                     KsPreferenceKey.getInstance(getActivity()).setCatchupValue(true);
@@ -595,20 +593,20 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                 defaultParentalRating = responseDmsModel.getParams().getDefaultParentalLevel();
                 userSelectedParentalRating = KsPreferenceKey.getInstance(getActivity()).getUserSelectedRating();
                 if (!userSelectedParentalRating.equalsIgnoreCase("")) {
-                    assetKey = AssetContent.getAssetKey(asset.getTags(),userSelectedParentalRating, getActivity());
-                    if(assetKey){
+                    assetKey = AssetContent.getAssetKey(asset.getTags(), userSelectedParentalRating, getActivity());
+                    if (assetKey) {
                         assetRuleErrorCode = AppLevelConstants.NO_ERROR;
                         checkOnlyDevice(asset);
-                    }else {
+                    } else {
                         validateParentalPin(asset);
                     }
 
                 } else {
-                    assetKey = AssetContent.getAssetKey(asset.getTags(),defaultParentalRating, getActivity());
-                    if(assetKey){
+                    assetKey = AssetContent.getAssetKey(asset.getTags(), defaultParentalRating, getActivity());
+                    if (assetKey) {
                         assetRuleErrorCode = AppLevelConstants.NO_ERROR;
                         checkOnlyDevice(asset);
-                    }else {
+                    } else {
                         validateParentalPin(asset);
                     }
                 }
@@ -618,7 +616,6 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             }
         }
     }
-
 
 
     private void validateParentalPin(Asset asset) {
@@ -656,7 +653,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 
 
     private void checkOnlyDevice(Asset asset) {
-        if(getActivity() == null)
+        if (getActivity() == null)
             return;
         new HouseHoldCheck().checkHouseholdDevice(getActivity(), commonResponse -> {
             if (commonResponse != null) {
@@ -677,7 +674,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                 } else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
                         new RefreshKS(getActivity()).refreshKS(response -> checkDevice(asset));
-                    }else {
+                    } else {
                         callProgressBar();
                         showDialog(commonResponse.getMessage());
                     }
@@ -698,7 +695,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                 } else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
                         new RefreshKS(getActivity()).refreshKS(response -> checkDevice(asset));
-                    }else {
+                    } else {
                         callProgressBar();
                         showDialog(commonResponse.getMessage());
                     }
@@ -710,7 +707,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     }
 
     private void checkEntitleMent(final Asset asset) {
-       String fileId = AppCommonMethods.getFileIdOfAssest(asset);
+        String fileId = AppCommonMethods.getFileIdOfAssest(asset);
         new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey, errorCode1, message) -> {
             if (status) {
                 playerChecksCompleted = true;
@@ -745,9 +742,9 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                 } catch (Exception e) {
                     PrintLogging.printLog("Exception", "", "" + e);
                 }
-            }else {
+            } else {
                 callProgressBar();
-                if (message!="")
+                if (message != "")
                     showDialog(message);
             }
 //                            playerChecksCompleted = true;
@@ -767,16 +764,16 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                                 if (dtvAccount.equalsIgnoreCase("0")) {
                                     isDtvAdded = false;
                                     callProgressBar();
-                                    checkForSubscription(isDtvAdded,asset);
+                                    checkForSubscription(isDtvAdded, asset);
 
                                 } else if (dtvAccount.equalsIgnoreCase("")) {
                                     isDtvAdded = false;
                                     callProgressBar();
-                                    checkForSubscription(isDtvAdded,asset);
+                                    checkForSubscription(isDtvAdded, asset);
                                 } else {
                                     isDtvAdded = true;
                                     callProgressBar();
-                                    checkForSubscription(isDtvAdded,asset);
+                                    checkForSubscription(isDtvAdded, asset);
                                 }
 
                             } else {
@@ -784,8 +781,8 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                                 callProgressBar();
                                 showDialog(getString(R.string.something_went_wrong_try_again));
                             }
-                        }catch (Exception e){
-                            Log.e("ExceptionIs",e.toString());
+                        } catch (Exception e) {
+                            Log.e("ExceptionIs", e.toString());
                         }
                     }
                 });
@@ -796,29 +793,29 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 
     private void checkForSubscription(boolean isDtvAdded, Asset asset) {
         //***** Mobile + Non-Dialog + Non-DTV *************//
-        if(KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded==false){
-            getActivity().runOnUiThread(() ->DialogHelper.openDialougeFornonDialog(getActivity(),isLiveChannel));
+        if (KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == false) {
+            getActivity().runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(getActivity(), isLiveChannel));
         }
         //********** Mobile + Non-Dialog + DTV ******************//
-        else if (KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded==true){
-            getActivity().runOnUiThread(() ->DialogHelper.openDialougeFornonDialog(getActivity(),isLiveChannel));
+        else if (KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == true) {
+            getActivity().runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(getActivity(), isLiveChannel));
         }
         //*********** Mobile + Dialog + Non-DTV *****************//
-        else if(KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded==false){
-            if(AssetContent.isPurchaseAllowed(asset.getMetas(), asset,getActivity())){
-                getActivity().runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(getActivity(), true,isLiveChannel));
-            }else {
-                getActivity().runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(getActivity(), false,isLiveChannel));
+        else if (KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == false) {
+            if (AssetContent.isPurchaseAllowed(asset.getMetas(), asset, getActivity())) {
+                getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), true, isLiveChannel));
+            } else {
+                getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), false, isLiveChannel));
             }
         }
         //************ Mobile + Dialog + DTV ********************//
-        else if (KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded==true){
-            if(AssetContent.isPurchaseAllowed(asset.getMetas(), asset,getActivity())){
-                getActivity().runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(getActivity(), true,isLiveChannel));
-            }else {
-                getActivity().runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(getActivity(), false,isLiveChannel));
+        else if (KsPreferenceKey.getInstance(getActivity()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == true) {
+            if (AssetContent.isPurchaseAllowed(asset.getMetas(), asset, getActivity())) {
+                getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), true, isLiveChannel));
+            } else {
+                getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), false, isLiveChannel));
             }
-        }else {
+        } else {
             showDialog(getString(R.string.something_went_wrong_try_again));
         }
     }
@@ -860,7 +857,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             previousView.setSelected(false);
         v.setSelected(true);
 
-        callChannelsByTimeStamp(Integer.valueOf(v.getContentDescription().toString()) - 3);
+        callChannelsByTimeStamp(Integer.valueOf(v.getContentDescription().toString()) );
         // connectionObserver();
         previousView = v;
     }
@@ -1031,9 +1028,9 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                 Log.w("deviceWidthdeviceWidth", deviceWidth + deviceHeight + "");
                 int target;
                 if (deviceWidth <= 1080) {
-                    target = linearLayout.getChildAt(1).getLeft();
+                    target = linearLayout.getChildAt(0).getLeft();
                 } else if (context.getResources().getBoolean(R.bool.isTablet)) {
-                    target = linearLayout.getChildAt(1).getLeft();
+                    target = linearLayout.getChildAt(0).getLeft();
 
                 } else {
                     target = linearLayout.getChildAt(0).getLeft();

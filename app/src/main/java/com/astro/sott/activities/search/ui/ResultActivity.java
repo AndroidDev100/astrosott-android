@@ -199,7 +199,7 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
                                                 new ActivityLauncher(ResultActivity.this).catchUpActivity(ResultActivity.this, CatchupActivity.class, railCommonData);
                                             } else {
                                                 getProgramRailCommonData(itemValue, AppLevelConstants.PROGRAM_CLICKED);
-                                                new ActivityLauncher(ResultActivity.this).forwardeEPGActivity(ResultActivity.this, ForwardedEPGActivity.class, railCommonData);
+                                              //  new ActivityLauncher(ResultActivity.this).forwardeEPGActivity(ResultActivity.this, ForwardedEPGActivity.class, railCommonData);
                                             }
                                         }
                                     } else {

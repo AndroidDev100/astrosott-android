@@ -46,6 +46,9 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     }
 
     private void setClicks() {
+        getBinding().backIcon.setOnClickListener(view -> {
+            onBackPressed();
+        });
         getBinding().loginBtn.setOnClickListener(view -> {
             //
             // searchAccountv2();
@@ -55,6 +58,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         });
         getBinding().google.setOnClickListener(view -> {
         });
+
         getBinding().fb.setOnClickListener(view -> {
             //  confirmOtp();
         });

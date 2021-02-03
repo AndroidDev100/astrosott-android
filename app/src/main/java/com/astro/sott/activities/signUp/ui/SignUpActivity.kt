@@ -68,6 +68,10 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     fun setClicks() {
+
+        activitySinUpBinding?.backIcon?.setOnClickListener(View.OnClickListener {
+            onBackPressed()
+        })
         activitySinUpBinding?.nextBtn?.setOnClickListener {
             val mobilePattern = Regex("^[0-9]*$")
             val emailPattern = Regex("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"

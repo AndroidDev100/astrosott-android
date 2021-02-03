@@ -455,7 +455,7 @@ public class ActivityLauncher {
                         // new ActivityLauncher(activity).catchUpActivity(activity, CatchupActivity.class, railCommonData);
                     } else {
                         getProgramRailCommonData(itemValue);
-                        new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
+                       // new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
                     }
                 }
             }
@@ -482,7 +482,7 @@ public class ActivityLauncher {
                             });
                             //   new ActivityLauncher(activity).catchUpActivity(activity, CatchupActivity.class, railCommonData);
                         } else {
-                            new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
+                          //  new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
                         }
                     }
                 }

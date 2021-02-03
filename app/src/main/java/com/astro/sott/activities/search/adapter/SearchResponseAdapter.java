@@ -166,7 +166,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             getProgramRailCommonData(asset.getCurrentProgram(), "Program VideoItemClicked");
                             new ActivityLauncher(activity).catchUpActivity(activity, CatchupActivity.class, railCommonData);
                         } else {
-                            new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
+                          //  new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
                         }
                     }
                 }

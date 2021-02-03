@@ -257,7 +257,7 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
 
                         if (startTime > Long.valueOf(currentTime)) {
 
-                            new ActivityLauncher(context).forwardeEPGActivity(context, ForwardedEPGActivity.class, data.get(getLayoutPosition()));
+                           // new ActivityLauncher(context).forwardeEPGActivity(context, ForwardedEPGActivity.class, data.get(getLayoutPosition()));
 
                         } else {
                             if (((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp()) {
@@ -276,7 +276,7 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
                         if (startTime > liveNowStartTime) {
                           //  scheduleItemBinding.playIcon.setVisibility(View.GONE);
 
-                            new ActivityLauncher(context).forwardeEPGActivity(context, ForwardedEPGActivity.class, data.get(getLayoutPosition()));
+                           // new ActivityLauncher(context).forwardeEPGActivity(context, ForwardedEPGActivity.class, data.get(getLayoutPosition()));
 
                         } else {
                             if (((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp()) {
