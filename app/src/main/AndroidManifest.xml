@@ -26,13 +26,10 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.profile.ui.EditPasswordActivity">
-
-        </activity>
+        <activity android:name=".activities.ForgetPassword.ForgetPasswordActivity"></activity>
+        <activity android:name=".activities.profile.ui.EditPasswordActivity"></activity>
         <activity android:name=".activities.profile.ui.EditEmailActivity" />
-        <activity android:name=".activities.profile.ui.EditProfileActivity">
-
-        </activity>
+        <activity android:name=".activities.profile.ui.EditProfileActivity"></activity>
         <activity android:name=".activities.language.ui.LanguageSettingsActivity" />
         <activity android:name=".activities.signUp.ui.SignUpActivity" />
         <activity android:name=".activities.loginActivity.ui.AstrLoginActivity" />
