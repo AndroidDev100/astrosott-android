@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.activities.catchUpRails.ui.CatchupActivity;
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.moreListing.ui.GridListingActivity;
 import com.astro.sott.activities.myplaylist.ui.MyPlaylist;
 import com.astro.sott.R;
@@ -42,6 +43,7 @@ import com.astro.sott.activities.notification.ui.NotificationActivity;
 import com.astro.sott.activities.parentalControl.ui.ViewingRestrictionActivity;
 import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.activities.search.ui.ResultActivity;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.activities.subscription.ui.SingleLiveChannelSubscriptionActivity;
 import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
@@ -103,6 +105,16 @@ public class ActivityLauncher {
                 hasFilter = true;
         }
         intent.putExtra("hasFilter", hasFilter);
+        activity.startActivity(intent);
+    }
+
+    public void astrLoginActivity(Activity source, Class<AstrLoginActivity> destination) {
+        Intent intent = new Intent(source, destination);
+        activity.startActivity(intent);
+    }
+
+    public void signupActivity(Activity source, Class<SignUpActivity> destination){
+        Intent intent = new Intent(source, destination);
         activity.startActivity(intent);
     }
 
@@ -455,7 +467,7 @@ public class ActivityLauncher {
                         // new ActivityLauncher(activity).catchUpActivity(activity, CatchupActivity.class, railCommonData);
                     } else {
                         getProgramRailCommonData(itemValue);
-                       // new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
+                        // new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
                     }
                 }
             }
@@ -482,7 +494,7 @@ public class ActivityLauncher {
                             });
                             //   new ActivityLauncher(activity).catchUpActivity(activity, CatchupActivity.class, railCommonData);
                         } else {
-                          //  new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
+                            //  new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
                         }
                     }
                 }
@@ -594,8 +606,8 @@ public class ActivityLauncher {
     public void updatePaymentMethod(Activity activity, Class<UpdatePaymentMethod> updatePaymentMethodClass, String externalIdToCompare, int paymentMethodId) {
 
         Intent intent = new Intent(activity, updatePaymentMethodClass);
-        intent.putExtra("ExternalId",externalIdToCompare);
-        intent.putExtra("paymentMethodId",paymentMethodId);
+        intent.putExtra("ExternalId", externalIdToCompare);
+        intent.putExtra("paymentMethodId", paymentMethodId);
         activity.startActivity(intent);
     }
 

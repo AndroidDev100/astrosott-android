@@ -527,7 +527,7 @@ public class AssetContent {
             PrintLogging.printLog("AssetContent", "", "valuesssInRef" + ref_id);
             connection.postValue(ref_id + "");
         } else {
-            connection.postValue("");
+            connection.postValue("10000012");
         }
 
         return connection;

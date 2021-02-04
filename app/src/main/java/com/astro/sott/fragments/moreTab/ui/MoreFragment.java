@@ -114,8 +114,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
                         startActivity(intent);
                     }
                 } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.DEVICE_MANAGEMENT) || alList.get(position).equalsIgnoreCase("Pengurusan peranti")) {
-                    Intent intent = new Intent(getActivity(), AstrLoginActivity.class);
-                    startActivity(intent);
+
                    /* if (isLogin) {
 
                        // startActivity(new Intent(homeActivity, DeviceManagementActivity.class).putExtra("from", ""));

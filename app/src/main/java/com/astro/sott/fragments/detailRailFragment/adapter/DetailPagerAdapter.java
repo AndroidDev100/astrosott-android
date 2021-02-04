@@ -68,7 +68,7 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return mContext.getString(R.string.more_like_this);//mContext.getString(R.string.more_like_this);
+                return mContext.getString(R.string.related);//mContext.getString(R.string.more_like_this);
             case 1:
                 if (railData.getObject().getType() == MediaTypeConstant.getSeries(mContext)) {
                     return "Episodes";

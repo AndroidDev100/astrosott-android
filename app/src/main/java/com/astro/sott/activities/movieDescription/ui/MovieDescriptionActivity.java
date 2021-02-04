@@ -538,7 +538,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             trailor_url = AssetContent.getTrailorUrl(asset);
 
 //            fragment.getUrl(AssetContent.getTrailorUrl(asset), asset, railData.getProgress());
-            getRefId(1);
+            getRefId(1,asset);
         } else {
 
 //            getUrlToPlay(asset);
@@ -547,16 +547,20 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
 
-    private void getRefId(final int type) {
-        viewModel.getRefIdLivedata(map).observe(this, new Observer<String>() {
+    private void getRefId(final int type,Asset asset) {
+        if (asset.getExternalId()!=null && !asset.getExternalId().equalsIgnoreCase("")){
+            callTrailorAPI(asset.getExternalId(), type);
+        }
+
+        /*viewModel.getRefIdLivedata(map).observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String ref_id) {
                 if (!TextUtils.isEmpty(ref_id)) {
                     PrintLogging.printLog(this.getClass(), "", "refIdPrint" + ref_id);
-                    callTrailorAPI(ref_id, type);
+
                 }
             }
-        });
+        });*/
     }
 
 
@@ -723,7 +727,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
             PrintLogging.printLog(this.getClass(), "type 1", "");
         } else {
-            getRefId(0);
+            getRefId(0,asset);
         }
 
         assetId = asset.getId();
@@ -764,6 +768,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                     value = StringBuilderHolder.getInstance().getText().substring(0, value.length() - 2);
                 }
                 getBinding().tvShortDescription.setText(value);
+                getBinding().movieTitle.setText(asset.getName());
+                getBinding().descriptionText.setText(asset.getDescription());
 
 
                 setBannerImage(asset);

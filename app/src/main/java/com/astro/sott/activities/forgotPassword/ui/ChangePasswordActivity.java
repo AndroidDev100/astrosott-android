@@ -11,8 +11,10 @@ import android.widget.Toast;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityChangePasswordBinding;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 
 public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePasswordBinding> {
     private String token = "";
@@ -50,6 +52,7 @@ public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePa
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 Toast.makeText(this, "You have successfully updated your password. All other registered devices will be auto logout for security purposes.", Toast.LENGTH_SHORT).show();
+                new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class);
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();

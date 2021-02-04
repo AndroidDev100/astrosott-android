@@ -19,6 +19,7 @@ import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 
 /**
@@ -26,7 +27,7 @@ import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
  * Use the {@link MoreNewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBinding> {
+public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBinding> {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,7 +37,7 @@ public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBind
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private  FragmentMoreLayoutBinding mBinding;
+    private FragmentMoreLayoutBinding mBinding;
     private String oldLang, newLang;
 
     public MoreNewFragment() {
@@ -61,7 +62,7 @@ public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBind
         return fragment;
     }
 
-//    @Override
+    //    @Override
 //    public void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        if (getArguments() != null) {
@@ -86,8 +87,8 @@ public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBind
 
         getBinding().loginSignupMore.setOnClickListener(view -> {
 
-            Intent intent=new Intent(getActivity(), AstrLoginActivity.class);
-            startActivity(intent);
+            new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
+
         });
 //
 //       getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
@@ -160,6 +161,7 @@ public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBind
 //            }
 //        });
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -192,8 +194,8 @@ public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBind
                 getBinding().tvCoupanRedemption.setText("Penebusan Kupon");
                 getBinding().tvHelp.setText("Tolonglah");
                 getBinding().tvLogout.setText("Log keluar");
-               getBinding().tvVersion.setText("Versi1.045b");
-            }else {
+                getBinding().tvVersion.setText("Versi1.045b");
+            } else {
                 getBinding().loginSignupMore.setText("Sign In/Sign Up");
                 getBinding().tvVIPUser.setText("Guest user");
                 getBinding().tvBilling.setText("Partner Billing");
@@ -215,8 +217,6 @@ public class MoreNewFragment  extends BaseBindingFragment<FragmentMoreLayoutBind
 
         }
     }
-
-
 
 
 }

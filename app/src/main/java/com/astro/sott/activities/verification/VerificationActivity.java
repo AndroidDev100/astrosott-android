@@ -14,10 +14,13 @@ import android.widget.Toast;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
+import com.astro.sott.activities.splash.ui.SplashActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityVerificationBinding;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
 
 import java.util.concurrent.TimeUnit;
@@ -25,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> {
     private AstroLoginViewModel astroLoginViewModel;
     private String loginType, emailMobile, password, from, token = "";
+    private CountDownTimer countDownTimer;
 
     @Override
     protected ActivityVerificationBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -54,7 +58,11 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void countDownTimer() {
-        new CountDownTimer(300000, 1000) {
+
+        if (countDownTimer != null)
+            countDownTimer.cancel();
+
+        countDownTimer = new CountDownTimer(300000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
@@ -78,7 +86,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 getBinding().otpValid.setVisibility(View.GONE);
 
             }
-        }.start();
+        };
+        countDownTimer.start();
     }
 
     private void setClicks() {
@@ -163,7 +172,9 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         astroLoginViewModel.createUser(loginType, emailMobile, password).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
+
                 Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                new ActivityLauncher(VerificationActivity.this).homeScreen(VerificationActivity.this, HomeActivity.class);
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();

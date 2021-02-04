@@ -34,14 +34,31 @@
 
         </activity>
         <activity android:name=".activities.language.ui.LanguageSettingsActivity" />
-        <activity android:name=".activities.signUp.ui.SignUpActivity" />
-        <activity android:name=".activities.loginActivity.ui.AstrLoginActivity" />
-        <activity android:name=".activities.forgotPassword.ui.ForgotPasswordActivity" />
-        <activity android:name=".activities.verification.VerificationActivity" />
-        <activity android:name=".activities.forgotPassword.ui.ChangePasswordActivity" />
-        <activity android:name=".activities.subtitle.ui.SubtitleLanguageActivity" />
-        <activity android:name=".activities.audio.ui.AudioLanguageActivity" />
-        <activity android:name=".activities.language.ui.ChangeLanguageActivity" />
+        <activity
+            android:name=".activities.signUp.ui.SignUpActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.loginActivity.ui.AstrLoginActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.forgotPassword.ui.ForgotPasswordActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.verification.VerificationActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.forgotPassword.ui.ChangePasswordActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.subtitle.ui.SubtitleLanguageActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.audio.ui.AudioLanguageActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.language.ui.ChangeLanguageActivity"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.changePaymentMethod.ui.UpdatePaymentMethod"
             android:screenOrientation="locked" />

@@ -104,6 +104,13 @@
     <color name="pin_view_bg">#0e0f24</color>
     <color name="maya_blue">#5bc3ff</color>
     <color name="radical_red">#ff2954</color>
+    <!-- Astro colors-->
+
+    <color name="detailBGColor">#211C31</color>
+    <color name="lightBlueColor">#58BAFF</color>
+    <color name="lightGreenColor">#00F2B6</color>
+
+
 
 
 </resources>
