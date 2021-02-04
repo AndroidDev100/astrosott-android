@@ -43,6 +43,48 @@
     <string name="Subtitle_language">Bahasa Sari kata</string>
 
     <string name="profile_txt">Profil</string>
-    <string name="live_home">Live</string>
+    <string name="live_home">Langsung</string>
+
+    <string name="edit_profile">Sunting profil</string>
+    <string name="change_profile_photo"><u>Tukar Foto Profil</u></string>
+    <string name="name">Nama</string>
+    <string name="email">E-mel</string>
+    <string name="mobile_no">Nombor telefon</string>
+    <string name="password">Kata Laluan</string>
+    <string name="update_profile">Kemas kini Profil</string>
+    <string name="edit_email">Edit E-mel</string>
+    <string name="existing_email">E-mel Sedia Ada</string>
+    <string name="new_email">emel baru</string>
+    <string name="edit_password">Edit Kata Laluan</string>
+    <string name="existing_password">Kata Laluan Sedia Ada</string>
+    <string name="new_psw">Kata laluan baharu</string>
+    <string name="Profile">Profil</string>
+    <string name="subscibe_now">Langgan sekarang <b></b>untuk membuang iklan</string>
+
+    <string name="terms_and_conditions">saya setuju dengan<font color='#5bc3ff'> <u>Terma dan Syarat</u>.</font> </string>
+    <string name="already_have_an_account">Sudah mempunyai akaun? <font color='#5bc3ff'> <u>log masuk</u></font></string>
+    <string name="password_rules">Kata laluan mestilah sekurang-kurangnya 8 aksara, sekurang-kurangnya 1<b></b> nombor, 1 huruf kecil dan 1 huruf besar.</string>
+    <string name="verify">PENGESAHAN</string>
+    <string name="verification_code">Kod pengesahan</string>
+    <string name="verification_code_text">Masukkan Kod Pengesahan anda</string>
+    <string name="didnt_receive_otp">Tidak Menerima OTP?</string>
+    <string name="resend_otp"><u>Hantar semula OTP?</u></string>
+    <string name="welcome_back">Selamat kembali</string>
+    <string name="email_id_mobileNo">Id E-mel / Nombor Mudah Alih</string>
+    <string name="forgt_psw"><font color='#5bc3ff'><u>Lupa kata laluan?</u></font></string>
+    <string name="sign_in_google">Log Masuk Dengan Google</string>
+    <string name="sign_in_fb">Teruskan Dengan Facebook</string>
+    <string name="sign_in_apple">Log Masuk Dengan Apple</string>
+    <string name="next">SETERUSNYA</string>
+
+    <string name="login">Log masuk</string>
+    <string name="otp_valid_for">OTP sah untuk</string>
+    <string name="invalid_otp">OTP Tidak Dimasukkan</string>
+    <string name="sign_up_text">Mendaftar</string>
+    <string name="sign_in_with">atau Log Masuk Dengan</string>
+    <string name="dont_have_account">Tidak mempunyai akaun?</string>
+
+
+
     <string name="related">RELATED</string>
 </resources>

@@ -111,6 +111,7 @@ class SignUpActivity : AppCompatActivity() {
                 activitySinUpBinding?.errorEmail?.text = getString(R.string.email_mobile_error)
 
             }
+
         }
 
         activitySinUpBinding?.eyeIcon?.setOnClickListener(View.OnClickListener {
@@ -135,8 +136,14 @@ class SignUpActivity : AppCompatActivity() {
         var password = activitySinUpBinding?.passwordEdt?.text.toString();
         if (!password.equals("", true)) {
             if (passwordPattern.containsMatchIn(password)) {
+                if (activitySinUpBinding?.checkbox!!.isChecked) {
+                    activitySinUpBinding?.errorCheckbox?.visibility = View.GONE
+                    searchAccountv2(type, emailMobile, password)
 
-                searchAccountv2(type, emailMobile, password)
+                } else {
+                    activitySinUpBinding?.errorCheckbox?.visibility = View.VISIBLE
+
+                }
                 //createUser(type, emailMobile, password)
             } else {
                 activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE

@@ -35,7 +35,19 @@ public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePa
 
     private void setCLicks() {
         getBinding().update.setOnClickListener(view -> {
-            resetPassword();
+            String newPassword = getBinding().newPasswordEdt.getText().toString();
+            String confirmPassword = getBinding().confirmPasswordEdt.getText().toString();
+            if (!confirmPassword.equals("")) {
+                if (confirmPassword.equals(newPassword)) {
+                    resetPassword();
+                } else {
+                    getBinding().errorPasssword.setText("Confirm password does't match with password");
+                    getBinding().errorPasssword.setVisibility(View.VISIBLE);
+                }
+            } else {
+                getBinding().errorPasssword.setVisibility(View.VISIBLE);
+                getBinding().errorPasssword.setText("Please enter valid Password ");
+            }
         });
     }
 
@@ -46,7 +58,7 @@ public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePa
 
     private void resetPassword() {
         getBinding().progressBar.setVisibility(View.VISIBLE);
-
+        getBinding().errorPasssword.setVisibility(View.GONE);
         String password = getBinding().confirmPasswordEdt.getText().toString();
         astroLoginViewModel.resetPassword(token, password).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);

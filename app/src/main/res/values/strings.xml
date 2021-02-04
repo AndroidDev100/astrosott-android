@@ -500,8 +500,19 @@
     <string name="already_have_an_account">Already have an account? <font color='#5bc3ff'> <u>Log In</u></font></string>
     <string name="password_rules">Password must be at least 8 characters, at least 1 <b></b> number, 1 lowercase letter and 1 uppercase letter.</string>
     <string name="verify">VERIFY</string>
-    <string name="verifcation_code">Verification Code</string>
-    <string name="verification_code">Please key in your Verification Code</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="verification_code_text">Please key in your Verification Code</string>
     <string name="didnt_receive_otp">Didn\'t Receive the OTP?</string>
     <string name="resend_otp"><u>Resend OTP?</u></string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="email_id_mobileNo">Email Id / Mobile Number</string>
+    <string name="forgt_psw"><font color='#5bc3ff'><u>Forgot Password?</u></font></string>
+    <string name="sign_in_google">Sign In With Google</string>
+    <string name="sign_in_fb">Continue With Facebook</string>
+    <string name="sign_in_apple">Sign In With Apple</string>
+    <string name="next">NEXT</string>
+    <string name="otp_valid_for">OTP valid for</string>
+    <string name="invalid_otp">Invalid OTP Entered</string>
+    <string name="sign_up_text">Sign Up</string>
+    <string name="sign_in_with">or Sign In With</string>
 </resources>

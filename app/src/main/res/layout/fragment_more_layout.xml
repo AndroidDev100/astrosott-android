@@ -70,7 +70,8 @@
         android:text="@string/siginup_more"
         android:textColor="@color/white"
         android:textSize="16sp"
-        android:padding="10dp"
+        android:padding="12dp"
+        android:layout_marginRight="5dp"
         android:textAllCaps="true"
         android:textAlignment="center"
        android:fontFamily="@font/heebo_medium"
@@ -155,6 +156,7 @@
         android:layout_gravity="center"
         android:textColor="@color/white"
         android:textSize="14sp"
+        android:maxLines="2"
         android:padding="@dimen/_1sdp"
         android:fontFamily="@font/heebo_regular"
         android:text="@string/subscibe_now"
@@ -191,7 +193,7 @@
         android:visibility="gone"
         ></TextView>
     <Button
-        android:layout_width="@dimen/_80sdp"
+        android:layout_width="@dimen/_65sdp"
         android:layout_height="@dimen/_29sdp"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_26sdp"
