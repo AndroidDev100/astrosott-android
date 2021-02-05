@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.language.ui.ChangeLanguageActivity;
@@ -90,6 +91,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
 
         });
+        getBinding().tvVersion.setText("Version " + BuildConfig.VERSION_NAME);
 //
 //       getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
 //            @Override
