@@ -4,8 +4,10 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.provider.Settings;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.view.WindowManager;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.WindowFocusCallback;
+import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
@@ -172,5 +175,6 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
     @Override
     protected void onStop() {
         super.onStop();
+        ConvivaManager.convivaPlayerAppBackgrounded(this);
     }
 }

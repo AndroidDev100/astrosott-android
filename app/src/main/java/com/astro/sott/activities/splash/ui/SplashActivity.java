@@ -32,6 +32,7 @@ import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.modelClasses.appVersion.AppVersionStatus;
+import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
 import com.astro.sott.utils.helpers.ToastHandler;
@@ -142,6 +143,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
             updateLanguage();
             initDrm();
             DMSCall();
+            ConvivaManager.initConvivaAnalytics(this);
+
             // versionStatus();
         } else {
             setConnectionLayout();
@@ -337,6 +340,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     private void pushToken() {
+
         token = SharedPrefHelper.getInstance(this).getString(AppLevelConstants.FCM_TOKEN, "");
         if (token == null || token.equals("")) {
             FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
@@ -807,7 +811,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
             }
         }
 
-        AppCommonMethods.isAdsEnable = false;
+        AppCommonMethods.isAdsEnable = true;
         callViewModel();
         showAnimation();
 

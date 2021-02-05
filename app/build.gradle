@@ -178,7 +178,9 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
+//conviva
 
+    implementation 'com.conviva.sdk:conviva-core-sdk:4.0+'
     // Required Dependency by Audience Network SDK
     implementation 'com.gmail.samehadar:iosdialog:1.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
@@ -193,7 +195,7 @@ dependencies {
     implementation 'io.branch.sdk.android:library:5.+'
     // required if your app is in the Google Play Store (tip: avoid using bundled play services libs)
 
-   // implementation 'io.branch.sdk.android:library:2.19.5'
+    // implementation 'io.branch.sdk.android:library:2.19.5'
 
     implementation 'com.squareup.okhttp:okhttp:2.7.5'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
@@ -210,7 +212,7 @@ dependencies {
 //    }
 
     //Image Cropping
-   // implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
+    // implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
 
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
     implementation 'com.facebook.android:audience-network-sdk:5.1.0'
@@ -254,7 +256,6 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
     implementation 'com.facebook.android:facebook-login:5.1.0'
     implementation 'com.facebook.android:audience-network-sdk:5.6.1'
-
 
 
 }
