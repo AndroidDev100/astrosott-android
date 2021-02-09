@@ -2,11 +2,12 @@ package com.astro.sott.usermanagment.utils
 
 import android.content.Context
 import com.astro.sott.usermanagment.R
+import com.astro.sott.usermanagment.modelClasses.ErrorModel
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.FailureMessageItem
 
 class EvergentErrorHandling {
 
-    fun getErrorMessage(errorBody: List<FailureMessageItem?>?, context: Context): String {
+    fun getErrorMessage(errorBody: List<FailureMessageItem?>?, context: Context): ErrorModel {
         var message = ""
         var errorCode = ""
 
@@ -72,7 +73,9 @@ class EvergentErrorHandling {
             else -> message = errorBody?.get(0)?.errorMessage.toString()
         }
 
-
-        return message
+        var errorModel = ErrorModel()
+        errorModel.errorCode = errorCode
+        errorModel.errorMessage = message
+        return errorModel
     }
 }

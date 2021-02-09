@@ -34,7 +34,7 @@ public class AstrLoginRepository {
     public LiveData<EvergentCommonResponse> searchAccountV2(Context context, String type, String emailMobile) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().searchAccountv2(context,type,emailMobile, new EvergentSearchAccountCallBack() {
+        EvergentServices.Companion.getInstance().searchAccountv2(context, type, emailMobile, new EvergentSearchAccountCallBack() {
             @Override
             public void onSuccess(@NotNull SearchAccountv2Response searchAccountv2Response) {
                 evergentCommonResponse.setStatus(true);
@@ -43,10 +43,12 @@ public class AstrLoginRepository {
             }
 
             @Override
-            public void onFailure(@NotNull String errorMessage) {
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
                 evergentCommonResponse.setStatus(false);
                 evergentCommonResponse.setErrorMessage(errorMessage);
                 mutableLiveData.postValue(evergentCommonResponse);
+                evergentCommonResponse.setErrorCode(errorCode);
+
 
             }
         });
@@ -57,13 +59,15 @@ public class AstrLoginRepository {
     public LiveData<EvergentCommonResponse> createOtp(Context context, String type, String emailMobile) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().createOtp(context,type,emailMobile, new EvergentCreateOtpCallBack() {
+        EvergentServices.Companion.getInstance().createOtp(context, type, emailMobile, new EvergentCreateOtpCallBack() {
 
 
             @Override
-            public void onFailure(@NotNull String errorMessage) {
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
                 evergentCommonResponse.setStatus(false);
                 evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+
                 mutableLiveData.postValue(evergentCommonResponse);
             }
 
@@ -80,13 +84,14 @@ public class AstrLoginRepository {
     public LiveData<EvergentCommonResponse> confirmOtp(Context context, String loginType, String emailMobile, String otp) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().confirmOtp(context,loginType,emailMobile,otp, new EvergentConfirmOtpCallBack() {
+        EvergentServices.Companion.getInstance().confirmOtp(context, loginType, emailMobile, otp, new EvergentConfirmOtpCallBack() {
 
 
             @Override
-            public void onFailure(@NotNull String errorMessage) {
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
                 evergentCommonResponse.setStatus(false);
                 evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
                 mutableLiveData.postValue(evergentCommonResponse);
             }
 
@@ -104,13 +109,15 @@ public class AstrLoginRepository {
     public LiveData<EvergentCommonResponse> resetPassword(Context context, String token, String password) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().resetPassword(token, context,password, new EvergentResetPasswordCallBack() {
+        EvergentServices.Companion.getInstance().resetPassword(token, context, password, new EvergentResetPasswordCallBack() {
 
 
             @Override
-            public void onFailure(@NotNull String errorMessage) {
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
                 evergentCommonResponse.setStatus(false);
                 evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+
                 mutableLiveData.postValue(evergentCommonResponse);
             }
 
@@ -128,13 +135,14 @@ public class AstrLoginRepository {
     public LiveData<EvergentCommonResponse> createUser(Context context, String type, String emailMobile, String password) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().createUser(context,type,emailMobile,password, new EvergentCreateUserCallback() {
+        EvergentServices.Companion.getInstance().createUser(context, type, emailMobile, password, new EvergentCreateUserCallback() {
 
 
             @Override
-            public void onFailure(@NotNull String errorMessage) {
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
                 evergentCommonResponse.setStatus(false);
                 evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
                 mutableLiveData.postValue(evergentCommonResponse);
             }
 

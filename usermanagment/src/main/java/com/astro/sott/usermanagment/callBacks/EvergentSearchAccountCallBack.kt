@@ -7,5 +7,5 @@ interface EvergentSearchAccountCallBack {
 
     fun onSuccess(searchAccountv2Response: SearchAccountv2Response)
 
-    fun onFailure(errorMessage: String)
+    fun onFailure(errorMessage: String,errorCode:String)
 }

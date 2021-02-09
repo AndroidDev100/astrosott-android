@@ -51,7 +51,7 @@ class EvergentServices {
         val call = apiInterface?.searchAccountV2(searchAccountJson)
         call?.enqueue(object : Callback<SearchAccountv2Response?> {
             override fun onFailure(call: Call<SearchAccountv2Response?>, t: Throwable) {
-                searchAccountCallBack.onFailure("Something Went Wrong")
+                searchAccountCallBack.onFailure("Something Went Wrong", "")
 
             }
 
@@ -61,12 +61,11 @@ class EvergentServices {
                     if (response.body()?.searchAccountV2ResponseMessage?.responseCode.equals("1", true)) {
                         searchAccountCallBack.onSuccess(response.body()!!);
                     } else {
-                        if (response.body()?.searchAccountV2ResponseMessage?.message == "No Accounts Found") {
-                            searchAccountCallBack.onFailure("No Accounts Found")
-                        } else if (response.body()?.searchAccountV2ResponseMessage?.failureMessage != null) {
-                            searchAccountCallBack.onFailure(EvergentErrorHandling().getErrorMessage(response.body()?.searchAccountV2ResponseMessage?.failureMessage, context))
+                        if (response.body()?.searchAccountV2ResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.searchAccountV2ResponseMessage?.failureMessage, context)
+                            searchAccountCallBack.onFailure(errorModel.errorMessage, errorModel.errorCode)
                         } else {
-                            searchAccountCallBack.onFailure("Something Went Wrong")
+                            searchAccountCallBack.onFailure("Something Went Wrong", "")
                         }
                     }
 
@@ -100,7 +99,7 @@ class EvergentServices {
         val call = apiInterface?.createOtp(searchAccountJson)
         call?.enqueue(object : Callback<CreateOtpResponse?> {
             override fun onFailure(call: Call<CreateOtpResponse?>, t: Throwable) {
-                evergentCreateOtpCallBack.onFailure("Something Went Wrong")
+                evergentCreateOtpCallBack.onFailure("Something Went Wrong", "")
 
             }
 
@@ -111,9 +110,10 @@ class EvergentServices {
                         evergentCreateOtpCallBack.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.createOTPResponseMessage?.failureMessage != null) {
-                            evergentCreateOtpCallBack.onFailure(EvergentErrorHandling().getErrorMessage(response.body()?.createOTPResponseMessage?.failureMessage, context))
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.createOTPResponseMessage?.failureMessage, context)
+                            evergentCreateOtpCallBack.onFailure(errorModel.errorMessage, errorModel.errorCode)
                         } else {
-                            evergentCreateOtpCallBack.onFailure("Something Went Wrong")
+                            evergentCreateOtpCallBack.onFailure("Something Went Wrong", "")
                         }
                     }
 
@@ -148,7 +148,7 @@ class EvergentServices {
         val call = apiInterface?.confirmOtp(searchAccountJson)
         call?.enqueue(object : Callback<ConfirmOtpResponse?> {
             override fun onFailure(call: Call<ConfirmOtpResponse?>, t: Throwable) {
-                evergentConfirmOtpCallBack.onFailure("Something Went Wrong")
+                evergentConfirmOtpCallBack.onFailure("Something Went Wrong", "")
 
             }
 
@@ -159,9 +159,10 @@ class EvergentServices {
                         evergentConfirmOtpCallBack.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.confirmOTPResponseMessage?.failureMessage != null) {
-                            evergentConfirmOtpCallBack.onFailure(EvergentErrorHandling().getErrorMessage(response.body()?.confirmOTPResponseMessage?.failureMessage, context))
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.confirmOTPResponseMessage?.failureMessage, context)
+                            evergentConfirmOtpCallBack.onFailure(errorModel.errorMessage, errorModel.errorCode)
                         } else {
-                            evergentConfirmOtpCallBack.onFailure("Something Went Wrong")
+                            evergentConfirmOtpCallBack.onFailure("Something Went Wrong", "")
                         }
                     }
 
@@ -189,7 +190,7 @@ class EvergentServices {
         val call = apiInterface?.resetPassword(searchAccountJson)
         call?.enqueue(object : Callback<ResetPasswordResponse?> {
             override fun onFailure(call: Call<ResetPasswordResponse?>, t: Throwable) {
-                evergentResetPasswordCallBack.onFailure("Something Went Wrong")
+                evergentResetPasswordCallBack.onFailure("Something Went Wrong", "")
 
             }
 
@@ -200,9 +201,11 @@ class EvergentServices {
                         evergentResetPasswordCallBack.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.resetPasswordResponseMessage?.failureMessage != null) {
-                            evergentResetPasswordCallBack.onFailure(EvergentErrorHandling().getErrorMessage(response.body()?.resetPasswordResponseMessage?.failureMessage, context))
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.resetPasswordResponseMessage?.failureMessage, context)
+                            evergentResetPasswordCallBack.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
                         } else {
-                            evergentResetPasswordCallBack.onFailure("Something Went Wrong")
+                            evergentResetPasswordCallBack.onFailure("Something Went Wrong", "")
                         }
                     }
 
@@ -261,7 +264,7 @@ class EvergentServices {
         val call = apiInterface?.createUser(createUserJson)
         call?.enqueue(object : Callback<CreateUserResponse?> {
             override fun onFailure(call: Call<CreateUserResponse?>, t: Throwable) {
-                evergentCreateUserCallback.onFailure("Something Went Wrong")
+                evergentCreateUserCallback.onFailure("Something Went Wrong", "")
 
             }
 
@@ -272,9 +275,11 @@ class EvergentServices {
                         evergentCreateUserCallback.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.createUserResponseMessage?.failureMessage != null) {
-                            evergentCreateUserCallback.onFailure(EvergentErrorHandling().getErrorMessage(response.body()?.createUserResponseMessage?.failureMessage, context))
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.createUserResponseMessage?.failureMessage, context)
+                            evergentCreateUserCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
                         } else {
-                            evergentCreateUserCallback.onFailure("Something Went Wrong")
+                            evergentCreateUserCallback.onFailure("Something Went Wrong", "")
                         }
                     }
 

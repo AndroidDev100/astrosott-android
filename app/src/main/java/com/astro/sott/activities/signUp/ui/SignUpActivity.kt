@@ -165,9 +165,8 @@ class SignUpActivity : AppCompatActivity() {
                 activitySinUpBinding?.progressBar?.visibility = View.GONE
                 // Toast.makeText(this, evergentCommonResponse.searchAccountv2Response.searchAccountV2ResponseMessage!!.message, Toast.LENGTH_SHORT).show()
             } else {
-                if (evergentCommonResponse.errorMessage.equals("No Accounts Found", true) || evergentCommonResponse.errorMessage.equals("No account found with the given details", true)) {
+                if (evergentCommonResponse.errorCode.equals("eV2327", true)) {
                     createOtp(type, emailMobile, password)
-
                 } else {
                     activitySinUpBinding?.progressBar?.visibility = View.GONE
                     Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()

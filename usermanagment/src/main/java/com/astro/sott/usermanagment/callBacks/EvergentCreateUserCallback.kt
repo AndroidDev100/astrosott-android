@@ -7,5 +7,5 @@ interface EvergentCreateUserCallback {
 
     fun onSuccess(createUserResponse: CreateUserResponse)
 
-    fun onFailure(errorMessage: String)
+    fun onFailure(errorMessage: String,errorCode:String)
 }

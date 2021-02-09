@@ -7,5 +7,5 @@ interface EvergentCreateOtpCallBack {
 
     fun onSuccess(createOtpResponse: CreateOtpResponse)
 
-    fun onFailure(errorMessage: String)
+    fun onFailure(errorMessage: String,errorCode:String)
 }

@@ -9,6 +9,8 @@ import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2
 public class EvergentCommonResponse {
 
     private String errorMessage;
+    private String errorCode;
+
     private boolean status;
     private SearchAccountv2Response searchAccountv2Response;
 
@@ -53,6 +55,14 @@ public class EvergentCommonResponse {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
     }
 
     public String getErrorMessage() {
