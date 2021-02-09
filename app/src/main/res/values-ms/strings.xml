@@ -84,6 +84,13 @@
     <string name="sign_in_with">atau Log Masuk Dengan</string>
     <string name="dont_have_account">Tidak mempunyai akaun?</string>
 
+    <string name="forget_psw">Lupa kata laluan</string>
+    <string name="new_psw_para">Masukkan kata laluan baru anda</string>
+    <string name="confirm_psw">Sahkan Kata Laluan</string>
+    <string name="update">KEMASKINI</string>
+    <string name="key_in_email_address">Sila masukkan alamat e-mel anda</string>
+    <string name="submit">HANTAR</string>
+
 
 
     <string name="related">RELATED</string>
