@@ -10,12 +10,14 @@ import com.astro.sott.usermanagment.EvergentServices.EvergentServices;
 import com.astro.sott.usermanagment.callBacks.EvergentConfirmOtpCallBack;
 import com.astro.sott.usermanagment.callBacks.EvergentCreateOtpCallBack;
 import com.astro.sott.usermanagment.callBacks.EvergentCreateUserCallback;
+import com.astro.sott.usermanagment.callBacks.EvergentLoginUserCallback;
 import com.astro.sott.usermanagment.callBacks.EvergentResetPasswordCallBack;
 import com.astro.sott.usermanagment.callBacks.EvergentSearchAccountCallBack;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse;
+import com.astro.sott.usermanagment.modelClasses.login.LoginResponse;
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse;
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response;
 
@@ -150,6 +152,30 @@ public class AstrLoginRepository {
             public void onSuccess(@NotNull CreateUserResponse createUserResponse) {
                 evergentCommonResponse.setStatus(true);
                 evergentCommonResponse.setCreateUserResponse(createUserResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
+    public LiveData<EvergentCommonResponse> loginUser(Context context, String type, String emailMobile, String password) {
+        MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().loginUser(context, type, emailMobile, password, new EvergentLoginUserCallback() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull LoginResponse createUserResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setLoginResponse(createUserResponse);
                 mutableLiveData.postValue(evergentCommonResponse);
             }
         });

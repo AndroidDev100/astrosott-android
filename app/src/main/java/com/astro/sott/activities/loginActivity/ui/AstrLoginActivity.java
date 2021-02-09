@@ -28,6 +28,8 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+    private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
+
 
     @Override
     protected ActivityAstrLoginBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -51,11 +53,19 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             onBackPressed();
         });
         getBinding().loginBtn.setOnClickListener(view -> {
-            //
-            // searchAccountv2();
+            if (checkEmailVaildation()) {
+                String password = getBinding().passwordEdt.getText().toString();
+                if (checkPasswordValidation(password)) {
+                    login(password);
+                } else {
+                    getBinding().passwordError.setVisibility(View.VISIBLE);
+                }
+            }
         });
         getBinding().forgotText.setOnClickListener(view -> {
-            checkEmailVaildation();
+            if (checkEmailVaildation()) {
+                searchAccountv2();
+            }
         });
         getBinding().google.setOnClickListener(view -> {
         });
@@ -89,6 +99,39 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
             }
         }));
+
+        getBinding().passwordEdt.addTextChangedListener(new CustomTextWatcher(this, new TextWatcherCallBack() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                getBinding().passwordError.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        }));
+    }
+
+
+    private void login(String password) {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        astroLoginViewModel.loginUser(type, email_mobile, password).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+
+            if (evergentCommonResponse.isStatus()) {
+                Toast.makeText(this, evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            } else {
+
+                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void searchAccountv2() {
@@ -107,30 +150,41 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         });
     }
 
+    private boolean checkPasswordValidation(String password) {
+        if (password.matches(PASSWORD_REGEX)) {
+            return true;
+        }
+        return false;
+    }
 
-    private void checkEmailVaildation() {
+    private boolean checkEmailVaildation() {
         email_mobile = getBinding().emailMobileEdt.getText().toString();
         if (!email_mobile.equalsIgnoreCase("")) {
             if (email_mobile.matches(MOBILE_REGEX)) {
                 if (email_mobile.length() == 10 || email_mobile.length() == 11) {
                     type = "mobile";
-                    searchAccountv2();
+                    return true;
+
                 } else {
+
                     getBinding().errorEmail.setVisibility(View.VISIBLE);
                     getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
+                    return false;
 
                 }
             } else if (email_mobile.matches(EMAIL_REGEX)) {
                 type = "email";
-                searchAccountv2();
+                return true;
             } else {
                 getBinding().errorEmail.setVisibility(View.VISIBLE);
                 getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
+                return false;
 
             }
         } else {
             getBinding().errorEmail.setVisibility(View.VISIBLE);
             getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
+            return false;
 
         }
     }
@@ -153,33 +207,4 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             }
         });
     }
-
-    String token = "";
-
-    private void confirmOtp() {
-       /* astroLoginViewModel.confirmOtp(loginType, emailMobile).observe(this, evergentCommonResponse -> {
-
-            if (evergentCommonResponse.isStatus()) {
-                Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
-                token = evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getToken();
-            } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });*/
-    }
-
-
-   /* private void resetPassword() {
-        astroLoginViewModel.resetPassword(token, password).observe(this, evergentCommonResponse -> {
-
-            if (evergentCommonResponse.isStatus()) {
-                Toast.makeText(this, evergentCommonResponse.getResetPasswordResponse().getResetPasswordResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
-
-            } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }*/
-
-
 }

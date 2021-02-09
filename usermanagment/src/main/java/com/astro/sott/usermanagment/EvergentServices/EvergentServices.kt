@@ -6,6 +6,7 @@ import com.astro.sott.usermanagment.callBacks.*
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
+import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
 import com.astro.sott.usermanagment.networkManager.retrofit.EvergentApiInterface
@@ -276,6 +277,68 @@ class EvergentServices {
                     } else {
                         if (response.body()?.createUserResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.createUserResponseMessage?.failureMessage, context)
+                            evergentCreateUserCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentCreateUserCallback.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
+
+    fun loginUser(context: Context, type: String, emailMobile: String, password: String, evergentCreateUserCallback: EvergentLoginUserCallback) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        var devicejson = JsonObject()
+        var accountAttributes = JsonArray();
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        json.addProperty(API_USER, API_USER_VALUE)
+        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
+
+        if (type.equals("email", true)) {
+            json.addProperty("email", emailMobile)
+
+        } else if (type.equals("mobile", true)) {
+            json.addProperty("alternateUserName", emailMobile)
+
+        } else if (type.equals("social", true)) {
+        }
+        json.addProperty("contactPassword", password)
+
+        devicejson.addProperty("serialNo", "QER-GHi445678455-980988-8668H83583")
+        devicejson.addProperty("deviceName", "Samsung Note")
+        devicejson.addProperty("deviceType", "Android")
+        devicejson.addProperty("modelNo", "5Sk Se6ries")
+        devicejson.addProperty("os", "Android")
+        json.add("deviceMessage", devicejson)
+        createUserJson.add("GetOAuthAccessTokenv2RequestMessage", json)
+
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.login(createUserJson)
+        call?.enqueue(object : Callback<LoginResponse?> {
+            override fun onFailure(call: Call<LoginResponse?>, t: Throwable) {
+                evergentCreateUserCallback.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<LoginResponse?>, response: Response<LoginResponse?>) {
+                if (response.body() != null && response.body()?.getOAuthAccessTokenv2ResponseMessage != null && response.body()?.getOAuthAccessTokenv2ResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.getOAuthAccessTokenv2ResponseMessage?.responseCode.equals("1", true)) {
+                        evergentCreateUserCallback.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.getOAuthAccessTokenv2ResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.getOAuthAccessTokenv2ResponseMessage?.failureMessage, context)
                             evergentCreateUserCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
 
                         } else {

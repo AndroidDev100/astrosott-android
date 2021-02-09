@@ -3,6 +3,7 @@ package com.astro.sott.usermanagment.networkManager.retrofit
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
+import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
 import com.google.gson.JsonObject
@@ -27,5 +28,8 @@ interface EvergentApiInterface {
 
     @POST("createUser")
     fun createUser(@Body jsonObject: JsonObject?): Call<CreateUserResponse?>?
+
+    @POST("getOAuthAccessTokenv2")
+    fun login(@Body jsonObject: JsonObject?): Call<LoginResponse?>?
 
 }
