@@ -3,16 +3,20 @@ package com.astro.sott.baseModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
+import com.astro.sott.fragments.sports.viewModel.SportsViewModel;
 import com.astro.sott.fragments.video.viewModel.VideoViewModel;
 import com.astro.sott.repositories.homeTab.HomeFragmentRepository;
 import com.astro.sott.utils.helpers.ShimmerDataModel;
@@ -86,7 +90,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         if (aBoolean) {
             getBinding().swipeContainer.setRefreshing(true);
             UIinitialization();
-           // loadDataFromModel();
+            // loadDataFromModel();
             getBaseCategoryRail();
         } else {
             noConnectionLayout();
@@ -94,6 +98,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     }
 
     List<BaseCategory> baseCategories;
+
     public void getBaseCategoryRail() {
         HomeFragmentRepository.getInstance().getCategories(screenID).observe((LifecycleOwner) getActivity(), baseCategoriesList -> {
             if (baseCategoriesList.size() > 0) {
@@ -122,7 +127,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         swipeToRefresh();
         getBinding().myRecyclerView.setHasFixedSize(true);
         getBinding().myRecyclerView.setItemViewCacheSize(20);
-       // getBinding().myRecyclerView.setNestedScrollingEnabled(false);
+        // getBinding().myRecyclerView.setNestedScrollingEnabled(false);
         getBinding().myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         CustomShimmerAdapter adapter = new CustomShimmerAdapter(getActivity(), new ShimmerDataModel(getActivity()).getList(0), new ShimmerDataModel(getActivity()).getSlides());
         getBinding().myRecyclerView.setAdapter(adapter);
@@ -297,7 +302,6 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     }
 
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -445,10 +449,12 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
             screenID = String.valueOf(AppConstants.TAB_FIRST);
             //screenID = "14";
         } else if (viewModel instanceof LiveTvViewModel) {
-            screenID = String.valueOf(AppConstants.TAB_FIRST);
+            screenID = String.valueOf(AppConstants.TAB_FOUR);
         } else if (viewModel instanceof VideoViewModel) {
-            screenID = String.valueOf(AppConstants.TAB_FIRST);
-        }  else {
+            screenID = String.valueOf(AppConstants.TAB_SECOND);
+        } else if (viewModel instanceof SportsViewModel) {
+            screenID = String.valueOf(AppConstants.TAB_THIRD);
+        } else {
             screenID = String.valueOf(AppConstants.TAB_FIRST);
         }
     }
