@@ -1913,6 +1913,28 @@ public class KsServices {
         new Thread(runnable).start();
     }
 
+    public void kalturaAddToken(final String session_ks) {
+        try {
+            int expiryDate = getTokenExpiryDate();
+            loginClient(session_ks);
+            AppToken token = new AppToken();
+            token.expiry(String.valueOf(expiryDate)); // session expiry ks valid for 7 days
+
+            token.sessionDuration("604800");
+            token.hashType("SHA256");
+            AppTokenService.AddAppTokenBuilder builder = AppTokenService.add(token)
+                    .setCompletion(result -> {
+                        if (result.isSuccess()) {
+                        } else {
+                        }
+                    });
+            getRequestQueue().queue(builder.build(client));
+
+        } catch (Exception e) {
+            PrintLogging.printLog(this.getClass(), "", "Exception" + e.getMessage());
+        }
+    }
+
     public void addToken(final String session_ks, final KsAppTokenCallBack ksAppTokenCallBack) {
         try {
             int expiryDate = getTokenExpiryDate();

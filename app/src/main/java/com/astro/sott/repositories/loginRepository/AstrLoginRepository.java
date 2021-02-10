@@ -6,6 +6,7 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.usermanagment.EvergentServices.EvergentServices;
 import com.astro.sott.usermanagment.callBacks.EvergentConfirmOtpCallBack;
 import com.astro.sott.usermanagment.callBacks.EvergentCreateOtpCallBack;
@@ -57,6 +58,9 @@ public class AstrLoginRepository {
         return mutableLiveData;
     }
 
+    public void addToken(Context context, String ks) {
+        new KsServices(context).kalturaAddToken(ks);
+    }
 
     public LiveData<EvergentCommonResponse> createOtp(Context context, String type, String emailMobile) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();

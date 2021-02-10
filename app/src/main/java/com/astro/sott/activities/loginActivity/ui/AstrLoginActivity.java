@@ -19,6 +19,7 @@ import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityAstrLoginBinding;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.userInfo.UserInfo;
 
 
 public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBinding> {
@@ -125,6 +126,11 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             getBinding().progressBar.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus()) {
+                UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getAccessToken());
+                UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getRefreshToken());
+                UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
+
+                astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
                 Toast.makeText(this, evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
                 onBackPressed();
             } else {

@@ -15,29 +15,32 @@ public class AstroLoginViewModel extends AndroidViewModel {
     }
 
     public LiveData<EvergentCommonResponse> searchAccountV2(String type, String emailMobile) {
-        return AstrLoginRepository.getInstance().searchAccountV2(getApplication(),type,emailMobile);
+        return AstrLoginRepository.getInstance().searchAccountV2(getApplication(), type, emailMobile);
     }
 
     public LiveData<EvergentCommonResponse> createOtp(String type, String emailMobile) {
-        return AstrLoginRepository.getInstance().createOtp(getApplication(),type,emailMobile);
+        return AstrLoginRepository.getInstance().createOtp(getApplication(), type, emailMobile);
     }
 
 
     public LiveData<EvergentCommonResponse> confirmOtp(String loginType, String emailMobile, String otp) {
-        return AstrLoginRepository.getInstance().confirmOtp(getApplication(),loginType,emailMobile,otp);
+        return AstrLoginRepository.getInstance().confirmOtp(getApplication(), loginType, emailMobile, otp);
     }
 
     public LiveData<EvergentCommonResponse> resetPassword(String token, String password) {
-        return AstrLoginRepository.getInstance().resetPassword(getApplication(),token,password);
+        return AstrLoginRepository.getInstance().resetPassword(getApplication(), token, password);
     }
 
     public LiveData<EvergentCommonResponse> createUser(String type, String emailMobile, String password) {
-        return AstrLoginRepository.getInstance().createUser(getApplication(),type,emailMobile,password);
+        return AstrLoginRepository.getInstance().createUser(getApplication(), type, emailMobile, password);
     }
 
     public LiveData<EvergentCommonResponse> loginUser(String type, String emailMobile, String password) {
-        return AstrLoginRepository.getInstance().loginUser(getApplication(),type,emailMobile,password);
+        return AstrLoginRepository.getInstance().loginUser(getApplication(), type, emailMobile, password);
     }
 
+    public void addToken(String ks) {
+        AstrLoginRepository.getInstance().addToken(getApplication(), ks);
+    }
 
 }

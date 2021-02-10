@@ -51,7 +51,7 @@ public class SharedPrefHelper {
     public void setString(String key, String value) {
         String encryptedValue;
         encryptedValue = cryptUtil.encrypt(value, AppLevelConstants.MY_DIALOG_ENCRYPTION_KEY);
-        if (key.equalsIgnoreCase("DMS_Response") || value.equalsIgnoreCase("")) {
+        if (key.equalsIgnoreCase("DMS_Response") || value == null || value.equalsIgnoreCase("")) {
             editor.putString(key, value);
         } else {
             editor.putString(key, encryptedValue);
