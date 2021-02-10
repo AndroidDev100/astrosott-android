@@ -104,6 +104,7 @@
     <color name="pin_view_bg">#0e0f24</color>
     <color name="maya_blue">#5bc3ff</color>
     <color name="radical_red">#ff2954</color>
+    <color name="tab_selected">#303255</color>
 
 
 </resources>

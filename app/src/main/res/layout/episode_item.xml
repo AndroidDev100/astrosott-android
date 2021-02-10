@@ -9,9 +9,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:background="@color/episode_back"
+        android:background="@color/blue_bg"
         android:layout_marginBottom="3dp"
         android:layout_height="wrap_content">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,15 +23,16 @@
                 android:id="@+id/play_lay"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_width="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:background="@drawable/play_icon"
-                    android:layout_height="30dp" />
+                    android:layout_width="155dp"
+                    android:id="@+id/landscape_image"
+                    android:background="@drawable/nodatafound"
+                    android:layout_height="88dp" />
 
 
             </LinearLayout>
@@ -44,48 +46,76 @@
                 android:layout_weight="1"
                 android:id="@+id/main_lay"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_height="wrap_content">
-
+<!--<LinearLayout-->
+<!--    android:layout_marginBottom="@dimen/_4sdp"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:orientation="horizontal"-->
+<!--    android:layout_weight="1"-->
+<!--    android:id="@+id/second_lay"-->
+<!--    android:layout_marginRight="@dimen/_5sdp"-->
+<!--    android:layout_marginLeft="@dimen/_5sdp">-->
                 <TextView
                     android:id="@+id/episodeNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|left"
                     android:ellipsize="end"
-                    android:fontFamily="@font/roboto_medium"
-                    android:maxLines="1"
-                    android:text=""
+                    android:fontFamily="@font/heebo_medium"
+                    android:maxLines="2"
+                    android:text="Ep:1"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/search_item_margin_top" />
+                    android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:fontFamily="@font/heebo_medium"
+        android:maxLines="2"
+        android:text="The Lord Kingdom"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tvTitle"
+                    android:id="@+id/tvduration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|left"
-                    android:layout_marginTop="@dimen/search_item_margin_end"
                     android:ellipsize="end"
-                    android:fontFamily="@font/roboto_regular"
+                    android:fontFamily="@font/heebo_regular"
                     android:maxLines="2"
-                    android:text=""
+                    android:text="56min"
                     android:textColor="@color/search_sub_title"
-                    android:textSize="@dimen/search_item_margin_top" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/download_icon"
-                android:layout_width="@dimen/_50sdp"
-                android:orientation="vertical"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:gravity="center_horizontal"
-                android:layout_height="match_parent">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/download_icon"-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_marginRight="@dimen/_5sdp"-->
+<!--              android:layout_marginEnd="16sp"-->
+<!--                android:gravity="center_horizontal"-->
+<!--                android:layout_marginTop="@dimen/_10sdp"-->
+<!--                android:layout_height="24dp">-->
+                <ImageButton
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:rotation="270"
+                    android:id="@+id/downloadIcon"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/blue_bg"
+                    android:src="@drawable/ic_baseline_arrow_back"
+                    />
 
 
-
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
 
 
@@ -95,7 +125,6 @@
 
         <LinearLayout
             android:id="@+id/clRoot"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
@@ -103,6 +132,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <ImageView
@@ -128,12 +158,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|left"
                 android:ellipsize="end"
-                android:fontFamily="@font/roboto_regular"
-                android:maxLines="2"
-                android:padding="@dimen/_10sdp"
-                android:text=""
+                android:fontFamily="@font/heebo_regular"
+                android:maxLines="3"
+               android:lineSpacingExtra="8sp"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:text="While Bran recovers from his fall, Ned takes only his daughters to King's Landing. Jon Snow goes with his uncle Benjen to the Wall. Tyrion joins them."
                 android:textColor="@color/search_sub_title"
-                android:textSize="@dimen/search_item_margin_top" />
+                android:textSize="14sp" />
 
 
         </LinearLayout>

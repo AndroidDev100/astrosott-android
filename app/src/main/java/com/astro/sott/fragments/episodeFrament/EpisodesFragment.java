@@ -234,7 +234,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
             adapter = new EpisodeAdapter(getActivity(), list, getArguments().getInt(AppConstants.EPISODE_NUMBER),this);
             getBinding().recyclerView.setAdapter(adapter);
-
+               getBinding().season.setVisibility(View.VISIBLE);
             int count = adapter.getItemCount();
             if (count >= assetCommonBeans.get(0).getTotalCount()) {
                 getBinding().loadMoreButton.setVisibility(View.GONE);
