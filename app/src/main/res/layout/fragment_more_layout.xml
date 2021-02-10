@@ -201,6 +201,7 @@
         android:text="@string/subscribe_more"
         android:textColor="@color/light_blue_text_color"
         android:textSize="14sp"
+        android:padding="2dp"
         android:fontFamily="@font/heebo_regular"
         android:textAllCaps="false"
         android:id="@+id/subscribe"
