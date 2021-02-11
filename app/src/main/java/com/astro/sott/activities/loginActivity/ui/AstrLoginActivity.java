@@ -129,7 +129,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getAccessToken());
                 UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getRefreshToken());
                 UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
-
+                UserInfo.getInstance(this).setActive(true);
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
                 Toast.makeText(this, evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
                 onBackPressed();

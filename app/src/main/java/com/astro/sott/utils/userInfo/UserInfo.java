@@ -9,6 +9,15 @@ public class UserInfo {
     private String accessToken;
     private String refreshToken;
     private String externalSessionToken;
+    private boolean active;
+
+    public boolean isActive() {
+        return session.getBoolean("astroUserActive", false);
+    }
+
+    public void setActive(boolean activeUser) {
+        session.setBoolean("astroUserActive", activeUser);
+    }
 
     public String getAccessToken() {
         return session.getString("accessToken", "");

@@ -21,6 +21,7 @@ import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.astro.sott.utils.userInfo.UserInfo;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,6 +90,23 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
             new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
 
+        });
+
+
+        getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                UserInfo.getInstance(getActivity()).setAccessToken("");
+                UserInfo.getInstance(getActivity()).setRefreshToken("");
+                UserInfo.getInstance(getActivity()).setExternalSessionToken("");
+                UserInfo.getInstance(getActivity()).setActive(false);
+                getBinding().rlLogout.setVisibility(View.GONE);
+                getBinding().loginSignupMore.setVisibility(View.VISIBLE);
+                getBinding().loginUi.setVisibility(View.GONE);
+                getBinding().edit.setVisibility(View.GONE);
+
+            }
         });
 //
 //       getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +184,19 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     public void onResume() {
         super.onResume();
         updateLang();
+        if (UserInfo.getInstance(getActivity()).isActive()) {
+            getBinding().loginUi.setVisibility(View.VISIBLE);
+            getBinding().loginSignupMore.setVisibility(View.GONE);
+            getBinding().rlLogout.setVisibility(View.VISIBLE);
+            getBinding().edit.setVisibility(View.VISIBLE);
+        } else {
+            getBinding().loginUi.setVisibility(View.GONE);
+            getBinding().loginSignupMore.setVisibility(View.VISIBLE);
+            getBinding().rlLogout.setVisibility(View.GONE);
+            getBinding().edit.setVisibility(View.GONE);
+
+
+        }
     }
 
 
