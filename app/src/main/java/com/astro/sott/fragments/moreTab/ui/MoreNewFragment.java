@@ -188,6 +188,8 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             getBinding().loginUi.setVisibility(View.VISIBLE);
             getBinding().loginSignupMore.setVisibility(View.GONE);
             getBinding().rlLogout.setVisibility(View.VISIBLE);
+            getBinding().tvName.setText(UserInfo.getInstance(getActivity()).getFirstName() + " " + UserInfo.getInstance(getActivity()).getLastName());
+            getBinding().tvEmail.setText(UserInfo.getInstance(getActivity()).getEmail());
             getBinding().edit.setVisibility(View.VISIBLE);
         } else {
             getBinding().loginUi.setVisibility(View.GONE);

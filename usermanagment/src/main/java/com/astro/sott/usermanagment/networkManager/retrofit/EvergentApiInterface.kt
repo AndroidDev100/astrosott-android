@@ -3,6 +3,7 @@ package com.astro.sott.usermanagment.networkManager.retrofit
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
+import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
@@ -31,5 +32,8 @@ interface EvergentApiInterface {
 
     @POST("getOAuthAccessTokenv2")
     fun login(@Body jsonObject: JsonObject?): Call<LoginResponse?>?
+
+    @POST("getContact")
+    fun getContact(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<GetContactResponse?>?
 
 }

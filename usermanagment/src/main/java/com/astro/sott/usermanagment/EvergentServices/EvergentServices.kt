@@ -6,6 +6,7 @@ import com.astro.sott.usermanagment.callBacks.*
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
+import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
@@ -354,6 +355,48 @@ class EvergentServices {
 
 
     }
+
+    fun getContact(context: Context,acessToken:String,  evergentCreateUserCallback: EvergentGetContactCallback) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        json.addProperty(API_USER, API_USER_VALUE)
+        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
+        createUserJson.add("GetContactRequestMessage", json)
+
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.getContact(acessToken,createUserJson)
+        call?.enqueue(object : Callback<GetContactResponse?> {
+            override fun onFailure(call: Call<GetContactResponse?>, t: Throwable) {
+                evergentCreateUserCallback.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<GetContactResponse?>, response: Response<GetContactResponse?>) {
+                if (response.body() != null && response.body()?.getContactResponseMessage != null && response.body()?.getContactResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.getContactResponseMessage?.responseCode.equals("1", true)) {
+                        evergentCreateUserCallback.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.getContactResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.getContactResponseMessage?.failureMessage, context)
+                            evergentCreateUserCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentCreateUserCallback.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
 
 
 }

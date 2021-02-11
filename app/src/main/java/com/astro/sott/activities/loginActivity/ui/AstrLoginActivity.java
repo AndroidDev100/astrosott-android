@@ -123,19 +123,36 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private void login(String password) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         astroLoginViewModel.loginUser(type, email_mobile, password).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus()) {
                 UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getAccessToken());
                 UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getRefreshToken());
                 UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
-                UserInfo.getInstance(this).setActive(true);
+                getContact();
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
-                Toast.makeText(this, evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
-                onBackPressed();
             } else {
+                getBinding().progressBar.setVisibility(View.GONE);
 
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getContact() {
+        astroLoginViewModel.getContact("Bearer "+UserInfo.getInstance(this).getAccessToken()).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+
+            if (evergentCommonResponse.isStatus() && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().size() > 0) {
+                UserInfo.getInstance(this).setFirstName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getFirstName());
+                UserInfo.getInstance(this).setLastName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getLastName());
+                UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
+
+                UserInfo.getInstance(this).setActive(true);
+                Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            } else {
+                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }

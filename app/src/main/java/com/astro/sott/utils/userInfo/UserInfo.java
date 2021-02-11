@@ -10,6 +10,36 @@ public class UserInfo {
     private String refreshToken;
     private String externalSessionToken;
     private boolean active;
+    private String firstName;
+    private String lastName;
+    private String email;
+
+
+    public String getEmail() {
+        return session.getString("AstroEmail", "");
+
+    }
+
+    public void setEmail(String email) {
+        session.setString("AstroEmail", email);
+    }
+
+    public String getLastName() {
+        return session.getString("AstrolastName", "");
+
+    }
+
+    public void setLastName(String lastName) {
+        session.setString("AstrolastName", lastName);
+    }
+
+    public String getFirstName() {
+        return session.getString("AstrofirstName", "");
+    }
+
+    public void setFirstName(String firstName) {
+        session.setString("AstrofirstName", firstName);
+    }
 
     public boolean isActive() {
         return session.getBoolean("astroUserActive", false);
