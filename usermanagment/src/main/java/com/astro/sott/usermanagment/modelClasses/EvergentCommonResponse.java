@@ -5,6 +5,7 @@ import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse;
 import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse;
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse;
+import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse;
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse;
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response;
 
@@ -23,7 +24,16 @@ public class EvergentCommonResponse {
     private CreateUserResponse createUserResponse;
     private LoginResponse loginResponse;
     private GetContactResponse getContactResponse;
+    private RefreshTokenResponse refreshTokenResponse;
 
+
+    public RefreshTokenResponse getRefreshTokenResponse() {
+        return refreshTokenResponse;
+    }
+
+    public void setRefreshTokenResponse(RefreshTokenResponse refreshTokenResponse) {
+        this.refreshTokenResponse = refreshTokenResponse;
+    }
 
     public GetContactResponse getGetContactResponse() {
         return getContactResponse;

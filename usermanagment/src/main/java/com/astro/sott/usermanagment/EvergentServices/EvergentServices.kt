@@ -1,13 +1,16 @@
 package com.astro.sott.usermanagment.EvergentServices
 
+import android.content.ContentResolver
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
+import android.os.Build
+import android.provider.Settings
 import com.astro.sott.usermanagment.callBacks.*
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
 import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
+import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
 import com.astro.sott.usermanagment.networkManager.retrofit.EvergentApiInterface
@@ -18,6 +21,7 @@ import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.reflect.Method
 
 class EvergentServices {
 
@@ -314,11 +318,10 @@ class EvergentServices {
         } else if (type.equals("social", true)) {
         }
         json.addProperty("contactPassword", password)
-
-        devicejson.addProperty("serialNo", "QER-GHi445678455-980988-8668H83583")
-        devicejson.addProperty("deviceName", "Samsung Note")
+        devicejson.addProperty("serialNo", getDeviceId(context.contentResolver))
+        devicejson.addProperty("deviceName", Build.DEVICE)
         devicejson.addProperty("deviceType", "Android")
-        devicejson.addProperty("modelNo", "5Sk Se6ries")
+        devicejson.addProperty("modelNo", Build.MODEL)
         devicejson.addProperty("os", "Android")
         json.add("deviceMessage", devicejson)
         createUserJson.add("GetOAuthAccessTokenv2RequestMessage", json)
@@ -355,8 +358,12 @@ class EvergentServices {
 
 
     }
+    fun getDeviceId(contentResolver: ContentResolver?): String? {
+        return Settings.Secure.getString(contentResolver,
+                Settings.Secure.ANDROID_ID)
+    }
 
-    fun getContact(context: Context,acessToken:String,  evergentCreateUserCallback: EvergentGetContactCallback) {
+    fun getContact(context: Context, acessToken: String, evergentCreateUserCallback: EvergentGetContactCallback) {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
@@ -366,7 +373,7 @@ class EvergentServices {
 
 
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
-        val call = apiInterface?.getContact(acessToken,createUserJson)
+        val call = apiInterface?.getContact(acessToken, createUserJson)
         call?.enqueue(object : Callback<GetContactResponse?> {
             override fun onFailure(call: Call<GetContactResponse?>, t: Throwable) {
                 evergentCreateUserCallback.onFailure("Something Went Wrong", "")
@@ -397,6 +404,49 @@ class EvergentServices {
 
     }
 
+
+    fun refreshToken(context: Context, refreshToken: String, evergentRefreshToken: EvergentRefreshTokenCallBack) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        json.addProperty(API_USER, API_USER_VALUE)
+        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
+        json.addProperty("refreshToken", refreshToken)
+        createUserJson.add("RefreshTokenRequestMessage", json)
+
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.refreshToken(createUserJson)
+        call?.enqueue(object : Callback<RefreshTokenResponse?> {
+            override fun onFailure(call: Call<RefreshTokenResponse?>, t: Throwable) {
+                evergentRefreshToken.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<RefreshTokenResponse?>, response: Response<RefreshTokenResponse?>) {
+                if (response.body() != null && response.body()?.refreshTokenResponseMessage != null && response.body()?.refreshTokenResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.refreshTokenResponseMessage?.responseCode.equals("1", true)) {
+                        evergentRefreshToken.onSuccess(response.body()!!)
+                    } else {
+                        if (response.body()?.refreshTokenResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.refreshTokenResponseMessage?.failureMessage, context)
+                            evergentRefreshToken.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentRefreshToken.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                }
+            }
+        }
+
+        )
+
+
+    }
 
 
 }

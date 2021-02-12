@@ -17,8 +17,10 @@ import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityAstrLoginBinding;
+import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 
@@ -40,6 +42,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         modelCall();
         setClicks();
     }
@@ -128,6 +131,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getAccessToken());
                 UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getRefreshToken());
                 UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
+                KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
                 getContact();
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
             } else {
@@ -139,7 +143,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     }
 
     private void getContact() {
-        astroLoginViewModel.getContact("Bearer "+UserInfo.getInstance(this).getAccessToken()).observe(this, evergentCommonResponse -> {
+        astroLoginViewModel.getContact("Bearer " + UserInfo.getInstance(this).getAccessToken()).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus() && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().size() > 0) {
@@ -151,7 +155,19 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
                 onBackPressed();
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
+                    EvergentRefreshToken.refreshToken(AstrLoginActivity.this, UserInfo.getInstance(AstrLoginActivity.this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                        if (evergentCommonResponse.isStatus()) {
+                            getContact();
+                        } else {
+                            Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                } else {
+                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+
+                }
 
             }
         });

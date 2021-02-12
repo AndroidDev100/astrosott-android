@@ -245,6 +245,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
     implementation project(':enveusdk')
 
+    implementation 'com.anjlab.android.iab.v3:library:1.0.44'
 
 
     // optional

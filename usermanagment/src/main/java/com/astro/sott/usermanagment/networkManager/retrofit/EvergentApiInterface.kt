@@ -5,6 +5,7 @@ import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
 import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
+import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
 import com.google.gson.JsonObject
@@ -35,5 +36,8 @@ interface EvergentApiInterface {
 
     @POST("getContact")
     fun getContact(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<GetContactResponse?>?
+
+    @POST("refreshToken")
+    fun refreshToken(@Body jsonObject: JsonObject?): Call<RefreshTokenResponse?>?
 
 }

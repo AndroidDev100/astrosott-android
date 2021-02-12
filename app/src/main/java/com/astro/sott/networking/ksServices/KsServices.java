@@ -98,6 +98,7 @@ import com.astro.sott.utils.helpers.StringBuilderHolder;
 import com.astro.sott.utils.helpers.StringUtils;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.ksPreferenceKey.SubCategoriesPrefs;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
@@ -3229,7 +3230,7 @@ public class KsServices {
         } else {
             client.setLanguage("en");
         }
-        if (KsPreferenceKey.getInstance(activity).getUserActive()) {
+        if (UserInfo.getInstance(activity).isActive()) {
             client.setKs(KsPreferenceKey.getInstance(activity).getStartSessionKs());
         } else {
             client.setKs(KsPreferenceKey.getInstance(activity).getAnonymousks());

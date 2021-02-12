@@ -43,6 +43,8 @@ public class AstroLoginViewModel extends AndroidViewModel {
         return AstrLoginRepository.getInstance().getContact(getApplication(),acessToken);
     }
 
+
+
     public void addToken(String ks) {
         AstrLoginRepository.getInstance().addToken(getApplication(), ks);
     }
