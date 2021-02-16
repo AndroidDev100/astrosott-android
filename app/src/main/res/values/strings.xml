@@ -521,5 +521,6 @@
     <string name="update">UPDATE</string>
     <string name="key_in_email_address">Please key in your email address</string>
     <string name="submit">SUBMIT</string>
+    <string name="season_number">SEASON 1</string>
 
 </resources>

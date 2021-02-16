@@ -87,7 +87,10 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                 }
             }
             viewHolder.watchlistItemBinding.episodeNumber.setText("Episode " + value + "");
-
+            if (singleItem.getImages() != null && singleItem.getImages().size() > 0) {
+                AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
+                ImageHelper.getInstance(viewHolder.watchlistItemBinding.landscapeImage.getContext()).loadImageTo(viewHolder.watchlistItemBinding.landscapeImage, assetCommonImages.getImageUrl(), R.drawable.landscape);
+            }
            /* if (singleItem.getExpended()) {
                 viewHolder.watchlistItemBinding.clRoot.setVisibility(View.VISIBLE);
             } else {
@@ -95,7 +98,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
             }*/
 
 
-            viewHolder.watchlistItemBinding.downloadIcon.setVisibility(View.GONE);
+            viewHolder.watchlistItemBinding.downloadIcon.setVisibility(View.VISIBLE);
 
 
             viewHolder.watchlistItemBinding.mainLay.setOnClickListener(new View.OnClickListener() {
