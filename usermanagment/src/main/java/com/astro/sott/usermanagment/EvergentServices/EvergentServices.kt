@@ -9,8 +9,10 @@ import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
 import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse
+import com.astro.sott.usermanagment.modelClasses.getDevice.GetDevicesResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse
+import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceResponse
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
 import com.astro.sott.usermanagment.networkManager.retrofit.EvergentApiInterface
@@ -358,6 +360,7 @@ class EvergentServices {
 
 
     }
+
     fun getDeviceId(contentResolver: ContentResolver?): String? {
         return Settings.Secure.getString(contentResolver,
                 Settings.Secure.ANDROID_ID)
@@ -373,7 +376,7 @@ class EvergentServices {
 
 
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
-        val call = apiInterface?.getContact(acessToken, createUserJson)
+        val call = apiInterface?.getContact("Bearer $acessToken", createUserJson)
         call?.enqueue(object : Callback<GetContactResponse?> {
             override fun onFailure(call: Call<GetContactResponse?>, t: Throwable) {
                 evergentCreateUserCallback.onFailure("Something Went Wrong", "")
@@ -392,6 +395,92 @@ class EvergentServices {
 
                         } else {
                             evergentCreateUserCallback.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
+
+    fun getDevice(context: Context, acessToken: String, evergentGetDeviceCallback: EvergentGetDeviceCallback) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        json.addProperty(API_USER, API_USER_VALUE)
+        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
+        createUserJson.add("GetAccountDevicesRequestMessage", json)
+
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.getDevice("Bearer $acessToken", createUserJson)
+        call?.enqueue(object : Callback<GetDevicesResponse?> {
+            override fun onFailure(call: Call<GetDevicesResponse?>, t: Throwable) {
+                evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<GetDevicesResponse?>, response: Response<GetDevicesResponse?>) {
+                if (response.body() != null && response.body()?.getAccountDevicesResponseMessage != null && response.body()?.getAccountDevicesResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.getAccountDevicesResponseMessage?.responseCode.equals("1", true)) {
+                        evergentGetDeviceCallback.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.getAccountDevicesResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.getAccountDevicesResponseMessage?.failureMessage, context)
+                            evergentGetDeviceCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
+    fun removeDevice(context: Context, acessToken: String, serial: String, evergentGetDeviceCallback: EvergentRemoveDevice) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        var devicejson = JsonObject()
+        json.addProperty(API_USER, API_USER_VALUE)
+        devicejson.addProperty("serialNo", serial)
+        json.add("deviceMessage", devicejson)
+        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
+        createUserJson.add("RemoveDevicesRequestMessage", json)
+
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.removeDevice("Bearer $acessToken", createUserJson)
+        call?.enqueue(object : Callback<RemoveDeviceResponse?> {
+            override fun onFailure(call: Call<RemoveDeviceResponse?>, t: Throwable) {
+                evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<RemoveDeviceResponse?>, response: Response<RemoveDeviceResponse?>) {
+                if (response.body() != null && response.body()?.removeDevicesResponseMessage != null && response.body()?.removeDevicesResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.removeDevicesResponseMessage?.responseCode.equals("1", true)) {
+                        evergentGetDeviceCallback.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.removeDevicesResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.removeDevicesResponseMessage?.failureMessage, context)
+                            evergentGetDeviceCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
                         }
                     }
 

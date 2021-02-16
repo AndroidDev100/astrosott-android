@@ -9,16 +9,13 @@ import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.astro.sott.R;
-import com.astro.sott.activities.home.HomeActivity;
-import com.astro.sott.activities.language.ui.ChangeLanguageActivity;
 import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
-import com.astro.sott.activities.signUp.ui.SignUpActivity;
+import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -97,16 +94,23 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             @Override
             public void onClick(View view) {
 
-                UserInfo.getInstance(getActivity()).setAccessToken("");
-                UserInfo.getInstance(getActivity()).setRefreshToken("");
-                UserInfo.getInstance(getActivity()).setExternalSessionToken("");
-                UserInfo.getInstance(getActivity()).setActive(false);
+                AppCommonMethods.removeUserPrerences(getActivity());
                 getBinding().rlLogout.setVisibility(View.GONE);
                 getBinding().loginSignupMore.setVisibility(View.VISIBLE);
                 getBinding().loginUi.setVisibility(View.GONE);
                 getBinding().edit.setVisibility(View.GONE);
 
             }
+        });
+        getBinding().rlManageDevice.setOnClickListener(view -> {
+            if (UserInfo.getInstance(getActivity()).isActive()) {
+                Intent manageDeviceIntent = new Intent(getActivity(), ManageDeviceActivity.class);
+                startActivity(manageDeviceIntent);
+            } else {
+                new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
+
+            }
+
         });
 //
 //       getBinding().subscribe.setOnClickListener(new View.OnClickListener() {

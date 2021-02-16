@@ -11,8 +11,10 @@ import com.astro.sott.usermanagment.callBacks.EvergentConfirmOtpCallBack;
 import com.astro.sott.usermanagment.callBacks.EvergentCreateOtpCallBack;
 import com.astro.sott.usermanagment.callBacks.EvergentCreateUserCallback;
 import com.astro.sott.usermanagment.callBacks.EvergentGetContactCallback;
+import com.astro.sott.usermanagment.callBacks.EvergentGetDeviceCallback;
 import com.astro.sott.usermanagment.callBacks.EvergentLoginUserCallback;
 import com.astro.sott.usermanagment.callBacks.EvergentRefreshTokenCallBack;
+import com.astro.sott.usermanagment.callBacks.EvergentRemoveDevice;
 import com.astro.sott.usermanagment.callBacks.EvergentResetPasswordCallBack;
 import com.astro.sott.usermanagment.callBacks.EvergentSearchAccountCallBack;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
@@ -20,8 +22,10 @@ import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse;
 import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse;
+import com.astro.sott.usermanagment.modelClasses.getDevice.GetDevicesResponse;
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse;
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse;
+import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceResponse;
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse;
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response;
 
@@ -189,10 +193,10 @@ public class AstrLoginRepository {
         return mutableLiveData;
     }
 
-    public LiveData<EvergentCommonResponse> getContact(Context context,String accessToken) {
+    public LiveData<EvergentCommonResponse> getContact(Context context, String accessToken) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().getContact(context,accessToken, new EvergentGetContactCallback() {
+        EvergentServices.Companion.getInstance().getContact(context, accessToken, new EvergentGetContactCallback() {
 
 
             @Override
@@ -214,6 +218,53 @@ public class AstrLoginRepository {
     }
 
 
+    public LiveData<EvergentCommonResponse> getDevice(Context context, String accessToken) {
+        MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().getDevice(context, accessToken, new EvergentGetDeviceCallback() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull GetDevicesResponse getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setGetDevicesResponse(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
+    public LiveData<EvergentCommonResponse> removeDevice(Context context, String accessToken,String serial) {
+        MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().removeDevice(context, accessToken,serial, new EvergentRemoveDevice() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull RemoveDeviceResponse getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setRemoveDeviceResponse(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
 
 
 }

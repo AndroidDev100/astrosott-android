@@ -43,6 +43,14 @@ public class AstroLoginViewModel extends AndroidViewModel {
         return AstrLoginRepository.getInstance().getContact(getApplication(),acessToken);
     }
 
+    public LiveData<EvergentCommonResponse> getDevice(String acessToken) {
+        return AstrLoginRepository.getInstance().getDevice(getApplication(),acessToken);
+    }
+
+    public LiveData<EvergentCommonResponse> removeDevice(String acessToken,String serial) {
+        return AstrLoginRepository.getInstance().removeDevice(getApplication(),acessToken,serial);
+    }
+
 
 
     public void addToken(String ks) {

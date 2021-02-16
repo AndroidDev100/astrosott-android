@@ -37,6 +37,7 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.ksPreferenceKey.SubCategoriesPrefs;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -123,6 +124,15 @@ public class AppCommonMethods {
 
     }
 
+    public static void removeUserPrerences(Context context) {
+
+        UserInfo.getInstance(context).setAccessToken("");
+        UserInfo.getInstance(context).setRefreshToken("");
+        UserInfo.getInstance(context).setExternalSessionToken("");
+        UserInfo.getInstance(context).setActive(false);
+
+    }
+
     public static void updateLanguage(String language, Context context) {
         try {
             Locale locale = new Locale(language);
@@ -136,6 +146,7 @@ public class AppCommonMethods {
 
         }
     }
+
     public static int getEpisodeNumber(Map<String, Value> metas) {
         int episodeNumber = 0;
         try {
@@ -156,6 +167,7 @@ public class AppCommonMethods {
         }
         return episodeNumber;
     }
+
     public static String setTime(Asset asset, int type) {
         String programTime = "";
         Long _time;
@@ -560,7 +572,7 @@ public class AppCommonMethods {
     }
 
     public static void getImageList(Context context, String tileType, int position, int j, int k, List<Response<ListResponse<Asset>>> list, AssetCommonImages assetCommonImages, List<AssetCommonImages> imagesList) {
-        Log.w("imageType-->>",tileType);
+        Log.w("imageType-->>", tileType);
         switch (tileType) {
             case AppLevelConstants.TYPE2:
 
@@ -643,7 +655,7 @@ public class AppCommonMethods {
                 break;
 
             case AppLevelConstants.TYPEPOSTER:
-                Log.w("ImageRatio-->>",list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                Log.w("ImageRatio-->>", list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
                 if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
                     if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context)) {
                         if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
@@ -654,11 +666,11 @@ public class AppCommonMethods {
                         }
                     } else {
                         if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("2x3")) {
-                            Log.w("ImageRatio-->>in",list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                            Log.w("ImageRatio-->>in", list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
                             String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
                             String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.poster_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.poster_image_height) + AppLevelConstants.QUALITY;
-                            Log.w("FinalUrl-->>in",final_url);
-                            Log.w("ImageUrl-->>in",image_url);
+                            Log.w("FinalUrl-->>in", final_url);
+                            Log.w("ImageUrl-->>in", image_url);
                             assetCommonImages.setImageUrl(final_url);
                             imagesList.add(assetCommonImages);
                         }
@@ -669,7 +681,7 @@ public class AppCommonMethods {
                 break;
 
             case AppLevelConstants.TYPEPR2:
-                Log.w("ImageRatio-->>",list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                Log.w("ImageRatio-->>", list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
                 if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
                     if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context)) {
                         if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
@@ -680,11 +692,11 @@ public class AppCommonMethods {
                         }
                     } else {
                         if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("2x3")) {
-                            Log.w("ImageRatio-->>in",list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                            Log.w("ImageRatio-->>in", list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
                             String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
                             String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.poster_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.poster_image_height) + AppLevelConstants.QUALITY;
-                            Log.w("FinalUrl-->>in",final_url);
-                            Log.w("ImageUrl-->>in",image_url);
+                            Log.w("FinalUrl-->>in", final_url);
+                            Log.w("ImageUrl-->>in", image_url);
                             assetCommonImages.setImageUrl(final_url);
                             imagesList.add(assetCommonImages);
                         }
@@ -1167,20 +1179,20 @@ public class AppCommonMethods {
 
     public static void handleTitleDesc(RelativeLayout titleLayout, TextView tvTitle, TextView tvDescription, BaseCategory baseCategory) {
         try {
-            if (baseCategory!=null){
-                if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())){
+            if (baseCategory != null) {
+                if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())) {
                     titleLayout.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     //titleLayout.setVisibility(View.VISIBLE);
-                    if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE.name())){
+                    if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE.name())) {
                         titleLayout.setVisibility(View.VISIBLE);
                         tvTitle.setVisibility(View.VISIBLE);
-                    }else {
-                        if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE_DESC.name())){
+                    } else {
+                        if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE_DESC.name())) {
                             titleLayout.setVisibility(View.VISIBLE);
                             tvTitle.setVisibility(View.VISIBLE);
                             tvDescription.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             titleLayout.setVisibility(View.GONE);
                             tvTitle.setVisibility(View.GONE);
                             tvDescription.setVisibility(View.GONE);
@@ -1190,7 +1202,7 @@ public class AppCommonMethods {
                 }
 
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
             titleLayout.setVisibility(View.GONE);
             tvTitle.setVisibility(View.GONE);
             tvDescription.setVisibility(View.GONE);
@@ -1199,20 +1211,20 @@ public class AppCommonMethods {
 
     public static void handleTitleDesc(LinearLayout titleLayout, TextView tvTitle, TextView tvDescription, BaseCategory baseCategory) {
         try {
-            if (baseCategory!=null){
-                if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())){
+            if (baseCategory != null) {
+                if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())) {
                     titleLayout.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     //titleLayout.setVisibility(View.VISIBLE);
-                    if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE.name())){
+                    if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE.name())) {
                         titleLayout.setVisibility(View.VISIBLE);
                         tvTitle.setVisibility(View.VISIBLE);
-                    }else {
-                        if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE_DESC.name())){
+                    } else {
+                        if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE_DESC.name())) {
                             titleLayout.setVisibility(View.VISIBLE);
                             tvTitle.setVisibility(View.VISIBLE);
                             tvDescription.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             titleLayout.setVisibility(View.GONE);
                             tvTitle.setVisibility(View.GONE);
                             tvDescription.setVisibility(View.GONE);
@@ -1222,7 +1234,7 @@ public class AppCommonMethods {
                 }
 
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
             titleLayout.setVisibility(View.GONE);
             tvTitle.setVisibility(View.GONE);
             tvDescription.setVisibility(View.GONE);

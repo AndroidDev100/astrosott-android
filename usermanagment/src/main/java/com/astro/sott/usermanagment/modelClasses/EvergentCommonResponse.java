@@ -4,8 +4,10 @@ import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse;
 import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse;
+import com.astro.sott.usermanagment.modelClasses.getDevice.GetDevicesResponse;
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse;
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse;
+import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceResponse;
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse;
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response;
 
@@ -25,7 +27,24 @@ public class EvergentCommonResponse {
     private LoginResponse loginResponse;
     private GetContactResponse getContactResponse;
     private RefreshTokenResponse refreshTokenResponse;
+    private GetDevicesResponse getDevicesResponse;
+    private RemoveDeviceResponse removeDeviceResponse;
 
+    public void setRemoveDeviceResponse(RemoveDeviceResponse removeDeviceResponse) {
+        this.removeDeviceResponse = removeDeviceResponse;
+    }
+
+    public RemoveDeviceResponse getRemoveDeviceResponse() {
+        return removeDeviceResponse;
+    }
+
+    public void setGetDevicesResponse(GetDevicesResponse getDevicesResponse) {
+        this.getDevicesResponse = getDevicesResponse;
+    }
+
+    public GetDevicesResponse getGetDevicesResponse() {
+        return getDevicesResponse;
+    }
 
     public RefreshTokenResponse getRefreshTokenResponse() {
         return refreshTokenResponse;
