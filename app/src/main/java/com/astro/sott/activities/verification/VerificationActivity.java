@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -146,6 +147,11 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
                 } else {
                     Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
+                    getBinding().progressBar.setVisibility(View.GONE);
+                    getBinding().invalidOtp.setVisibility(View.VISIBLE);
+
+
                 }
             });
         } else {
@@ -164,6 +170,10 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
+                getBinding().progressBar.setVisibility(View.GONE);
+
+
             }
         });
     }
@@ -178,6 +188,10 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
+                getBinding().progressBar.setVisibility(View.GONE);
+
+
             }
         });
     }

@@ -505,7 +505,7 @@
     <string name="resend_otp"><u>Resend OTP?</u></string>
     <string name="welcome_back">Welcome Back</string>
     <string name="email_id_mobileNo">Email Id / Mobile Number</string>
-    <string name="forgt_psw"><font color='#5bc3ff'><u>Forgot Password?</u></font></string>
+    <string name="forgt_psw"><u>Forgot Password?</u></string>
     <string name="sign_in_google">Sign In With Google</string>
     <string name="sign_in_fb">Continue With Facebook</string>
     <string name="sign_in_apple">Sign In With Apple</string>

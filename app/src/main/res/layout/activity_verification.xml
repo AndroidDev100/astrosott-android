@@ -39,9 +39,9 @@
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/ic_launcher"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:background="@drawable/astro_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"></ImageView>
@@ -50,7 +50,7 @@
                 android:id="@+id/forgot_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/heebo_medium"
                 android:text="@string/verification_code"
                 android:textColor="@color/white"
@@ -95,7 +95,7 @@
                 app:itemCount="6"
                 app:itemHeight="56dp"
                 app:itemRadius="4dp"
-                app:itemSpacing="10dp"
+                app:itemSpacing="18dp"
                 app:itemWidth="41dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

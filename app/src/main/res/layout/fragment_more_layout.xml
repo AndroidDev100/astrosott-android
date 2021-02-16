@@ -530,7 +530,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:textColor="@color/white"
+            android:textColor="@color/grey"
             android:textSize="16sp"
             android:padding="@dimen/_1sdp"
             android:layout_marginTop="@dimen/_30sdp"
