@@ -78,6 +78,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void UIinitialization() {
+        getBinding().toolbar.setVisibility(View.VISIBLE);
         setClicks();
     }
 

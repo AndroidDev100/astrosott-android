@@ -44,10 +44,10 @@
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
                 android:layout_marginTop="@dimen/_50sdp"
-                android:background="@mipmap/ic_launcher"
+                android:background="@drawable/astro_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"></ImageView>
@@ -56,7 +56,7 @@
                 android:id="@+id/forgot_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="18dp"
                 android:fontFamily="@font/heebo_medium"
                 android:text="@string/welcome_back"
                 android:textColor="@color/white"
@@ -119,7 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="18dp"
-                android:textColor="@color/red_live"
+                android:textColor="@color/radical_red"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/email"></TextView>
@@ -188,8 +188,9 @@
                 android:fontFamily="@font/heebo_regular"
                 android:gravity="center"
                 android:text="@string/forgt_psw"
-                android:textColor="@color/white"
+                android:textColor="@color/maya_blue"
                 android:textSize="16sp"
+                android:visibility="visible"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/password_error"></TextView>
 
@@ -268,7 +269,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/or"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.727" />
+                app:layout_constraintVertical_bias="0.733" />
             <View
                 android:layout_width="60dp"
                 android:layout_height="1.5dp"
@@ -279,7 +280,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/or"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.728" />
+                app:layout_constraintVertical_bias="0.730" />
 
             <TextView
                 android:id="@+id/google"
