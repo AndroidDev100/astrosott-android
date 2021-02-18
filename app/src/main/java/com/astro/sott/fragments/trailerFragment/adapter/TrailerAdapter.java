@@ -50,7 +50,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerI
         Asset asset = assetList.get(i);
         if (assetList.get(i).getImages() != null && assetList.get(i).getImages().size() > 0) {
             for (int imageCounter = 0; imageCounter < asset.getImages().size(); imageCounter++) {
-                if (asset.getImages().get(imageCounter).getRatio().equalsIgnoreCase("16:9")) {
+                if (asset.getImages().get(imageCounter).getRatio().equalsIgnoreCase("16x9")) {
                     String image_url = asset.getImages().get(imageCounter).getUrl();
                     String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.trailer_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.trailer_image_height) + AppLevelConstants.QUALITY;
                     ImageHelper.getInstance(holder.trailerItemBinding.trailerImage.getContext()).loadImageTo(holder.trailerItemBinding.trailerImage, final_url, R.drawable.landscape);
@@ -58,7 +58,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerI
                 }
             }
         }
-        holder.trailerItemBinding.trailerName.setText(asset.getName());
         if (context.getResources().getBoolean(R.bool.isTablet)) {
             holder.trailerItemBinding.trailerDescription.setText(asset.getDescription());
             holder.trailerItemBinding.durationTxt.setText(AppCommonMethods.getURLDuration(asset));

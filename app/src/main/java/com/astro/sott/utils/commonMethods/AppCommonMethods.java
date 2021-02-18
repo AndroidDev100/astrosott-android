@@ -456,7 +456,7 @@ public class AppCommonMethods {
                     ? "" + secs + " sec"
                     : "" + secs + " sec");
             if (hours > 0)
-                return hours + " hr " + minsString + " min " + secsString;
+                return hours + " hr " + minsString + " min " ;
             else if (mins > 0)
                 return mins + " min";
             else return secsString;

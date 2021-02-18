@@ -70,6 +70,10 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
         return AssetContent.getGenredata(map);
     }
 
+    public LiveData<String> getSubGenreLivedata(Map<String, MultilingualStringValueArray> map) {
+        return AssetContent.getSubGenredata(map);
+    }
+
 
     public LiveData<String> getUrlfromModel(Asset asset, String videoResolution) {
         return AssetContent.getUrl(asset,videoResolution);
@@ -90,6 +94,11 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
     public LiveData<String> getLanguageLiveData(Map<String, MultilingualStringValueArray> map) {
 
         return AssetContent.getLanguageData(map);
+    }
+
+    public LiveData<String> getSubTitleLanguageLiveData(Map<String, MultilingualStringValueArray> map) {
+
+        return AssetContent.getSubTitleLanguageData(map);
     }
 
     public LiveData<CommonResponse> listAllwatchList(String assetId) {

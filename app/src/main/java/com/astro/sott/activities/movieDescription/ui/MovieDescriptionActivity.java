@@ -366,8 +366,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         btn_update.setOnClickListener(view1 -> {
             alert.dismiss();
             if (!new KsPreferenceKey(this).getDownloadOverWifi()) {
-                    callProgressBar();
-                    playerChecks(railData);
+                callProgressBar();
+                playerChecks(railData);
 
             }
         });
@@ -538,7 +538,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             trailor_url = AssetContent.getTrailorUrl(asset);
 
 //            fragment.getUrl(AssetContent.getTrailorUrl(asset), asset, railData.getProgress());
-            getRefId(1,asset);
+            getRefId(1, asset);
         } else {
 
 //            getUrlToPlay(asset);
@@ -547,8 +547,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
 
-    private void getRefId(final int type,Asset asset) {
-        if (asset.getExternalId()!=null && !asset.getExternalId().equalsIgnoreCase("")){
+    private void getRefId(final int type, Asset asset) {
+        if (asset.getExternalId() != null && !asset.getExternalId().equalsIgnoreCase("")) {
             callTrailorAPI(asset.getExternalId(), type);
         }
 
@@ -575,7 +575,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                     getBinding().crewLay.setVisibility(View.GONE);
                 } else {
                     getBinding().crewLay.setVisibility(View.VISIBLE);
-                    getBinding().setCrewValue(" " + crewText.trim());
+                    getBinding().crewText.setText(" " + crewText);
                 }
 
             }
@@ -588,30 +588,15 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 getBinding().castLay.setVisibility(View.GONE);
             } else {
                 getBinding().castLay.setVisibility(View.VISIBLE);
-                getBinding().setCastValue(" " + castTest.trim());
+                getBinding().castText.setText(" " + castTest);
             }
 
         });
     }
 
     private void setMetas() {
-        viewModel.getGenreLivedata(map).observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-//                getBinding().setTagText(s.trim());
+        getMovieYear();
 
-                if (!TextUtils.isEmpty(s)) {
-                    StringBuilderHolder.getInstance().append(s.trim());
-                    StringBuilderHolder.getInstance().append(" | ");
-
-                    PrintLogging.printLog(this.getClass(), "", "setMetas " + StringBuilderHolder.getInstance().getText());
-                }
-
-                getLanguage();
-
-
-            }
-        });
     }
 
 
@@ -723,11 +708,13 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
         getMovieCasts();
         getMovieCrews();
+        setSubtitleLanguage();
+        getDuration();
         if (type == 1) {
 
             PrintLogging.printLog(this.getClass(), "type 1", "");
         } else {
-            getRefId(0,asset);
+            getRefId(0, asset);
         }
 
         assetId = asset.getId();
@@ -736,6 +723,26 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
 
     }
+
+    private void setSubtitleLanguage() {
+
+        viewModel.getSubTitleLanguageLiveData(map).observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String crewText) {
+
+                PrintLogging.printLog(this.getClass(), "", "crewValusIs" + crewText);
+
+                if (TextUtils.isEmpty(crewText)) {
+                    getBinding().subtitleLay.setVisibility(View.GONE);
+                } else {
+                    getBinding().subtitleLay.setVisibility(View.VISIBLE);
+                    getBinding().subtitleText.setText(" " + crewText);
+                }
+
+            }
+        });
+    }
+
 
     private void getLanguage() {
         viewModel.getLanguageLiveData(map).observe(this, new Observer<String>() {
@@ -752,9 +759,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 }
 
 
-                getDuration();
+                //getDuration();
 
-                getMovieYear();
 
                 getMovieRating();
 
@@ -781,12 +787,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         String duraton = AppCommonMethods.getURLDuration(asset);
 
         if (!TextUtils.isEmpty(duraton)) {
+            getBinding().durationLay.setVisibility(View.VISIBLE);
+            getBinding().durationText.setText(" " + duraton);
+        } else {
+            getBinding().durationLay.setVisibility(View.GONE);
 
-            StringBuilderHolder.getInstance().append(duraton);
-            StringBuilderHolder.getInstance().append(" | ");
-
-
-            PrintLogging.printLog(this.getClass(), "", "duration " + StringBuilderHolder.getInstance().getText());
         }
 
 
@@ -808,7 +813,29 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
             }
         }
+        getSubGenre();
 
+    }
+
+    private void getSubGenre() {
+
+        viewModel.getSubGenreLivedata(map).observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+//                getBinding().setTagText(s.trim());
+
+                if (!TextUtils.isEmpty(s)) {
+                    StringBuilderHolder.getInstance().append(s.trim());
+                    StringBuilderHolder.getInstance().append(" | ");
+
+                    PrintLogging.printLog(this.getClass(), "", "setMetas " + StringBuilderHolder.getInstance().getText());
+                }
+
+                getLanguage();
+
+
+            }
+        });
     }
 
     private void getMovieRating() {
@@ -984,7 +1011,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private void setExpandable() {
         getBinding().expandableLayout.collapse();
         getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
-        getBinding().setExpandabletext(getResources().getString(R.string.more));
+        getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
         getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
         getBinding().lessButton.setOnClickListener(view -> {
 
@@ -997,10 +1024,10 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             }
 
             if (getBinding().expandableLayout.isExpanded()) {
-                getBinding().setExpandabletext(getResources().getString(R.string.more));
+                getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
 
             } else {
-                getBinding().setExpandabletext(getResources().getString(R.string.less));
+                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
             }
             if (view != null) {
                 getBinding().expandableLayout.expand();

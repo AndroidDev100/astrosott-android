@@ -1693,7 +1693,7 @@ public class KsServices {
         clientSetupKs();
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         String one = "(and asset_type='";
-        String two = "' TrailerParentRefId ~ '";
+        String two = "' ParentRefId ~ '";
         String three = "')";
         String kSQL = one + MediaTypeConstant.getTrailer(activity) + two + ref_id + three;
         searchAssetFilter.setKSql(kSQL);
@@ -1724,6 +1724,61 @@ public class KsServices {
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
                                         getTrailorAsset(ref_id, assetType, callBack);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        callBack.getTrailorAsset(false, null);
+                                    }
+                                }
+                            });
+                        else {
+                            callBack.getTrailorAsset(false, null);
+                        }
+                    } else {
+                        callBack.getTrailorAsset(false, null);
+                    }
+
+
+                }
+            }
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
+    public void getHighLightAsset(String ref_id, int assetType, TrailerAssetCallBack callBack) {
+        clientSetupKs();
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        String one = "(and asset_type='";
+        String two = "' externalId ~ '";
+        String three = "')";
+        String kSQL = one + MediaTypeConstant.getHighlight(activity) + two + ref_id + three;
+        searchAssetFilter.setKSql(kSQL);
+
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(20);
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Asset>> result) {
+                if (result.isSuccess()) {
+                    if (result.results != null && result.results.getObjects() != null) {
+                        if (result.results.getTotalCount() > 0) {
+                            callBack.getTrailorAsset(true, result.results.getObjects());
+                        } else {
+                            callBack.getTrailorAsset(false, null);
+                        }
+                    } else {
+                        callBack.getTrailorAsset(false, null);
+                    }
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getHighLightAsset(ref_id, assetType, callBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         callBack.getTrailorAsset(false, null);

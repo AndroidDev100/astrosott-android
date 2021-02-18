@@ -30,6 +30,10 @@ public class TrailerFragmentViewModel extends AndroidViewModel {
     public LiveData<List<Asset>> getTrailer(String refId, int assetType) {
         return TrailerFragmentRepository.getInstance().getTrailerAsset(getApplication(), refId, assetType);
     }
+
+    public LiveData<List<Asset>> getHighlight(String refId, int assetType) {
+        return TrailerFragmentRepository.getInstance().getHighlightAsset(getApplication(), refId, assetType);
+    }
     public LiveData<List<Integer>> getSeasonsListData(int assetId,
                                                       int counter,
                                                       int assetType,

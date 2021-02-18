@@ -90,7 +90,7 @@ public interface AppLevelConstants {
 
     String KSQL_GENRE_END = "' Genre='";
     String PROMO_ASSET_NAME = "name";
-    String PARENTAL_RATING = "Parental Rating";
+    String PARENTAL_RATING = "ParentalRating";
     String KEY_SEASON_NUMBER = "SeasonNumber";
     String KEY_EPISODE_NUMBER = "EpisodeNumber";
 
@@ -99,6 +99,7 @@ public interface AppLevelConstants {
     String KEY_PROMO_MEDIA_ID = "Promo Media Id";
     String KEY_BASE_ID = "Base ID";
 
+    String KEY_EXTERNAL_REF_ID = "ExternalReferenceId";
 
     String KEY_REF_ID = "Ref Id";
     String YEAR = "Year";
@@ -111,8 +112,14 @@ public interface AppLevelConstants {
 
     String HLS = "HLS_Main";
     String KEY_GENRE = "Genre";
+    String KEY_SUB_GENRE = "SubGenre";
+
+
     String KEY_MAINCAST = "Main Cast";
-    String KEY_LANGUAGE = "SubtitleLanguage";
+    String KEY_LANGUAGE = "Languages";
+
+    String KEY_SUBTITLE_LANGUAGE = "SubtitleLanguages";
+
     String KEY_CAST_ACTOR = "Actors";
     String KEY_PARENTREF_ID = "TrailerParentRefId";
     String KEY_VIDEO_RESOLUTION = "VideoResolution";

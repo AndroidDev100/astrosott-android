@@ -43,6 +43,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/detailBGColor"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -75,7 +76,6 @@
                                     tools:ignore="ContentDescription" />
 
                                 <ImageView
-                                    android:id="@+id/iv_play_icon"
                                     android:layout_width="64dp"
                                     android:layout_height="64dp"
                                     android:layout_centerInParent="true"
@@ -84,7 +84,7 @@
                                     android:background="@drawable/play_icon"
                                     android:clickable="false"
                                     android:contentDescription="@string/play_icon"
-                                    android:visibility="visible"
+                                    android:visibility="gone"
                                     tools:ignore="ContentDescription" />
 
                             </RelativeLayout>
@@ -137,13 +137,13 @@
                                     android:clickable="true"
                                     android:layout_weight="1"
                                     android:gravity="center"
-                                    android:drawableTop="@drawable/favorite"
                                     android:drawablePadding="7dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_regular"
-                                    android:text="@string/share"
+                                    android:text="@string/my_list"
                                     android:textColor="@color/lightBlueColor"
-                                    android:textSize="@dimen/font_medium" />
+                                    android:textSize="@dimen/font_small"
+                                    app:drawableTopCompat="@drawable/favorite" />
 
                                 <TextView
                                     android:gravity="center"
@@ -158,7 +158,7 @@
                                     android:fontFamily="@font/heebo_regular"
                                     android:text="@string/share"
                                     android:textColor="@color/lightBlueColor"
-                                    android:textSize="@dimen/font_medium" />
+                                    android:textSize="@dimen/font_small" />
 
                                 <TextView
                                     android:id="@+id/playlist"
@@ -168,11 +168,12 @@
                                     android:layout_marginTop="@dimen/share_margin_top"
                                     android:clickable="true"
                                     android:layout_weight="1"
-                                    android:drawableTop="@drawable/play_list"
+                                    android:visibility="gone"
+                                    android:drawableTop="@drawable/download_icon"
                                     android:drawablePadding="7dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_regular"
-                                    android:text="@string/share"
+                                    android:text="@string/download"
                                     android:textColor="@color/lightBlueColor"
                                     android:textSize="@dimen/font_medium" />
 
@@ -187,8 +188,9 @@
                                 android:layout_height="wrap_content">
 
                                 <LinearLayout
+                                    android:id="@+id/iv_play_icon"
                                     android:layout_width="match_parent"
-                                    android:background="@drawable/rounded_new_button"
+                                    android:background="@drawable/gradient_button"
                                     android:layout_height="50dp">
 
                                     <TextView
@@ -200,10 +202,10 @@
                                         android:gravity="center"
                                         android:drawablePadding="7dp"
                                         android:focusable="true"
-                                        android:fontFamily="@font/roboto_regular"
-                                        android:text="@string/share"
+                                        android:fontFamily="@font/heebo_medium"
+                                        android:text="@string/play_now"
                                         android:textColor="@color/white"
-                                        android:textSize="@dimen/font_medium" />
+                                        android:textSize="@dimen/font_medium_large" />
 
 
                                 </LinearLayout>
@@ -213,6 +215,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:background="@color/detailBGColor"
                                 android:layout_marginTop="@dimen/_15sdp"
                                 android:orientation="vertical">
 
@@ -230,12 +233,12 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/movie_detail_ll_margin_top"
                                         android:ellipsize="end"
-                                        android:fontFamily="@font/heebo_regular"
+                                        android:fontFamily="@font/heebo_medium"
                                         android:lineHeight="@dimen/movie_title_line_height"
                                         android:maxLines="3"
                                         android:singleLine="true"
                                         android:textColor="@color/white"
-                                        android:textSize="@dimen/font_large"
+                                        android:textSize="@dimen/font_xxlarge"
                                         tools:targetApi="p" />
 
 
@@ -246,9 +249,9 @@
                                         android:layout_gravity="center_vertical"
                                         android:layout_marginTop="4dp"
                                         android:layout_marginEnd="@dimen/movie_metadata_tag_margin_margin_right"
-                                        android:fontFamily="@font/roboto_regular"
+                                        android:fontFamily="@font/heebo_regular"
                                         android:textColor="@color/lightGreenColor"
-                                        android:textSize="@dimen/font_small" />
+                                        android:textSize="@dimen/font_medium" />
 
 
                                     <com.astro.sott.utils.helpers.ExpandableTextView
@@ -258,11 +261,11 @@
                                         android:layout_marginTop="12dp"
                                         android:layout_marginEnd="@dimen/expandable_text_margin_right"
                                         android:ellipsize="end"
-                                        android:fontFamily="@font/roboto_regular"
+                                        android:fontFamily="@font/heebo_regular"
                                         android:lineSpacingExtra="2dp"
                                         android:maxLines="2"
                                         android:textColor="@color/white"
-                                        android:textSize="@dimen/font_medium" />
+                                        android:textSize="@dimen/font_medium_large" />
 
                                     <com.astro.sott.utils.helpers.ExpandableCardLayout
                                         android:id="@+id/expandable_layout"
@@ -277,7 +280,53 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:orientation="vertical">
+                                            <LinearLayout
+                                                android:id="@+id/duration_lay"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top">
 
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/heebo_bold"
+                                                    android:text="@string/duration"
+
+                                                    android:textColor="@color/lightGreenColor"
+                                                    android:textSize="@dimen/font_medium" />
+
+                                                <TextView
+                                                    android:id="@+id/duration_text"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/heebo_regular"
+                                                    android:textColor="@color/cast_and_crew_title"
+                                                    android:textSize="@dimen/font_medium" />
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:id="@+id/subtitle_lay"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/heebo_bold"
+                                                    android:text="@string/sub_title"
+
+                                                    android:textColor="@color/lightGreenColor"
+                                                    android:textSize="@dimen/font_medium" />
+
+                                                <TextView
+                                                    android:id="@+id/subtitle_text"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/heebo_regular"
+                                                    android:textColor="@color/cast_and_crew_title"
+                                                    android:textSize="@dimen/font_medium" />
+                                            </LinearLayout>
                                             <LinearLayout
                                                 android:id="@+id/cast_lay"
                                                 android:layout_width="match_parent"
@@ -287,20 +336,22 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:fontFamily="@font/roboto_bold"
+                                                    android:fontFamily="@font/heebo_bold"
                                                     android:text="@string/actors"
 
-                                                    android:textColor="@color/cast_and_crew_title"
+                                                    android:textColor="@color/lightGreenColor"
                                                     android:textSize="@dimen/font_medium" />
 
                                                 <TextView
                                                     android:id="@+id/cast_text"
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:fontFamily="@font/roboto_regular"
+                                                    android:fontFamily="@font/heebo_regular"
                                                     android:textColor="@color/cast_and_crew_title"
                                                     android:textSize="@dimen/font_medium" />
                                             </LinearLayout>
+
+
 
                                             <LinearLayout
                                                 android:id="@+id/crew_lay"
@@ -311,16 +362,16 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:fontFamily="@font/roboto_bold"
+                                                    android:fontFamily="@font/heebo_bold"
                                                     android:text="@string/directors"
-                                                    android:textColor="@color/cast_and_crew_title"
+                                                    android:textColor="@color/lightGreenColor"
                                                     android:textSize="@dimen/font_medium" />
 
                                                 <TextView
                                                     android:id="@+id/crew_text"
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:fontFamily="@font/roboto_regular"
+                                                    android:fontFamily="@font/heebo_regular"
                                                     android:textColor="@color/cast_and_crew_title"
                                                     android:textSize="@dimen/font_medium" />
                                             </LinearLayout>
@@ -343,12 +394,12 @@
                                             android:layout_height="wrap_content"
                                             android:background="?attr/selectableItemBackgroundBorderless"
                                             android:ellipsize="end"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:fontFamily="@font/heebo_bold"
                                             android:maxLines="2"
                                             android:paddingTop="10dp"
                                             android:paddingRight="20dp"
                                             android:paddingBottom="10dp"
-                                            android:text="@string/more"
+                                            android:text="@string/view_more"
                                             android:textAllCaps="true"
                                             android:textColor="@color/white"
                                             android:textSize="@dimen/font_medium" />
