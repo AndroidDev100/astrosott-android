@@ -35,10 +35,10 @@
 
                 <ImageView
                     android:id="@+id/logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
                     android:layout_marginTop="40dp"
-                    android:background="@mipmap/ic_launcher"
+                    android:background="@drawable/astro_white"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"></ImageView>
@@ -47,7 +47,7 @@
                     android:id="@+id/forgot_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="28dp"
                     android:fontFamily="@font/heebo_medium"
                     android:text="@string/sign_up_text"
                     android:textColor="@color/white"
@@ -272,7 +272,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/or"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.724" />
+                    app:layout_constraintVertical_bias="0.734" />
 
                 <View
                     android:layout_width="60dp"
@@ -284,7 +284,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/or"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.721" />
+                    app:layout_constraintVertical_bias="0.734" />
 
                 <TextView
                     android:id="@+id/or"
