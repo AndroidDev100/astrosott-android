@@ -104,13 +104,13 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             }
         });
         getBinding().rlManageDevice.setOnClickListener(view -> {
-           /* if (UserInfo.getInstance(getActivity()).isActive()) {
+            if (UserInfo.getInstance(getActivity()).isActive()) {
                 Intent manageDeviceIntent = new Intent(getActivity(), ManageDeviceActivity.class);
                 startActivity(manageDeviceIntent);
             } else {
                 new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
 
-            }*/
+            }
 
         });
 //
