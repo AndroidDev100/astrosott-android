@@ -1,10 +1,14 @@
 package com.astro.sott.fragments.trailerFragment.adapter;
 
 import android.content.Context;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.os.SystemClock;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -25,7 +29,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerI
     private List<Asset> assetList;
     private Context context;
     private TrailerAsset trailerAssetCallBack;
-    private long lastClickTime =0;
+    private long lastClickTime = 0;
 
 
     public TrailerAdapter(Context mContext, List<Asset> assetList, TrailerAsset trailerAssetCallBack) {
@@ -58,6 +62,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerI
                 }
             }
         }
+        holder.trailerItemBinding.trailerName.setText(asset.getName());
+
         if (context.getResources().getBoolean(R.bool.isTablet)) {
             holder.trailerItemBinding.trailerDescription.setText(asset.getDescription());
             holder.trailerItemBinding.durationTxt.setText(AppCommonMethods.getURLDuration(asset));

@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.activities.catchUpRails.ui.CatchupActivity;
+import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.moreListing.ui.GridListingActivity;
 import com.astro.sott.activities.myplaylist.ui.MyPlaylist;
@@ -114,6 +115,11 @@ public class ActivityLauncher {
     }
 
     public void signupActivity(Activity source, Class<SignUpActivity> destination){
+        Intent intent = new Intent(source, destination);
+        activity.startActivity(intent);
+    }
+
+    public void forgotPasswordActivity(Activity source, Class<ForgotPasswordActivity> destination){
         Intent intent = new Intent(source, destination);
         activity.startActivity(intent);
     }

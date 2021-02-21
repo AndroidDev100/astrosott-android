@@ -55,7 +55,7 @@
     <string name="now_playing">Now Playing</string>
     <string name="more_like_this"> MORE LIKE THIS </string>
     <string name="related">RELATED</string>
-    <string name="trailer_more">TRAILER AND MORE</string>
+    <string name="trailer_more">TRAILERS &amp; MORE</string>
     <string name="trailer_title">TRAILER</string>
     <string name="highlights">HIGHLIGHTS</string>
     <string name="schedule">Schedule</string>
@@ -88,7 +88,7 @@
     <string name="similar_channel">Similar Channel</string>
     <string name="title_exclusives">Exclusive</string>
     <string name="actors">Actors: </string>
-    <string name="sub_title">SubTitle Language: </string>
+    <string name="sub_title">Subtitle Languages: </string>
     <string name="duration">Duration: </string>
     <string name="directors">Directors: </string>
 

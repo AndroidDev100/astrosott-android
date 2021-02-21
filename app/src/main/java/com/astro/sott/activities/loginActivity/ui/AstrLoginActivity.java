@@ -3,6 +3,7 @@ package com.astro.sott.activities.loginActivity.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.verification.VerificationActivity;
@@ -28,6 +30,7 @@ import com.astro.sott.utils.userInfo.UserInfo;
 public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBinding> {
     private AstroLoginViewModel astroLoginViewModel;
     private String email_mobile, type;
+    private boolean passwordVisibility = false;
     private final String MOBILE_REGEX = "^[0-9]*$";
     private final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -68,9 +71,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             }
         });
         getBinding().forgotText.setOnClickListener(view -> {
-            if (checkEmailVaildation()) {
-                searchAccountv2();
-            }
+            new ActivityLauncher(this).forgotPasswordActivity(this, ForgotPasswordActivity.class);
         });
         getBinding().google.setOnClickListener(view -> {
         });
@@ -88,6 +89,20 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     }
 
     private void setTextWatcher() {
+        getBinding().eyeIcon.setOnClickListener(view -> {
+            if (passwordVisibility) {
+                getBinding().eyeIcon.setBackgroundResource(R.drawable.ic_outline_visibility_off_light);
+                getBinding().passwordEdt.setInputType(InputType.TYPE_CLASS_TEXT);
+                getBinding().passwordEdt.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                passwordVisibility = false;
+            } else {
+                passwordVisibility = true;
+                getBinding().passwordEdt.setInputType(InputType.TYPE_CLASS_TEXT);
+                getBinding().eyeIcon.setBackgroundResource(R.drawable.ic_outline_visibility_light);
+
+            }
+            getBinding().passwordEdt.setSelection(getBinding().passwordEdt.getText().length());
+        });
         getBinding().emailMobileEdt.addTextChangedListener(new CustomTextWatcher(this, new TextWatcherCallBack() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -209,7 +224,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 } else {
 
                     getBinding().errorEmail.setVisibility(View.VISIBLE);
-                    getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
+                    getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
                     return false;
 
                 }

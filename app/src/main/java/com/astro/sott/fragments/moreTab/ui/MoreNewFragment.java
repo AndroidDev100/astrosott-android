@@ -1,5 +1,6 @@
 package com.astro.sott.fragments.moreTab.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -75,6 +76,11 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         oldLang = new KsPreferenceKey(getActivity()).getAppLangName();
 
         UIinitialization();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
     }
 
     private void UIinitialization() {

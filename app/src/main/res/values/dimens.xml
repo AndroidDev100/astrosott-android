@@ -31,6 +31,8 @@
     <dimen name="device_managment_margin_left">16dp</dimen>
     <dimen name="multiple_playlist_item">14dp</dimen>
     <dimen name="account_setting_margin_left">18dp</dimen>
+    <dimen name="related_item_width">158dp</dimen>
+    <dimen name="related_item_height">87dp</dimen>
     <dimen name="landscape_item_width">160dp</dimen>
     <dimen name="landscape_item_height">90dp</dimen>
 

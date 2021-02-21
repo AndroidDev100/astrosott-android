@@ -125,7 +125,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:weightSum="3"
-                                android:layout_marginTop="@dimen/_25sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
                                 android:orientation="horizontal"
                                 android:layout_height="wrap_content">
 
@@ -182,8 +182,6 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_marginLeft="@dimen/_20sdp"
-                                android:layout_marginRight="@dimen/_20sdp"
                                 android:layout_marginTop="@dimen/_20sdp"
                                 android:layout_height="wrap_content">
 
@@ -216,14 +214,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@color/detailBGColor"
-                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginTop="24dp"
                                 android:orientation="vertical">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_marginLeft="@dimen/_20sdp"
-                                    android:layout_marginRight="@dimen/_20sdp"
                                     android:orientation="vertical">
 
 
@@ -231,13 +227,12 @@
                                         android:id="@+id/movie_title"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/movie_detail_ll_margin_top"
                                         android:ellipsize="end"
                                         android:fontFamily="@font/heebo_medium"
-                                        android:lineHeight="@dimen/movie_title_line_height"
+                                        android:lineHeight="24sp"
                                         android:maxLines="3"
                                         android:singleLine="true"
-                                        android:textColor="@color/white"
+                                        android:textColor="@color/title_color"
                                         android:textSize="@dimen/font_xxlarge"
                                         tools:targetApi="p" />
 
@@ -247,8 +242,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
-                                        android:layout_marginTop="4dp"
                                         android:layout_marginEnd="@dimen/movie_metadata_tag_margin_margin_right"
+                                        android:lineHeight="24sp"
                                         android:fontFamily="@font/heebo_regular"
                                         android:textColor="@color/lightGreenColor"
                                         android:textSize="@dimen/font_medium" />
@@ -260,9 +255,9 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="12dp"
                                         android:layout_marginEnd="@dimen/expandable_text_margin_right"
+                                        android:lineHeight="24sp"
                                         android:ellipsize="end"
                                         android:fontFamily="@font/heebo_regular"
-                                        android:lineSpacingExtra="2dp"
                                         android:maxLines="2"
                                         android:textColor="@color/white"
                                         android:textSize="@dimen/font_medium_large" />

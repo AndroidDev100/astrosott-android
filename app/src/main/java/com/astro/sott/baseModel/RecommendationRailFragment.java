@@ -32,6 +32,7 @@ import com.astro.sott.repositories.homeTab.HomeFragmentRepository;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.helpers.SpacingItemDecoration;
 import com.astro.sott.utils.helpers.StringUtils;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MultilingualStringValueArray;
@@ -145,6 +146,8 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
     public void setRecyclerProperties(RecyclerView recyclerView) {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(false);
+        recyclerView.addItemDecoration(new SpacingItemDecoration(20,2));
+
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setLayoutManager(mLayoutManager);
     }
@@ -199,22 +202,6 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
         if (dtChannelsList != null)
             dtChannelsList.clear();
-        /*viewModel.getChannelList(tabId).observe(getActivity(), assetCommonBean -> {
-            if (assetCommonBean.getStatus()) {
-                PrintLogging.printLog("RecommendationRailFragment", "channelList--" + assetCommonBean.getChannelList().size());
-                if (dtChannelsList != null && dtChannelsList.size() > 0)
-                    dtChannelsList.clear();
-
-                dtChannelsList = assetCommonBean.getDTChannelList();
-                callYouMayAlsoLike((int) assetId, 0, assetType, map, layoutType, tabId, asset);
-
-            } else {
-                if (dtChannelsList != null && dtChannelsList.size() > 0)
-                    dtChannelsList.clear();
-                PrintLogging.printLog("RecommendationRailFragment", "in error");
-            }
-
-        });*/
 
         callYouMayAlsoLike((int) assetId, 1, assetType, map, layoutType, tabId, asset);
 

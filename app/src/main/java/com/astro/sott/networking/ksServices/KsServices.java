@@ -1981,6 +1981,8 @@ public class KsServices {
             AppTokenService.AddAppTokenBuilder builder = AppTokenService.add(token)
                     .setCompletion(result -> {
                         if (result.isSuccess()) {
+                            KsPreferenceKey.getInstance(activity).setTokenId(result.results.getId() + "");
+                            KsPreferenceKey.getInstance(activity).setToken(result.results.getToken() + "");
                         } else {
                         }
                     });

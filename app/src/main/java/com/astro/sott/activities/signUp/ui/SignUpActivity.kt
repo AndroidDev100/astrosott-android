@@ -23,7 +23,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private var astroLoginViewModel: AstroLoginViewModel? = null
     private var activitySinUpBinding: ActivitySinUpBinding? = null
-    private var passwordVisibility = true
+    private var passwordVisibility = false
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -117,12 +117,12 @@ class SignUpActivity : AppCompatActivity() {
         activitySinUpBinding?.eyeIcon?.setOnClickListener(View.OnClickListener {
             if (passwordVisibility) {
                 activitySinUpBinding?.eyeIcon?.setBackgroundResource(R.drawable.ic_outline_visibility_off_light)
-                activitySinUpBinding?.passwordEdt?.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                activitySinUpBinding?.passwordEdt?.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 passwordVisibility = false
                 activitySinUpBinding?.passwordEdt?.setSelection(activitySinUpBinding?.passwordEdt?.text?.length!!)
             } else {
                 passwordVisibility = true
-                activitySinUpBinding?.passwordEdt?.setInputType(InputType.TYPE_CLASS_TEXT)
+                activitySinUpBinding?.passwordEdt?.inputType = InputType.TYPE_CLASS_TEXT
                 activitySinUpBinding?.eyeIcon?.setBackgroundResource(R.drawable.ic_outline_visibility_light)
                 activitySinUpBinding?.passwordEdt?.setSelection(activitySinUpBinding?.passwordEdt?.text?.length!!)
 
