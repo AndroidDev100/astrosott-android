@@ -5,8 +5,11 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/toolbar_bg"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
         android:minHeight="?attr/actionBarSize"
+        local:titleTextAppearance="@style/Toolbar.TitleText"
         local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 </layout>

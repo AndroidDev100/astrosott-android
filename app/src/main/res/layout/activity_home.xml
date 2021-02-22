@@ -32,8 +32,9 @@
                     android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:tabTextColor="@color/tabUnselectedColor"
                     app:tabSelectedTextColor="@color/white"
+                    app:tabTextAppearance="@style/MineCustomTabTextAppearence"
+                    app:tabTextColor="@color/grey"
                     android:background="@drawable/tab_background">
 
 
@@ -106,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:background="@color/search_toolbar_background"
+                android:background="@drawable/gradient_bottom_nav"
                 app:itemIconTint="@color/bottom_navigation_selected"
                 app:itemTextColor="@color/bottom_navigation_selected"
                 app:labelVisibilityMode="unlabeled"

@@ -25,7 +25,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_marginStart="@dimen/_16sdp"
-                    android:src="@drawable/ic_baseline_arrow_back" />
+                    android:src="@drawable/ic_arrow_back_24px" />
 
                 <TextView
                     android:id="@+id/title"
@@ -51,16 +51,15 @@
                 android:layout_marginStart="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_8sdp"
                 android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/circular_imageView_more"
-                    android:layout_width="@dimen/_75sdp"
-                    android:layout_height="@dimen/_75sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
-                    android:src="@color/warm_grey" />
+                    android:src="@drawable/ic_account_circle_80px" />
 
                 <Button
                     android:id="@+id/login_signup_more"
@@ -99,7 +98,7 @@
                         android:fontFamily="@font/heebo_medium"
                         android:text="Lorem Ipsum"
                         android:textAllCaps="false"
-                        android:textColor="@color/light_blue"
+                        android:textColor="@color/white"
                         android:textSize="24sp"></TextView>
 
                     <TextView
@@ -109,19 +108,19 @@
                         android:fontFamily="@font/heebo_regular"
                         android:text="loremipsum@hotmail.com"
                         android:textAllCaps="false"
-                        android:textColor="@color/light_blue"
-                        android:textSize="14sp"></TextView>
+                        android:textColor="@color/white"
+                        android:textSize="13sp"></TextView>
                 </LinearLayout>
 
                 <ImageView
                     android:id="@+id/edit"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="right"
                     android:visibility="gone"
-                    android:src="@drawable/ic_edit"
+                    android:src="@drawable/ic_edit_24px"
                      />
 
             </RelativeLayout>
@@ -236,9 +235,40 @@
                 android:layout_below="@+id/rl1_more"
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@color/toolbar_bg" />
-
             <RelativeLayout
-                android:id="@+id/rl_partner_billing"
+                android:id="@+id/rl_linked_accounts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/tv_linked_accounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_add_black_24dp"
+                    android:drawablePadding="@dimen/_14sdp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:padding="@dimen/_1sdp"
+                    android:text="@string/linked_accounts"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"></TextView>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_manage_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_12sdp"
@@ -253,8 +283,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_add_black_24dp"
-                    android:drawablePadding="@dimen/_10sdp"
+                    android:drawableLeft="@drawable/ic_credit_card_24px"
+                    android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/manage_payments"
@@ -267,7 +297,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/arrow_forward" />
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -286,8 +316,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_add_black_24dp"
-                    android:drawablePadding="@dimen/_10sdp"
+                    android:drawableLeft="@drawable/ic_receipt_24px"
+                    android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/transac_history"
@@ -300,7 +330,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/arrow_forward" />
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -319,8 +349,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_add_black_24dp"
-                    android:drawablePadding="@dimen/_10sdp"
+                    android:drawableLeft="@drawable/ic_language_24px"
+                    android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/lang_selection"
@@ -333,7 +363,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/arrow_forward" />
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -352,8 +382,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_add_black_24dp"
-                    android:drawablePadding="@dimen/_10sdp"
+                    android:drawableLeft="@drawable/ic_file_download_24px"
+                    android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/downloads"
@@ -366,7 +396,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/arrow_forward" />
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -385,8 +415,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_add_black_24dp"
-                    android:drawablePadding="@dimen/_10sdp"
+                    android:drawableLeft="@drawable/ic_devices_24px"
+                    android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/mannage_device"
@@ -399,7 +429,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/arrow_forward" />
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -418,8 +448,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_add_black_24dp"
-                    android:drawablePadding="@dimen/_10sdp"
+                    android:drawableLeft="@drawable/ic_content_pref_24px"
+                    android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/content_pref"
@@ -432,7 +462,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/arrow_forward" />
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -451,8 +481,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_add_black_24dp"
-                    android:drawablePadding="@dimen/_10sdp"
+                    android:drawableLeft="@drawable/ic_local_offer_24px"
+                    android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/coupon_redem"
@@ -465,7 +495,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/arrow_forward" />
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -484,8 +514,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_add_black_24dp"
-                    android:drawablePadding="@dimen/_10sdp"
+                    android:drawableLeft="@drawable/ic_help_outline_24px"
+                    android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/help"
@@ -498,7 +528,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/arrow_forward" />
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -510,7 +540,6 @@
                 android:layout_marginRight="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:visibility="gone"
-
                 >
 
                 <TextView
@@ -520,8 +549,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_add_black_24dp"
-                    android:drawablePadding="@dimen/_10sdp"
+                    android:drawableLeft="@drawable/ic_exit_to_app_24px"
+                    android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/logout"
@@ -543,7 +572,7 @@
                 android:padding="@dimen/_1sdp"
                 android:text="@string/version_more"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/grey"
                 android:textSize="16sp"></TextView>
         </LinearLayout>
     </ScrollView>

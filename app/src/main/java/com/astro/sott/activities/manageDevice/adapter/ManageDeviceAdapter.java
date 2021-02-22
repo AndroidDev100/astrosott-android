@@ -44,6 +44,9 @@ public class ManageDeviceAdapter extends RecyclerView.Adapter<ManageDeviceAdapte
             if (itemList.get(position).getSerialNo() != null)
                 deviceDeleteCallBack.onDelete(itemList.get(position).getSerialNo());
         });
+//        if(position== (getItemCount()-1 )){
+//
+//        }
 
     }
 

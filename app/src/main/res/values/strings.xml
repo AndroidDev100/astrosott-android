@@ -471,7 +471,7 @@
     <string name="coupon_redem">Coupon Redemption</string>
     <string name="help">Help</string>
     <string name="logout">Logout</string>
-    <string name="manage_payments">Manage Payments</string>
+    <string name="manage_payments">Manage Payment</string>
     <string name="language_selection">Language Selection</string>
     <string name="App_language">App Language</string>
     <string name="Audio_language">Audio Language</string>
@@ -523,5 +523,8 @@
     <string name="submit">SUBMIT</string>
     <string name="season_number">SEASON 1</string>
     <string name="search_astro">Search for title, genre, cast, etc.</string>
+    <string name="logout_all_devices">LOGOUT ALL DEVICES</string>
+    <string name="linked_accounts">Linked Accounts</string>
+    <string name="search_text">Search</string>
 
 </resources>
