@@ -8,6 +8,8 @@ import androidx.multidex.MultiDexApplication;
 
 import com.appsflyer.AppsFlyerConversionListener;
 import com.appsflyer.AppsFlyerLib;
+import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
 import com.astro.sott.R;
@@ -35,27 +37,27 @@ public class ApplicationMain extends MultiDexApplication {
     }
 
     private AppsFlyerConversionListener conversionDataListener =
-          new AppsFlyerConversionListener() {
-              @Override
-              public void onConversionDataSuccess(Map<String, Object> map) {
+            new AppsFlyerConversionListener() {
+                @Override
+                public void onConversionDataSuccess(Map<String, Object> map) {
 
-              }
+                }
 
-              @Override
-              public void onConversionDataFail(String s) {
+                @Override
+                public void onConversionDataFail(String s) {
 
-              }
+                }
 
-              @Override
-              public void onAppOpenAttribution(Map<String, String> map) {
+                @Override
+                public void onAppOpenAttribution(Map<String, String> map) {
 
-              }
+                }
 
-              @Override
-              public void onAttributionFailure(String s) {
+                @Override
+                public void onAttributionFailure(String s) {
 
-              }
-          };
+                }
+            };
 //    private static Context context;
 
 //    public static Context getAppContext() {
@@ -78,15 +80,15 @@ public class ApplicationMain extends MultiDexApplication {
             @Override
             public void run() {
                 connectionWarmup();
-             //   AdSettings.setIntegrationErrorMode(INTEGRATION_ERROR_CRASH_DEBUG_MODE);
+                //   AdSettings.setIntegrationErrorMode(INTEGRATION_ERROR_CRASH_DEBUG_MODE);
 
                 FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
                     String token = instanceIdResult.getToken();
-                    Log.e("ApplicationMain", "run: "+token);
+                    Log.e("ApplicationMain", "run: " + token);
 //                    PrintLogging.printLog(ApplicationMain.class, "", token + "fcmtokentoken");
                     SharedPrefHelper.getInstance(getApplicationContext()).setString(AppLevelConstants.FCM_TOKEN, token);
                 });
-               // AudienceNetworkAds.initialize(getApplicationContext());
+                // AudienceNetworkAds.initialize(getApplicationContext());
                 //AppsFlyerLib.getInstance().init(AppConstants.AF_DEV_KEY, conversionDataListener, getApplicationContext());
                 //AppsFlyerLib.getInstance().startTracking(ApplicationMain.this, AppConstants.AF_DEV_KEY);
 
@@ -117,6 +119,7 @@ public class ApplicationMain extends MultiDexApplication {
         boolean isTablet = getResources().getBoolean(R.bool.isTablet);
         String API_KEY = "";
         String DEVICE_TYPE = "";
+        String EXPERIENCE_MANAGER_URL = "";
         if (isTablet) {
             API_KEY = AppConstants.API_KEY_TAB;
             DEVICE_TYPE = BaseDeviceType.tablet.name();
@@ -124,9 +127,11 @@ public class ApplicationMain extends MultiDexApplication {
             API_KEY = AppConstants.API_KEY_MOB;
             DEVICE_TYPE = BaseDeviceType.mobile.name();
         }
-
-        //   BaseClient client = new BaseClient(BaseGateway.ENVEU, AppConstants.BASE_URL, AppConstants.SUBSCRIPTION_BASE_URL,AppConstants.OVP_API_KEY,API_KEY, DEVICE_TYPE, BasePlatform.android.name(), isTablet, AppCommonMethods.getDeviceId(getContentResolver()));
-        BaseClient client = new BaseClient(BaseGateway.ENVEU, AppConstants.BASE_URL, AppConstants.SUBSCRIPTION_BASE_URL, AppConstants.OVP_API_KEY, API_KEY, DEVICE_TYPE, BasePlatform.android.name(), isTablet, UDID.getDeviceId(this, this.getContentResolver()));
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(this);
+       /* if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlExpManager() != null)
+           // EXPERIENCE_MANAGER_URL = responseDmsModel.getParams().getApiProxyUrlExpManager();*/
+            EXPERIENCE_MANAGER_URL = AppConstants.BASE_URL;
+        BaseClient client = new BaseClient(BaseGateway.ENVEU, EXPERIENCE_MANAGER_URL, AppConstants.SUBSCRIPTION_BASE_URL, AppConstants.OVP_API_KEY, API_KEY, DEVICE_TYPE, BasePlatform.android.name(), isTablet, UDID.getDeviceId(this, this.getContentResolver()));
 
         BaseConfiguration.Companion.getInstance().clientSetup(client);
     }

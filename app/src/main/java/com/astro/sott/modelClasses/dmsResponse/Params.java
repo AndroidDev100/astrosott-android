@@ -112,6 +112,40 @@ public class Params {
     @Expose
     private String defaultParentalLevel;
 
+
+    @SerializedName("apiProxyUrlKaltura")
+    @Expose
+    private String apiProxyUrlKaltura;
+
+    @SerializedName("apiProxyUrlEvergent")
+    @Expose
+    private String apiProxyUrlEvergent;
+
+    @SerializedName("apiProxyUrlExpManager")
+    @Expose
+    private String apiProxyUrlExpManager;
+
+    @SerializedName("AdTagURL")
+    @Expose
+    private AdTagURL AdTagURL;
+
+
+    public com.astro.sott.modelClasses.dmsResponse.AdTagURL getAdTagURL() {
+        return AdTagURL;
+    }
+
+    public String getApiProxyUrlEvergent() {
+        return apiProxyUrlEvergent;
+    }
+
+    public String getApiProxyUrlExpManager() {
+        return apiProxyUrlExpManager;
+    }
+
+    public String getApiProxyUrlKaltura() {
+        return apiProxyUrlKaltura;
+    }
+
     public String getDefaultParentalLevel() {
         return defaultParentalLevel;
     }

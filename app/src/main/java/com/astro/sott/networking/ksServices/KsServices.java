@@ -3205,15 +3205,7 @@ public class KsServices {
         Configuration config = new Configuration();
         config.setConnectTimeout(30000);
         if (responseDmsModel != null) {
-            //  config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-
-            if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
-                //config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            } else {
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            }
-
+            config.setEndpoint(responseDmsModel.getParams().getApiProxyUrlKaltura());
         } else {
             config.setEndpoint(AppConstants.END_POINT);
         }
@@ -3276,8 +3268,8 @@ public class KsServices {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(activity);
         Configuration config = new Configuration();
         config.setConnectTimeout(30000);
-        if (responseDmsModel != null) {
-            config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
+        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlKaltura() != null) {
+            config.setEndpoint(responseDmsModel.getParams().getApiProxyUrlKaltura());
         } else {
             config.setEndpoint(BuildConfig.KALTURA_BASE_URL);
         }
@@ -3301,14 +3293,7 @@ public class KsServices {
         Configuration config = new Configuration();
         config.setConnectTimeout(30000);
         if (responseDmsModel != null) {
-            // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-
-            if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
-                // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            } else {
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            }
+            config.setEndpoint(responseDmsModel.getParams().getApiProxyUrlKaltura());
 
         } else {
             config.setEndpoint(AppConstants.END_POINT);
@@ -5222,15 +5207,7 @@ public class KsServices {
         Configuration config = new Configuration();
         config.setConnectTimeout(30000);
         if (responseDmsModel != null) {
-            //  config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-
-            if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
-                //  config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            } else {
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            }
-
+            config.setEndpoint(responseDmsModel.getParams().getApiProxyUrlKaltura());
         } else {
             config.setEndpoint(AppConstants.END_POINT);
         }
@@ -5456,15 +5433,7 @@ public class KsServices {
         config.setParam("timestamp", System.currentTimeMillis());
         config.setConnectTimeout(30000);
         if (responseDmsModel != null) {
-            // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-
-            if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
-                // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            } else {
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            }
-
+            config.setEndpoint(responseDmsModel.getParams().getApiProxyUrlKaltura());
         } else {
             config.setEndpoint(AppConstants.END_POINT);
         }

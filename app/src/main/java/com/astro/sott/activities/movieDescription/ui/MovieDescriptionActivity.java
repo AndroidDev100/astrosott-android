@@ -182,10 +182,6 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             }
             lastClickTime = SystemClock.elapsedRealtime();
 
-            getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
-
-            });
-
             boolean wifiConnected = NetworkConnectivity.isWifiConnected(this);
             boolean connectionPreference = new KsPreferenceKey(this).getDownloadOverWifi();
             if (connectionPreference && !wifiConnected) {
