@@ -44,7 +44,7 @@
             android:contentDescription=""
             android:focusable="true"
             android:padding="4dp"
-            android:src="@drawable/search_icon"
+            android:src="@drawable/ic_search_24px"
             tools:ignore="ContentDescription" />
 
 <!--        <ImageView-->
