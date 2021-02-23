@@ -135,7 +135,7 @@ public class ApplicationMain extends MultiDexApplication {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(this);
         if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlExpManager() != null)
             EXPERIENCE_MANAGER_URL = responseDmsModel.getParams().getApiProxyUrlExpManager();
-        BaseClient client = new BaseClient(BaseGateway.ENVEU, EXPERIENCE_MANAGER_URL, AppConstants.SUBSCRIPTION_BASE_URL, OVP_API_KEY, API_KEY, DEVICE_TYPE, BasePlatform.android.name(), isTablet, UDID.getDeviceId(this, this.getContentResolver()));
+        BaseClient client = new BaseClient(BaseGateway.ENVEU, AppConstants.BASE_URL, AppConstants.SUBSCRIPTION_BASE_URL, OVP_API_KEY, API_KEY, DEVICE_TYPE, BasePlatform.android.name(), isTablet, UDID.getDeviceId(this, this.getContentResolver()));
 
         BaseConfiguration.Companion.getInstance().clientSetup(client);
 

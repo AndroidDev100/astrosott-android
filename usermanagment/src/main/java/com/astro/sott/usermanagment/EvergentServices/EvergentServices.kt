@@ -46,8 +46,6 @@ class EvergentServices {
         var searchAccountJson = JsonObject()
         var json = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
-        json.addProperty(API_USER, API_USER_VALUE)
-        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
         json.addProperty("userName", emailMobile)
 
         if (type.equals("mobile", true)) {
@@ -92,8 +90,6 @@ class EvergentServices {
         var searchAccountJson = JsonObject()
         var json = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
-        json.addProperty(API_USER, API_USER_VALUE)
-        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
         json.addProperty("country", "MY")
         if (type.equals("email", true)) {
             json.addProperty(EMAIL, emailMobile)
@@ -140,8 +136,6 @@ class EvergentServices {
         var searchAccountJson = JsonObject()
         var json = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
-        json.addProperty(API_USER, API_USER_VALUE)
-        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
         json.addProperty("country", "MY")
         if (type.equals("email", true)) {
             json.addProperty("email", emailMobile)
@@ -189,8 +183,6 @@ class EvergentServices {
         var searchAccountJson = JsonObject()
         var json = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
-        json.addProperty(API_USER, API_USER_VALUE)
-        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
         json.addProperty("contactPassword", password)
         json.addProperty("userToken", token)
         searchAccountJson.add("ResetPasswordRequestMessage", json)
@@ -233,8 +225,6 @@ class EvergentServices {
         var devicejson = JsonObject()
         var accountAttributes = JsonArray();
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
-        json.addProperty(API_USER, API_USER_VALUE)
-        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
         json.addProperty("isGenerateJWT", true)
 
         if (type.equals("email", true)) {
@@ -308,8 +298,6 @@ class EvergentServices {
         var devicejson = JsonObject()
         var accountAttributes = JsonArray();
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
-        json.addProperty(API_USER, API_USER_VALUE)
-        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
 
         if (type.equals("email", true)) {
             json.addProperty("email", emailMobile)
@@ -370,8 +358,6 @@ class EvergentServices {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
-        json.addProperty(API_USER, API_USER_VALUE)
-        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
         createUserJson.add("GetContactRequestMessage", json)
 
 
@@ -412,8 +398,6 @@ class EvergentServices {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
-        json.addProperty(API_USER, API_USER_VALUE)
-        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
         createUserJson.add("GetAccountDevicesRequestMessage", json)
 
 
@@ -454,10 +438,8 @@ class EvergentServices {
         var createUserJson = JsonObject()
         var json = JsonObject()
         var devicejson = JsonObject()
-        json.addProperty(API_USER, API_USER_VALUE)
         devicejson.addProperty("serialNo", serial)
         json.add("deviceMessage", devicejson)
-        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
         createUserJson.add("RemoveDevicesRequestMessage", json)
 
 
@@ -499,8 +481,6 @@ class EvergentServices {
         var createUserJson = JsonObject()
         var json = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
-        json.addProperty(API_USER, API_USER_VALUE)
-        json.addProperty(API_PASSWORD, "Gfty5$" + "dfr&")
         json.addProperty("refreshToken", refreshToken)
         createUserJson.add("RefreshTokenRequestMessage", json)
 
