@@ -292,7 +292,7 @@ public interface AppConstants {
     public static String SUBSCRIPTION_BASE_URL = "";
     public static String API_KEY_MOB = "CqZXGMdFAE1vnBnR3IAycaDGmYlKZa5I2aa6ol0F";*/
     public static String OVP_API_KEY = "emrdlkycyjzwzzsgeeeliudfcthlzeiabrogpiwf";
-    public static String BASE_URL = "https://i8ms0qd7f5.execute-api.ap-south-1.amazonaws.com/qa/";
+    public static String BASE_URL = "https://tddsy70es4.execute-api.ap-southeast-1.amazonaws.com/enveu_prod/";
     public static String OVP_BASE_URL = "";
     public static String SUBSCRIPTION_BASE_URL = "";
     public static String API_KEY_MOB = "bxwlpovuvcefasfegfonsxtzgzzyggrelwoyqebo";

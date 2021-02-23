@@ -121,18 +121,21 @@ public class ApplicationMain extends MultiDexApplication {
         boolean isTablet = getResources().getBoolean(R.bool.isTablet);
         String API_KEY = "";
         String DEVICE_TYPE = "";
+        String OVP_API_KEY = "";
         String EXPERIENCE_MANAGER_URL = "";
         if (isTablet) {
             API_KEY = AppConstants.API_KEY_TAB;
+            OVP_API_KEY = AppConstants.API_KEY_TAB;
             DEVICE_TYPE = BaseDeviceType.tablet.name();
         } else {
             API_KEY = AppConstants.API_KEY_MOB;
+            OVP_API_KEY = AppConstants.API_KEY_MOB;
             DEVICE_TYPE = BaseDeviceType.mobile.name();
         }
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(this);
         if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlExpManager() != null)
             EXPERIENCE_MANAGER_URL = responseDmsModel.getParams().getApiProxyUrlExpManager();
-        BaseClient client = new BaseClient(BaseGateway.ENVEU, EXPERIENCE_MANAGER_URL, AppConstants.SUBSCRIPTION_BASE_URL, API_KEY, API_KEY, DEVICE_TYPE, BasePlatform.android.name(), isTablet, UDID.getDeviceId(this, this.getContentResolver()));
+        BaseClient client = new BaseClient(BaseGateway.ENVEU, EXPERIENCE_MANAGER_URL, AppConstants.SUBSCRIPTION_BASE_URL, OVP_API_KEY, API_KEY, DEVICE_TYPE, BasePlatform.android.name(), isTablet, UDID.getDeviceId(this, this.getContentResolver()));
 
         BaseConfiguration.Companion.getInstance().clientSetup(client);
 
