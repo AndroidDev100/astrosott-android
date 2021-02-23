@@ -35,6 +35,10 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
     public LiveData<String> getSubGenreLivedata(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getSubGenredata(map);
     }
+
+    public LiveData<List<AssetCommonBean>> callEpisodes(Asset map, int assetType, int counter, int seasonCounter, int layoutType) {
+        return EpisodesLayer.getInstance().getEpisodesListWithoutSeason(getApplication().getApplicationContext(), map, assetType, counter, seasonCounter, layoutType);
+    }
     public LiveData<String> getSubTitleLanguageLiveData(Map<String, MultilingualStringValueArray> map) {
 
         return AssetContent.getSubTitleLanguageData(map);

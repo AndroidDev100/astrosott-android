@@ -41,16 +41,19 @@ public class TrailerFragmentViewModel extends AndroidViewModel {
     public void setYouMayAlsoLikeData(List<RailCommonData> trailerData) {
         TabsData.getInstance().setYouMayAlsoLikeData(trailerData);
     }
+
     public List<RailCommonData> getYouMayAlsoLikeData() {
         return TabsData.getInstance().getYouMayAlsoLikeData();
     }
+
     public LiveData<List<AssetCommonBean>> getYouMayAlsoLike(int assetId,
                                                              int counter,
                                                              int assetType,
                                                              Map<String, MultilingualStringValueArray> map
-                                                             ) {
+    ) {
         return YouMayAlsoLike.getInstance().fetchSimilarMovie(getApplication().getApplicationContext(), assetId, counter, assetType, map);
     }
+
     public List<Asset> getTrailer() {
         return TabsData.getInstance().getTrailerData();
     }
@@ -58,6 +61,30 @@ public class TrailerFragmentViewModel extends AndroidViewModel {
 
     public void setHighLightsData(List<Asset> highLightsDataData) {
         TabsData.getInstance().setHighLightsData(highLightsDataData);
+    }
+
+    public void setSeasonList(List<Integer> seasonList) {
+        TabsData.getInstance().setSeasonList(seasonList);
+    }
+
+    public List<Integer> getSeasonList() {
+        return TabsData.getInstance().getSeasonList();
+    }
+
+    public List<AssetCommonBean> getOpenSeriesData() {
+        return TabsData.getInstance().getOpenSeriesData();
+    }
+
+    public List<AssetCommonBean> getClosedSeriesData() {
+        return TabsData.getInstance().getClosedSeriesData();
+    }
+
+    public void setClosedSeriesData(List<AssetCommonBean> closedSeriesData) {
+        TabsData.getInstance().setClosedSeriesData(closedSeriesData);
+    }
+
+    public void setOpenSeriesData(List<AssetCommonBean> openSeriesData) {
+        TabsData.getInstance().setOpenSeriesData(openSeriesData);
     }
 
     public List<Asset> getHighLights() {
@@ -84,6 +111,11 @@ public class TrailerFragmentViewModel extends AndroidViewModel {
     public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType) {
         return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType);
     }
+
+    public LiveData<List<AssetCommonBean>> callEpisodes(Asset map, int assetType, int counter, int seasonCounter, int layoutType) {
+        return EpisodesLayer.getInstance().getEpisodesListWithoutSeason(getApplication().getApplicationContext(), map, assetType, counter, seasonCounter, layoutType);
+    }
+
 
     public LiveData<String> getDtvAccountList() {
         return DTVRepository.getInstance().getDtvAccountList(getApplication().getApplicationContext());

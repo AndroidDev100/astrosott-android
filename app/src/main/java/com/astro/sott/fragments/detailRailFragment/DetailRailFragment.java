@@ -97,12 +97,18 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
             if (integers != null) {
                 if (integers.size() > 0) {
                     seriesNumberList = integers;
+                    trailerFragmentViewModel.setOpenSeriesData(null);
+                    trailerFragmentViewModel.setSeasonList(integers);
                     getEpisode(seriesNumberList);
                 } else {
-                    getRefId(asset.getType());
+                    trailerFragmentViewModel.setSeasonList(null);
+                    trailerFragmentViewModel.setClosedSeriesData(null);
+                    getOpenSeriesEpisodes();
                 }
             } else {
-                getRefId(asset.getType());
+                trailerFragmentViewModel.setSeasonList(null);
+                trailerFragmentViewModel.setClosedSeriesData(null);
+                getOpenSeriesEpisodes();
 
             }
 
@@ -111,14 +117,32 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
     }
 
-    private void getEpisode(List<Integer> seriesNumberList) {
-        trailerFragmentViewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, AppConstants.Rail5).observe(this, assetCommonBeans -> {
+    private void getOpenSeriesEpisodes() {
+        trailerFragmentViewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, AppConstants.Rail5).observe(this, assetCommonBeans -> {
             if (assetCommonBeans.get(0).getStatus()) {
+                trailerFragmentViewModel.setOpenSeriesData(assetCommonBeans);
                 isTrailerCount = 1;
                 getRefId(asset.getType());
                 trailerFragmentType = 1;
 
             } else {
+                trailerFragmentViewModel.setOpenSeriesData(null);
+                getRefId(asset.getType());
+
+            }
+        });
+    }
+
+    private void getEpisode(List<Integer> seriesNumberList) {
+        trailerFragmentViewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, AppConstants.Rail5).observe(this, assetCommonBeans -> {
+            if (assetCommonBeans.get(0).getStatus()) {
+                trailerFragmentViewModel.setClosedSeriesData(assetCommonBeans);
+                isTrailerCount = 1;
+                getRefId(asset.getType());
+                trailerFragmentType = 1;
+
+            } else {
+                trailerFragmentViewModel.setClosedSeriesData(null);
                 getRefId(asset.getType());
 
             }
@@ -254,6 +278,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
                 }
             });
+            getBinding().tabLayout.setVisibility(View.VISIBLE);
         } catch (IllegalStateException e) {
 
         }

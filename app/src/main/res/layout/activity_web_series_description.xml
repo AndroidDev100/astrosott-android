@@ -405,7 +405,7 @@
                                             android:paddingBottom="10dp"
                                             android:text="@string/view_more"
                                             android:textAllCaps="true"
-                                            android:textColor="@color/white"
+                                            android:textColor="@color/maya_blue"
                                             android:textSize="@dimen/font_medium" />
                                     </LinearLayout>
 

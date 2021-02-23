@@ -82,8 +82,8 @@
     <string name="my_list">My List</string>
     <string name="no_connection">No Connection</string>
     <string name="more">MORE</string>
-    <string name="view_more">VIEW MORE</string>
-    <string name="view_less">VIEW LESS</string>
+    <string name="view_more"><u>VIEW MORE</u></string>
+    <string name="view_less"><u>VIEW LESS</u></string>
 
     <string name="less">LESS</string>
     <string name="live">Live Now</string>

@@ -821,7 +821,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void setExpandable() {
         getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
-        getBinding().setExpandabletext(getResources().getString(R.string.more));
+        getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
         getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
         getBinding().lessButton.setOnClickListener(view -> {
             getBinding().descriptionText.toggle();
@@ -833,10 +833,10 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             }
 
             if (getBinding().expandableLayout.isExpanded()) {
-                getBinding().setExpandabletext(getResources().getString(R.string.more));
+                getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
 
             } else {
-                getBinding().setExpandabletext(getResources().getString(R.string.less));
+                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
             }
             if (view != null) {
                 getBinding().expandableLayout.expand();

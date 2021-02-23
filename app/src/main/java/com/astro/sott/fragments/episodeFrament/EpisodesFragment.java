@@ -35,6 +35,7 @@ import com.astro.sott.callBacks.commonCallBacks.ContinueWatchingRemove;
 import com.astro.sott.callBacks.commonCallBacks.EpisodeClickListener;
 import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
 import com.astro.sott.databinding.EpisodeFooterFragmentBinding;
+import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
@@ -60,6 +61,8 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     TextView pause_download, resume_download, cancel_download, go_to_mydownload_lay;
     long estimatedSize;
     WebSeriesDescriptionViewModel viewModel;
+    private List<AssetCommonBean> closedSeriesData;
+
     Asset asset;
     LinearLayoutManager mLayoutManager;
     private int seasonNumber = 0;
@@ -118,10 +121,6 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         try {
             loadedList = new ArrayList<>();
 
-            int seasonNumber = getArguments().getInt(AppConstants.KEY_SEASON_NUMBER);
-            if (seasonNumber > 0) {
-                seasonCounter = seasonNumber - 1;
-            }
             modelCall();
             getVideoRails();
         } catch (Exception e) {
@@ -222,8 +221,19 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         if (aBoolean == true) {
             if (asset.getExternalId() != null)
                 externalId = asset.getExternalId();
-            getSeasons();
             UIinitialization();
+
+            if (TabsData.getInstance().getSeasonList() != null&&TabsData.getInstance().getClosedSeriesData()!=null) {
+                getBinding().season.setVisibility(View.VISIBLE);
+                closedSeriesData=TabsData.getInstance().getClosedSeriesData();
+                getBinding().seasonText.setText(closedSeriesData.get(0).getTitle());
+
+                seriesNumberList = TabsData.getInstance().getSeasonList();
+                setUIComponets(TabsData.getInstance().getClosedSeriesData());
+            }else {
+                getOpenSeriesData();
+            }
+            //getSeasons();
         } else {
         }
     }
@@ -235,7 +245,11 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             @Override
             public void onClick(View view) {
                 counter++;
-                callSeasonEpisodes(seriesNumberList);
+                if (openSeriesData == null && openSeriesData.size() == 0) {
+                    callSeasonEpisodes(seriesNumberList);
+                } else {
+                    callEpisodes();
+                }
             }
         });
 
@@ -246,8 +260,8 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     }
 
     public void setRecyclerProperties(RecyclerView recyclerView) {
-       /* recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setHasFixedSize(false);*/
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setHasFixedSize(false);
         mLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         //   ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
@@ -262,20 +276,33 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                     callSeasonEpisodes(seriesNumberList);
                 } else {
 
-                    getBinding().upcoming.setVisibility(View.VISIBLE);
-                    getBinding().recyclerView.setVisibility(View.GONE);
+
+
                     // tabsVisibility(true);
                 }
             } else {
+                getOpenSeriesData();
 
-                getBinding().upcoming.setVisibility(View.VISIBLE);
-                getBinding().recyclerView.setVisibility(View.GONE);
                 // tabsVisibility(true);
 
 
             }
 
         });
+
+    }
+
+    private List<AssetCommonBean> openSeriesData;
+
+    private void getOpenSeriesData() {
+        openSeriesData = TabsData.getInstance().getOpenSeriesData();
+        if (openSeriesData != null && openSeriesData.size() > 0) {
+            getBinding().season.setVisibility(View.VISIBLE);
+            int totalCount = openSeriesData.get(0).getTotalCount();
+            getBinding().seasonText.setText("EPISODE 1 - " + totalCount);
+            getBinding().season.setEnabled(false);
+            setUIComponets(TabsData.getInstance().getOpenSeriesData());
+        }
 
     }
 
@@ -322,8 +349,28 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             getBinding().loadMoreTxt.setText("Load More");
             if (assetCommonBeans.get(0).getStatus()) {
                 getBinding().retryTxt.setVisibility(View.GONE);
-                getBinding().seasonText.setText(seriesNumberList.get(0) + "");
+                getBinding().seasonText.setText(assetCommonBeans.get(0).getTitle());
+                getBinding().season.setVisibility(View.VISIBLE);
                 getBinding().recyclerView.setVisibility(View.VISIBLE);
+                //  _mClickListener.onFirstEpisodeData(assetCommonBeans);
+                setUIComponets(assetCommonBeans);
+                //callSeasonEpisodes(seriesNumberList);
+            } else {
+                getBinding().retryTxt.setVisibility(View.VISIBLE);
+            }
+
+        });
+        getBinding().retryTxt.setOnClickListener(view -> {
+            getSeasons();
+        });
+
+    }
+
+    private void callEpisodes() {
+        getBinding().loadMoreTxt.setText(getActivity().getResources().getString(R.string.loading));
+        viewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
+            getBinding().loadMoreTxt.setText("Load More");
+            if (assetCommonBeans.get(0).getStatus()) {
                 //  _mClickListener.onFirstEpisodeData(assetCommonBeans);
                 setUIComponets(assetCommonBeans);
                 //callSeasonEpisodes(seriesNumberList);
@@ -347,10 +394,9 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             }
 
             checkExpiry(list);
-
             adapter = new EpisodeAdapter(getActivity(), list, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
             getBinding().recyclerView.setAdapter(adapter);
-            getBinding().season.setVisibility(View.VISIBLE);
+
             int count = adapter.getItemCount();
             if (count >= assetCommonBeans.get(0).getTotalCount()) {
                 getBinding().loadMoreButton.setVisibility(View.GONE);
@@ -524,7 +570,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     public void getEpisodes(int seasonNumber) {
         loadedList.clear();
         adapter = null;
-        seasonCounter = seasonNumber;
+        seasonCounter = selectedIndex;
         callSeasonEpisodes(seriesNumberList);
     }
 
