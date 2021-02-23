@@ -2,6 +2,7 @@ package com.astro.sott.activities.webEpisodeDescription.layers;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
 
 import com.astro.sott.utils.helpers.AssetContent;
@@ -34,12 +35,11 @@ public class SeasonsLayer {
                                             final int assetTyp,
                                             Map<String, Value> map,
                                             final int layoutType,
-                                            final int seriesMediaTyp) {
+                                            final String seriesId) {
 
         assetType = assetTyp;
         final MutableLiveData<List<Integer>> connection = new MutableLiveData<>();
         ArrayList<Integer> emptyList = new ArrayList<>();
-        seriesId = AssetContent.getSeriesId(map);
         final KsServices ksServices = new KsServices(context);
         if (!seriesId.equals("")) {
             AppCommonMethods.checkDMS(context, status -> {

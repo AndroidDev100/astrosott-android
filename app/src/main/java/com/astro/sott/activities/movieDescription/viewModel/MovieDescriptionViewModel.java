@@ -54,7 +54,7 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
                                                              int assetType,
                                                              Map<String, MultilingualStringValueArray> map,
                                                              int layoutType, int screen_id, Asset asset) {
-        return YouMayAlsoLike.getInstance().fetchSimilarMovie(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, screen_id, asset);
+        return YouMayAlsoLike.getInstance().fetchSimilarMovie(getApplication().getApplicationContext(), assetId, counter, assetType, map);
     }
 
 

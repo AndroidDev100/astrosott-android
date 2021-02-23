@@ -135,7 +135,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         layoutType = AppLevelConstants.Rail3;
         if (getIntent().getExtras() != null) {
             railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
-            //   AllChannelManager.getInstance().setRailCommonData(railData);
             if (railData != null) {
                 asset = railData.getObject();
                 getDatafromBack();
@@ -175,6 +174,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         Constants.assetId = (int) Constants.id;
         getMovieCasts();
         getMovieCrews();
+        setSubtitleLanguage();
+        getDuration();
+
 
         StringBuilderHolder.getInstance().clear();
         setMetas();
@@ -193,17 +195,46 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void setMetas() {
-        viewModel.getGenreLivedata(map).observe(this, new Observer<String>() {
+        getMovieYear();
+    }
+
+    private void getMovieYear() {
+
+        if (yearMap != null) {
+            doubleValue = (DoubleValue) yearMap.get(AppLevelConstants.YEAR);
+        }
+        if (doubleValue != null) {
+            String s = String.valueOf(doubleValue.getValue());
+
+
+            if (!TextUtils.isEmpty(s)) {
+
+                StringBuilderHolder.getInstance().append(s.substring(0, 4));
+                StringBuilderHolder.getInstance().append(" | ");
+
+            }
+        }
+        getSubGenre();
+
+    }
+
+    private void getSubGenre() {
+
+        viewModel.getSubGenreLivedata(map).observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-
+//                getBinding().setTagText(s.trim());
 
                 if (!TextUtils.isEmpty(s)) {
                     StringBuilderHolder.getInstance().append(s.trim());
                     StringBuilderHolder.getInstance().append(" | ");
+
+                    PrintLogging.printLog(this.getClass(), "", "setMetas " + StringBuilderHolder.getInstance().getText());
                 }
 
                 getLanguage();
+
+
             }
         });
     }
@@ -217,22 +248,31 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     StringBuilderHolder.getInstance().append(s);
                     StringBuilderHolder.getInstance().append(" | ");
 
+
                     PrintLogging.printLog(this.getClass(), "", "language " + StringBuilderHolder.getInstance().getText());
 
                 }
 
-                getDuration();
 
-                getMovieYear();
+                //getDuration();
+
 
                 getMovieRating();
 
 
+//                if (StringBuilderHolder.getInstance().getText().length() > 0) {
+//                    StringBuilderHolder.getInstance().subString(0, StringBuilderHolder.getInstance().getText().length() - 2);
+//                }
+//                getBinding().tvShortDescription.setText(StringBuilderHolder.getInstance().getText());
                 String value = StringBuilderHolder.getInstance().getText().toString();
                 if (value.length() > 0) {
                     value = StringBuilderHolder.getInstance().getText().substring(0, value.length() - 2);
                 }
                 getBinding().tvShortDescription.setText(value);
+                getBinding().movieTitle.setText(asset.getName());
+                getBinding().descriptionText.setText(asset.getDescription());
+
+
             }
         });
     }
@@ -249,20 +289,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     }
 
-    private void getMovieYear() {
-        PrintLogging.printLog(this.getClass(), "", yearMap + "djsfkjdsfnkdsnfkds");
-        if (yearMap != null) {
-            doubleValue = (DoubleValue) yearMap.get(AppLevelConstants.YEAR);
-        }
-        if (doubleValue != null) {
-            String s = String.valueOf(doubleValue.getValue());
-
-            StringBuilderHolder.getInstance().append(s.substring(0, 4));
-            StringBuilderHolder.getInstance().append(" | ");
-
-        }
-
-    }
 
     private void getMovieRating() {
 
@@ -279,26 +305,61 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void getMovieCrews() {
-        viewModel.getCrewLiveDAta(map).observe(this, crewText -> {
+        viewModel.getCrewLiveDAta(map).observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String crewText) {
 
-            if (TextUtils.isEmpty(crewText)) {
-                getBinding().crewLay.setVisibility(View.GONE);
-            } else {
-                getBinding().crewLay.setVisibility(View.VISIBLE);
-                getBinding().setCrewValue(" " + crewText.trim());
+                PrintLogging.printLog(this.getClass(), "", "crewValusIs" + crewText);
+
+                if (TextUtils.isEmpty(crewText)) {
+                    getBinding().crewLay.setVisibility(View.GONE);
+                } else {
+                    getBinding().crewLay.setVisibility(View.VISIBLE);
+                    getBinding().crewText.setText(" " + crewText);
+                }
+
             }
+        });
+    }
+    private void setSubtitleLanguage() {
 
+        viewModel.getSubTitleLanguageLiveData(map).observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String crewText) {
 
+                PrintLogging.printLog(this.getClass(), "", "crewValusIs" + crewText);
+
+                if (TextUtils.isEmpty(crewText)) {
+                    getBinding().subtitleLay.setVisibility(View.GONE);
+                } else {
+                    getBinding().subtitleLay.setVisibility(View.VISIBLE);
+                    getBinding().subtitleText.setText(" " + crewText);
+                }
+
+            }
         });
     }
 
+    private void getDuration() {
+        String duraton = AppCommonMethods.getURLDuration(asset);
+
+        if (!TextUtils.isEmpty(duraton)) {
+            getBinding().durationLay.setVisibility(View.VISIBLE);
+            getBinding().durationText.setText(" " + duraton);
+        } else {
+            getBinding().durationLay.setVisibility(View.GONE);
+
+        }
+
+
+    }
     private void getMovieCasts() {
         viewModel.getCastLiveData(map).observe(this, castTest -> {
             if (TextUtils.isEmpty(castTest)) {
                 getBinding().castLay.setVisibility(View.GONE);
             } else {
                 getBinding().castLay.setVisibility(View.VISIBLE);
-                getBinding().setCastValue(" " + castTest.trim());
+                getBinding().castText.setText(" " + castTest);
             }
 
         });
@@ -350,7 +411,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 openShareDialouge();
             });
 
-            getBinding().textwatchlist.setOnClickListener(new View.OnClickListener() {
+            /*getBinding().textwatchlist.setOnClickListener(new View.OnClickListener() {
 
 
                 final boolean isActive = KsPreferenceKey.getInstance(getApplicationContext()).getUserActive();
@@ -411,7 +472,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
                     }
                 }
-            });
+            });*/
             setRailBaseFragment();
 
             //loadDataFromModel();
@@ -683,7 +744,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     if (Constants.assetType == MediaTypeConstant.getClip()) {
                         viewModel.getClipData(Constants.assetId, Constants.counter, Constants.assetType, map, layoutType, asset.getType()).observe(this, assetCommonBeans -> clipList = assetCommonBeans);
                     }
-                    viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, asset.getMetas(), layoutType, asset.getType()).observe(this, integers -> {
+                   /* viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, asset.getMetas(), layoutType, asset.getType()).observe(this, integers -> {
                         if (integers != null && integers.size() > 0) {
                             seriesNumberList = integers;
                             callSeasonEpisodes(seriesNumberList);
@@ -692,9 +753,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                             callCategoryRailAPI(dtChannelsList);
                         }
 
-                    });
+                    });*/
                 } else {
-                    viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, asset.getMetas(), layoutType, asset.getType()).observe(this, integers -> {
+                   /* viewModel.getSeasonsListData(Constants.assetId, Constants.counter, Constants.assetType, asset.getMetas(), layoutType, asset.getType()).observe(this, integers -> {
                         if (integers != null && integers.size() > 0) {
                             seriesNumberList = integers;
                             callSeasonEpisodes(seriesNumberList);
@@ -702,7 +763,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                             callCategoryRailAPI(dtChannelsList);
                         }
 
-                    });
+                    });*/
                 }
             });
         }
@@ -710,7 +771,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void callSeasonEpisodes(List<Integer> seriesNumberList) {
         if (seasonCounter != seriesNumberList.size()) {
-            viewModel.callSeasonEpisodes(asset.getMetas(), Constants.assetType, 1, seriesNumberList, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
+           /* viewModel.callSeasonEpisodes(asset.getMetas(), Constants.assetType, 1, seriesNumberList, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
                 if (assetCommonBeans != null && assetCommonBeans.get(0).getStatus()) {
                     getBinding().myRecyclerView.setVisibility(View.VISIBLE);
                     setUIComponets(assetCommonBeans, tempCount, 0);
@@ -723,7 +784,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 } else {
                     callCategoryRailAPI(dtChannelsList);
                 }
-            });
+            });*/
         } else {
             tempCount--;
             callCategoryRailAPI(dtChannelsList);
@@ -910,14 +971,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     }
 
-    private void getDuration() {
-        String duraton = AppCommonMethods.getURLDuration(asset);
 
-        if (!TextUtils.isEmpty(duraton)) {
-            StringBuilderHolder.getInstance().append(duraton);
-            StringBuilderHolder.getInstance().append(" | ");
-        }
-    }
 
 
     private void showDialog(String message) {

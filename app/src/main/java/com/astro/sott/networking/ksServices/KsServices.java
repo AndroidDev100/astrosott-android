@@ -1692,12 +1692,12 @@ public class KsServices {
     public void getTrailorAsset(String ref_id, int assetType, TrailerAssetCallBack callBack) {
         clientSetupKs();
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
-        String one = "(and asset_type='";
-        String two = "' ParentRefId ~ '";
+        String one = "(and (or asset_type='";
+        String four = "' asset_type='";
+        String two = "') ParentRefId ~ '";
         String three = "')";
-        String kSQL = one + MediaTypeConstant.getTrailer(activity) + two + ref_id + three;
+        String kSQL = one + MediaTypeConstant.getTrailer(activity) + four + MediaTypeConstant.getHighlight(activity) + two + ref_id + three;
         searchAssetFilter.setKSql(kSQL);
-
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
         filterPager.setPageSize(20);

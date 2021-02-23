@@ -59,7 +59,7 @@ public class WebEpisodeDescriptionViewModel extends AndroidViewModel {
                                                       int assetType,
                                                       Map<String, Value> map,
                                                       int layoutType,
-                                                      int seriesMediaTyp) {
+                                                      String seriesMediaTyp) {
         return SeasonsLayer.getInstance().loadData(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, seriesMediaTyp);
     }
 
@@ -101,7 +101,7 @@ public class WebEpisodeDescriptionViewModel extends AndroidViewModel {
         return WebEpisodeDescriptionRepository.getInstance().deleteFromWatchlist(idfromAssetWatchlist, getApplication().getApplicationContext());
     }
 
-    public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Map<String, Value> map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType) {
+    public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType) {
         return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType);
     }
 

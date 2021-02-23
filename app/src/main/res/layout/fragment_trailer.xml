@@ -1,19 +1,55 @@
 <layout>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context="com.astro.sott.com.astro.dialoggo.fragments.trailerFragment.TrailerFragment">
 
-        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/trailerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/heebo_regular"
+            android:text="Trailers"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_xlarge"
+            android:visibility="gone"></TextView>
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
+            android:id="@+id/trailer_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/recycleview_margin_top"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never"
+            android:visibility="gone"
+            tools:targetApi="lollipop" />
+
+
+        <TextView
+            android:id="@+id/highLightText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/heebo_regular"
+            android:text="Previews"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_xlarge"
+            android:visibility="gone"></TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/highLightREcycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/recycleview_margin_top"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            android:visibility="gone"
             tools:targetApi="lollipop" />
 
         <include
@@ -22,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
-    </FrameLayout>
+    </LinearLayout>
 </layout>

@@ -75,7 +75,9 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     private int priorityLevel;
     private String externalRefId;
     private TrailerAdapter trailerAdapter;
-    private List<Asset> finalList;
+    private List<Asset> trailerData;
+    private List<Asset> highLightData;
+
 
     private int assetRestrictionLevel;
     private String externalId = "";
@@ -100,7 +102,6 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
         super.onActivityCreated(savedInstanceState);
         railCommonData = getArguments().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
         // AllChannelManager.getInstance().setRailCommonData(railCommonData);
-
         if (railCommonData != null && railCommonData.getObject() != null)
             asset = railCommonData.getObject();
         map = asset.getTags();
@@ -108,71 +109,41 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
             externalId = asset.getExternalId();
         parentalLevels = new ArrayList<>();
         modelCall();
-        getRefId(asset.getType(), asset.getMetas());
+        checkTrailerOrHighlights();
+        //   getRefId(asset.getType(), asset.getMetas());
 
     }
 
-    private void getRefId(final int type, Map<String, Value> map) {
-        StringValue refValue = null;
-        if (map != null) {
-            refValue = (StringValue) map.get(AppLevelConstants.KEY_EXTERNAL_REF_ID);
-        }
-        if (refValue != null)
-            externalRefId = refValue.getValue();
-        if (!TextUtils.isEmpty(externalId)) {
-            getTrailer(externalId, type);
-        }
+    private void checkTrailerOrHighlights() {
+        trailerData = trailerFragmentViewModel.getTrailer();
+        highLightData = trailerFragmentViewModel.getHighLights();
+        if (trailerData.size() > 0)
+            setTrailerUiComponents();
+        if (highLightData.size() > 0)
+            setHighLightUiComponents();
+
+
     }
 
     private void modelCall() {
         trailerFragmentViewModel = ViewModelProviders.of(this).get(TrailerFragmentViewModel.class);
     }
 
-    private void getTrailer(String ref_id, int assetType) {
-        trailerFragmentViewModel.getTrailer(ref_id, assetType).observe(this, assetList -> {
-            finalList = new ArrayList<>();
 
-            if (assetList != null) {
-                if (assetList.size() > 0) {
-                    finalList.addAll(assetList);
-                    setUiComponents();
-                    getHighlight(assetType);
-                } else {
-                    getHighlight(assetType);
-
-                }
-            } else {
-                getHighlight(assetType);
-
-            }
-
-        });
+    private void setTrailerUiComponents() {
+        getBinding().trailerText.setVisibility(View.VISIBLE);
+        getBinding().trailerRecyclerView.setVisibility(View.VISIBLE);
+        getBinding().trailerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        trailerAdapter = new TrailerAdapter(getActivity(), trailerData, this);
+        getBinding().trailerRecyclerView.setAdapter(trailerAdapter);
     }
 
-    private void setUiComponents() {
-        getBinding().myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-
-        trailerAdapter = new TrailerAdapter(getActivity(), finalList, this);
-        getBinding().myRecyclerView.setAdapter(trailerAdapter);
-    }
-
-    private void getHighlight(int assetType) {
-
-        trailerFragmentViewModel.getHighlight(externalRefId, assetType).observe(this, assetList -> {
-
-            if (assetList != null) {
-                if (assetList.size() > 0) {
-                    finalList.addAll(assetList);
-                    trailerAdapter.notifyDataSetChanged();
-                } else {
-
-                }
-
-            } else {
-
-            }
-
-        });
+    private void setHighLightUiComponents() {
+        getBinding().highLightText.setVisibility(View.VISIBLE);
+        getBinding().highLightREcycler.setVisibility(View.VISIBLE);
+        getBinding().highLightREcycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        trailerAdapter = new TrailerAdapter(getActivity(), highLightData, this);
+        getBinding().highLightREcycler.setAdapter(trailerAdapter);
     }
 
     private void playerChecks(final Asset railData) {
@@ -219,44 +190,6 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
 
     }
 
-    private void isDtvAccountAdded() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                trailerFragmentViewModel.getDtvAccountList().observe(getActivity(), new Observer<String>() {
-                    @Override
-                    public void onChanged(String dtvAccount) {
-                        try {
-                            if (dtvAccount != null) {
-                                if (dtvAccount.equalsIgnoreCase("0")) {
-
-                                    callProgressBar();
-                                    getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), false, false));
-
-                                } else if (dtvAccount.equalsIgnoreCase("")) {
-
-                                    callProgressBar();
-                                    getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), false, false));
-                                } else {
-
-                                    callProgressBar();
-                                    getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), true, false));
-                                }
-
-                            } else {
-                                // Api Failure Error
-                                callProgressBar();
-                                showDialog(getString(R.string.something_went_wrong_try_again));
-                            }
-                        } catch (Exception e) {
-                            Log.e("ExceptionIs", e.toString());
-                        }
-                    }
-                });
-
-            }
-        });
-    }
 
     private void checkBlockingErrors(Response<ListResponse<UserAssetRule>> response, Asset
             railData) {

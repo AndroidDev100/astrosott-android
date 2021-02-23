@@ -2,6 +2,7 @@ package com.astro.sott.activities.webEpisodeDescription.layers;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
 
 import com.astro.sott.utils.helpers.AssetContent;
@@ -42,14 +43,14 @@ public class EpisodesLayer {
     private AssetCommonBean assetCommonBean;
     private List<AssetCommonBean> assetCommonList;
 
-    public LiveData<List<AssetCommonBean>> getEpisodesList(Context context, Map<String, Value> map,
+    public LiveData<List<AssetCommonBean>> getEpisodesList(Context context, Asset asset,
                                                            int assetType, int counter, List<Integer> seasonNumberList, int seasonCounter, int layoutType) {
 
         responseList = new ArrayList<>();
         assetCommonList = new ArrayList<>();
         final MutableLiveData<List<AssetCommonBean>> connection = new MutableLiveData<>();
         assetCommonBean = new AssetCommonBean();
-        seriesId = AssetContent.getSeriesId(map);
+        seriesId = asset.getExternalId();
         KsServices ksServices = new KsServices(context);
         ksServices.callSeasonEpisodes(counter, seriesId, assetType, seasonNumberList, seasonCounter, (status, commonResponse) -> {
 
@@ -68,7 +69,7 @@ public class EpisodesLayer {
 
     private void parseEpisodesAssests(Context context, Response<ListResponse<Asset>> list, List<Integer> seasonNumberList, int layoutType, int assetType, int i) {
 
-        if(list == null){
+        if (list == null) {
             return;
         }
         responseList.add(list);
@@ -100,13 +101,13 @@ public class EpisodesLayer {
 
     private void setRailData(Context context, List<Response<ListResponse<Asset>>> list,
                              AssetCommonBean assetCommonBean, int position) {
-        if(!(list.get(position).results.getTotalCount() >= 0)){
+        if (!(list.get(position).results.getTotalCount() >= 0)) {
             return;
         }
         int totalCount = list.get(position).results.getTotalCount();
         if (totalCount != 0) {
             List<RailCommonData> railList = new ArrayList<>();
-            try{
+            try {
                 for (int j = 0; j < list.get(position).results.getObjects().size(); j++) {
                     RailCommonData railCommonData = new RailCommonData();
                     //  railCommonData.setCatchUpBuffer(list.get(position).results.getObjects().get(j).getEnableCatchUp());
@@ -138,7 +139,7 @@ public class EpisodesLayer {
 
                 }
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 PrintLogging.printLog("Exception", e.toString());
             }
             assetCommonBean.setRailAssetList(railList);

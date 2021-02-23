@@ -50,9 +50,8 @@ public class YouMayAlsoLike {
     public LiveData<List<AssetCommonBean>> fetchSimilarMovie(Context context,
                                                              int assetId,
                                                              int counter, int assetType,
-                                                             Map<String, MultilingualStringValueArray> map,
-                                                             int layoutType,
-                                                             int screen_id, Asset asset) {
+                                                             Map<String, MultilingualStringValueArray> map
+                                                             ) {
 
         assetID = assetId;
         assetTYPE = assetType;

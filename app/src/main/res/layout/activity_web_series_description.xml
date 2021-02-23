@@ -40,7 +40,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/fragment_background_color">
+            android:background="@color/detailBGColor">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -84,15 +84,15 @@
                                     android:scaleType="fitXY" />
 
                                 <ImageView
-                                    android:id="@+id/iv_play_icon"
                                     android:layout_width="64dp"
                                     android:layout_height="64dp"
                                     android:layout_centerInParent="true"
+
                                     android:layout_marginEnd="@dimen/web_series_iv_player_icon_margin_right"
                                     android:layout_marginBottom="@dimen/web_series_iv_player_icon_margin_bottom"
                                     android:background="@drawable/play_icon"
                                     android:contentDescription="@string/play_icon"
-                                    android:visibility="visible" />
+                                    android:visibility="gone" />
 
 
                             </RelativeLayout>
@@ -120,201 +120,310 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="@dimen/movie_detail_ll_margin_top"
-                        android:layout_marginRight="16dp"
+                        android:layout_height="match_parent"
+                        android:descendantFocusability="blocksDescendants"
                         android:orientation="vertical">
-
-
-                        <TextView
-                            android:id="@+id/movie_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/movie_detail_ll_margin_left"
-
-                            android:fontFamily="@font/roboto_medium"
-                            android:lineHeight="@dimen/movie_title_line_height"
-                            android:singleLine="true"
-                            android:text="@{movieAssestModel.name}"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/font_large"
-                            tools:targetApi="p" />
-
-
-                        <TextView
-                            android:id="@+id/tv_short_description"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/movie_detail_ll_margin_left"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="@dimen/movie_metadata_tag_margin_margin_right"
-
-                            android:fontFamily="@font/roboto_regular"
-                            android:text=""
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/font_small" />
-
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="@dimen/movie_detail_ll_margin_left"
-                            android:layout_marginTop="@dimen/movie_detail_ll_margin_top"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
                             android:orientation="vertical">
 
-                            <com.astro.sott.utils.helpers.ExpandableTextView
-                                android:id="@+id/description_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/expandable_text_margin_right"
-                                android:ellipsize="end"
-                                android:fontFamily="@font/roboto_regular"
-                                android:lineSpacingExtra="2dp"
-                                android:maxLines="2"
-                                android:text="@{movieAssestModel.description}"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/font_medium" />
-
-                            <com.astro.sott.utils.helpers.ExpandableCardLayout
-                                android:id="@+id/expandable_layout"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/movie_metadata_expandable_card_margin_right"
-                                android:orientation="vertical"
-                                app:el_expanded="false">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
-
-                                    <LinearLayout
-                                        android:id="@+id/cast_lay"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/movie_detail_ll_margin_top">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:text="@string/actors"
-                                            android:textColor="@color/cast_and_crew_title"
-                                            android:textSize="@dimen/font_medium" />
-
-                                        <TextView
-                                            android:id="@+id/cast_text"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/roboto_regular"
-                                            android:text="@{castValue}"
-                                            android:textColor="@color/cast_and_crew_title"
-                                            android:textSize="@dimen/font_medium" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/crew_lay"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/movie_crew_ll_margin_top">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:text="@string/directors"
-                                            android:textColor="@color/cast_and_crew_title"
-                                            android:textSize="@dimen/font_medium" />
-
-                                        <TextView
-                                            android:id="@+id/crew_text"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/roboto_regular"
-                                            android:text="@{crewValue}"
-                                            android:textColor="@color/cast_and_crew_title"
-                                            android:textSize="@dimen/font_medium" />
-                                    </LinearLayout>
-                                </LinearLayout>
-                            </com.astro.sott.utils.helpers.ExpandableCardLayout>
-
                             <LinearLayout
-                                android:id="@+id/less_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_marginTop="@dimen/less_button_margin_top"
-                                android:gravity="center"
-                                android:orientation="horizontal">
+                                android:layout_width="match_parent"
+                                android:weightSum="3"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:orientation="horizontal"
+                                android:layout_height="wrap_content">
 
                                 <TextView
-                                    android:id="@+id/text_expandable"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:ellipsize="end"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:maxLines="1"
-                                    android:paddingStart="@dimen/movie_metadata_txt_show_hide_padding_left"
-                                    android:paddingTop="@dimen/movie_metadata_txt_show_hide_padding_top"
-                                    android:paddingEnd="@dimen/movie_metadata_txt_show_hide_padding_right"
-                                    android:paddingBottom="@dimen/movie_metadata_txt_show_hide_padding_bottom"
-                                    android:text="@{expandabletext}"
-                                    android:textAllCaps="true"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/font_medium" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/movie_detail_ll_margin_left"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:id="@+id/shareWith"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:orientation="vertical">
-
-                                <TextView
+                                    android:id="@+id/shareWith"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/share_margin_top"
+                                    android:clickable="true"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:drawablePadding="7dp"
+                                    android:focusable="true"
+                                    android:fontFamily="@font/heebo_regular"
+                                    android:text="@string/my_list"
+                                    android:textColor="@color/lightBlueColor"
+                                    android:textSize="@dimen/font_small"
+                                    app:drawableTopCompat="@drawable/favorite" />
+
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/share_margin_top"
+                                    android:clickable="true"
+                                    android:layout_weight="1"
                                     android:drawableTop="@drawable/share"
-                                    android:drawablePadding="5dp"
-                                    android:fontFamily="@font/roboto_regular"
+                                    android:drawablePadding="7dp"
+                                    android:focusable="true"
+                                    android:fontFamily="@font/heebo_regular"
                                     android:text="@string/share"
-                                    android:textColor="@color/white"
+                                    android:textColor="@color/lightBlueColor"
+                                    android:textSize="@dimen/font_small" />
+
+                                <TextView
+                                    android:id="@+id/playlist"
+                                    android:gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/share_margin_top"
+                                    android:clickable="true"
+                                    android:layout_weight="1"
+                                    android:visibility="gone"
+                                    android:drawableTop="@drawable/download_icon"
+                                    android:drawablePadding="7dp"
+                                    android:focusable="true"
+                                    android:fontFamily="@font/heebo_regular"
+                                    android:text="@string/download"
+                                    android:textColor="@color/lightBlueColor"
                                     android:textSize="@dimen/font_medium" />
+
+
                             </LinearLayout>
 
                             <LinearLayout
-                                android:id="@+id/watchList"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="40dp"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:id="@+id/iv_play_icon"
+                                    android:layout_width="match_parent"
+                                    android:background="@drawable/gradient_button"
+                                    android:layout_height="50dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/share_margin_top"
+                                        android:clickable="true"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:drawablePadding="7dp"
+                                        android:focusable="true"
+                                        android:fontFamily="@font/heebo_medium"
+                                        android:text="@string/play_now"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/font_medium_large" />
+
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/detailBGColor"
+                                android:layout_marginTop="24dp"
                                 android:orientation="vertical">
 
-                                <TextView
-                                    android:id="@+id/textwatchlist"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/watchlist_margin_top"
-                                    android:drawableTop="@drawable/ic_outline_subscriptions_24px"
-                                    android:drawablePadding="5dp"
-                                    android:fontFamily="@font/roboto_regular"
-                                    android:text="@string/follow"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/font_medium" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+
+                                    <TextView
+                                        android:id="@+id/movie_title"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ellipsize="end"
+                                        android:fontFamily="@font/heebo_medium"
+                                        android:lineHeight="24sp"
+                                        android:maxLines="3"
+                                        android:singleLine="true"
+                                        android:textColor="@color/title_color"
+                                        android:textSize="@dimen/font_xxlarge"
+                                        tools:targetApi="p" />
+
+
+                                    <TextView
+                                        android:id="@+id/tv_short_description"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginEnd="@dimen/movie_metadata_tag_margin_margin_right"
+                                        android:lineHeight="24sp"
+                                        android:fontFamily="@font/heebo_regular"
+                                        android:textColor="@color/lightGreenColor"
+                                        android:textSize="@dimen/font_medium" />
+
+
+                                    <com.astro.sott.utils.helpers.ExpandableTextView
+                                        android:id="@+id/description_text"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="12dp"
+                                        android:layout_marginEnd="@dimen/expandable_text_margin_right"
+                                        android:lineHeight="24sp"
+                                        android:ellipsize="end"
+                                        android:fontFamily="@font/heebo_regular"
+                                        android:maxLines="2"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/font_medium_large" />
+
+                                    <com.astro.sott.utils.helpers.ExpandableCardLayout
+                                        android:id="@+id/expandable_layout"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_marginEnd="@dimen/movie_metadata_expandable_card_margin_right"
+                                        android:orientation="vertical"
+                                        app:el_expanded="false">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+                                            <LinearLayout
+                                                android:id="@+id/duration_lay"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/heebo_bold"
+                                                    android:text="@string/duration"
+
+                                                    android:textColor="@color/lightGreenColor"
+                                                    android:textSize="@dimen/font_medium" />
+
+                                                <TextView
+                                                    android:id="@+id/duration_text"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/heebo_regular"
+                                                    android:textColor="@color/cast_and_crew_title"
+                                                    android:textSize="@dimen/font_medium" />
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:id="@+id/subtitle_lay"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/heebo_bold"
+                                                    android:text="@string/sub_title"
+
+                                                    android:textColor="@color/lightGreenColor"
+                                                    android:textSize="@dimen/font_medium" />
+
+                                                <TextView
+                                                    android:id="@+id/subtitle_text"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/heebo_regular"
+                                                    android:textColor="@color/cast_and_crew_title"
+                                                    android:textSize="@dimen/font_medium" />
+                                            </LinearLayout>
+                                            <LinearLayout
+                                                android:id="@+id/cast_lay"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/heebo_bold"
+                                                    android:text="@string/actors"
+
+                                                    android:textColor="@color/lightGreenColor"
+                                                    android:textSize="@dimen/font_medium" />
+
+                                                <TextView
+                                                    android:id="@+id/cast_text"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/heebo_regular"
+                                                    android:textColor="@color/cast_and_crew_title"
+                                                    android:textSize="@dimen/font_medium" />
+                                            </LinearLayout>
+
+
+
+                                            <LinearLayout
+                                                android:id="@+id/crew_lay"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/movie_crew_ll_margin_top">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/heebo_bold"
+                                                    android:text="@string/directors"
+                                                    android:textColor="@color/lightGreenColor"
+                                                    android:textSize="@dimen/font_medium" />
+
+                                                <TextView
+                                                    android:id="@+id/crew_text"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/heebo_regular"
+                                                    android:textColor="@color/cast_and_crew_title"
+                                                    android:textSize="@dimen/font_medium" />
+                                            </LinearLayout>
+                                        </LinearLayout>
+                                    </com.astro.sott.utils.helpers.ExpandableCardLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/less_button"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="start"
+                                        android:layout_marginTop="@dimen/less_button_margin_top"
+                                        android:background="@color/detailBGColor"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/text_expandable"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="?attr/selectableItemBackgroundBorderless"
+                                            android:ellipsize="end"
+                                            android:fontFamily="@font/heebo_bold"
+                                            android:maxLines="2"
+                                            android:paddingTop="10dp"
+                                            android:paddingRight="20dp"
+                                            android:paddingBottom="10dp"
+                                            android:text="@string/view_more"
+                                            android:textAllCaps="true"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/font_medium" />
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
                             </LinearLayout>
 
 
+
+
                         </LinearLayout>
+
+                        <!--<fragment
+                            android:id="@+id/rail_fragment"
+                            android:name="com.dialog.dialoggo.baseModel.RailBaseFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/rail_base_fragment_margin_top" />-->
                     </LinearLayout>
 
                     <FrameLayout
