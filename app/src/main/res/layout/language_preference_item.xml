@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/genre_ll_margin_top"
+        android:layout_marginEnd="@dimen/genre_ll_margin_right"
+        android:background="@drawable/genre_unselected"
+        android:fontFamily="@font/heebo_medium"
+        android:paddingLeft="@dimen/uploaded_cl_padding_left"
+        android:paddingTop="@dimen/uploaded_cl_padding_top"
+        android:paddingRight="@dimen/uploaded_cl_padding_left"
+        android:paddingBottom="@dimen/uploaded_cl_padding_top"
+        android:text="@string/actors"
+        android:textColor="@color/grey_text"
+        android:textSize="@dimen/genre_item_text_size" />
+
+
+</layout>

@@ -546,4 +546,7 @@
 
     <dimen name="extraSpacingLDS">70dp</dimen>
 
+    <dimen name="_14sp">14sp</dimen>
+    <dimen name="_16sp">16sp</dimen>
+
 </resources>

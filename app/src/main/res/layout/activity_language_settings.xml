@@ -122,7 +122,7 @@
         android:layout_marginTop="@dimen/_1sdp"
         android:layout_below="@+id/rl_audio_lang"
         android:id="@+id/v2"
-        android:background="@color/lineGreyColor"/>
+        android:background="@color/toolbar_bg"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

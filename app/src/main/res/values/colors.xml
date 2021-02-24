@@ -109,7 +109,7 @@
     <color name="detailBGColor">#211C31</color>
     <color name="lightBlueColor">#58BAFF</color>
     <color name="lightGreenColor">#00F2B6</color>
-
+<color name="grey_text">#9b98ab</color>
 
     <color name="tab_selected">#303255</color>
 

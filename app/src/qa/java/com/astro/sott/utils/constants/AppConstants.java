@@ -307,5 +307,8 @@ public interface AppConstants {
     public static final int SPAN_COUNT_PORTRAIT = 3;
     public static final int SPAN_COUNT_LANDSCAPE = 2;
 
+    public static final int TYPE_LANGUAGE =1;
+    public static final int TYPE_GENRE =2;
+
 
 }

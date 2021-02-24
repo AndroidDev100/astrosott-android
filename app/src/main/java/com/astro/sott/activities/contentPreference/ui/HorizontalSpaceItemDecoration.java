@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
-class HorizontalSpaceItemDecoration extends RecyclerView.ItemDecoration {
+public class HorizontalSpaceItemDecoration extends RecyclerView.ItemDecoration {
     private final int horizontalItemSpace;
 
     public HorizontalSpaceItemDecoration(int horiontalItemSpace) {
