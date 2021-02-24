@@ -22,6 +22,7 @@ import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.StringValue;
 
 
 import java.util.List;
@@ -69,14 +70,21 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
             }
             int value = AppCommonMethods.getEpisodeNumber(asset.getMetas());
             String duration = AppCommonMethods.getURLDuration(asset);
-            if(!TextUtils.isEmpty(duration)){
+            if (!TextUtils.isEmpty(duration)) {
                 viewHolder.watchlistItemBinding.tvduration.setVisibility(View.VISIBLE);
                 viewHolder.watchlistItemBinding.tvduration.setText(duration);
             }
 
 
-            viewHolder.watchlistItemBinding.tvTitle.setText("E" + value+": " + singleItem.getName());
-            viewHolder.watchlistItemBinding.tvDescription.setText(asset.getDescription());
+            viewHolder.watchlistItemBinding.tvTitle.setText("E" + value + ": " + singleItem.getName());
+            StringValue stringValue = null;
+            String description = "";
+            if (asset.getMetas() != null)
+                stringValue = (StringValue) asset.getMetas().get("ShortDescription");
+            if (stringValue != null)
+                description = stringValue.getValue();
+
+            viewHolder.watchlistItemBinding.tvDescription.setText(description);
             if (value == episodeNumber) {
                 RailCommonData singleItems = railList.get(position);
                 if (singleItems.getExpended()) {

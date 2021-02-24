@@ -66,8 +66,10 @@ import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.MultilingualStringValue;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.PersonalList;
+import com.kaltura.client.types.StringValue;
 import com.kaltura.client.types.UserAssetRule;
 import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
@@ -771,7 +773,13 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 }
                 getBinding().tvShortDescription.setText(value);
                 getBinding().movieTitle.setText(asset.getName());
-                getBinding().descriptionText.setText(asset.getDescription());
+                MultilingualStringValue stringValue = null;
+                String description = "";
+                if (asset.getMetas() != null)
+                    stringValue = (MultilingualStringValue) asset.getMetas().get("LongDescription");
+                if (stringValue != null)
+                    description = stringValue.getValue();
+                getBinding().descriptionText.setText(description);
 
 
                 setBannerImage(asset);

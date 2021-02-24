@@ -65,6 +65,7 @@ import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.MultilingualStringValue;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.UserAssetRule;
 import com.kaltura.client.types.Value;
@@ -270,7 +271,13 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 }
                 getBinding().tvShortDescription.setText(value);
                 getBinding().movieTitle.setText(asset.getName());
-                getBinding().descriptionText.setText(asset.getDescription());
+                MultilingualStringValue stringValue = null;
+                String description = "";
+                if (asset.getMetas() != null)
+                    stringValue = (MultilingualStringValue) asset.getMetas().get("LongDescription");
+                if (stringValue != null)
+                    description = stringValue.getValue();
+                getBinding().descriptionText.setText(description);
 
 
             }
@@ -321,6 +328,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             }
         });
     }
+
     private void setSubtitleLanguage() {
 
         viewModel.getSubTitleLanguageLiveData(map).observe(this, new Observer<String>() {
@@ -353,6 +361,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
 
     }
+
     private void getMovieCasts() {
         viewModel.getCastLiveData(map).observe(this, castTest -> {
             if (TextUtils.isEmpty(castTest)) {
@@ -970,8 +979,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
 
     }
-
-
 
 
     private void showDialog(String message) {

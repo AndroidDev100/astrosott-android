@@ -92,6 +92,9 @@ public interface AppLevelConstants {
     String PROMO_ASSET_NAME = "name";
     String PARENTAL_RATING = "ParentalRating";
     String KEY_SEASON_NUMBER = "SeasonNumber";
+    String KEY_LONG_DESCRIPTION="LongDescription";
+    String KEY_SHORT_DESCRIPTION="ShortDescription";
+
     String KEY_EPISODE_NUMBER = "EpisodeNumber";
 
     String KEY_EXTERNAL_URL = "External URL";
