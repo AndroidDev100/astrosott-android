@@ -63,6 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                    android:lineHeight="24sp"
+
                     android:fontFamily="@font/heebo_medium"
                     android:maxLines="2"
                     android:textColor="@color/title_color"

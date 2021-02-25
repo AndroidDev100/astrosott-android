@@ -437,8 +437,9 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
         }  else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getEpisode(ActivitySearch.this)) {
             getRailCommonData(itemValue);
+            new ActivityLauncher(this).webDetailRedirection(railCommonData.getObject(), AppLevelConstants.Rail5);
 
-            new ActivityLauncher(this).webEpisodeActivity(this, WebEpisodeDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
+            //new ActivityLauncher(this).webEpisodeActivity(this, WebEpisodeDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
 
         } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getSeries(ActivitySearch.this)) {
             getRailCommonData(itemValue);

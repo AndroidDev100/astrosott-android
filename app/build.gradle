@@ -142,6 +142,7 @@ android {
         useLibrary 'org.apache.http.legacy'
 
     }
+    buildToolsVersion '30.0.3'
 
 }
 

@@ -48,6 +48,7 @@ import com.astro.sott.callBacks.kalturaCallBacks.DeleteDeviceCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.DeleteFromFollowlistCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.DeleteWatchListCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.GenreCallBack;
+import com.astro.sott.callBacks.kalturaCallBacks.GetSeriesCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.HomechannelCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.HouseHoldAddCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.HouseHoldDevice;
@@ -779,6 +780,39 @@ public class KsServices {
         new Thread(runnable).start();
     }
 
+
+    public void callSeriesData( int mediaType, String seriesID, GetSeriesCallBack callBack) {
+
+
+        clientSetupKs();
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        FilterPager filterPager = new FilterPager();
+
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(1);
+
+        if (mediaType == MediaTypeConstant.getEpisode(activity)) {
+            String ksql = KSQL.getSeriesKSQL(MediaTypeConstant.getSeries(activity), seriesID);
+            searchAssetFilter.setKSql(ksql);
+        }
+
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
+            PrintLogging.printLog("", "response" + result.isSuccess());
+            if (result.isSuccess()) {
+                if (result.results != null && result.results.getObjects() != null && result.results.getTotalCount() > 0) {
+                    callBack.onSuccess(result.results.getObjects());
+                } else {
+                    callBack.onFailure();
+                }
+            } else {
+
+            }
+
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
     public void callSpotlightSesionEpisode(String seriesId, int assetType, List<Integer> results, HomechannelCallBack callBack) {
         homechannelCallBack = callBack;
         listAssetBuilders = new ArrayList<>();
@@ -986,7 +1020,7 @@ public class KsServices {
         similarMovieCallBack = callBack;
         final CommonResponse commonResponse = new CommonResponse();
         try {
-           // long idd = results.get(seasonCounter);
+            // long idd = results.get(seasonCounter);
             // Log.w("idsssoftiles", "idsprints" + idd + "-->>");
             int iid = (int) 0;
             String one = "(and SeriesID='";
@@ -1043,7 +1077,7 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        callEpisodes(counter, seriesId, assetType,  callBack);
+                                        callEpisodes(counter, seriesId, assetType, callBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         similarMovieCallBack.response(false, commonResponse);

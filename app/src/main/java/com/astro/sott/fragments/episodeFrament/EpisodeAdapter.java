@@ -18,10 +18,12 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.EpisodeClickListener;
 import com.astro.sott.databinding.EpisodeItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.MultilingualStringValue;
 import com.kaltura.client.types.StringValue;
 
 
@@ -77,10 +79,10 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
 
 
             viewHolder.watchlistItemBinding.tvTitle.setText("E" + value + ": " + singleItem.getName());
-            StringValue stringValue = null;
+            MultilingualStringValue stringValue = null;
             String description = "";
             if (asset.getMetas() != null)
-                stringValue = (StringValue) asset.getMetas().get("ShortDescription");
+                stringValue = (MultilingualStringValue) asset.getMetas().get(AppLevelConstants.KEY_SHORT_DESCRIPTION);
             if (stringValue != null)
                 description = stringValue.getValue();
 

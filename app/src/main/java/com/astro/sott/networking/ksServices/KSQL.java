@@ -29,7 +29,18 @@ class KSQL {
         return KSQL;
 
     }
-
+    public static String getSeriesKSQL(int assetType,String seriesID) {
+        //  "kSql": "(and (or asset_type= '559') SeriesId ~ 'CBGF17102018')",
+        String one = "(and ";
+        String two = "(or asset_type='";
+        String three=assetType+"";
+        String four="') externalId = '";
+        String five=seriesID;
+        String six="')";
+        KSQL=one+two+three+four+five+six;
+        printKSQL(KSQL);
+        return KSQL;
+    }
     public static String forCatchUpNextProgram(String externalId, String startDate) {
         _one = "(and epg_channel_id='";
         _tw0 = "' start_date>'";

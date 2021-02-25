@@ -776,7 +776,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 MultilingualStringValue stringValue = null;
                 String description = "";
                 if (asset.getMetas() != null)
-                    stringValue = (MultilingualStringValue) asset.getMetas().get("LongDescription");
+                    stringValue = (MultilingualStringValue) asset.getMetas().get(AppLevelConstants.KEY_LONG_DESCRIPTION);
                 if (stringValue != null)
                     description = stringValue.getValue();
                 getBinding().descriptionText.setText(description);
