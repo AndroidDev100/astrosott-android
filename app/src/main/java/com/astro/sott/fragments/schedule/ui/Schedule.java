@@ -67,6 +67,7 @@ import com.astro.sott.utils.helpers.RecyclerAnimator;
 import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.ProgramAsset;
 import com.kaltura.client.types.UserAssetRule;
 import com.kaltura.client.utils.response.base.Response;
@@ -169,6 +170,8 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         super.onCreate(savedInstanceState);
         parentalLevels = new ArrayList<>();
         connectionObserver();
+
+
         myReceiver = new MyReceiver();
         //  progressDialog = new ProgressHandler(getActivity());
     }
@@ -188,12 +191,45 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         }
     }
 
+    private int count = 0;
+    Calendar c = null;
+    String cast = "";
+
     private void createEpgDateChips() {
-        LayoutInflater inflater = (LayoutInflater) baseActivity.getSystemService(LAYOUT_INFLATER_SERVICE);
+        c = Calendar.getInstance();
+        c.setTime(new Date()); // Now use today date.
+        c.add(Calendar.DATE, 0); // Adding 5 days
+        cast = getCurrentDate(counter, c.getTime());
 
-        int size = 8;
+        getBinding().chipDateText.setText(cast);
+        selectDate(count);
 
-        for (int i = 0; i < size; i++) {
+        getBinding().forwardDate.setOnClickListener(v -> {
+            if (count < 8) {
+                count++;
+                c = Calendar.getInstance();
+                c.setTime(new Date()); // Now use today date.
+                c.add(Calendar.DATE, 0); // Adding 5 days
+                cast = getCurrentDate(count, c.getTime());
+                getBinding().chipDateText.setText(cast);
+                selectDate(count);
+            }
+
+        });
+        getBinding().backDate.setOnClickListener(v -> {
+            if (count > 0) {
+                count--;
+                c = Calendar.getInstance();
+                c.setTime(new Date()); // Now use today date.
+                c.add(Calendar.DATE, 0); // Adding 5 days
+                cast = getCurrentDate(count, c.getTime());
+                getBinding().chipDateText.setText(cast);
+                selectDate(count);
+            }
+
+        });
+
+        /*for (int i = 0; i < size; i++) {
             Calendar c = Calendar.getInstance();
             c.setTime(new Date()); // Now use today date.
             c.add(Calendar.DATE, 0); // Adding 5 days
@@ -221,7 +257,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         selectDate(getBinding().castsContainer.getChildAt(0));
 
         customRunnable = new CustomRunnable(getBinding().castsContainer, getBinding().scrollable, baseActivity);
-        getBinding().scrollable.post(customRunnable);
+        getBinding().scrollable.post(customRunnable);*/
 
     }
 
@@ -271,7 +307,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
-            //  intentValues();
+            intentValues();
             modelCall();
             getStartEndTimestamp();
 //            new Handler().postDelayed(this::getEPGChannels, 500);
@@ -280,10 +316,15 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         }
     }
 
+    String externalId;
+
     private void intentValues() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             railCommonData1 = bundle.getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
+            MediaAsset mediaAsset = (MediaAsset) railCommonData1.getObject();
+            externalId = mediaAsset.getExternalIds();
+
             AllChannelManager.getInstance().setRailCommonData(railCommonData1);
 
         }
@@ -308,7 +349,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         if (viewModel == null) {
             return;
         }
-        viewModel.getEPGChannelsList(NowPlaying.EXTERNAL_IDS, startTimeStamp, endTimeStamp, 2, counter).observe(this, railCommonData -> {
+        viewModel.getEPGChannelsList(externalId, startTimeStamp, endTimeStamp, 2, counter).observe(this, railCommonData -> {
             if (railCommonData != null && railCommonData.size() > 0) {
                 getBinding().noItem.setVisibility(View.GONE);
                 getBinding().programRecyclerview.setVisibility(View.VISIBLE);
@@ -414,7 +455,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     }
 
     private boolean compareDates() {
-        return values.contains("Today");
+        return false;
     }
 
     private void getStartEndTimestamp() {
@@ -425,16 +466,16 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     private String getCurrentDate(int i, Date startDate) {
         String output = "";
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM", Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat("d MMMM yyyy", Locale.US);
             Calendar c = Calendar.getInstance();
             c.setTime(startDate); // Now use today date.
             c.add(Calendar.DATE, i); // Adding 5 days
             if (i == 0) {
-                output = "Today";
+                output = "TODAY " + sdf.format(c.getTime());
 
 
             } else if (i == 1) {
-                output = "Tomorrow";
+                output = "Tomorrow " + sdf.format(c.getTime());
 
             } else {
                 output = sdf.format(c.getTime());
@@ -852,14 +893,8 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     };
 
 
-    private void selectDate(View v) {
-        if (previousView != null)
-            previousView.setSelected(false);
-        v.setSelected(true);
-
-        callChannelsByTimeStamp(Integer.valueOf(v.getContentDescription().toString()) );
-        // connectionObserver();
-        previousView = v;
+    private void selectDate(int v) {
+        callChannelsByTimeStamp(v);
     }
 
 

@@ -806,7 +806,26 @@ public class KsServices {
                     callBack.onFailure();
                 }
             } else {
+                if (result.error != null) {
 
+                    String errorCode = result.error.getCode();
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                            @Override
+                            public void response(CommonResponse response) {
+                                if (response.getStatus()) {
+                                    callSeriesData(mediaType,seriesID,callBack);
+                                } else {
+                                    callBack.onFailure();
+                                }
+                            }
+                        });
+                    else {
+                        callBack.onFailure();
+                    }
+                } else {
+                    callBack.onFailure();
+                }
             }
 
         });
@@ -837,7 +856,26 @@ public class KsServices {
                     callBack.onFailure();
                 }
             } else {
+                if (result.error != null) {
 
+                    String errorCode = result.error.getCode();
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                            @Override
+                            public void response(CommonResponse response) {
+                                if (response.getStatus()) {
+                                    getAssetFromTrailer(refId,callBack);
+                                } else {
+                                    callBack.onFailure();
+                                }
+                            }
+                        });
+                    else {
+                        callBack.onFailure();
+                    }
+                } else {
+                    callBack.onFailure();
+                }
             }
 
         });
@@ -870,7 +908,26 @@ public class KsServices {
                     callBack.onFailure();
                 }
             } else {
+                if (result.error != null) {
 
+                    String errorCode = result.error.getCode();
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                            @Override
+                            public void response(CommonResponse response) {
+                                if (response.getStatus()) {
+                                    getProgramFromLinear(channelId,callBack);
+                                } else {
+                                    callBack.onFailure();
+                                }
+                            }
+                        });
+                    else {
+                        callBack.onFailure();
+                    }
+                } else {
+                    callBack.onFailure();
+                }
             }
 
         });

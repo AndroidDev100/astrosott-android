@@ -163,6 +163,7 @@
                             android:id="@+id/channel_logo"
                             android:layout_width="64dp"
                             android:layout_height="36dp"
+                            android:background="@drawable/landscape"
                             android:layout_gravity="center"
                             android:scaleType="fitXY"></ImageView>
 
@@ -177,7 +178,6 @@
                             android:fontFamily="@font/heebo_medium"
                             android:lineHeight="24sp"
                             android:maxLines="1"
-                            android:text="How Its Made"
                             android:textColor="@color/title_color"
                             android:textSize="@dimen/font_xxlarge">
 
@@ -192,7 +192,6 @@
                         android:fontFamily="@font/heebo_regular"
                         android:layout_marginTop="1dp"
                         android:lineHeight="24sp"
-                        android:text="Thu, Jan 28 at 04:00 PM | English | Family | PG 18"
                         android:textColor="@color/live_metas_color"
                         android:textSize="@dimen/font_medium"></TextView>
 
@@ -205,7 +204,6 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/heebo_regular"
                         android:lineHeight="24sp"
-                        android:text="Nine noble families fight for control over the lands of Westeros, while an ancient enemy returns after being dormant for millennia."
                         android:textColor="@color/title_color"
                         android:textSize="@dimen/font_medium_large" />
                 </LinearLayout>
