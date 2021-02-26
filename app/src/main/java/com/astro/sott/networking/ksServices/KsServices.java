@@ -781,7 +781,7 @@ public class KsServices {
     }
 
 
-    public void callSeriesData( int mediaType, String seriesID, GetSeriesCallBack callBack) {
+    public void callSeriesData(int mediaType, String seriesID, GetSeriesCallBack callBack) {
 
 
         clientSetupKs();
@@ -795,6 +795,37 @@ public class KsServices {
             String ksql = KSQL.getSeriesKSQL(MediaTypeConstant.getSeries(activity), seriesID);
             searchAssetFilter.setKSql(ksql);
         }
+
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
+            PrintLogging.printLog("", "response" + result.isSuccess());
+            if (result.isSuccess()) {
+                if (result.results != null && result.results.getObjects() != null && result.results.getTotalCount() > 0) {
+                    callBack.onSuccess(result.results.getObjects());
+                } else {
+                    callBack.onFailure();
+                }
+            } else {
+
+            }
+
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
+
+    public void getAssetFromTrailer( String refId, GetSeriesCallBack callBack) {
+
+
+        clientSetupKs();
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        FilterPager filterPager = new FilterPager();
+
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(1);
+
+        String ksql = KSQL.getAssetFromTrailerKSQL(MediaTypeConstant.getMovie(activity),MediaTypeConstant.getSeries(activity), refId);
+        searchAssetFilter.setKSql(ksql);
 
 
         AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {

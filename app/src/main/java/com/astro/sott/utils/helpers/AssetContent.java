@@ -652,6 +652,24 @@ public class AssetContent {
         return connection;
     }
 
+
+    public static String getParentRefId(Map<String, MultilingualStringValueArray> map) {
+
+        String language = "";
+        List<MultilingualStringValue> refId_value = new ArrayList<>();
+        MultilingualStringValueArray refId_list = map.get(AppLevelConstants.KEY_PARENT_REF_ID);
+        if (refId_list != null)
+//            for (MultilingualStringValue value : language_list.getObjects()) {
+//                language_value.add(value);
+//            }
+            refId_value.addAll(refId_list.getObjects());
+        if (refId_value.get(0) != null)
+            language = refId_value.get(0).getValue();
+
+
+        return language;
+    }
+
     public static LiveData<String> getSubTitleLanguageData(Map<String, MultilingualStringValueArray> map) {
 
         final MutableLiveData<String> connection = new MutableLiveData<>();

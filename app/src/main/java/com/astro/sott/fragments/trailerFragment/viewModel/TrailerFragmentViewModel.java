@@ -12,6 +12,7 @@ import com.astro.sott.activities.webEpisodeDescription.layers.SeasonsLayer;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.repositories.dtv.DTVRepository;
+import com.astro.sott.repositories.trailerFragment.TrailerHighlightsDataLayer;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.repositories.trailerFragment.TrailerFragmentRepository;
@@ -95,6 +96,8 @@ public class TrailerFragmentViewModel extends AndroidViewModel {
         return TrailerFragmentRepository.getInstance().getTrailerAsset(getApplication(), refId, assetType);
     }
 
+
+
     public LiveData<List<Asset>> getHighlight(String refId, int assetType) {
         return TrailerFragmentRepository.getInstance().getHighlightAsset(getApplication(), refId, assetType);
     }
@@ -120,5 +123,9 @@ public class TrailerFragmentViewModel extends AndroidViewModel {
     public LiveData<String> getDtvAccountList() {
         return DTVRepository.getInstance().getDtvAccountList(getApplication().getApplicationContext());
 
+    }
+
+    public String getParentRefId(Map<String, MultilingualStringValueArray> tags) {
+        return AssetContent.getParentRefId(tags);
     }
 }

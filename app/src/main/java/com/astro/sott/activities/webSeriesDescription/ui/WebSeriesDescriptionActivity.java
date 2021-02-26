@@ -183,17 +183,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         setMetas();
 
         setBannerImage(assetId);
-        setHungamaTag(asset);
     }
 
-    private void setHungamaTag(Asset asset) {
-        boolean isProviderAvailable = AssetContent.getHungamaTag(asset.getTags());
-        if (isProviderAvailable) {
-            getBinding().hungama.setVisibility(View.VISIBLE);
-        } else {
-            getBinding().hungama.setVisibility(View.GONE);
-        }
-    }
+
 
     private void setMetas() {
         getMovieYear();

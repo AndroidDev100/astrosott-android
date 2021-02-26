@@ -120,6 +120,8 @@ public interface AppLevelConstants {
 
     String KEY_MAINCAST = "Main Cast";
     String KEY_LANGUAGE = "Languages";
+    String KEY_PARENT_REF_ID = "ParentRefId";
+
 
     String KEY_SUBTITLE_LANGUAGE = "SubtitleLanguages";
 

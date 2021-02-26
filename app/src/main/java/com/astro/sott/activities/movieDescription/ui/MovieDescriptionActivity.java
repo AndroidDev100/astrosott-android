@@ -644,18 +644,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         setWatchlist();
         // setRailFragment();
         setRailBaseFragment();
-
-        setHungamaTag(asset);
     }
 
-    private void setHungamaTag(Asset asset) {
-        boolean isProviderAvailable = AssetContent.getHungamaTag(asset.getTags());
-        if (isProviderAvailable) {
-            getBinding().hungama.setVisibility(View.VISIBLE);
-        } else {
-            getBinding().hungama.setVisibility(View.GONE);
-        }
-    }
 
     private void setRailBaseFragment() {
         FragmentManager fm = getSupportFragmentManager();

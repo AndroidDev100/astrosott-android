@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -41,6 +42,7 @@ import com.astro.sott.player.houseHoldCheckManager.HouseHoldCheck;
 import com.astro.sott.player.ui.PlayerActivity;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.DialogHelper;
@@ -215,19 +217,12 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     }
 
     @Override
-    public void getTrailerAsset(Asset asset) {
+    public void getTrailerAsset(Asset trailerAsset) {
 
         getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
 
         });
-
-
-        if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
-            callProgressBar();
-            playerChecks(asset);
-        } else {
-            DialogHelper.showLoginDialog(getActivity());
-        }
+        new ActivityLauncher(getActivity()).trailerDirection(trailerAsset, AppConstants.Rail5);
 
     }
 

@@ -29,18 +29,34 @@ class KSQL {
         return KSQL;
 
     }
-    public static String getSeriesKSQL(int assetType,String seriesID) {
+
+    public static String getSeriesKSQL(int assetType, String seriesID) {
         //  "kSql": "(and (or asset_type= '559') SeriesId ~ 'CBGF17102018')",
         String one = "(and ";
         String two = "(or asset_type='";
-        String three=assetType+"";
-        String four="') externalId = '";
-        String five=seriesID;
-        String six="')";
-        KSQL=one+two+three+four+five+six;
+        String three = assetType + "";
+        String four = "') externalId = '";
+        String five = seriesID;
+        String six = "')";
+        KSQL = one + two + three + four + five + six;
         printKSQL(KSQL);
         return KSQL;
     }
+
+    public static String getAssetFromTrailerKSQL(int movieAssetType, int seriesAssetType, String refId) {
+        //  "kSql": "(and (or asset_type= '559') SeriesId ~ 'CBGF17102018')",
+        String one = "(and ";
+        String two = "(or asset_type='";
+        String three = movieAssetType + "' ";
+        String four = "') externalId ~ '";
+        String five = refId;
+        String six = "')";
+        String seven = "asset_type='" + seriesAssetType;
+        KSQL = one + two + three + seven + four + five + six;
+        printKSQL(KSQL);
+        return KSQL;
+    }
+
     public static String forCatchUpNextProgram(String externalId, String startDate) {
         _one = "(and epg_channel_id='";
         _tw0 = "' start_date>'";
@@ -50,7 +66,6 @@ class KSQL {
         return KSQL;
 
     }
-
 
 
     public static String forEPGListing(String externalId, String startDate, String endDate) {
@@ -64,7 +79,7 @@ class KSQL {
     }
 
     private static void printKSQL(String ksql) {
-       PrintLogging.printLog("KSQL","", "KSQL" + ksql);
+        PrintLogging.printLog("KSQL", "", "KSQL" + ksql);
     }
 
     public static String forvideoContent(String AssetId) {
@@ -104,6 +119,7 @@ class KSQL {
         printKSQL(KSQL);
         return KSQL;
     }
+
     public static String forsimillarMovie(int assetType) {
         String one = "(and asset_type='";
         String two = "')";
@@ -112,7 +128,7 @@ class KSQL {
         return KSQL;
     }
 
-    public static String foryouMayLikeMovie(String genreSkl,int assetType) {
+    public static String foryouMayLikeMovie(String genreSkl, int assetType) {
         String one = "(and asset_type='";
         String two = "' (or " + genreSkl + "))";
         String third = String.valueOf(assetType);
@@ -120,6 +136,7 @@ class KSQL {
         printKSQL(KSQL);
         return KSQL;
     }
+
     public static String forContinueWatchingAssets(String ksql) {
         _one = "media_id:'";
         _tw0 = "'";

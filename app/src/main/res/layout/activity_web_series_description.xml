@@ -94,27 +94,17 @@
                                     android:contentDescription="@string/play_icon"
                                     android:visibility="gone" />
 
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_alignParentBottom="true"
+                                    android:background="@drawable/above_dark_shadow">
 
+
+                                </FrameLayout>
                             </RelativeLayout>
 
 
-                            <FrameLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_marginTop="8dp"
-                                android:background="@drawable/above_dark_shadow"
-                                app:layout_constraintBottom_toBottomOf="@+id/player_layout"
-                                app:layout_constraintTop_toTopOf="@+id/player_layout">
-                                <ImageView
-                                    android:id="@+id/hungama"
-                                    android:layout_width="60dp"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/playpurple"
-                                    android:layout_marginStart="@dimen/movie_items_margin_left"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_gravity="bottom|left"
-                                    android:visibility="gone"></ImageView>
-                            </FrameLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
 
@@ -133,83 +123,83 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:weightSum="3"
+                                android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_15sdp"
                                 android:orientation="horizontal"
-                                android:layout_height="wrap_content">
+                                android:weightSum="3">
 
                                 <TextView
                                     android:id="@+id/shareWith"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/share_margin_top"
-                                    android:clickable="true"
                                     android:layout_weight="1"
-                                    android:gravity="center"
+                                    android:clickable="true"
                                     android:drawablePadding="7dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_regular"
+                                    android:gravity="center"
                                     android:text="@string/my_list"
                                     android:textColor="@color/lightBlueColor"
                                     android:textSize="@dimen/font_small"
                                     app:drawableTopCompat="@drawable/favorite" />
 
                                 <TextView
-                                    android:gravity="center"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/share_margin_top"
-                                    android:clickable="true"
                                     android:layout_weight="1"
+                                    android:clickable="true"
                                     android:drawableTop="@drawable/share"
                                     android:drawablePadding="7dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_regular"
+                                    android:gravity="center"
                                     android:text="@string/share"
                                     android:textColor="@color/lightBlueColor"
                                     android:textSize="@dimen/font_small" />
 
                                 <TextView
                                     android:id="@+id/playlist"
-                                    android:gravity="center"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/share_margin_top"
-                                    android:clickable="true"
                                     android:layout_weight="1"
-                                    android:visibility="gone"
+                                    android:clickable="true"
                                     android:drawableTop="@drawable/download_icon"
                                     android:drawablePadding="7dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_regular"
+                                    android:gravity="center"
                                     android:text="@string/download"
                                     android:textColor="@color/lightBlueColor"
-                                    android:textSize="@dimen/font_medium" />
+                                    android:textSize="@dimen/font_medium"
+                                    android:visibility="gone" />
 
 
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_marginTop="@dimen/_20sdp"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_20sdp">
 
                                 <LinearLayout
                                     android:id="@+id/iv_play_icon"
                                     android:layout_width="match_parent"
-                                    android:background="@drawable/gradient_button"
-                                    android:layout_height="50dp">
+                                    android:layout_height="50dp"
+                                    android:background="@drawable/gradient_button">
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/share_margin_top"
-                                        android:clickable="true"
                                         android:layout_weight="1"
-                                        android:gravity="center"
+                                        android:clickable="true"
                                         android:drawablePadding="7dp"
                                         android:focusable="true"
                                         android:fontFamily="@font/heebo_medium"
+                                        android:gravity="center"
                                         android:text="@string/play_now"
                                         android:textColor="@color/white"
                                         android:textSize="@dimen/font_medium_large" />
@@ -222,8 +212,8 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="@color/detailBGColor"
                                 android:layout_marginTop="24dp"
+                                android:background="@color/detailBGColor"
                                 android:orientation="vertical">
 
                                 <LinearLayout
@@ -252,8 +242,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
                                         android:layout_marginEnd="@dimen/movie_metadata_tag_margin_margin_right"
-                                        android:lineHeight="24sp"
                                         android:fontFamily="@font/heebo_regular"
+                                        android:lineHeight="24sp"
                                         android:textColor="@color/lightGreenColor"
                                         android:textSize="@dimen/font_medium" />
 
@@ -264,9 +254,9 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="12dp"
                                         android:layout_marginEnd="@dimen/expandable_text_margin_right"
-                                        android:lineHeight="24sp"
                                         android:ellipsize="end"
                                         android:fontFamily="@font/heebo_regular"
+                                        android:lineHeight="24sp"
                                         android:maxLines="2"
                                         android:textColor="@color/white"
                                         android:textSize="@dimen/font_medium_large" />
@@ -284,6 +274,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:orientation="vertical">
+
                                             <LinearLayout
                                                 android:id="@+id/duration_lay"
                                                 android:layout_width="match_parent"
@@ -331,6 +322,7 @@
                                                     android:textColor="@color/cast_and_crew_title"
                                                     android:textSize="@dimen/font_medium" />
                                             </LinearLayout>
+
                                             <LinearLayout
                                                 android:id="@+id/cast_lay"
                                                 android:layout_width="match_parent"
@@ -354,7 +346,6 @@
                                                     android:textColor="@color/cast_and_crew_title"
                                                     android:textSize="@dimen/font_medium" />
                                             </LinearLayout>
-
 
 
                                             <LinearLayout
@@ -412,8 +403,6 @@
 
                                 </LinearLayout>
                             </LinearLayout>
-
-
 
 
                         </LinearLayout>
@@ -493,7 +482,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </RelativeLayout>
 

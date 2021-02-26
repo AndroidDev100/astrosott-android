@@ -56,6 +56,7 @@ import com.astro.sott.beanModel.commonBeanModel.SearchModel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
+import com.astro.sott.repositories.trailerFragment.TrailerHighlightsDataLayer;
 import com.astro.sott.repositories.webSeriesDescription.SeriesDataLayer;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.kaltura.client.types.Asset;
@@ -421,9 +422,10 @@ public class ActivityLauncher {
             new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, itemsList);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getEpisode(activity)) {
             webDetailRedirection(itemsList.getObject(), layoutType);
-            //new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getTrailer(activity)) {
-            new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, itemsList, layoutType);
+            trailerDirection(itemsList.getObject(), layoutType);
+        } else if (itemsList.getObject().getType() == MediaTypeConstant.getHighlight(activity)) {
+            trailerDirection(itemsList.getObject(), layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getClip()) {
             //new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getProgram(activity)) {
@@ -431,6 +433,35 @@ public class ActivityLauncher {
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getPromo(activity)) {
             promoCondition(itemsList, layoutType);
         }
+    }
+    public void trailerDirection(Asset itemsList, int layoutType) {
+        if (SystemClock.elapsedRealtime() - episodeClickTime < 1000) {
+            return;
+        }
+        episodeClickTime = SystemClock.elapsedRealtime();
+        String parentRefId = AssetContent.getParentRefId(itemsList.getTags());
+        if (!parentRefId.equalsIgnoreCase("")) {
+            TrailerHighlightsDataLayer.geAssetFromTrailer(activity, parentRefId).observe((LifecycleOwner) activity, asset -> {
+                if (asset != null) {
+                    RailCommonData railCommonData = new RailCommonData();
+                    railCommonData.setObject(asset);
+                    if (asset.getType() == MediaTypeConstant.getMovie(activity)) {
+                        new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, railCommonData, layoutType);
+
+                    } else if (asset.getType() == MediaTypeConstant.getSeries(activity)) {
+                        new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, railCommonData, layoutType);
+
+                    }
+                } else {
+                    Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                }
+
+            });
+        } else {
+            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 
     private long episodeClickTime = 0;
