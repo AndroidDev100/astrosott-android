@@ -62,6 +62,7 @@ import com.astro.sott.repositories.webSeriesDescription.SeriesDataLayer;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
+import com.kaltura.client.types.ProgramAsset;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -515,8 +516,28 @@ public class ActivityLauncher {
     }
 
     private void checkCurrentProgram(final Asset itemValue) {
+        try {
 
-        new LiveChannelManager().getLiveProgram(activity, itemValue, asset -> {
+            ProgramAsset progAsset = (ProgramAsset) itemValue;
+            if (progAsset.getLinearAssetId() != null) {
+                LinearProgramDataLayer.getLinearFromProgram(activity, progAsset.getLinearAssetId().toString()).observe((LifecycleOwner) activity, railCommonData1 -> {
+                    if (railCommonData1.getStatus()) {
+                        Intent intent = new Intent(activity, LiveChannel.class);
+                        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData1);
+                        intent.putExtra(AppLevelConstants.PROGRAM_ASSET, itemValue);
+                        intent.putExtra("asset_ids", railCommonData1.getObject().getId());
+                        activity.startActivity(intent);
+                    } else {
+                        Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        } catch (Exception e) {
+            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+        }
+        /*new LiveChannelManager().getLiveProgram(activity, itemValue, asset -> {
             if (asset.getStatus()) {
                 if (asset.getLivePrograme()) {
                     getProgramRailCommonData(itemValue);
@@ -540,7 +561,7 @@ public class ActivityLauncher {
                     }
                 }
             }
-        });
+        });*/
     }
 
 
