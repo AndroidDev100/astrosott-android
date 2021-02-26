@@ -31,6 +31,8 @@
                 <ImageView
                     android:id="@+id/landscape_image"
                     android:layout_width="155dp"
+                    android:scaleType="fitXY"
+                    android:background="@drawable/landscape"
                     android:layout_height="88dp"
                      />
 

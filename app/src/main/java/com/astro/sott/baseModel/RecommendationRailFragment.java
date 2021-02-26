@@ -133,8 +133,9 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
-            setSimilarUIComponent(TabsData.getInstance().getYouMayAlsoLikeData());
-           // youMayAlsoLike();
+            if (TabsData.getInstance().getYouMayAlsoLikeData() != null)
+                setSimilarUIComponent(TabsData.getInstance().getYouMayAlsoLikeData());
+            // youMayAlsoLike();
         }
     }
 
@@ -193,7 +194,7 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
                 if (assetCommonBeans.size() > 0) {
                     if (assetCommonBeans.get(0).getStatus()) {
                         channelList = dtChannelsList;
-                       // setSimilarUIComponent(assetCommonBeans);
+                        // setSimilarUIComponent(assetCommonBeans);
                     } else {
                         getBinding().upcoming.setVisibility(View.VISIBLE);
                     }

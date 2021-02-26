@@ -56,10 +56,13 @@ import com.astro.sott.beanModel.commonBeanModel.SearchModel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
+import com.astro.sott.repositories.liveChannel.LinearProgramDataLayer;
 import com.astro.sott.repositories.trailerFragment.TrailerHighlightsDataLayer;
 import com.astro.sott.repositories.webSeriesDescription.SeriesDataLayer;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.MediaAsset;
+import com.kaltura.client.types.ProgramAsset;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -434,6 +437,7 @@ public class ActivityLauncher {
             promoCondition(itemsList, layoutType);
         }
     }
+
     public void trailerDirection(Asset itemsList, int layoutType) {
         if (SystemClock.elapsedRealtime() - episodeClickTime < 1000) {
             return;
@@ -512,8 +516,28 @@ public class ActivityLauncher {
     }
 
     private void checkCurrentProgram(final Asset itemValue) {
+        try {
 
-        new LiveChannelManager().getLiveProgram(activity, itemValue, asset -> {
+            ProgramAsset progAsset = (ProgramAsset) itemValue;
+            if (progAsset.getLinearAssetId() != null) {
+                LinearProgramDataLayer.getLinearFromProgram(activity, progAsset.getLinearAssetId().toString()).observe((LifecycleOwner) activity, railCommonData1 -> {
+                    if (railCommonData1.getStatus()) {
+                        Intent intent = new Intent(activity, LiveChannel.class);
+                        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData1);
+                        intent.putExtra(AppLevelConstants.PROGRAM_ASSET, itemValue);
+                        intent.putExtra("asset_ids", railCommonData1.getObject().getId());
+                        activity.startActivity(intent);
+                    } else {
+                        Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        } catch (Exception e) {
+            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+        }
+        /*new LiveChannelManager().getLiveProgram(activity, itemValue, asset -> {
             if (asset.getStatus()) {
                 if (asset.getLivePrograme()) {
                     getProgramRailCommonData(itemValue);
@@ -537,7 +561,7 @@ public class ActivityLauncher {
                     }
                 }
             }
-        });
+        });*/
     }
 
 
@@ -589,10 +613,30 @@ public class ActivityLauncher {
 
     public void liveChannelActivity(Activity source,
                                     Class<LiveChannel> destination, RailCommonData commonData) {
-        Intent intent = new Intent(source, destination);
-        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
-        intent.putExtra("asset_ids", commonData.getObject().getId());
-        activity.startActivity(intent);
+        try {
+
+
+            MediaAsset mediaAsset = (MediaAsset) commonData.getObject();
+            String channelId = mediaAsset.getExternalIds();
+            LinearProgramDataLayer.getProgramFromLinear(activity, channelId).observe((LifecycleOwner) activity, programAsset -> {
+                if (programAsset != null) {
+                    Intent intent = new Intent(source, destination);
+                    intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
+                    intent.putExtra(AppLevelConstants.PROGRAM_ASSET, programAsset);
+                    intent.putExtra("asset_ids", commonData.getObject().getId());
+                    activity.startActivity(intent);
+                } else {
+                    Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+                }
+
+            });
+        } catch (Exception exception) {
+            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+        }
+
+        /* */
     }
 
     public void detailActivity(Activity source, Class<MovieDescriptionActivity> destination, RailCommonData railData, int layoutType) {

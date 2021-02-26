@@ -6,241 +6,139 @@
         android:id="@+id/main_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/fragment_background_color"
+        android:background="@color/blue_bg"
         android:orientation="vertical"
         android:paddingTop="@dimen/schedule_top_margin"
         android:paddingBottom="@dimen/schedule_bottom_margin">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/schedule_item_margin"
-            android:layout_marginRight="@dimen/schedule_item_margin"
-            android:baselineAligned="false"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/blue_bg"
             android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:background="@drawable/landscape"
+                android:scaleType="fitXY"></ImageView>
+
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/epg_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="19dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/heebo_medium"
+                    android:lineHeight="24sp"
+                    android:maxLines="1"
+                    android:textColor="@color/title_color"
+                    android:textSize="@dimen/font_medium_large"></TextView>
+
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="19dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/outline_button"
+                    android:gravity="center"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp">
+
+
+                    <TextView
+                        android:id="@+id/start_end_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/heebo_regular"
+                        android:gravity="center"
+                        android:lineHeight="24sp"
+                        android:textColor="@color/title_color"
+                        android:textSize="@dimen/font_small"></TextView>
+                </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/title_txt"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/roboto_medium"
-                        android:maxLines="1"
-                        android:text=""
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/font_medium" />
 
                     <ImageView
-                        android:id="@+id/catchup_icon"
+                        android:id="@+id/share"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scaleType="fitXY"
-                        android:layout_gravity="left"
-                        android:visibility="gone"
-                        android:layout_marginEnd="@dimen/dp14"
-                        android:background="@drawable/catchup_con"/>
+                        android:layout_marginLeft="19dp"
+                        android:background="@drawable/share">
 
-                    <LinearLayout
-                        android:id="@+id/livenow_lay"
+                    </ImageView>
+
+                    <ImageView
+                        android:id="@+id/notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:background="@color/schedule_live_background"
-                        android:visibility="gone">
+                        android:layout_marginLeft="24dp"
+                        android:background="@drawable/notification_icon">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="@dimen/schedule_livenow_left_padding"
-                            android:paddingEnd="@dimen/schedule_livenow_right_padding"
-                            android:text="@string/live_text"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/font_small" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/schedule_text_top_margin"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/genre_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/total_duration_left"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/genre_txt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:fontFamily="@font/roboto_regular"
-                            android:text="@string/comedy"
-
-                            android:textColor="@color/cast_and_crew_title"
-                            android:textSize="@dimen/font_small"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/total_duration_left"
-                            android:layout_marginTop="2dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:paddingBottom="@dimen/schedule_text_padding_bottom"
-                            android:text="@string/bullet_symbol"
-                            android:textColor="@color/cast_and_crew_title" />
-
-
-                    </LinearLayout>
-
-
-                    <TextView
-                        android:id="@+id/total_duration_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/roboto_regular"
-                        android:text="@string/comedy"
-                        android:textColor="@color/cast_and_crew_title"
-                        android:textSize="@dimen/font_small" />
-
-
-                </LinearLayout>
-
-                <at.blogc.android.views.ExpandableTextView
-                    android:id="@+id/descriptionText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:lineSpacingExtra="1dp"
-                    android:maxLines="1"
-                    android:textColor="@color/cast_and_crew_title"
-                    android:textSize="@dimen/font_small"
-                    app:animation_duration="300" />
-
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="top">
-
-                <ImageView
-                    android:id="@+id/reminder_icon"
-                    android:layout_width="@dimen/search_header_item_height"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:contentDescription="@string/play_icon_content_discription" />
-
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/schedule_left_margin"
-
-                android:gravity="top"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/start_hint"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="5dp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:text="@string/start"
-                        android:textColor="@color/primary_blue"
-                        android:textSize="@dimen/font_small" />
-
-
-                    <TextView
-                        android:id="@+id/start"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/roboto_regular"
-                        android:text=""
-                        android:textColor="@color/primary_blue"
-                        android:textSize="@dimen/font_small"
-                        android:textStyle="bold" />
-
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/end_hint"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:text="@string/end"
-                        android:textColor="@color/primary_blue"
-                        android:textSize="@dimen/font_small" />
-
-
-                    <TextView
-                        android:id="@+id/end"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/roboto_regular"
-                        android:text=""
-                        android:textColor="@color/primary_blue"
-                        android:textSize="@dimen/font_small"
-                        android:textStyle="bold" />
-
+                    </ImageView>
 
                 </LinearLayout>
             </LinearLayout>
+
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/more_text"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="@dimen/schedule_item_margin"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="right"
-            android:padding="5dp"
-            android:text="@string/more"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_small" />
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <com.astro.sott.utils.helpers.ExpandableTextView
+                android:id="@+id/description_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="@font/heebo_regular"
+                android:lineHeight="24sp"
+                android:maxLines="1"
+                android:textColor="@color/title_color"
+                android:textSize="@dimen/font_medium_large" />
+
+            <TextView
+                android:id="@+id/more_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:ellipsize="end"
+                android:fontFamily="@font/heebo_bold"
+                android:maxLines="2"
+                android:paddingTop="10dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
+                android:text="See More"
+                android:textAllCaps="true"
+                android:textColor="@color/maya_blue"
+                android:textSize="@dimen/font_medium" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
 </layout>
