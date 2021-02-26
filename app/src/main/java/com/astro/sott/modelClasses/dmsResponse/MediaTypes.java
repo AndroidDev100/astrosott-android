@@ -33,6 +33,18 @@ public class MediaTypes {
     @SerializedName("Program")
     @Expose
     private String program;
+    @SerializedName("FilterGenre")
+    @Expose
+    private String filterGenre;
+
+
+    public String getFilterGenre() {
+        return filterGenre;
+    }
+
+    public void setFilterGenre(String filterGenre) {
+        this.filterGenre = filterGenre;
+    }
 
     public String getLinear() {
         return linear;

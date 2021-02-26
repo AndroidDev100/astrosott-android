@@ -6,6 +6,9 @@
     <dimen name="font_medium">14sp</dimen>
     <dimen name="font_medium_large">16sp</dimen>
     <dimen name="font_large">18sp</dimen>
+    <dimen name="font_xlarge">20sp</dimen>
+
+    <dimen name="font_xxlarge">24sp</dimen>
     <dimen name="video_quality_seprate_line_margin">5dp</dimen>
     <dimen name="trailer_description_margin_top">10dp</dimen>
     <dimen name="trailer_description_margin_left">20dp</dimen>
@@ -30,6 +33,8 @@
     <dimen name="device_managment_margin_left">16dp</dimen>
     <dimen name="multiple_playlist_item">14dp</dimen>
     <dimen name="account_setting_margin_left">18dp</dimen>
+    <dimen name="related_item_width">158dp</dimen>
+    <dimen name="related_item_height">87dp</dimen>
     <dimen name="landscape_item_width">160dp</dimen>
     <dimen name="landscape_item_height">90dp</dimen>
 

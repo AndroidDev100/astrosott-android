@@ -82,7 +82,7 @@ import io.branch.referral.util.LinkProperties;
 
 public class AppCommonMethods {
     private static String progDuration;
-    public static boolean isAdsEnable = false;
+    public static boolean isAdsEnable = true;
     private static Long _time;
     public static boolean isTablet = false;
 
@@ -456,7 +456,7 @@ public class AppCommonMethods {
                     ? "" + secs + " sec"
                     : "" + secs + " sec");
             if (hours > 0)
-                return hours + " hr " + minsString + " min " + secsString;
+                return hours + " hr " + minsString + " min " ;
             else if (mins > 0)
                 return mins + " min";
             else return secsString;

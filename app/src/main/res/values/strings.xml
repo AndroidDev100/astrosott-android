@@ -55,7 +55,11 @@
     <string name="now_playing">Now Playing</string>
     <string name="more_like_this"> MORE LIKE THIS </string>
     <string name="related">RELATED</string>
-    <string name="trailer_title">TRAILER AND MORE</string>
+    <string name="episode_title">Episodes</string>
+
+    <string name="trailer_more">TRAILERS &amp; MORE</string>
+    <string name="trailer_title">TRAILERS</string>
+    <string name="highlights">HIGHLIGHTS</string>
     <string name="schedule">Schedule</string>
     <string name="no_device_found">No device found</string>
     <string name="remove_device">Do you really want to remove this device?</string>
@@ -74,14 +78,22 @@
     <string name="download">Download</string>
 
     <string name="share"><b>Share </b></string>
+    <string name="play_now">Play Now</string>
+    <string name="become_vip">BECOME A VIP</string>
+    <string name="my_list">My List</string>
     <string name="no_connection">No Connection</string>
     <string name="more">MORE</string>
+    <string name="view_more"><u>VIEW MORE</u></string>
+    <string name="view_less"><u>VIEW LESS</u></string>
+
     <string name="less">LESS</string>
     <string name="live">Live Now</string>
     <string name="similar_channel">Similar Channel</string>
     <string name="title_exclusives">Exclusive</string>
-    <string name="actors">Actors:</string>
-    <string name="directors">Directors:</string>
+    <string name="actors">Actors: </string>
+    <string name="sub_title">Subtitle Languages: </string>
+    <string name="duration">Duration: </string>
+    <string name="directors">Directors: </string>
 
     <string name="show_all">Show All</string>
     <string name="title_creators">Creators</string>

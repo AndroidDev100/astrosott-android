@@ -61,5 +61,5 @@
         android:layout_marginTop="@dimen/dimen24dp"
         />
 
-</RelativeLayout>>
+</RelativeLayout>
 </layout>

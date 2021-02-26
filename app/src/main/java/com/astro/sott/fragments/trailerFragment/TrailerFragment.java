@@ -3,8 +3,10 @@ package com.astro.sott.fragments.trailerFragment;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -39,6 +42,7 @@ import com.astro.sott.player.houseHoldCheckManager.HouseHoldCheck;
 import com.astro.sott.player.ui.PlayerActivity;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.DialogHelper;
@@ -46,10 +50,13 @@ import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MultilingualStringValueArray;
+import com.kaltura.client.types.StringValue;
 import com.kaltura.client.types.UserAssetRule;
+import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,7 +75,14 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     private String userSelectedParentalRating = "";
     private int userSelectedParentalPriority;
     private int priorityLevel;
+    private String externalRefId;
+    private TrailerAdapter trailerAdapter;
+    private List<Asset> trailerData;
+    private List<Asset> highLightData;
+
+
     private int assetRestrictionLevel;
+    private String externalId = "";
     ArrayList<ParentalLevels> parentalLevels;
 
 
@@ -89,56 +103,60 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         railCommonData = getArguments().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
-       // AllChannelManager.getInstance().setRailCommonData(railCommonData);
-
-       /* if (railCommonData != null && railCommonData.getObject() != null)
+        // AllChannelManager.getInstance().setRailCommonData(railCommonData);
+        if (railCommonData != null && railCommonData.getObject() != null)
             asset = railCommonData.getObject();
-            map = asset.getTags();
+        map = asset.getTags();
+        if (asset.getExternalId() != null)
+            externalId = asset.getExternalId();
         parentalLevels = new ArrayList<>();
         modelCall();
-        getRefId(asset.getType(), asset.getTags());*/
+        checkTrailerOrHighlights();
+        //   getRefId(asset.getType(), asset.getMetas());
 
     }
 
-    private void getRefId(final int type, Map<String, MultilingualStringValueArray> map) {
-        trailerFragmentViewModel.getRefIdLivedata(map).observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String ref_id) {
-                if (!TextUtils.isEmpty(ref_id)) {
-                    getTrailer(ref_id, type);
-                }
-            }
-        });
+    private void checkTrailerOrHighlights() {
+        trailerData = trailerFragmentViewModel.getTrailer();
+        highLightData = trailerFragmentViewModel.getHighLights();
+        if (trailerData.size() > 0)
+            setTrailerUiComponents();
+        if (highLightData.size() > 0)
+            setHighLightUiComponents();
+
+
     }
 
     private void modelCall() {
         trailerFragmentViewModel = ViewModelProviders.of(this).get(TrailerFragmentViewModel.class);
     }
 
-    private void getTrailer(String ref_id, int assetType) {
-        trailerFragmentViewModel.getTrailer(ref_id, assetType).observe(this, assetList -> {
 
-            if (assetList != null) {
-                if (assetList.size() > 0) {
-                    getBinding().myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-                    TrailerAdapter trailerAdapter = new TrailerAdapter(getActivity(), assetList, this);
-                    getBinding().myRecyclerView.setAdapter(trailerAdapter);
-                }
+    private void setTrailerUiComponents() {
+        getBinding().trailerText.setVisibility(View.VISIBLE);
+        getBinding().trailerRecyclerView.setVisibility(View.VISIBLE);
+        getBinding().trailerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        trailerAdapter = new TrailerAdapter(getActivity(), trailerData, this);
+        getBinding().trailerRecyclerView.setAdapter(trailerAdapter);
+    }
 
-            }
-
-        });
+    private void setHighLightUiComponents() {
+        getBinding().highLightText.setVisibility(View.VISIBLE);
+        getBinding().highLightREcycler.setVisibility(View.VISIBLE);
+        getBinding().highLightREcycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        trailerAdapter = new TrailerAdapter(getActivity(), highLightData, this);
+        getBinding().highLightREcycler.setAdapter(trailerAdapter);
     }
 
     private void playerChecks(final Asset railData) {
-        new GeoBlockingCheck().aseetAvailableOrNot(getActivity(), railData, (status, response, totalCount,errorcode,message) -> {
+        new GeoBlockingCheck().aseetAvailableOrNot(getActivity(), railData, (status, response, totalCount, errorcode, message) -> {
             if (status) {
                 if (totalCount != 0) {
                     checkBlockingErrors(response, railData);
                 } else {
                     checkEntitleMent(railData);
                 }
-            }else {
+            } else {
                 callProgressBar();
                 showDialog(message);
             }
@@ -146,9 +164,9 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     }
 
     private void checkEntitleMent(final Asset railCommonData) {
-      String  fileId = AppCommonMethods.getFileIdOfAssest(railCommonData);
+        String fileId = AppCommonMethods.getFileIdOfAssest(railCommonData);
 
-        new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey,  errorCode1, message) -> {
+        new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey, errorCode1, message) -> {
             if (status) {
                 playerChecksCompleted = true;
                 if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
@@ -163,9 +181,9 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
                     checkErrors(railCommonData);
                     //not play
                 }
-            }else {
+            } else {
                 callProgressBar();
-                if (message!="")
+                if (message != "")
                     showDialog(message);
             }
 
@@ -174,44 +192,6 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
 
     }
 
-    private void isDtvAccountAdded() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                trailerFragmentViewModel.getDtvAccountList().observe(getActivity(), new Observer<String>() {
-                    @Override
-                    public void onChanged(String dtvAccount) {
-                        try {
-                            if (dtvAccount != null) {
-                                if (dtvAccount.equalsIgnoreCase("0")) {
-
-                                    callProgressBar();
-                                    getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), false,false));
-
-                                } else if (dtvAccount.equalsIgnoreCase("")) {
-
-                                    callProgressBar();
-                                    getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), false,false));
-                                } else {
-
-                                    callProgressBar();
-                                    getActivity().runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(getActivity(), true,false));
-                                }
-
-                            } else {
-                                // Api Failure Error
-                                callProgressBar();
-                                showDialog(getString(R.string.something_went_wrong_try_again));
-                            }
-                        }catch (Exception e){
-                            Log.e("ExceptionIs",e.toString());
-                        }
-                    }
-                });
-
-            }
-        });
-    }
 
     private void checkBlockingErrors(Response<ListResponse<UserAssetRule>> response, Asset
             railData) {
@@ -237,19 +217,12 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     }
 
     @Override
-    public void getTrailerAsset(Asset asset) {
+    public void getTrailerAsset(Asset trailerAsset) {
 
         getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
 
         });
-
-
-        if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
-            callProgressBar();
-            playerChecks(asset);
-        }else {
-            DialogHelper.showLoginDialog(getActivity());
-        }
+        new ActivityLauncher(getActivity()).trailerDirection(trailerAsset, AppConstants.Rail5);
 
     }
 
@@ -302,20 +275,20 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
                 defaultParentalRating = responseDmsModel.getParams().getDefaultParentalLevel();
                 userSelectedParentalRating = KsPreferenceKey.getInstance(getActivity()).getUserSelectedRating();
                 if (!userSelectedParentalRating.equalsIgnoreCase("")) {
-                    assetKey = AssetContent.getAssetKey(asset.getTags(),userSelectedParentalRating, getActivity());
-                    if(assetKey){
+                    assetKey = AssetContent.getAssetKey(asset.getTags(), userSelectedParentalRating, getActivity());
+                    if (assetKey) {
                         assetRuleErrorCode = AppLevelConstants.NO_ERROR;
                         checkOnlyDevice(asset);
-                    }else {
+                    } else {
                         validateParentalPin(asset);
                     }
 
                 } else {
-                    assetKey = AssetContent.getAssetKey(asset.getTags(),defaultParentalRating, getActivity());
-                    if(assetKey){
+                    assetKey = AssetContent.getAssetKey(asset.getTags(), defaultParentalRating, getActivity());
+                    if (assetKey) {
                         assetRuleErrorCode = AppLevelConstants.NO_ERROR;
                         checkOnlyDevice(asset);
-                    }else {
+                    } else {
                         validateParentalPin(asset);
                     }
                 }
@@ -337,7 +310,7 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
                 } else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
                         new RefreshKS(getActivity()).refreshKS(response -> checkDevice(railData));
-                    }else {
+                    } else {
                         callProgressBar();
                         showDialog(commonResponse.getMessage());
                     }
@@ -355,7 +328,7 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
                 } else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
                         new RefreshKS(getActivity()).refreshKS(response -> checkDevice(railData));
-                    }else {
+                    } else {
                         callProgressBar();
                         showDialog(commonResponse.getMessage());
                     }
@@ -421,11 +394,11 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
         startActivity(intent);
     }
 
-    private void callProgressBar(){
+    private void callProgressBar() {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(getBinding().includeProgressbar.progressBar.getVisibility() == View.VISIBLE){
+                if (getBinding().includeProgressbar.progressBar.getVisibility() == View.VISIBLE) {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 } else {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);

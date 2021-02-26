@@ -48,6 +48,7 @@ import com.astro.sott.callBacks.kalturaCallBacks.DeleteDeviceCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.DeleteFromFollowlistCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.DeleteWatchListCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.GenreCallBack;
+import com.astro.sott.callBacks.kalturaCallBacks.GetSeriesCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.HomechannelCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.HouseHoldAddCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.HouseHoldDevice;
@@ -779,6 +780,103 @@ public class KsServices {
         new Thread(runnable).start();
     }
 
+
+    public void callSeriesData(int mediaType, String seriesID, GetSeriesCallBack callBack) {
+
+
+        clientSetupKs();
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        FilterPager filterPager = new FilterPager();
+
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(1);
+
+        if (mediaType == MediaTypeConstant.getEpisode(activity)) {
+            String ksql = KSQL.getSeriesKSQL(MediaTypeConstant.getSeries(activity), seriesID);
+            searchAssetFilter.setKSql(ksql);
+        }
+
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
+            PrintLogging.printLog("", "response" + result.isSuccess());
+            if (result.isSuccess()) {
+                if (result.results != null && result.results.getObjects() != null && result.results.getTotalCount() > 0) {
+                    callBack.onSuccess(result.results.getObjects());
+                } else {
+                    callBack.onFailure();
+                }
+            } else {
+
+            }
+
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
+
+    public void getAssetFromTrailer(String refId, GetSeriesCallBack callBack) {
+
+
+        clientSetupKs();
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        FilterPager filterPager = new FilterPager();
+
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(1);
+
+        String ksql = KSQL.getAssetFromTrailerKSQL(MediaTypeConstant.getMovie(activity), MediaTypeConstant.getSeries(activity), refId);
+        searchAssetFilter.setKSql(ksql);
+
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
+            PrintLogging.printLog("", "response" + result.isSuccess());
+            if (result.isSuccess()) {
+                if (result.results != null && result.results.getObjects() != null && result.results.getTotalCount() > 0) {
+                    callBack.onSuccess(result.results.getObjects());
+                } else {
+                    callBack.onFailure();
+                }
+            } else {
+
+            }
+
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
+
+    public void getProgramFromLinear(String channelId, GetSeriesCallBack callBack) {
+
+
+        clientSetupKs();
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        FilterPager filterPager = new FilterPager();
+
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(1);
+        String one = "(and epg_channel_id='";
+        String two = "' start_date<'0' end_date>'0')";
+        String ksql = one + channelId + two;
+        searchAssetFilter.setKSql(ksql);
+        searchAssetFilter.setTypeIn(MediaTypeConstant.getProgram(activity) + "");
+
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
+            PrintLogging.printLog("", "response" + result.isSuccess());
+            if (result.isSuccess()) {
+                if (result.results != null && result.results.getObjects() != null && result.results.getTotalCount() > 0) {
+                    callBack.onSuccess(result.results.getObjects());
+                } else {
+                    callBack.onFailure();
+                }
+            } else {
+
+            }
+
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
     public void callSpotlightSesionEpisode(String seriesId, int assetType, List<Integer> results, HomechannelCallBack callBack) {
         homechannelCallBack = callBack;
         listAssetBuilders = new ArrayList<>();
@@ -910,10 +1008,10 @@ public class KsServices {
 
             searchAssetFilter.setKSql(kSQL);
             Log.e("ASSET TYPE", String.valueOf(assetType));
-            if (assetType == MediaTypeConstant.getDrama(activity)) {
-                searchAssetFilter.typeIn(MediaTypeConstant.getWebEpisode(activity) + "");
+            if (assetType == MediaTypeConstant.getSeries(activity)) {
+                searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
             } else if (assetType == MediaTypeConstant.getWebEpisode(activity)) {
-                searchAssetFilter.typeIn(MediaTypeConstant.getWebEpisode(activity) + "");
+                searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
             }
 
             // searchAssetFilter.typeIn("603");
@@ -956,6 +1054,94 @@ public class KsServices {
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
                                         callSeasonEpisodes(counter, seriesId, assetType, results, seasonCounter, callBack);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        similarMovieCallBack.response(false, commonResponse);
+                                    }
+                                }
+                            });
+                        else {
+                            similarMovieCallBack.response(false, commonResponse);
+                        }
+                    } else {
+                        similarMovieCallBack.response(false, commonResponse);
+                    }
+
+
+                }
+            });
+            getRequestQueue().queue(builder.build(client));
+        } catch (Exception e) {
+            PrintLogging.printLog(this.getClass(), "Exception", "" + e);
+
+        }
+
+    }
+
+
+    public void callEpisodes(int counter, String seriesId, int assetType, SimilarMovieCallBack callBack) {
+        clientSetupKs();
+        similarMovieCallBack = callBack;
+        final CommonResponse commonResponse = new CommonResponse();
+        try {
+            // long idd = results.get(seasonCounter);
+            // Log.w("idsssoftiles", "idsprints" + idd + "-->>");
+            int iid = (int) 0;
+            String one = "(and SeriesID='";
+            String two = "' SeasonNumber='";
+            String three = "')";
+            String kSQL = one + seriesId + three;
+            // Log.w("idsssoftiles", "idsprints" + idd + "-->>" + kSQL);
+            SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+
+            searchAssetFilter.setKSql(kSQL);
+            Log.e("ASSET TYPE", String.valueOf(assetType));
+            if (assetType == MediaTypeConstant.getSeries(activity)) {
+                searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
+            } else if (assetType == MediaTypeConstant.getWebEpisode(activity)) {
+                searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
+            }
+
+            // searchAssetFilter.typeIn("603");
+            DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
+            dynamicOrderBy.setName("EpisodeNumber");
+            dynamicOrderBy.orderBy("META_ASC");
+            searchAssetFilter.setDynamicOrderBy(dynamicOrderBy);
+
+            FilterPager filterPager = new FilterPager();
+            filterPager.setPageIndex(counter);
+            filterPager.setPageSize(20);
+
+
+            AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null) {
+                            if (result.results.getObjects().size() > 0) {
+                                commonResponse.setStatus(true);
+                                commonResponse.setAssetList(result);
+                                similarMovieCallBack.response(true, commonResponse);
+                            } else {
+                                similarMovieCallBack.response(false, commonResponse);
+                            }
+                        } else {
+                            similarMovieCallBack.response(false, commonResponse);
+                        }
+                    } else {
+                        similarMovieCallBack.response(false, commonResponse);
+                    }
+                } else {
+
+
+                    if (result.error != null) {
+
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        callEpisodes(counter, seriesId, assetType, callBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         similarMovieCallBack.response(false, commonResponse);
@@ -1692,10 +1878,65 @@ public class KsServices {
     public void getTrailorAsset(String ref_id, int assetType, TrailerAssetCallBack callBack) {
         clientSetupKs();
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
-        String one = "(and asset_type='";
-        String two = "' TrailerParentRefId ~ '";
+        String one = "(and (or asset_type='";
+        String four = "' asset_type='";
+        String two = "') ParentRefId ~ '";
         String three = "')";
-        String kSQL = one + MediaTypeConstant.getTrailer(activity) + two + ref_id + three;
+        String kSQL = one + MediaTypeConstant.getTrailer(activity) + four + MediaTypeConstant.getHighlight(activity) + two + ref_id + three;
+        searchAssetFilter.setKSql(kSQL);
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(20);
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Asset>> result) {
+                if (result.isSuccess()) {
+                    if (result.results != null && result.results.getObjects() != null) {
+                        if (result.results.getTotalCount() > 0) {
+                            callBack.getTrailorAsset(true, result.results.getObjects());
+                        } else {
+                            callBack.getTrailorAsset(false, null);
+                        }
+                    } else {
+                        callBack.getTrailorAsset(false, null);
+                    }
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getTrailorAsset(ref_id, assetType, callBack);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        callBack.getTrailorAsset(false, null);
+                                    }
+                                }
+                            });
+                        else {
+                            callBack.getTrailorAsset(false, null);
+                        }
+                    } else {
+                        callBack.getTrailorAsset(false, null);
+                    }
+
+
+                }
+            }
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
+    public void getHighLightAsset(String ref_id, int assetType, TrailerAssetCallBack callBack) {
+        clientSetupKs();
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        String one = "(and asset_type='";
+        String two = "' externalId ~ '";
+        String three = "')";
+        String kSQL = one + MediaTypeConstant.getHighlight(activity) + two + ref_id + three;
         searchAssetFilter.setKSql(kSQL);
 
         FilterPager filterPager = new FilterPager();
@@ -1723,7 +1964,7 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        getTrailorAsset(ref_id, assetType, callBack);
+                                        getHighLightAsset(ref_id, assetType, callBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         callBack.getTrailorAsset(false, null);
@@ -1926,6 +2167,8 @@ public class KsServices {
             AppTokenService.AddAppTokenBuilder builder = AppTokenService.add(token)
                     .setCompletion(result -> {
                         if (result.isSuccess()) {
+                            KsPreferenceKey.getInstance(activity).setTokenId(result.results.getId() + "");
+                            KsPreferenceKey.getInstance(activity).setToken(result.results.getToken() + "");
                         } else {
                         }
                     });
@@ -3148,15 +3391,7 @@ public class KsServices {
         Configuration config = new Configuration();
         config.setConnectTimeout(30000);
         if (responseDmsModel != null) {
-            //  config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-
-            if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
-                //config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            } else {
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            }
-
+            config.setEndpoint(responseDmsModel.getParams().getApiProxyUrlKaltura());
         } else {
             config.setEndpoint(AppConstants.END_POINT);
         }
@@ -3219,8 +3454,8 @@ public class KsServices {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(activity);
         Configuration config = new Configuration();
         config.setConnectTimeout(30000);
-        if (responseDmsModel != null) {
-            config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
+        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlKaltura() != null) {
+            config.setEndpoint(responseDmsModel.getParams().getApiProxyUrlKaltura());
         } else {
             config.setEndpoint(BuildConfig.KALTURA_BASE_URL);
         }
@@ -3244,14 +3479,7 @@ public class KsServices {
         Configuration config = new Configuration();
         config.setConnectTimeout(30000);
         if (responseDmsModel != null) {
-            // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-
-            if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
-                // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            } else {
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            }
+            config.setEndpoint(responseDmsModel.getParams().getApiProxyUrlKaltura());
 
         } else {
             config.setEndpoint(AppConstants.END_POINT);
@@ -5165,15 +5393,7 @@ public class KsServices {
         Configuration config = new Configuration();
         config.setConnectTimeout(30000);
         if (responseDmsModel != null) {
-            //  config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-
-            if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
-                //  config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            } else {
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            }
-
+            config.setEndpoint(responseDmsModel.getParams().getApiProxyUrlKaltura());
         } else {
             config.setEndpoint(AppConstants.END_POINT);
         }
@@ -5399,15 +5619,7 @@ public class KsServices {
         config.setParam("timestamp", System.currentTimeMillis());
         config.setConnectTimeout(30000);
         if (responseDmsModel != null) {
-            // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-
-            if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
-                // config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW().concat("/latest"));
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            } else {
-                config.setEndpoint(responseDmsModel.getParams().getGateways().getJsonGW());
-            }
-
+            config.setEndpoint(responseDmsModel.getParams().getApiProxyUrlKaltura());
         } else {
             config.setEndpoint(AppConstants.END_POINT);
         }

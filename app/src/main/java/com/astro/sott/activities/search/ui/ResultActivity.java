@@ -173,7 +173,9 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
                     } else if (itemValue.getType() == MediaTypeConstant.getEpisode(ResultActivity.this)) {
                         getRailCommonData(itemValue);
                         //  new ToastHandler(this).show(allResult.getHeaderTitle());
-                        new ActivityLauncher(ResultActivity.this).webEpisodeActivity(ResultActivity.this, WebEpisodeDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
+                        new ActivityLauncher(ResultActivity.this).webDetailRedirection(railCommonData.getObject(), AppLevelConstants.Rail5);
+
+                        //new ActivityLauncher(ResultActivity.this).webEpisodeActivity(ResultActivity.this, WebEpisodeDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
 //                    new ActivityLauncher(ResultActivity.this).detailActivity(ResultActivity.this, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);
 
                     } else if (itemValue.getType() == MediaTypeConstant.getLinear(ResultActivity.this)) {

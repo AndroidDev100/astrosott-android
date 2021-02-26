@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.activities.catchUpRails.ui.CatchupActivity;
+import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.moreListing.ui.GridListingActivity;
 import com.astro.sott.activities.myplaylist.ui.MyPlaylist;
@@ -54,8 +56,13 @@ import com.astro.sott.beanModel.commonBeanModel.SearchModel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
+import com.astro.sott.repositories.liveChannel.LinearProgramDataLayer;
+import com.astro.sott.repositories.trailerFragment.TrailerHighlightsDataLayer;
+import com.astro.sott.repositories.webSeriesDescription.SeriesDataLayer;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.MediaAsset;
+import com.kaltura.client.types.ProgramAsset;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +120,12 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
-    public void signupActivity(Activity source, Class<SignUpActivity> destination){
+    public void signupActivity(Activity source, Class<SignUpActivity> destination) {
+        Intent intent = new Intent(source, destination);
+        activity.startActivity(intent);
+    }
+
+    public void forgotPasswordActivity(Activity source, Class<ForgotPasswordActivity> destination) {
         Intent intent = new Intent(source, destination);
         activity.startActivity(intent);
     }
@@ -351,8 +363,8 @@ public class ActivityLauncher {
 
             new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getWebEpisode(activity)) {
-
-            new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
+            webDetailRedirection(asset.getObject(), AppLevelConstants.Rail5);
+            //   new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getTrailer(activity)) {
 
             new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, asset, AppLevelConstants.Rail5);
@@ -412,16 +424,74 @@ public class ActivityLauncher {
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getLinear(activity)) {
             new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, itemsList);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getEpisode(activity)) {
-            new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, itemsList, layoutType);
+            webDetailRedirection(itemsList.getObject(), layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getTrailer(activity)) {
-            new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, itemsList, layoutType);
+            trailerDirection(itemsList.getObject(), layoutType);
+        } else if (itemsList.getObject().getType() == MediaTypeConstant.getHighlight(activity)) {
+            trailerDirection(itemsList.getObject(), layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getClip()) {
-            new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, itemsList, layoutType);
+            //new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getProgram(activity)) {
             checkCurrentProgram(itemsList.getObject());
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getPromo(activity)) {
             promoCondition(itemsList, layoutType);
         }
+    }
+
+    public void trailerDirection(Asset itemsList, int layoutType) {
+        if (SystemClock.elapsedRealtime() - episodeClickTime < 1000) {
+            return;
+        }
+        episodeClickTime = SystemClock.elapsedRealtime();
+        String parentRefId = AssetContent.getParentRefId(itemsList.getTags());
+        if (!parentRefId.equalsIgnoreCase("")) {
+            TrailerHighlightsDataLayer.geAssetFromTrailer(activity, parentRefId).observe((LifecycleOwner) activity, asset -> {
+                if (asset != null) {
+                    RailCommonData railCommonData = new RailCommonData();
+                    railCommonData.setObject(asset);
+                    if (asset.getType() == MediaTypeConstant.getMovie(activity)) {
+                        new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, railCommonData, layoutType);
+
+                    } else if (asset.getType() == MediaTypeConstant.getSeries(activity)) {
+                        new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, railCommonData, layoutType);
+
+                    }
+                } else {
+                    Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                }
+
+            });
+        } else {
+            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    private long episodeClickTime = 0;
+
+    public void webDetailRedirection(Asset asset, int layoutType) {
+        if (SystemClock.elapsedRealtime() - episodeClickTime < 1000) {
+            return;
+        }
+        episodeClickTime = SystemClock.elapsedRealtime();
+        String seriesId = AssetContent.getSeriesId(asset.getMetas());
+        if (!seriesId.equalsIgnoreCase("")) {
+            SeriesDataLayer.getSeries(activity, asset.getType(), seriesId).observe((LifecycleOwner) activity, asset1 -> {
+                if (asset1 != null) {
+                    RailCommonData railCommonData = new RailCommonData();
+                    railCommonData.setObject(asset1);
+                    new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, railCommonData, layoutType);
+
+                } else {
+                    Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 
     private void promoCondition(RailCommonData itemsList, int layoutType) {
@@ -446,8 +516,28 @@ public class ActivityLauncher {
     }
 
     private void checkCurrentProgram(final Asset itemValue) {
+        try {
 
-        new LiveChannelManager().getLiveProgram(activity, itemValue, asset -> {
+            ProgramAsset progAsset = (ProgramAsset) itemValue;
+            if (progAsset.getLinearAssetId() != null) {
+                LinearProgramDataLayer.getLinearFromProgram(activity, progAsset.getLinearAssetId().toString()).observe((LifecycleOwner) activity, railCommonData1 -> {
+                    if (railCommonData1.getStatus()) {
+                        Intent intent = new Intent(activity, LiveChannel.class);
+                        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData1);
+                        intent.putExtra(AppLevelConstants.PROGRAM_ASSET, itemValue);
+                        intent.putExtra("asset_ids", railCommonData1.getObject().getId());
+                        activity.startActivity(intent);
+                    } else {
+                        Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        } catch (Exception e) {
+            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+        }
+        /*new LiveChannelManager().getLiveProgram(activity, itemValue, asset -> {
             if (asset.getStatus()) {
                 if (asset.getLivePrograme()) {
                     getProgramRailCommonData(itemValue);
@@ -471,7 +561,7 @@ public class ActivityLauncher {
                     }
                 }
             }
-        });
+        });*/
     }
 
 
@@ -523,10 +613,30 @@ public class ActivityLauncher {
 
     public void liveChannelActivity(Activity source,
                                     Class<LiveChannel> destination, RailCommonData commonData) {
-        Intent intent = new Intent(source, destination);
-        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
-        intent.putExtra("asset_ids", commonData.getObject().getId());
-        activity.startActivity(intent);
+        try {
+
+
+            MediaAsset mediaAsset = (MediaAsset) commonData.getObject();
+            String channelId = mediaAsset.getExternalIds();
+            LinearProgramDataLayer.getProgramFromLinear(activity, channelId).observe((LifecycleOwner) activity, programAsset -> {
+                if (programAsset != null) {
+                    Intent intent = new Intent(source, destination);
+                    intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
+                    intent.putExtra(AppLevelConstants.PROGRAM_ASSET, programAsset);
+                    intent.putExtra("asset_ids", commonData.getObject().getId());
+                    activity.startActivity(intent);
+                } else {
+                    Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+                }
+
+            });
+        } catch (Exception exception) {
+            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+
+        }
+
+        /* */
     }
 
     public void detailActivity(Activity source, Class<MovieDescriptionActivity> destination, RailCommonData railData, int layoutType) {

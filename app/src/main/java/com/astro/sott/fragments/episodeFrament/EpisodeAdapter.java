@@ -1,6 +1,7 @@
 package com.astro.sott.fragments.episodeFrament;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +18,13 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.EpisodeClickListener;
 import com.astro.sott.databinding.EpisodeItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.MultilingualStringValue;
+import com.kaltura.client.types.StringValue;
 
 
 import java.util.List;
@@ -66,9 +70,23 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 ImageHelper.getInstance(viewHolder.watchlistItemBinding.itemImage.getContext()).loadImageTo(viewHolder.watchlistItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.landscape);
             }
-            viewHolder.watchlistItemBinding.tvTitle.setText(singleItem.getName());
-            viewHolder.watchlistItemBinding.tvDescription.setText(asset.getDescription());
             int value = AppCommonMethods.getEpisodeNumber(asset.getMetas());
+            String duration = AppCommonMethods.getURLDuration(asset);
+            if (!TextUtils.isEmpty(duration)) {
+                viewHolder.watchlistItemBinding.tvduration.setVisibility(View.VISIBLE);
+                viewHolder.watchlistItemBinding.tvduration.setText(duration);
+            }
+
+
+            viewHolder.watchlistItemBinding.tvTitle.setText("E" + value + ": " + singleItem.getName());
+            MultilingualStringValue stringValue = null;
+            String description = "";
+            if (asset.getMetas() != null)
+                stringValue = (MultilingualStringValue) asset.getMetas().get(AppLevelConstants.KEY_SHORT_DESCRIPTION);
+            if (stringValue != null)
+                description = stringValue.getValue();
+
+            viewHolder.watchlistItemBinding.tvDescription.setText(description);
             if (value == episodeNumber) {
                 RailCommonData singleItems = railList.get(position);
                 if (singleItems.getExpended()) {
@@ -86,7 +104,6 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                     //AppCommonMethods.expand(viewHolder.watchlistItemBinding.clRoot,1000,200);
                 }
             }
-            viewHolder.watchlistItemBinding.episodeNumber.setText("Episode " + value + "");
             if (singleItem.getImages() != null && singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 ImageHelper.getInstance(viewHolder.watchlistItemBinding.landscapeImage.getContext()).loadImageTo(viewHolder.watchlistItemBinding.landscapeImage, assetCommonImages.getImageUrl(), R.drawable.landscape);
@@ -98,7 +115,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
             }*/
 
 
-            viewHolder.watchlistItemBinding.downloadIcon.setVisibility(View.VISIBLE);
+            viewHolder.watchlistItemBinding.downloadIcon.setVisibility(View.GONE);
 
 
             viewHolder.watchlistItemBinding.mainLay.setOnClickListener(new View.OnClickListener() {

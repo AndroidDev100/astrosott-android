@@ -14,7 +14,7 @@ import retrofit2.http.*
 
 interface EnveuEndpoints {
 
-    @GET("screen?")
+    @GET("enveu_prod/screen?")
     fun categoryService(@Header("x-device") device: String, @Header("x-platform") platform: String, @Header("x-api-key") key: String, @Query("screenId") screenId: String): Call<EnveuCategory>
 
     @Headers("x-platform: android")

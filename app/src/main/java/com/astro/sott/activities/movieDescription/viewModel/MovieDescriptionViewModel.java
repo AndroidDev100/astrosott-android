@@ -54,7 +54,7 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
                                                              int assetType,
                                                              Map<String, MultilingualStringValueArray> map,
                                                              int layoutType, int screen_id, Asset asset) {
-        return YouMayAlsoLike.getInstance().fetchSimilarMovie(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, screen_id, asset);
+        return YouMayAlsoLike.getInstance().fetchSimilarMovie(getApplication().getApplicationContext(), assetId, counter, assetType, map);
     }
 
 
@@ -68,6 +68,10 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
 
     public LiveData<String> getGenreLivedata(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getGenredata(map);
+    }
+
+    public LiveData<String> getSubGenreLivedata(Map<String, MultilingualStringValueArray> map) {
+        return AssetContent.getSubGenredata(map);
     }
 
 
@@ -90,6 +94,11 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
     public LiveData<String> getLanguageLiveData(Map<String, MultilingualStringValueArray> map) {
 
         return AssetContent.getLanguageData(map);
+    }
+
+    public LiveData<String> getSubTitleLanguageLiveData(Map<String, MultilingualStringValueArray> map) {
+
+        return AssetContent.getSubTitleLanguageData(map);
     }
 
     public LiveData<CommonResponse> listAllwatchList(String assetId) {

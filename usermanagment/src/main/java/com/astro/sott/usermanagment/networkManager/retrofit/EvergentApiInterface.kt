@@ -18,35 +18,35 @@ import retrofit2.http.POST
 
 interface EvergentApiInterface {
 
-    @POST("searchAccountV2")
+    @POST("astro/searchAccountV2")
     fun searchAccountV2(@Body jsonObject: JsonObject?): Call<SearchAccountv2Response?>?
 
-    @POST("createOTP")
+    @POST("astro/createOTP")
     fun createOtp(@Body jsonObject: JsonObject?): Call<CreateOtpResponse?>?
 
-    @POST("confirmOTP")
+    @POST("astro/confirmOTP")
     fun confirmOtp(@Body jsonObject: JsonObject?): Call<ConfirmOtpResponse?>?
 
-    @POST("resetPassword")
+    @POST("astro/resetPassword")
     fun resetPassword(@Body jsonObject: JsonObject?): Call<ResetPasswordResponse?>?
 
-    @POST("createUser")
+    @POST("astro/createUser")
     fun createUser(@Body jsonObject: JsonObject?): Call<CreateUserResponse?>?
 
-    @POST("getOAuthAccessTokenv2")
+    @POST("astro/getOAuthAccessTokenv2")
     fun login(@Body jsonObject: JsonObject?): Call<LoginResponse?>?
 
-    @POST("getContact")
+    @POST("astro/getContact")
     fun getContact(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<GetContactResponse?>?
 
-    @POST("refreshToken")
+    @POST("astro/refreshToken")
     fun refreshToken(@Body jsonObject: JsonObject?): Call<RefreshTokenResponse?>?
 
-    @POST("removeDevices")
+    @POST("astro/removeDevices")
     fun removeDevice(@Header("Authorization") key: String,@Body jsonObject: JsonObject?): Call<RemoveDeviceResponse?>?
 
 
-    @POST("getAccountDevices")
+    @POST("astro/getAccountDevices")
     fun getDevice(@Header("Authorization") key: String,@Body jsonObject: JsonObject?): Call<GetDevicesResponse?>?
 
 

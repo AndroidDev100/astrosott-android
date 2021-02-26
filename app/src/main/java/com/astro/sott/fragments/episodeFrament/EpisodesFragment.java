@@ -3,17 +3,23 @@ package com.astro.sott.fragments.episodeFrament;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +35,7 @@ import com.astro.sott.callBacks.commonCallBacks.ContinueWatchingRemove;
 import com.astro.sott.callBacks.commonCallBacks.EpisodeClickListener;
 import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
 import com.astro.sott.databinding.EpisodeFooterFragmentBinding;
+import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
@@ -54,12 +61,22 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     TextView pause_download, resume_download, cancel_download, go_to_mydownload_lay;
     long estimatedSize;
     WebSeriesDescriptionViewModel viewModel;
+    private List<AssetCommonBean> closedSeriesData;
+
     Asset asset;
     LinearLayoutManager mLayoutManager;
+    private int seasonNumber = 0;
+
     int counter = 1;
+    private int selectedIndex = 0;
+
     EpisodeAdapter adapter;
     List<RailCommonData> loadedList;
     ArrayList<RailCommonData> list;
+    private android.app.AlertDialog alertDialog;
+    private android.app.AlertDialog.Builder builder;
+
+
     Timer timer;
     int clickedPosition = -1;
     int interval = 0;
@@ -69,6 +86,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     String activeDownloadId = "";
     private Context context;
     private int layoutType;
+    private String externalId = "";
     private Map<String, MultilingualStringValueArray> map;
     private List<Integer> seriesNumberList;
     private int seasonCounter = 0;
@@ -103,10 +121,6 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         try {
             loadedList = new ArrayList<>();
 
-            int seasonNumber = getArguments().getInt(AppConstants.KEY_SEASON_NUMBER);
-            if (seasonNumber > 0) {
-                seasonCounter = seasonNumber - 1;
-            }
             modelCall();
             getVideoRails();
         } catch (Exception e) {
@@ -141,10 +155,85 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         }
     }
 
+    class SeasonListAdapter extends RecyclerView.Adapter<SeasonListAdapter.ViewHolder> {
+        private final List<Integer> list;
+        private int selectedPos;
+        private Context mContext;
+
+        //TrackGroup list;
+        public SeasonListAdapter(List<Integer> list, int selectedPos, Context context) {
+            this.list = list;
+            this.selectedPos = selectedPos;
+            mContext = context;
+        }
+
+        @NonNull
+        @Override
+        public SeasonListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.all_season_listing, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+            holder.season.setText(mContext.getResources().getString(R.string.season) + " " + list.get(position).toString());
+            if (selectedIndex == position) {
+                holder.season.setTextColor(mContext.getResources().getColor(R.color.moretitlecolor));
+                //holder.season.setTextSize(getResources().getDimension(R.dimen.large_text_size));
+                Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
+                holder.season.setTypeface(boldTypeface);
+            } else {
+                holder.season.setTextColor(mContext.getResources().getColor(R.color.white));
+                //holder.season.setTextSize(getResources().getDimension(R.dimen.large_text_size));
+                Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.NORMAL);
+                holder.season.setTypeface(boldTypeface);
+            }
+
+            holder.season.setOnClickListener(v -> {
+                alertDialog.cancel();
+                selectedIndex = position;
+                seasonNumber = list.get(position);
+                getBinding().seasonText.setText(getResources().getString(R.string.season) + " " + seasonNumber);
+                getEpisodes(selectedIndex);
+
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return list.size();
+        }
+
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            TextView season;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                season = itemView.findViewById(R.id.season_name);
+            }
+        }
+
+    }
+
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean == true) {
-            getSeasons();
+            if (asset.getExternalId() != null)
+                externalId = asset.getExternalId();
             UIinitialization();
+
+            if (TabsData.getInstance().getSeasonList() != null&&TabsData.getInstance().getClosedSeriesData()!=null) {
+                getBinding().season.setVisibility(View.VISIBLE);
+                closedSeriesData=TabsData.getInstance().getClosedSeriesData();
+                getBinding().seasonText.setText(closedSeriesData.get(0).getTitle());
+
+                seriesNumberList = TabsData.getInstance().getSeasonList();
+                setUIComponets(TabsData.getInstance().getClosedSeriesData());
+            }else {
+                getOpenSeriesData();
+            }
+            //getSeasons();
         } else {
         }
     }
@@ -156,23 +245,30 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             @Override
             public void onClick(View view) {
                 counter++;
-                callSeasonEpisodes(seriesNumberList);
+                if (openSeriesData == null && openSeriesData.size() == 0) {
+                    callSeasonEpisodes(seriesNumberList);
+                } else {
+                    callEpisodes();
+                }
             }
         });
 
+        getBinding().season.setOnClickListener(view -> {
+            showSeasonList();
+        });
 
     }
 
     public void setRecyclerProperties(RecyclerView recyclerView) {
-       /* recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setHasFixedSize(false);*/
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setHasFixedSize(false);
         mLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
-     //   ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        //   ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
     }
 
     public void getSeasons() {
-        viewModel.getSeasonsListData(asset.getId().intValue(), 1, asset.getType(), asset.getMetas(), layoutType, asset.getType()).observe(getActivity(), integers -> {
+        viewModel.getSeasonsListData(asset.getId().intValue(), 1, asset.getType(), asset.getMetas(), layoutType, externalId).observe(getActivity(), integers -> {
             if (integers != null) {
                 if (integers.size() > 0) {
                     seriesNumberList = integers;
@@ -180,20 +276,66 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                     callSeasonEpisodes(seriesNumberList);
                 } else {
 
-                    getBinding().upcoming.setVisibility(View.VISIBLE);
-                    getBinding().recyclerView.setVisibility(View.GONE);
+
+
                     // tabsVisibility(true);
                 }
             } else {
+                getOpenSeriesData();
 
-                getBinding().upcoming.setVisibility(View.VISIBLE);
-                getBinding().recyclerView.setVisibility(View.GONE);
-               // tabsVisibility(true);
+                // tabsVisibility(true);
 
 
             }
 
         });
+
+    }
+
+    private List<AssetCommonBean> openSeriesData;
+
+    private void getOpenSeriesData() {
+        openSeriesData = TabsData.getInstance().getOpenSeriesData();
+        if (openSeriesData != null && openSeriesData.size() > 0) {
+            getBinding().season.setVisibility(View.VISIBLE);
+            int totalCount = openSeriesData.get(0).getTotalCount();
+            getBinding().seasonText.setText("EPISODE 1 - " + totalCount);
+            getBinding().season.setEnabled(false);
+            setUIComponets(TabsData.getInstance().getOpenSeriesData());
+        }
+
+    }
+
+    public void showSeasonList() {
+
+        if (selectedIndex == -1) {
+            return;
+        }
+
+        SeasonListAdapter listAdapter = new SeasonListAdapter(seriesNumberList, selectedIndex, context);
+        builder = new android.app.AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View content = inflater.inflate(R.layout.season_custom_dialog, null);
+        builder.setView(content);
+        RecyclerView mRecyclerView = content.findViewById(R.id.my_recycler_view);
+        ImageView imageView = content.findViewById(R.id.close);
+        imageView.setOnClickListener(v -> {
+            alertDialog.cancel();
+        });
+
+        //Creating Adapter to fill data in Dialog
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(listAdapter);
+        alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(ActivityCompat.getDrawable(getActivity(), R.color.half_transparent));
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        alertDialog.show();
+        WindowManager.LayoutParams lWindowParams = new WindowManager.LayoutParams();
+        lWindowParams.copyFrom(alertDialog.getWindow().getAttributes());
+        lWindowParams.width = WindowManager.LayoutParams.MATCH_PARENT; // this is where the magic happens
+        lWindowParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+        alertDialog.getWindow().setAttributes(lWindowParams);
 
     }
 
@@ -203,12 +345,33 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     private void callSeasonEpisodes(List<Integer> seriesNumberList) {
         getBinding().loadMoreTxt.setText(getActivity().getResources().getString(R.string.loading));
-        viewModel.callSeasonEpisodes(asset.getMetas(), asset.getType(), counter, seriesNumberList, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
+        viewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
             getBinding().loadMoreTxt.setText("Load More");
             if (assetCommonBeans.get(0).getStatus()) {
                 getBinding().retryTxt.setVisibility(View.GONE);
+                getBinding().seasonText.setText(assetCommonBeans.get(0).getTitle());
+                getBinding().season.setVisibility(View.VISIBLE);
                 getBinding().recyclerView.setVisibility(View.VISIBLE);
-              //  _mClickListener.onFirstEpisodeData(assetCommonBeans);
+                //  _mClickListener.onFirstEpisodeData(assetCommonBeans);
+                setUIComponets(assetCommonBeans);
+                //callSeasonEpisodes(seriesNumberList);
+            } else {
+                getBinding().retryTxt.setVisibility(View.VISIBLE);
+            }
+
+        });
+        getBinding().retryTxt.setOnClickListener(view -> {
+            getSeasons();
+        });
+
+    }
+
+    private void callEpisodes() {
+        getBinding().loadMoreTxt.setText(getActivity().getResources().getString(R.string.loading));
+        viewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
+            getBinding().loadMoreTxt.setText("Load More");
+            if (assetCommonBeans.get(0).getStatus()) {
+                //  _mClickListener.onFirstEpisodeData(assetCommonBeans);
                 setUIComponets(assetCommonBeans);
                 //callSeasonEpisodes(seriesNumberList);
             } else {
@@ -231,10 +394,9 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             }
 
             checkExpiry(list);
-
-            adapter = new EpisodeAdapter(getActivity(), list, getArguments().getInt(AppConstants.EPISODE_NUMBER),this);
+            adapter = new EpisodeAdapter(getActivity(), list, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
             getBinding().recyclerView.setAdapter(adapter);
-               getBinding().season.setVisibility(View.VISIBLE);
+
             int count = adapter.getItemCount();
             if (count >= assetCommonBeans.get(0).getTotalCount()) {
                 getBinding().loadMoreButton.setVisibility(View.GONE);
@@ -408,7 +570,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     public void getEpisodes(int seasonNumber) {
         loadedList.clear();
         adapter = null;
-        seasonCounter = seasonNumber;
+        seasonCounter = selectedIndex;
         callSeasonEpisodes(seriesNumberList);
     }
 

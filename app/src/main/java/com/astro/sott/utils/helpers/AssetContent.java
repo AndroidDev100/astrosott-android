@@ -508,6 +508,34 @@ public class AssetContent {
         return connection;
     }
 
+    public static LiveData<String> getSubGenredata(Map<String, MultilingualStringValueArray> map) {
+        final MutableLiveData<String> connection = new MutableLiveData<>();
+        String genre;
+        List<MultilingualStringValue> genre_values = new ArrayList<>();
+        MultilingualStringValueArray genre_list = map.get(AppLevelConstants.KEY_SUB_GENRE);
+        if (genre_list != null)
+
+            genre_values.addAll(genre_list.getObjects());
+//            for (MultilingualStringValue value : genre_list.getObjects()) {
+//                genre_values.add(value);
+//            }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= genre_values.size() - 1; i++) {
+            stringBuilder.append(genre_values.get(i).getValue()).append(", ");
+        }
+
+        if (stringBuilder.length() > 0) {
+            genre = stringBuilder.toString();
+            genre = genre.substring(0, genre.length() - 2);
+
+        } else {
+            genre = "";
+        }
+        connection.postValue(genre + "");
+        return connection;
+    }
+
+
     public static LiveData<String> getRefIdData(Map<String, MultilingualStringValueArray> map) {
         final MutableLiveData<String> connection = new MutableLiveData<>();
         String ref_id;
@@ -574,7 +602,7 @@ public class AssetContent {
         final MutableLiveData<String> connection = new MutableLiveData<>();
         String cast = "";
         List<MultilingualStringValue> cast_value = new ArrayList<>();
-        MultilingualStringValueArray cast_list = map.get(AppLevelConstants.KEY_MAINCAST);
+        MultilingualStringValueArray cast_list = map.get(AppLevelConstants.KEY_CAST_ACTOR);
         if (cast_list != null)
 //            for (MultilingualStringValue value : cast_list.getObjects()) {
 //                cast_value.add(value);
@@ -602,6 +630,52 @@ public class AssetContent {
         String language = "";
         List<MultilingualStringValue> language_value = new ArrayList<>();
         MultilingualStringValueArray language_list = map.get(AppLevelConstants.KEY_LANGUAGE);
+        if (language_list != null)
+//            for (MultilingualStringValue value : language_list.getObjects()) {
+//                language_value.add(value);
+//            }
+            language_value.addAll(language_list.getObjects());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= language_value.size() - 1; i++) {
+
+            stringBuilder.append(language_value.get(i).getValue()).append(", ");
+
+        }
+
+        if (stringBuilder.length() > 0) {
+            language = stringBuilder.toString();
+            language = language.substring(0, language.length() - 2);
+        }
+
+
+        connection.postValue(language + "");
+        return connection;
+    }
+
+
+    public static String getParentRefId(Map<String, MultilingualStringValueArray> map) {
+
+        String language = "";
+        List<MultilingualStringValue> refId_value = new ArrayList<>();
+        MultilingualStringValueArray refId_list = map.get(AppLevelConstants.KEY_PARENT_REF_ID);
+        if (refId_list != null)
+//            for (MultilingualStringValue value : language_list.getObjects()) {
+//                language_value.add(value);
+//            }
+            refId_value.addAll(refId_list.getObjects());
+        if (refId_value.get(0) != null)
+            language = refId_value.get(0).getValue();
+
+
+        return language;
+    }
+
+    public static LiveData<String> getSubTitleLanguageData(Map<String, MultilingualStringValueArray> map) {
+
+        final MutableLiveData<String> connection = new MutableLiveData<>();
+        String language = "";
+        List<MultilingualStringValue> language_value = new ArrayList<>();
+        MultilingualStringValueArray language_list = map.get(AppLevelConstants.KEY_SUBTITLE_LANGUAGE);
         if (language_list != null)
 //            for (MultilingualStringValue value : language_list.getObjects()) {
 //                language_value.add(value);

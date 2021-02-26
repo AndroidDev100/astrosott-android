@@ -29,9 +29,11 @@ import com.astro.sott.databinding.DetailFooterFragmentBinding;
 import com.astro.sott.fragments.detailRailFragment.adapter.SimilarAdapter;
 import com.astro.sott.fragments.home.viewModel.HomeFragmentViewModel;
 import com.astro.sott.repositories.homeTab.HomeFragmentRepository;
+import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.helpers.SpacingItemDecoration;
 import com.astro.sott.utils.helpers.StringUtils;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MultilingualStringValueArray;
@@ -131,10 +133,9 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
-            if (context instanceof WebSeriesDescriptionActivity) {
-                getBaseCategoryRail();
-            } else
-                youMayAlsoLike();
+            if (TabsData.getInstance().getYouMayAlsoLikeData() != null)
+                setSimilarUIComponent(TabsData.getInstance().getYouMayAlsoLikeData());
+            // youMayAlsoLike();
         }
     }
 
@@ -145,7 +146,9 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
     public void setRecyclerProperties(RecyclerView recyclerView) {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(false);
-        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(),2);
+        recyclerView.addItemDecoration(new SpacingItemDecoration(20, 2));
+
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
     }
 
@@ -167,27 +170,6 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
         });
     }
 
-    /*private void tabsVisibility(boolean removetab) {
-        try {
-            if (context instanceof WebSeriesDescriptionActivity) {
-                if (removetab)
-                    ((WebSeriesDescriptionActivity) context).removeTab(2, context.getResources().getString(R.string.more_like_this));
-                ((WebSeriesDescriptionActivity) context).isRecommended = true;
-                ((WebSeriesDescriptionActivity) context).showTabs();
-            } else if (context instanceof MovieDescriptionActivity) {
-                if (removetab)
-                    ((MovieDescriptionActivity) context).removeTab(1, context.getResources().getString(R.string.more_like_this));
-                ((MovieDescriptionActivity) context).isRecommended = true;
-                ((MovieDescriptionActivity) context).showTabs();
-            } else if (context instanceof ShortFilmActivity) {
-                if (removetab)
-                    ((ShortFilmActivity) context).removeTab(1, context.getResources().getString(R.string.more_like_this));
-                ((ShortFilmActivity) context).isRecommended = true;
-                ((ShortFilmActivity) context).showTabs();
-            }
-        } catch (Exception e) {
-        }
-    }*/
 
     private void youMayAlsoLike() {
         assetId = asset.getId();
@@ -199,22 +181,6 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
         if (dtChannelsList != null)
             dtChannelsList.clear();
-        /*viewModel.getChannelList(tabId).observe(getActivity(), assetCommonBean -> {
-            if (assetCommonBean.getStatus()) {
-                PrintLogging.printLog("RecommendationRailFragment", "channelList--" + assetCommonBean.getChannelList().size());
-                if (dtChannelsList != null && dtChannelsList.size() > 0)
-                    dtChannelsList.clear();
-
-                dtChannelsList = assetCommonBean.getDTChannelList();
-                callYouMayAlsoLike((int) assetId, 0, assetType, map, layoutType, tabId, asset);
-
-            } else {
-                if (dtChannelsList != null && dtChannelsList.size() > 0)
-                    dtChannelsList.clear();
-                PrintLogging.printLog("RecommendationRailFragment", "in error");
-            }
-
-        });*/
 
         callYouMayAlsoLike((int) assetId, 1, assetType, map, layoutType, tabId, asset);
 
@@ -228,23 +194,15 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
                 if (assetCommonBeans.size() > 0) {
                     if (assetCommonBeans.get(0).getStatus()) {
                         channelList = dtChannelsList;
-                        //  setUIComponets(assetCommonBeans);
-
-                        setSimilarUIComponent(assetCommonBeans);
-                        // getBaseCategoryRail();
+                        // setSimilarUIComponent(assetCommonBeans);
                     } else {
                         getBinding().upcoming.setVisibility(View.VISIBLE);
-                      //  getBaseCategoryRail();
                     }
                 } else {
                     getBinding().upcoming.setVisibility(View.VISIBLE);
-
-                    //   getBaseCategoryRail();
                 }
             } catch (Exception e) {
                 getBinding().upcoming.setVisibility(View.VISIBLE);
-
-                //  getBaseCategoryRail();
             }
 
 
@@ -252,8 +210,8 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
     }
 
-    private void setSimilarUIComponent(List<AssetCommonBean> assetCommonBeans) {
-        SimilarAdapter similarAdapter = new SimilarAdapter(assetCommonBeans.get(0).getRailAssetList());
+    private void setSimilarUIComponent(List<RailCommonData> railCommonData) {
+        SimilarAdapter similarAdapter = new SimilarAdapter(railCommonData);
         getBinding().recyclerView.setAdapter(similarAdapter);
 
     }

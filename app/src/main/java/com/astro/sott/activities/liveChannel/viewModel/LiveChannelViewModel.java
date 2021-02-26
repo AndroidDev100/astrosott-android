@@ -7,10 +7,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
+import com.astro.sott.activities.movieDescription.layers.YouMayAlsoLike;
 import com.astro.sott.baseModel.ChannelLayer;
 import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.fragments.nowPlaying.layers.LiveNowPrograms;
 import com.astro.sott.fragments.nowPlaying.layers.SimilarChannels;
+import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.baseModel.CategoryRailLayer;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
@@ -23,10 +25,12 @@ import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MultilingualStringValueArray;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class LiveChannelViewModel extends AndroidViewModel {
 
@@ -52,7 +56,30 @@ public class LiveChannelViewModel extends AndroidViewModel {
         return LiveChannelRepository.getInstance().loadChannelsData(getApplication().getApplicationContext(), externalId, startDate, endDate, type,counter);
     }
 
+    public LiveData<List<AssetCommonBean>> getYouMayAlsoLike(int assetId,
+                                                             int counter,
+                                                             int assetType,
+                                                             Map<String, MultilingualStringValueArray> map
+    ) {
+        return YouMayAlsoLike.getInstance().fetchSimilarMovie(getApplication().getApplicationContext(), assetId, counter, assetType, map);
+    }
 
+    public String getStartDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa");
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+    public void setYouMayAlsoLikeData(List<RailCommonData> trailerData) {
+        TabsData.getInstance().setYouMayAlsoLikeData(trailerData);
+    }
     public String getProgramTime(Long endTime) {
         try {
             Date date = new Date(endTime * 1000L);

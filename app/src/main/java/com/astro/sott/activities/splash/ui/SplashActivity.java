@@ -277,7 +277,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                             PrintLogging.printLog("", "forwardedEPG else" + itemValue.getName());
                             getProgramRailCommonData(itemValue, "asdas");
                             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
-                          //  new ActivityLauncher(SplashActivity.this).forwardeEPGActivity(SplashActivity.this, ForwardedEPGActivity.class, railCommonData);
+                            //  new ActivityLauncher(SplashActivity.this).forwardeEPGActivity(SplashActivity.this, ForwardedEPGActivity.class, railCommonData);
                         }
                     }
                 } else {
@@ -627,7 +627,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                             // new ActivityLauncher(SplashActivity.this).catchUpActivity(SplashActivity.this, CatchupActivity.class, railCommonData);
                         } else {
                             finish();
-                          //  new ActivityLauncher(SplashActivity.this).forwardeEPGActivity(SplashActivity.this, ForwardedEPGActivity.class, railCommonData);
+                            //  new ActivityLauncher(SplashActivity.this).forwardeEPGActivity(SplashActivity.this, ForwardedEPGActivity.class, railCommonData);
                         }
                     }
                 }
@@ -649,7 +649,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getWebEpisode(SplashActivity.this)) {
             //finish();
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
-            new ActivityLauncher(SplashActivity.this).webEpisodeActivity(SplashActivity.this, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
+            new ActivityLauncher(SplashActivity.this).webDetailRedirection(railCommonData.getObject(), AppLevelConstants.Rail5);
+
+            // new ActivityLauncher(SplashActivity.this).webEpisodeActivity(SplashActivity.this, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getTrailer(SplashActivity.this)) {
             //  finish();
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
@@ -807,7 +809,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
             }
         }
 
-        AppCommonMethods.isAdsEnable = false;
+        AppCommonMethods.isAdsEnable = true;
         callViewModel();
         showAnimation();
 

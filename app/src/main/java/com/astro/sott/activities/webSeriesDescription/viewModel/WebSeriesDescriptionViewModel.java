@@ -1,6 +1,7 @@
 package com.astro.sott.activities.webSeriesDescription.viewModel;
 
 import android.app.Application;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
@@ -31,6 +32,17 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
 
     }
 
+    public LiveData<String> getSubGenreLivedata(Map<String, MultilingualStringValueArray> map) {
+        return AssetContent.getSubGenredata(map);
+    }
+
+    public LiveData<List<AssetCommonBean>> callEpisodes(Asset map, int assetType, int counter, int seasonCounter, int layoutType) {
+        return EpisodesLayer.getInstance().getEpisodesListWithoutSeason(getApplication().getApplicationContext(), map, assetType, counter, seasonCounter, layoutType);
+    }
+    public LiveData<String> getSubTitleLanguageLiveData(Map<String, MultilingualStringValueArray> map) {
+
+        return AssetContent.getSubTitleLanguageData(map);
+    }
     public LiveData<String> getCrewLiveDAta(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getCrewData(map);
     }
@@ -59,7 +71,7 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
                                                       int assetType,
                                                       Map<String, Value> map,
                                                       int layoutType,
-                                                      int seriesMediaTyp) {
+                                                      String seriesMediaTyp) {
         return SeasonsLayer.getInstance().loadData(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, seriesMediaTyp);
     }
 
@@ -110,7 +122,7 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
         return WebSeriesDescriptionRepository.getInstance().getNumberOfEpisode(asset, getApplication().getApplicationContext());
     }
 
-    public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Map<String, Value> map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType) {
+    public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType) {
         return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType);
     }
 
