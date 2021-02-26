@@ -29,7 +29,7 @@
         android:layout_marginStart="@dimen/_14sdp"
         android:src="@drawable/ic_arrow_back_24px"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_17sdp"
         />
 <TextView
     android:layout_width="wrap_content"
@@ -212,20 +212,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rl1"
+        android:visibility="gone"
         android:layout_marginStart="@dimen/_14sdp"
         android:layout_marginEnd="@dimen/_14sdp"
         android:layout_marginTop="@dimen/_22sdp"
         android:layout_below="@+id/ll3">
+
         <TextView
+            android:id="@+id/download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:fontFamily="@font/heebo_medium"
             android:text="@string/downloadable"
             android:textColor="@color/white"
-            android:fontFamily="@font/heebo_medium"
-            android:textSize="@dimen/_16sp"
-            android:id="@+id/download"
-            android:layout_alignParentLeft="true"
-            />
+            android:textSize="@dimen/_16sp" />
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
