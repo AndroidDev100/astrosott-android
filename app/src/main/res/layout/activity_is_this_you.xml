@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blue_bg"
+       >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_18sdp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:background="@drawable/ic_arrow_back_24px"
+            app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></ProgressBar>
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:background="@drawable/astro_white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+            <TextView
+                android:id="@+id/isthatYou_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/heebo_medium"
+                android:text="@string/is_this_you"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/logo"></TextView>
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:fontFamily="@font/heebo_regular"
+                android:text="@string/is_that_you_para"
+                android:textColor="@color/white"
+                android:maxLines="2"
+                android:textAlignment="center"
+                android:layout_marginLeft="@dimen/margin46dp"
+                android:layout_marginRight="@dimen/margin46dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/isthatYou_title"></TextView>
+
+            <LinearLayout
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="23dp"
+                android:layout_marginRight="18dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description"
+                android:background="@color/edit_text_blue_bg"
+                android:orientation="vertical"
+                android:layout_height="@dimen/_54dp">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.9"
+                    android:background="@null"
+                    android:id="@+id/email_id"
+                    android:layout_marginLeft="@dimen/margin_18dp"
+                    android:layout_marginRight="@dimen/margin_18dp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:textColorHint="@color/grey"
+                    android:cursorVisible="true"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="@string/email"
+                    android:importantForAutofill="no"
+                    android:inputType="text|textNoSuggestions"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_16sp"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/margin_18dp"
+                android:layout_marginTop="@dimen/marginTop15dp"
+                android:layout_marginRight="@dimen/margin_18dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email"
+                android:background="@color/edit_text_blue_bg"
+                android:orientation="vertical"
+                android:layout_height="@dimen/_54dp">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="18dp"
+                    android:layout_weight="1.9"
+                    android:background="@null"
+                    android:id="@+id/password_edt"
+                    android:fontFamily="@font/heebo_regular"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/_16sp"
+                    android:hint="@string/password"
+                    android:importantForAutofill="no"
+                    android:inputType="text|textNoSuggestions"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/new_password" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/error_passsword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="Confirm password does't match with password"
+                android:textColor="@color/red_live"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/password"></TextView>
+            <TextView
+                android:id="@+id/forgot_text"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginTop="10dp"
+                app:layout_goneMarginTop="10dp"
+                android:layout_marginRight="@dimen/margin_18dp"
+                android:fontFamily="@font/heebo_regular"
+                android:gravity="center"
+                android:text="@string/forgt_psw"
+                android:textColor="@color/maya_blue"
+                android:textSize="@dimen/_16sp"
+                android:visibility="visible"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/password"></TextView>
+
+
+            <TextView
+                android:id="@+id/update"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginTop="@dimen/margin_top_30dp"
+                android:background="@drawable/gradient_button"
+                android:fontFamily="@font/heebo_medium"
+                android:gravity="center"
+                android:textAllCaps="true"
+                android:text="@string/proceed"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/forgot_text"></TextView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

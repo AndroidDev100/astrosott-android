@@ -27,7 +27,11 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.search.ui.SearchKeywordActivity"></activity>
+        <activity android:name=".activities.forgotPassword.ui.DetailsConfirmationActivity"></activity>
+        <activity android:name=".activities.forgotPassword.ui.IsThisYouActivity">
+
+        </activity>
+        <activity android:name=".activities.search.ui.SearchKeywordActivity" />
         <activity android:name=".activities.manageDevice.ui.ManageDeviceActivity" />
         <activity android:name=".activities.ForgetPassword.ForgetPasswordActivity" />
         <activity android:name=".activities.profile.ui.EditPasswordActivity" />
@@ -131,11 +135,13 @@
             android:launchMode="singleTask"
             android:screenOrientation="locked"
             android:theme="@style/splashtheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+
+
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
             <intent-filter>
                 <data
                     android:host="open"

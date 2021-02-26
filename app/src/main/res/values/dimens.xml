@@ -553,5 +553,28 @@
 
     <dimen name="_14sp">14sp</dimen>
     <dimen name="_16sp">16sp</dimen>
+    <dimen name="_60dp">60dp</dimen>
+    <dimen name="_18sp">18sp</dimen>
+    <dimen name="_54dp">54dp</dimen>
+    <dimen name="margin_18dp">18dp</dimen>
+    <dimen name="button_width">250dp</dimen>
+    <dimen name="button_height">44dp</dimen>
+    <dimen name="margin_top_30dp">30dp</dimen>
+    <dimen name="margin46dp">46dp</dimen>
+    <dimen name="margin_top_33dp">33dp</dimen>
+    <dimen name="margin_top_32dp">32dp</dimen>
+    <dimen name="margin_top_29dp">29dp</dimen>
+    <dimen name="margin70dp">70dp</dimen>
+    <dimen name="margin67dp">67dp</dimen>
+    <dimen name="margin65dp">65dp</dimen>
+    <dimen name="dimen24dp">24dp</dimen>
+    <dimen name="button_width_328dp">328dp</dimen>
+    <dimen name="dimen205dp">205dp</dimen>
+    <dimen name="dimen48dp">48dp</dimen>
+    <dimen name="margin55dp">55dp</dimen>
+    <dimen name="marginTop47dp">47dp</dimen>
+    <dimen name="marginTop45dp">45dp</dimen>
+    <dimen name="marginTop37dp">37dp</dimen>
+    <dimen name="_12sp">12sp</dimen>
 
 </resources>
