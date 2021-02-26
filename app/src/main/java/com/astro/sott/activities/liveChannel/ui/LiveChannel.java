@@ -1,13 +1,16 @@
 package com.astro.sott.activities.liveChannel.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,9 +46,11 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.DialogHelper;
+import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.helpers.StringBuilderHolder;
 import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
@@ -55,10 +60,14 @@ import com.kaltura.client.types.ProgramAsset;
 import com.kaltura.client.types.UserAssetRule;
 import com.kaltura.client.utils.response.base.Response;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.TimeZone;
 
 
 public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding> implements DetailRailClick,
@@ -73,7 +82,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private long lastClickTime;
     private String image_url = "";
     private int errorCode = -1;
-    private Asset asset, programAsset;
+    private Asset asset;
     private boolean playerChecksCompleted = false;
     private int assetRuleErrorCode = -1;
     private boolean isParentalLocked = false;
@@ -136,28 +145,128 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
     }
 
+    private Asset programAsset;
+
     private void intentValues() {
         if (getIntent().getExtras() != null)
             railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
+        programAsset = getIntent().getExtras().getParcelable(AppLevelConstants.PROGRAM_ASSET);
+        if (programAsset != null)
+            setProgramMetas();
         if (railData != null) {
             getDataFromBack(railData);
             Constants.channelName = railData.getName();
+            setImages(railData, this, getBinding().channelLogo);
         }
+    }
+
+    public static void setImages(RailCommonData railCommonData, Context context, ImageView webseriesimage) {
+        try {
+            if (railCommonData == null) {
+                return;
+            }
+            if (railCommonData.getObject().getImages().size() > 0) {
+                for (int i = 0; i < railCommonData.getObject().getImages().size(); i++) {
+                    if (railCommonData.getObject().getImages().get(i).getRatio().equals("16x9")) {
+                        String image_url = railCommonData.getObject().getImages().get(i).getUrl();
+                        String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.detail_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.carousel_image_height) + AppLevelConstants.QUALITY;
+                        ImageHelper.getInstance(webseriesimage.getContext()).loadImageToPotrait(webseriesimage, final_url, R.drawable.square1);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            PrintLogging.printLog("Exception", "" + e);
+        }
+
+    }
+
+    private void setProgramMetas() {
+        getBinding().programTitle.setText(programAsset.getName());
+        getBinding().descriptionText.setText(programAsset.getDescription());
+        stringBuilder = new StringBuilder();
+        stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + " | ");
+        getGenre();
+
+    }
+
+
+    private StringBuilder stringBuilder;
+
+    private void getGenre() {
+
+
+        ///"EEE, d MMM yyyy HH:mm:ss Z"
+
+
+        activityViewModel.getGenreLivedata(programAsset.getTags()).observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+
+                if (!TextUtils.isEmpty(s)) {
+                    stringBuilder.append(s + " | ");
+                }
+                getParentalRating();
+            }
+        });
+
+
+    }
+
+    private void getParentalRating() {
+        if (!TextUtils.isEmpty(AssetContent.getParentalRating(programAsset.getTags()))) {
+
+            stringBuilder.append(AssetContent.getParentalRating(programAsset.getTags()));
+
+        }
+        String value = stringBuilder.toString();
+       /* if (value.length() > 0) {
+            value = StringBuilderHolder.getInstance().getText().substring(0, value.length() - 2);
+        }*/
+        getBinding().metas.setText(value);
+        StringBuilderHolder.getInstance().clear();
+
     }
 
     private void getDataFromBack(RailCommonData backRailData) {
         AllChannelManager.getInstance().setRailCommonData(backRailData);
         PrintLogging.printLog(this.getClass(), "", "programAssetId" + backRailData.getObject().getName());
-        if (backRailData.getObject().getType() == MediaTypeConstant.getProgram(LiveChannel.this)) {
+        /*if (backRailData.getObject().getType() == MediaTypeConstant.getProgram(LiveChannel.this)) {
             getSpecificAsset(backRailData);
         } else {
             setProgrameValues(backRailData);
             viewPagerIntializtion();
 
-        }
+        }*/
 
+        callYouMaylAlsoLike();
 
         getBinding().backImg.setOnClickListener(view -> onBackPressed());
+    }
+
+    private int adapterCount = 1;
+
+    private void callYouMaylAlsoLike() {
+        long assetId = railData.getObject().getId();
+        asset = railData.getObject();
+        activityViewModel.setYouMayAlsoLikeData(null);
+        activityViewModel.getYouMayAlsoLike((int) assetId, 1, asset.getType(), asset.getTags()).observe(this, assetCommonBeans -> {
+            try {
+                if (assetCommonBeans.size() > 0) {
+                    if (assetCommonBeans.get(0).getStatus()) {
+                        activityViewModel.setYouMayAlsoLikeData(assetCommonBeans.get(0).getRailAssetList());
+                        adapterCount = 2;
+                        viewPagerIntializtion();
+                    } else {
+                        viewPagerIntializtion();
+                    }
+                } else {
+                    viewPagerIntializtion();
+                }
+            } catch (Exception e) {
+            }
+
+
+        });
     }
 
 
@@ -165,17 +274,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         railData = backRailData;
         asset = railData.getObject();
         setPlayerFragment();
-        setHungamaTag(asset);
     }
 
-    private void setHungamaTag(Asset asset) {
-        boolean isProviderAvailable = AssetContent.getHungamaTag(asset.getTags());
-        if (isProviderAvailable){
-            getBinding().hungama.setVisibility(View.VISIBLE);
-        }else {
-            getBinding().hungama.setVisibility(View.GONE);
-        }
-    }
 
     private void setPlayerFragment() {
         getImage();
@@ -291,20 +391,20 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 userSelectedParentalRating = KsPreferenceKey.getInstance(getApplicationContext()).getUserSelectedRating();
 
                 if (!userSelectedParentalRating.equalsIgnoreCase("")) {
-                    assetKey = AssetContent.getAssetKey(asset.getTags(),userSelectedParentalRating, getApplicationContext());
-                    if(assetKey){
+                    assetKey = AssetContent.getAssetKey(asset.getTags(), userSelectedParentalRating, getApplicationContext());
+                    if (assetKey) {
                         assetRuleErrorCode = AppLevelConstants.NO_ERROR;
                         checkOnlyDevice(railData);
-                    }else {
+                    } else {
                         validateParentalPin(railData);
                     }
 
                 } else {
-                    assetKey = AssetContent.getAssetKey(asset.getTags(),defaultParentalRating, getApplicationContext());
-                    if(assetKey){
+                    assetKey = AssetContent.getAssetKey(asset.getTags(), defaultParentalRating, getApplicationContext());
+                    if (assetKey) {
                         assetRuleErrorCode = AppLevelConstants.NO_ERROR;
                         checkOnlyDevice(railData);
-                    }else {
+                    } else {
                         validateParentalPin(railData);
                     }
                 }
@@ -333,7 +433,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
                         new RefreshKS(LiveChannel.this).refreshKS(response -> checkDevice(railData));
-                    }else {
+                    } else {
                         callProgressBar();
                         showDialog(commonResponse.getMessage());
                     }
@@ -393,14 +493,14 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     }
 
     private void playerChecks(final RailCommonData railData) {
-        new GeoBlockingCheck().aseetAvailableOrNot(LiveChannel.this, railData.getObject(), (status, response, totalCount,errorcode,message) -> {
+        new GeoBlockingCheck().aseetAvailableOrNot(LiveChannel.this, railData.getObject(), (status, response, totalCount, errorcode, message) -> {
             if (status) {
                 if (totalCount != 0) {
                     checkBlockingErrors(response);
                 } else {
                     checkEntitleMent(railData);
                 }
-            }else {
+            } else {
                 callProgressBar();
                 showDialog(message);
             }
@@ -439,7 +539,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     }
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
-      String  fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+        String fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
         new EntitlementCheck().checkAssetType(LiveChannel.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
             if (status) {
                 playerChecksCompleted = true;
@@ -467,13 +567,12 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     }
 
                 }
-            }else {
+            } else {
                 callProgressBar();
-                if (message!="")
+                if (message != "")
                     showDialog(message);
             }
         });
-
 
 
     }
@@ -491,16 +590,16 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                                 if (dtvAccount.equalsIgnoreCase("0")) {
                                     isDtvAdded = false;
                                     callProgressBar();
-                                    checkForSubscription(isDtvAdded,railCommonData);
+                                    checkForSubscription(isDtvAdded, railCommonData);
 
                                 } else if (dtvAccount.equalsIgnoreCase("")) {
                                     isDtvAdded = false;
                                     callProgressBar();
-                                    checkForSubscription(isDtvAdded,railCommonData);
+                                    checkForSubscription(isDtvAdded, railCommonData);
                                 } else {
                                     isDtvAdded = true;
                                     callProgressBar();
-                                    checkForSubscription(isDtvAdded,railCommonData);
+                                    checkForSubscription(isDtvAdded, railCommonData);
                                 }
 
                             } else {
@@ -508,8 +607,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                                 callProgressBar();
                                 showDialog(getString(R.string.something_went_wrong_try_again));
                             }
-                        }catch (Exception e){
-                            Log.e("ExceptionIs",e.toString());
+                        } catch (Exception e) {
+                            Log.e("ExceptionIs", e.toString());
                         }
                     }
                 });
@@ -521,29 +620,29 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
     private void checkForSubscription(boolean isDtvAdded, RailCommonData railCommonData) {
         //***** Mobile + Non-Dialog + Non-DTV *************//
-        if(KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded==false){
-            runOnUiThread(() ->DialogHelper.openDialougeFornonDialog(LiveChannel.this,isLiveChannel));
+        if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == false) {
+            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(LiveChannel.this, isLiveChannel));
         }
         //********** Mobile + Non-Dialog + DTV ******************//
-        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded==true){
-            runOnUiThread(() ->DialogHelper.openDialougeFornonDialog(LiveChannel.this,isLiveChannel));
+        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == true) {
+            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(LiveChannel.this, isLiveChannel));
         }
         //*********** Mobile + Dialog + Non-DTV *****************//
-        else if(KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded==false){
-            if(AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(),LiveChannel.this)){
-                runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(LiveChannel.this, true,isLiveChannel));
-            }else {
-                runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(LiveChannel.this, false,isLiveChannel));
+        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == false) {
+            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), LiveChannel.this)) {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(LiveChannel.this, true, isLiveChannel));
+            } else {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(LiveChannel.this, false, isLiveChannel));
             }
         }
         //************ Mobile + Dialog + DTV ********************//
-        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded==true){
-            if(AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(),LiveChannel.this)){
-                runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(LiveChannel.this, true,isLiveChannel));
-            }else {
-                runOnUiThread(() ->DialogHelper.openDialougeForDtvAccount(LiveChannel.this, false,isLiveChannel));
+        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == true) {
+            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), LiveChannel.this)) {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(LiveChannel.this, true, isLiveChannel));
+            } else {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(LiveChannel.this, false, isLiveChannel));
             }
-        }else {
+        } else {
             showDialog(getString(R.string.something_went_wrong_try_again));
         }
     }
@@ -565,7 +664,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 } else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
                         new RefreshKS(LiveChannel.this).refreshKS(response -> checkDevice(railData));
-                    }else {
+                    } else {
                         callProgressBar();
                         showDialog(commonResponse.getMessage());
                     }
@@ -579,7 +678,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     }
 
     private void viewPagerIntializtion() {
-        LiveChannelPagerAdapter liveChannelPagerAdapter = new LiveChannelPagerAdapter(this, getSupportFragmentManager(), railData);
+        LiveChannelPagerAdapter liveChannelPagerAdapter = new LiveChannelPagerAdapter(this, getSupportFragmentManager(), railData, adapterCount);
         getBinding().pager.setAdapter(liveChannelPagerAdapter);
         getBinding().tabLayout.setupWithViewPager(getBinding().pager);
         getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -655,4 +754,4 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     }
 
 
-   }
+}

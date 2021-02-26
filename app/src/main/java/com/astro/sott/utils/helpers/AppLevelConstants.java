@@ -107,6 +107,9 @@ public interface AppLevelConstants {
     String KEY_REF_ID = "Ref Id";
     String YEAR = "Year";
     String RAIL_DATA_OBJECT = "railData";
+    String PROGRAM_ASSET = "program_asset";
+
+
     String FORWARDED_EPG = "FORWARDED_EPG";
     String KSQL_GENRE = "Genre='";
     //

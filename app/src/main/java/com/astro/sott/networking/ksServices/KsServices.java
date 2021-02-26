@@ -814,7 +814,7 @@ public class KsServices {
     }
 
 
-    public void getAssetFromTrailer( String refId, GetSeriesCallBack callBack) {
+    public void getAssetFromTrailer(String refId, GetSeriesCallBack callBack) {
 
 
         clientSetupKs();
@@ -824,8 +824,41 @@ public class KsServices {
         filterPager.setPageIndex(1);
         filterPager.setPageSize(1);
 
-        String ksql = KSQL.getAssetFromTrailerKSQL(MediaTypeConstant.getMovie(activity),MediaTypeConstant.getSeries(activity), refId);
+        String ksql = KSQL.getAssetFromTrailerKSQL(MediaTypeConstant.getMovie(activity), MediaTypeConstant.getSeries(activity), refId);
         searchAssetFilter.setKSql(ksql);
+
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
+            PrintLogging.printLog("", "response" + result.isSuccess());
+            if (result.isSuccess()) {
+                if (result.results != null && result.results.getObjects() != null && result.results.getTotalCount() > 0) {
+                    callBack.onSuccess(result.results.getObjects());
+                } else {
+                    callBack.onFailure();
+                }
+            } else {
+
+            }
+
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
+
+    public void getProgramFromLinear(String channelId, GetSeriesCallBack callBack) {
+
+
+        clientSetupKs();
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        FilterPager filterPager = new FilterPager();
+
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(1);
+        String one = "(and epg_channel_id='";
+        String two = "' start_date<'0' end_date>'0')";
+        String ksql = one + channelId + two;
+        searchAssetFilter.setKSql(ksql);
+        searchAssetFilter.setTypeIn(MediaTypeConstant.getProgram(activity) + "");
 
 
         AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
