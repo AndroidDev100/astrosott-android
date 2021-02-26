@@ -91,9 +91,27 @@
     <string name="key_in_email_address">Sila masukkan alamat e-mel anda</string>
     <string name="submit">HANTAR</string>
     <string name="season_number">MUSIM 1</string>
-
-
-
+    <string name="search_text">Search</string>
 
     <string name="related">RELATED</string>
+
+    <string name="search_astro">Cari tajuk, genre, pemeran, dll.</string>
+    <string name="logout_all_devices">MASUK SEMUA PERANTI</string>
+    <string name="linked_accounts">Akaun Terpaut</string>
+    <string name="sort_by">Disusun mengikut</string>
+    <string name="atoz">A-Z</string>
+    <string name="popular">Popular</string>
+    <string name="newest">Terkini</string>
+    <string name="content_type">Jenis kandungan</string>
+    <string name="free_paid">Percuma / Berbayar</string>
+    <string name="all">Semua</string>
+    <string name="free">Percuma</string>
+    <string name="paid">Dibayar</string>
+    <string name="on_demand">Permintaan</string>
+    <string name="downloadable">Boleh dimuat turun:</string>
+    <string name="language">Bahasa:</string>
+    <string name="genre">Genre:</string>
+    <string name="clear">Jelas</string>
+    <string name="apply">Memohon</string>
+
 </resources>

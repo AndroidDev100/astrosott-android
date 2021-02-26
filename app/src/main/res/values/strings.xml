@@ -153,7 +153,6 @@
     <string name="result">Result</string>
     <string name="short_film_onitem_clicked">Short FilmonItemClicked</string>
     <string name="ugc_video_item_clicked">UGC VideoItemClicked</string>
-    <string name="all">All</string>
     <string name="version">Version</string>
     <string name="no_data">No results found.</string>
     <string name="prod">prod</string>
@@ -483,7 +482,7 @@
     <string name="coupon_redem">Coupon Redemption</string>
     <string name="help">Help</string>
     <string name="logout">Logout</string>
-    <string name="manage_payments">Manage Payments</string>
+    <string name="manage_payments">Manage Payment</string>
     <string name="language_selection">Language Selection</string>
     <string name="App_language">App Language</string>
     <string name="Audio_language">Audio Language</string>
@@ -534,5 +533,25 @@
     <string name="key_in_email_address">Please key in your email address</string>
     <string name="submit">SUBMIT</string>
     <string name="season_number">SEASON 1</string>
+    <string name="search_astro">Search for title, genre, cast, etc.</string>
+    <string name="logout_all_devices">LOGOUT ALL DEVICES</string>
+    <string name="linked_accounts">Linked Accounts</string>
+    <string name="search_text">Search</string>
+    <string name="sort_by">Sort By</string>
+    <string name="atoz">A-Z</string>
+    <string name="popular">Popular</string>
+    <string name="newest">Newest</string>
+    <string name="content_type">Content Type</string>
+    <string name="free_paid">Free/Paid</string>
+    <string name="all">All</string>
+    <string name="free">Free</string>
+    <string name="paid">Paid</string>
+    <string name="on_demand">On Demand</string>
+    <string name="downloadable">Downloadable:</string>
+    <string name="language">Language:</string>
+    <string name="genre">Genre:</string>
+    <string name="clear">Clear</string>
+    <string name="apply">Apply</string>
+
 
 </resources>

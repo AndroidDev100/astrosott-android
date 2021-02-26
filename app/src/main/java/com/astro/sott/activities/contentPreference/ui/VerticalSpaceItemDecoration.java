@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
- class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
+ public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
 
     private final int verticalSpaceHeight;
 

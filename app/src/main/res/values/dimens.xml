@@ -187,7 +187,7 @@
     <dimen name="search_item_margin_right">8dp</dimen>
     <dimen name="search_item_margin_top">12dp</dimen>
     <dimen name="search_item_margin_end">10dp</dimen>
-    <dimen name="search_toolbar_padding_right">5dp</dimen>
+    <dimen name="search_toolbar_padding_right">9dp</dimen>
     <dimen name="search_toolbar_header_margin">25dp</dimen>
     <dimen name="search_toolbar_underline_margin_left">3dp</dimen>
     <dimen name="search_toolbar_padding_left">25dp</dimen>
@@ -550,5 +550,8 @@
     <dimen name="list_lds_height">72dp</dimen>
 
     <dimen name="extraSpacingLDS">70dp</dimen>
+
+    <dimen name="_14sp">14sp</dimen>
+    <dimen name="_16sp">16sp</dimen>
 
 </resources>

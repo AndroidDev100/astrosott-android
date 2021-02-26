@@ -4,17 +4,17 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/search_toolbar_background"
+        android:layout_height="65dp"
+        android:background="@color/blue_bg"
 
         android:orientation="vertical">
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/search_toolbar_margin_top"
+            android:paddingLeft="16dp"
             android:paddingRight="@dimen/search_toolbar_margin_top">
 
             <LinearLayout
@@ -22,6 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
                 android:layout_marginEnd="@dimen/search_toolbar_padding_right"
                 android:paddingBottom="@dimen/search_toolbar_padding_right"
                 tools:ignore="ContentDescription">
@@ -29,19 +31,22 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_arrow_back_black_24dp"
+                    android:background="@drawable/ic_arrow_back_24px"
                     android:contentDescription="@string/back_icon" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/search_edit"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/search_editText_margin_right"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-
+                android:layout_centerInParent="true"
+                android:background="@drawable/search_linear_bg"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/search_toolbar_padding_right"
+                android:paddingTop="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_toRightOf="@+id/back_button"
+                android:layout_toLeftOf="@+id/filter"
                 android:paddingBottom="@dimen/search_toolbar_margin_bottom">
 
                 <EditText
@@ -52,29 +57,38 @@
                     android:background="@null"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:fontFamily="@font/roboto_regular"
-                    android:hint="@string/search_dialog"
+                    android:fontFamily="@font/heebo_regular"
+                    android:hint="@string/search_astro"
                     android:imeOptions="actionDone"
                     android:inputType="textNoSuggestions"
                     android:paddingLeft="@dimen/search_toolbar_margin_top"
                     android:paddingRight="@dimen/search_toolbar_margin_top"
                     android:singleLine="true"
-                    android:textColor="@color/white"
+                    android:textColor="@color/grey"
                     android:textColorHint="@color/search_edit_text_color"
                     android:textCursorDrawable="@drawable/color_cursor"
-                    android:textSize="@dimen/font_large"
+                    android:textSize="16sp"
                     tools:ignore="Autofill" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginStart="@dimen/search_toolbar_underline_margin_left"
-                    android:background="@color/search_edit_underline_color" />
+<!--                <View-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="2dp"-->
+<!--                    android:layout_marginStart="@dimen/search_toolbar_underline_margin_left"-->
+<!--                    android:background="@color/search_edit_underline_color" />-->
 
             </LinearLayout>
+             <ImageView
+                 android:id="@+id/filter"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:layout_marginStart="8dp"
+                 android:layout_marginEnd="16dp"
+                 android:layout_centerInParent="true"
+                 android:layout_alignParentRight="true"
+                 android:src="@drawable/ic_filter_24px"/>
 
-
-        </LinearLayout>
+        </RelativeLayout>
 
 
         <!-- footer-->

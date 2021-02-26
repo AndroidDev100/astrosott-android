@@ -34,6 +34,7 @@ class ManageDeviceActivity : AppCompatActivity(), DeviceDeleteCallBack {
 
     private fun setRecyclerProperties() {
         activityManageDeviceBinding?.recyclerview?.layoutManager = LinearLayoutManager(this)
+
     }
 
     private fun modelCall() {
@@ -85,13 +86,16 @@ class ManageDeviceActivity : AppCompatActivity(), DeviceDeleteCallBack {
     private fun setUiComponent(accountDeviceDetails: List<AccountDeviceDetailsItem?>) {
         var manageDeviceAdapter = ManageDeviceAdapter(accountDeviceDetails, this)
         activityManageDeviceBinding?.recyclerview?.adapter = manageDeviceAdapter
+        activityManageDeviceBinding?.logoutDevices?.visibility = View.VISIBLE
+
     }
 
 
     private fun setToolbar() {
         setSupportActionBar(activityManageDeviceBinding?.include?.toolbar)
         if (supportActionBar != null) {
-            supportActionBar!!.title = "Manage Device"
+            supportActionBar!!.title = "MANAGE DEVICES"
+
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
             supportActionBar!!.setDisplayShowHomeEnabled(true)
         }

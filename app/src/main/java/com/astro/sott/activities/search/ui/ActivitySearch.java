@@ -2,6 +2,7 @@ package com.astro.sott.activities.search.ui;
 
 import androidx.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -216,6 +217,14 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
 
         getBinding().toolbar.backButton.setOnClickListener(view -> exitActivity());
+        getBinding().toolbar.filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ActivitySearch.this,SearchKeywordActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         getBinding().deleteKeywords.setOnClickListener(view -> {
             if (NetworkConnectivity.isOnline(ActivitySearch.this))

@@ -13,13 +13,13 @@
         android:background="@color/toolbar_bg"
         android:id="@+id/toolbar">
         <ImageView
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_23sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/back_button"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:layout_margin="@dimen/_10sdp"
-            android:src="@drawable/ic_baseline_arrow_back"/>
+            android:src="@drawable/ic_arrow_back_24px"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,11 +39,11 @@
 
     </RelativeLayout>
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="@dimen/_75sdp"
-        android:layout_height="@dimen/_75sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/circular_profile"
-        android:src="@color/warm_grey"
+        android:src="@drawable/ic_account_circle_80px"
         android:layout_centerInParent="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/_65sdp"
@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editemail"
                 android:layout_centerInParent="true"
-                android:drawableRight= "@drawable/ic_edit"
+                android:drawableRight= "@drawable/ic_edit_24px"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
         <RelativeLayout
@@ -163,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editMobileNo"
                 android:layout_centerInParent="true"
-                android:drawableRight= "@drawable/ic_edit"
+                android:drawableRight= "@drawable/ic_edit_24px"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
         <RelativeLayout
@@ -201,7 +201,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editpassword"
                 android:layout_centerInParent="true"
-                android:drawableRight= "@drawable/ic_edit"
+                android:drawableRight= "@drawable/ic_edit_24px"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
         <Button
