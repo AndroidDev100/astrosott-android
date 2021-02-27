@@ -92,12 +92,11 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         getBinding().eyeIcon.setOnClickListener(view -> {
             if (passwordVisibility) {
                 getBinding().eyeIcon.setBackgroundResource(R.drawable.ic_outline_visibility_off_light);
-                getBinding().passwordEdt.setInputType(InputType.TYPE_CLASS_TEXT);
-                getBinding().passwordEdt.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                getBinding().passwordEdt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 passwordVisibility = false;
             } else {
                 passwordVisibility = true;
-                getBinding().passwordEdt.setInputType(InputType.TYPE_CLASS_TEXT);
+                getBinding().passwordEdt.setInputType(InputType.TYPE_CLASS_TEXT );
                 getBinding().eyeIcon.setBackgroundResource(R.drawable.ic_outline_visibility_light);
 
             }
@@ -166,7 +165,6 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setFirstName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getFirstName());
                 UserInfo.getInstance(this).setLastName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getLastName());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
-
                 UserInfo.getInstance(this).setActive(true);
                 Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
                 onBackPressed();

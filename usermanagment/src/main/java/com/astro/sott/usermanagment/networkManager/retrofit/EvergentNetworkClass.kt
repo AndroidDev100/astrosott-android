@@ -22,7 +22,7 @@ class EvergentNetworkClass {
                     .build()
             if (retrofit == null) {
                 retrofit = Retrofit.Builder()
-                        .baseUrl(EvergentBaseConfiguration.instance.clients.getBaseUrl()+"/")
+                        .baseUrl(EvergentBaseConfiguration.instance.clients.getBaseUrl())
                         .addConverterFactory(GsonConverterFactory.create())
                         .client(okHttpClient)
                         .build()
