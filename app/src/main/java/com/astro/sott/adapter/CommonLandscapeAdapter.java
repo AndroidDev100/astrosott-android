@@ -3,9 +3,12 @@ package com.astro.sott.adapter;
 import android.app.Activity;
 
 import androidx.databinding.DataBindingUtil;
+
 import android.os.SystemClock;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +57,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
-        this.baseCategory=baseCat;
+        this.baseCategory = baseCat;
         try {
             this.detailRailClick = ((DetailRailClick) context);
         } catch (ClassCastException e) {
@@ -66,7 +69,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
-        this.baseCategory=baseCat;
+        this.baseCategory = baseCat;
         try {
             this.detailRailClick = ((DetailRailClick) context);
         } catch (ClassCastException e) {
@@ -80,14 +83,15 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private boolean isContinueWatchingRail;
     private String strRailName;
     MediaTypes mediaTypes;
-    public CommonLandscapeAdapter(Activity context, List<RailCommonData> itemsList, int type, String railName,BaseCategory baseCat) {
+
+    public CommonLandscapeAdapter(Activity context, List<RailCommonData> itemsList, int type, String railName, BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
         String name = mContext.getClass().getSimpleName();
         strRailName = railName;
         this.isContinueWatchingRail = false;
-        this.baseCategory=baseCat;
+        this.baseCategory = baseCat;
         try {
             responseDmsModel = AppCommonMethods.callpreference(mContext);
             mediaTypes = responseDmsModel.getParams().getMediaTypes();
@@ -103,32 +107,29 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        if (baseCategory!=null && baseCategory.getRailCardSize()!=null) {
+        if (baseCategory != null && baseCategory.getRailCardSize() != null) {
             if (baseCategory.getRailCardSize().equalsIgnoreCase(RailCardSize.NORMAL.name())) {
                 LandscapeItemBinding landscapeItemBinding = DataBindingUtil.inflate(
                         LayoutInflater.from(parent.getContext()),
                         R.layout.landscape_item, parent, false);
                 return new NormalHolder(landscapeItemBinding);
-            }
-            else if (baseCategory.getRailCardSize().equalsIgnoreCase(RailCardSize.SMALL.name())) {
+            } else if (baseCategory.getRailCardSize().equalsIgnoreCase(RailCardSize.SMALL.name())) {
                 LandscapeItemSmallBinding landscapeItemBinding = DataBindingUtil.inflate(
                         LayoutInflater.from(parent.getContext()),
                         R.layout.landscape_item_small, parent, false);
                 return new SmallHolder(landscapeItemBinding);
-            }
-            else if (baseCategory.getRailCardSize().equalsIgnoreCase(RailCardSize.LARGE.name())) {
+            } else if (baseCategory.getRailCardSize().equalsIgnoreCase(RailCardSize.LARGE.name())) {
                 LandscapeItemLargeBinding landscapeItemBinding = DataBindingUtil.inflate(
                         LayoutInflater.from(parent.getContext()),
                         R.layout.landscape_item_large, parent, false);
                 return new LargeHolder(landscapeItemBinding);
-            }
-            else {
+            } else {
                 LandscapeItemBinding landscapeItemBinding = DataBindingUtil.inflate(
                         LayoutInflater.from(parent.getContext()),
                         R.layout.landscape_item, parent, false);
                 return new NormalHolder(landscapeItemBinding);
             }
-        }else {
+        } else {
             LandscapeItemBinding landscapeItemBinding = DataBindingUtil.inflate(
                     LayoutInflater.from(parent.getContext()),
                     R.layout.landscape_item, parent, false);
@@ -140,13 +141,11 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
         if (holder instanceof NormalHolder) {
-            setNormalValues((( NormalHolder) holder).landscapeItemBinding,i);
-        }
-        else if (holder instanceof SmallHolder) {
-            setSmallValues((( SmallHolder) holder).circularItemBinding,i);
-        }
-        else if (holder instanceof LargeHolder) {
-            setLargeValues((( LargeHolder) holder).circularItemBinding,i);
+            setNormalValues(((NormalHolder) holder).landscapeItemBinding, i);
+        } else if (holder instanceof SmallHolder) {
+            setSmallValues(((SmallHolder) holder).circularItemBinding, i);
+        } else if (holder instanceof LargeHolder) {
+            setLargeValues(((LargeHolder) holder).circularItemBinding, i);
         }
 
 
@@ -154,13 +153,13 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private void setLargeValues(LandscapeItemLargeBinding landscapeItemBinding, int i) {
         RailCommonData singleItem = itemsList.get(i);
-        PrintLogging.printLog(CommonLandscapeAdapter.class,"",itemsList.get(0).getType()+"assettypeassest");
+        PrintLogging.printLog(CommonLandscapeAdapter.class, "", itemsList.get(0).getType() + "assettypeassest");
         try {
 
             boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
+            if (isProviderAvailable) {
                 landscapeItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 landscapeItemBinding.hungama.setVisibility(View.GONE);
             }
 
@@ -176,19 +175,19 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             try {
-                AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout,landscapeItemBinding.tvTitle,landscapeItemBinding.tvDescription,baseCategory);
+                AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
-            if(itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+            if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
                 landscapeItemBinding.livenowLay.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             }
-            getPremimumMark(i,landscapeItemBinding.exclusiveLayout);
+            getPremimumMark(i, landscapeItemBinding.exclusiveLayout);
         } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);
         }
@@ -196,13 +195,13 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private void setSmallValues(LandscapeItemSmallBinding landscapeItemBinding, int i) {
         RailCommonData singleItem = itemsList.get(i);
-        PrintLogging.printLog(CommonLandscapeAdapter.class,"",itemsList.get(0).getType()+"assettypeassest");
+        PrintLogging.printLog(CommonLandscapeAdapter.class, "", itemsList.get(0).getType() + "assettypeassest");
         try {
 
             boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
+            if (isProviderAvailable) {
                 landscapeItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 landscapeItemBinding.hungama.setVisibility(View.GONE);
             }
 
@@ -218,19 +217,19 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             try {
-                AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout,landscapeItemBinding.tvTitle,landscapeItemBinding.tvDescription,baseCategory);
+                AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
-            if(itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+            if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
                 landscapeItemBinding.livenowLay.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             }
-            getPremimumMark(i,landscapeItemBinding.exclusiveLayout);
+            getPremimumMark(i, landscapeItemBinding.exclusiveLayout);
         } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);
         }
@@ -238,15 +237,8 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private void setNormalValues(LandscapeItemBinding landscapeItemBinding, int i) {
         RailCommonData singleItem = itemsList.get(i);
-        PrintLogging.printLog(CommonLandscapeAdapter.class,"",itemsList.get(0).getType()+"assettypeassest");
+        PrintLogging.printLog(CommonLandscapeAdapter.class, "", itemsList.get(0).getType() + "assettypeassest");
         try {
-
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                landscapeItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-                landscapeItemBinding.hungama.setVisibility(View.GONE);
-            }
 
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
@@ -260,19 +252,19 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             try {
-                AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout,landscapeItemBinding.tvTitle,landscapeItemBinding.tvDescription,baseCategory);
+                AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
-            if(itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+            if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
                 landscapeItemBinding.livenowLay.setVisibility(View.VISIBLE);
-            }else {
-               landscapeItemBinding.livenowLay.setVisibility(View.GONE);
+            } else {
+                landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             }
-            getPremimumMark(i,landscapeItemBinding.exclusiveLayout);
+            getPremimumMark(i, landscapeItemBinding.exclusiveLayout);
         } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);
         }
@@ -302,6 +294,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
         }
     }
+
     @Override
     public int getItemCount() {
         return (null != itemsList ? itemsList.size() : 0);
@@ -323,7 +316,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
 
-                new ActivityLauncher(mContext).railClickCondition("","",name, itemsList.get(getLayoutPosition()),getLayoutPosition(), layoutType,itemsList, new MediaTypeCallBack() {
+                new ActivityLauncher(mContext).railClickCondition("", "", name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType, itemsList, new MediaTypeCallBack() {
                     @Override
                     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
                         if (NetworkConnectivity.isOnline(mContext)) {
@@ -357,7 +350,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
 
-                new ActivityLauncher(mContext).railClickCondition("","",name, itemsList.get(getLayoutPosition()),getLayoutPosition(), layoutType,itemsList, new MediaTypeCallBack() {
+                new ActivityLauncher(mContext).railClickCondition("", "", name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType, itemsList, new MediaTypeCallBack() {
                     @Override
                     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
                         if (NetworkConnectivity.isOnline(mContext)) {
@@ -382,8 +375,28 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         SmallHolder(LandscapeItemSmallBinding circularItemBind) {
             super(circularItemBind.getRoot());
             this.circularItemBinding = circularItemBind;
+            final String name = mContext.getClass().getSimpleName();
 
+            circularItemBind.getRoot().setOnClickListener(view1 -> {
+
+                if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                    return;
+                }
+                lastClickTime = SystemClock.elapsedRealtime();
+                new ActivityLauncher(mContext).railClickCondition("", "", name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType, itemsList, new MediaTypeCallBack() {
+                    @Override
+                    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
+                        if (NetworkConnectivity.isOnline(mContext)) {
+                            detailRailClick.detailItemClicked(_url, position, type, commonData);
+                        } else {
+                            ToastHandler.show(mContext.getResources().getString(R.string.no_internet_connection), mContext);
+                        }
+                    }
+                });
+
+            });
         }
+
 
     }
 
@@ -394,7 +407,26 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         LargeHolder(LandscapeItemLargeBinding circularItemBind) {
             super(circularItemBind.getRoot());
             this.circularItemBinding = circularItemBind;
+            final String name = mContext.getClass().getSimpleName();
 
+            circularItemBind.getRoot().setOnClickListener(view1 -> {
+
+                if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                    return;
+                }
+                lastClickTime = SystemClock.elapsedRealtime();
+                new ActivityLauncher(mContext).railClickCondition("", "", name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType, itemsList, new MediaTypeCallBack() {
+                    @Override
+                    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
+                        if (NetworkConnectivity.isOnline(mContext)) {
+                            detailRailClick.detailItemClicked(_url, position, type, commonData);
+                        } else {
+                            ToastHandler.show(mContext.getResources().getString(R.string.no_internet_connection), mContext);
+                        }
+                    }
+                });
+
+            });
         }
 
     }

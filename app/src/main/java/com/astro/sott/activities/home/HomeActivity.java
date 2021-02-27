@@ -118,9 +118,9 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //                    return true;
                 case R.id.navigation_more:
                     if (moreNewFragment == null) {
-                        getBinding().tabs.setVisibility(View.GONE);
+                       /* getBinding().tabs.setVisibility(View.GONE);
                         getBinding().viewPager.setVisibility(View.GONE);
-                        getBinding().mainLayout.setVisibility(View.VISIBLE);
+                        getBinding().mainLayout.setVisibility(View.VISIBLE);*/
                         getBinding().toolbar.setVisibility(View.GONE);
                         moreNewFragment = new MoreNewFragment();
                         active = moreNewFragment;
@@ -143,6 +143,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
+        getBinding().toolbar.setVisibility(View.VISIBLE);
         liveTvFragment = new LiveTvFragment();
         active = liveTvFragment;
         fragmentManager = getSupportFragmentManager();
@@ -320,8 +321,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //            notification_Icon.setVisibility(View.GONE);
 
         homeIcon.setOnClickListener(view -> {
-            navigation.setSelectedItemId(R.id.navigation_home);
-            homeFragment.sameClick();
+          /*  navigation.setSelectedItemId(R.id.navigation_home);
+            homeFragment.sameClick();*/
         });
 
 //        notification_Icon.setOnClickListener(view -> {
@@ -381,6 +382,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         }*/
         getBinding().mainLayout.setVisibility(View.GONE);
         getBinding().tabs.setVisibility(View.VISIBLE);
+        getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().viewPager.setVisibility(View.VISIBLE);
 
     }
@@ -394,6 +396,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
+        getBinding().toolbar.setVisibility(View.VISIBLE);
         fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commitAllowingStateLoss();
         checkSameClick();
         active = liveTvFragment;
@@ -466,13 +469,11 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             if (newLang.equalsIgnoreCase("ms")) {
                 navigation.getMenu().getItem(0).setTitle("Rumah");
                 navigation.getMenu().getItem(1).setTitle("Siaran langsung TV");
-                navigation.getMenu().getItem(3).setTitle("DI BAWAH Aplikasi");
-                navigation.getMenu().getItem(4).setTitle("LAGI");
+                navigation.getMenu().getItem(2).setTitle("Profil");
             } else {
                 navigation.getMenu().getItem(0).setTitle("Home");
                 navigation.getMenu().getItem(1).setTitle("Live TV");
-                navigation.getMenu().getItem(3).setTitle("SOTT Apps");
-                navigation.getMenu().getItem(4).setTitle("MORE");
+                navigation.getMenu().getItem(2).setTitle("Profile");
             }
 
 

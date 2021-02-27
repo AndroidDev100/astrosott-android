@@ -1,6 +1,7 @@
 package com.astro.sott.activities.language.ui
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -66,8 +67,14 @@ class ChangeLanguageActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private var lastClickTime: Long = 0
+
     private fun changeLanguage() {
         try {
+            if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                return
+            }
+            lastClickTime = SystemClock.elapsedRealtime()
             val selectedLanguage = KsPreferenceKey(this).appLangName
             if (selectedLanguage.equals("en", ignoreCase = true) || selectedLanguage.equals("", ignoreCase = true)) {
                 AppCommonMethods.updateLanguage("ms", this)
