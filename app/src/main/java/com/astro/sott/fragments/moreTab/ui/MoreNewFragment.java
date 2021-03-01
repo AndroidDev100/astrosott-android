@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
@@ -85,6 +86,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
     private void UIinitialization() {
         getBinding().toolbar.setVisibility(View.VISIBLE);
+        getBinding().tvVersion.setText("Version "+BuildConfig.VERSION_NAME);
         setClicks();
     }
 

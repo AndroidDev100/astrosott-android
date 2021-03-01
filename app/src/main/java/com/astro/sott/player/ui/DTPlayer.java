@@ -582,7 +582,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             currentProgramId = String.valueOf(asset.getId());
 
             //Showing bottomSheet for CatchupTV
-            showCatchupUI(startTime, asset);
+         //   showCatchupUI(startTime, asset);
 
         } catch (Exception e) {
 
@@ -1566,7 +1566,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
     private void showCatchupUI(Long startTime, Asset object) {
-        try {
+        /*try {
 
             bottomSheetBehavior = BottomSheetBehavior.from(getBinding().bottomSheetLayout.bottomSheet);
             // bottomSheetBehavior.setPeekHeight(360);
@@ -1727,7 +1727,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             });
         } catch (IllegalArgumentException e) {
             Log.d("ExceptionIs", e.getMessage());
-        }
+        }*/
     }
 
     private void loadPreviousCatchup(Long startTime, Asset object) {

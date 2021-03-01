@@ -239,7 +239,29 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             viewPagerIntializtion();
 
         }*/
+        getBinding().astroPlayButton.setOnClickListener(view -> {
+            if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                return;
+            }
+            lastClickTime = SystemClock.elapsedRealtime();
 
+            getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
+
+            });
+
+            /*if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                callProgressBar();
+                programName = Constants.programName;
+                playerChecks(railData);
+            }else {
+                DialogHelper.showLoginDialog(LiveChannel.this);
+            }*/
+            callProgressBar();
+            programName = Constants.programName;
+            playerChecks(railData);
+
+
+        });
         callYouMaylAlsoLike();
 
         getBinding().backImg.setOnClickListener(view -> onBackPressed());
@@ -282,30 +304,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private void setPlayerFragment() {
         getImage();
 
-        getBinding().ivPlayIcon.setClickable(true);
-        getBinding().ivPlayIcon.setOnClickListener(view -> {
-            if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
-                return;
-            }
-            lastClickTime = SystemClock.elapsedRealtime();
+        //getBinding().ivPlayIcon.setClickable(true);
 
-            getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
-
-            });
-
-            /*if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                callProgressBar();
-                programName = Constants.programName;
-                playerChecks(railData);
-            }else {
-                DialogHelper.showLoginDialog(LiveChannel.this);
-            }*/
-            callProgressBar();
-            programName = Constants.programName;
-            playerChecks(railData);
-
-
-        });
     }
 
     private void getImage() {

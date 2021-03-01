@@ -571,7 +571,6 @@
                 android:layout_marginBottom="@dimen/_40sdp"
                 android:fontFamily="@font/heebo_regular"
                 android:padding="@dimen/_1sdp"
-                android:text="@string/version_more"
                 android:textAllCaps="false"
                 android:textColor="@color/grey"
                 android:textSize="16sp"></TextView>
