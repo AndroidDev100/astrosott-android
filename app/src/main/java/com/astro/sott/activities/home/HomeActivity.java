@@ -24,6 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.widget.Toolbar;
@@ -31,8 +32,10 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.astro.sott.R;
@@ -118,10 +121,11 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //                    return true;
                 case R.id.navigation_more:
                     if (moreNewFragment == null) {
-                       /* getBinding().tabs.setVisibility(View.GONE);
+                        getBinding().tabs.setVisibility(View.GONE);
                         getBinding().viewPager.setVisibility(View.GONE);
-                        getBinding().mainLayout.setVisibility(View.VISIBLE);*/
+                        getBinding().mainLayout.setVisibility(View.VISIBLE);
                         getBinding().toolbar.setVisibility(View.GONE);
+                        setMargins(0);
                         moreNewFragment = new MoreNewFragment();
                         active = moreNewFragment;
                         fragmentManager = getSupportFragmentManager();
@@ -147,10 +151,22 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         liveTvFragment = new LiveTvFragment();
         active = liveTvFragment;
         fragmentManager = getSupportFragmentManager();
+        setMargins(150);
         fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "1").hide(liveTvFragment).commit();
         fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commit();
         active = liveTvFragment;
     }
+
+    private void setMargins(int marginTop) {
+        try {
+            CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            layoutParams.setMargins(0, marginTop, 0, 0);
+            findViewById(R.id.main_layout).setLayoutParams(layoutParams);
+        } catch (Exception e) {
+
+        }
+    }
+
 
     private BottomNavigationView navigation;
 
@@ -397,6 +413,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
+        setMargins(150);
         fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commitAllowingStateLoss();
         checkSameClick();
         active = liveTvFragment;
@@ -416,6 +433,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private void switchToNewMoreFragment() {
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
+        setMargins(0);
         getBinding().toolbar.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();

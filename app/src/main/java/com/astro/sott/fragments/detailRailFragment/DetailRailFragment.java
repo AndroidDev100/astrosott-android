@@ -13,7 +13,9 @@ import androidx.viewpager.widget.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.databinding.FragmentDetailRailBinding;
@@ -258,6 +260,11 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
     private void viewPagerSetup() {
         try {
+            if (isTrailerCount == 1) {
+                ViewGroup.LayoutParams params = getBinding().tabLayout.getLayoutParams();
+                params.width = (int) 650;
+                getBinding().tabLayout.setLayoutParams(params);
+            }
             DetailPagerAdapter detailPagerAdapter = new DetailPagerAdapter(getChildFragmentManager(), getActivity(), railCommonData, isTrailerCount, trailerFragmentType);
             getBinding().pager.setAdapter(detailPagerAdapter);
             getBinding().pager.disableScroll(true);

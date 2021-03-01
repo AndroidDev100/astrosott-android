@@ -523,7 +523,7 @@
     <string name="next">NEXT</string>
     <string name="otp_valid_for">OTP valid for</string>
     <string name="invalid_otp">Invalid OTP Entered</string>
-    <string name="sign_up_text">Sign Up</string>
+    <string name="sign_up_text"><u>Sign Up</u></string>
     <string name="sign_in_with">or Sign In With</string>
 
     <string name="forget_psw">Forgot Password</string>
