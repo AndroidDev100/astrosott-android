@@ -118,9 +118,9 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //                    return true;
                 case R.id.navigation_more:
                     if (moreNewFragment == null) {
-                       /* getBinding().tabs.setVisibility(View.GONE);
+                       getBinding().tabs.setVisibility(View.GONE);
                         getBinding().viewPager.setVisibility(View.GONE);
-                        getBinding().mainLayout.setVisibility(View.VISIBLE);*/
+                        getBinding().mainLayout.setVisibility(View.VISIBLE);
                         getBinding().toolbar.setVisibility(View.GONE);
                         moreNewFragment = new MoreNewFragment();
                         active = moreNewFragment;
@@ -418,6 +418,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().toolbar.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
+        getBinding().appbar.setVisibility(View.GONE);
         fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
         active = moreNewFragment;
 
