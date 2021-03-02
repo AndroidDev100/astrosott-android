@@ -1,6 +1,7 @@
 package com.astro.sott;
 
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.multidex.MultiDex;
@@ -101,7 +102,12 @@ public class ApplicationMain extends MultiDexApplication {
             }
         });
 
-        setupBaseClient();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setupBaseClient();
+            }
+        }, 2000);
 
     }
 
@@ -133,13 +139,16 @@ public class ApplicationMain extends MultiDexApplication {
             DEVICE_TYPE = BaseDeviceType.mobile.name();
         }
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(this);
-        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlExpManager() != null)
+
+        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlExpManager() != null) {
             EXPERIENCE_MANAGER_URL = responseDmsModel.getParams().getApiProxyUrlExpManager();
-        BaseClient client = new BaseClient(BaseGateway.ENVEU, EXPERIENCE_MANAGER_URL, AppConstants.SUBSCRIPTION_BASE_URL, OVP_API_KEY, API_KEY, DEVICE_TYPE, BasePlatform.android.name(), isTablet, UDID.getDeviceId(this, this.getContentResolver()));
+            BaseClient client = new BaseClient(BaseGateway.ENVEU, EXPERIENCE_MANAGER_URL, AppConstants.SUBSCRIPTION_BASE_URL, OVP_API_KEY, API_KEY, DEVICE_TYPE, BasePlatform.android.name(), isTablet, UDID.getDeviceId(this, this.getContentResolver()));
+            BaseConfiguration.Companion.getInstance().clientSetup(client);
+        }
 
-        BaseConfiguration.Companion.getInstance().clientSetup(client);
+        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().
 
-        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlEvergent() != null) {
+                getApiProxyUrlEvergent() != null) {
             EvergentBaseClient evergentBaseClient = new EvergentBaseClient(responseDmsModel.getParams().getApiProxyUrlEvergent());
             EvergentBaseConfiguration.Companion.getInstance().clientSetup(evergentBaseClient);
         }
