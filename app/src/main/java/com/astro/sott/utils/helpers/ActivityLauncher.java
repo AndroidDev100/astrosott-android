@@ -120,6 +120,7 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
+
     public void signupActivity(Activity source, Class<SignUpActivity> destination) {
         Intent intent = new Intent(source, destination);
         activity.startActivity(intent);

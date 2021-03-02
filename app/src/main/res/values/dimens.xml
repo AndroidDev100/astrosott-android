@@ -403,6 +403,7 @@
     <dimen name="dp2">2dp</dimen>
     <dimen name="dp8">8dp</dimen>
     <dimen name="dp50">50dp</dimen>
+    <dimen name="_42dp">42dp</dimen>
     <dimen name="player_button_sizes">64dp</dimen>
     <dimen name="dialog_base_padding">12dp</dimen>
     <dimen name="dialog_button_margin">16dp</dimen>

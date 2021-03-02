@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_three"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".activities.profile.ui.ChangeEmailConfirmation">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="311dp"
+        android:layout_height="276dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/corner_bg"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/make_sure"
+            android:id="@+id/make_sure"
+            android:gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:layout_marginStart="@dimen/dimen40dp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/dimen16dp"
+            android:fontFamily="@font/heebo_medium"
+            android:textSize="@dimen/_18sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/key_in_pswd"
+            android:textAlignment="center"
+            android:id="@+id/key_in_pswd"
+            android:textColor="@color/grey"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/make_sure"
+            android:layout_marginStart="@dimen/_42dp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/dp3"
+            android:fontFamily="@font/heebo_regular"
+            android:textSize="@dimen/_16sp"
+            />
+
+        <LinearLayout
+            android:id="@+id/password"
+            android:layout_below="@id/key_in_pswd"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginLeft="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen24dp"
+            android:layout_marginRight="@dimen/dimen16dp"
+            android:background="@color/edit_text_blue_bg"
+            android:orientation="horizontal"
+           >
+
+            <EditText
+                android:id="@+id/password_edt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:layout_weight="1.9"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:fontFamily="@font/heebo_regular"
+                android:hint="@string/password"
+                android:importantForAutofill="no"
+                android:inputType="text|textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textColorHint="@color/grey"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="@dimen/_16sp" />
+
+            <ImageView
+                android:id="@+id/eye_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="4dp"
+                android:layout_marginRight="18dp"
+                android:background="@drawable/ic_outline_visibility_off_light"></ImageView>
+        </LinearLayout>
+                  <Button
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginStart="@dimen/dimen30dp"
+                      android:layout_marginEnd="@dimen/dimen30dp"
+                      android:layout_below="@id/password"
+                      android:layout_marginTop="@dimen/dimen16dp"
+                      android:layout_marginBottom="@dimen/dimen16dp"
+                      android:background="@drawable/gradient_button"
+                      android:text="@string/confirm"
+                      android:textSize="@dimen/_16sp"
+                      android:textColor="@color/white"
+                      android:fontFamily="@font/heebo_medium"/>
+    </RelativeLayout>
+
+</LinearLayout>
+</layout>

@@ -3,6 +3,7 @@ package com.astro.sott.fragments.subscription.ui;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,9 +65,18 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        UIinitialization();
+
+    }
+
     private void loadDataFromModel() {
         SubscriptionAdapter adapter = new SubscriptionAdapter(SubscriptionPacksFragment.this);
         getBinding().recyclerView.setAdapter(adapter);
+
     }
 
     private void UIinitialization() {
@@ -74,6 +84,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         getBinding().recyclerView.setNestedScrollingEnabled(false);
         getBinding().recyclerView.hasFixedSize();
         getBinding().recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        loadDataFromModel();
 
     }
 
@@ -82,10 +93,5 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         return FragmentSubscriptionPacksBinding.inflate(inflater);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_subscription_packs, container, false);
-    }
+
 }

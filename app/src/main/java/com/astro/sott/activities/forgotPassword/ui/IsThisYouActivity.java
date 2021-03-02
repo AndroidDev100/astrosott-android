@@ -3,8 +3,10 @@ package com.astro.sott.activities.forgotPassword.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingActivity;
@@ -20,5 +22,23 @@ public class IsThisYouActivity extends BaseBindingActivity<ActivityIsThisYouBind
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setClicks();
     }
+
+    private void setClicks() {
+        getBinding().backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        getBinding().proceed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(getApplicationContext(),DetailsConfirmationActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
 }

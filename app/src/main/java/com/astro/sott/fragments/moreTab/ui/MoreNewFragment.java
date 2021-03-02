@@ -1,5 +1,6 @@
 package com.astro.sott.fragments.moreTab.ui;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,19 +8,25 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.astro.sott.R;
+import com.astro.sott.activities.forgotPassword.ui.IsThisYouActivity;
 import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
+import com.astro.sott.activities.profile.ui.ChangeEmailConfirmation;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
+import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,7 +45,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     private String mParam2;
     private FragmentMoreLayoutBinding mBinding;
     private String oldLang, newLang;
-
+    BottomNavigationView navBar;
     public MoreNewFragment() {
         // Required empty public constructor
     }
@@ -74,7 +81,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         oldLang = new KsPreferenceKey(getActivity()).getAppLangName();
-
+        navBar = getActivity().findViewById(R.id.navigation);
         UIinitialization();
     }
 
@@ -95,7 +102,40 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
 
         });
+          getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  Intent intent = new Intent(getActivity(),IsThisYouActivity.class);
+                  startActivity(intent);
+              }
+          });
+          getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+//                 SubscriptionLandingFragment fragment =new SubscriptionLandingFragment();
+//                  FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//                  transaction.replace(R.id.relative_layout, fragment).commit();
 
+                  navBar.setVisibility(View.GONE);
+                  SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
+                  FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                  transaction.replace(R.id.content_frame, someFragment ); // give your fragment container id in first parameter
+                  transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                  transaction.commit();
+              }
+          });
+          getBinding().rlLinkedAccounts.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  navBar.setVisibility(View.GONE);
+
+                  ChangeEmailConfirmation someFragment = new ChangeEmailConfirmation();
+                  FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                  transaction.replace(R.id.content_frame, someFragment ); // give your fragment container id in first parameter
+                  transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                  transaction.commit();
+              }
+          });
 
         getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,6 +234,11 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     @Override
     public void onResume() {
         super.onResume();
+        if (navBar.getVisibility() != View.VISIBLE){
+            navBar.setVisibility(View.VISIBLE);
+        }
+
+
         updateLang();
         if (UserInfo.getInstance(getActivity()).isActive()) {
             getBinding().loginUi.setVisibility(View.VISIBLE);

@@ -569,6 +569,8 @@
     <string name="vip_pack">VIP Packs</string>
     <string name="choose_pack">Choose one of the packs you would like.</string>
     <string name="Learn_more"><u>LEARN MORE</u></string>
+    <string name="make_sure">Just Wanted to Make Sure \n You are You</string>
+    <string name="key_in_pswd">Please key in your password \n to update email.</string>
 
 
 </resources>
