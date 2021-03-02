@@ -44,7 +44,6 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/gradient_outline_button"
             android:gravity="center"
-            android:layout_marginBottom="@dimen/_4sdp"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"

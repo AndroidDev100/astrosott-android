@@ -55,6 +55,7 @@ import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.ProgramAsset;
 import com.kaltura.client.types.UserAssetRule;
@@ -156,6 +157,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         if (railData != null) {
             getDataFromBack(railData);
             Constants.channelName = railData.getName();
+
             setImages(railData, this, getBinding().channelLogo);
         }
     }
