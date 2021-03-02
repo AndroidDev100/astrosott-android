@@ -401,6 +401,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().viewPager.setVisibility(View.VISIBLE);
 
+
     }
 
     private void switchToViuFragment() {

@@ -18,6 +18,10 @@ import com.astro.sott.utils.helpers.SharedPrefHelper;
 import com.astro.sott.R;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.UDID;
+import com.clevertap.android.sdk.ActivityLifecycleCallback;
+import com.clevertap.android.sdk.CTInboxListener;
+import com.clevertap.android.sdk.CleverTapAPI;
+import com.clevertap.android.sdk.CleverTapInstanceConfig;
 import com.enveu.BaseClient.BaseClient;
 import com.enveu.BaseClient.BaseConfiguration;
 import com.enveu.BaseClient.BaseDeviceType;
@@ -69,8 +73,12 @@ public class ApplicationMain extends MultiDexApplication {
 
     @Override
     public void onCreate() {
+        ActivityLifecycleCallback.register(this);
         super.onCreate();
-
+       /* CleverTapInstanceConfig clevertapAdditionalInstanceConfig =  CleverTapInstanceConfig.createInstance(this, "TEST-775-W65-ZZ6Z", "TEST-560-5aa");
+        clevertapAdditionalInstanceConfig.setDebugLevel(CleverTapAPI.LogLevel.DEBUG); // default is CleverTapAPI.LogLevel.INFO
+        clevertapAdditionalInstanceConfig.setAnalyticsOnly(true); // disables the user engagement features of the instance, default is false
+        clevertapAdditionalInstanceConfig.useGoogleAdId(true);*/
         mInstance = this;
 //        ApplicationMain.context = getApplicationContext();
         MultiDex.install(this);
@@ -140,15 +148,13 @@ public class ApplicationMain extends MultiDexApplication {
         }
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(this);
 
-        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlExpManager() != null) {
+       /* if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlExpManager() != null) {
             EXPERIENCE_MANAGER_URL = responseDmsModel.getParams().getApiProxyUrlExpManager();
             BaseClient client = new BaseClient(BaseGateway.ENVEU, EXPERIENCE_MANAGER_URL, AppConstants.SUBSCRIPTION_BASE_URL, OVP_API_KEY, API_KEY, DEVICE_TYPE, BasePlatform.android.name(), isTablet, UDID.getDeviceId(this, this.getContentResolver()));
             BaseConfiguration.Companion.getInstance().clientSetup(client);
-        }
+        }*/
 
-        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().
-
-                getApiProxyUrlEvergent() != null) {
+        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlEvergent() != null) {
             EvergentBaseClient evergentBaseClient = new EvergentBaseClient(responseDmsModel.getParams().getApiProxyUrlEvergent());
             EvergentBaseConfiguration.Companion.getInstance().clientSetup(evergentBaseClient);
         }
