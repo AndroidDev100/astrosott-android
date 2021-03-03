@@ -155,7 +155,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (getActivity() != null) {
+       if (getActivity() != null) {
             ((LiveChannel) getActivity()).setLiveChannelCommunicator((int oldScrollX, int oldScrollY) -> {
                 if (totalProgramListCount != arrayList.size()) {
                     mListener.showScrollViewProgressBarView(true);
@@ -180,7 +180,6 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initializeRecyclerView();
-        scrollRefresh();
     }
 
     @Override
@@ -362,9 +361,9 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                     getBinding().programRecyclerview.setVisibility(View.GONE);
                 }
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                if (mListener != null) {
+              /*  if (mListener != null) {
                     mListener.showScrollViewProgressBarView(false);
-                }
+                }*/
             }
         });
     }
@@ -377,6 +376,8 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     }
 
     private void setValues(final List<RailCommonData> commonData) {
+        scrollRefresh();
+
         arrayList.addAll(commonData);
         if (!compareDates()) {
             position = -1;
@@ -395,14 +396,14 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 //            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             adapter = new ProgramsAdapter(baseActivity, arrayList, position, Schedule.this, Schedule.this);
             getBinding().programRecyclerview.setAdapter(adapter);
-            manager.scrollToPositionWithOffset(position, 0);
+           // manager.scrollToPositionWithOffset(position, 0);
             mIsLoading = adapter.getItemCount() != totalCOunt;
             adapter.updateLiveChannelCount(position);
-            mListener.showScrollViewProgressBarView(false);
+          mListener.showScrollViewProgressBarView(true);
         } else {
-            if (mListener != null) {
+          /*  if (mListener != null) {
                 new Handler().postDelayed(() -> mListener.showScrollViewProgressBarView(false), 800);
-            }
+            }*/
 
             if (getResources().getBoolean(R.bool.isTablet)) {
                 new Handler().postDelayed(new Runnable() {
@@ -862,33 +863,45 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     }
 
     private void scrollRefresh() {
-        getBinding().programRecyclerview.addOnScrollListener(onScrollListener);
+        getBinding().programRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                try {
+                    LinearLayoutManager layoutManager = ((LinearLayoutManager) getBinding().programRecyclerview.getLayoutManager());
+                    firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+                    if (dy > 0) {
+                        visibleItemCount = layoutManager.getChildCount();
+                        totalItemCount = layoutManager.getItemCount();
+                        pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+                        if (mIsLoading) {
+                            if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                                mIsLoading = false;
+                                counter++;
+                                isScrolling = true;
+                                mScrollY += dy;
+                                getEPGChannels();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e("ERROR", e.getMessage());
+                }
+            }
+        });
+        //getBinding().programRecyclerview.addOnScrollListener(onScrollListener);
     }
 
     RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            try {
-                LinearLayoutManager layoutManager = ((LinearLayoutManager) getBinding().programRecyclerview.getLayoutManager());
-                firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
-                if (dy > 0) {
-                    visibleItemCount = layoutManager.getChildCount();
-                    totalItemCount = layoutManager.getItemCount();
-                    pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
-                    if (mIsLoading) {
-                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                            mIsLoading = false;
-                            counter++;
-                            isScrolling = true;
-                            mScrollY += dy;
-                            getEPGChannels();
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                Log.e("ERROR", e.getMessage());
-            }
+
         }
     };
 

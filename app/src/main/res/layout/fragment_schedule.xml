@@ -75,8 +75,8 @@
                     android:id="@+id/program_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/blue_bg"
                     android:nestedScrollingEnabled="false"
+                    android:background="@color/blue_bg"
                     tools:targetApi="lollipop" />
 
                 <include
