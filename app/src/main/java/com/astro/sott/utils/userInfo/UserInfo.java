@@ -13,7 +13,16 @@ public class UserInfo {
     private String firstName;
     private String lastName;
     private String email;
+    private String cpCustomerId;
 
+
+    public String getCpCustomerId() {
+        return cpCustomerId;
+    }
+
+    public void setCpCustomerId(String cpCustomerId) {
+        this.cpCustomerId = cpCustomerId;
+    }
 
     public String getEmail() {
         return session.getString("AstroEmail", "");

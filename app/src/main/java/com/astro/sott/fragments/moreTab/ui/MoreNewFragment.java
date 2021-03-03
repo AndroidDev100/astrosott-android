@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
@@ -28,7 +29,12 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
+import com.clevertap.android.sdk.CleverTapAPI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +54,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     private FragmentMoreLayoutBinding mBinding;
     private String oldLang, newLang;
     BottomNavigationView navBar;
+
     public MoreNewFragment() {
         // Required empty public constructor
     }
@@ -94,7 +101,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
     private void UIinitialization() {
         getBinding().toolbar.setVisibility(View.VISIBLE);
-        getBinding().tvVersion.setText("Version "+BuildConfig.VERSION_NAME);
+        getBinding().tvVersion.setText("Version " + BuildConfig.VERSION_NAME);
         setClicks();
     }
 
@@ -105,52 +112,52 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
 
         });
-          getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                  Intent intent = new Intent(getActivity(),IsThisYouActivity.class);
-                  startActivity(intent);
-              }
-          });
-          getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
+        getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), IsThisYouActivity.class);
+                startActivity(intent);
+            }
+        });
+        getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 //                 SubscriptionLandingFragment fragment =new SubscriptionLandingFragment();
 //                  FragmentTransaction transaction = getFragmentManager().beginTransaction();
 //                  transaction.replace(R.id.relative_layout, fragment).commit();
 
-                  navBar.setVisibility(View.GONE);
-                  SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
-                  FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                  transaction.replace(R.id.content_frame, someFragment ); // give your fragment container id in first parameter
-                  transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                  transaction.commit();
-              }
-          });
-          getBinding().rlLinkedAccounts.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                  navBar.setVisibility(View.GONE);
+                navBar.setVisibility(View.GONE);
+                SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
+                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                transaction.commit();
+            }
+        });
+        getBinding().rlLinkedAccounts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navBar.setVisibility(View.GONE);
 
-                  ChangeEmailConfirmation someFragment = new ChangeEmailConfirmation();
-                  FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                  transaction.replace(R.id.content_frame, someFragment ); // give your fragment container id in first parameter
-                  transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                  transaction.commit();
-              }
-          });
-          getBinding().rlTransactionHistory.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                  navBar.setVisibility(View.GONE);
+                ChangeEmailConfirmation someFragment = new ChangeEmailConfirmation();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
+                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                transaction.commit();
+            }
+        });
+        getBinding().rlTransactionHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navBar.setVisibility(View.GONE);
 
-                  QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
-                  FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                  transaction.replace(R.id.content_frame, quickSearchGenre ); // give your fragment container id in first parameter
-                  transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                  transaction.commit();
-              }
-          });
+                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_frame, quickSearchGenre); // give your fragment container id in first parameter
+                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                transaction.commit();
+            }
+        });
         getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,6 +169,63 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 getBinding().edit.setVisibility(View.GONE);
 
             }
+        });
+        getBinding().rlContentPreference.setOnClickListener(v -> {
+           /* HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("Name", UserInfo.getInstance(getActivity()).getFirstName());                  // String
+            profileUpdate.put("Identity", UserInfo.getInstance(getActivity()).getCpCustomerId() + "_ProfileA");                    // String or number
+            profileUpdate.put("Email", UserInfo.getInstance(getActivity()).getEmail());               // Email address of the user
+            profileUpdate.put("Phone", "+14155551234");                 // Phone (with the country code, starting with +)
+            profileUpdate.put("Gender", "M");                           // Can be either M or F
+            profileUpdate.put("DOB", new Date());                       // Date of Birth. Set the Date object to the appropriate value first
+            profileUpdate.put("Photo", "www.foobar.com/image.jpeg");    // URL to the Image
+
+// optional fields. controls whether the user will be sent email, push etc.
+            profileUpdate.put("MSG-email", false);                      // Disable email notifications
+            profileUpdate.put("MSG-push", true);                        // Enable push notifications
+            profileUpdate.put("MSG-sms", false);                        // Disable SMS notifications
+            profileUpdate.put("MSG-whatsapp", true);                    // Enable WhatsApp notifications
+
+            ArrayList<String> stuff = new ArrayList<String>();
+            stuff.add("bag");
+            stuff.add("shoes");
+            profileUpdate.put("MyStuff", stuff);                        //ArrayList of Strings
+
+            String[] otherStuff = {"Jeans", "Perfume"};
+            profileUpdate.put("MyStuff", otherStuff);                   //String Array
+
+            CleverTapAPI.getDefaultInstance(getActivity()).pushProfile(profileUpdate);
+            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();*/
+
+        });
+
+        getBinding().rlCoupanRedem.setOnClickListener(v -> {
+           /* HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("Name", UserInfo.getInstance(getActivity()).getFirstName());                  // String
+            profileUpdate.put("Identity", UserInfo.getInstance(getActivity()).getCpCustomerId() + "_ProfileB");                    // String or number
+            profileUpdate.put("Email", UserInfo.getInstance(getActivity()).getEmail());               // Email address of the user
+            profileUpdate.put("Phone", "+14155551234");                 // Phone (with the country code, starting with +)
+            profileUpdate.put("Gender", "M");                           // Can be either M or F
+            profileUpdate.put("DOB", new Date());                       // Date of Birth. Set the Date object to the appropriate value first
+            profileUpdate.put("Photo", "www.foobar.com/image.jpeg");    // URL to the Image
+
+// optional fields. controls whether the user will be sent email, push etc.
+            profileUpdate.put("MSG-email", false);                      // Disable email notifications
+            profileUpdate.put("MSG-push", true);                        // Enable push notifications
+            profileUpdate.put("MSG-sms", false);                        // Disable SMS notifications
+            profileUpdate.put("MSG-whatsapp", true);                    // Enable WhatsApp notifications
+
+            ArrayList<String> stuff = new ArrayList<String>();
+            stuff.add("bag");
+            stuff.add("shoes");
+            profileUpdate.put("MyStuff", stuff);                        //ArrayList of Strings
+
+            String[] otherStuff = {"Jeans", "Perfume"};
+            profileUpdate.put("MyStuff", otherStuff);                   //String Array
+
+            CleverTapAPI.getDefaultInstance(getActivity()).pushProfile(profileUpdate);
+            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();*/
+
         });
         getBinding().rlManageDevice.setOnClickListener(view -> {
             if (UserInfo.getInstance(getActivity()).isActive()) {
@@ -248,7 +312,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     @Override
     public void onResume() {
         super.onResume();
-        if (navBar.getVisibility() != View.VISIBLE){
+        if (navBar.getVisibility() != View.VISIBLE) {
             navBar.setVisibility(View.VISIBLE);
         }
 

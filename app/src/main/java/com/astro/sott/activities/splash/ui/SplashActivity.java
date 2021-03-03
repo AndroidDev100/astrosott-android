@@ -33,6 +33,8 @@ import com.astro.sott.activities.webEpisodeDescription.ui.WebEpisodeDescriptionA
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.modelClasses.appVersion.AppVersionStatus;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.usermanagment.EvergentBaseClient.EvergentBaseClient;
+import com.astro.sott.usermanagment.EvergentBaseClient.EvergentBaseConfiguration;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
@@ -346,12 +348,10 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     private void pushToken() {
 
-        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(this);
+        setupBaseClient();
 
-        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlExpManager() != null) {
-            BaseClient client = new BaseClient(BaseGateway.ENVEU, responseDmsModel.getParams().getApiProxyUrlExpManager(), AppConstants.SUBSCRIPTION_BASE_URL, AppConstants.API_KEY_MOB, AppConstants.API_KEY_MOB, BaseDeviceType.mobile.name(), BasePlatform.android.name(), false, UDID.getDeviceId(this, this.getContentResolver()));
-            BaseConfiguration.Companion.getInstance().clientSetup(client);
-        }
+
+
         token = SharedPrefHelper.getInstance(this).getString(AppLevelConstants.FCM_TOKEN, "");
         if (token == null || token.equals("")) {
             FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
@@ -433,6 +433,36 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
             });
         }
+    }
+    private void setupBaseClient() {
+        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+        String API_KEY = "";
+        String DEVICE_TYPE = "";
+        String OVP_API_KEY = "";
+        String EXPERIENCE_MANAGER_URL = "";
+        if (isTablet) {
+            API_KEY = AppConstants.API_KEY_TAB;
+            OVP_API_KEY = AppConstants.API_KEY_TAB;
+            DEVICE_TYPE = BaseDeviceType.tablet.name();
+        } else {
+            API_KEY = AppConstants.API_KEY_MOB;
+            OVP_API_KEY = AppConstants.API_KEY_MOB;
+            DEVICE_TYPE = BaseDeviceType.mobile.name();
+        }
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(this);
+
+
+        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlExpManager() != null) {
+            EXPERIENCE_MANAGER_URL = responseDmsModel.getParams().getApiProxyUrlExpManager();
+            BaseClient client = new BaseClient(BaseGateway.ENVEU, EXPERIENCE_MANAGER_URL, AppConstants.SUBSCRIPTION_BASE_URL, OVP_API_KEY, API_KEY, DEVICE_TYPE, BasePlatform.android.name(), isTablet, UDID.getDeviceId(this, this.getContentResolver()));
+            BaseConfiguration.Companion.getInstance().clientSetup(client);
+        }
+
+        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlEvergent() != null) {
+            EvergentBaseClient evergentBaseClient = new EvergentBaseClient(responseDmsModel.getParams().getApiProxyUrlEvergent());
+            EvergentBaseConfiguration.Companion.getInstance().clientSetup(evergentBaseClient);
+        }
+
     }
 
     @Override

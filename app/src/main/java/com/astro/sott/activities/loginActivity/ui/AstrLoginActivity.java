@@ -25,6 +25,11 @@ import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
+import com.clevertap.android.sdk.CleverTapAPI;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 
 public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBinding> {
@@ -96,7 +101,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 passwordVisibility = false;
             } else {
                 passwordVisibility = true;
-                getBinding().passwordEdt.setInputType(InputType.TYPE_CLASS_TEXT );
+                getBinding().passwordEdt.setInputType(InputType.TYPE_CLASS_TEXT);
                 getBinding().eyeIcon.setBackgroundResource(R.drawable.ic_outline_visibility_light);
 
             }
@@ -165,8 +170,10 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setFirstName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getFirstName());
                 UserInfo.getInstance(this).setLastName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getLastName());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
+                UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
                 UserInfo.getInstance(this).setActive(true);
                 Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
+              //  setCleverTap();
                 onBackPressed();
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
@@ -186,6 +193,35 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
             }
         });
+    }
+
+    private void setCleverTap() {
+
+        HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+        profileUpdate.put("Name", UserInfo.getInstance(this).getFirstName());    // String
+        profileUpdate.put("Identity", UserInfo.getInstance(this).getCpCustomerId());      // String or number
+        profileUpdate.put("Email", UserInfo.getInstance(this).getEmail()); // Email address of the user
+        profileUpdate.put("Phone", "+14155551234");   // Phone (with the country code, starting with +)
+        profileUpdate.put("Gender", "M");             // Can be either M or F
+        profileUpdate.put("DOB", new Date());         // Date of Birth. Set the Date object to the appropriate value first
+
+// optional fields. controls whether the user will be sent email, push etc.
+        profileUpdate.put("MSG-email", false);        // Disable email notifications
+        profileUpdate.put("MSG-push", true);          // Enable push notifications
+        profileUpdate.put("MSG-sms", false);          // Disable SMS notifications
+        profileUpdate.put("MSG-whatsapp", true);      // Enable WhatsApp notifications
+
+        ArrayList<String> stuff = new ArrayList<String>();
+        stuff.add("bag");
+        stuff.add("shoes");
+        profileUpdate.put("MyStuff", stuff);                        //ArrayList of Strings
+
+        String[] otherStuff = {"Jeans", "Perfume"};
+        profileUpdate.put("MyStuff", otherStuff);                   //String Array
+
+
+        CleverTapAPI.getDefaultInstance(getApplicationContext()).onUserLogin(profileUpdate);
+
     }
 
     private void searchAccountv2() {

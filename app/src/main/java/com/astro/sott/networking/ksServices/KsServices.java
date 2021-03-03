@@ -1401,7 +1401,6 @@ public class KsServices {
         String two = "'";
         String kSQL = one + seriesID + two;
 
-        searchAssetFilter.orderBy("NAME_ASC");
         searchAssetFilter.setKSql(kSQL);
 
         if (assetType == MediaTypeConstant.getSeries(activity)) {
