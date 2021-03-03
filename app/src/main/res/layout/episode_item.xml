@@ -112,55 +112,22 @@
 
         </LinearLayout>
 
-
-        <LinearLayout
-            android:id="@+id/clRoot"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/itemImage"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="0dp"
-                    android:scaleType="fitXY"
-                    app:layout_constraintDimensionRatio="H,16:9"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <TextView
-                android:id="@+id/tvDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|left"
-                android:layout_marginLeft="@dimen/_1sdp"
-                android:layout_marginRight="@dimen/_12sdp"
-                android:ellipsize="end"
-                android:fontFamily="@font/heebo_regular"
-                android:lineSpacingExtra="8sp"
-                android:lineHeight="24sp"
-                android:maxLines="3"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_10sdp"
-                android:textColor="@color/title_color"
-                android:textSize="14sp" />
-
-
-        </LinearLayout>
+            android:layout_gravity="top|left"
+            android:layout_marginLeft="@dimen/_1sdp"
+            android:layout_marginRight="@dimen/_12sdp"
+            android:ellipsize="end"
+            android:fontFamily="@font/heebo_regular"
+            android:lineSpacingExtra="8sp"
+            android:lineHeight="24sp"
+            android:maxLines="3"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:textColor="@color/title_color"
+            android:textSize="14sp" />
 
 
     </LinearLayout>

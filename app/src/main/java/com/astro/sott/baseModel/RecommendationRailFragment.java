@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.astro.sott.R;
 import com.astro.sott.activities.movieDescription.adapter.MovieDescriptionCommonAdapter;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
@@ -197,7 +198,7 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
     private void callYouMayAlsoLike(Long assetId, int counter, int assetType, Map<String, MultilingualStringValueArray> map) {
         long asseId = assetId;
-        getBinding().loadMore.setText("Loading...");
+        getBinding().loadMore.setText(getActivity().getResources().getString(R.string.loading));
         viewModel.getYouMayAlsoLike((int) asseId, counter, assetType, map).observe(this, assetCommonBeans -> {
             try {
                 getBinding().loadMore.setText("Load More");
