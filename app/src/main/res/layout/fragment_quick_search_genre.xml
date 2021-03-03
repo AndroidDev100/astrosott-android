@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_bg"
+    tools:context=".activities.search.ui.QuickSearchGenre">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/ll1"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/search_toolbar" />
+
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/ll1"
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+      />
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_76sdp"
+        card_view:cardElevation="@dimen/_8dp"
+        card_view:cardMaxElevation="@dimen/_3dp"
+        card_view:cardPreventCornerOverlap="false"
+        android:layout_alignParentBottom="true"
+        card_view:cardBackgroundColor="@color/blue_bg">
+
+        <TextView
+            android:id="@+id/quick_search_btn"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@drawable/gradient_button"
+            android:fontFamily="@font/heebo_medium"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="@string/quick_search_text"
+            android:textAllCaps="true"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp"
+            android:layout_marginStart="@dimen/dimen16dp"
+            android:layout_marginEnd="@dimen/dimen16dp">
+
+        </TextView>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>
+</layout>

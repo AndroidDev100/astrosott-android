@@ -12,8 +12,10 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_18sdp"
-            android:layout_marginTop="@dimen/_18sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:padding="8dp"
+            android:id="@+id/back_icon"
             app:layout_constraintLeft_toLeftOf="parent"
             android:background="@drawable/ic_arrow_back_24px"
             app:layout_constraintTop_toTopOf="parent"></ImageView>
@@ -119,7 +121,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/email"
                 android:background="@color/edit_text_blue_bg"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_height="@dimen/_54dp">
                 <EditText
                     android:layout_width="match_parent"
@@ -128,6 +130,7 @@
                     android:layout_marginRight="18dp"
                     android:layout_weight="1.9"
                     android:background="@null"
+                    android:cursorVisible="true"
                     android:id="@+id/password_edt"
                     android:fontFamily="@font/heebo_regular"
                     android:textColorHint="@color/grey"
@@ -136,11 +139,23 @@
                     android:importantForAutofill="no"
                     android:inputType="text|textNoSuggestions"
                     android:maxLines="1"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:singleLine="true"
                     android:textColor="@color/white"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/new_password" />
+                <ImageView
+                    android:id="@+id/eye_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="4dp"
+                    android:layout_marginRight="@dimen/margin_18dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:background="@drawable/ic_outline_visibility_off_light"></ImageView>
+
             </LinearLayout>
 
             <TextView
@@ -162,6 +177,7 @@
                 android:layout_marginRight="@dimen/margin_18dp"
                 android:fontFamily="@font/heebo_regular"
                 android:gravity="center"
+                android:padding="4dp"
                 android:text="@string/forgt_psw"
                 android:textColor="@color/maya_blue"
                 android:textSize="@dimen/_16sp"
@@ -171,7 +187,7 @@
 
 
             <TextView
-                android:id="@+id/update"
+                android:id="@+id/proceed"
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginTop="@dimen/margin_top_30dp"

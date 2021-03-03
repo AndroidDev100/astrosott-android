@@ -214,7 +214,7 @@
             card_view:cardBackgroundColor="@color/blue_bg">
 
             <TextView
-                android:id="@+id/login_btn"
+                android:id="@+id/search_btn"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:background="@drawable/gradient_button"

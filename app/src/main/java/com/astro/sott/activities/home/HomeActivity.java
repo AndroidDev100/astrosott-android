@@ -151,7 +151,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         liveTvFragment = new LiveTvFragment();
         active = liveTvFragment;
         fragmentManager = getSupportFragmentManager();
-        setMargins(150);
         fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "1").hide(liveTvFragment).commit();
         fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commit();
         active = liveTvFragment;
@@ -437,6 +436,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         setMargins(0);
         getBinding().toolbar.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
+        getBinding().appbar.setVisibility(View.GONE);
         fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
         active = moreNewFragment;
 
