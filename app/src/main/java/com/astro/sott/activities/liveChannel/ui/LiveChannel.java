@@ -53,6 +53,7 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.StringBuilderHolder;
 import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.bumptech.glide.Glide;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MediaAsset;
@@ -157,7 +158,6 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         if (railData != null) {
             getDataFromBack(railData);
             Constants.channelName = railData.getName();
-
             setImages(railData, this, getBinding().channelLogo);
         }
     }
@@ -187,6 +187,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         getBinding().descriptionText.setText(programAsset.getDescription());
         stringBuilder = new StringBuilder();
         stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + " | ");
+        getImage();
         getGenre();
 
     }
@@ -302,29 +303,22 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
 
     private void setPlayerFragment() {
-        getImage();
+
 
         //getBinding().ivPlayIcon.setClickable(true);
 
     }
 
     private void getImage() {
-        image_url = Constants.ImageUrl;
-        new Handler().postDelayed(() -> {
-            if (image_url.equalsIgnoreCase("")) {
-                getImage();
-            } else {
-                image_url = Constants.ImageUrl;
-                if (!image_url.equalsIgnoreCase("")) {
-                    // image_url = image_url + AppLevelConstants.WIDTH + (int) getResources().getDimension(R.dimen.live_carousel_image_width) + AppLevelConstants.HEIGHT + (int) getResources().getDimension(R.dimen.live_carousel_image_height) + AppLevelConstants.QUALITY;
-                   /* Glide.with(getApplicationContext()).load(image_url)
-                            .thumbnail(0.7f).into(getBinding().playerImage);*/
-
-                    Constants.ImageUrl = "";
+        if (programAsset.getImages().size() > 0) {
+            for (int i = 0; i < programAsset.getImages().size(); i++) {
+                if (programAsset.getImages().get(i).getRatio().equals("16x9")) {
+                    String image_url = programAsset.getImages().get(i).getUrl();
+                    String final_url = image_url + AppLevelConstants.WIDTH + (int) getResources().getDimension(R.dimen.detail_image_width) + AppLevelConstants.HEIGHT + (int) getResources().getDimension(R.dimen.carousel_image_height) + AppLevelConstants.QUALITY;
+                    ImageHelper.getInstance(getBinding().playerImage.getContext()).loadImageToPotrait(getBinding().playerImage, final_url, R.drawable.square1);
                 }
-
             }
-        }, 200);
+        }
 
     }
 
