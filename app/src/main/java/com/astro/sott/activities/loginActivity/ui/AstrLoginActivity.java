@@ -170,6 +170,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setFirstName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getFirstName());
                 UserInfo.getInstance(this).setLastName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getLastName());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
+                UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
                 UserInfo.getInstance(this).setActive(true);
                 Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
               //  setCleverTap();
@@ -198,7 +199,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
         HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
         profileUpdate.put("Name", UserInfo.getInstance(this).getFirstName());    // String
-        profileUpdate.put("Identity", 61026032);      // String or number
+        profileUpdate.put("Identity", UserInfo.getInstance(this).getCpCustomerId());      // String or number
         profileUpdate.put("Email", UserInfo.getInstance(this).getEmail()); // Email address of the user
         profileUpdate.put("Phone", "+14155551234");   // Phone (with the country code, starting with +)
         profileUpdate.put("Gender", "M");             // Can be either M or F
