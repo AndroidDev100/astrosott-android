@@ -17,8 +17,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
                 <ImageView
                     android:id="@+id/back_date"
@@ -43,8 +43,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginRight="17dp"
-                    android:background="@drawable/ic_baseline_arrow_forward_ios_24"
-                    ></ImageView>
+                    android:background="@drawable/ic_baseline_arrow_forward_ios_24"></ImageView>
             </LinearLayout>
 
             <HorizontalScrollView
@@ -68,16 +67,33 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="20dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/program_recyclerview"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:nestedScrollingEnabled="false"
+                    android:layout_height="wrap_content"
                     android:background="@color/blue_bg"
+                    android:nestedScrollingEnabled="false"
                     tools:targetApi="lollipop" />
+
+                <TextView
+                    android:id="@+id/load_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/program_recyclerview"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:paddingBottom="10dp"
+                    android:text="Load More"
+                    android:textColor="@color/title_color"
+                    android:textSize="@dimen/font_medium_large"
+                    android:visibility="gone"
+
+                    ></TextView>
 
                 <include
                     android:id="@+id/include_progressbar"
