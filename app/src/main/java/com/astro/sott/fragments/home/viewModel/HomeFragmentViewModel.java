@@ -34,10 +34,11 @@ public class HomeFragmentViewModel extends HomeBaseViewModel {
     public LiveData<List<AssetCommonBean>> getYouMayAlsoLike(int assetId,
                                                              int counter,
                                                              int assetType,
-                                                             Map<String, MultilingualStringValueArray> map,
-                                                             int layoutType, int screen_id, Asset asset) {
-        return YouMayAlsoLike.getInstance().fetchSimilarMovie(getApplication().getApplicationContext(), assetId, counter, assetType, map );
+                                                             Map<String, MultilingualStringValueArray> map
+    ) {
+        return YouMayAlsoLike.getInstance().fetchSimilarMovie(getApplication().getApplicationContext(), assetId, counter, assetType, map);
     }
+
 
     public void resetObject() {
         HomeFragmentRepository.resetObject();
