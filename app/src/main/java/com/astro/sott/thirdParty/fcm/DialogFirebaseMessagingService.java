@@ -30,6 +30,9 @@ import java.util.Map;
 public class DialogFirebaseMessagingService extends FirebaseMessagingService {
     private Long value;
     private String programScreenValue = null;
+    private String title="";
+    private String description="";
+
     String valueEmoji;
 
     /**
@@ -46,12 +49,17 @@ public class DialogFirebaseMessagingService extends FirebaseMessagingService {
 
         for (String key : remoteMessage.getData().keySet()) {
 
-            if(key.equalsIgnoreCase("type")){
+            if (key.equalsIgnoreCase("type")) {
                 programScreenValue = remoteMessage.getData().get(key);
 
-            } else if(key.equalsIgnoreCase("Id")){
-                 value = Long.valueOf(remoteMessage.getData().get(key));
+            } else if (key.equalsIgnoreCase("Id")) {
+                value = Long.valueOf(remoteMessage.getData().get(key));
 
+            } else if (key.equalsIgnoreCase("nm")) {
+                title = remoteMessage.getData().get(key);
+
+            }else if (key.equalsIgnoreCase("nt")) {
+                description = remoteMessage.getData().get(key);
 
             }
 
@@ -73,12 +81,12 @@ public class DialogFirebaseMessagingService extends FirebaseMessagingService {
         Bitmap icon = BitmapFactory.decodeResource(ApplicationMain.getInstance().getResources(), R.mipmap.ic_launcher);
 
         Intent intent = new Intent(context, SplashActivity.class);
-        intent.putExtra(AppLevelConstants.ID,value);
-        intent.putExtra("via",AppLevelConstants.FIREBASE_SCREEN);
-        intent.putExtra(AppLevelConstants.SCREEN_NAME,programScreenValue);
+        intent.putExtra(AppLevelConstants.ID, value);
+        intent.putExtra("via", AppLevelConstants.FIREBASE_SCREEN);
+        intent.putExtra(AppLevelConstants.SCREEN_NAME, programScreenValue);
 
-         //valueEmoji = "Title \uD83D\uDE00";
-       // valueEmoji= getEmijoByUnicode(Integer.parseInt(notification.getTitle().substring(2), 16));
+        //valueEmoji = "Title \uD83D\uDE00";
+        // valueEmoji= getEmijoByUnicode(Integer.parseInt(notification.getTitle().substring(2), 16));
 //        String user = notification.getTitle();
 //
 //        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -87,34 +95,50 @@ public class DialogFirebaseMessagingService extends FirebaseMessagingService {
 //            valueEmoji = String.valueOf(Html.fromHtml(notification.getTitle()));
 //        }
 
-       // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "channel_id")
-                .setContentTitle(notification.getTitle())
-                .setContentText(notification.getBody())
+                .setContentTitle(title)
+                .setContentText(description)
                 .setAutoCancel(true)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentIntent(pendingIntent)
-                .setContentInfo(data.get("gcm_title"))
                 .setLargeIcon(icon)
                 .setColor(Color.RED)
                 .setLights(Color.RED, 1000, 300)
                 .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setSmallIcon(R.mipmap.ic_launcher);
-        try {
-            String picture_url = data.get("gcm_image_url");
-            if (picture_url != null && !"".equals(picture_url)) {
-                URL url = new URL(picture_url);
-                Bitmap bigPicture = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                notificationBuilder.setStyle(
-                        new NotificationCompat.BigPictureStyle().bigPicture(bigPicture).setSummaryText(data.get("gcm_notificationType"))
-                );
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+      /*  try {
 
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            PendingIntent pendingIntent1 = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+            NotificationCompat.Builder notificationBuilder1 = new NotificationCompat.Builder(context, "channel_id")
+                    .setContentTitle(notification.getTitle())
+                    .setContentText(notification.getBody())
+                    .setAutoCancel(true)
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setContentIntent(pendingIntent)
+                    .setContentInfo(data.get("gcm_title"))
+                    .setLargeIcon(icon)
+                    .setColor(Color.RED)
+                    .setLights(Color.RED, 1000, 300)
+                    .setDefaults(Notification.DEFAULT_VIBRATE)
+                    .setSmallIcon(R.mipmap.ic_launcher);
+            try {
+                String picture_url = data.get("gcm_image_url");
+                if (picture_url != null && !"".equals(picture_url)) {
+                    URL url = new URL(picture_url);
+                    Bitmap bigPicture = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    notificationBuilder.setStyle(
+                            new NotificationCompat.BigPictureStyle().bigPicture(bigPicture).setSummaryText(data.get("gcm_notificationType"))
+                    );
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+*/
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Notification Channel is required for Android O and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -132,20 +156,21 @@ public class DialogFirebaseMessagingService extends FirebaseMessagingService {
 
         }
         notificationManager.notify(0, notificationBuilder.build());
+
     }
 
     @Override
     public void onNewToken(String s) {
 
-            //now we will have the token
-            String token = FirebaseInstanceId.getInstance().getToken();
+        //now we will have the token
+        String token = FirebaseInstanceId.getInstance().getToken();
 
-            Log.d("TokenIS",token);
+        Log.d("TokenIS", token);
 
-            //for now we are displaying the token in the log
-            //copy it as this method is called only when the new token is generated
-            //and usually new token is only generated when the app is reinstalled or the data is cleared
-            // Log.d("MyRefreshedToken", token);
+        //for now we are displaying the token in the log
+        //copy it as this method is called only when the new token is generated
+        //and usually new token is only generated when the app is reinstalled or the data is cleared
+        // Log.d("MyRefreshedToken", token);
 
         super.onNewToken(s);
 

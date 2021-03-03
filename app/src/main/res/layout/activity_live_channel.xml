@@ -69,17 +69,6 @@
                                 android:src="@drawable/landscape"
                                 tools:ignore="ContentDescription" />
 
-                            <ImageView
-                                android:id="@+id/iv_play_icon"
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_centerInParent="true"
-                                android:layout_marginEnd="@dimen/web_series_iv_player_icon_margin_right"
-                                android:layout_marginBottom="@dimen/web_series_iv_player_icon_margin_bottom"
-                                android:background="@drawable/play_icon"
-                                android:contentDescription="@string/play_icon"
-                                android:visibility="visible"
-                                tools:ignore="ContentDescription" />
 
                             <ImageView
                                 android:id="@+id/hungama"
@@ -99,6 +88,21 @@
 
 
                             </FrameLayout>
+
+                            <ImageView
+                                android:id="@+id/astro_play_button"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginEnd="@dimen/web_series_iv_player_icon_margin_right"
+                                android:elevation="4dp"
+                                android:layout_marginBottom="@dimen/web_series_iv_player_icon_margin_bottom"
+                                android:background="@drawable/play_icon"
+                                android:contentDescription="@string/play_icon"
+                                android:visibility="visible"
+                                tools:ignore="ContentDescription" />
+
+
                         </RelativeLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

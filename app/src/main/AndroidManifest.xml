@@ -27,6 +27,8 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
+
+
         <activity android:name=".activities.forgotPassword.ui.DetailsConfirmationActivity"></activity>
         <activity android:name=".activities.forgotPassword.ui.IsThisYouActivity">
 
@@ -113,6 +115,14 @@
             android:name=".activities.SelectAccount.UI.SelectDtvAccountActivity"
             android:screenOrientation="locked" />
 
+        <meta-data
+            android:name="CLEVERTAP_ACCOUNT_ID"
+            android:value="TEST-775-W65-ZZ6Z" />
+
+        <meta-data
+            android:name="CLEVERTAP_TOKEN"
+            android:value="TEST-560-5aa" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -136,12 +146,12 @@
             android:screenOrientation="locked"
             android:theme="@style/splashtheme">
 
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
 
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <intent-filter>
                 <data
                     android:host="open"
@@ -272,11 +282,29 @@
             </intent-filter>
         </receiver>
 
+
+        <!--<service
+            android:name="com.clevertap.android.sdk.FcmTokenListenerService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.clevertap.android.sdk.FcmMessageListenerService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>-->
         <service android:name=".thirdParty.fcm.DialogFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <meta-data
+            android:name="FCM_SENDER_ID"
+            android:value="id:929669716426"/>
+
         <service android:name=".thirdParty.fcm.WatchoFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />

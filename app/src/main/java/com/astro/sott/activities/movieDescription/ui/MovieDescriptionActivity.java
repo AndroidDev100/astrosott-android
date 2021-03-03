@@ -177,8 +177,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
     private void setPlayerFragment() {
         manager = getSupportFragmentManager();
-        getBinding().ivPlayIcon.setClickable(true);
-        getBinding().ivPlayIcon.setOnClickListener(view -> {
+        //getBinding().playButton.setClickable(true);
+        getBinding().astroPlayButton.setOnClickListener(view -> {
             if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
                 return;
             }
@@ -186,13 +186,13 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
             boolean wifiConnected = NetworkConnectivity.isWifiConnected(this);
             boolean connectionPreference = new KsPreferenceKey(this).getDownloadOverWifi();
-            if (connectionPreference && !wifiConnected) {
+            /*if (connectionPreference && !wifiConnected) {
                 showWifiDialog();
-            } else {
+            } else {*/
                 callProgressBar();
                 playerChecks(railData);
 
-            }
+            /*}*/
 
 
         });

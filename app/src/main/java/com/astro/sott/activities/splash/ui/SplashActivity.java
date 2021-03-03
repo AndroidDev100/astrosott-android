@@ -32,6 +32,8 @@ import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.modelClasses.appVersion.AppVersionStatus;
+import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
 import com.astro.sott.utils.helpers.ToastHandler;
@@ -50,7 +52,13 @@ import com.astro.sott.utils.helpers.DialogHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.helpers.UDID;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.enveu.BaseClient.BaseClient;
+import com.enveu.BaseClient.BaseConfiguration;
+import com.enveu.BaseClient.BaseDeviceType;
+import com.enveu.BaseClient.BaseGateway;
+import com.enveu.BaseClient.BasePlatform;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -337,6 +345,13 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     private void pushToken() {
+
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(this);
+
+        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlExpManager() != null) {
+            BaseClient client = new BaseClient(BaseGateway.ENVEU, responseDmsModel.getParams().getApiProxyUrlExpManager(), AppConstants.SUBSCRIPTION_BASE_URL, AppConstants.API_KEY_MOB, AppConstants.API_KEY_MOB, BaseDeviceType.mobile.name(), BasePlatform.android.name(), false, UDID.getDeviceId(this, this.getContentResolver()));
+            BaseConfiguration.Companion.getInstance().clientSetup(client);
+        }
         token = SharedPrefHelper.getInstance(this).getString(AppLevelConstants.FCM_TOKEN, "");
         if (token == null || token.equals("")) {
             FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {

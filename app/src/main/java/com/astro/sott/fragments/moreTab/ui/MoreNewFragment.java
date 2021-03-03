@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
 import com.astro.sott.activities.forgotPassword.ui.IsThisYouActivity;
 import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
@@ -93,6 +94,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
     private void UIinitialization() {
         getBinding().toolbar.setVisibility(View.VISIBLE);
+        getBinding().tvVersion.setText("Version "+BuildConfig.VERSION_NAME);
         setClicks();
     }
 
