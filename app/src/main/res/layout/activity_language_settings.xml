@@ -17,16 +17,17 @@
             android:layout_height="@dimen/_23sdp"
             android:id="@+id/back_button"
             android:layout_margin="@dimen/_12sdp"
+            android:padding="@dimen/_6dp"
             android:layout_centerInParent="true"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/ic_baseline_arrow_back"/>
+            android:src="@drawable/ic_arrow_back_24px"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:id="@+id/title"
         android:textAllCaps="true"
-        android:textSize="14sp"
+        android:textSize="@dimen/_14sp"
         android:layout_centerInParent="true"
         android:letterSpacing="0.09"
         android:fontFamily="@font/heebo_medium"
@@ -54,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16sp"
             android:padding="@dimen/_1sdp"
             android:layout_centerInParent="true"
             android:fontFamily="@font/heebo_regular"
@@ -65,12 +66,12 @@
            android:layout_alignParentLeft="true"
             ></TextView>
         <ImageView
-            android:layout_width="@dimen/_24sdp"
-            android:layout_height="@dimen/_24sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/back_icon"
-            android:rotation="270"
+            android:id="@+id/arrow_down_app_lang"
+            android:src="@drawable/ic_arrow_down_24px"
             />
     </RelativeLayout>
     <View
@@ -80,6 +81,13 @@
         android:layout_below="@+id/rl_app_lang"
         android:id="@+id/v1"
         android:background="@color/toolbar_bg"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/v1"
+        android:layout_marginBottom="@dimen/_74sdp">
+    </androidx.recyclerview.widget.RecyclerView>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -97,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16sp"
             android:padding="@dimen/_1sdp"
             android:fontFamily="@font/heebo_regular"
             android:layout_centerInParent="true"
@@ -108,12 +116,12 @@
             android:layout_alignParentLeft="true"
             ></TextView>
         <ImageView
-            android:layout_width="@dimen/_24sdp"
-            android:layout_height="@dimen/_24sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/back_icon"
-            android:rotation="270"
+            android:id="@+id/arrow_down_audio"
+            android:src="@drawable/ic_arrow_down_24px"
             />
     </RelativeLayout>
     <View
@@ -140,7 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16sp"
             android:padding="@dimen/_1sdp"
             android:layout_centerInParent="true"
             android:drawablePadding="@dimen/_10sdp"
@@ -150,12 +158,12 @@
             android:layout_alignParentLeft="true"
             ></TextView>
         <ImageView
-            android:layout_width="@dimen/_24sdp"
-            android:layout_height="@dimen/_24sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/back_icon"
-            android:rotation="270"
+            android:id="@+id/arrow_down_subtitle"
+            android:src="@drawable/ic_arrow_down_24px"
             />
     </RelativeLayout>
     <View

@@ -59,6 +59,7 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
                 onBackPressed();
             }
         });
+
     }
 
     private void updateLang() {
