@@ -2,20 +2,29 @@ package com.astro.sott.activities.search.ui;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.search.adapter.QuickSearchGenreAdapter;
+import com.astro.sott.activities.search.adapter.SearchKeywordAdapter;
+import com.astro.sott.baseModel.BaseBindingFragment;
+import com.astro.sott.databinding.FragmentQuickSearchGenreBinding;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link QuickSearchGenre#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class QuickSearchGenre extends Fragment {
+public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGenreBinding> {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,9 +67,38 @@ public class QuickSearchGenre extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_quick_search_genre, container, false);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setClicks();
+        UIinitialization();
+        loadDataFromModel();
     }
+    private void loadDataFromModel() {
+       QuickSearchGenreAdapter adapter = new QuickSearchGenreAdapter(QuickSearchGenre.this);
+        getBinding().recyclerView.setAdapter(adapter);
+        getBinding().quickSearchBtn.setVisibility(View.VISIBLE);
+    }
+
+    private void UIinitialization() {
+        getBinding().recyclerView.hasFixedSize();
+        getBinding().recyclerView.setNestedScrollingEnabled(false);
+        getBinding().recyclerView.hasFixedSize();
+        getBinding().recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
+    }
+    private void setClicks() {
+//        getBinding().toolbar.backButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+    }
+
+    @Override
+    protected FragmentQuickSearchGenreBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+        return FragmentQuickSearchGenreBinding.inflate(inflater);
+    }
+
+
 }

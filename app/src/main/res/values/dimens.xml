@@ -577,5 +577,10 @@
     <dimen name="marginTop45dp">45dp</dimen>
     <dimen name="marginTop37dp">37dp</dimen>
     <dimen name="_12sp">12sp</dimen>
+    <dimen name="dimen156dp">156dp</dimen>
+    <dimen name="dimen57dp">57dp</dimen>
+    <dimen name="_8dp">8dp</dimen>
+    <dimen name="_3dp">3dp</dimen>
+    <dimen name="_4dp">4dp</dimen>
 
 </resources>

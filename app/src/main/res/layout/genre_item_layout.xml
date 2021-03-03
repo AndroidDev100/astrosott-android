@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/dimen16dp">
     <androidx.cardview.widget.CardView
-        android:layout_width="156dp"
-        android:layout_height="57dp"
-        app:cardBackgroundColor="@color/blue_bg"
-        android:layout_marginStart="@dimen/dimen16dp"
-        app:cardCornerRadius="5dp"
-         android:layout_marginTop="3dp"
+        android:layout_width="@dimen/dimen156dp"
+        android:layout_height="@dimen/dimen57dp"
+        app:cardBackgroundColor="@color/toolbar_bg"
+        app:cardCornerRadius="@dimen/_4dp"
+        android:layout_marginBottom="@dimen/dimen24dp"
         app:cardElevation="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/dimen16dp">
          <TextView
@@ -17,7 +17,7 @@
              android:layout_height="wrap_content"
              android:fontFamily="@font/heebo_regular"
              android:textColor="@color/white"
-             android:layout_marginStart="8dp"
+             android:layout_marginStart="@dimen/_8dp"
              android:layout_gravity="center|left"
              android:text="@string/watch_movie"
              android:textSize="@dimen/_14sp"/>

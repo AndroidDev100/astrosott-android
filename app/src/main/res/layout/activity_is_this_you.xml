@@ -12,9 +12,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_18sdp"
-            android:layout_marginTop="@dimen/_18sdp"
-            android:padding="4dp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:padding="8dp"
             android:id="@+id/back_icon"
             app:layout_constraintLeft_toLeftOf="parent"
             android:background="@drawable/ic_arrow_back_24px"

@@ -19,6 +19,7 @@ import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
 import com.astro.sott.activities.profile.ui.ChangeEmailConfirmation;
+import com.astro.sott.activities.search.ui.QuickSearchGenre;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
 import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
@@ -136,7 +137,18 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                   transaction.commit();
               }
           });
+          getBinding().rlTransactionHistory.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  navBar.setVisibility(View.GONE);
 
+                  QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
+                  FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                  transaction.replace(R.id.content_frame, quickSearchGenre ); // give your fragment container id in first parameter
+                  transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                  transaction.commit();
+              }
+          });
         getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

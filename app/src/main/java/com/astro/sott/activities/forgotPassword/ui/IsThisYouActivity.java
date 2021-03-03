@@ -15,7 +15,7 @@ import com.astro.sott.databinding.ActivityIsThisYouBinding;
 public class IsThisYouActivity extends BaseBindingActivity<ActivityIsThisYouBinding> {
 
     @Override
-    protected ActivityIsThisYouBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivityIsThisYouBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
         return ActivityIsThisYouBinding.inflate(inflater);
     }
 

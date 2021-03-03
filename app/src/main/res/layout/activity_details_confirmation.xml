@@ -12,9 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/back_icon"
-        android:padding="4dp"
-        android:layout_marginLeft="@dimen/_18sdp"
-        android:layout_marginTop="@dimen/_18sdp"
+        android:padding="8dp"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:background="@drawable/ic_arrow_back_24px"
         app:layout_constraintTop_toTopOf="parent"></ImageView>
