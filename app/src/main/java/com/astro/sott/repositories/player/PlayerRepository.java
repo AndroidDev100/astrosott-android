@@ -753,7 +753,7 @@ public class PlayerRepository {
             subscribePhoenixAnalyticsReportEvent();
 
 //            player.getSettings().setABRSettings(new ABRSettings().setMinVideoBitrate(200000).setInitialBitrateEstimate(150000));
-            player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(550000));
+         //   player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(550000));
 
             player.prepare(mediaConfig);
             player.play();

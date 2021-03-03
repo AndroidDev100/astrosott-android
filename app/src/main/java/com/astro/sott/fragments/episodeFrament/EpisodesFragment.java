@@ -411,7 +411,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(listAdapter);
         alertDialog = builder.create();
-        alertDialog.getWindow().setBackgroundDrawable(ActivityCompat.getDrawable(getActivity(), R.color.half_transparent));
+        alertDialog.getWindow().setBackgroundDrawable(ActivityCompat.getDrawable(getActivity(), R.color.black_transparent));
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         alertDialog.show();
