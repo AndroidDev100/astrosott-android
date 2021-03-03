@@ -69,6 +69,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     int counter = 1;
     private int selectedIndex = 0;
+    private int totalPages;
 
     EpisodeAdapter adapter;
     List<RailCommonData> loadedList;
@@ -76,6 +77,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     private android.app.AlertDialog alertDialog;
     private android.app.AlertDialog.Builder builder;
 
+    private String seriesType = "";
 
     Timer timer;
     int clickedPosition = -1;
@@ -217,20 +219,91 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     }
 
+    class EpisodeListAdapter extends RecyclerView.Adapter<EpisodeListAdapter.ViewHolder> {
+        private Context mContext;
+        private int tOtalPages;
+        private int startNo = 1;
+        private int endNo = 20;
+        private int totalData;
+
+        //TrackGroup list;
+        public EpisodeListAdapter(Context context, int counter, int total) {
+            mContext = context;
+            tOtalPages = counter;
+            totalData = total;
+        }
+
+        @NonNull
+        @Override
+        public EpisodeListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.all_season_listing, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+
+            if (position + 1 == tOtalPages) {
+                holder.season.setText("EPISODE " + startNo + " - " + totalData);
+            } else {
+                holder.season.setText("EPISODE " + startNo + " - " + endNo);
+            }
+            startNo += 20;
+            endNo += 20;
+            if (selectedIndex == position) {
+                holder.season.setTextColor(mContext.getResources().getColor(R.color.moretitlecolor));
+                Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
+                holder.season.setTypeface(boldTypeface);
+            } else {
+                holder.season.setTextColor(mContext.getResources().getColor(R.color.white));
+                Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.NORMAL);
+                holder.season.setTypeface(boldTypeface);
+            }
+
+            holder.season.setOnClickListener(v -> {
+                alertDialog.cancel();
+                selectedIndex = position;
+                counter = position + 1;
+                callEpisodes();
+                getBinding().seasonText.setText(holder.season.getText());
+                getEpisodes(selectedIndex);
+
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return tOtalPages;
+        }
+
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            TextView season;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                season = itemView.findViewById(R.id.season_name);
+            }
+        }
+
+    }
+
+
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean == true) {
             if (asset.getExternalId() != null)
                 externalId = asset.getExternalId();
             UIinitialization();
 
-            if (TabsData.getInstance().getSeasonList() != null&&TabsData.getInstance().getClosedSeriesData()!=null) {
+            if (TabsData.getInstance().getSeasonList() != null && TabsData.getInstance().getClosedSeriesData() != null) {
                 getBinding().season.setVisibility(View.VISIBLE);
-                closedSeriesData=TabsData.getInstance().getClosedSeriesData();
+                seriesType = "closed";
+                closedSeriesData = TabsData.getInstance().getClosedSeriesData();
                 getBinding().seasonText.setText(closedSeriesData.get(0).getTitle());
 
                 seriesNumberList = TabsData.getInstance().getSeasonList();
                 setUIComponets(TabsData.getInstance().getClosedSeriesData());
-            }else {
+            } else {
                 getOpenSeriesData();
             }
             //getSeasons();
@@ -254,7 +327,11 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         });
 
         getBinding().season.setOnClickListener(view -> {
-            showSeasonList();
+            if (seriesType.equalsIgnoreCase("closed")) {
+                showSeasonList();
+            } else if (seriesType.equalsIgnoreCase("open")) {
+                showEpisodeList();
+            }
         });
 
     }
@@ -277,7 +354,6 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 } else {
 
 
-
                     // tabsVisibility(true);
                 }
             } else {
@@ -293,13 +369,22 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     }
 
     private List<AssetCommonBean> openSeriesData;
+    private int total;
 
     private void getOpenSeriesData() {
         openSeriesData = TabsData.getInstance().getOpenSeriesData();
+        double totalCount = openSeriesData.get(0).getTotalCount();
         if (openSeriesData != null && openSeriesData.size() > 0) {
+            double a = totalCount / 20;
+            totalPages = (int) Math.ceil(a);
+            seriesType = "open";
             getBinding().season.setVisibility(View.VISIBLE);
-            int totalCount = openSeriesData.get(0).getTotalCount();
-            getBinding().seasonText.setText("EPISODE 1 - " + totalCount);
+            total = openSeriesData.get(0).getTotalCount();
+            if ((totalCount > 20)) {
+                getBinding().seasonText.setText("EPISODE 1 - 20");
+            } else {
+                getBinding().seasonText.setText("EPISODE 1 - " + total);
+            }
             getBinding().season.setEnabled(false);
             setUIComponets(TabsData.getInstance().getOpenSeriesData());
         }
@@ -307,7 +392,6 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     }
 
     public void showSeasonList() {
-
         if (selectedIndex == -1) {
             return;
         }
@@ -328,6 +412,38 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         mRecyclerView.setAdapter(listAdapter);
         alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawable(ActivityCompat.getDrawable(getActivity(), R.color.half_transparent));
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        alertDialog.show();
+        WindowManager.LayoutParams lWindowParams = new WindowManager.LayoutParams();
+        lWindowParams.copyFrom(alertDialog.getWindow().getAttributes());
+        lWindowParams.width = WindowManager.LayoutParams.MATCH_PARENT; // this is where the magic happens
+        lWindowParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+        alertDialog.getWindow().setAttributes(lWindowParams);
+
+    }
+
+    public void showEpisodeList() {
+        if (selectedIndex == -1) {
+            return;
+        }
+
+        EpisodeListAdapter listAdapter = new EpisodeListAdapter(context, totalPages, total);
+        builder = new android.app.AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View content = inflater.inflate(R.layout.season_custom_dialog, null);
+        builder.setView(content);
+        RecyclerView mRecyclerView = content.findViewById(R.id.my_recycler_view);
+        ImageView imageView = content.findViewById(R.id.close);
+        imageView.setOnClickListener(v -> {
+            alertDialog.cancel();
+        });
+
+        //Creating Adapter to fill data in Dialog
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(listAdapter);
+        alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(ActivityCompat.getDrawable(getActivity(), R.color.black_transparent));
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         alertDialog.show();
@@ -367,9 +483,10 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     }
 
     private void callEpisodes() {
-        getBinding().loadMoreTxt.setText(getActivity().getResources().getString(R.string.loading));
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         viewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
-            getBinding().loadMoreTxt.setText("Load More");
+            getBinding().progressBar.setVisibility(View.GONE);
+
             if (assetCommonBeans.get(0).getStatus()) {
                 //  _mClickListener.onFirstEpisodeData(assetCommonBeans);
                 setUIComponets(assetCommonBeans);
@@ -387,22 +504,25 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     private void setUIComponets(List<AssetCommonBean> assetCommonBeans) {
         try {
-            loadedList.addAll(assetCommonBeans.get(0).getRailAssetList());
+            loadedList = assetCommonBeans.get(0).getRailAssetList();
             list = new ArrayList<>();
             for (int i = 0; i < loadedList.size(); i++) {
                 list.add(i, loadedList.get(i));
             }
 
             checkExpiry(list);
-            adapter = new EpisodeAdapter(getActivity(), list, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
+            adapter = new EpisodeAdapter(getActivity(), loadedList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
             getBinding().recyclerView.setAdapter(adapter);
 
-            int count = adapter.getItemCount();
-            if (count >= assetCommonBeans.get(0).getTotalCount()) {
+            if (seriesType.equalsIgnoreCase("open")) {
+                if (totalPages > 1)
+                    getBinding().season.setEnabled(true);
+            }
+            /*if (count >= assetCommonBeans.get(0).getTotalCount()) {
                 getBinding().loadMoreButton.setVisibility(View.GONE);
             } else {
                 getBinding().loadMoreButton.setVisibility(View.VISIBLE);
-            }
+            }*/
 
         } catch (Exception e) {
 

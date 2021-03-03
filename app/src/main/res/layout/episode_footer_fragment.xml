@@ -10,14 +10,7 @@
         android:orientation="vertical"
         android:visibility="visible">
 
-        <TextView
-            android:id="@+id/upcoming"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Coming Soon"
-            android:textColor="@color/red_live"
-            android:visibility="gone"></TextView>
+
 
 
         <View
@@ -115,7 +108,14 @@
 
         </LinearLayout>
 
-
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_70sdp"
+            android:layout_below="@id/season"
+            android:visibility="gone"></ProgressBar>
     </RelativeLayout>
 
 

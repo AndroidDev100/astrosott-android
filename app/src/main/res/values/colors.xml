@@ -34,6 +34,8 @@
     <color name="sign_up_title">#eeeeee</color>
     <color name="sign_up_sub_title">#d1d1d1</color>
     <color name="half_transparent">#41000000</color>
+    <color name="black_transparent">#99000000</color>
+
     <color name="alert_dialog_background">#343434</color>
 
     <color name="cast_and_crew_title">#a19e9e</color>
