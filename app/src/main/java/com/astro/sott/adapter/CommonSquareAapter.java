@@ -138,6 +138,7 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             try {
+                AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory);
                 squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -181,6 +182,7 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             try {
+                AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory);
                 squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -224,6 +226,7 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             try {
+                AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory);
                 squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());

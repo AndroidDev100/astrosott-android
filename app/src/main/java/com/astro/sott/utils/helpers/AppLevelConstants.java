@@ -91,9 +91,11 @@ public interface AppLevelConstants {
     String KSQL_GENRE_END = "' Genre='";
     String PROMO_ASSET_NAME = "name";
     String PARENTAL_RATING = "ParentalRating";
+    String BILLING_ID = "BillingId";
+
     String KEY_SEASON_NUMBER = "SeasonNumber";
-    String KEY_LONG_DESCRIPTION="LongDescription";
-    String KEY_SHORT_DESCRIPTION="ShortDescription";
+    String KEY_LONG_DESCRIPTION = "LongDescription";
+    String KEY_SHORT_DESCRIPTION = "ShortDescription";
 
     String KEY_EPISODE_NUMBER = "EpisodeNumber";
 
