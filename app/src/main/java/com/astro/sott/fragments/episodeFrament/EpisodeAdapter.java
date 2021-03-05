@@ -66,10 +66,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
             Asset asset = singleItem.getObject();
             PrintLogging.printLog("", asset.getType() + "valuesOfListType");
 
-            if (singleItem.getImages() != null && singleItem.getImages().size() > 0) {
-                AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
-                ImageHelper.getInstance(viewHolder.watchlistItemBinding.itemImage.getContext()).loadImageTo(viewHolder.watchlistItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.landscape);
-            }
+
             int value = AppCommonMethods.getEpisodeNumber(asset.getMetas());
             String duration = AppCommonMethods.getURLDuration(asset);
             if (!TextUtils.isEmpty(duration)) {
@@ -94,12 +91,10 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                     railList.remove(position);
                     railList.add(position, singleItems);
                     //AppCommonMethods.collapse(viewHolder.watchlistItemBinding.clRoot,1000,200);
-                    viewHolder.watchlistItemBinding.clRoot.setVisibility(View.GONE);
                 } else {
                     singleItems.setExpended(true);
                     railList.remove(position);
                     railList.add(position, singleItems);
-                    viewHolder.watchlistItemBinding.clRoot.setVisibility(View.VISIBLE);
                     // itemClickListener.expendedView(position);
                     //AppCommonMethods.expand(viewHolder.watchlistItemBinding.clRoot,1000,200);
                 }
@@ -127,13 +122,11 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                         railList.remove(position);
                         railList.add(position, singleItem);
                         //AppCommonMethods.collapse(viewHolder.watchlistItemBinding.clRoot,1000,200);
-                        viewHolder.watchlistItemBinding.clRoot.setVisibility(View.GONE);
                         //itemClickListener.onClick(position);
                     } else {
                         singleItem.setExpended(true);
                         railList.remove(position);
                         railList.add(position, singleItem);
-                        viewHolder.watchlistItemBinding.clRoot.setVisibility(View.VISIBLE);
                         //AppCommonMethods.expand(viewHolder.watchlistItemBinding.clRoot,1000,200);
                     }
 

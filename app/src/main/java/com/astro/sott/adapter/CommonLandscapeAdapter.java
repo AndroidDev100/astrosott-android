@@ -151,17 +151,11 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     }
 
+
     private void setLargeValues(LandscapeItemLargeBinding landscapeItemBinding, int i) {
         RailCommonData singleItem = itemsList.get(i);
         PrintLogging.printLog(CommonLandscapeAdapter.class, "", itemsList.get(0).getType() + "assettypeassest");
         try {
-
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable) {
-                landscapeItemBinding.hungama.setVisibility(View.VISIBLE);
-            } else {
-                landscapeItemBinding.hungama.setVisibility(View.GONE);
-            }
 
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
@@ -175,6 +169,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             try {
+                AppCommonMethods.setBillingUi(landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -198,12 +193,6 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         PrintLogging.printLog(CommonLandscapeAdapter.class, "", itemsList.get(0).getType() + "assettypeassest");
         try {
 
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable) {
-                landscapeItemBinding.hungama.setVisibility(View.VISIBLE);
-            } else {
-                landscapeItemBinding.hungama.setVisibility(View.GONE);
-            }
 
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
@@ -217,6 +206,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             try {
+                AppCommonMethods.setBillingUi(landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -229,7 +219,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else {
                 landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             }
-            getPremimumMark(i, landscapeItemBinding.exclusiveLayout);
+             getPremimumMark(i, landscapeItemBinding.exclusiveLayout);
         } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);
         }
@@ -252,6 +242,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             try {
+                AppCommonMethods.setBillingUi(landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -264,7 +255,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else {
                 landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             }
-            getPremimumMark(i, landscapeItemBinding.exclusiveLayout);
+             getPremimumMark(i, landscapeItemBinding.exclusiveLayout);
         } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);
         }

@@ -391,19 +391,25 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 
     private void setAdapter() {
 
-        if (!isScrolling) {
+//        if (!isScrolling) {
             new RecyclerAnimator(baseActivity).animate(getBinding().programRecyclerview);
 //            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             adapter = new ProgramsAdapter(baseActivity, arrayList, position, Schedule.this, Schedule.this);
             getBinding().programRecyclerview.setAdapter(adapter);
+            if (totalProgramListCount<=adapter.getItemCount()){
+               getBinding().loadMore.setVisibility(View.GONE);
+            }else {
+                getBinding().loadMore.setVisibility(View.VISIBLE);
+
+            }
            // manager.scrollToPositionWithOffset(position, 0);
             mIsLoading = adapter.getItemCount() != totalCOunt;
             adapter.updateLiveChannelCount(position);
           mListener.showScrollViewProgressBarView(true);
-        } else {
-          /*  if (mListener != null) {
+        /*} else {
+          *//*  if (mListener != null) {
                 new Handler().postDelayed(() -> mListener.showScrollViewProgressBarView(false), 800);
-            }*/
+            }*//*
 
             if (getResources().getBoolean(R.bool.isTablet)) {
                 new Handler().postDelayed(new Runnable() {
@@ -419,7 +425,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                 adapter.updateLiveChannelCount(position);
                 adapter.notifyDataSetChanged();
             }
-        }
+        }*/
     }
 
     private void resetAdapter() {
@@ -863,6 +869,10 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     }
 
     private void scrollRefresh() {
+        getBinding().loadMore.setOnClickListener(v -> {
+            counter++;
+            getEPGChannels();
+        });
         getBinding().programRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {

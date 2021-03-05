@@ -192,6 +192,7 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         try {
+            AppCommonMethods.setBillingUi(itemBinding.metas.billingImage, singleItem.getObject().getTags());
             AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory);
             itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
             itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -235,6 +236,8 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         try {
+            AppCommonMethods.setBillingUi(itemBinding.metas.billingImage, singleItem.getObject().getTags());
+
             AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory);
             itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
             itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -278,6 +281,8 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         try {
+            AppCommonMethods.setBillingUi(itemBinding.metas.billingImage, singleItem.getObject().getTags());
+
             AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory);
             itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
             itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());

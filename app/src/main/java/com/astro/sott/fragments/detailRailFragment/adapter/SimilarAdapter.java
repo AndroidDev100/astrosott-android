@@ -53,6 +53,13 @@ public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SingleIt
             ImageHelper.getInstance(holder.landscapeItemBinding.image.getContext()).loadImageToPlaceholder(holder.landscapeItemBinding.image, AppCommonMethods.getImageURI(R.drawable.landscape, holder.landscapeItemBinding.image), R.drawable.landscape);
 
         }
+        try {
+            AppCommonMethods.setBillingUi(holder.landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
+
+        }catch (Exception e){
+
+        }
+
         holder.landscapeItemBinding.lanscapeTitle.setText(singleItem.getName());
 
     }

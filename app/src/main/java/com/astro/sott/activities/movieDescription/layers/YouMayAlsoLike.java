@@ -134,6 +134,7 @@ public class YouMayAlsoLike {
                 railCommonData.setName(list.get(0).results.getObjects().get(j).getName());
                 railCommonData.setId(list.get(0).results.getObjects().get(j).getId());
                 railCommonData.setObject(list.get(0).results.getObjects().get(j));
+                railCommonData.setTotalCount(list.get(0).results.getTotalCount());
 
                 List<AssetCommonImages> imagesList = new ArrayList<>();
                 for (int k = 0; k < list.get(0).results.getObjects().get(j).getImages().size(); k++) {

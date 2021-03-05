@@ -142,6 +142,8 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
 
             try {
+                AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags());
+
                 AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory);
                 potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -188,6 +190,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
 
             try {
+                AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory);
                 potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -228,6 +231,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
 
             try {
+                AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory);
                 potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());

@@ -1706,7 +1706,7 @@ public class KsServices {
         searchAssetFilter.setOrderBy("START_DATE_ASC");
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(counter);
-        filterPager.setPageSize(100);
+        filterPager.setPageSize(50);
 
         AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
             if (result != null) {

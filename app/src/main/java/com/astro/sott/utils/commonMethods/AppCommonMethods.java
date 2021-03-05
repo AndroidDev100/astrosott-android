@@ -30,6 +30,7 @@ import com.astro.sott.callBacks.kalturaCallBacks.DMSCallBack;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrefConstant;
@@ -53,6 +54,7 @@ import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MediaImage;
+import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -1214,6 +1216,21 @@ public class AppCommonMethods {
         return mDetailList;
     }
 
+
+    public static void setBillingUi(ImageView imageView, Map<String, MultilingualStringValueArray> tags){
+       try {
+
+           if (AssetContent.getBillingId(tags)) {
+               imageView.setVisibility(View.VISIBLE);
+           } else {
+               imageView.setVisibility(View.GONE);
+
+           }
+       }catch (Exception e){
+
+       }
+
+    }
 
     public static void handleTitleDesc(RelativeLayout titleLayout, TextView tvTitle, TextView tvDescription, BaseCategory baseCategory) {
         try {
