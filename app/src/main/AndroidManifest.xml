@@ -114,7 +114,14 @@
         <activity
             android:name=".activities.SelectAccount.UI.SelectDtvAccountActivity"
             android:screenOrientation="locked" />
+        <activity
+            android:name="com.clevertap.android.sdk.InAppNotificationActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+           />
 
+        <meta-data
+            android:name="CLEVERTAP_INAPP_EXCLUDE"
+            android:value=".activities.splash.ui.SplashActivity" />
         <meta-data
             android:name="CLEVERTAP_ACCOUNT_ID"
             android:value="TEST-775-W65-ZZ6Z" />
