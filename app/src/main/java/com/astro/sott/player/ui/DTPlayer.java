@@ -585,7 +585,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             currentProgramId = String.valueOf(asset.getId());
 
             //Showing bottomSheet for CatchupTV
-         //   showCatchupUI(startTime, asset);
+            //   showCatchupUI(startTime, asset);
 
         } catch (Exception e) {
 
@@ -2250,6 +2250,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             Map<String, Object> contentInfo = new HashMap<String, Object>();
             contentInfo.put(ConvivaSdkConstants.POD_INDEX, event.adInfo.getPodIndex());
             contentInfo.put(ConvivaSdkConstants.POD_DURATION, event.adInfo.getAdDuration());
+            contentInfo.put(ConvivaManager.AD_SYSTEM, "DFP");
+            contentInfo.put(ConvivaManager.AD_TECHNOLOGY, "Client Side");
+            contentInfo.put(ConvivaManager.AD_STITCHER, "NA");
             ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakStarted(ConvivaSdkConstants.AdPlayer.CONTENT, ConvivaSdkConstants.AdType.CLIENT_SIDE, contentInfo);
             showAdsView();
         });
@@ -2258,7 +2261,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             AdEvent.AdStartedEvent adStartedEvent = event;
             Map<String, Object> contentInfo = new HashMap<String, Object>();
             contentInfo.put(ConvivaSdkConstants.ASSET_NAME, adStartedEvent.adInfo.getAdTitle());
-            contentInfo.put(ConvivaSdkConstants.IS_LIVE, ConvivaSdkConstants.StreamType.VOD);
             contentInfo.put(ConvivaSdkConstants.STREAM_URL, "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=");
             ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdLoaded(contentInfo);
             ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdStarted();

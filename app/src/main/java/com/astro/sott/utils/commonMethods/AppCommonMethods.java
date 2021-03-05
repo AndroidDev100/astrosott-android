@@ -132,7 +132,27 @@ public class AppCommonMethods {
         UserInfo.getInstance(context).setActive(false);
 
     }
+    public static String getAssetType(Integer assetType,Context context) {
+        String type = "";
+        if (assetType == MediaTypeConstant.getMovie(context)) {
+            type = "Movie";
+        } else if (assetType == MediaTypeConstant.getWebEpisode(context)) {
+            type = "Episode";
+        } else if (assetType == MediaTypeConstant.getWebSeries(context)) {
+            type = "Series";
+        }else if (assetType==MediaTypeConstant.getHighlight(context)){
+            type = "Highlight";
+        }
+        else if (assetType == MediaTypeConstant.getTrailer(context)) {
+            type = "Trailer";
+        }  else if (assetType == MediaTypeConstant.getLinear(context)) {
+            type = "Linear";
+        } else if (assetType == MediaTypeConstant.getProgram(context)) {
+            type = "Program";
+        }
 
+        return type;
+    }
     public static void updateLanguage(String language, Context context) {
         try {
             Locale locale = new Locale(language);
@@ -456,10 +476,24 @@ public class AppCommonMethods {
                     ? "" + secs + " sec"
                     : "" + secs + " sec");
             if (hours > 0)
-                return hours + " hr " + minsString + " min " ;
+                return hours + " hr " + minsString + " min ";
             else if (mins > 0)
                 return mins + " min";
             else return secsString;
+        }
+        return "";
+    }
+
+    public static String getDuration(Asset asset) {
+        int HLSPOs = 0;
+        if (asset.getMediaFiles() != null && asset.getMediaFiles().size() > 0) {
+            for (int i = 0; i < asset.getMediaFiles().size(); i++) {
+                if (asset.getMediaFiles().get(i).getType().equals("DASH")) {
+                    HLSPOs = i;
+                }
+            }
+            long totalSecs = asset.getMediaFiles().get(HLSPOs).getDuration();
+            return totalSecs + "";
         }
         return "";
     }
@@ -528,6 +562,10 @@ public class AppCommonMethods {
 
         }
         return deviceName;
+    }
+
+    public static String getDeviceId(ContentResolver contentResolver) {
+        return Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID);
     }
 
     public static String getFileIdOfAssest(Asset asset) {

@@ -816,7 +816,7 @@ public class PlayerRepository {
 
         imaConfig = new IMAConfig();
         imaConfig.setAdTagUrl(imaVastTag);
-        imaConfig.setAdLoadTimeOut(12);
+        imaConfig.setAdLoadTimeOut(25);
         imaConfig.enableDebugMode(true);
 
         playerPluginConfig.setPluginConfig(IMAPlugin.factory.getName(), imaConfig);
