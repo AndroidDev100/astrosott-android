@@ -36,6 +36,7 @@ import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.usermanagment.EvergentBaseClient.EvergentBaseClient;
 import com.astro.sott.usermanagment.EvergentBaseClient.EvergentBaseConfiguration;
 import com.astro.sott.utils.constants.AppConstants;
+import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
 import com.astro.sott.utils.helpers.ToastHandler;
@@ -152,6 +153,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
             updateLanguage();
             initDrm();
             DMSCall();
+            ConvivaManager.initConvivaAnalytics(this);
+
             // versionStatus();
         } else {
             setConnectionLayout();
@@ -347,6 +350,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     private void pushToken() {
+
 
         setupBaseClient();
 

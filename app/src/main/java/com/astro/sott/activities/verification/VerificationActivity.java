@@ -160,6 +160,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 }
             });
         } else {
+            getBinding().progressBar.setVisibility(View.GONE);
+
             getBinding().invalidOtp.setVisibility(View.VISIBLE);
         }
     }

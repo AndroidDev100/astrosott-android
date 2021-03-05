@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.BuildConfig;
@@ -218,7 +219,7 @@ public class PlayerRepository {
         final MutableLiveData<Boolean> playPause = new MutableLiveData<>();
         if (player != null) {
             if (player.isPlaying()) {
-
+                ConvivaManager.convivaPlayerPauseReportRequest();
                 playPause.postValue(false);
                 player.pause();
 
@@ -638,10 +639,13 @@ public class PlayerRepository {
                     break;
                 case READY:
                     booleanMutableLiveData.postValue(true);
+                    ConvivaManager.convivaPlayerPlayReportRequest();
+
                     //  log.d("StateChange Ready");
                     //  mPlayerControlsView.setProgressBarVisibility(false);
                     break;
                 case BUFFERING:
+                    ConvivaManager.convivaPlayerBufferReportRequest();
                     // log.e("StateChange Buffering");
                     // mPlayerControlsView.setProgressBarVisibility(true);
                     // booleanMutableLiveData.postValue(false);
