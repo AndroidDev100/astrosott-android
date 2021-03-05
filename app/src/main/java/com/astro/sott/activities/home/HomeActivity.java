@@ -146,7 +146,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void initFrameFragment() {
         setToolBarScroll(0);
-
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
@@ -410,6 +409,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             active = homeFragment;
         }*/
         setToolBarScroll(1);
+        setMargins(150);
         getBinding().mainLayout.setVisibility(View.GONE);
         getBinding().tabs.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
@@ -452,7 +452,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         setMargins(0);
         getBinding().toolbar.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
-        getBinding().appbar.setVisibility(View.GONE);
+       // getBinding().appbar.setVisibility(View.GONE);
         fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
         active = moreNewFragment;
 
