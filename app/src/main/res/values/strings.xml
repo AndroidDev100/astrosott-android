@@ -200,7 +200,7 @@
     <string name="concurrency_error">Sorry, your device limit is exceeded</string>
     <string name="loading">Loading</string>
     <string name="subscription_dialouge_for_logged_in">Get your susbcription now</string>
-    <string name="purchase_dialouge_for_logged_in">Sorry, you cant view this video. Do you want to subscribe now?</string>
+    <string name="purchase_dialouge_for_logged_in">Sorry, you can\'t view this video. Do you want to subscribe now?</string>
     <string name="text_error">Error</string>
     <string name="pls_enter_device_name">Please enter device name.</string>
     <string name="pls_enter_title">Please give a name for the playlist</string>
@@ -212,8 +212,8 @@
     <string name="account_no_required">Oops! Account number cannot be blank</string>
     <string name="mobile_no_required">Oops! Mobile number cannot be blank</string>
     <string name="incorrect_phone_number">Incorrect mobile number. Try again</string>
-    <string name="incorrect_account_number">Oh no, that cant be right. Lets recheck the account number</string>
-    <string name="incorrect_mobile_number">Oh no, that cant be right. Lets recheck the mobile number</string>
+    <string name="incorrect_account_number">Oh no, that can\'t be right. Lets recheck the account number</string>
+    <string name="incorrect_mobile_number">Oh no, that can\'t be right. Lets recheck the mobile number</string>
     <string name="dialog">SOTT</string>
     <string name="new_version">New Version Available</string>
     <string name="pin_required">PIN cannot be blank</string>

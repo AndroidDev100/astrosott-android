@@ -1,6 +1,7 @@
 package com.astro.sott.utils.helpers;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import java.lang.reflect.Field;
  *
  * @author Wat Chun Pang Gilbert
  */
+@SuppressLint("AppCompatCustomView")
 public class ExpandableTextView extends TextView {
 
     private static final String TAG = ExpandableTextView.class.getSimpleName();

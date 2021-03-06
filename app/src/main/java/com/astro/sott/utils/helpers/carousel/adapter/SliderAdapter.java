@@ -96,7 +96,6 @@ public class SliderAdapter extends PagerAdapter {
             container.addView(view);
             return view;
         } else {
-            //noinspection ConstantConditions
             return view;
         }
 
