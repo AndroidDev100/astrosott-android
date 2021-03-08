@@ -1,16 +1,11 @@
 package com.astro.sott.activities.search.adapter;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.astro.sott.R;
 import com.astro.sott.databinding.GenreItemLayoutBinding;
 
@@ -36,7 +31,7 @@ public class QuickSearchGenreAdapter extends RecyclerView.Adapter<QuickSearchGen
 
     @Override
     public int getItemCount() {
-        return 16;
+        return 116;
     }
 
     public class SingleItemHolder extends RecyclerView.ViewHolder {

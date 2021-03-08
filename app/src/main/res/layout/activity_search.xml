@@ -56,6 +56,7 @@
                     <LinearLayout
                         android:id="@+id/popularSearchGroup"
                         android:layout_width="match_parent"
+                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
@@ -74,13 +75,17 @@
                                 android:fontFamily="@font/heebo_bold"
                                 android:text="@string/popular_search"
                                 android:textAllCaps="true"
+                                android:visibility="gone"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/font_medium_large" />
 
                         </LinearLayout>
 
+
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycler_view"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:nestedScrollingEnabled="false"
@@ -93,6 +98,7 @@
                             android:layout_height="wrap_content"
                             android:nestedScrollingEnabled="false"
                             android:overScrollMode="never"
+                            android:visibility="gone"
                             tools:targetApi="lollipop"/>
                     </LinearLayout>
 
@@ -108,6 +114,7 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:visibility="gone"
                             android:layout_marginTop="@dimen/search_recent_tab_margin_top">
 
                             <TextView
@@ -153,6 +160,7 @@
                             android:nestedScrollingEnabled="false"
                             android:overScrollMode="never"
                             tools:targetApi="lollipop"
+                            android:visibility="gone"
                             android:layout_marginBottom="76dp">
 
                         </androidx.recyclerview.widget.RecyclerView>
@@ -164,7 +172,7 @@
                         android:layout_height="wrap_content">
 
                         <androidx.recyclerview.widget.RecyclerView
-
+                            android:visibility="gone"
                             android:id="@+id/rvSearchResult"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -173,7 +181,15 @@
                     </LinearLayout>
 
 
+                    <FrameLayout
+                        android:id="@+id/genre_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></FrameLayout>
+
+
+
                 </LinearLayout>
+
 
             </androidx.core.widget.NestedScrollView>
 
@@ -233,6 +249,35 @@
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_76sdp"
+            card_view:cardElevation="@dimen/_8dp"
+            card_view:cardMaxElevation="@dimen/_3dp"
+            card_view:cardPreventCornerOverlap="false"
+            android:layout_alignParentBottom="true"
+            card_view:cardBackgroundColor="@color/blue_bg">
+
+            <TextView
+                android:id="@+id/quick_search_btn"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/gradient_button"
+                android:fontFamily="@font/heebo_medium"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/quick_search_text"
+                android:textAllCaps="true"
+                android:visibility="visible"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sp"
+                android:layout_marginStart="@dimen/dimen16dp"
+                android:layout_marginEnd="@dimen/dimen16dp">
+
+            </TextView>
+
+
+        </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
 

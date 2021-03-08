@@ -1,26 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/dimen16dp">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/dimen156dp"
-        android:layout_height="@dimen/dimen57dp"
+        android:layout_width="@dimen/landscape_item_width"
+        android:layout_height="70dp"
         app:cardBackgroundColor="@color/toolbar_bg"
-        app:cardCornerRadius="@dimen/_4dp"
-        android:layout_marginBottom="@dimen/dimen24dp"
-        app:cardElevation="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/dimen16dp">
-         <TextView
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:fontFamily="@font/heebo_regular"
-             android:textColor="@color/white"
-             android:layout_marginStart="@dimen/_8dp"
-             android:layout_gravity="center|left"
-             android:text="@string/watch_movie"
-             android:textSize="@dimen/_14sp"/>
+        app:cardElevation="@dimen/_10sdp">
+
+        <RelativeLayout
+            android:layout_width="@dimen/landscape_item_width"
+            android:background="#ffffff"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="#ffffff"
+                android:layout_height="match_parent">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_1sdp"
+                android:layout_marginRight="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_1sdp"
+                android:background="#303255"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/heebo_regular"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:text="@string/watch_movie"
+                    android:textSize="@dimen/_14sp"/>
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="-65dp"
+                    android:src="@drawable/placeholder_square"
+                    android:layout_height="wrap_content">
+
+                </de.hdodenhof.circleimageview.CircleImageView>
+
+                <LinearLayout
+                    android:layout_width="40dp"
+                    android:rotation="180"
+                    android:gravity="right"
+                    android:background="@drawable/half_circle_selector"
+                    android:layout_height="wrap_content">
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+
+
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

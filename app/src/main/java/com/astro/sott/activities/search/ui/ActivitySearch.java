@@ -1,5 +1,6 @@
 package com.astro.sott.activities.search.ui;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import com.astro.sott.beanModel.commonBeanModel.MediaTypeModel;
 import com.astro.sott.beanModel.commonBeanModel.SearchModel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.db.search.SearchedKeywords;
+import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
@@ -183,10 +185,17 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             UIinitialization();
             getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
             loadDataFromModel();
+            addGenreFragment();
         } else {
 
             noConnectionLayout();
         }
+    }
+
+    private void addGenreFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        QuickSearchGenre detailRailFragment = new QuickSearchGenre();
+        fm.beginTransaction().replace(R.id.genre_fragment, detailRailFragment).commitNow();
     }
 
     private void resetLayout() {

@@ -76,13 +76,11 @@ public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGen
     private void loadDataFromModel() {
        QuickSearchGenreAdapter adapter = new QuickSearchGenreAdapter(QuickSearchGenre.this);
         getBinding().recyclerView.setAdapter(adapter);
-        getBinding().quickSearchBtn.setVisibility(View.VISIBLE);
+        getBinding().recyclerView.setNestedScrollingEnabled(true);
+       // getBinding().quickSearchBtn.setVisibility(View.VISIBLE);
     }
 
     private void UIinitialization() {
-        getBinding().recyclerView.hasFixedSize();
-        getBinding().recyclerView.setNestedScrollingEnabled(false);
-        getBinding().recyclerView.hasFixedSize();
         getBinding().recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
     }
