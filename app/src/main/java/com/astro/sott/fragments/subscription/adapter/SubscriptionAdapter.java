@@ -38,7 +38,7 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 4;
     }
 
     public class SingleItemHolder extends RecyclerView.ViewHolder {

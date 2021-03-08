@@ -2,6 +2,8 @@ package com.astro.sott.activities.language.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +12,9 @@ import android.view.View;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.audio.ui.AudioLanguageActivity;
+import com.astro.sott.activities.language.ui.adapter.AppLanguageAdapter;
+import com.astro.sott.activities.search.adapter.SearchKeywordAdapter;
+import com.astro.sott.activities.search.ui.SearchKeywordActivity;
 import com.astro.sott.activities.subtitle.ui.SubtitleLanguageActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityLanguageSettingsBinding;
@@ -28,31 +33,33 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
         super.onCreate(savedInstanceState);
         oldLang = new KsPreferenceKey(LanguageSettingsActivity.this).getAppLangName();
         setClicks();
+       // UIinitialization();
+        loadDataFromModel();
 
     }
 
     private void setClicks() {
-        getBinding().rlAppLang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(LanguageSettingsActivity.this, ChangeLanguageActivity.class);
-                startActivity(intent1);
-            }
-        });
-        getBinding().rlAudioLang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(LanguageSettingsActivity.this, AudioLanguageActivity.class);
-                startActivity(intent1);
-            }
-        });
-        getBinding().rlSubtitleLang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(LanguageSettingsActivity.this, SubtitleLanguageActivity.class);
-                startActivity(intent1);
-            }
-        });
+//        getBinding().rlAppLang.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent1 = new Intent(LanguageSettingsActivity.this, ChangeLanguageActivity.class);
+//                startActivity(intent1);
+//            }
+//        });
+//        getBinding().rlAudioLang.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent1 = new Intent(LanguageSettingsActivity.this, AudioLanguageActivity.class);
+//                startActivity(intent1);
+//            }
+//        });
+//        getBinding().rlSubtitleLang.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent1 = new Intent(LanguageSettingsActivity.this, SubtitleLanguageActivity.class);
+//                startActivity(intent1);
+//            }
+//        });
         getBinding().backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +68,10 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
         });
 
     }
+    private void loadDataFromModel() {
+        AppLanguageAdapter adapter = new AppLanguageAdapter(LanguageSettingsActivity.this);
+        getBinding().expandableListView.setAdapter(adapter);
+    }
 
     private void updateLang() {
         newLang = new KsPreferenceKey(LanguageSettingsActivity.this).getAppLangName();
@@ -68,14 +79,14 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
             oldLang = newLang;
             if (newLang.equalsIgnoreCase("ms")) {
                 getBinding().title.setText("Pemilihan Bahasa");
-                getBinding().tvAppLanguage.setText("Bahasa Aplikasi");
-                getBinding().tvAudioLanguage.setText("Bahasa Audio");
-                getBinding().tvSubtitleLanguage.setText("Bahasa Sari kata");
+//                getBinding().tvAppLanguage.setText("Bahasa Aplikasi");
+//                getBinding().tvAudioLanguage.setText("Bahasa Audio");
+//                getBinding().tvSubtitleLanguage.setText("Bahasa Sari kata");
             } else {
                 getBinding().title.setText("Language Selection");
-                getBinding().tvAppLanguage.setText("App Language");
-                getBinding().tvAudioLanguage.setText("Audio Language");
-                getBinding().tvSubtitleLanguage.setText("Subtitle Language");
+//                getBinding().tvAppLanguage.setText("App Language");
+//                getBinding().tvAudioLanguage.setText("Audio Language");
+//                getBinding().tvSubtitleLanguage.setText("Subtitle Language");
 
             }
         }

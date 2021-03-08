@@ -572,6 +572,7 @@
     <string name="make_sure">Just Wanted to Make Sure \n You are You</string>
     <string name="key_in_pswd">Please key in your password \n to update email.</string>
     <string name="quick_search_text">QUICK SEARCH</string>
+    <string name="successful">successful</string>
 
 
 </resources>
