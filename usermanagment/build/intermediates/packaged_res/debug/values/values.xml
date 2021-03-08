@@ -10,7 +10,7 @@
     <string name="account_already_exist">Account with the given CustomerID already exists</string>
     <string name="account_already_exist_sp_account">Account with the given SPAccountID already exists</string>
     <string name="alternate_username_exist">Alternate User Name already exists</string>
-    <string name="app_name">User Managment</string>
+    <string name="app_name">User Management</string>
     <string name="authentication_failed">Authentication Failed</string>
     <string name="cellphone_invalid">Invalid  Cell Phone</string>
     <string name="country_invalid">Invalid Country.</string>
@@ -45,7 +45,7 @@
     <string name="no_account_found">No account found with the given details</string>
     <string name="no_zone">NO Zone X Reference exists with the DMA ID</string>
     <string name="otp_cannot_empty">OTP cannot be empty.</string>
-    <string name="passward_given">Your given password Shouldnt be \"Password\</string>
+    <string name="passward_given">Your given password Shouldn\'t be \"Password\</string>
     <string name="password_character">Password should contain alphabets along with Numerics or special character @#$%^+=!</string>
     <string name="password_exceed">Password length should not exceed 100</string>
     <string name="password_length_atleast">Password must be at least 4 characters</string>
@@ -62,16 +62,16 @@
     <string name="verify_account_and_login">Please verify your account and login again</string>
     <string name="wrong_username_or_password">Wrong Username or Password</string>
     <style name="Theme.Astrosottandroid" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
+        
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
+        
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
+        
         <item name="android:statusBarColor" ns1:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        
     </style>
 </resources>

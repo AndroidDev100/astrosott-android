@@ -67,7 +67,7 @@
     <string name="notification_message">No new notifications</string>
     <string name="remove_watchlist_item">Do you want to remove this video from your playlist?</string>
     <string name="search_dialog">Search Astro</string>
-    <string name="geo_location_dialouge">Sorry, this is not available in your area or country</string>
+    <string name="geo_location_dialouge">Uh-no! Looks like you are not in Malaysia at the moment. You may still browse around to checkout our contents. Come back soon to enjoy your favourite shows and movies!</string>
     <string name="purchase_dialouge">Please login to view this content.</string>
     <string name="live_tag">LIVE</string>
     <string name="you_may_like">You may also like</string>
