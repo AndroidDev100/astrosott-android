@@ -134,7 +134,8 @@ public class AppCommonMethods {
         UserInfo.getInstance(context).setActive(false);
 
     }
-    public static String getAssetType(Integer assetType,Context context) {
+
+    public static String getAssetType(Integer assetType, Context context) {
         String type = "";
         if (assetType == MediaTypeConstant.getMovie(context)) {
             type = "Movie";
@@ -142,12 +143,11 @@ public class AppCommonMethods {
             type = "Episode";
         } else if (assetType == MediaTypeConstant.getWebSeries(context)) {
             type = "Series";
-        }else if (assetType==MediaTypeConstant.getHighlight(context)){
+        } else if (assetType == MediaTypeConstant.getHighlight(context)) {
             type = "Highlight";
-        }
-        else if (assetType == MediaTypeConstant.getTrailer(context)) {
+        } else if (assetType == MediaTypeConstant.getTrailer(context)) {
             type = "Trailer";
-        }  else if (assetType == MediaTypeConstant.getLinear(context)) {
+        } else if (assetType == MediaTypeConstant.getLinear(context)) {
             type = "Linear";
         } else if (assetType == MediaTypeConstant.getProgram(context)) {
             type = "Program";
@@ -155,6 +155,7 @@ public class AppCommonMethods {
 
         return type;
     }
+
     public static void updateLanguage(String language, Context context) {
         try {
             Locale locale = new Locale(language);
@@ -211,6 +212,15 @@ public class AppCommonMethods {
             PrintLogging.printLog("Exception", "", "" + e);
         }
         return programTime;
+    }
+
+    public static String getAssetHistory(Context context) {
+        String assetHistoryDays = "";
+        ResponseDmsModel responseDmsModel = callpreference(context);
+        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAssetHistoryDays() != null && responseDmsModel.getParams().getAssetHistoryDays().getDays() != null && !responseDmsModel.getParams().getAssetHistoryDays().getDays().equalsIgnoreCase("")) {
+            assetHistoryDays = responseDmsModel.getParams().getAssetHistoryDays().getDays();
+        }
+        return assetHistoryDays;
     }
 
     public static Calendar getDate(Asset asset) {
@@ -752,6 +762,11 @@ public class AppCommonMethods {
                         String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.portrait_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.portrait_image_height) + AppLevelConstants.QUALITY;
                         assetCommonImages.setImageUrl(final_url);
                         imagesList.add(assetCommonImages);
+                    } else if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
+                        String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                        String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                        assetCommonImages.setImageUrl(final_url);
+                        imagesList.add(assetCommonImages);
                     }
 
                 }
@@ -1217,18 +1232,18 @@ public class AppCommonMethods {
     }
 
 
-    public static void setBillingUi(ImageView imageView, Map<String, MultilingualStringValueArray> tags){
-       try {
+    public static void setBillingUi(ImageView imageView, Map<String, MultilingualStringValueArray> tags) {
+        try {
 
-           if (AssetContent.getBillingId(tags)) {
-               imageView.setVisibility(View.VISIBLE);
-           } else {
-               imageView.setVisibility(View.GONE);
+            if (AssetContent.getBillingId(tags)) {
+                imageView.setVisibility(View.VISIBLE);
+            } else {
+                imageView.setVisibility(View.GONE);
 
-           }
-       }catch (Exception e){
+            }
+        } catch (Exception e) {
 
-       }
+        }
 
     }
 

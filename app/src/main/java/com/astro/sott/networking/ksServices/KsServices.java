@@ -814,7 +814,7 @@ public class KsServices {
                             @Override
                             public void response(CommonResponse response) {
                                 if (response.getStatus()) {
-                                    callSeriesData(mediaType,seriesID,callBack);
+                                    callSeriesData(mediaType, seriesID, callBack);
                                 } else {
                                     callBack.onFailure();
                                 }
@@ -864,7 +864,7 @@ public class KsServices {
                             @Override
                             public void response(CommonResponse response) {
                                 if (response.getStatus()) {
-                                    getAssetFromTrailer(refId,callBack);
+                                    getAssetFromTrailer(refId, callBack);
                                 } else {
                                     callBack.onFailure();
                                 }
@@ -916,7 +916,7 @@ public class KsServices {
                             @Override
                             public void response(CommonResponse response) {
                                 if (response.getStatus()) {
-                                    getProgramFromLinear(channelId,callBack);
+                                    getProgramFromLinear(channelId, callBack);
                                 } else {
                                     callBack.onFailure();
                                 }
@@ -2746,7 +2746,7 @@ public class KsServices {
                         } else {
                             // ksStartSessionCallBack.failure(false, result);
                             callLogoutApi();
-                            KsPreferenceKey.getInstance(activity).setUserActive(false);
+                            UserInfo.getInstance(activity).setActive(false);
                             KsPreferenceKey.getInstance(activity).setUser(null);
                             KsPreferenceKey.getInstance(activity).setStartSessionKs("");
                             KsPreferenceKey.getInstance(activity).setMsisdn("");
@@ -3722,7 +3722,7 @@ public class KsServices {
         clientSetupKs();
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
         assetHistoryFilter.statusEqual("all");
-        assetHistoryFilter.daysLessThanOrEqual("30");
+        assetHistoryFilter.daysLessThanOrEqual(AppCommonMethods.getAssetHistory(activity));
 
         FilterPager pagerFilter = new FilterPager();
         pagerFilter.setPageIndex(1);
@@ -3883,7 +3883,7 @@ public class KsServices {
         int size = channelList.size();
 
         for (int i = 0; i < size; i++) {
-            boolean status = KsPreferenceKey.getInstance(activity).getUserActive();
+            boolean status = UserInfo.getInstance(activity).isActive();
             if (status) {
                 PrintLogging.printLog(this.getClass(), "", "channellLisSize==" + size);
                 if (channelList.get(i).getDescription().equals(AppLevelConstants.KEY_CONTINUE_WATCHING)) {
@@ -4656,7 +4656,7 @@ public class KsServices {
                 KsPreferenceKey.getInstance(activity).setContinueWatchingIndex(-1);
             }
 
-            boolean status = KsPreferenceKey.getInstance((activity)).getUserActive();
+            boolean status = UserInfo.getInstance(activity).isActive();
             if (status) {
                 if (size == 1) {
                     if (dtChannelList.get(counter).getDescription().equals(AppLevelConstants.KEY_CONTINUE_WATCHING)) {
@@ -4925,7 +4925,7 @@ public class KsServices {
 
     public void getWatchlistRails(VIUChannel channel, List<VIUChannel> list) {
 
-        boolean isLogin = KsPreferenceKey.getInstance(activity).getUserActive();
+        boolean isLogin = UserInfo.getInstance(activity).isActive();
         if (isLogin) {
             clientSetupKs();
             KsServices ksServices = new KsServices(activity);
@@ -5420,7 +5420,7 @@ public class KsServices {
                             // ksStartSessionCallBack.failure(false, result);
 
                             callLogoutApi();
-                            KsPreferenceKey.getInstance(activity).setUserActive(false);
+                            UserInfo.getInstance(activity).setActive(false);
                             KsPreferenceKey.getInstance(activity).setUser(null);
                             KsPreferenceKey.getInstance(activity).setStartSessionKs("");
                             KsPreferenceKey.getInstance(activity).setMsisdn("");
@@ -6514,7 +6514,7 @@ public class KsServices {
         } else {
             client.setLanguage("en");
         }
-        if (KsPreferenceKey.getInstance(activity).getUserActive()) {
+        if (UserInfo.getInstance(activity).isActive()) {
             client.setKs(KsPreferenceKey.getInstance(activity).getStartSessionKs());
         } else {
             client.setKs(KsPreferenceKey.getInstance(activity).getAnonymousks());

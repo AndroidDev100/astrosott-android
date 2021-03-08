@@ -230,10 +230,10 @@ public class CategoryRails {
                     int totalCount = list.get(i).results.getTotalCount();
 
                     if (totalCount == 0) {
-                        // Log.w("AnkurYadav " + i, loopCount + "");
+                        // Log.w(" " + i, loopCount + "");
                         PrintLogging.printLog("", "channel" + channelList.get(counter).getName());
                     } else {
-                        // Log.w("AnkurYadav " + i, loopCount + "");
+                        // Log.w(" " + i, loopCount + "");
                         AssetCommonBean assetCommonBean = new AssetCommonBean();
                         assetCommonBean.setStatus(true);
                         if (loopCount == 1) {

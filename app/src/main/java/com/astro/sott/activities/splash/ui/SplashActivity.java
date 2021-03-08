@@ -350,12 +350,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     private void pushToken() {
-
-
         setupBaseClient();
-
-
-
         token = SharedPrefHelper.getInstance(this).getString(AppLevelConstants.FCM_TOKEN, "");
         if (token == null || token.equals("")) {
             FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
