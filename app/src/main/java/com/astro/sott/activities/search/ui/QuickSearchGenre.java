@@ -1,5 +1,6 @@
 package com.astro.sott.activities.search.ui;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,15 +10,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.moreListing.ui.ListingActivity;
 import com.astro.sott.activities.search.adapter.QuickSearchGenreAdapter;
 import com.astro.sott.activities.search.adapter.SearchKeywordAdapter;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentQuickSearchGenreBinding;
+import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,11 +82,27 @@ public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGen
        QuickSearchGenreAdapter adapter = new QuickSearchGenreAdapter(QuickSearchGenre.this);
         getBinding().recyclerView.setAdapter(adapter);
         getBinding().recyclerView.setNestedScrollingEnabled(true);
+
        // getBinding().quickSearchBtn.setVisibility(View.VISIBLE);
     }
 
     private void UIinitialization() {
-        getBinding().recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        int spanCount, spacing;
+            if (tabletSize) {
+                spanCount = AppLevelConstants.SPAN_COUNT_SQUARE_TAB;
+                Resources r = getResources();
+                spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, AppLevelConstants.PORTRAIT_SPACING_TAB, r.getDisplayMetrics());
+            } else {
+                spanCount = AppLevelConstants.SPAN_COUNT_LANDSCAPE;
+                Resources r = getResources();
+                spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, AppLevelConstants.PORTRAIT_SPACING, r.getDisplayMetrics());
+            }
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), spanCount);
+        getBinding().recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
+        getBinding().recyclerView.setLayoutManager(gridLayoutManager);
 
     }
     private void setClicks() {
