@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.astro.sott.R;
 import com.astro.sott.activities.movieDescription.adapter.MovieDescriptionCommonAdapter;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
@@ -50,11 +51,18 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
     Asset asset;
     List<VIUChannel> dtChannelsList;
     List<VIUChannel> channelList;
-    int counterValueApiFail = 0;
+    private List<RailCommonData> youMayAlsoLikeData;
     int continueWatchingIndex = -1;
     MovieDescriptionCommonAdapter adapter;
+    private SimilarAdapter similarAdapter;
     List<AssetCommonBean> loadedList;
-    int counter = 0;
+    private int mScrollY;
+    int counter = 1;
+    private int totalCount;
+    private int firstVisiblePosition, pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean mIsLoading = true, isScrolling = false;
+
+
     int swipeToRefresh = 0;
     private Context context;
     private boolean iscalled = false;
@@ -106,7 +114,6 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
     public void getVideoRails() {
         //   AppConstants.FRAGMENT_CALL = AppConstants.FRAGMENT_CALL + 1;
-        counter = 0;
         if (channelList != null)
             channelList.clear();
         if (dtChannelsList != null)
@@ -133,9 +140,10 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
-            if (TabsData.getInstance().getYouMayAlsoLikeData() != null)
+            if (TabsData.getInstance().getYouMayAlsoLikeData() != null) {
+                youMayAlsoLikeData = new ArrayList<>();
                 setSimilarUIComponent(TabsData.getInstance().getYouMayAlsoLikeData());
-            // youMayAlsoLike();
+            }
         }
     }
 
@@ -150,59 +158,63 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
+
+        setPagination();
     }
 
-    private void getBaseCategoryRail() {
-        HomeFragmentRepository.getInstance().getCategories(String.valueOf(tabId)).observe(getActivity(), baseCategoriesList -> {
-            if (baseCategoriesList.size() > 0) {
-                dtChannelsList = new ArrayList<>();
-                for (int j = 0; j < baseCategoriesList.size(); j++) {
-                    VIUChannel tempChannel = new VIUChannel(getActivity(), baseCategoriesList.get(j));
-                    dtChannelsList.add(tempChannel);
-                }
-                channelList = dtChannelsList;
-                counter = 0;
-                callRailAPI(dtChannelsList);
-            } else {
-                // tabsVisibility(true);
-                PrintLogging.printLog("", "in error");
-            }
+    private void setPagination() {
+
+        getBinding().loadMore.setOnClickListener(v -> {
+            counter++;
+            callYouMayAlsoLike(asset.getId(), counter, asset.getType(), asset.getTags());
+
         });
+        /*getBinding().recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                try {
+                    LinearLayoutManager layoutManager = ((LinearLayoutManager) getBinding().recyclerView.getLayoutManager());
+                    firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+                    if (dy > 0) {
+                        visibleItemCount = layoutManager.getChildCount();
+                        totalItemCount = layoutManager.getItemCount();
+                        pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+                        if (mIsLoading) {
+                            if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                                mIsLoading = false;
+
+                                isScrolling = true;
+                                mScrollY += dy;
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e("ERROR", e.getMessage());
+                }
+            }
+        });*/
     }
 
 
-    private void youMayAlsoLike() {
-        assetId = asset.getId();
-        map = asset.getTags();
-        assetType = asset.getType();
-        dtChannelsList = new ArrayList<>();
-        if (channelList != null)
-            channelList.clear();
-
-        if (dtChannelsList != null)
-            dtChannelsList.clear();
-
-        callYouMayAlsoLike((int) assetId, 1, assetType, map, layoutType, tabId, asset);
-
-
-    }
-
-    private void callYouMayAlsoLike(int assetId, int counter, int assetType, Map<String, MultilingualStringValueArray> map, int layoutType, int screen_id, Asset asset) {
-        viewModel.getYouMayAlsoLike(assetId, counter, assetType, map, layoutType, screen_id, asset).observe(this, assetCommonBeans -> {
+    private void callYouMayAlsoLike(Long assetId, int counter, int assetType, Map<String, MultilingualStringValueArray> map) {
+        long asseId = assetId;
+        getBinding().loadMore.setText(getActivity().getResources().getString(R.string.loading));
+        viewModel.getYouMayAlsoLike((int) asseId, counter, assetType, map).observe(this, assetCommonBeans -> {
             try {
-                PrintLogging.printLog("RecommendationRailFragment", "similarMovieListing-->>" + assetCommonBeans.size() + " " + assetCommonBeans.get(0).getStatus());
+                getBinding().loadMore.setText("Load More");
                 if (assetCommonBeans.size() > 0) {
                     if (assetCommonBeans.get(0).getStatus()) {
-                        channelList = dtChannelsList;
-                        // setSimilarUIComponent(assetCommonBeans);
+                        setSimilarUIComponent(assetCommonBeans.get(0).getRailAssetList());
                     } else {
-                        getBinding().upcoming.setVisibility(View.VISIBLE);
+                        getBinding().loadMore.setVisibility(View.GONE);
+
                     }
                 } else {
-                    getBinding().upcoming.setVisibility(View.VISIBLE);
+                    getBinding().loadMore.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
-                getBinding().upcoming.setVisibility(View.VISIBLE);
+                getBinding().loadMore.setVisibility(View.GONE);
+
             }
 
 
@@ -211,8 +223,21 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
     }
 
     private void setSimilarUIComponent(List<RailCommonData> railCommonData) {
-        SimilarAdapter similarAdapter = new SimilarAdapter(railCommonData);
-        getBinding().recyclerView.setAdapter(similarAdapter);
+        youMayAlsoLikeData.addAll(railCommonData);
+        if (youMayAlsoLikeData.get(0) != null)
+            totalCount = youMayAlsoLikeData.get(0).getTotalCount();
+        if (similarAdapter == null) {
+            similarAdapter = new SimilarAdapter(youMayAlsoLikeData);
+            getBinding().recyclerView.setAdapter(similarAdapter);
+        } else {
+            similarAdapter.notifyDataSetChanged();
+        }
+        if (totalCount <= similarAdapter.getItemCount()) {
+            getBinding().loadMore.setVisibility(View.GONE);
+        } else {
+            getBinding().loadMore.setVisibility(View.VISIBLE);
+
+        }
 
     }
 
@@ -314,25 +339,11 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
     public void onDetach() {
         super.onDetach();
         HomeFragmentRepository.getInstance().resetObject();
-        // if (viewModel != null)
-        // viewModel.resetViewModel();
+
     }
 
     @Override
     public void heroItemClick(int position, RailCommonData railCommonData, AssetCommonBean commonData) {
-        //heroClickRedirection(railCommonData.getRailDetail(),railCommonData,commonData);
-        /*HeroDiversion heroDiversion;
-
-        if (context instanceof WebSeriesDescriptionActivity) {
-            heroDiversion = new HeroDiversion(railCommonData, commonData, (WebSeriesDescriptionActivity) context, (WebSeriesDescriptionActivity) context, ViewModelProviders.of(this).get(HomeViewModel.class));
-            heroDiversion.heroClickRedirection();
-        } else if (context instanceof MovieDescriptionActivity) {
-            heroDiversion = new HeroDiversion(railCommonData, commonData, (MovieDescriptionActivity) context, (MovieDescriptionActivity) context, ViewModelProviders.of(this).get(HomeViewModel.class));
-            heroDiversion.heroClickRedirection();
-        } else if (context instanceof ShortFilmActivity) {
-            heroDiversion = new HeroDiversion(railCommonData, commonData, (ShortFilmActivity) context, (ShortFilmActivity) context, ViewModelProviders.of(this).get(HomeViewModel.class));
-            heroDiversion.heroClickRedirection();
-        }*/
 
 
     }

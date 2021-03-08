@@ -10,6 +10,7 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
@@ -192,8 +193,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             /*if (connectionPreference && !wifiConnected) {
                 showWifiDialog();
             } else {*/
-                callProgressBar();
-                playerChecks(railData);
+            callProgressBar();
+            playerChecks(railData);
 
             /*}*/
 
@@ -332,7 +333,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         try {
             callProgressBar();
 
-          //  ConvivaManager.getConvivaAdAnalytics(this);
+            //  ConvivaManager.getConvivaAdAnalytics(this);
             Intent intent = new Intent(MovieDescriptionActivity.this, PlayerActivity.class);
             intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
             startActivity(intent);
@@ -1082,7 +1083,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 if (KsPreferenceKey.getInstance(this).getUserActive()) {
                     callwatchlistApi();
                 } else {
-                    new ActivityLauncher(MovieDescriptionActivity.this).loginActivity(MovieDescriptionActivity.this, LoginActivity.class, 0, "");
+                    new ActivityLauncher(MovieDescriptionActivity.this).astrLoginActivity(MovieDescriptionActivity.this, AstrLoginActivity.class);
+                    // new ActivityLauncher(MovieDescriptionActivity.this).loginActivity(MovieDescriptionActivity.this, LoginActivity.class, 0, "");
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), MovieDescriptionActivity.this);

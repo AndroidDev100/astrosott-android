@@ -19,6 +19,7 @@ import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -144,6 +145,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     };
 
     private void initFrameFragment() {
+        setToolBarScroll(0);
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
@@ -155,6 +157,16 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "1").hide(liveTvFragment).commit();
         fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commit();
         active = liveTvFragment;
+    }
+
+    private void setToolBarScroll(int type) {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        if (type == 1) {
+            params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+        } else {
+            params.setScrollFlags(0);
+        }
     }
 
     private void setMargins(int marginTop) {
@@ -396,6 +408,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             checkSameClick();
             active = homeFragment;
         }*/
+        setToolBarScroll(1);
+        setMargins(150);
         getBinding().mainLayout.setVisibility(View.GONE);
         getBinding().tabs.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
@@ -410,6 +424,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     private void switchToLiveTvFragment() {
+        setToolBarScroll(0);
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
@@ -437,7 +452,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         setMargins(0);
         getBinding().toolbar.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
-        getBinding().appbar.setVisibility(View.GONE);
+       // getBinding().appbar.setVisibility(View.GONE);
         fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
         active = moreNewFragment;
 

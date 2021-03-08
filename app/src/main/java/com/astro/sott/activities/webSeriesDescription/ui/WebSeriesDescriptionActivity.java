@@ -24,6 +24,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.astro.sott.activities.loginActivity.LoginActivity;
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.webSeriesDescription.viewModel.WebSeriesDescriptionViewModel;
@@ -137,27 +139,24 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         if (getIntent().getExtras() != null) {
             railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
             if (railData != null) {
+                commonData=railData;
                 asset = railData.getObject();
                 getDatafromBack();
             }
         }
 
-        getBinding().ivPlayIcon.setClickable(true);
         getBinding().ivPlayIcon.setOnClickListener(view -> {
 
-            if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+          /*  if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
 
-            if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                if (commonData != null) {
-                    callProgressBar();
-                    playerChecks(commonData);
-                }
-            } else {
-                DialogHelper.showLoginDialog(WebSeriesDescriptionActivity.this);
+            if (commonData != null) {
+                callProgressBar();
+                playerChecks(commonData);
             }
+*/
 
         });
 
@@ -184,7 +183,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
         setBannerImage(assetId);
     }
-
 
 
     private void setMetas() {
@@ -569,35 +567,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
 
         });
-        getBinding().ivPlayIcon.setClickable(true);
-        getBinding().ivPlayIcon.setOnClickListener(view -> {
 
-
-            boolean isTablet = this.getResources().getBoolean(R.bool.isTablet);
-            if (isTablet) {
-                if (SystemClock.elapsedRealtime() - lastClickTime < 2000) {
-                    return;
-                }
-                lastClickTime = SystemClock.elapsedRealtime();
-
-                callProgressBar();
-                playerChecks(railCommonData);
-
-
-            } else {
-                if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
-                    return;
-                }
-                lastClickTime = SystemClock.elapsedRealtime();
-
-                callProgressBar();
-                playerChecks(railCommonData);
-
-
-            }
-
-
-        });
 
 
         fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
@@ -994,7 +964,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     public void onFinishDialog() {
         if (isPurchased) {
             isPurchased = false;
-            new ActivityLauncher(WebSeriesDescriptionActivity.this).loginActivity(WebSeriesDescriptionActivity.this, LoginActivity.class, 0, "");
+            new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class);
+
         }
     }
 
