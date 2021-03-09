@@ -131,7 +131,7 @@
                                 android:weightSum="3">
 
                                 <TextView
-                                    android:id="@+id/shareWith"
+                                    android:id="@+id/watchList"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/share_margin_top"
@@ -142,11 +142,12 @@
                                     android:fontFamily="@font/heebo_regular"
                                     android:gravity="center"
                                     android:text="@string/my_list"
-                                    android:textColor="@color/lightBlueColor"
+                                    android:textColor="@color/grey"
                                     android:textSize="@dimen/font_small"
-                                    app:drawableTopCompat="@drawable/favorite" />
+                                    app:drawableTopCompat="@drawable/favorite_unselected" />
 
                                 <TextView
+                                    android:id="@+id/shareWith"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/share_margin_top"
@@ -158,7 +159,7 @@
                                     android:fontFamily="@font/heebo_regular"
                                     android:gravity="center"
                                     android:text="@string/share"
-                                    android:textColor="@color/lightBlueColor"
+                                    android:textColor="@color/grey"
                                     android:textSize="@dimen/font_small" />
 
                                 <TextView

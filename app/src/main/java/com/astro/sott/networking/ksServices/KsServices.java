@@ -2053,14 +2053,11 @@ public class KsServices {
                     public void onComplete(Response<Void> result) {
                         PrintLogging.printLog(this.getClass(), "", "deleteDevice" + result.isSuccess());
                         if (result.isSuccess()) {
-
                             deleteWatchListCallBack.deleteWatchlistDetail(true, "", "");
-//
                         } else {
                             if (result.error != null) {
                                 String errorCode = result.error.getCode();
                                 // PrintLogging.printLog("","errorCodess-->>"+errorCode);
-                                Log.e("errorCodessMywatchList", errorCode);
                                 if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
                                     new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                         @Override
@@ -2096,7 +2093,8 @@ public class KsServices {
         final PersonalList personalList = new PersonalList();
         personalList.setName(titleName);
         personalList.setKsql(id);
-        personalList.setPartnerListType(playlistidtype);
+        personalList.setPartnerListType(Integer.valueOf(AppConstants.WATCHLIST_PARTNER_TYPE));
+
 //        Runnable runnable = new Runnable() {
 //            @Override
 //            public void run() {
@@ -2452,6 +2450,8 @@ public class KsServices {
                         watchlistCallBack.getWatchlistDetail(false, "", result);
                     }
                 } else {
+                    watchlistCallBack.getWatchlistDetail(false, "", null);
+
                     /*ErrorHandling.checkErrorType(result.error, (code, status) -> {
                         if (code.equalsIgnoreCase(AppConstants.KS_EXPIRE) && status) {
                             compareWatchlist(counter, watchlistCallBack);
@@ -2472,6 +2472,7 @@ public class KsServices {
         watchlistCallBack = callBack;
 
         final PersonalListFilter personalListFilter = new PersonalListFilter();
+        personalListFilter.partnerListTypeIn(AppConstants.WATCHLIST_PARTNER_TYPE);
 
 
         Runnable runnable = new Runnable() {
@@ -4968,24 +4969,14 @@ public class KsServices {
         String value = "";
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < size; i++) {
-            PrintLogging.printLog("", "sfsfsfsfds" + personalLists.get(i).getKsql());
-            PrintLogging.printLog("", "listPartnerTypeIn" + personalLists.get(i).getPartnerListType());
             String ksql = personalLists.get(i).getKsql();
-            String[] arr = ksql.split("'");
-            String one = arr[0];
-            String two = arr[1];
-            builder.append(two).append(",");
+            builder.append(ksql).append(",");
         }
         value = builder.toString();
         if (value.length() > 0) {
             value = value.substring(0, value.length() - 1);
-            PrintLogging.printLog("", "mainValueIs" + value);
-
         }
         return value;
-        //
-        // loadWatchlistData(value);
-
     }
 
 

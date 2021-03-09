@@ -1,6 +1,7 @@
 package com.astro.sott.baseModel;
 
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -24,10 +25,6 @@ public class Watchlist {
         KsServices ksServices = new KsServices(context);
         ksServices.compareWatchlist((status, errorCode, result) -> {
             if (status) {
-               /* commonResponse.setPersonalLists(result.results.getObjects());
-
-                commonMutableLiveData.postValue(commonResponse);*/
-
                 checkAssetAdded(result, commonMutableLiveData, assetId, commonResponse);
             } else {
                 if (errorCode.equals(AppLevelConstants.KS_EXPIRE)) {
@@ -63,8 +60,6 @@ public class Watchlist {
         });
 
     }
-
-
 
 
     public void checkWatchlist(final String assetId, final Context context, final MutableLiveData<CommonResponse> commonMutableLiveData) {
@@ -112,12 +107,17 @@ public class Watchlist {
     private void checkAssetAdded(Response<ListResponse<PersonalList>> result,
                                  MutableLiveData<CommonResponse> stringMutableLiveData,
                                  String assetId, CommonResponse commonResponse) {
-        String results = "";
+
+        try {
+
+
+            String results = "";
             if (result.results.getTotalCount() > 0) {
                 for (int i = 0; i < result.results.getObjects().size(); i++) {
                     String ksqlassetid = result.results.getObjects().get(i).getKsql();
                     Log.d("dssdsdsdsdsdsds", ksqlassetid + "--->>" + assetId);
-
+                  /*  String[] ksql = ksqlassetid.split("'");
+                    ksqlassetid = ksql[1];*/
                     if (ksqlassetid.equals(assetId)) {
                         PrintLogging.printLog(this.getClass(), "", "compareCondition" + ksqlassetid + "-->.." + assetId);
                         results = result.results.getObjects().get(i).getId().toString();
@@ -135,30 +135,36 @@ public class Watchlist {
                 commonResponse.setAssetID(results);
                 stringMutableLiveData.postValue(commonResponse);
             }
+        } catch (Exception e) {
+            commonResponse.setStatus(false);
+            commonResponse.setPersonalLists(result.results.getObjects());
+            commonResponse.setIsAssetAdded(0);
+            stringMutableLiveData.postValue(commonResponse);
+        }
     }
 
 
-    public void addToWatchList(final String id, String titleName, Context context, final MutableLiveData<CommonResponse> stringMutableLiveData,int playlistidtype) {
+    public void addToWatchList(final String id, String titleName, Context context, final MutableLiveData<CommonResponse> stringMutableLiveData, int playlistidtype) {
         KsServices ksServices = new KsServices(context);
         final CommonResponse commonResponse = new CommonResponse();
-        callWatchListApi(id, titleName, context, stringMutableLiveData, commonResponse, ksServices,playlistidtype);
+        callWatchListApi(id, titleName, context, stringMutableLiveData, commonResponse, ksServices, playlistidtype);
 
     }
 
     private void callWatchListApi(final String id, final String titleName, final Context context,
                                   final MutableLiveData<CommonResponse> stringMutableLiveData,
-                                  final CommonResponse commonResponse, final KsServices ksServices,int playlistidtype) {
+                                  final CommonResponse commonResponse, final KsServices ksServices, int playlistidtype) {
 
-        ksServices.addToWatchlist(playlistidtype,id, titleName, (ids, errorCode, message) -> {
+        ksServices.addToWatchlist(playlistidtype, id, titleName, (ids, errorCode, message) -> {
             if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
                 new StartSessionLogin(context).callUserLogin(KsPreferenceKey.getInstance(context).getUser().getUsername(), "", (status, apiType, list) -> {
                     if (status) {
 //                                PrintLogging.printLog(this.getClass(), "", "kalturaLogin" + status);
-                        callWatchListApi(id, titleName, context, stringMutableLiveData, commonResponse, ksServices,playlistidtype);
+                        callWatchListApi(id, titleName, context, stringMutableLiveData, commonResponse, ksServices, playlistidtype);
                     }
                 });
             } else {
-                checkWatchlistAddedCondition(ids, errorCode, stringMutableLiveData, commonResponse, new ErrorCallBack().ErrorMessage(errorCode,message));
+                checkWatchlistAddedCondition(ids, errorCode, stringMutableLiveData, commonResponse, new ErrorCallBack().ErrorMessage(errorCode, message));
 
             }
 

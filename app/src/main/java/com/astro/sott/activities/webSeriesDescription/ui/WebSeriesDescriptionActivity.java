@@ -64,6 +64,7 @@ import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.StringBuilderHolder;
 import com.astro.sott.utils.helpers.shimmer.Constants;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
@@ -91,7 +92,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private long assetId;
     private boolean iconClicked = false;
     private long lastClickTime;
-    private String fileId = "";
+    private String fileId = "", titleName = "";
     private boolean isPurchased;
     private String idfromAssetWatchlist, cast = "", crew = "", genre, language, subGenre;
     private WebEpisodeDescriptionCommonAdapter adapter = null;
@@ -139,7 +140,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         if (getIntent().getExtras() != null) {
             railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
             if (railData != null) {
-                commonData=railData;
+                commonData = railData;
                 asset = railData.getObject();
                 getDatafromBack();
             }
@@ -173,10 +174,12 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         Constants.assetType = asset.getType();
         Constants.assetId = (int) Constants.id;
         getMovieCasts();
+        titleName = asset.getName();
         getMovieCrews();
         setSubtitleLanguage();
         getDuration();
-
+        isWatchlistedOrNot();
+        setClicks();
 
         StringBuilderHolder.getInstance().clear();
         setMetas();
@@ -184,6 +187,92 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         setBannerImage(assetId);
     }
 
+    private void setClicks() {
+        getBinding().webwatchList.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                return;
+            }
+            lastClickTime = SystemClock.elapsedRealtime();
+            if (NetworkConnectivity.isOnline(getApplication())) {
+                if (UserInfo.getInstance(this).isActive()) {
+                    if (isAdded) {
+                        deleteWatchlist();
+                    } else {
+                        addToWatchlist(titleName);
+                    }
+                } else {
+                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class);
+                }
+            } else {
+                ToastHandler.show(getResources().getString(R.string.no_internet_connection), WebSeriesDescriptionActivity.this);
+
+            }
+        });
+    }
+
+    private void deleteWatchlist() {
+        viewModel.deleteWatchlist(idfromAssetWatchlist).observe(WebSeriesDescriptionActivity.this, aBoolean -> {
+            if (aBoolean != null && aBoolean.getStatus()) {
+                isAdded = false;
+                showAlertDialog(getApplicationContext().getResources().getString(R.string.movie_text) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist));
+                getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
+                getBinding().webwatchList.setTextColor(getResources().getColor(R.color.grey));
+            } else {
+                if (aBoolean != null && aBoolean.getErrorCode().equals("")) {
+                    showDialog(aBoolean.getMessage());
+                } else {
+                    if (aBoolean != null && aBoolean.getErrorCode().equals(AppLevelConstants.ALREADY_UNFOLLOW_ERROR)) {
+                        isAdded = false;
+                        showAlertDialog(getApplicationContext().getResources().getString(R.string.movie_text) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist));
+                        getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
+                        getBinding().webwatchList.setTextColor(getResources().getColor(R.color.grey));
+                    } else {
+                        if (aBoolean != null)
+                            showDialog(aBoolean.getMessage());
+                    }
+
+                }
+            }
+
+        });
+    }
+
+    private void addToWatchlist(String title) {
+
+        if (UserInfo.getInstance(this).isActive()) {
+
+            viewModel.addToWatchlist(assetId + "", title, 1).observe(this, s -> {
+                if (s != null) {
+                    checkAddedCondition(s);
+                }
+            });
+        }
+    }
+
+
+    private void checkAddedCondition(CommonResponse s) {
+        if (s.getStatus()) {
+            showAlertDialog("Series " + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
+            idfromAssetWatchlist = s.getAssetID();
+            isAdded = true;
+            getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite), null, null);
+            getBinding().webwatchList.setTextColor(getResources().getColor(R.color.lightBlueColor));
+
+        } else {
+            switch (s.getErrorCode()) {
+                case "":
+                    showDialog(s.getMessage());
+                    break;
+                case AppLevelConstants.ALREADY_FOLLOW_ERROR:
+                    showAlertDialog(getApplicationContext().getResources().getString(R.string.movie) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist));
+                    break;
+                default:
+                    showDialog(s.getMessage());
+                    break;
+            }
+
+        }
+    }
 
     private void setMetas() {
         getMovieYear();
@@ -481,6 +570,28 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         }
     }
 
+    private void isWatchlistedOrNot() {
+        viewModel.listAllwatchList(assetId + "").observe(this, commonResponse -> {
+            if (commonResponse.getStatus()) {
+                if (commonResponse != null) {
+                    idfromAssetWatchlist = commonResponse.getAssetID();
+                    isAdded = true;
+                    getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite), null, null);
+                    getBinding().webwatchList.setTextColor(getResources().getColor(R.color.lightBlueColor));
+                } else {
+                    isAdded = false;
+                    getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
+                    getBinding().webwatchList.setTextColor(getResources().getColor(R.color.grey));
+
+                }
+            } else {
+                isAdded = false;
+                getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
+                getBinding().webwatchList.setTextColor(getResources().getColor(R.color.grey));
+            }
+        });
+    }
+
     public void moveToPlay(int position, RailCommonData railCommonData, int type) {
         callProgressBar();
         playerChecks(railCommonData);
@@ -567,7 +678,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
 
         });
-
 
 
         fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
