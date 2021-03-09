@@ -7,6 +7,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="@dimen/landscape_item_width"
         android:layout_height="70dp"
+        app:cardCornerRadius="@dimen/_2sdp"
         app:cardBackgroundColor="@color/toolbar_bg"
         app:cardElevation="@dimen/_10sdp">
 
@@ -17,7 +18,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:background="#ffffff"
+                android:background="#13ff78"
                 android:layout_height="match_parent">
 
             </LinearLayout>
@@ -27,7 +28,7 @@
                 android:orientation="horizontal"
                 android:layout_marginLeft="@dimen/_1sdp"
                 android:layout_marginTop="@dimen/_1sdp"
-                android:layout_marginRight="@dimen/_1sdp"
+                android:layout_marginRight="@dimen/_2sdp"
                 android:layout_marginBottom="@dimen/_1sdp"
                 android:background="#303255"
                 android:gravity="center_vertical"
@@ -46,14 +47,17 @@
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="wrap_content"
-                    android:layout_marginRight="-65dp"
+                    android:id="@+id/imageView"
+                    android:layout_width="70dp"
+                    android:layout_marginRight="-69dp"
                     android:src="@drawable/placeholder_square"
-                    android:layout_height="wrap_content">
+                    android:layout_height="70dp">
 
                 </de.hdodenhof.circleimageview.CircleImageView>
 
                 <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/half_circle"
                     android:layout_width="40dp"
                     android:rotation="180"
                     android:gravity="right"
