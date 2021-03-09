@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidDomInspection -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.astro.sott">
@@ -283,6 +284,7 @@
             android:resource="@drawable/noti_icon" /> <!-- <meta-data -->
         <!-- android:name="com.google.firebase.messaging.default_notification_color" -->
         <!-- android:resource="@color/colorPrimary" /> -->
+
         <receiver
             android:name="io.branch.referral.InstallListener"
             android:exported="true"
