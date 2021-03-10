@@ -6667,4 +6667,76 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
     }
 
+    public void getAssetListBasedOnMediaType(Context context,int mediatype, final HomechannelCallBack callBack) {
+        responseList = new ArrayList<Response<ListResponse<Asset>>>();
+        homechannelCallBack = callBack;
+        clientSetupKs();
+        SearchAssetFilter relatedFilter = new SearchAssetFilter();
+        relatedFilter.setTypeIn(String.valueOf(mediatype));
+
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(100);
+
+        AssetService.ListAssetBuilder builder = AssetService.list(relatedFilter, filterPager).setCompletion(result -> {
+            try {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null) {
+                            if (result.results.getObjects().size() > 0) {
+                                responseList.add(result);
+                                homechannelCallBack.response(true, responseList,null);
+                            } else {
+                                responseList.add(null);
+                                homechannelCallBack.response(false, responseList,null);
+                            }
+                        } else {
+                            responseList.add(null);
+                            homechannelCallBack.response(false, responseList,null);
+                        }
+                    } else {
+                        responseList.add(null);
+                        homechannelCallBack.response(false,responseList, null);
+                    }
+                } else {
+
+                    if (result.error != null) {
+
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getAssetListBasedOnMediaType(context,mediatype, homechannelCallBack);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        responseList.add(null);
+                                        homechannelCallBack.response(false,responseList, null);
+
+                                    }
+                                }
+                            });
+                        else {
+                            responseList.add(null);
+                            homechannelCallBack.response(false,responseList, null);
+
+                        }
+                    } else {
+                        responseList.add(null);
+                        homechannelCallBack.response(false,responseList, null);
+
+                    }
+
+
+                }
+            } catch (Exception e) {
+                PrintLogging.printLog(this.getClass(), "Exception", "" + e);
+
+            }
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
+
 }

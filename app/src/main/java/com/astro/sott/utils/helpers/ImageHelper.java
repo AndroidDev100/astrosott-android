@@ -150,4 +150,12 @@ public class ImageHelper {
 
     }
 
+    public void loadImageOfGenre(ImageView imageView, String imageUrl, int placeholder) {
+        requestOptions.placeholder(placeholder);
+        GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
+                load(imageUrl).thumbnail(0.6f).into(imageView);
+
+
+    }
+
 }

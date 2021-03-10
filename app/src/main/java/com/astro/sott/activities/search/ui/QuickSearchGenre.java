@@ -6,10 +6,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +19,14 @@ import android.view.ViewGroup;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.moreListing.ui.ListingActivity;
+import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.search.adapter.QuickSearchGenreAdapter;
 import com.astro.sott.activities.search.adapter.SearchKeywordAdapter;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentQuickSearchGenreBinding;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
+import com.astro.sott.utils.helpers.MediaTypeConstant;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,13 +78,24 @@ public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGen
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setViewModel();
         setClicks();
         UIinitialization();
         loadDataFromModel();
     }
+
+    QuickSearchViewModel viewModel;
+    private void setViewModel() {
+        viewModel = ViewModelProviders.of(this).get(QuickSearchViewModel.class);
+    }
+
     private void loadDataFromModel() {
-       QuickSearchGenreAdapter adapter = new QuickSearchGenreAdapter(QuickSearchGenre.this);
-        getBinding().recyclerView.setAdapter(adapter);
+        getActivity().runOnUiThread(() -> viewModel.getGenreData(getActivity(),MediaTypeConstant.getFilterGenre(getActivity())).observe(getActivity(), commonResponse -> {
+           Log.w("genreResponse",commonResponse.toString());
+            QuickSearchGenreAdapter adapter = new QuickSearchGenreAdapter(QuickSearchGenre.this,commonResponse);
+            getBinding().recyclerView.setAdapter(adapter);
+        }));
+
         getBinding().recyclerView.setNestedScrollingEnabled(true);
 
        // getBinding().quickSearchBtn.setVisibility(View.VISIBLE);
