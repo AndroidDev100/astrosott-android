@@ -66,6 +66,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
+import com.google.firebase.crashlytics.internal.common.CommonUtils;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -145,15 +146,19 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
-            isFirstTimeUser = SharedPrefHelper.getInstance(getApplication()).getBoolean("isFirstTime", false);
-            if (!isFirstTimeUser) {
-                SharedPrefHelper.getInstance(getApplication()).setString("DMS_Date", "mDate");
-                SharedPrefHelper.getInstance(getApplication()).setBoolean("isFirstTime", true);
+            if (CommonUtils.isRooted(this)) {
+                isFirstTimeUser = SharedPrefHelper.getInstance(getApplication()).getBoolean("isFirstTime", false);
+                if (!isFirstTimeUser) {
+                    SharedPrefHelper.getInstance(getApplication()).setString("DMS_Date", "mDate");
+                    SharedPrefHelper.getInstance(getApplication()).setBoolean("isFirstTime", true);
+                }
+                updateLanguage();
+                initDrm();
+                DMSCall();
+                ConvivaManager.initConvivaAnalytics(this);
+            } else {
+                showFailureDialog(getString(R.string.rooted_failure_msg));
             }
-            updateLanguage();
-            initDrm();
-            DMSCall();
-            ConvivaManager.initConvivaAnalytics(this);
 
             // versionStatus();
         } else {
@@ -433,6 +438,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
             });
         }
     }
+
     private void setupBaseClient() {
         boolean isTablet = getResources().getBoolean(R.bool.isTablet);
         String API_KEY = "";
@@ -763,7 +769,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
                         } else if (isDmsFailed) {
                             isDmsFailed = false;
-                            showFailureDialog();
+                            showFailureDialog(getString(R.string.something_went_wrong_try_again));
                         } else {
                             final String appPackageName = getPackageName();
                             try {
@@ -790,8 +796,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     }
 
-    private void showFailureDialog() {
-        DialogHelper.showAlertDialog(this, getString(R.string.something_went_wrong_try_again), getString(R.string.ok), this);
+    private void showFailureDialog(String string) {
+        DialogHelper.showAlertDialog(this, string, getString(R.string.ok), this);
     }
 
     private void setConnectionLayout() {

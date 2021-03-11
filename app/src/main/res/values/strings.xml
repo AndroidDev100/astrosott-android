@@ -109,6 +109,8 @@
     <string name="on_Dialog">on Dialog SOTT!</string>
     <string name="added_to_watchlist">added to your watchlist</string>
 
+    <string name="rooted_failure_msg">Tsk tsk tsk…you cannot run this app on jailbreak or rooted devices!</string>
+
 
     //dialog buttons
     <string name="yes">Yes</string>
