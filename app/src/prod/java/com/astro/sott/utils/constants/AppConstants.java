@@ -28,7 +28,7 @@ public interface AppConstants {
 
     String END_POINT = "https://rest-as.ott.kaltura.com";
     String TNC_URL = "https://www.dialog.lk/browse/termsAndConditions.jsp?id=rpb4deb831863ff58e428067028c98d4b50";
-    String HELP_URL = "https://www.dialog.lk/browse/contactUs.jsp";
+    String HELP_URL = "https://astrosott.zendesk.com/hc/en-us";
     String HD = "HD";
     String SD= "SD";
     String Mobile_Dash_HD="Mobile_Dash_HD";
