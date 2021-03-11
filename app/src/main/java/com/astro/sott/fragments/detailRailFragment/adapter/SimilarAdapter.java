@@ -1,15 +1,18 @@
 package com.astro.sott.fragments.detailRailFragment.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.R;
 import com.astro.sott.adapter.CommonLandscapeAdapter;
+import com.astro.sott.adapter.RibbonAdapter;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -17,8 +20,10 @@ import com.astro.sott.databinding.ExclusiveItemBinding;
 import com.astro.sott.databinding.LandscapeItemBinding;
 import com.astro.sott.databinding.RelatedItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.kaltura.client.types.BooleanValue;
+import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 
 import java.util.Iterator;
@@ -28,9 +33,11 @@ import java.util.Set;
 
 public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SingleItemViewHolder> {
     private List<RailCommonData> similarItemList;
+    private Context mContext;
 
-    public SimilarAdapter(List<RailCommonData> loadedList) {
+    public SimilarAdapter(Context context, List<RailCommonData> loadedList) {
         similarItemList = loadedList;
+        mContext = context;
     }
 
     @NonNull
@@ -54,13 +61,21 @@ public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SingleIt
 
         }
         try {
+            setRecycler(holder.landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
             AppCommonMethods.setBillingUi(holder.landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
         holder.landscapeItemBinding.lanscapeTitle.setText(singleItem.getName());
+
+    }
+
+    private void setRecycler(RecyclerView recyclerView, Map<String, MultilingualStringValueArray> tags) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        RibbonAdapter ribbonAdapter = new RibbonAdapter(AssetContent.getRibbon(tags));
+        recyclerView.setAdapter(ribbonAdapter);
 
     }
 

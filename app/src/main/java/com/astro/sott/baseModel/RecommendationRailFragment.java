@@ -227,7 +227,7 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
         if (youMayAlsoLikeData.get(0) != null)
             totalCount = youMayAlsoLikeData.get(0).getTotalCount();
         if (similarAdapter == null) {
-            similarAdapter = new SimilarAdapter(youMayAlsoLikeData);
+            similarAdapter = new SimilarAdapter(getActivity(),youMayAlsoLikeData);
             getBinding().recyclerView.setAdapter(similarAdapter);
         } else {
             similarAdapter.notifyDataSetChanged();
