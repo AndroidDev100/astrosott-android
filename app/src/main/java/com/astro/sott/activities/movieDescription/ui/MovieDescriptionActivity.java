@@ -102,7 +102,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private RailBaseFragment baseRailFragment;
     private String trailor_url = "";
     private List<Integer> list;
-    private String  name, titleName, idfromAssetWatchlist;
+    private String name, titleName, idfromAssetWatchlist;
     private boolean isActive, isAdded;
     private boolean iconClicked = false;
     private String image_url = "";
@@ -789,8 +789,37 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             }
         }
         getSubGenre();
+        getXofferWindow();
+        getRibbon();
 
     }
+
+    private List<String> ribbonList;
+
+    private void getRibbon() {
+        ribbonList = new ArrayList<>();
+        ribbonList.addAll(viewModel.getRibbon(map));
+    }
+
+    private void getXofferWindow() {
+        StringValue stringValue = null;
+        String xofferValue = "";
+        if (yearMap != null) {
+            stringValue = (StringValue) yearMap.get(AppLevelConstants.XOFFERWINDOW);
+        }
+        if (stringValue != null) {
+            xofferValue = stringValue.getValue();
+        }
+        if (!xofferValue.equalsIgnoreCase("")) {
+            if (viewModel.isXofferWindow(xofferValue)) {
+                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+
+            } else {
+                getBinding().astroPlayButton.setVisibility(View.GONE);
+            }
+        }
+    }
+
 
     private void getSubGenre() {
 
@@ -840,6 +869,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             PrintLogging.printLog("ExceptionIs", e.getMessage());
         }
     }
+
     private void setConnectionLayout() {
         getBinding().noConnectionLayout.setVisibility(View.VISIBLE);
 

@@ -5,6 +5,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,9 +14,10 @@
             android:layout_width="@dimen/landscape_item_width"
             android:layout_height="wrap_content"
             card_view:cardBackgroundColor="@color/blackColor"
-            card_view:cardCornerRadius="2dp"
+            card_view:cardCornerRadius="9dp"
             card_view:cardElevation="1dp"
             card_view:cardMaxElevation="1dp"
+            android:clipChildren="false"
             card_view:cardPreventCornerOverlap="false"
             card_view:cardUseCompatPadding="true">
 
@@ -22,16 +25,10 @@
             <RelativeLayout
                 android:id="@+id/seek_bar"
                 android:layout_width="match_parent"
+                android:clipChildren="false"
                 android:layout_height="@dimen/landscape_item_height">
 
-                <include
-                    android:id="@+id/metas"
-                    layout="@layout/metas_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:visibility="visible"></include>
+
 
                 <ImageView
                     android:id="@+id/itemImage"
@@ -84,6 +81,16 @@
                         android:contentDescription="@string/info_icon"
                         android:visibility="gone" />
                 </RelativeLayout>
+
+                <include
+                    android:id="@+id/metas"
+                    layout="@layout/metas_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|right"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    ></include>
             </RelativeLayout>
 
             <RelativeLayout
@@ -156,6 +163,7 @@
 
             <include
                 android:id="@+id/exclusive_layout"
+                android:visibility="gone"
                 layout="@layout/exclusive_item" />
         </androidx.cardview.widget.CardView>
 

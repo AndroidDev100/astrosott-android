@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil;
 import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ import com.astro.sott.utils.helpers.ToastHandler;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardSize;
 import com.kaltura.client.types.BooleanValue;
+import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 
 import java.util.Iterator;
@@ -169,6 +171,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             try {
+                setRecycler(landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
@@ -206,6 +209,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             try {
+                setRecycler(landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
@@ -219,7 +223,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else {
                 landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             }
-             getPremimumMark(i, landscapeItemBinding.exclusiveLayout);
+            getPremimumMark(i, landscapeItemBinding.exclusiveLayout);
         } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);
         }
@@ -242,6 +246,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             try {
+                setRecycler(landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
@@ -255,10 +260,17 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else {
                 landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             }
-             getPremimumMark(i, landscapeItemBinding.exclusiveLayout);
+            getPremimumMark(i, landscapeItemBinding.exclusiveLayout);
         } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);
         }
+    }
+
+    private void setRecycler(RecyclerView recyclerView, Map<String, MultilingualStringValueArray> tags) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        RibbonAdapter ribbonAdapter = new RibbonAdapter(AssetContent.getRibbon(tags));
+        recyclerView.setAdapter(ribbonAdapter);
+
     }
 
     private void getPremimumMark(int position, ExclusiveItemBinding exclusiveLayout) {

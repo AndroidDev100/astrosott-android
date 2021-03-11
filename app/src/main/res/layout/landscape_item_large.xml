@@ -23,15 +23,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/landscape_item_height_large">
 
-                <include
-                    android:id="@+id/metas"
-                    layout="@layout/metas_layout"
-                    android:layout_width="wrap_content"
-                    android:visibility="visible"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"></include>
-
                 <ImageView
                     android:id="@+id/itemImage"
                     android:layout_width="@dimen/landscape_item_width_large"
@@ -83,6 +74,17 @@
                         android:contentDescription="@string/info_icon"
                         android:visibility="gone" />
                 </RelativeLayout>
+
+                <include
+                    android:id="@+id/metas"
+                    layout="@layout/metas_layout"
+                    android:layout_width="match_parent"
+                    android:visibility="visible"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"></include>
+
+
             </RelativeLayout>
 
             <RelativeLayout

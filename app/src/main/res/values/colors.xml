@@ -102,6 +102,7 @@
     <color name="light_blue_text_color">#f2f2f7</color>
     <color name="grey">#9b98ab</color>
     <color name="edit_text_blue_bg">#0e0f24</color>
+    <color name="ribbon_color">#1571db</color>
     <color name="neon_green">#13ff78</color>
     <color name="dark_blue">#3367d6</color>
     <color name="light_blue">#3975ea</color>

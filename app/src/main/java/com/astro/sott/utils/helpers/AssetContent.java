@@ -1254,4 +1254,38 @@ public class AssetContent {
         }
         return diffSeconds1;
     }
+
+    public static List<String> getRibbon(Map<String, MultilingualStringValueArray> map) {
+        List<String> ribbonList = new ArrayList<>();
+        List<MultilingualStringValue> crew_value = new ArrayList<>();
+        MultilingualStringValueArray crew_list = map.get(AppLevelConstants.RIBBON);
+        if (crew_list != null)
+            crew_value.addAll(crew_list.getObjects());
+        for (int i = 0; i <= crew_value.size() - 1; i++) {
+            if (crew_value.get(i) != null) {
+                try {
+                    String[] splitString = crew_value.get(i).getValue().split("\\|");
+                    String label = splitString[0];
+                    String startTimeSplit = splitString[1];
+                    String endTimeSplit = splitString[2];
+                    String[] startTimeArray = startTimeSplit.split("=");
+                    String[] endTimeArray = endTimeSplit.split("=");
+                    String startTime = startTimeArray[1];
+                    String endTime = endTimeArray[1];
+                    boolean isVisible = AppCommonMethods.compareStartEndTime(startTime, endTime);
+                    if (isVisible) {
+                        ribbonList.add(label);
+                    }
+                } catch (Exception e) {
+
+                }
+
+
+            }
+
+            // stringBuilder.append(crew_value.get(i).getValue()).append(", ");
+        }
+        return ribbonList;
+
+    }
 }

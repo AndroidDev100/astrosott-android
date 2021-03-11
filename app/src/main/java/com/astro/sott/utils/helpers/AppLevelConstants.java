@@ -108,6 +108,7 @@ public interface AppLevelConstants {
 
     String KEY_REF_ID = "Ref Id";
     String YEAR = "Year";
+    String XOFFERWINDOW="XOfferWindow";
     String RAIL_DATA_OBJECT = "railData";
     String PROGRAM_ASSET = "program_asset";
 
@@ -134,6 +135,7 @@ public interface AppLevelConstants {
     String KEY_PARENTREF_ID = "TrailerParentRefId";
     String KEY_VIDEO_RESOLUTION = "VideoResolution";
     String KEY_DIRECTOR = "Director";
+    String RIBBON="Ribbon";
     String WATCHLIST_PARTNER_TYPE = "1";
     String MEDIATYPE_SEARCH_MOVIE = "Movie";
     String MEDIATYPE_SERIES = "Series";

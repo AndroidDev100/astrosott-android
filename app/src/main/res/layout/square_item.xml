@@ -94,12 +94,12 @@
         <include
             android:id="@+id/metas"
             layout="@layout/metas_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_gravity="top|right"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:visibility="gone"></include>
+            ></include>
         <include
             android:id="@+id/exclusive_layout"
             layout="@layout/exclusive_item" />

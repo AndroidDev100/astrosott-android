@@ -78,6 +78,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import io.branch.indexing.BranchUniversalObject;
 import io.branch.referral.util.LinkProperties;
@@ -1311,4 +1312,62 @@ public class AppCommonMethods {
         }
     }
 
+    public static boolean isXofferWindow(String xofferValue) {
+        String[] splitString = xofferValue.split(";");
+        String[] splitStartTime;
+        String[] splitEndTime;
+
+        String startTime;
+        String endTime;
+
+        if (splitString[0] != null && splitString[1] != null && !splitString[0].equalsIgnoreCase("") && !splitString[1].equalsIgnoreCase("")) {
+            splitStartTime = splitString[0].split("=");
+            splitEndTime = splitString[1].split("=");
+
+            if (splitStartTime[1] != null && !splitStartTime[1].equals("") && splitEndTime[1] != null && !splitEndTime[1].equals("")) {
+                startTime = splitStartTime[1];
+                endTime = splitEndTime[1];
+
+                return compareStartEndTime(startTime, endTime);
+
+
+            } else {
+                return false;
+            }
+
+
+        } else {
+            return false;
+        }
+
+
+    }
+
+    public static boolean compareStartEndTime(String startTime, String endTime) {
+        Date currentDate = new Date();
+        Date endDate = new Date();
+        Date startDate = new Date();
+
+
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        String currentTime = inputFormat.format(today);
+        try {
+            currentDate = inputFormat.parse(currentTime);
+            startDate = inputFormat.parse(startTime);
+            endDate = inputFormat.parse(endTime);
+
+            if (currentDate.before(endDate) && currentDate.after(startDate)) {
+                return true;
+            } else {
+                return false;
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }
