@@ -2,6 +2,7 @@ package com.astro.sott.utils.helpers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -122,6 +123,19 @@ public class AssetContent {
         }
 
         return ref_id;
+    }
+
+    public static boolean isAdsEnable(Map<String, Value> metas) {
+        BooleanValue adsValue = null;
+        if (metas != null) {
+            adsValue = (BooleanValue) metas.get(AppLevelConstants.NOADS);
+        }
+        if (adsValue != null) {
+            boolean value = adsValue.getValue();
+            return value;
+        } else {
+            return false;
+        }
     }
 
     public static List<Integer> getSeasonNumber(Response<ListResponse<Asset>> result) {

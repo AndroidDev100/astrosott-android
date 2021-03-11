@@ -108,6 +108,8 @@ public interface AppLevelConstants {
 
     String KEY_REF_ID = "Ref Id";
     String YEAR = "Year";
+    String NOADS = "NoAds";
+
     String XOFFERWINDOW="XOfferWindow";
     String RAIL_DATA_OBJECT = "railData";
     String PROGRAM_ASSET = "program_asset";

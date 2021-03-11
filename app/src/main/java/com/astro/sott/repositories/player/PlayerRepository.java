@@ -729,8 +729,11 @@ public class PlayerRepository {
             if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
                 PrintLogging.printLog("ValueIS", "0");
             } else {
-                if (AppCommonMethods.isAdsEnable)
-                    addIMAConfig(context, playerPluginConfig);
+                if (AppCommonMethods.isAdsEnable) {
+                    if (AssetContent.isAdsEnable(asset.getMetas())) {
+                        addIMAConfig(context, playerPluginConfig);
+                    }
+                }
             }
 
 
@@ -757,7 +760,7 @@ public class PlayerRepository {
             subscribePhoenixAnalyticsReportEvent();
 
 //            player.getSettings().setABRSettings(new ABRSettings().setMinVideoBitrate(200000).setInitialBitrateEstimate(150000));
-         //   player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(550000));
+            //   player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(550000));
 
             player.prepare(mediaConfig);
             player.play();
@@ -800,6 +803,7 @@ public class PlayerRepository {
         }
 
     }
+
 
     private void addIMAConfig(Context context, PKPluginConfigs playerPluginConfig) {
 
