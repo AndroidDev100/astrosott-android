@@ -146,7 +146,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
-            if (CommonUtils.isRooted(this)) {
+            if (!CommonUtils.isRooted(this)) {
                 isFirstTimeUser = SharedPrefHelper.getInstance(getApplication()).getBoolean("isFirstTime", false);
                 if (!isFirstTimeUser) {
                     SharedPrefHelper.getInstance(getApplication()).setString("DMS_Date", "mDate");
