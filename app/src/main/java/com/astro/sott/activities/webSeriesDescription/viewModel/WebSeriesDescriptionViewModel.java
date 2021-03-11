@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.astro.sott.baseModel.ChannelLayer;
 import com.astro.sott.repositories.movieDescription.MovieDescriptionRepository;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.activities.webEpisodeDescription.layers.ClipLayer;
 import com.astro.sott.activities.webEpisodeDescription.layers.EpisodesLayer;
@@ -47,7 +48,9 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
     public LiveData<String> getCrewLiveDAta(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getCrewData(map);
     }
-
+    public boolean isXofferWindow(String xofferValue) {
+        return AppCommonMethods.isXofferWindow(xofferValue);
+    }
     public LiveData<String> getCastLiveData(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getCastData(map);
     }

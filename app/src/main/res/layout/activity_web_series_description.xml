@@ -184,10 +184,12 @@
                                 android:id="@+id/iv_play_icon"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
+                                android:visibility="gone"
                                 android:layout_marginTop="@dimen/_20sdp"
                                 android:background="@drawable/gradient_button">
 
                                 <TextView
+                                    android:id="@id/play_text"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/share_margin_top"

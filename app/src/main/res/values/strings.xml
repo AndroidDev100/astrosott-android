@@ -79,7 +79,6 @@
 
     <string name="share"><b>Share </b></string>
     <string name="play_now">Play Now</string>
-    <string name="become_vip">BECOME A VIP</string>
     <string name="my_list">My List</string>
     <string name="no_connection">No Connection</string>
     <string name="more">MORE</string>
@@ -109,6 +108,9 @@
     <string name="on_Dialog">on Dialog SOTT!</string>
     <string name="added_to_watchlist">added to your watchlist</string>
 
+    <string name="watch_now">WATCH NOW</string>
+    <string name="become_vip">BECOME A VIP</string>
+    <string name="rent_movie">RENT MOVIE FOR RM XX.XX</string>
     <string name="rooted_failure_msg">Tsk tsk tsk…you cannot run this app on jailbreak or rooted devices!</string>
 
 
