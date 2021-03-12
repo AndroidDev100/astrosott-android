@@ -604,7 +604,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
         });
         setWatchlist();
         // setRailFragment();
-       // setRailBaseFragment();
+        setRailBaseFragment();
     }
 
 
