@@ -1302,4 +1302,43 @@ public class AssetContent {
         return ribbonList;
 
     }
+
+    public static boolean plabackControl(Map<String, Value> metas) {
+        StringValue startValue, endValue;
+        String startDate, endDate;
+        startValue = (StringValue) metas.get(AppLevelConstants.PLAYBACK_START_DATE);
+        endValue = (StringValue) metas.get(AppLevelConstants.PLAYBACK_END_DATE);
+
+        if (startValue != null && endValue != null) {
+            startDate = startValue.getValue();
+            endDate = endValue.getValue();
+            if (startDate != null && endDate != null && !startDate.equalsIgnoreCase("") && !endDate.equalsIgnoreCase("")) {
+                return AppCommonMethods.comparePlaybackStartEndTime(startDate, endDate);
+            } else {
+                return true;
+            }
+
+        } else {
+            return true;
+        }
+
+
+    }
+
+    public static boolean isSponsored(Map<String, Value> metas) {
+        BooleanValue sponsoredValue;
+        if (metas != null) {
+            sponsoredValue = (BooleanValue) metas.get(AppLevelConstants.IS_SPONSORED);
+            if (sponsoredValue != null) {
+                return sponsoredValue.getValue();
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
+
+    }
 }

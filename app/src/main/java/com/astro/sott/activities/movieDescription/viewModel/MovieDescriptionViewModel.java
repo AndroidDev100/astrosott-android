@@ -19,6 +19,7 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MultilingualStringValueArray;
+import com.kaltura.client.types.Value;
 
 import java.util.List;
 import java.util.Map;
@@ -128,5 +129,9 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
 
     public List<String> getRibbon(Map<String, MultilingualStringValueArray> tags) {
         return AssetContent.getRibbon(tags);
+    }
+
+    public boolean getPlayBackControl(Map<String, Value> metas) {
+        return AssetContent.plabackControl(metas);
     }
 }

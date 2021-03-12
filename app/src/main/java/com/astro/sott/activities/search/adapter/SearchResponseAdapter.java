@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.astro.sott.activities.boxSet.ui.BoxSetDetailActivity;
 import com.astro.sott.activities.catchUpRails.ui.CatchupActivity;
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
@@ -147,7 +148,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getCollection(activity)) {
             getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
             if (railCommonData.getImages().size() == itemValue.getImages().size())
-                new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
+                new ActivityLauncher(activity).boxSetDetailActivity(activity, BoxSetDetailActivity.class, railCommonData, AppLevelConstants.Rail3);
         } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getLinear(activity)) {
             getRailCommonData(itemValue, activity.getResources().getString(R.string.ugc_video_item_clicked));
             if (railCommonData.getImages().size() == itemValue.getImages().size())

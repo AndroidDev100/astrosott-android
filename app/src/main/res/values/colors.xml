@@ -88,12 +88,7 @@
     <color name="sapphire">#224ba3</color>
 
 
-
-
-
-
-
-   <!-- Astro colors-->
+    <!-- Astro colors-->
     <color name="toolbarColor">#1C1827</color>
     <color name="tabBarColor">#382C57</color>
     <color name="tabUnselectedColor">#9086A0</color>
@@ -110,11 +105,14 @@
     <color name="maya_blue">#5bc3ff</color>
     <color name="radical_red">#ff2954</color>
     <!-- Astro colors-->
-
+    <color name="boxSetBgColor">#2d1347</color>
+    <color name="aqua_marine">#2cd8e5</color>
+    <color name="yellow_orange">#ffb400</color>
+    <color name="heather">#9b98ab</color>
     <color name="detailBGColor">#211C31</color>
     <color name="lightBlueColor">#58BAFF</color>
     <color name="lightGreenColor">#00F2B6</color>
-<color name="grey_text">#9b98ab</color>
+    <color name="grey_text">#9b98ab</color>
 
     <color name="tab_selected">#303255</color>
 

@@ -13,6 +13,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.astro.sott.activities.boxSet.ui.BoxSetDetailActivity;
 import com.astro.sott.activities.catchUpRails.ui.CatchupActivity;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
@@ -645,6 +646,15 @@ public class ActivityLauncher {
         intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
         activity.startActivity(intent);
+    }
+
+    public void boxSetDetailActivity(Activity source, Class<BoxSetDetailActivity> destination, RailCommonData railData, int layoutType) {
+        if (!AssetContent.isSponsored(railData.getObject().getMetas())) {
+            Intent intent = new Intent(source, destination);
+            intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
+            intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
+            activity.startActivity(intent);
+        }
     }
 
 

@@ -1370,4 +1370,33 @@ public class AppCommonMethods {
 
         return false;
     }
+
+
+    public static boolean comparePlaybackStartEndTime(String startTime, String endTime) {
+        Date currentDate = new Date();
+        Date endDate = new Date();
+        Date startDate = new Date();
+
+
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        String currentTime = inputFormat.format(today);
+        try {
+            currentDate = inputFormat.parse(currentTime);
+            startDate = inputFormat.parse(startTime);
+            endDate = inputFormat.parse(endTime);
+
+            if (currentDate.before(endDate) && currentDate.after(startDate)) {
+                return true;
+            } else {
+                return false;
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return true;
+        }
+
+    }
 }

@@ -47,6 +47,9 @@
             android:name=".activities.loginActivity.ui.AstrLoginActivity"
             android:screenOrientation="locked" />
         <activity
+            android:name=".activities.boxSet.ui.BoxSetDetailActivity"
+            android:screenOrientation="locked" />
+        <activity
             android:name=".activities.forgotPassword.ui.ForgotPasswordActivity"
             android:screenOrientation="locked" />
         <activity
@@ -116,8 +119,7 @@
             android:screenOrientation="locked" />
         <activity
             android:name="com.clevertap.android.sdk.InAppNotificationActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-           />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <meta-data
             android:name="CLEVERTAP_INAPP_EXCLUDE"
@@ -130,9 +132,9 @@
             android:name="CLEVERTAP_TOKEN"
             android:value="TEST-560-5aa" />
 
-       <!-- <meta-data
-            android:name="CLEVERTAP_USE_CUSTOM_ID"
-            android:value="1"/>-->
+        <!-- <meta-data
+             android:name="CLEVERTAP_USE_CUSTOM_ID"
+             android:value="1"/>-->
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -314,7 +316,7 @@
         </service>
         <meta-data
             android:name="FCM_SENDER_ID"
-            android:value="id:929669716426"/>
+            android:value="id:929669716426" />
 
         <service android:name=".thirdParty.fcm.WatchoFirebaseInstanceIdService">
             <intent-filter>

@@ -1086,8 +1086,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void showAlertDialog(String msg) {
         FragmentManager fm = getSupportFragmentManager();
-        AlertDialogFragment alertDialog = AlertDialogFragment.newInstance(getResources().getString(R.string.dialog), msg, getResources().getString(R.string.login), getResources().getString(R.string.cancel));
-        alertDialog.setAlertDialogCallBack(this);
+        AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance("", msg, getString(R.string.ok));
+        alertDialog.setAlertDialogCallBack(alertDialog::dismiss);
         alertDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
     }
 

@@ -738,6 +738,7 @@ public class PlayerRepository {
 
 
             player = PlayKitManager.loadPlayer(context, playerPluginConfig);
+
             playerMutableLiveData.postValue(player);
 
             KalturaPlaybackRequestAdapter.install(player, "com.astro.sott"); // in case app developer wants to give customized referrer instead the default referrer in the playmanifest
