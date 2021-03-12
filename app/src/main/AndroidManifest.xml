@@ -47,6 +47,9 @@
             android:name=".activities.loginActivity.ui.AstrLoginActivity"
             android:screenOrientation="locked" />
         <activity
+            android:name=".activities.sponsored.ui.SponsoredDetailActivity"
+            android:screenOrientation="locked" />
+        <activity
             android:name=".activities.boxSet.ui.BoxSetDetailActivity"
             android:screenOrientation="locked" />
         <activity

@@ -48,6 +48,7 @@ import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.activities.search.ui.ResultActivity;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.splash.viewModel.SplashViewModel;
+import com.astro.sott.activities.sponsored.ui.SponsoredDetailActivity;
 import com.astro.sott.activities.subscription.ui.SingleLiveChannelSubscriptionActivity;
 import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionAndMyPlanActivity;
@@ -648,14 +649,17 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
-    public void boxSetDetailActivity(Activity source, Class<BoxSetDetailActivity> destination, RailCommonData railData, int layoutType) {
-        if (!AssetContent.isSponsored(railData.getObject().getMetas())) {
-            Intent intent = new Intent(source, destination);
+    public void boxSetDetailActivity(Activity source, RailCommonData railData, int layoutType) {
+        if (AssetContent.isSponsored(railData.getObject().getMetas())) {
+            Intent intent = new Intent(source, BoxSetDetailActivity.class);
             intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
             intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
             activity.startActivity(intent);
-        }else {
-
+        } else {
+            Intent intent = new Intent(source, SponsoredDetailActivity.class);
+            intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
+            intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
+            activity.startActivity(intent);
         }
     }
 
