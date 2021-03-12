@@ -649,12 +649,12 @@ public class ActivityLauncher {
     }
 
     public void boxSetDetailActivity(Activity source, Class<BoxSetDetailActivity> destination, RailCommonData railData, int layoutType) {
-        if (!AssetContent.isSponsored(railData.getObject().getMetas())) {
+        /*if (!AssetContent.isSponsored(railData.getObject().getMetas())) {
             Intent intent = new Intent(source, destination);
             intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
             intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
             activity.startActivity(intent);
-        }
+        }*/
     }
 
 
