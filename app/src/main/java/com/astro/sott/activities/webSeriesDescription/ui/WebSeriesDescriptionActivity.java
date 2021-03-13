@@ -87,7 +87,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private WebSeriesDescriptionViewModel viewModel;
     private Map<String, MultilingualStringValueArray> map;
     private String vodType;
-    private boolean xofferWindowValue = false;
+    private boolean xofferWindowValue = false, playbackControlValue = false;
     private String image_url = "";
     private Map<String, Value> yearMap;
     private DoubleValue doubleValue;
@@ -176,19 +176,22 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         Constants.id = asset.getId();
         Constants.assetType = asset.getType();
         Constants.assetId = (int) Constants.id;
+        isActive = UserInfo.getInstance(this).isActive();
         getMovieCasts();
         titleName = asset.getName();
         getMovieCrews();
         setSubtitleLanguage();
         getDuration();
-        isWatchlistedOrNot();
+        if (isActive)
+            isWatchlistedOrNot();
         setClicks();
 
         StringBuilderHolder.getInstance().clear();
         setMetas();
 
         setBannerImage(assetId);
-        checkEntitleMent(railData);
+        if (playbackControlValue)
+            checkEntitleMent(railData);
     }
 
     private void setClicks() {
@@ -319,8 +322,14 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getLanguage();
 
                 getXofferWindow();
+                getPlayBackControl();
             }
         });
+    }
+
+    private void getPlayBackControl() {
+        if (yearMap != null)
+            playbackControlValue = viewModel.getPlayBackControl(yearMap);
     }
 
     private void getXofferWindow() {
