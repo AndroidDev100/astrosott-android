@@ -108,13 +108,13 @@ public interface AppLevelConstants {
 
     String KEY_REF_ID = "Ref Id";
     String YEAR = "Year";
-    String IS_SPONSORED="IsSponsored";
-    String PLAYBACK_START_DATE="PlaybackStartDate";
-    String PLAYBACK_END_DATE="PlaybackEndDate";
+    String IS_SPONSORED = "IsSponsored";
+    String PLAYBACK_START_DATE = "PlaybackStartDate";
+    String PLAYBACK_END_DATE = "PlaybackEndDate";
 
     String NOADS = "NoAds";
 
-    String XOFFERWINDOW="XOfferWindow";
+    String XOFFERWINDOW = "XOfferWindow";
     String RAIL_DATA_OBJECT = "railData";
     String PROGRAM_ASSET = "program_asset";
 
@@ -127,6 +127,8 @@ public interface AppLevelConstants {
 
     String HLS = "HLS_Main";
     String KEY_GENRE = "Genre";
+    String KEY_KEYWORD= "Keywords";
+
     String KEY_SUB_GENRE = "SubGenre";
 
 
@@ -141,7 +143,8 @@ public interface AppLevelConstants {
     String KEY_PARENTREF_ID = "TrailerParentRefId";
     String KEY_VIDEO_RESOLUTION = "VideoResolution";
     String KEY_DIRECTOR = "Director";
-    String RIBBON="Ribbon";
+    String PROVIDER = "Provider";
+    String RIBBON = "Ribbon";
     String WATCHLIST_PARTNER_TYPE = "1";
     String MEDIATYPE_SEARCH_MOVIE = "Movie";
     String MEDIATYPE_SERIES = "Series";

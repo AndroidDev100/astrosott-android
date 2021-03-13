@@ -29,6 +29,7 @@ public class ConvivaManager {
     private static final String BRAND = "c3.cm.brand";
     private static final String GENRE = "c3.cm.genre";
     private static final String GENRE_LIST = "c3.cm.genreList";
+    private static final String ASSET_ID = "c3.cm.id";
 
 
     private static final String CATEGORY_TYPE = "c3.cm.categoryType";
@@ -39,6 +40,8 @@ public class ConvivaManager {
     private static final String APP_VERSION = "appVersion";
     private static final String CONTENT_LENGTH = "appVersion";
     private static final String CONNECTION_TYPE = "connectionType";
+    private static final String ASSET_PROVIDER_NAME = "assetProviderName";
+
     private static final String WIRELESS = "Wireless";
     private static final String MOBILE = "Mobile";
     private static final String LINEAR = "Linear";
@@ -103,8 +106,18 @@ public class ConvivaManager {
 
 
         } else {
+            if (!AssetContent.getKeyworddata(railData.getObject().getTags()).equalsIgnoreCase("")) {
+                contentInfo.put(CHANNEL, AssetContent.getKeyworddata(railData.getObject().getTags()));
+            } else {
+                contentInfo.put(CHANNEL, "NA");
+
+            }
             contentInfo.put(CONTENT_TYPE, VOD);
-            contentInfo.put(CHANNEL, "");
+            contentInfo.put(ASSET_ID, railData.getObject().getExternalId());
+        }
+
+        if (AssetContent.getProvider(railData.getObject().getTags()).equalsIgnoreCase("")) {
+            contentInfo.put(ASSET_PROVIDER_NAME, AssetContent.getProvider(railData.getObject().getTags()));
         }
         if (railData.getObject().getType() == MediaTypeConstant.getEpisode(context)) {
             contentInfo.put(EPISODE_NUMBER, railData.getObject().getName());

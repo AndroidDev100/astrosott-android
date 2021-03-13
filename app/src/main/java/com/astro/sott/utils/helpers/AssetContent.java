@@ -546,6 +546,31 @@ public class AssetContent {
         return connection;
     }
 
+    public static String getKeyworddata(Map<String, MultilingualStringValueArray> map) {
+        String keyword;
+        List<MultilingualStringValue> genre_values = new ArrayList<>();
+        MultilingualStringValueArray genre_list = map.get(AppLevelConstants.KEY_KEYWORD);
+        if (genre_list != null)
+
+            genre_values.addAll(genre_list.getObjects());
+//            for (MultilingualStringValue value : genre_list.getObjects()) {
+//                genre_values.add(value);
+//            }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= genre_values.size() - 1; i++) {
+            stringBuilder.append(genre_values.get(i).getValue()).append(", ");
+        }
+
+        if (stringBuilder.length() > 0) {
+            keyword = stringBuilder.toString();
+            keyword = keyword.substring(0, keyword.length() - 2);
+
+        } else {
+            keyword = "";
+        }
+        return keyword;
+    }
+
     public static LiveData<String> getSubGenredata(Map<String, MultilingualStringValueArray> map) {
         final MutableLiveData<String> connection = new MutableLiveData<>();
         String genre;
@@ -759,6 +784,30 @@ public class AssetContent {
         }
         connection.postValue(crew + "");
         return connection;
+    }
+
+    public static String getProvider(Map<String, MultilingualStringValueArray> map) {
+        String provider;
+        List<MultilingualStringValue> crew_value = new ArrayList<>();
+        MultilingualStringValueArray crew_list = map.get(AppLevelConstants.PROVIDER);
+        if (crew_list != null)
+//            for (MultilingualStringValue value : crew_list.getObjects()) {
+//                crew_value.add(value);
+//            }
+            crew_value.addAll(crew_list.getObjects());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= crew_value.size() - 1; i++) {
+            stringBuilder.append(crew_value.get(i).getValue()).append(", ");
+        }
+
+        if (stringBuilder.length() > 0) {
+            provider = stringBuilder.toString();
+            provider = provider.substring(0, provider.length() - 2);
+        } else {
+            provider = "";
+        }
+
+        return provider;
     }
 
     public static int getVideoPosition(Context context, int j, int assetId) {
