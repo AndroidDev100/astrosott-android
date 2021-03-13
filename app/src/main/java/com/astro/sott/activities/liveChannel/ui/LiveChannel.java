@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -674,6 +675,11 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     }
 
     private void viewPagerIntializtion() {
+        if (adapterCount == 1) {
+            ViewGroup.LayoutParams params = getBinding().tabLayout.getLayoutParams();
+            params.width = (int) 650;
+            getBinding().tabLayout.setLayoutParams(params);
+        }
         LiveChannelPagerAdapter liveChannelPagerAdapter = new LiveChannelPagerAdapter(this, getSupportFragmentManager(), railData, adapterCount);
         getBinding().pager.setAdapter(liveChannelPagerAdapter);
         getBinding().tabLayout.setupWithViewPager(getBinding().pager);
@@ -693,8 +699,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
             }
         });
-
-        if (getResources().getBoolean(R.bool.isTablet)) {
+        getBinding().tabLayout.setVisibility(View.VISIBLE);
+        /*if (getResources().getBoolean(R.bool.isTablet)) {
             getBinding().scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
                 if (v.getChildAt(v.getChildCount() - 1) != null) {
                     if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY) {
@@ -706,7 +712,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     }
                 }
             });
-        }
+        }*/
     }
 
     @Override

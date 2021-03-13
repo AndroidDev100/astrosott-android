@@ -22,11 +22,13 @@ import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
 import com.astro.sott.activities.profile.ui.ChangeEmailConfirmation;
 import com.astro.sott.activities.search.ui.QuickSearchGenre;
+import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
 import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.clevertap.android.sdk.CleverTapAPI;
@@ -236,6 +238,11 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
             }
 
+        });
+        getBinding().rlHelp.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+            intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
+            startActivity(intent);
         });
 //
 //       getBinding().subscribe.setOnClickListener(new View.OnClickListener() {

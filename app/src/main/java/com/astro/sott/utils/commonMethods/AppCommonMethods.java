@@ -80,6 +80,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import io.branch.indexing.BranchUniversalObject;
 import io.branch.referral.util.LinkProperties;
@@ -136,7 +137,8 @@ public class AppCommonMethods {
         UserInfo.getInstance(context).setActive(false);
 
     }
-    public static String getAssetType(Integer assetType,Context context) {
+
+    public static String getAssetType(Integer assetType, Context context) {
         String type = "";
         if (assetType == MediaTypeConstant.getMovie(context)) {
             type = "Movie";
@@ -144,12 +146,11 @@ public class AppCommonMethods {
             type = "Episode";
         } else if (assetType == MediaTypeConstant.getWebSeries(context)) {
             type = "Series";
-        }else if (assetType==MediaTypeConstant.getHighlight(context)){
+        } else if (assetType == MediaTypeConstant.getHighlight(context)) {
             type = "Highlight";
-        }
-        else if (assetType == MediaTypeConstant.getTrailer(context)) {
+        } else if (assetType == MediaTypeConstant.getTrailer(context)) {
             type = "Trailer";
-        }  else if (assetType == MediaTypeConstant.getLinear(context)) {
+        } else if (assetType == MediaTypeConstant.getLinear(context)) {
             type = "Linear";
         } else if (assetType == MediaTypeConstant.getProgram(context)) {
             type = "Program";
@@ -157,6 +158,7 @@ public class AppCommonMethods {
 
         return type;
     }
+
     public static void updateLanguage(String language, Context context) {
         try {
             Locale locale = new Locale(language);
@@ -213,6 +215,15 @@ public class AppCommonMethods {
             PrintLogging.printLog("Exception", "", "" + e);
         }
         return programTime;
+    }
+
+    public static String getAssetHistory(Context context) {
+        String assetHistoryDays = "";
+        ResponseDmsModel responseDmsModel = callpreference(context);
+        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAssetHistoryDays() != null && responseDmsModel.getParams().getAssetHistoryDays().getDays() != null && !responseDmsModel.getParams().getAssetHistoryDays().getDays().equalsIgnoreCase("")) {
+            assetHistoryDays = responseDmsModel.getParams().getAssetHistoryDays().getDays();
+        }
+        return assetHistoryDays;
     }
 
     public static Calendar getDate(Asset asset) {
@@ -754,6 +765,11 @@ public class AppCommonMethods {
                         String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.portrait_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.portrait_image_height) + AppLevelConstants.QUALITY;
                         assetCommonImages.setImageUrl(final_url);
                         imagesList.add(assetCommonImages);
+                    } else if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
+                        String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                        String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                        assetCommonImages.setImageUrl(final_url);
+                        imagesList.add(assetCommonImages);
                     }
 
                 }
@@ -1219,18 +1235,18 @@ public class AppCommonMethods {
     }
 
 
-    public static void setBillingUi(ImageView imageView, Map<String, MultilingualStringValueArray> tags){
-       try {
+    public static void setBillingUi(ImageView imageView, Map<String, MultilingualStringValueArray> tags) {
+        try {
 
-           if (AssetContent.getBillingId(tags)) {
-               imageView.setVisibility(View.VISIBLE);
-           } else {
-               imageView.setVisibility(View.GONE);
+            if (AssetContent.getBillingId(tags)) {
+                imageView.setVisibility(View.VISIBLE);
+            } else {
+                imageView.setVisibility(View.GONE);
 
-           }
-       }catch (Exception e){
+            }
+        } catch (Exception e) {
 
-       }
+        }
 
     }
 
@@ -1298,6 +1314,93 @@ public class AppCommonMethods {
         }
     }
 
+    public static boolean isXofferWindow(String xofferValue) {
+        String[] splitString = xofferValue.split(";");
+        String[] splitStartTime;
+        String[] splitEndTime;
+
+        String startTime;
+        String endTime;
+
+        if (splitString[0] != null && splitString[1] != null && !splitString[0].equalsIgnoreCase("") && !splitString[1].equalsIgnoreCase("")) {
+            splitStartTime = splitString[0].split("=");
+            splitEndTime = splitString[1].split("=");
+
+            if (splitStartTime[1] != null && !splitStartTime[1].equals("") && splitEndTime[1] != null && !splitEndTime[1].equals("")) {
+                startTime = splitStartTime[1];
+                endTime = splitEndTime[1];
+
+                return compareStartEndTime(startTime, endTime);
+
+
+            } else {
+                return false;
+            }
+
+
+        } else {
+            return false;
+        }
+
+
+    }
+
+    public static boolean compareStartEndTime(String startTime, String endTime) {
+        Date currentDate = new Date();
+        Date endDate = new Date();
+        Date startDate = new Date();
+
+
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        String currentTime = inputFormat.format(today);
+        try {
+            currentDate = inputFormat.parse(currentTime);
+            startDate = inputFormat.parse(startTime);
+            endDate = inputFormat.parse(endTime);
+
+            if (currentDate.before(endDate) && currentDate.after(startDate)) {
+                return true;
+            } else {
+                return false;
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
+    public static boolean comparePlaybackStartEndTime(String startTime, String endTime) {
+        Date currentDate = new Date();
+        Date endDate = new Date();
+        Date startDate = new Date();
+
+
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        String currentTime = inputFormat.format(today);
+        try {
+            currentDate = inputFormat.parse(currentTime);
+            startDate = inputFormat.parse(startTime);
+            endDate = inputFormat.parse(endTime);
+
+            if (currentDate.before(endDate) && currentDate.after(startDate)) {
+                return true;
+            } else {
+                return false;
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return true;
+        }
+
+    }
     public static String getSearchFieldsKsql(String searchString) {
        // "(or name ~'collection' description ~'collection' director~'collection' Keywords~'collection' Actors~'collection'
         StringBuilderHolder.getInstance().clear();
