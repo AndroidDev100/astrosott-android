@@ -48,7 +48,7 @@
 
     <string name="no_tracks_available">Sorry, there\'s no audio tracks available</string>
     <string name="no_caption_available">Sorry, there\'s no subtitles available</string>
-    <string name="no_result_found">No Result Found</string>
+    <string name="no_result_found">No Results Found</string>
     <string name="FOR_PURCHASE_SUBSCRIPTION_ONLY">SUBSCRIPTION_PURCHASED</string>
     <string name="FOR_PURCHASED">FOR_PURCHASE_SUBSCRIPTION_ONLY</string>
     <string name="FREE">FREE</string>
@@ -95,13 +95,13 @@
     <string name="duration">Duration: </string>
     <string name="directors">Directors: </string>
 
-    <string name="show_all">Show All</string>
+    <string name="show_all"><u>SEE MORE</u></string>
     <string name="title_creators">Creators</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="delete_confirmation">Are you sure you want to delete the search history?</string>
 
     <string name="popular_search">Popular Searches</string>
-    <string name="recent_searches">Recent Searches</string>
+    <string name="recent_searches">Search History</string>
 
     <string name="removed_from_watchlist">removed from your playlist</string>
     <string name="playlist_removed">Video removed from your playlist</string>

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.astro.sott.databinding.QuickSearchItemBinding;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
@@ -38,9 +39,9 @@ public class SearchNormalAdapter extends RecyclerView.Adapter<SearchNormalAdapte
     @NonNull
     @Override
     public SingleItemRowHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        SearchItemBinding itemBinding = DataBindingUtil.inflate(
+        QuickSearchItemBinding itemBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(activity),
-                R.layout.search_item, viewGroup, false);
+                R.layout.quick_search_item, viewGroup, false);
         return new SingleItemRowHolder(itemBinding);
     }
     @Override
@@ -96,10 +97,10 @@ public class SearchNormalAdapter extends RecyclerView.Adapter<SearchNormalAdapte
 
     @Override
     public int getItemCount() {
-        int limitView = 5;
+       /* int limitView = 5;
         if (itemsList.size() > 4)
             return limitView;
-        else return itemsList.size();
+        else*/ return itemsList.size();
     }
 
     public interface SearchNormalItemListener {
@@ -107,9 +108,9 @@ public class SearchNormalAdapter extends RecyclerView.Adapter<SearchNormalAdapte
     }
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
-        final SearchItemBinding searchItemBinding;
+        final QuickSearchItemBinding searchItemBinding;
 
-        SingleItemRowHolder(SearchItemBinding binding) {
+        SingleItemRowHolder(QuickSearchItemBinding binding) {
             super(binding.getRoot());
             this.searchItemBinding = binding;
         }

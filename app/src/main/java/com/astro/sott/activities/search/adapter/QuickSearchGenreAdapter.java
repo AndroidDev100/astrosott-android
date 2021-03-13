@@ -1,6 +1,7 @@
 package com.astro.sott.activities.search.adapter;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
+import com.astro.sott.callBacks.commonCallBacks.GenreSelectionCallBack;
 import com.astro.sott.databinding.GenreItemLayoutBinding;
 import com.astro.sott.utils.helpers.ImageHelper;
 
@@ -19,9 +21,11 @@ import java.util.List;
 public class QuickSearchGenreAdapter extends RecyclerView.Adapter<QuickSearchGenreAdapter.SingleItemHolder>{
     private Fragment ctx;
     List<RailCommonData> dataList;
-    public QuickSearchGenreAdapter(Fragment activity, List<RailCommonData> data) {
+    GenreSelectionCallBack callBack;
+    public QuickSearchGenreAdapter(Fragment activity, List<RailCommonData> data, GenreSelectionCallBack call) {
         this.ctx=activity;
         this.dataList=data;
+        this.callBack=call;
     }
 
     @NonNull
@@ -47,8 +51,17 @@ public class QuickSearchGenreAdapter extends RecyclerView.Adapter<QuickSearchGen
             holder.binding.border.setBackgroundColor(Color.parseColor("#13ff78"));
 
         } else {
+            Log.w("selectedColor",railCommonData.getSelectedColor()+"  "+railCommonData.isChecked());
+            if (railCommonData.getSelectedColor()!=null && !railCommonData.getSelectedColor().equalsIgnoreCase("")){
+                if (railCommonData.getSelectedColor().equalsIgnoreCase("1")){
+                    holder.binding.mainLayout.setBackgroundColor(Color.parseColor("#1571db"));
+                }else {
+                    holder.binding.mainLayout.setBackgroundColor(Color.parseColor("#303255"));
+                }
+            }
+           // holder.binding.mainLayout.setBackgroundColor(Color.parseColor(railCommonData.getSelectedColor()));
 
-            if (position%2==1){
+            /*if (position%2==1){
                 holder.binding.mainLayout.setBackgroundColor(Color.parseColor("#303255"));
             }else {
                 if (position!=0 && position+1%2==0){
@@ -56,7 +69,7 @@ public class QuickSearchGenreAdapter extends RecyclerView.Adapter<QuickSearchGen
                 }else {
                     holder.binding.mainLayout.setBackgroundColor(Color.parseColor("#1571db"));
                 }
-            }
+            }*/
            // holder.binding.mainLayout.setBackgroundColor(Color.parseColor("#303255"));
             holder.binding.halfCircle.setVisibility(View.GONE);
             holder.binding.imageView.setVisibility(View.VISIBLE);
@@ -74,6 +87,8 @@ public class QuickSearchGenreAdapter extends RecyclerView.Adapter<QuickSearchGen
                     railCommonData.setChecked(true);
                     notifyDataSetChanged();
                 }
+
+                callBack.onClick(position,dataList);
             }
         });
 

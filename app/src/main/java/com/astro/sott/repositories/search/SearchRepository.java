@@ -4,6 +4,7 @@ package com.astro.sott.repositories.search;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.util.Log;
 
 import com.astro.sott.beanModel.commonBeanModel.MediaTypeModel;
 import com.astro.sott.db.search.SearchedKeywords;
@@ -201,28 +202,132 @@ public class SearchRepository {
     public LiveData<ArrayList<SearchModel>> matchSetHitApi(String searchString, final Context context, final List<MediaTypeModel> list, int counter) {
         initRealm(context);
         matchingKeyword(searchString);
+        //Log.w("valuesFromList",list.get(counter).getId()+"");
+        final MutableLiveData<ArrayList<SearchModel>> connection = new MutableLiveData<>();
+        final KsServices ksServices = new KsServices(context);
+        if (counter==0){
+            callNonCollectiondata(searchString,context,list,counter,ksServices,connection);
+           // callMovieCollectiondata(searchString,context,list,counter,ksServices,connection);
+        }else if (counter==3){
+           // callNonCollectiondata(searchString,context,list,counter,ksServices,connection);
+            callCollectiondata(searchString,context,list,counter,ksServices,connection);
+        }else {
+            callNonCollectiondata(searchString,context,list,counter,ksServices,connection);
+        }
+      /*  if (list.get(counter).getId().contains(",")){
+            if (counter==0){
+                callMovieCollectiondata(searchString,context,list,counter,ksServices,connection);
+            }else {
+                callNonCollectiondata(searchString,context,list,counter,ksServices,connection);
+            }
 
+        }else {
+            if (list.get(counter).getId().equalsIgnoreCase(String.valueOf(MediaTypeConstant.getCollection(context)))){
+                callCollectiondata(searchString,context,list,counter,ksServices,connection);
+            }else {
+                callNonCollectiondata(searchString,context,list,counter,ksServices,connection);
+            }
+        }
+*/
+        return connection;
+    }
+
+    private void callMovieCollectiondata(String searchString, Context context, List<MediaTypeModel> list, int counter, KsServices ksServices, MutableLiveData<ArrayList<SearchModel>> connection) {
+        Log.w("valuesFromList M",list.get(counter).getId()+"");
         String tag3 = "name ~ '";
         String tag2 = "'";
 
         final String modifyString =
                 tag3 +
-                searchString +
-                tag2;
+                        searchString +
+                        tag2;
 
-        final MutableLiveData<ArrayList<SearchModel>> connection = new MutableLiveData<>();
-        final KsServices ksServices = new KsServices(context);
+
         AppCommonMethods.checkDMS(context, new DMSCallBack() {
             @Override
             public void configuration(boolean status) {
                 if (status) {
-                    ksServices.searchKeyword(context, modifyString, list,counter, (status1, result, remarks) -> {
+                    ksServices.searchMovieKeyword(context, modifyString, list,counter, (status1, result, remarks) -> {
                         if (status1) {
 
-                                if (remarks.equalsIgnoreCase(AppLevelConstants.NO_RESULT_FOUND)) {
-                                    connection.postValue(new ArrayList<>());
-                                } else
-                                    connection.postValue(sortMediaTypeList(context, result));
+                            if (remarks.equalsIgnoreCase(AppLevelConstants.NO_RESULT_FOUND)) {
+                                connection.postValue(new ArrayList<>());
+                            } else{
+                                callVodCollection(searchString,context,list,counter,ksServices,connection,result);
+                              //  connection.postValue(sortMediaTypeList(context, result,counter));
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+
+    }
+
+    private void callVodCollection(String searchString, Context context, List<MediaTypeModel> list, int counter, KsServices ksServices, MutableLiveData<ArrayList<SearchModel>> connection, ArrayList<SearchModel> results) {
+        Log.w("valuesFromList M",list.get(counter).getId()+"");
+        String tag3 = "";
+        String tag2 = "(and IsSponsored='0')";
+
+        final String modifyString =
+                tag3 +
+                        tag2;
+
+
+        AppCommonMethods.checkDMS(context, new DMSCallBack() {
+            @Override
+            public void configuration(boolean status) {
+                if (status) {
+                    ksServices.searchVodCollectionKeyword(context, modifyString, list,counter, (status1, result, remarks) -> {
+                        if (status1) {
+
+                            if (remarks.equalsIgnoreCase(AppLevelConstants.NO_RESULT_FOUND)) {
+                                connection.postValue(results);
+                            } else{
+                                List<Asset> list=results.get(0).getAllItemsInSection();
+                                List<Asset> list2=result.get(0).getAllItemsInSection();
+
+                                list.addAll(list2);
+
+                                results.get(0).setAllItemsInSection(list);
+
+                                connection.postValue(sortMediaTypeList(context, results,counter));
+                            }
+
+                        }else {
+                            connection.postValue(results);
+                        }
+                    });
+                }
+
+            }
+        });
+
+    }
+
+    private void callCollectiondata(String searchString, Context context, List<MediaTypeModel> list, int counter, KsServices ksServices, MutableLiveData<ArrayList<SearchModel>> connection) {
+        Log.w("valuesFromList M",list.get(counter).getId()+"");
+        String tag3 = "(and name ~ '";
+        String tag2 = "' (and IsSponsored='1'))";
+
+        final String modifyString =
+                tag3 +
+                        searchString +
+                        tag2;
+
+
+        AppCommonMethods.checkDMS(context, new DMSCallBack() {
+            @Override
+            public void configuration(boolean status) {
+                if (status) {
+                    ksServices.searchVodCollectionKeyword(context, modifyString, list,counter, (status1, result, remarks) -> {
+                        if (status1) {
+
+                            if (remarks.equalsIgnoreCase(AppLevelConstants.NO_RESULT_FOUND)) {
+                                connection.postValue(new ArrayList<>());
+                            } else
+                                connection.postValue(sortMediaTypeList(context, result,counter));
 
                         }
                     });
@@ -231,8 +336,40 @@ public class SearchRepository {
             }
         });
 
+    }
 
-        return connection;
+    private void callNonCollectiondata(String searchString, Context context, List<MediaTypeModel> list, int counter,KsServices ksServices,MutableLiveData<ArrayList<SearchModel>> connection) {
+        Log.w("valuesFromList N",list.get(counter).getId()+"");
+        String searchKsql=AppCommonMethods.getSearchFieldsKsql(searchString);
+        Log.w("SearchKsql-->>",searchKsql);
+        String tag3 = "name ~ '";
+        String tag2 = "'";
+
+        final String modifyString =
+                tag3 +
+                        searchString +
+                        tag2;
+
+
+        AppCommonMethods.checkDMS(context, new DMSCallBack() {
+            @Override
+            public void configuration(boolean status) {
+                if (status) {
+                    ksServices.searchKeyword(context, searchKsql, list,counter, (status1, result, remarks) -> {
+                        if (status1) {
+
+                            if (remarks.equalsIgnoreCase(AppLevelConstants.NO_RESULT_FOUND)) {
+                                connection.postValue(new ArrayList<>());
+                            } else
+                                connection.postValue(sortMediaTypeList(context, result,counter));
+
+                        }
+                    });
+                }
+
+            }
+        });
+
     }
 
     public LiveData<ArrayList<SearchModel>> autoCompleteHit(String searchString, final Context context, final List<MediaTypeModel> list,int autoCompleteCounter) {
@@ -283,7 +420,7 @@ public class SearchRepository {
     }
 
 
-    private ArrayList<SearchModel> sortMediaTypeList(Context context, ArrayList<SearchModel> list) {
+    private ArrayList<SearchModel> sortMediaTypeList(Context context, ArrayList<SearchModel> list,int counter) {
         ArrayList<SearchModel> allSampleData = new ArrayList<>();
 
         //please do not break sequence
@@ -292,9 +429,23 @@ public class SearchRepository {
         SearchModel Episode = new SearchModel();
         SearchModel Collection = new SearchModel();
         SearchModel Linear = new SearchModel();
+        SearchModel Program = new SearchModel();
+        if (counter==0){
+            Movie = list.get(0);
+        }else if (counter==1){
+            Episode = list.get(0);
+            Series = list.get(0);
+        }else if (counter==2){
+            Linear = list.get(0);
+            Program = list.get(0);
+        }
+        else if (counter==3){
+            Collection=list.get(0);
+        }
 
 
-
+        Log.w("valuesFromList S",list.size()+"");
+/*
         for (int i = 0; i < list.size(); i++) {
 
             String checkId = String.valueOf(list.get(i).getType());
@@ -319,31 +470,38 @@ public class SearchRepository {
 
             }
         }
+*/
         if (Movie.getAllItemsInSection().size() > 0) {
-            Movie.setHeaderTitle(SearchModel.MEDIATYPE_SEARCH_MOVIE);
+            Movie.setHeaderTitle(SearchModel.SEARCH_VOD);
             allSampleData.add(Movie);
         }
 
         if (Series.getAllItemsInSection().size() > 0) {
-            Series.setHeaderTitle(SearchModel.MEDIATYPE_SERIES);
+            Series.setHeaderTitle(SearchModel.SEARCH_TV_SHOWS);
             allSampleData.add(Series);
         }
 
 
         if (Episode.getAllItemsInSection().size() > 0) {
-            Episode.setHeaderTitle(SearchModel.MEDIATYPE_EPISODE);
+            Episode.setHeaderTitle(SearchModel.SEARCH_TV_SHOWS);
             allSampleData.add(Episode);
         }
 
         if (Collection.getAllItemsInSection().size() > 0) {
-            Collection.setHeaderTitle(SearchModel.MEDIATYPE_COLLECTION);
+            Collection.setHeaderTitle(SearchModel.SEARCH_PAGE);
             allSampleData.add(Collection);
         }
 
         if (Linear.getAllItemsInSection().size() > 0) {
-            Linear.setHeaderTitle(SearchModel.MEDIATYPE_LINEAR);
+            Linear.setHeaderTitle(SearchModel.SEARCH_LIVE);
             allSampleData.add(Linear);
         }
+
+        if (Program.getAllItemsInSection().size() > 0) {
+            Linear.setHeaderTitle(SearchModel.SEARCH_LIVE);
+            allSampleData.add(Linear);
+        }
+
 
         return allSampleData;
     }

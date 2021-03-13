@@ -396,4 +396,9 @@ public interface AppLevelConstants {
     String DIALOG = "Dialog";
     String BASE_ID = "Base ID";
     String REASEN_CODE = "reasonCode";
+
+    String SEARCH_GENRE_CONSTATNT = "FilterGenre='";
+    String SEARCH_ISSPONSORED_CONSTATNT = "IsSponsored";
+
+
 }

@@ -33,16 +33,14 @@ public class ResultAllXmlUtils {
         if (urlImage != null) {
             Context context = view.getContext();
 
-            RequestOptions option = new RequestOptions()
-                    .placeholder(R.drawable.square1)
-                    .error(R.drawable.square1);
-
             String final_url = urlImage.getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.square_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.square_image_height) + AppLevelConstants.QUALITY;
 
-            Glide.with(context)
+           /* Glide.with(context)
                     .setDefaultRequestOptions(option)
                     .load(final_url)
-                    .into(view);
+                    .into(view);*/
+
+            ImageHelper.getInstance(view.getContext()).loadQuickSearchImage(view, final_url, R.drawable.landscape);
         }
 
 

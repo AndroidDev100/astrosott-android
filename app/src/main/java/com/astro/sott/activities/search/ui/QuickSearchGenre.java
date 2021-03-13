@@ -23,10 +23,16 @@ import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionView
 import com.astro.sott.activities.search.adapter.QuickSearchGenreAdapter;
 import com.astro.sott.activities.search.adapter.SearchKeywordAdapter;
 import com.astro.sott.baseModel.BaseBindingFragment;
+import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
+import com.astro.sott.callBacks.commonCallBacks.DataLoadedOnFragment;
+import com.astro.sott.callBacks.commonCallBacks.GenreSelectionCallBack;
 import com.astro.sott.databinding.FragmentQuickSearchGenreBinding;
+import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +49,7 @@ public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGen
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private DataLoadedOnFragment dataLoadedOnFragment;
 
     public QuickSearchGenre() {
         // Required empty public constructor
@@ -82,6 +89,13 @@ public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGen
         setClicks();
         UIinitialization();
         loadDataFromModel();
+        try {
+            if (getActivity() instanceof DataLoadedOnFragment){
+                dataLoadedOnFragment=(DataLoadedOnFragment)getActivity();
+            }
+        }catch (Exception ignored){
+
+        }
     }
 
     QuickSearchViewModel viewModel;
@@ -89,11 +103,37 @@ public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGen
         viewModel = ViewModelProviders.of(this).get(QuickSearchViewModel.class);
     }
 
+    String selectedGenre="";
     private void loadDataFromModel() {
         getActivity().runOnUiThread(() -> viewModel.getGenreData(getActivity(),MediaTypeConstant.getFilterGenre(getActivity())).observe(getActivity(), commonResponse -> {
-           Log.w("genreResponse",commonResponse.toString());
-            QuickSearchGenreAdapter adapter = new QuickSearchGenreAdapter(QuickSearchGenre.this,commonResponse);
-            getBinding().recyclerView.setAdapter(adapter);
+           //Log.w("genreResponse",commonResponse.toString());
+            if (commonResponse!=null && commonResponse.size()>0 && commonResponse.get(0).getStatus()){
+                dataLoadedOnFragment.isDataLoaded(true);
+                QuickSearchGenreAdapter adapter = new QuickSearchGenreAdapter(QuickSearchGenre.this,commonResponse, new GenreSelectionCallBack() {
+                    @Override
+                    public void onClick(int position, List<RailCommonData> arrayList) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 0; i<arrayList.size(); i ++){
+                            if (arrayList.get(i).isChecked()){
+                                stringBuilder.append(AppLevelConstants.SEARCH_GENRE_CONSTATNT +arrayList.get(i).getName()+"'").append("  ");
+
+                            }
+                            if (stringBuilder.length() > 0) {
+                                selectedGenre = stringBuilder.toString();
+                                selectedGenre = selectedGenre.substring(0, selectedGenre.length() - 2);
+                            } else {
+                                selectedGenre = "";
+                            }
+                        }
+
+                        Log.w("selectedGenres-:",selectedGenre);
+                    }
+                });
+                getBinding().recyclerView.setAdapter(adapter);
+            }else {
+                dataLoadedOnFragment.isDataLoaded(false);
+            }
+
         }));
 
         getBinding().recyclerView.setNestedScrollingEnabled(true);

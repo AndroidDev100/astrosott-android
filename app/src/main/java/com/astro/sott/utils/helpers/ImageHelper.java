@@ -158,4 +158,13 @@ public class ImageHelper {
 
     }
 
+    public void loadQuickSearchImage(ImageView imageView, String imageUrl, int placeholder) {
+        requestOptions.placeholder(placeholder);
+        GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
+                load(imageUrl).transition(DrawableTransitionOptions.withCrossFade(250)).thumbnail(0.6f).into(imageView);
+
+
+    }
+
+
 }

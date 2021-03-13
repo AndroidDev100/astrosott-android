@@ -36,6 +36,7 @@ import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrefConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
+import com.astro.sott.utils.helpers.StringBuilderHolder;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.ksPreferenceKey.SubCategoriesPrefs;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -51,6 +52,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetHistory;
+import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MediaImage;
@@ -1296,4 +1298,51 @@ public class AppCommonMethods {
         }
     }
 
+    public static String getSearchFieldsKsql(String searchString) {
+       // "(or name ~'collection' description ~'collection' director~'collection' Keywords~'collection' Actors~'collection'
+        StringBuilderHolder.getInstance().clear();
+        StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("description~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("')");
+
+        return StringBuilderHolder.getInstance().getText().toString();
+    }
+
+    public static List<Asset> removePagesFromCollection(ListResponse<Asset> results,Context context) {
+        List<Asset> sortedList=new ArrayList();
+        BooleanValue sponsored;
+        for (int i=0;i<results.getObjects().size();i++){
+            if (results.getObjects().get(i).getType()==MediaTypeConstant.getCollection(context)){
+                if (results.getObjects().get(i).getMetas()!=null){
+                    sponsored=(BooleanValue)results.getObjects().get(i).getMetas().get(AppLevelConstants.SEARCH_ISSPONSORED_CONSTATNT);
+                    if (sponsored!=null){
+                        if (!sponsored.getValue()){
+                            sortedList.add(results.getObjects().get(i));
+                        }
+
+                    }
+                }
+            }else {
+                sortedList.add(results.getObjects().get(i));
+            }
+
+        }
+        return sortedList;
+    }
 }

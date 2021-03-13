@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.commonBeanModel.MediaTypeModel;
 import com.astro.sott.beanModel.commonBeanModel.SearchModel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
+import com.astro.sott.callBacks.commonCallBacks.DataLoadedOnFragment;
 import com.astro.sott.db.search.SearchedKeywords;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -49,7 +51,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> implements KeywordListAdapter.KeywordItemHolderListener, SearchResponseAdapter.ShowAllItemListener, SearchNormalAdapter.SearchNormalItemListener, AutoSearchAdapter.SearchNormalItemListener {
+public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> implements KeywordListAdapter.KeywordItemHolderListener, SearchResponseAdapter.ShowAllItemListener, SearchNormalAdapter.SearchNormalItemListener, AutoSearchAdapter.SearchNormalItemListener, DataLoadedOnFragment {
 
     private final ArrayList<SearchModel> laodMoreList = new ArrayList<>();
     List<Asset> list;
@@ -104,6 +106,20 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 //                viewModel.insertRecentSearchKeywords(editable.toString());
             }
         });
+
+        getBinding().toolbar.searchText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    Log.w("focusValue 1",hasFocus+"");
+                    showRecentSearchLayout(1);
+                }else {
+                    Log.w("focusValue 2",hasFocus+"");
+                    showRecentSearchLayout(2);
+                }
+            }
+        });
+
 
     }
 
@@ -184,7 +200,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             resetLayout();
             UIinitialization();
             getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
-            loadDataFromModel();
+           // loadDataFromModel();
             addGenreFragment();
         } else {
 
@@ -201,22 +217,19 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     private void resetLayout() {
         getBinding().noResult.setVisibility(View.GONE);
         getBinding().noConnectionLayout.setVisibility(View.GONE);
-        getBinding().popularSearchGroup.setVisibility(View.VISIBLE);
-        getBinding().llRecentSearchLayout.setVisibility(View.VISIBLE);
+        getBinding().popularSearchGroup.setVisibility(View.GONE);
+        getBinding().llRecentSearchLayout.setVisibility(View.GONE);
         getBinding().llSearchResultLayout.setVisibility(View.GONE);
     }
 
     private void UIinitialization() {
+        getBinding().quickSearchLayout.setVisibility(View.GONE);
         setMediaType();
         setRecyclerProperties(getBinding().searchKeywordRecycler);
         setRecyclerProperties(getBinding().recyclerView);
         setRecyclerProperties(getBinding().rvSearchResult);
 
-        List<SearchedKeywords> mList = new ArrayList<>();
-        getBinding().llRecentSearchLayout.setVisibility(View.GONE);
 
-        keywordListAdapter = new KeywordListAdapter(getApplicationContext(), mList, ActivitySearch.this);
-        getBinding().searchKeywordRecycler.setAdapter(keywordListAdapter);
 
         setListners();
 
@@ -274,11 +287,11 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     private void setMediaType() {
         mediaList = new ArrayList<>();
-        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_MOVIE, String.valueOf(MediaTypeConstant.getMovie(ActivitySearch.this))));
-        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SERIES, String.valueOf(MediaTypeConstant.getSeries(ActivitySearch.this))));
-        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_EPISODE, String.valueOf(MediaTypeConstant.getEpisode(ActivitySearch.this))));
+        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_MOVIE, String.valueOf(MediaTypeConstant.getMovie(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getCollection(ActivitySearch.this))));
+        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SERIES, String.valueOf(MediaTypeConstant.getSeries(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getEpisode(ActivitySearch.this))));
+       // mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_EPISODE, ""));
+        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getProgram(ActivitySearch.this))));
         mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_COLLECTION, String.valueOf(MediaTypeConstant.getCollection(ActivitySearch.this))));
-        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))));
         //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))));
         //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_SHORTFILM, String.valueOf(MediaTypeConstant.getShortFilm(ActivitySearch.this))));
 
@@ -296,7 +309,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     private void callRefreshOnDelete() {
         viewModel.getRecentSearches().observe(this, searchedKeywords -> {
             if (searchedKeywords != null && searchedKeywords.size() > 0) {
-                getBinding().llRecentSearchLayout.setVisibility(View.VISIBLE);
+                getBinding().llRecentSearchLayout.setVisibility(View.GONE);
                 keywordListAdapter.notifyKeywordAdapter(searchedKeywords);
             } else
                 getBinding().llRecentSearchLayout.setVisibility(View.GONE);
@@ -331,7 +344,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                     } else {
                         getBinding().noResult.setVisibility(View.VISIBLE);
                         getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
-                        getBinding().popularSearchGroup.setVisibility(View.VISIBLE);
+                        getBinding().popularSearchGroup.setVisibility(View.GONE);
                         getBinding().autoRecyclerView.setVisibility(View.GONE);
                         getBinding().recyclerView.setVisibility(View.VISIBLE);
                         loadDataFromModel();
@@ -345,7 +358,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
                 getBinding().noResult.setVisibility(View.VISIBLE);
-                getBinding().popularSearchGroup.setVisibility(View.VISIBLE);
+                getBinding().popularSearchGroup.setVisibility(View.GONE);
                 getBinding().autoRecyclerView.setVisibility(View.GONE);
                 getBinding().recyclerView.setVisibility(View.VISIBLE);
                 loadDataFromModel();
@@ -374,6 +387,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     }
 
     private void loadDataFromModel() {
+/*
         viewModel.getListLiveDataPopular().observe(this, assets -> {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             if (assets != null) {
@@ -391,12 +405,13 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             }
 
         });
+*/
     }
 
     private void setRecentListAfterPopular() {
         viewModel.getRecentSearches().observe(this, searchedKeywords -> {
             if (searchedKeywords != null && searchedKeywords.size() > 0) {
-                getBinding().llRecentSearchLayout.setVisibility(View.VISIBLE);
+                getBinding().llRecentSearchLayout.setVisibility(View.GONE);
                 keywordListAdapter.notifyKeywordAdapter(searchedKeywords);
             }
         });
@@ -503,6 +518,47 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         railCommonData.setType(itemValue.getType());
         railCommonData.setName(itemValue.getName());
 
+
+    }
+
+
+    @Override
+    public void isDataLoaded(boolean isLoaded) {
+        if (isLoaded){
+            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+            getBinding().quickSearchLayout.setVisibility(View.VISIBLE);
+        }else {
+            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+            getBinding().quickSearchLayout.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void showRecentSearchLayout(int i) {
+            if (i==1){
+                getBinding().genreFragment.setVisibility(View.GONE);
+                List<SearchedKeywords> mList = new ArrayList<>();
+                getBinding().llRecentSearchLayout.setVisibility(View.VISIBLE);
+
+                keywordListAdapter = new KeywordListAdapter(getApplicationContext(), mList, ActivitySearch.this);
+                getBinding().searchKeywordRecycler.setAdapter(keywordListAdapter);
+                getBinding().quickSearchLayout.setVisibility(View.GONE);
+                setRecentSearchData();
+
+            }else {
+                getBinding().llRecentSearchLayout.setVisibility(View.GONE);
+                getBinding().quickSearchLayout.setVisibility(View.VISIBLE);
+                getBinding().genreFragment.setVisibility(View.VISIBLE);
+            }
+    }
+
+    private void setRecentSearchData() {
+        viewModel.getRecentSearches().observe(this, searchedKeywords -> {
+            if (searchedKeywords != null && searchedKeywords.size() > 0) {
+                getBinding().llRecentSearchLayout.setVisibility(View.VISIBLE);
+                keywordListAdapter.notifyKeywordAdapter(searchedKeywords);
+            }
+        });
 
     }
 

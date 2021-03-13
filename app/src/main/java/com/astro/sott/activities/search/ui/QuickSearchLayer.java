@@ -1,8 +1,10 @@
 package com.astro.sott.activities.search.ui;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -19,12 +21,14 @@ import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QuickSearchLayer {
 
     private static QuickSearchLayer quickSearchLayer;
-    private ArrayList<RailCommonData> railList = new ArrayList<RailCommonData>();
+    private ArrayList<RailCommonData> railList;
     private QuickSearchLayer() {
 
     }
@@ -60,10 +64,18 @@ public class QuickSearchLayer {
 
     }
 
-    private void callDynamicData(Context context,String layout, List<Response<ListResponse<Asset>>> list) {
+    int colorCount=0;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void callDynamicData(Context context, String layout, List<Response<ListResponse<Asset>>> list) {
         try {
 
             if (list != null) {
+                railList = new ArrayList<RailCommonData>();
+                String[] colors = new String[]{"1", "2"};
+
+                Map<Integer, String> colorMap = new HashMap<>();
+                int control = 0;
+                int colorIdx = 1;
 
                 for (int j = 0; j < list.get(0).results.getObjects().size(); j++) {
                     RailCommonData railCommonData = new RailCommonData();
@@ -136,15 +148,49 @@ public class QuickSearchLayer {
                     }
                     railCommonData.setImages(imagesList);
                     railCommonData.setUrls(urlList);
-                    if (j%2==0){
-                        railCommonData.setChecked(false);
+                  /*  if (j>0){
+                        if (railCommonData.getSelectedColor().equalsIgnoreCase())
+                        railCommonData.setSelectedColor("#303255");
                     }else {
-                        railCommonData.setChecked(false);
+                        railCommonData.setSelectedColor("#1571db");
+                    }*/
+
+                    /*if (colorCount==0){
+                        railCommonData.setSelectedColor("#1571db");
+                        colorCount=1;
+                    }else if (colorCount==3){
+                        if ()
+                        railCommonData.setSelectedColor("#303255");
+                        colorCount=0;
+                    }else {
+                        railCommonData.setSelectedColor("#303255");
+                        colorCount=3;
+                    }*/
+                    //railCommonData.setSelectedColor("#303255");
+
+                    if (j==0){
+                        colorMap.put(j, colors[0]);
+                    }else if(j==1) {
+                        colorMap.put(j, colors[1]);
+                    }else {
+
+                        if (colorMap.get(j-2)=="1"){
+                            colorMap.put(j, colors[1]);
+                        }
+                        else {
+                            colorMap.put(j, colors[0]);
+                        }
                     }
 
                     railList.add(railCommonData);
 
                 }
+
+                Log.w("colorSize",colorMap.size()+"   "+railList.size());
+                colorMap.forEach((idx, color) -> {
+                    System.out.println(idx + "\t====>\t" + color );
+                    railList.get(idx).setSelectedColor(color);
+                });
             }
         }catch (Exception e){
             Log.e("Error",e.getMessage());
