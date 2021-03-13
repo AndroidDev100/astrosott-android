@@ -143,8 +143,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         if (getIntent().getExtras() != null) {
             railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
             if (railData != null) {
-                commonData = railData;
-                asset = railData.getObject();
+
                 getDatafromBack();
             }
         }
@@ -168,6 +167,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void getDatafromBack() {
+        commonData = railData;
+        asset = railData.getObject();
         getBinding().setMovieAssestModel(asset);
         map = asset.getTags();
         yearMap = asset.getMetas();
@@ -280,6 +281,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void setMetas() {
         getMovieYear();
+        setRailBaseFragment();
     }
 
     private void getMovieYear() {
@@ -583,7 +585,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     }
                 }
             });*/
-            setRailBaseFragment();
+
 
             //loadDataFromModel();
 
@@ -1069,12 +1071,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
 
-    @Override
-    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
-
-    }
-
-
     private void showDialog(String message) {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(getResources().getString(R.string.dialog), message, getResources().getString(R.string.ok));
@@ -1106,6 +1102,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         mHandler.removeCallbacksAndMessages(null);
         super.onDestroy();
     }
+
 
     private void playerChecks(final RailCommonData railCommonData) {
         new GeoBlockingCheck().aseetAvailableOrNot(WebSeriesDescriptionActivity.this, railData.getObject(), (status, response, totalCount, errorcode, message) -> {
@@ -1375,6 +1372,14 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     @Override
     public void onFirstEpisodeData(List<AssetCommonBean> railCommonData) {
 
+    }
+
+    @Override
+    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
+        getBinding().scrollView.scrollTo(0, 0);
+        railData = commonData;
+        getDatafromBack();
+        isActive = UserInfo.getInstance(this).isActive();
     }
 }
 

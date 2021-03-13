@@ -1,5 +1,6 @@
 package com.astro.sott.fragments.detailRailFragment.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,18 @@ import com.astro.sott.adapter.RibbonAdapter;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
+import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
+import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.astro.sott.databinding.ExclusiveItemBinding;
 import com.astro.sott.databinding.LandscapeItemBinding;
 import com.astro.sott.databinding.RelatedItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.constants.AppConstants;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
+import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
@@ -33,11 +40,18 @@ import java.util.Set;
 
 public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SingleItemViewHolder> {
     private List<RailCommonData> similarItemList;
-    private Context mContext;
+    private Activity mContext;
+    private DetailRailClick detailRailClick;
 
-    public SimilarAdapter(Context context, List<RailCommonData> loadedList) {
+
+    public SimilarAdapter(Activity context, List<RailCommonData> loadedList) {
         similarItemList = loadedList;
         mContext = context;
+        try {
+            this.detailRailClick = ((DetailRailClick) context);
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement AdapterCallback.");
+        }
     }
 
     @NonNull
@@ -115,7 +129,25 @@ public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SingleIt
         public SingleItemViewHolder(@NonNull RelatedItemBinding itemView) {
             super(itemView.getRoot());
             landscapeItemBinding = itemView;
+            final String name = mContext.getClass().getSimpleName();
+
+
+            landscapeItemBinding.cardView.setOnClickListener(v -> {
+                new ActivityLauncher(mContext).railClickCondition("", "", name, similarItemList.get(getLayoutPosition()), getLayoutPosition(), AppConstants.Rail5, similarItemList, new MediaTypeCallBack() {
+                    @Override
+                    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
+                        if (NetworkConnectivity.isOnline(mContext)) {
+                             detailRailClick.detailItemClicked(_url, position, type, commonData);
+                        } else {
+                            ToastHandler.show(mContext.getResources().getString(R.string.no_internet_connection), mContext);
+                        }
+                    }
+                });
+            });
+
         }
+
+
     }
 
 }

@@ -244,6 +244,9 @@ public class ActivityLauncher {
             case AppLevelConstants.WEB_EPISODE_DESCRIPTION_ACTIVITY:
                 webEpisodeScreenCheck(name, railCommonData, layoutPosition, layoutType, detailRailClick);
                 break;
+            case AppLevelConstants.BOX_SET_DETAIL:
+                boxSetScreenCheck(name, railCommonData, layoutPosition, layoutType, detailRailClick);
+                break;
             case AppLevelConstants.LIVE_CHANNEL:
                 liveplayerScreenCheck(name, railCommonData, layoutPosition, layoutType, detailRailClick);
                 break;
@@ -258,9 +261,17 @@ public class ActivityLauncher {
         }
     }
 
+    private void boxSetScreenCheck(String name, RailCommonData railCommonData, int layoutPosition, int layoutType, MediaTypeCallBack detailRailClick) {
+        if (railCommonData.getObject().getType() == MediaTypeConstant.getCollection(activity)) {
+            detailRailClick.detailItemClicked(AssetContent.getTileVideoURL(railCommonData.getObject(), AssetContent.getVideoResol(railCommonData.getObject().getTags())), layoutPosition, 1, railCommonData);
+        }
+
+    }
+
     private void dramaScreenCheck(String name, RailCommonData railCommonData, int layoutPosition, int layoutType, MediaTypeCallBack detailRailClick) {
-        if (railCommonData.getObject().getType() == MediaTypeConstant.getDrama(activity)) {
-            new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, railCommonData, layoutType);
+        if (railCommonData.getObject().getType() == MediaTypeConstant.getSeries(activity)) {
+            detailRailClick.detailItemClicked(AssetContent.getTileVideoURL(railCommonData.getObject(), AssetContent.getVideoResol(railCommonData.getObject().getTags())), layoutPosition, 1, railCommonData);
+
         } else if (railCommonData.getObject().getType() == MediaTypeConstant.getPromo(activity)) {
             promoCondition(railCommonData, layoutType);
         } else {
@@ -436,6 +447,8 @@ public class ActivityLauncher {
             //new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getProgram(activity)) {
             checkCurrentProgram(itemsList.getObject());
+        } else if (itemsList.getObject().getType() == MediaTypeConstant.getCollection(activity)) {
+            //  boxSetDetailActivity(activity, itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getPromo(activity)) {
             promoCondition(itemsList, layoutType);
         }

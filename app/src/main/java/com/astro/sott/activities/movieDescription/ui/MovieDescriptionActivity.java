@@ -1041,20 +1041,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
 
-    @Override
-    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
 
-        if (getBinding().descriptionText.isExpanded()) {
-            getBinding().descriptionText.toggle();
-        }
-        assetRuleErrorCode = AppLevelConstants.NO_ERROR;
-        getDataFromBack(commonData, layoutType);
-
-        titleName = name;
-        isAdded = false;
-        iconClicked = false;
-        isActive = true;
-    }
 
     private void isWatchlistedOrNot() {
         viewModel.listAllwatchList(assetId + "").observe(this, commonResponse -> {
@@ -1129,5 +1116,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         });
     }
 
+    @Override
+    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
+        getBinding().scrollView.scrollTo(0, 0);
+        getDataFromBack(commonData, layoutType);
+        isActive = UserInfo.getInstance(this).isActive();
+    }
 }
 
