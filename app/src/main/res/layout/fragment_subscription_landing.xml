@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,7 +23,7 @@
         android:layout_marginStart="@dimen/dimen16dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/_6dp"
         />
 <RelativeLayout
     android:layout_width="match_parent"
@@ -25,7 +31,7 @@
     android:layout_below="@id/astro_logo"
     android:id="@+id/rl1"
     android:layout_marginStart="@dimen/dimen16dp"
-    android:layout_marginTop="@dimen/margin65dp">
+    android:layout_marginTop="@dimen/margin58dp">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -107,6 +113,7 @@
         android:layout_marginTop="@dimen/margin_top_32dp"
         android:layout_marginEnd="@dimen/dimen16dp"
         android:layout_marginStart="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/_200sdp"
         android:background="@drawable/gradient_button"
         android:fontFamily="@font/heebo_medium"
         android:gravity="center"
@@ -116,5 +123,7 @@
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="@dimen/_16sp"/>
+
 </RelativeLayout>
+</ScrollView>
 </layout>

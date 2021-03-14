@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_bg"
+    tools:context=".fragments.transactionhistory.ui.TransactionHistory">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/toolbar_bg"
+        android:id="@+id/toolbar">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/back_button"
+            android:layout_marginStart="@dimen/_8dp"
+            android:padding="@dimen/_6dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_arrow_back_24px"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:id="@+id/title"
+            android:textAllCaps="true"
+            android:textSize="@dimen/_14sp"
+            android:layout_centerInParent="true"
+            android:letterSpacing="0.09"
+            android:fontFamily="@font/heebo_medium"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:text="@string/language_selection"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp">
+        </TextView>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/download_button"
+            android:layout_margin="@dimen/_8sdp"
+            android:padding="@dimen/_6dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_file_download_24px"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/toolbar"
+        android:background="@drawable/gradient_outline_button"
+        android:gravity="center|end"
+        android:layout_marginTop="@dimen/dimen32dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen12dp"
+       >
+
+        <TextView
+            android:id="@+id/season_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/heebo_medium"
+            android:text="@string/successful"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:layout_marginStart="@dimen/dimen16dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen16dp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_gravity="end|center"
+            android:src="@drawable/ic_arrow_down_24px" />
+    </LinearLayout>
+<androidx.recyclerview.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/status"
+    android:layout_marginTop="@dimen/dimen32dp"
+    android:layout_marginBottom="@dimen/dimen20dp"
+    android:id="@+id/recycler_view"/>
+</RelativeLayout>
+</layout>
