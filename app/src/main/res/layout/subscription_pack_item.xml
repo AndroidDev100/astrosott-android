@@ -1,55 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
->
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.cardview.widget.CardView
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen205dp"
-        android:layout_marginTop="@dimen/dimen16dp"
-        android:layout_marginStart="@dimen/dimen16dp"
-        android:layout_marginEnd="@dimen/dimen16dp"
-        app:cardCornerRadius="@dimen/dimen8dp"
-        app:cardBackgroundColor="@color/toolbar_bg"
-        >
-        <LinearLayout
+        android:layout_height="wrap_content">
+        <!-- TODO: Update blank fragment layout -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen16dp"
-            android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="@dimen/_16sp"
-        android:fontFamily="@font/heebo_bold"
-        android:textColor="@color/white"
-        android:text="@string/vip_packs" />
-            <TextView
+            android:layout_height="165dp"
+            android:layout_marginStart="@dimen/dimen16dp"
+            android:layout_marginBottom="@dimen/dimen16dp"
+            android:layout_marginEnd="@dimen/dimen16dp"
+            app:cardCornerRadius="@dimen/dimen8dp">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="@dimen/_14sp"
-                android:layout_marginTop="@dimen/dimen8dp"
-                android:fontFamily="@font/heebo_regular"
-                android:textColor="@color/white"
-                android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimen48dp"
-            android:background="@drawable/gradient_button"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_16sp"
-            android:padding="@dimen/_10sdp"
-            android:text="30 Days @ RM XX.XX"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:layout_gravity="bottom|end"
-            android:fontFamily="@font/heebo_medium"
+                android:layout_height="match_parent">
 
-            />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
-</RelativeLayout>
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/pack_bg_img"></ImageView>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/gradient_pack_bg"></FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/pack_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/heebo_bold"
+                        android:text="@string/vip_packs"
+                        android:textColor="@color/title_color"
+                        android:textSize="@dimen/_16sp" />
+
+                    <TextView
+                        android:id="@+id/pack_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dimen8dp"
+                        android:fontFamily="@font/heebo_regular"
+                        android:textColor="@color/title_color"
+                        android:textSize="@dimen/_14sp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen48dp"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginTop="@dimen/dimen24dp"
+                        android:background="@drawable/gradient_button"
+                        android:fontFamily="@font/heebo_medium"
+                        android:padding="@dimen/_10sdp"
+                        android:text="BUY @ RM XX.XX"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_16sp"
+
+                        />
+                </LinearLayout>
+            </RelativeLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
 </layout>

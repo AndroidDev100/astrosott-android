@@ -12,6 +12,7 @@ import com.astro.sott.usermanagment.callBacks.EvergentCreateOtpCallBack;
 import com.astro.sott.usermanagment.callBacks.EvergentCreateUserCallback;
 import com.astro.sott.usermanagment.callBacks.EvergentGetContactCallback;
 import com.astro.sott.usermanagment.callBacks.EvergentGetDeviceCallback;
+import com.astro.sott.usermanagment.callBacks.EvergentGetProductsCallBack;
 import com.astro.sott.usermanagment.callBacks.EvergentLoginUserCallback;
 import com.astro.sott.usermanagment.callBacks.EvergentRefreshTokenCallBack;
 import com.astro.sott.usermanagment.callBacks.EvergentRemoveDevice;
@@ -23,6 +24,7 @@ import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse;
 import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse;
 import com.astro.sott.usermanagment.modelClasses.getDevice.GetDevicesResponse;
+import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse;
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse;
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse;
 import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceResponse;
@@ -242,10 +244,10 @@ public class AstrLoginRepository {
         return mutableLiveData;
     }
 
-    public LiveData<EvergentCommonResponse> removeDevice(Context context, String accessToken,String serial) {
+    public LiveData<EvergentCommonResponse> removeDevice(Context context, String accessToken, String serial) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().removeDevice(context, accessToken,serial, new EvergentRemoveDevice() {
+        EvergentServices.Companion.getInstance().removeDevice(context, accessToken, serial, new EvergentRemoveDevice() {
 
 
             @Override
@@ -265,6 +267,10 @@ public class AstrLoginRepository {
         });
         return mutableLiveData;
     }
+
+
+
+
 
 
 }

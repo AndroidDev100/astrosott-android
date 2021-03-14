@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +19,10 @@ import com.astro.sott.activities.search.ui.SearchKeywordActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentSubscriptionPacksBinding;
 import com.astro.sott.fragments.subscription.adapter.SubscriptionAdapter;
+import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
+import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,12 +30,12 @@ import com.astro.sott.fragments.subscription.adapter.SubscriptionAdapter;
  * create an instance of this fragment.
  */
 public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubscriptionPacksBinding> {
-
+    private SubscriptionViewModel subscriptionViewModel;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private String from;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -63,6 +68,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            from = getArguments().getString("from");
         }
     }
 
@@ -70,21 +76,46 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         UIinitialization();
+        modelCall();
+        getProducts();
 
     }
 
-    private void loadDataFromModel() {
-        SubscriptionAdapter adapter = new SubscriptionAdapter(SubscriptionPacksFragment.this);
+    private void modelCall() {
+        subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel.class);
+    }
+
+    private void loadDataFromModel(List<ProductsResponseMessageItem> productsResponseMessage) {
+        SubscriptionAdapter adapter = new SubscriptionAdapter(SubscriptionPacksFragment.this, productsResponseMessage);
         getBinding().recyclerView.setAdapter(adapter);
 
     }
 
+    private void getProducts() {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        subscriptionViewModel.getProduct().observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+
+            if (evergentCommonResponse.isStatus()) {
+                if (evergentCommonResponse.getGetProductResponse() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage().size() > 0) {
+                    loadDataFromModel(evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage());
+
+                }
+            } else {
+
+            }
+        });
+    }
+
     private void UIinitialization() {
+        if (from.equalsIgnoreCase("detail")) {
+            getBinding().toolbar.setVisibility(View.GONE);
+            getBinding().closeIcon.setVisibility(View.VISIBLE);
+        }
         getBinding().recyclerView.hasFixedSize();
         getBinding().recyclerView.setNestedScrollingEnabled(false);
         getBinding().recyclerView.hasFixedSize();
         getBinding().recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        loadDataFromModel();
 
     }
 

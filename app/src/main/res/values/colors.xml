@@ -105,6 +105,8 @@
     <color name="maya_blue">#5bc3ff</color>
     <color name="radical_red">#ff2954</color>
     <!-- Astro colors-->
+    <color name="dark_toolbar">#151024</color>
+    <color name="grape_purple">#2d1347</color>
     <color name="boxSetBgColor">#2d1347</color>
     <color name="aqua_marine">#2cd8e5</color>
     <color name="yellow_orange">#ffb400</color>

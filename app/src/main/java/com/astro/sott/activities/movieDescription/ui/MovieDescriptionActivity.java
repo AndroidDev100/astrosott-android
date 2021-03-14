@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
+import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceStatusCallBack;
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
@@ -189,6 +190,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
     private void setPlayerFragment() {
+
         manager = getSupportFragmentManager();
         //getBinding().playButton.setClickable(true);
         getBinding().astroPlayButton.setOnClickListener(view -> {
@@ -649,13 +651,15 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         setMetaDataValues(asset, type);
         getBinding().noConnectionLayout.setVisibility(View.GONE);
         setExpandable();
-        getBinding().shareWith.setOnClickListener(view -> {
+        getBinding().share.setOnClickListener(view -> {
 
-            if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
+            /*if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
-            openShareDialouge();
+            openShareDialouge();*/
+            Intent intent=new Intent(this,SubscriptionDetailActivity.class);
+            startActivity(intent);
         });
         setWatchlist();
         // setRailFragment();
@@ -1039,8 +1043,6 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
         }
     }
-
-
 
 
     private void isWatchlistedOrNot() {

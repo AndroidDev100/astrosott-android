@@ -3,17 +3,24 @@ package com.astro.sott.repositories.mysubscriptionplan;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.networking.errorCallBack.ErrorCallBack;
 import com.astro.sott.networking.ksServices.KsServices;
+import com.astro.sott.usermanagment.EvergentServices.EvergentServices;
+import com.astro.sott.usermanagment.callBacks.EvergentGetProductsCallBack;
+import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
+import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.Entitlement;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.Subscription;
 import com.kaltura.client.utils.response.base.Response;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -32,6 +39,31 @@ public class MySubscriptionPlanRepository {
             resultRepository = new MySubscriptionPlanRepository();
         }
         return resultRepository;
+    }
+
+
+    public LiveData<EvergentCommonResponse> getProducts(Context context) {
+        MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().getProduct(context, new EvergentGetProductsCallBack() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull GetProductResponse getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setGetProductResponse(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
     }
 
     public MutableLiveData<List<Entitlement>> getEntitlementList(Context context) {

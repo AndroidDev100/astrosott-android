@@ -10,6 +10,7 @@ import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
 import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse
 import com.astro.sott.usermanagment.modelClasses.getDevice.GetDevicesResponse
+import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse
 import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceResponse
@@ -475,6 +476,49 @@ class EvergentServices {
 
     }
 
+    fun getProduct(context: Context, evergentRefreshToken: EvergentGetProductsCallBack) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        var appChannelJson = JsonObject()
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        json.addProperty("dmaID", "001");
+        json.addProperty("returnAppChannels", "T");
+        json.add("appChannels", appChannelJson)
+        createUserJson.add("GetProductsRequestMessage", json)
+
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.getProducts(createUserJson)
+        call?.enqueue(object : Callback<GetProductResponse?> {
+            override fun onFailure(call: Call<GetProductResponse?>, t: Throwable) {
+                evergentRefreshToken.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<GetProductResponse?>, response: Response<GetProductResponse?>) {
+                if (response.body() != null && response.body()?.getProductsResponseMessage != null && response.body()?.getProductsResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.getProductsResponseMessage?.responseCode.equals("1", true)) {
+                        evergentRefreshToken.onSuccess(response.body()!!)
+                    } else {
+                        if (response.body()?.getProductsResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.getProductsResponseMessage?.failureMessage, context)
+                            evergentRefreshToken.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentRefreshToken.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                }
+            }
+        }
+
+        )
+
+
+    }
 
     fun refreshToken(context: Context, refreshToken: String, evergentRefreshToken: EvergentRefreshTokenCallBack) {
 
