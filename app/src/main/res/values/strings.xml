@@ -108,10 +108,10 @@
     <string name="on_Dialog">on Dialog SOTT!</string>
     <string name="added_to_watchlist">added to your watchlist</string>
 
-    <string name="watch_now">WATCH NOW</string>
     <string name="become_vip">BECOME A VIP</string>
     <string name="rent_movie">RENT MOVIE FOR RM XX.XX</string>
     <string name="rooted_failure_msg">Tsk tsk tsk…you cannot run this app on jailbreak or rooted devices!</string>
+    <string name="watch_now">WATCH NOW</string>
 
 
     //dialog buttons

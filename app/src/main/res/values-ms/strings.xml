@@ -11,6 +11,10 @@
     <string name="change_language">Tukar bahasa</string>
     <string name="audio_language">Bahasa audio</string>
     <string name="subtitle_language">Bahasa sari kata</string>
+    <string name="rent_movie">RENT MOVIE FOR RM XX.XX</string>
+    <string name="rooted_failure_msg">Tsk tsk tsk…you cannot run this app on jailbreak or rooted devices!</string>
+    <string name="watch_now">WATCH NOW</string>
+    <string name="successful">successful</string>
 
     <string name="play_over_wifi">Mainkan wifi</string>
     <string name="email_error">Please enter a valid email address</string>
