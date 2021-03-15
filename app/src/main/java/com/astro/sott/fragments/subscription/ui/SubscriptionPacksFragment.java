@@ -1,5 +1,6 @@
 package com.astro.sott.fragments.subscription.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -145,6 +146,13 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         return FragmentSubscriptionPacksBinding.inflate(inflater);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (!billingProcessor.handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
 
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
@@ -174,8 +182,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     @Override
     public void onCardClicked() {
         //skuDetails = billingProcessor.getSubscriptionListingDetails("com.astro.sott.autorenew_vip.15");
-        billingProcessor.subscribe(getActivity(), "com.astro.sott.autorenew_vip.15", "DEVELOPER PAYLOAD HERE");
+        billingProcessor.purchase(getActivity(), "com.astro.sott.autorenew_vip.15", "DEVELOPER PAYLOAD HERE");
 
-        Log.w("billingProcessor_play", skuDetails + "");
     }
 }

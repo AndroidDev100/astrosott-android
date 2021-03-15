@@ -21,6 +21,7 @@ import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
 import com.astro.sott.activities.profile.ui.ChangeEmailConfirmation;
+import com.astro.sott.activities.profile.ui.EditEmailActivity;
 import com.astro.sott.activities.search.ui.QuickSearchGenre;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
@@ -109,7 +110,10 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void setClicks() {
-
+        getBinding().edit.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditEmailActivity.class);
+            startActivity(intent);
+        });
         getBinding().loginSignupMore.setOnClickListener(view -> {
 
             new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
@@ -159,7 +163,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     transaction.replace(R.id.content_frame, transactionHistory); // give your fragment container id in first parameter
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                     transaction.commit();
-                }else {
+                } else {
                     new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
 
                 }

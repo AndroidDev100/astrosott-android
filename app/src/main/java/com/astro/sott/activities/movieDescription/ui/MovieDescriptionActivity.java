@@ -658,7 +658,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             }
             lastClickTime = SystemClock.elapsedRealtime();
             openShareDialouge();*/
-            Intent intent=new Intent(this,SubscriptionDetailActivity.class);
+            Intent intent = new Intent(this, SubscriptionDetailActivity.class);
             startActivity(intent);
         });
         setWatchlist();
@@ -823,8 +823,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
     private void getPlayBackControl() {
-        if (yearMap != null)
+        if (yearMap != null) {
             playbackControlValue = viewModel.getPlayBackControl(yearMap);
+        } else {
+            playbackControlValue = true;
+        }
     }
 
 
@@ -839,6 +842,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         }
         if (!xofferValue.equalsIgnoreCase("")) {
             xofferWindowValue = viewModel.isXofferWindow(xofferValue);
+        } else {
+            xofferWindowValue = true;
         }
     }
 

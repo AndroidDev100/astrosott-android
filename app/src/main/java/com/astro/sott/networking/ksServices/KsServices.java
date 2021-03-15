@@ -2869,8 +2869,8 @@ public class KsServices {
             if (result != null) {
                 if (result.isSuccess()) {
                     if (result.results != null) {
-                        if (result.results.getObjects() != null) {
-                            productPriceCallBack.getProductprice(true, result, "", "", "");
+                        if (result.results.getObjects() != null && result.results.getObjects().get(0).getPurchaseStatus() != null) {
+                            productPriceCallBack.getProductprice(true, result, result.results.getObjects().get(0).getPurchaseStatus().toString(), "", "");
                         } else {
                             productPriceCallBack.getProductprice(false, result, "", "", activity.getResources().getString(R.string.something_went_wrong));
                         }
