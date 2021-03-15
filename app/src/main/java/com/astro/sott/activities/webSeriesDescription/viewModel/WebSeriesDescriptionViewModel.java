@@ -54,7 +54,9 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
     public LiveData<String> getCastLiveData(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getCastData(map);
     }
-
+    public boolean getPlayBackControl(Map<String, Value> metas) {
+        return AssetContent.plabackControl(metas);
+    }
     public LiveData<String> getLanguageLiveData(Map<String, MultilingualStringValueArray> map) {
 
         return AssetContent.getLanguageData(map);
