@@ -153,11 +153,16 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             @Override
             public void onClick(View v) {
                 navBar.setVisibility(View.GONE);
-                TransactionHistory transactionHistory = new TransactionHistory();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame, transactionHistory); // give your fragment container id in first parameter
-                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                transaction.commit();
+                if (UserInfo.getInstance(getActivity()).isActive()) {
+                    TransactionHistory transactionHistory = new TransactionHistory();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.content_frame, transactionHistory); // give your fragment container id in first parameter
+                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                    transaction.commit();
+                }else {
+                    new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
+
+                }
 //                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
 //                FragmentTransaction transaction = getFragmentManager().beginTransaction();
 //                transaction.replace(R.id.content_frame, quickSearchGenre); // give your fragment container id in first parameter

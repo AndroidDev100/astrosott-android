@@ -5,17 +5,21 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentTransactionHistoryBinding;
+import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.transactionhistory.adapter.TransactionAdapter;
+import com.astro.sott.usermanagment.modelClasses.getPaymentV2.OrderItem;
+import com.astro.sott.utils.userInfo.UserInfo;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +27,7 @@ import com.astro.sott.fragments.transactionhistory.adapter.TransactionAdapter;
  * create an instance of this fragment.
  */
 public class TransactionHistory extends BaseBindingFragment<FragmentTransactionHistoryBinding> {
+    private SubscriptionViewModel subscriptionViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -63,14 +68,41 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        modelCall();
         UIinitialization();
+        getPaymentV2();
 
     }
-    private void loadDataFromModel() {
-        TransactionAdapter adapter = new TransactionAdapter(TransactionHistory.this);
+
+    private void getPaymentV2() {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        subscriptionViewModel.getPaymentV2(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (evergentCommonResponse.isStatus()) {
+                if (evergentCommonResponse.getPaymentV2Response() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder().size() > 0) {
+                    getBinding().status.setVisibility(View.VISIBLE);
+
+                    loadDataFromModel(evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder());
+                } else {
+                    getBinding().status.setVisibility(View.GONE);
+                }
+            } else {
+                getBinding().status.setVisibility(View.GONE);
+
+            }
+        });
+    }
+
+    private void modelCall() {
+        subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel.class);
+    }
+
+    private void loadDataFromModel(List<OrderItem> order) {
+        TransactionAdapter adapter = new TransactionAdapter(TransactionHistory.this, order);
         getBinding().recyclerView.setAdapter(adapter);
 
     }
@@ -80,9 +112,12 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         getBinding().recyclerView.setNestedScrollingEnabled(false);
         getBinding().recyclerView.hasFixedSize();
         getBinding().recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        loadDataFromModel();
 
+        getBinding().backButton.setOnClickListener(v -> {
+
+        });
     }
+
     @Override
     protected FragmentTransactionHistoryBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
         return FragmentTransactionHistoryBinding.inflate(inflater);

@@ -488,6 +488,8 @@
     <string name="logout">Logout</string>
     <string name="manage_payments">Manage Payment</string>
     <string name="language_selection">Language Selection</string>
+    <string name="transaction_history">Transaction History</string>
+
     <string name="App_language">App Language</string>
     <string name="Audio_language">Audio Language</string>
     <string name="Subtitle_language">Subtitle Language</string>

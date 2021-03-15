@@ -19,4 +19,8 @@ public class SubscriptionViewModel extends AndroidViewModel {
         return MySubscriptionPlanRepository.getInstance().getProducts(getApplication());
     }
 
+    public LiveData<EvergentCommonResponse> getPaymentV2(String acessToken) {
+        return MySubscriptionPlanRepository.getInstance().getPaymentV2(getApplication(),acessToken);
+    }
+
 }

@@ -12,7 +12,9 @@ import com.astro.sott.networking.errorCallBack.ErrorCallBack;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.usermanagment.EvergentServices.EvergentServices;
 import com.astro.sott.usermanagment.callBacks.EvergentGetProductsCallBack;
+import com.astro.sott.usermanagment.callBacks.EvergentPaymentV2Callback;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
+import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response;
 import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.Entitlement;
@@ -30,7 +32,8 @@ public class MySubscriptionPlanRepository {
     private List<AssetCommonBean> assetCommonList;
     private AssetCommonBean assetCommonBean;
     private List<Response<ListResponse<Asset>>> responseList;
-    private MySubscriptionPlanRepository(){
+
+    private MySubscriptionPlanRepository() {
 
     }
 
@@ -66,23 +69,47 @@ public class MySubscriptionPlanRepository {
         return mutableLiveData;
     }
 
+    public LiveData<EvergentCommonResponse> getPaymentV2(Context context, String acessToken) {
+        MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().getPaymentV2(context, acessToken, new EvergentPaymentV2Callback() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull PaymentV2Response getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setPaymentV2Response(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
     public MutableLiveData<List<Entitlement>> getEntitlementList(Context context) {
 
         final MutableLiveData<List<Entitlement>> connection = new MutableLiveData<>();
         final KsServices ksServices = new KsServices(context);
-        ksServices.callEntitlementListApi((status1,errorCode,message,entitlementListRespone)->{
-            if(status1){
-                if(entitlementListRespone != null){
-                    if(entitlementListRespone.size() > 0){
+        ksServices.callEntitlementListApi((status1, errorCode, message, entitlementListRespone) -> {
+            if (status1) {
+                if (entitlementListRespone != null) {
+                    if (entitlementListRespone.size() > 0) {
 
                         connection.postValue(entitlementListRespone);
-                    }else{
+                    } else {
                         connection.postValue(entitlementListRespone);
                     }
-                }else{
+                } else {
                     connection.postValue(null);
                 }
-            }else{
+            } else {
                 connection.postValue(null);
             }
         });
@@ -96,19 +123,19 @@ public class MySubscriptionPlanRepository {
         final MutableLiveData<List<Subscription>> connection = new MutableLiveData<>();
         final KsServices ksServices = new KsServices(context);
 
-        ksServices.callMySubcriptionListApi(id,(status1,errorCode,message,subscriptionListRespone)->{
-            if(status1){
-                if(subscriptionListRespone != null){
-                    if(subscriptionListRespone.size() > 0){
+        ksServices.callMySubcriptionListApi(id, (status1, errorCode, message, subscriptionListRespone) -> {
+            if (status1) {
+                if (subscriptionListRespone != null) {
+                    if (subscriptionListRespone.size() > 0) {
 
                         connection.postValue(subscriptionListRespone);
-                    }else{
+                    } else {
                         connection.postValue(subscriptionListRespone);
                     }
-                }else{
+                } else {
                     connection.postValue(null);
                 }
-            }else{
+            } else {
                 connection.postValue(null);
             }
         });
@@ -116,29 +143,27 @@ public class MySubscriptionPlanRepository {
         return connection;
     }
 
-    public MutableLiveData<CommonResponse> callCancelSubcriptionApi(String id,Context context) {
+    public MutableLiveData<CommonResponse> callCancelSubcriptionApi(String id, Context context) {
 
         final MutableLiveData<CommonResponse> connection = new MutableLiveData<>();
         final KsServices ksServices = new KsServices(context);
         final CommonResponse commonResponse = new CommonResponse();
-        ksServices.callCancelSubscriptionApi(id,(status1,errorCode,message)->{
-            if(status1){
+        ksServices.callCancelSubscriptionApi(id, (status1, errorCode, message) -> {
+            if (status1) {
                 commonResponse.setStatus(true);
                 commonResponse.setErrorCode(errorCode);
                 commonResponse.setMessage(message);
                 connection.postValue(commonResponse);
-            }else{
+            } else {
                 commonResponse.setStatus(false);
                 commonResponse.setErrorCode(errorCode);
-                commonResponse.setMessage(new ErrorCallBack().ErrorMessage(errorCode,message));
+                commonResponse.setMessage(new ErrorCallBack().ErrorMessage(errorCode, message));
                 connection.postValue(commonResponse);
             }
         });
 
         return connection;
     }
-
-
 
 
 }
