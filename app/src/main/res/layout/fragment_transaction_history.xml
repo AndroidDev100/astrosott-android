@@ -37,7 +37,7 @@
                 android:layout_marginBottom="@dimen/_15sdp"
                 android:fontFamily="@font/heebo_medium"
                 android:letterSpacing="0.09"
-                android:text="@string/language_selection"
+                android:text="@string/transaction_history"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp"></TextView>
