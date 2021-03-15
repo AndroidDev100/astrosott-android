@@ -42,6 +42,7 @@
     <string name="App_language">Bahasa Aplikasi</string>
     <string name="Audio_language">Bahasa Audio</string>
     <string name="Subtitle_language">Bahasa Sari kata</string>
+    <string name="transaction_history">Transaction History</string>
 
     <string name="profile_txt">Profil</string>
     <string name="live_home">Langsung</string>

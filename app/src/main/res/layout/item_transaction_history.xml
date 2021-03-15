@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/grape_purple">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/dark_toolbar"
+        android:layout_height="@dimen/_37dp"
+        android:id="@+id/ll1">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_14sp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/heebo_regular"
+            android:textColor="@color/grey"
+           android:paddingLeft="@dimen/dimen16dp"
+            android:text="Wed, 1/4/2019"/>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll1"
+        android:id="@+id/rl1"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:layout_marginStart="@dimen/dimen16dp"
+        >
+        <TextView
+            android:id="@+id/orderName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_alignParentLeft="true"
+            android:fontFamily="@font/heebo_regular"
+            android:text="@string/watch_movie"
+            android:textSize="@dimen/_16sp"/>
+
+        <TextView
+            android:id="@+id/currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/dimen16dp"
+            android:fontFamily="@font/heebo_medium"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp" />
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_below="@+id/rl1"
+        android:layout_marginEnd="@dimen/dimen16dp"
+        android:layout_alignParentRight="true"
+        android:fontFamily="@font/heebo_light"
+        android:text="inclusive 6% Tax"
+        android:textSize="@dimen/_10sp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rl2"
+        android:layout_marginTop="@dimen/_22dp"
+        android:layout_marginStart="@dimen/dimen16dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/dimen16dp"
+        android:layout_below="@id/rl1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:layout_alignParentLeft="true"
+            android:fontFamily="@font/heebo_regular"
+            android:text="@string/payment_method"
+            android:textSize="@dimen/_14sp"/>
+        <TextView
+            android:id="@+id/credit_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/heebo_regular"
+            android:text="4242"
+            android:drawablePadding="@dimen/dimen12dp"
+            android:drawableLeft="@drawable/ic_devices_24px"
+            android:textSize="@dimen/_14sp"/>
+    </RelativeLayout>
+</RelativeLayout>
+</layout>

@@ -8,16 +8,16 @@
         android:layout_width="@dimen/potrait_item_width"
         android:layout_height="wrap_content"
         android:background="@color/fragment_background_color"
-        card_view:cardCornerRadius="4dp">
+        card_view:cardCornerRadius="9dp">
         <include
             android:id="@+id/metas"
             layout="@layout/metas_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_gravity="top|right"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:visibility="visible"></include>
+           ></include>
         <ImageView
             android:id="@+id/itemImage"
             android:layout_width="match_parent"

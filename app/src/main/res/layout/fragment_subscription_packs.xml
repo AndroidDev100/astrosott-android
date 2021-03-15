@@ -1,65 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/blue_bg"
-    tools:context=".fragments.subscription.ui.SubscriptionPacksFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <ImageView
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
-        android:src="@drawable/astro_white"
-        android:id="@+id/astro_logo"
-        android:layout_marginStart="@dimen/dimen16dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/dimen10dp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/astro_logo"
-        android:fontFamily="@font/heebo_medium"
-        android:textSize="@dimen/txt24sp"
-        android:textColor="@color/white"
-        android:id="@+id/vip_packs"
-        android:layout_marginStart="@dimen/dimen16dp"
-        android:layout_marginTop="@dimen/marginTop37dp"
-        android:text="@string/vip_pack" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/vip_packs"
-        android:fontFamily="@font/heebo_regular"
-        android:textSize="@dimen/_16sp"
-        android:textColor="@color/white"
-        android:id="@+id/choose_pack"
-        android:layout_marginStart="@dimen/dimen16dp"
-        android:layout_marginTop="@dimen/dimen8dp"
-        android:text="@string/choose_pack" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/choose_pack"
-        android:fontFamily="@font/heebo_regular"
-        android:textSize="@dimen/_12sp"
-        android:textColor="@color/white"
-        android:textAllCaps="true"
-        android:id="@+id/learn_more"
-        android:layout_marginStart="@dimen/dimen16dp"
-        android:layout_marginTop="@dimen/dimen16dp"
-        android:text="@string/Learn_more"/>
-    <androidx.recyclerview.widget.RecyclerView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/recycler_view"
-        android:layout_below="@+id/learn_more"
-        android:layout_marginTop="@dimen/dimen24dp"
-        />
+        android:layout_height="match_parent"
+        android:background="@color/grape_purple"
+        tools:context=".fragments.subscription.ui.SubscriptionPacksFragment">
 
-</RelativeLayout>
+        <!-- TODO: Update blank fragment layout -->
+
+        <LinearLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:background="@color/dark_toolbar">
+
+            <ImageView
+                android:layout_width="110dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/sooka_landscape"></ImageView>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/close_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_baseline_clear_24"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/vip_packs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:layout_marginStart="@dimen/dimen16dp"
+            android:layout_marginTop="45dp"
+            android:fontFamily="@font/heebo_medium"
+            android:text="@string/vip_pack"
+            android:textColor="@color/title_color"
+            android:textSize="@dimen/txt24sp" />
+
+        <TextView
+            android:id="@+id/choose_pack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vip_packs"
+            android:layout_marginStart="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:fontFamily="@font/heebo_regular"
+            android:text="@string/choose_pack"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/_16sp" />
+
+        <TextView
+            android:id="@+id/learn_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/choose_pack"
+            android:layout_marginStart="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen16dp"
+            android:fontFamily="@font/heebo_regular"
+            android:text="@string/Learn_more"
+            android:textAllCaps="true"
+            android:textColor="@color/aqua_marine"
+            android:textSize="@dimen/_12sp" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_below="@id/learn_more"
+            android:visibility="gone"></ProgressBar>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/learn_more"
+            android:layout_marginTop="@dimen/_30sdp" />
+
+    </RelativeLayout>
 </layout>

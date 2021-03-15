@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
 
 import com.astro.sott.baseModel.ChannelLayer;
+import com.astro.sott.repositories.movieDescription.MovieDescriptionRepository;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.activities.webEpisodeDescription.layers.ClipLayer;
 import com.astro.sott.activities.webEpisodeDescription.layers.EpisodesLayer;
@@ -46,7 +48,9 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
     public LiveData<String> getCrewLiveDAta(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getCrewData(map);
     }
-
+    public boolean isXofferWindow(String xofferValue) {
+        return AppCommonMethods.isXofferWindow(xofferValue);
+    }
     public LiveData<String> getCastLiveData(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getCastData(map);
     }
@@ -89,9 +93,13 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
         return AssetContent.getGenredata(map);
     }
 
-//    public LiveData<String> getSubTitleLangLivedata(Map<String, MultilingualStringValueArray> map) {
-//        return AssetContent.getSubTitleLang(map);
-//    }
+    public LiveData<CommonResponse> listAllwatchList(String assetId) {
+        return MovieDescriptionRepository.getInstance().compareWatchlist(assetId, getApplication().getApplicationContext());
+    }
+
+    public LiveData<CommonResponse> addToWatchlist(String id, String titleName, int playlistId) {
+        return MovieDescriptionRepository.getInstance().addToWatchlist(id, titleName, getApplication().getApplicationContext(),playlistId);
+    }
 
     public LiveData<String> getImage(Asset asset) {
         return AssetContent.getImageUrl(asset);
@@ -114,10 +122,9 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
         return WebSeriesDescriptionRepository.getInstance().addToFollowlist(assetId, getApplication());
     }
 
-    public LiveData<CommonResponse> deleteWatchlist(long assetId) {
-        return WebSeriesDescriptionRepository.getInstance().deleteFromWatchlist(assetId, getApplication().getApplicationContext());
+    public LiveData<CommonResponse> deleteWatchlist(String idfromAssetWatchlist) {
+        return MovieDescriptionRepository.getInstance().deleteFromWatchlist(idfromAssetWatchlist, getApplication().getApplicationContext());
     }
-
     public LiveData<CommonResponse> getNumberOfEpisodes(Asset asset) {
         return WebSeriesDescriptionRepository.getInstance().getNumberOfEpisode(asset, getApplication().getApplicationContext());
     }

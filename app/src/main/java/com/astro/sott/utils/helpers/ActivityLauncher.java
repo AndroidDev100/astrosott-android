@@ -13,6 +13,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.astro.sott.activities.boxSet.ui.BoxSetDetailActivity;
 import com.astro.sott.activities.catchUpRails.ui.CatchupActivity;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
@@ -47,6 +48,7 @@ import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.activities.search.ui.ResultActivity;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.splash.viewModel.SplashViewModel;
+import com.astro.sott.activities.sponsored.ui.SponsoredDetailActivity;
 import com.astro.sott.activities.subscription.ui.SingleLiveChannelSubscriptionActivity;
 import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionAndMyPlanActivity;
@@ -242,6 +244,9 @@ public class ActivityLauncher {
             case AppLevelConstants.WEB_EPISODE_DESCRIPTION_ACTIVITY:
                 webEpisodeScreenCheck(name, railCommonData, layoutPosition, layoutType, detailRailClick);
                 break;
+            case AppLevelConstants.BOX_SET_DETAIL:
+                boxSetScreenCheck(name, railCommonData, layoutPosition, layoutType, detailRailClick);
+                break;
             case AppLevelConstants.LIVE_CHANNEL:
                 liveplayerScreenCheck(name, railCommonData, layoutPosition, layoutType, detailRailClick);
                 break;
@@ -256,9 +261,17 @@ public class ActivityLauncher {
         }
     }
 
+    private void boxSetScreenCheck(String name, RailCommonData railCommonData, int layoutPosition, int layoutType, MediaTypeCallBack detailRailClick) {
+        if (railCommonData.getObject().getType() == MediaTypeConstant.getCollection(activity)) {
+            detailRailClick.detailItemClicked(AssetContent.getTileVideoURL(railCommonData.getObject(), AssetContent.getVideoResol(railCommonData.getObject().getTags())), layoutPosition, 1, railCommonData);
+        }
+
+    }
+
     private void dramaScreenCheck(String name, RailCommonData railCommonData, int layoutPosition, int layoutType, MediaTypeCallBack detailRailClick) {
-        if (railCommonData.getObject().getType() == MediaTypeConstant.getDrama(activity)) {
-            new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, railCommonData, layoutType);
+        if (railCommonData.getObject().getType() == MediaTypeConstant.getSeries(activity)) {
+            detailRailClick.detailItemClicked(AssetContent.getTileVideoURL(railCommonData.getObject(), AssetContent.getVideoResol(railCommonData.getObject().getTags())), layoutPosition, 1, railCommonData);
+
         } else if (railCommonData.getObject().getType() == MediaTypeConstant.getPromo(activity)) {
             promoCondition(railCommonData, layoutType);
         } else {
@@ -434,6 +447,8 @@ public class ActivityLauncher {
             //new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getProgram(activity)) {
             checkCurrentProgram(itemsList.getObject());
+        } else if (itemsList.getObject().getType() == MediaTypeConstant.getCollection(activity)) {
+            //  boxSetDetailActivity(activity, itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getPromo(activity)) {
             promoCondition(itemsList, layoutType);
         }
@@ -645,6 +660,20 @@ public class ActivityLauncher {
         intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
         activity.startActivity(intent);
+    }
+
+    public void boxSetDetailActivity(Activity source, RailCommonData railData, int layoutType) {
+        if (!AssetContent.isSponsored(railData.getObject().getMetas())) {
+            Intent intent = new Intent(source, BoxSetDetailActivity.class);
+            intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
+            intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
+            activity.startActivity(intent);
+        } else {
+            Intent intent = new Intent(source, SponsoredDetailActivity.class);
+            intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
+            intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
+            activity.startActivity(intent);
+        }
     }
 
 

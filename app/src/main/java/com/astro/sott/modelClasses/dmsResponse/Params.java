@@ -24,6 +24,10 @@ public class Params {
     @Expose
     private JsonObject SubtitleLanguages;
 
+    @SerializedName("AssetHistoryDays")
+    @Expose
+    private AssetHistoryDays assetHistoryDays;
+
     @SerializedName("FilterValues")
     @Expose
     private JsonObject FilterValues;
@@ -152,6 +156,10 @@ public class Params {
 
     public void setDefaultParentalLevel(String defaultParentalLevel) {
         this.defaultParentalLevel = defaultParentalLevel;
+    }
+
+    public AssetHistoryDays getAssetHistoryDays() {
+        return assetHistoryDays;
     }
 
     private ParentalDefaultRule ParentalDefaultRule;

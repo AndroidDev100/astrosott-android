@@ -2,6 +2,7 @@ package com.astro.sott.utils.helpers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -122,6 +123,19 @@ public class AssetContent {
         }
 
         return ref_id;
+    }
+
+    public static boolean isAdsEnable(Map<String, Value> metas) {
+        BooleanValue adsValue = null;
+        if (metas != null) {
+            adsValue = (BooleanValue) metas.get(AppLevelConstants.NOADS);
+        }
+        if (adsValue != null) {
+            boolean value = adsValue.getValue();
+            return value;
+        } else {
+            return false;
+        }
     }
 
     public static List<Integer> getSeasonNumber(Response<ListResponse<Asset>> result) {
@@ -1253,5 +1267,78 @@ public class AssetContent {
 
         }
         return diffSeconds1;
+    }
+
+    public static List<String> getRibbon(Map<String, MultilingualStringValueArray> map) {
+        List<String> ribbonList = new ArrayList<>();
+        List<MultilingualStringValue> crew_value = new ArrayList<>();
+        MultilingualStringValueArray crew_list = map.get(AppLevelConstants.RIBBON);
+        if (crew_list != null)
+            crew_value.addAll(crew_list.getObjects());
+        for (int i = 0; i <= crew_value.size() - 1; i++) {
+            if (crew_value.get(i) != null) {
+                try {
+                    String[] splitString = crew_value.get(i).getValue().split("\\|");
+                    String label = splitString[0];
+                    String startTimeSplit = splitString[1];
+                    String endTimeSplit = splitString[2];
+                    String[] startTimeArray = startTimeSplit.split("=");
+                    String[] endTimeArray = endTimeSplit.split("=");
+                    String startTime = startTimeArray[1];
+                    String endTime = endTimeArray[1];
+                    boolean isVisible = AppCommonMethods.compareStartEndTime(startTime, endTime);
+                    if (isVisible) {
+                        ribbonList.add(label);
+                    }
+                } catch (Exception e) {
+
+                }
+
+
+            }
+
+            // stringBuilder.append(crew_value.get(i).getValue()).append(", ");
+        }
+        return ribbonList;
+
+    }
+
+    public static boolean plabackControl(Map<String, Value> metas) {
+        StringValue startValue, endValue;
+        String startDate, endDate;
+        startValue = (StringValue) metas.get(AppLevelConstants.PLAYBACK_START_DATE);
+        endValue = (StringValue) metas.get(AppLevelConstants.PLAYBACK_END_DATE);
+
+        if (startValue != null && endValue != null) {
+            startDate = startValue.getValue();
+            endDate = endValue.getValue();
+            if (startDate != null && endDate != null && !startDate.equalsIgnoreCase("") && !endDate.equalsIgnoreCase("")) {
+                return AppCommonMethods.comparePlaybackStartEndTime(startDate, endDate);
+            } else {
+                return true;
+            }
+
+        } else {
+            return true;
+        }
+
+
+    }
+
+    public static boolean isSponsored(Map<String, Value> metas) {
+        BooleanValue sponsoredValue;
+        if (metas != null) {
+            sponsoredValue = (BooleanValue) metas.get(AppLevelConstants.IS_SPONSORED);
+            if (sponsoredValue != null) {
+                return sponsoredValue.getValue();
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
+
     }
 }

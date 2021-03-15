@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class RecommendationRailFragment extends BaseBindingFragment<DetailFooterFragmentBinding> implements ContinueWatchingRemove, RemoveAdsCallBack, DetailRailClick, HeroItemClickListner {
+public class RecommendationRailFragment extends BaseBindingFragment<DetailFooterFragmentBinding> implements ContinueWatchingRemove, RemoveAdsCallBack, HeroItemClickListner {
     HomeFragmentViewModel viewModel;
     int tabId;
     int mediaType;
@@ -227,7 +227,7 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
         if (youMayAlsoLikeData.get(0) != null)
             totalCount = youMayAlsoLikeData.get(0).getTotalCount();
         if (similarAdapter == null) {
-            similarAdapter = new SimilarAdapter(youMayAlsoLikeData);
+            similarAdapter = new SimilarAdapter(getActivity(),youMayAlsoLikeData);
             getBinding().recyclerView.setAdapter(similarAdapter);
         } else {
             similarAdapter.notifyDataSetChanged();
@@ -326,14 +326,6 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
     }
 
-    @Override
-    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
-       /* if (context instanceof MovieDescriptionActivity) {
-            ((MovieDescriptionActivity) context).detailRailItemClick(commonData);
-        } else if (context instanceof ShortFilmActivity) {
-            ((ShortFilmActivity) context).detailRailItemClick(commonData);
-        }*/
-    }
 
     @Override
     public void onDetach() {

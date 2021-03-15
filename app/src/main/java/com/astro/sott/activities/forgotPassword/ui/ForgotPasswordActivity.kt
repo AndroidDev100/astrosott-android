@@ -34,6 +34,9 @@ class ForgotPasswordActivity : AppCompatActivity() {
             if (checkEmailVaildation()){
                 searchAccountv2()
             }
+            activityForgotPasswordBinding?.backIcon?.setOnClickListener({
+                onBackPressed()
+                })
         }
 
        activityForgotPasswordBinding?.emailMobileEdt?.addTextChangedListener(CustomTextWatcher(this, object : TextWatcherCallBack {

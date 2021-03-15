@@ -5,6 +5,8 @@ import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse;
 import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse;
 import com.astro.sott.usermanagment.modelClasses.getDevice.GetDevicesResponse;
+import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response;
+import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse;
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse;
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse;
 import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceResponse;
@@ -19,9 +21,10 @@ public class EvergentCommonResponse {
     private boolean status;
     private SearchAccountv2Response searchAccountv2Response;
 
+    private PaymentV2Response paymentV2Response;
     private CreateOtpResponse createOtpResponse;
     private ConfirmOtpResponse confirmOtpResponse;
-
+    private GetProductResponse getProductResponse;
     private ResetPasswordResponse resetPasswordResponse;
     private CreateUserResponse createUserResponse;
     private LoginResponse loginResponse;
@@ -32,6 +35,22 @@ public class EvergentCommonResponse {
 
     public void setRemoveDeviceResponse(RemoveDeviceResponse removeDeviceResponse) {
         this.removeDeviceResponse = removeDeviceResponse;
+    }
+
+    public PaymentV2Response getPaymentV2Response() {
+        return paymentV2Response;
+    }
+
+    public void setPaymentV2Response(PaymentV2Response paymentV2Response) {
+        this.paymentV2Response = paymentV2Response;
+    }
+
+    public GetProductResponse getGetProductResponse() {
+        return getProductResponse;
+    }
+
+    public void setGetProductResponse(GetProductResponse getProductResponse) {
+        this.getProductResponse = getProductResponse;
     }
 
     public RemoveDeviceResponse getRemoveDeviceResponse() {

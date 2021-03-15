@@ -79,7 +79,6 @@
 
     <string name="share"><b>Share </b></string>
     <string name="play_now">Play Now</string>
-    <string name="become_vip">BECOME A VIP</string>
     <string name="my_list">My List</string>
     <string name="no_connection">No Connection</string>
     <string name="more">MORE</string>
@@ -103,11 +102,16 @@
     <string name="popular_search">Popular Searches</string>
     <string name="recent_searches">Recent Searches</string>
 
-    <string name="removed_from_watchlist">removed from your playlist</string>
+    <string name="removed_from_watchlist">removed from your watchlist</string>
     <string name="playlist_removed">Video removed from your playlist</string>
     <string name="checkout">Checkout</string>
     <string name="on_Dialog">on Dialog SOTT!</string>
-    <string name="added_to_watchlist">added to your playlist</string>
+    <string name="added_to_watchlist">added to your watchlist</string>
+
+    <string name="watch_now">WATCH NOW</string>
+    <string name="become_vip">BECOME A VIP</string>
+    <string name="rent_movie">RENT MOVIE FOR RM XX.XX</string>
+    <string name="rooted_failure_msg">Tsk tsk tsk…you cannot run this app on jailbreak or rooted devices!</string>
 
 
     //dialog buttons
@@ -484,6 +488,8 @@
     <string name="logout">Logout</string>
     <string name="manage_payments">Manage Payment</string>
     <string name="language_selection">Language Selection</string>
+    <string name="transaction_history">Transaction History</string>
+
     <string name="App_language">App Language</string>
     <string name="Audio_language">Audio Language</string>
     <string name="Subtitle_language">Subtitle Language</string>
@@ -572,6 +578,7 @@
     <string name="make_sure">Just Wanted to Make Sure \n You are You</string>
     <string name="key_in_pswd">Please key in your password \n to update email.</string>
     <string name="quick_search_text">QUICK SEARCH</string>
+    <string name="successful">successful</string>
 
 
 </resources>

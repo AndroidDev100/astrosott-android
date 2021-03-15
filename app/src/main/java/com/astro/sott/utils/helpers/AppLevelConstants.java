@@ -34,6 +34,7 @@ public interface AppLevelConstants {
     String ASSET_COMMON_BEAN = "assetCommonBean";
     String MOVIE_DESCRIPTION_ACTIVITY = "MovieDescriptionActivity";
     String WEB_EPISODE_DESCRIPTION_ACTIVITY = "WebEpisodeDescriptionActivity";
+    String BOX_SET_DETAIL="BoxSetDetailActivity";
     String LIVE_CHANNEL = "LiveChannel";
     String SHORT_FILM_ACTIVITY = "ShortFilmActivity";
     String WEB_SERIES_DESCCRIPTION_ACTIVITY = "WebSeriesDescriptionActivity";
@@ -108,6 +109,13 @@ public interface AppLevelConstants {
 
     String KEY_REF_ID = "Ref Id";
     String YEAR = "Year";
+    String IS_SPONSORED="IsSponsored";
+    String PLAYBACK_START_DATE="PlaybackStartDate";
+    String PLAYBACK_END_DATE="PlaybackEndDate";
+
+    String NOADS = "NoAds";
+
+    String XOFFERWINDOW="XOfferWindow";
     String RAIL_DATA_OBJECT = "railData";
     String PROGRAM_ASSET = "program_asset";
 
@@ -134,6 +142,7 @@ public interface AppLevelConstants {
     String KEY_PARENTREF_ID = "TrailerParentRefId";
     String KEY_VIDEO_RESOLUTION = "VideoResolution";
     String KEY_DIRECTOR = "Director";
+    String RIBBON="Ribbon";
     String WATCHLIST_PARTNER_TYPE = "1";
     String MEDIATYPE_SEARCH_MOVIE = "Movie";
     String MEDIATYPE_SERIES = "Series";

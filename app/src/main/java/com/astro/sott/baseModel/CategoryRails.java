@@ -230,10 +230,10 @@ public class CategoryRails {
                     int totalCount = list.get(i).results.getTotalCount();
 
                     if (totalCount == 0) {
-                        // Log.w("AnkurYadav " + i, loopCount + "");
+                        // Log.w(" " + i, loopCount + "");
                         PrintLogging.printLog("", "channel" + channelList.get(counter).getName());
                     } else {
-                        // Log.w("AnkurYadav " + i, loopCount + "");
+                        // Log.w(" " + i, loopCount + "");
                         AssetCommonBean assetCommonBean = new AssetCommonBean();
                         assetCommonBean.setStatus(true);
                         if (loopCount == 1) {
@@ -366,8 +366,8 @@ public class CategoryRails {
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE4);
-                assetCommonBean1.setRailType(AppConstants.Rail4);
+                setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE5);
+                assetCommonBean1.setRailType(AppConstants.Rail5);
 
                 break;
 
