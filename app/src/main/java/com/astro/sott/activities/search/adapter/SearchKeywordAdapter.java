@@ -18,7 +18,12 @@ import com.astro.sott.activities.search.ui.SearchKeywordActivity;
 import com.astro.sott.databinding.GenreRecyclerItemBinding;
 import com.astro.sott.databinding.LandscapeRecyclerItemBinding;
 import com.astro.sott.databinding.LanguageRecyclerItemBinding;
+import com.astro.sott.db.search.SearchedKeywords;
+import com.astro.sott.modelClasses.dmsResponse.FilterLanguages;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.astro.sott.utils.constants.AppConstants.TYPE_GENRE;
 import static com.astro.sott.utils.constants.AppConstants.TYPE_LANGUAGE;
@@ -27,9 +32,13 @@ public class SearchKeywordAdapter extends RecyclerView.Adapter<RecyclerView.View
     private static final int VERTICAL_ITEM_SPACE = 30;
     private static final int HORIONTAL_ITEM_SPACE = 10;
     private Activity context;
+    private List<SearchedKeywords> searchedKeywordsList;
+    ArrayList<FilterLanguages> filterLanguageList;
 
-    public SearchKeywordAdapter(SearchKeywordActivity ctx) {
+    public SearchKeywordAdapter(SearchKeywordActivity ctx, List<SearchedKeywords> searchedKeywords, ArrayList<FilterLanguages> filterLangList) {
         this.context= ctx;
+        this.searchedKeywordsList=searchedKeywords;
+        this.filterLanguageList=filterLangList;
     }
 
     @NonNull
@@ -80,7 +89,7 @@ public class SearchKeywordAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof LanguageHolder) {
             try {
-          LanguageAdapter languageAdapter=new LanguageAdapter(context);
+          LanguageAdapter languageAdapter=new LanguageAdapter(context,filterLanguageList);
           ((LanguageHolder) holder).ItemBinding.recyclerView.setAdapter(languageAdapter);
 
           checkArrowVisibility(holder);
@@ -107,7 +116,7 @@ public class SearchKeywordAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
         if (holder instanceof GenreHolder) {
             try {
-                GenreAdapter genreAdapter=new GenreAdapter(context);
+                GenreAdapter genreAdapter=new GenreAdapter(context,searchedKeywordsList);
                 ((GenreHolder) holder).ItemBinding.recyclerView.setAdapter(genreAdapter);
                 checkGenreArrowVisibility(holder);
                 ((GenreHolder) holder).ItemBinding.expandableArrow.setOnClickListener(new View.OnClickListener() {

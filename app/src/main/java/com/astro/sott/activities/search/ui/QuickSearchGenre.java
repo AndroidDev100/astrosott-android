@@ -27,11 +27,15 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.DataLoadedOnFragment;
 import com.astro.sott.callBacks.commonCallBacks.GenreSelectionCallBack;
 import com.astro.sott.databinding.FragmentQuickSearchGenreBinding;
+import com.astro.sott.db.search.SearchedKeywords;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -130,6 +134,21 @@ public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGen
                     }
                 });
                 getBinding().recyclerView.setAdapter(adapter);
+
+                try {
+                    List<SearchedKeywords> list=new ArrayList<>();
+                    for (int i=0;i<commonResponse.size();i++){
+                        SearchedKeywords searchedKeywords=new SearchedKeywords();
+                        searchedKeywords.setKeyWords(commonResponse.get(i).getName());
+                        searchedKeywords.setSelected(false);
+                        list.add(searchedKeywords);
+                    }
+                    Gson gson = new Gson();
+                    String userProfileData = gson.toJson(list);
+                    KsPreferenceKey.getInstance(getActivity()).setUserProfileData(userProfileData);
+                }catch (Exception ignored){
+
+                }
             }else {
                 dataLoadedOnFragment.isDataLoaded(false);
             }
@@ -175,4 +194,7 @@ public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGen
     }
 
 
+    public String getSelectedGenres() {
+        return selectedGenre;
+    }
 }

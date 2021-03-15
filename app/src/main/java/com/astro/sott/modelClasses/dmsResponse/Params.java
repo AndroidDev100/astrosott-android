@@ -16,6 +16,10 @@ public class Params {
     @Expose
     private Gateways gateways;
 
+    @SerializedName("FilterLanguageValues")
+    @Expose
+    private JsonObject filterLanguages;
+
     @SerializedName("AudioLanguages")
     @Expose
     private JsonObject AudioLanguages;
@@ -218,6 +222,14 @@ public class Params {
 
     public void setParentalDefaultRule(ParentalDefaultRule parentalDefaultRule) {
         this.ParentalDefaultRule = parentalDefaultRule;
+    }
+
+    public void setFilterLanguages(JsonObject filterLanguages) {
+        this.filterLanguages = filterLanguages;
+    }
+
+    public JsonObject getFilterLanguages() {
+        return filterLanguages;
     }
 
     public JsonObject getAudioLanguages() {

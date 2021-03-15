@@ -45,6 +45,8 @@ import com.astro.sott.beanModel.ksBeanmodel.AssetCommonUrls;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.databinding.ActivitySearchBinding;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.kaltura.client.types.Asset;
 
 import java.util.ArrayList;
@@ -69,8 +71,8 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        KsPreferenceKey.getInstance(ActivitySearch.this).setFilterApply("false");
+        modelCall();
         connectionObserver();
 
         getBinding().toolbar.searchText.addTextChangedListener(new TextWatcher() {
@@ -186,17 +188,30 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         viewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
     }
 
+    List<SearchedKeywords> searchedKeywordsList;
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(this)) {
             connectionValidation(true);
         } else {
             connectionValidation(false);
         }
+
+        try {
+            if(UserInfo.getInstance(ActivitySearch.this).isActive()){
+                viewModel.getRecentSearchesKaltura().observe(this, searchedKeywords -> {
+                        if (searchedKeywords.size()>0){
+                            searchedKeywordsList=searchedKeywords;
+                        }
+                });
+                viewModel.deleteAllKeywordsRecent();
+            }
+        }catch (Exception ignored){
+
+        }
     }
 
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
-            modelCall();
             resetLayout();
             UIinitialization();
             getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
@@ -208,9 +223,10 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         }
     }
 
+    QuickSearchGenre detailRailFragment;
     private void addGenreFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        QuickSearchGenre detailRailFragment = new QuickSearchGenre();
+        detailRailFragment = new QuickSearchGenre();
         fm.beginTransaction().replace(R.id.genre_fragment, detailRailFragment).commitNow();
     }
 
@@ -235,6 +251,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     }
 
+    String selectedGenreValues;
     private void setListners() {
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
 
@@ -255,6 +272,24 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 noConnectionLayout();
         });
 
+        getBinding().quickSearchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (detailRailFragment!=null){
+                    selectedGenreValues=detailRailFragment.getSelectedGenres();
+                    if (selectedGenreValues==null || selectedGenreValues.equalsIgnoreCase("")){
+                        ToastHandler.show("Select at least one!", getApplicationContext());
+                    }else {
+                        counter = 0;
+                        laodMoreList.clear();
+                        adapter = null;
+                        getBinding().toolbar.filter.setVisibility(View.INVISIBLE);
+                        callQuickSearch("",1);
+                    }
+                }
+            }
+        });
+
         getBinding().toolbar.searchText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 if (NetworkConnectivity.isOnline(ActivitySearch.this)) {
@@ -265,6 +300,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                             counter = 0;
                             laodMoreList.clear();
                             adapter = null;
+                            getBinding().toolbar.filter.setVisibility(View.INVISIBLE);
                             callViewModel(getBinding().toolbar.searchText.getText().toString());
                         }
                     }
@@ -376,6 +412,9 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 adapter = new SearchResponseAdapter(ActivitySearch.this, laodMoreList, ActivitySearch.this);
                 getBinding().rvSearchResult.setAdapter(adapter);
             }
+            if (laodMoreList.size()>0){
+                getBinding().toolbar.filter.setVisibility(View.VISIBLE);
+            }
         } catch (Exception ignored) {
 
         }
@@ -445,6 +484,8 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             if (itemValue.getKeyWords().length() > 0) {
                 getBinding().toolbar.searchText.setText(itemValue.getKeyWords());
                 counter = 0;
+                laodMoreList.clear();
+                adapter = null;
                 callViewModel(itemValue.getKeyWords());
             }
         } else
@@ -537,13 +578,29 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     private void showRecentSearchLayout(int i) {
             if (i==1){
                 getBinding().genreFragment.setVisibility(View.GONE);
+                getBinding().toolbar.filter.setVisibility(View.INVISIBLE);
                 List<SearchedKeywords> mList = new ArrayList<>();
-                getBinding().llRecentSearchLayout.setVisibility(View.VISIBLE);
+                getBinding().llRecentSearchLayout.setVisibility(View.GONE);
 
                 keywordListAdapter = new KeywordListAdapter(getApplicationContext(), mList, ActivitySearch.this);
                 getBinding().searchKeywordRecycler.setAdapter(keywordListAdapter);
                 getBinding().quickSearchLayout.setVisibility(View.GONE);
-                setRecentSearchData();
+                getBinding().noResult.setVisibility(View.GONE);
+                if (UserInfo.getInstance(ActivitySearch.this).isActive()){
+                    if (searchedKeywordsList!=null && searchedKeywordsList.size()>0){
+                        getBinding().llRecentSearchLayout.setVisibility(View.VISIBLE);
+                        keywordListAdapter.notifyKeywordAdapter(searchedKeywordsList);
+                    }
+                }else {
+                    setRecentSearchData();
+                }
+
+                if (laodMoreList!=null && laodMoreList.size()>0){
+                    counter = 0;
+                    laodMoreList.clear();
+                    adapter = null;
+                    getBinding().rvSearchResult.setVisibility(View.GONE);
+                }
 
             }else {
                 getBinding().llRecentSearchLayout.setVisibility(View.GONE);
@@ -562,7 +619,71 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     }
 
+    private void callQuickSearch(final String searchString,int from) {
+        getBinding().genreFragment.setVisibility(View.GONE);
+        getBinding().quickSearchLayout.setVisibility(View.GONE);
+        if (counter == 0) {
+            getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+        }
+        if (counter != mediaList.size() && counter < mediaList.size()) {
+            viewModel.getQuickSearchResult(searchString, mediaList, counter,selectedGenreValues,from).observe(this, searchmodels -> {
+                if (mediaList.size() > 0) {
+                    if (counter == 4)
+                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                }
+                if (searchmodels.size() > 0) {
+                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().llSearchResultLayout.setVisibility(View.VISIBLE);
+                    getBinding().rvSearchResult.setVisibility(View.VISIBLE);
+                    getBinding().noResult.setVisibility(View.GONE);
+                    getBinding().popularSearchGroup.setVisibility(View.GONE);
+                    getBinding().llRecentSearchLayout.setVisibility(View.GONE);
+                    setUiComponents(searchmodels);
+                    counter++;
+                    callQuickSearch(searchString,from);
+                } else {
+                    if (counter != mediaList.size()) {
+                        counter++;
+                        callQuickSearch(searchString,from);
+                    } else {
+                        getBinding().noResult.setVisibility(View.VISIBLE);
+                        getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
+                        getBinding().popularSearchGroup.setVisibility(View.GONE);
+                        getBinding().autoRecyclerView.setVisibility(View.GONE);
+                        getBinding().recyclerView.setVisibility(View.VISIBLE);
+                        loadDataFromModel();
+                    }
 
+                }
+            });
+
+        } else {
+            if (laodMoreList != null && laodMoreList.size() == 0) {
+                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
+                getBinding().noResult.setVisibility(View.VISIBLE);
+                getBinding().popularSearchGroup.setVisibility(View.GONE);
+                getBinding().autoRecyclerView.setVisibility(View.GONE);
+                getBinding().recyclerView.setVisibility(View.VISIBLE);
+                loadDataFromModel();
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!KsPreferenceKey.getInstance(ActivitySearch.this).getFilterApply().equalsIgnoreCase("")){
+            if (KsPreferenceKey.getInstance(ActivitySearch.this).getFilterApply().equalsIgnoreCase("true")){
+                KsPreferenceKey.getInstance(ActivitySearch.this).setFilterApply("false");
+                counter = 0;
+                laodMoreList.clear();
+                adapter = null;
+                callQuickSearch("",2);
+            }
+
+        }
+    }
 }
 
 

@@ -31,6 +31,11 @@ public class SearchViewModel extends AndroidViewModel {
     public LiveData<ArrayList<SearchModel>> getListSearchResult(String searchString, List<MediaTypeModel> mediaList,int counter) {
         return repository.matchSetHitApi(searchString, getApplication().getApplicationContext(), mediaList,counter);
     }
+
+    public LiveData<ArrayList<SearchModel>> getQuickSearchResult(String searchString, List<MediaTypeModel> mediaList,int counter,String selectedGenre,int from) {
+        return repository.hitQuickSearchAPI(searchString, getApplication().getApplicationContext(), mediaList,counter,selectedGenre,from);
+    }
+
     public LiveData<ArrayList<SearchModel>> autoCompleteHit(String searchString, List<MediaTypeModel> mediaList,int autoCompleteCounter) {
         return repository.autoCompleteHit(searchString, getApplication().getApplicationContext(), mediaList,autoCompleteCounter);
     }
@@ -42,7 +47,9 @@ public class SearchViewModel extends AndroidViewModel {
     public LiveData<List<SearchedKeywords>> getRecentSearches() {
         return repository.recentSearch(getApplication().getApplicationContext());
     }
-
+    public LiveData<List<SearchedKeywords>> getRecentSearchesKaltura() {
+        return repository.recentSearchKaltura(getApplication().getApplicationContext());
+    }
     public LiveData<List<SearchedKeywords>> getListNew() {
         return repository.getRecentListDetail(getApplication().getApplicationContext());
     }

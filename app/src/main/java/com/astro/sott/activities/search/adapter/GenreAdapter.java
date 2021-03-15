@@ -1,7 +1,11 @@
 package com.astro.sott.activities.search.adapter;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -10,10 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.R;
 import com.astro.sott.databinding.LanguagePreferenceItemBinding;
+import com.astro.sott.db.search.SearchedKeywords;
+import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+
+import java.util.List;
 
 public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.SingleItemHolder>  {
-    public GenreAdapter(Activity context) {
-
+    List<SearchedKeywords> filterLanguageList;
+    Context context;
+    public GenreAdapter(Activity ctx, List<SearchedKeywords> list) {
+        this.filterLanguageList=list;
+        this.context=ctx;
     }
 
     @NonNull
@@ -27,12 +39,60 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.SingleItemHo
 
     @Override
     public void onBindViewHolder(@NonNull GenreAdapter.SingleItemHolder holder, int position) {
+          // holder.binding.titleText.setText(filterLanguageList.get(position).getKeyWords());
+
+        if (filterLanguageList.get(position).isSelected()){
+            holder.binding.titleText.setText(filterLanguageList.get(position).getKeyWords());
+            holder.binding.titleText.setTextColor(Color.parseColor("#151024"));
+            holder.binding.titleText.setBackgroundColor(Color.parseColor("#00e895"));
+
+        }else {
+            holder.binding.titleText.setText(filterLanguageList.get(position).getKeyWords());
+            holder.binding.titleText.setTextColor(context.getResources().getColor(R.color.grey_text));
+            holder.binding.titleText.setBackgroundColor(context.getResources().getColor(R.color.edit_text_blue_bg));
+
+        }
+
+        holder.binding.titleText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (filterLanguageList.get(position).isSelected()) {
+                    filterLanguageList.get(position).setSelected(false);
+                    notifyDataSetChanged();
+                } else {
+                    filterLanguageList.get(position).setSelected(true);
+                    notifyDataSetChanged();
+                }
+                getSelectedValues(filterLanguageList);
+            }
+        });
+    }
+
+    String selectedGenre="";
+    private void getSelectedValues(List<SearchedKeywords> arrayList) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i<arrayList.size(); i ++){
+            if (arrayList.get(i).isSelected()){
+                stringBuilder.append(AppLevelConstants.SEARCH_GENRE_CONSTATNT +arrayList.get(i).getKeyWords()+"'").append("  ");
+
+            }
+            if (stringBuilder.length() > 0) {
+                selectedGenre = stringBuilder.toString();
+                selectedGenre = selectedGenre.substring(0, selectedGenre.length() - 2);
+            } else {
+                selectedGenre = "";
+            }
+        }
+
+        KsPreferenceKey.getInstance(context).setFilterGenre(selectedGenre);
+
+        Log.w("selectedGenres-:",selectedGenre);
 
     }
 
     @Override
     public int getItemCount() {
-        return 8;
+        return filterLanguageList.size();
     }
 
     public class SingleItemHolder extends RecyclerView.ViewHolder {

@@ -45,7 +45,10 @@ public class AutoSearchAdapter extends RecyclerView.Adapter<AutoSearchAdapter.Si
         singleRowHolder.autoCompleteItemBinding.textAuto.setText(massetList.get(i).getName());
         singleRowHolder.autoCompleteItemBinding.textAuto.setOnClickListener(view ->{
             itemListener.onItemClicked(massetList.get(i), 23);
-            searchViewModel.insertRecentSearchKeywords(searchedtext);
+            if (searchedtext!=null && !searchedtext.equalsIgnoreCase("")){
+                searchViewModel.insertRecentSearchKeywords(searchedtext);
+            }
+
         } );
 
     }

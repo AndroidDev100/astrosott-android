@@ -1401,28 +1401,81 @@ public class AppCommonMethods {
         }
 
     }
-    public static String getSearchFieldsKsql(String searchString) {
+    public static String getSearchFieldsKsql(String searchString,String selectedGenre,int from,Context context) {
        // "(or name ~'collection' description ~'collection' director~'collection' Keywords~'collection' Actors~'collection'
-        StringBuilderHolder.getInstance().clear();
-        StringBuilderHolder.getInstance().append("(or name~'");
-        StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+//        Log.w("selectedGenre",selectedGenre);
+        if (from==1){
+            StringBuilderHolder.getInstance().clear();
+            StringBuilderHolder.getInstance().append("(or name~'");
+            StringBuilderHolder.getInstance().append(searchString);
+            StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
-        StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+            StringBuilderHolder.getInstance().append("description~'");
+            StringBuilderHolder.getInstance().append(searchString);
+            StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("director~'");
-        StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+            StringBuilderHolder.getInstance().append("director~'");
+            StringBuilderHolder.getInstance().append(searchString);
+            StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("Keywords~'");
-        StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+            StringBuilderHolder.getInstance().append("Keywords~'");
+            StringBuilderHolder.getInstance().append(searchString);
+            StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("Actors~'");
-        StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("')");
+            StringBuilderHolder.getInstance().append("Actors~'");
+            StringBuilderHolder.getInstance().append(searchString);
+            if (selectedGenre!=null && !selectedGenre.equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append("' (and ");
+                StringBuilderHolder.getInstance().append(selectedGenre);
+                StringBuilderHolder.getInstance().append("))");
+            }else {
+                StringBuilderHolder.getInstance().append("')");
+            }
+
+        }else {
+            StringBuilderHolder.getInstance().clear();
+            StringBuilderHolder.getInstance().append("(or name~'");
+            StringBuilderHolder.getInstance().append(searchString);
+            StringBuilderHolder.getInstance().append("'");
+
+            StringBuilderHolder.getInstance().append("description~'");
+            StringBuilderHolder.getInstance().append(searchString);
+            StringBuilderHolder.getInstance().append("'");
+
+            StringBuilderHolder.getInstance().append("director~'");
+            StringBuilderHolder.getInstance().append(searchString);
+            StringBuilderHolder.getInstance().append("'");
+
+            StringBuilderHolder.getInstance().append("Keywords~'");
+            StringBuilderHolder.getInstance().append(searchString);
+            StringBuilderHolder.getInstance().append("'");
+
+            StringBuilderHolder.getInstance().append("Actors~'");
+            StringBuilderHolder.getInstance().append(searchString);
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
+                    StringBuilderHolder.getInstance().append("' (and ");
+                    StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
+                    if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")){
+                        StringBuilderHolder.getInstance().append(") (and ");
+                        StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                        StringBuilderHolder.getInstance().append("))");
+                    }else {
+                        StringBuilderHolder.getInstance().append("))");
+                    }
+
+            }else {
+                if (selectedGenre!=null && !selectedGenre.equalsIgnoreCase("")){
+                    StringBuilderHolder.getInstance().append("' (and ");
+                    StringBuilderHolder.getInstance().append(selectedGenre);
+                    StringBuilderHolder.getInstance().append("))");
+                }else {
+                    StringBuilderHolder.getInstance().append("')");
+                }
+            }
+
+
+        }
+
 
         return StringBuilderHolder.getInstance().getText().toString();
     }
@@ -1448,4 +1501,27 @@ public class AppCommonMethods {
         }
         return sortedList;
     }
+
+    public static List<Asset> addPagesFromCollection(ListResponse<Asset> results,Context context) {
+        List<Asset> sortedList=new ArrayList();
+        BooleanValue sponsored;
+        for (int i=0;i<results.getObjects().size();i++){
+            if (results.getObjects().get(i).getType()==MediaTypeConstant.getCollection(context)){
+                if (results.getObjects().get(i).getMetas()!=null){
+                    sponsored=(BooleanValue)results.getObjects().get(i).getMetas().get(AppLevelConstants.SEARCH_ISSPONSORED_CONSTATNT);
+                    if (sponsored!=null){
+                        if (sponsored.getValue()){
+                            sortedList.add(results.getObjects().get(i));
+                        }
+
+                    }
+                }
+            }else {
+                sortedList.add(results.getObjects().get(i));
+            }
+
+        }
+        return sortedList;
+    }
+
 }

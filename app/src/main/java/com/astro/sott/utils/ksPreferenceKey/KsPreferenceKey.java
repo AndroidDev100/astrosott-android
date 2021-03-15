@@ -17,6 +17,14 @@ public class KsPreferenceKey {
     private static final String SUBTITLE_LANGUAGE = "subtitle_language_astr";
     public static final String AUTO_ROTATE = "auto_rotate";
     public static final String AUTO_DURATION = "auto_rotate_duration";
+    public static final String GENRE_DATA = "genre_data";
+    public static final String FILTER_SELECTED_GENRE = "FILTER_SELECTED_GENRE";
+    public static final String FILTER_SELECTED_LANGUAGE = "FILTER_SELECTED_LANGUAGE";
+
+    public static final String FILTER_SORT_BY = "FILTER_SORT_BY";
+    public static final String FILTER_CONTENT_TYPE = "FILTER_CONTENT_TYPE";
+    public static final String FILTER_FREE_PAID = "FILTER_FREE_PAID";
+    public static final String FILTER_APPLY = "FILTER_APPLY";
 
 
 
@@ -354,4 +362,65 @@ public class KsPreferenceKey {
     public void setAutoRotation(boolean value) {
         session.setBoolean(AUTO_ROTATE, value);
     }
+
+    public void setUserProfileData(String profileData) {
+        session.setString(GENRE_DATA, profileData);
+    }
+
+    public String getUserProfileData() {
+        return session.getString(GENRE_DATA, "");
+    }
+
+
+    public void setFilterGenre(String profileData) {
+        session.setString(FILTER_SELECTED_GENRE, profileData);
+    }
+
+    public String getFilterGenre() {
+        return session.getString(FILTER_SELECTED_GENRE, "");
+    }
+
+
+    public void setFilterLanguage(String profileData) {
+        session.setString(FILTER_SELECTED_LANGUAGE, profileData);
+    }
+
+    public String getFilterLanguage() {
+        return session.getString(FILTER_SELECTED_LANGUAGE, "");
+    }
+
+    public void setFilterSortBy(String profileData) {
+        session.setString(FILTER_SELECTED_LANGUAGE, profileData);
+    }
+
+    public String getFilterSortBy() {
+        return session.getString(FILTER_SELECTED_LANGUAGE, "");
+    }
+
+
+    public void setFilterContentType(String profileData) {
+        session.setString(FILTER_CONTENT_TYPE, profileData);
+    }
+
+    public String setFilterContentType() {
+        return session.getString(FILTER_CONTENT_TYPE, "");
+    }
+
+    public void setFilterFreePaid(String profileData) {
+        session.setString(FILTER_FREE_PAID, profileData);
+    }
+
+    public String getFilterFreePaid() {
+        return session.getString(FILTER_FREE_PAID, "");
+    }
+
+    public void setFilterApply(String profileData) {
+        session.setString(FILTER_APPLY, profileData);
+    }
+
+    public String getFilterApply() {
+        return session.getString(FILTER_APPLY, "");
+    }
+
+
 }

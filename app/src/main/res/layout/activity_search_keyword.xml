@@ -54,10 +54,11 @@
         android:layout_marginTop="@dimen/_6sdp"
         android:orientation="horizontal">
 <TextView
+    android:id="@+id/sortATZ"
     android:layout_width="0dp"
     android:layout_height="@dimen/_35sdp"
     android:textSize="@dimen/_14sp"
-    android:fontFamily="@font/heebo_regular"
+    android:fontFamily="@font/heebo_medium"
     android:textAlignment="center"
     android:gravity="center"
     android:textColor="@color/grey_text"
@@ -65,10 +66,11 @@
     android:text="@string/atoz"
     android:layout_weight="1"/>
         <TextView
+            android:id="@+id/sortPopular"
             android:layout_width="0dp"
             android:layout_height="@dimen/_35sdp"
             android:textSize="@dimen/_14sp"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/heebo_medium"
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
@@ -78,10 +80,11 @@
             android:text="@string/popular"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/sortNewest"
             android:layout_width="0dp"
             android:layout_height="@dimen/_35sdp"
             android:textSize="@dimen/_14sp"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/heebo_medium"
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
@@ -113,10 +116,11 @@
         android:layout_marginTop="@dimen/_6sdp"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/contentTypeAll"
             android:layout_width="0dp"
             android:layout_height="@dimen/_35sdp"
             android:textSize="@dimen/_14sp"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/heebo_medium"
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
@@ -124,10 +128,11 @@
             android:text="@string/all"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/contentTypeOnDemand"
             android:layout_width="0dp"
             android:layout_height="@dimen/_35sdp"
             android:textSize="@dimen/_14sp"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/heebo_medium"
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
@@ -137,15 +142,16 @@
             android:text="@string/on_demand"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/contentTypeLive"
             android:layout_width="0dp"
             android:layout_height="@dimen/_35sdp"
             android:textSize="@dimen/_14sp"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/heebo_medium"
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
             android:background="@color/edit_text_blue_bg"
-            android:text="@string/paid"
+            android:text="@string/live_home"
             android:layout_weight="1"/>
 
     </LinearLayout>
@@ -172,10 +178,11 @@
         android:layout_marginTop="@dimen/_6sdp"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/freePaidAll"
             android:layout_width="0dp"
             android:layout_height="@dimen/_35sdp"
             android:textSize="@dimen/_14sp"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/heebo_medium"
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
@@ -183,10 +190,11 @@
             android:text="@string/all"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/freePaidFree"
             android:layout_width="0dp"
             android:layout_height="@dimen/_35sdp"
             android:textSize="@dimen/_14sp"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/heebo_medium"
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
@@ -196,10 +204,11 @@
             android:text="@string/free"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/freePaidPaid"
             android:layout_width="0dp"
             android:layout_height="@dimen/_35sdp"
             android:textSize="@dimen/_14sp"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/heebo_medium"
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
