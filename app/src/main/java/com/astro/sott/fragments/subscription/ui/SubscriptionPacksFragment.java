@@ -9,18 +9,24 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.SkuDetails;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.R;
 import com.astro.sott.activities.search.adapter.SearchKeywordAdapter;
 import com.astro.sott.activities.search.ui.SearchKeywordActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
+import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.FragmentSubscriptionPacksBinding;
 import com.astro.sott.fragments.subscription.adapter.SubscriptionAdapter;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
+import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.List;
 
@@ -29,8 +35,12 @@ import java.util.List;
  * Use the {@link SubscriptionPacksFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubscriptionPacksBinding> {
+public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubscriptionPacksBinding> implements BillingProcessor.IBillingHandler, CardCLickedCallBack {
     private SubscriptionViewModel subscriptionViewModel;
+    private BillingProcessor billingProcessor;
+    private SkuDetails skuDetails;
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -75,10 +85,21 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        intializeBilling();
         UIinitialization();
         modelCall();
         getProducts();
 
+    }
+
+    private void intializeBilling() {
+
+        String tempBase64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhiyDBLi/JpQLoxikmVXqxK8M3ZhJNfW2tAdjnGnr7vnDiYOiyk+NomNLqmnLfQwkC+TNWn50A5XmA8FEuZmuqOzKNRQHw2P1Spl27mcZsjXcCFwj2Vy+eso3pPLjG4DfqCmQN2jZo97TW0EhsROdkWflUMepy/d6sD7eNfncA1Z0ECEDuSuOANlMQLJk7Ci5PwUHKYnUAIwbq0fU9LP6O8Ejx5BK6o5K7rtTBttCbknTiZGLo6rB+8RcSB4Z0v3Di+QPyvxjIvfSQXlWhRdyxAs/EZ/F4Hdfn6TB7mLZkKZZwI0xzOObJp2BiesclMi1wHQsNSgQ8pnZ8T52aJczpQIDAQAB";
+
+        billingProcessor = new BillingProcessor(getActivity(), tempBase64, this);
+        billingProcessor.initialize();
+
+        billingProcessor.loadOwnedPurchasesFromGoogle();
     }
 
     private void modelCall() {
@@ -125,4 +146,36 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     }
 
 
+    @Override
+    public void onProductPurchased(String productId, TransactionDetails details) {
+        Log.w("billingProcessor_play", UserInfo.getInstance(getActivity()).getAccessToken() + "");
+        Log.w("billingProcessor_play", "purchased" + productId + "  --- " + details);
+
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+        Log.w("billingProcessor_play", "history");
+
+
+    }
+
+    @Override
+    public void onBillingError(int errorCode, Throwable error) {
+        Log.w("billingProcessor_play", "error");
+
+    }
+
+    @Override
+    public void onBillingInitialized() {
+        Log.w("billingProcessor_play", "intialized");
+    }
+
+    @Override
+    public void onCardClicked() {
+        //skuDetails = billingProcessor.getSubscriptionListingDetails("com.astro.sott.autorenew_vip.15");
+        billingProcessor.subscribe(getActivity(), "com.astro.sott.autorenew_vip.15", "DEVELOPER PAYLOAD HERE");
+
+        Log.w("billingProcessor_play", skuDetails + "");
+    }
 }

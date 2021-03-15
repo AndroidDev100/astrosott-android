@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.search.adapter.LanguageAdapter;
+import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.LanguagePreferenceItemBinding;
 import com.astro.sott.databinding.SubcriptionPackageListItemBinding;
 import com.astro.sott.databinding.SubscriptionPackItemBinding;
@@ -22,10 +23,12 @@ import java.util.List;
 public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapter.SingleItemHolder> {
     Fragment fragment;
     private List<ProductsResponseMessageItem> productsResponseMessageItems;
+    private CardCLickedCallBack cardCLickedCallBack;
 
     public SubscriptionAdapter(SubscriptionPacksFragment ctx, List<ProductsResponseMessageItem> productsResponseMessage) {
         this.fragment = ctx;
         productsResponseMessageItems = productsResponseMessage;
+        cardCLickedCallBack = (CardCLickedCallBack) ctx;
     }
 
     @NonNull
@@ -48,6 +51,9 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
             description.append(" recurring subscription");
         }
         holder.binding.packDescription.setText(description);
+        holder.binding.cardLayout.setOnClickListener(v -> {
+            cardCLickedCallBack.onCardClicked();
+        });
     }
 
     @Override
