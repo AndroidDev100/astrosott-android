@@ -17,10 +17,11 @@
             android:background="@color/dark_toolbar">
 
             <ImageView
-                android:layout_width="130dp"
-                android:layout_height="50dp"
+                android:layout_width="110dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
                 android:layout_marginLeft="16dp"
-                android:background="@drawable/sooka"></ImageView>
+                android:background="@drawable/sooka_landscape"></ImageView>
         </LinearLayout>
 
         <ImageView
