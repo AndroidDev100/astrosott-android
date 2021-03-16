@@ -2953,6 +2953,23 @@ public class KsServices {
             assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getCollection(context)));
         }
 
+        if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")){
+            if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())){
+                assetFilter.orderBy(SortByEnum.NAME_ASC.name());
+            }
+            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())){
+                assetFilter.orderBy(SortByEnum.VIEWS_DESC.name());
+            }
+            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())){
+                assetFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
+            }else {
+                assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+            }
+
+        }else {
+            assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+        }
+
         Runnable runnable = () -> {
 
             clientSetupKs();
@@ -2965,7 +2982,12 @@ public class KsServices {
                             SearchModel temp = new SearchModel();
                             temp.setTotalCount(result.results.getTotalCount());
                             temp.setType(result.results.getObjects().get(0).getType());
-                            temp.setAllItemsInSection(result.results.getObjects());
+                           // temp.setAllItemsInSection(result.results.getObjects());
+
+                            List<Asset> assetss=AppCommonMethods.applyFreePaidFilter(result.results,context);
+                            temp.setAllItemsInSection(assetss);
+                          //  temp.setTotalCount(assetss.size());
+
                             temp.setSearchString(keyToSearch);
                             searchOutputModel.add(temp);
                             searchResultCallBack.response(true, searchOutputModel, "resultFound");
@@ -6941,7 +6963,24 @@ public class KsServices {
         assetFilter.setKSql(keyToSearch);
         assetFilter.name(searchKeyword);
         assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getCollection(context)));
-        assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+        //assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+
+        if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")){
+            if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())){
+                assetFilter.orderBy(SortByEnum.NAME_ASC.name());
+            }
+            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())){
+                assetFilter.orderBy(SortByEnum.VIEWS_DESC.name());
+            }
+            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())){
+                assetFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
+            }else {
+                assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+            }
+
+        }else {
+            assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+        }
 
         AssetService.ListAssetBuilder assetService = AssetService.list(assetFilter, filterPager).setCompletion(result -> {
             if (result.isSuccess()) {
@@ -6952,6 +6991,9 @@ public class KsServices {
                             temp.setTotalCount(result.results.getTotalCount());
                             temp.setHeaderTitle(getNameFromType(result.results.getObjects().get(0).getType()));
                             temp.setType(result.results.getObjects().get(0).getType());
+                           // List<Asset> assetss=AppCommonMethods.applyFreePaidFilter(result.results,context);
+                            //temp.setAllItemsInSection(assetss);
+                            //temp.setTotalCount(assetss.size());
 
                             if (result.results.getObjects().get(0).getType()==MediaTypeConstant.getMovie(context)
                                     || result.results.getObjects().get(0).getType()==MediaTypeConstant.getCollection(context)){
@@ -6963,7 +7005,6 @@ public class KsServices {
                                 temp.setTotalCount(result.results.getTotalCount());
                                 temp.setAllItemsInSection(result.results.getObjects());
                             }
-
 
                             // temp.setAllItemsInSection(result.results.getObjects());
                             temp.setSearchString(searchString);

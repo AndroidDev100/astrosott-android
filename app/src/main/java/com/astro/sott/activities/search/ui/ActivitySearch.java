@@ -280,8 +280,10 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         getBinding().toolbar.filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivitySearch.this,SearchKeywordActivity.class);
-                startActivity(intent);
+                if (!searchHappen) {
+                    Intent intent = new Intent(ActivitySearch.this, SearchKeywordActivity.class);
+                    startActivity(intent);
+                }
 
             }
         });
