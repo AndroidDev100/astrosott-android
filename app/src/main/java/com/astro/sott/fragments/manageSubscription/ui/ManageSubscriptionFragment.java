@@ -5,15 +5,19 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
+import android.view.View;
 
 import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingFragment;
+import com.astro.sott.callBacks.commonCallBacks.ChangePlanCallBack;
 import com.astro.sott.databinding.FragmentManageSubscriptionBinding;
 import com.astro.sott.fragments.manageSubscription.adapter.ManageSubscriptionAdapter;
+import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -25,7 +29,7 @@ import java.util.List;
  * Use the {@link ManageSubscriptionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentManageSubscriptionBinding> {
+public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentManageSubscriptionBinding> implements ChangePlanCallBack {
     private SubscriptionViewModel subscriptionViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -78,11 +82,11 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     }
 
     private void getActiveSubscription() {
-
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
-
                     loadData(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
                 } else {
                 }
@@ -97,7 +101,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     }
 
     private void loadData(List<AccountServiceMessageItem> accountServiceMessage) {
-        ManageSubscriptionAdapter manageSubscriptionAdapter = new ManageSubscriptionAdapter(accountServiceMessage);
+        ManageSubscriptionAdapter manageSubscriptionAdapter = new ManageSubscriptionAdapter(accountServiceMessage, this);
         getBinding().planRecycler.setAdapter(manageSubscriptionAdapter);
     }
 
@@ -111,4 +115,12 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     }
 
 
+    @Override
+    public void onClick() {
+        SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, someFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 }

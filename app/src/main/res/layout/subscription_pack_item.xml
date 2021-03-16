@@ -59,6 +59,7 @@
                         android:textSize="@dimen/_14sp" />
 
                     <Button
+                        android:id="@+id/btnBuy"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/dimen48dp"
                         android:layout_gravity="bottom|end"

@@ -26,9 +26,11 @@ import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.FragmentSubscriptionPacksBinding;
 import com.astro.sott.fragments.subscription.adapter.SubscriptionAdapter;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
+import com.astro.sott.modelClasses.InApp.PackDetail;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
 import com.astro.sott.utils.userInfo.UserInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +42,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     private SubscriptionViewModel subscriptionViewModel;
     private BillingProcessor billingProcessor;
     private SkuDetails skuDetails;
+    private List<PackDetail> packDetailList;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -96,8 +99,9 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     private void intializeBilling() {
 
         String tempBase64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhiyDBLi/JpQLoxikmVXqxK8M3ZhJNfW2tAdjnGnr7vnDiYOiyk+NomNLqmnLfQwkC+TNWn50A5XmA8FEuZmuqOzKNRQHw2P1Spl27mcZsjXcCFwj2Vy+eso3pPLjG4DfqCmQN2jZo97TW0EhsROdkWflUMepy/d6sD7eNfncA1Z0ECEDuSuOANlMQLJk7Ci5PwUHKYnUAIwbq0fU9LP6O8Ejx5BK6o5K7rtTBttCbknTiZGLo6rB+8RcSB4Z0v3Di+QPyvxjIvfSQXlWhRdyxAs/EZ/F4Hdfn6TB7mLZkKZZwI0xzOObJp2BiesclMi1wHQsNSgQ8pnZ8T52aJczpQIDAQAB";
+        Log.w("billingProcessor_play", getActivity().getClass().getName() + "");
 
-        billingProcessor = new BillingProcessor(getActivity(), tempBase64, this);
+        billingProcessor = new BillingProcessor(getActivity(), tempBase64, SubscriptionPacksFragment.this);
         billingProcessor.initialize();
 
         billingProcessor.loadOwnedPurchasesFromGoogle();
@@ -107,7 +111,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel.class);
     }
 
-    private void loadDataFromModel(List<ProductsResponseMessageItem> productsResponseMessage) {
+    private void loadDataFromModel(List<PackDetail> productsResponseMessage) {
         SubscriptionAdapter adapter = new SubscriptionAdapter(SubscriptionPacksFragment.this, productsResponseMessage);
         getBinding().recyclerView.setAdapter(adapter);
 
@@ -117,16 +121,32 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         getBinding().progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.getProduct().observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
-
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getGetProductResponse() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage().size() > 0) {
-                    loadDataFromModel(evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage());
+                    checkIfDetailAvailableOnPlaystore(evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage());
 
                 }
             } else {
 
             }
         });
+    }
+
+    private void checkIfDetailAvailableOnPlaystore(List<ProductsResponseMessageItem> productsResponseMessage) {
+        packDetailList = new ArrayList<>();
+        for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
+            if (responseMessageItem.getAppChannels() != null && responseMessageItem.getAppChannels().get(0) != null && responseMessageItem.getAppChannels().get(0).getAppChannel() != null && responseMessageItem.getAppChannels().get(0).getAppChannel().equalsIgnoreCase("Google Wallet") && responseMessageItem.getAppChannels().get(0).getAppID() != null) {
+                skuDetails = billingProcessor.getSubscriptionListingDetails(responseMessageItem.getAppChannels().get(0).getAppID());
+                if (skuDetails != null) {
+                    PackDetail packDetail = new PackDetail();
+                    packDetail.setSkuDetails(skuDetails);
+                    packDetail.setProductsResponseMessageItem(responseMessageItem);
+                    packDetailList.add(packDetail);
+                }
+            }
+        }
+        if (packDetailList.size() > 0)
+            loadDataFromModel(packDetailList);
     }
 
     private void UIinitialization() {
@@ -156,8 +176,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
 
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
-        Log.w("billingProcessor_play", UserInfo.getInstance(getActivity()).getAccessToken() + "");
-        Log.w("billingProcessor_play", "purchased" + productId + "  --- " + details);
+        Log.w("billingProcessor_play", "fragment");
 
     }
 
@@ -180,9 +199,8 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     }
 
     @Override
-    public void onCardClicked() {
-        //skuDetails = billingProcessor.getSubscriptionListingDetails("com.astro.sott.autorenew_vip.15");
-        billingProcessor.purchase(getActivity(), "com.astro.sott.autorenew_vip.15", "DEVELOPER PAYLOAD HERE");
+    public void onCardClicked(String productId) {
+        billingProcessor.purchase(getActivity(), productId, "DEVELOPER PAYLOAD HERE");
 
     }
 }

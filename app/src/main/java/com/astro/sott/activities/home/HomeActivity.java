@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -30,6 +32,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,7 +56,7 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 
-public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack {
+public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack, BillingProcessor.IBillingHandler {
     private final String TAG = this.getClass().getSimpleName();
     private TextView toolbarTitle;
     private HomeFragment homeFragment;
@@ -452,7 +455,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         setMargins(0);
         getBinding().toolbar.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
-       // getBinding().appbar.setVisibility(View.GONE);
+        // getBinding().appbar.setVisibility(View.GONE);
         fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
         active = moreNewFragment;
 
@@ -549,4 +552,25 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             popupSnackbarForCompleteUpdate();
         }
     };
+
+    @Override
+    public void onProductPurchased(String productId, TransactionDetails details) {
+        Log.w("billingProcessor_play", "purchased_homeactivity"+productId+details);
+
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+
+    }
+
+    @Override
+    public void onBillingError(int errorCode, Throwable error) {
+
+    }
+
+    @Override
+    public void onBillingInitialized() {
+
+    }
 }
