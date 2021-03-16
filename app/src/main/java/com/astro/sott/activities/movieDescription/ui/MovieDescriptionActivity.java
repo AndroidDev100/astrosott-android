@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
+import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceStatusCallBack;
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
@@ -189,6 +190,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
     private void setPlayerFragment() {
+
         manager = getSupportFragmentManager();
         //getBinding().playButton.setClickable(true);
         getBinding().astroPlayButton.setOnClickListener(view -> {
@@ -411,6 +413,10 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                         getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                         getBinding().playText.setText(getResources().getString(R.string.watch_now));
                         getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                        getBinding().starIcon.setVisibility(View.GONE);
+                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+
+
 
                     });
                     this.vodType = EntitlementCheck.FREE;
@@ -422,6 +428,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.VISIBLE);
                             });
                         }
                         this.vodType = EntitlementCheck.SVOD;
@@ -432,6 +439,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_button));
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+
                             });
                         }
 
@@ -649,13 +658,15 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         setMetaDataValues(asset, type);
         getBinding().noConnectionLayout.setVisibility(View.GONE);
         setExpandable();
-        getBinding().shareWith.setOnClickListener(view -> {
+        getBinding().share.setOnClickListener(view -> {
 
-            if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
+            /*if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
-            openShareDialouge();
+            openShareDialouge();*/
+            Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+            startActivity(intent);
         });
         setWatchlist();
         // setRailFragment();
@@ -819,8 +830,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
     private void getPlayBackControl() {
-        if (yearMap != null)
+        if (yearMap != null) {
             playbackControlValue = viewModel.getPlayBackControl(yearMap);
+        } else {
+            playbackControlValue = true;
+        }
     }
 
 
@@ -835,6 +849,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         }
         if (!xofferValue.equalsIgnoreCase("")) {
             xofferWindowValue = viewModel.isXofferWindow(xofferValue);
+        } else {
+            xofferWindowValue = true;
         }
     }
 
@@ -1021,8 +1037,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             showAlertDialog(getApplicationContext().getResources().getString(R.string.movie_text) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
-            getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite), null, null);
-            getBinding().watchList.setTextColor(getResources().getColor(R.color.lightBlueColor));
+            getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
+            getBinding().watchList.setTextColor(getResources().getColor(R.color.aqua_marine));
 
         } else {
             switch (s.getErrorCode()) {
@@ -1041,29 +1057,14 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
 
-    @Override
-    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
-
-        if (getBinding().descriptionText.isExpanded()) {
-            getBinding().descriptionText.toggle();
-        }
-        assetRuleErrorCode = AppLevelConstants.NO_ERROR;
-        getDataFromBack(commonData, layoutType);
-
-        titleName = name;
-        isAdded = false;
-        iconClicked = false;
-        isActive = true;
-    }
-
     private void isWatchlistedOrNot() {
         viewModel.listAllwatchList(assetId + "").observe(this, commonResponse -> {
             if (commonResponse.getStatus()) {
                 if (commonResponse != null) {
                     idfromAssetWatchlist = commonResponse.getAssetID();
                     isAdded = true;
-                    getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite), null, null);
-                    getBinding().watchList.setTextColor(getResources().getColor(R.color.lightBlueColor));
+                    getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
+                    getBinding().watchList.setTextColor(getResources().getColor(R.color.aqua_marine));
                 } else {
                     isAdded = false;
                     getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
@@ -1129,5 +1130,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         });
     }
 
+    @Override
+    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
+        getBinding().scrollView.scrollTo(0, 0);
+        getDataFromBack(commonData, layoutType);
+        isActive = UserInfo.getInstance(this).isActive();
+    }
 }
 

@@ -1,10 +1,13 @@
 package com.astro.sott.usermanagment.networkManager.retrofit
 
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
 import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse
 import com.astro.sott.usermanagment.modelClasses.getDevice.GetDevicesResponse
+import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response
+import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse
 import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceResponse
@@ -43,11 +46,20 @@ interface EvergentApiInterface {
     fun refreshToken(@Body jsonObject: JsonObject?): Call<RefreshTokenResponse?>?
 
     @POST("astro/removeDevices")
-    fun removeDevice(@Header("Authorization") key: String,@Body jsonObject: JsonObject?): Call<RemoveDeviceResponse?>?
+    fun removeDevice(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<RemoveDeviceResponse?>?
+
+    @POST("astro/getProducts")
+    fun getProducts(@Body jsonObject: JsonObject?): Call<GetProductResponse?>?
+
+    @POST("astro/getPaymentsV2")
+    fun getPaymentV2(@Header("Authorization") key: String,@Body jsonObject: JsonObject?): Call<PaymentV2Response?>?
 
 
     @POST("astro/getAccountDevices")
-    fun getDevice(@Header("Authorization") key: String,@Body jsonObject: JsonObject?): Call<GetDevicesResponse?>?
+    fun getDevice(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<GetDevicesResponse?>?
+
+    @POST("astro/getActiveSubscriptions")
+    fun getActiveSubscription(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<GetActiveResponse?>?
 
 
 }

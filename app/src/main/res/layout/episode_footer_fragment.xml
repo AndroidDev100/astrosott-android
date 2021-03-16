@@ -6,7 +6,7 @@
         android:id="@+id/rlFooter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue_bg"
+        android:background="@color/grape_purple"
         android:orientation="vertical"
         android:visibility="visible">
 
@@ -31,16 +31,17 @@
         <LinearLayout
             android:id="@+id/season"
             android:layout_width="wrap_content"
-            android:layout_height="44dp"
+            android:layout_height="@dimen/_44dp"
             android:layout_alignParentTop="true"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/gradient_outline_button"
             android:gravity="center"
+            android:visibility="gone"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:visibility="gone">
+            >
 
             <TextView
                 android:id="@+id/season_text"

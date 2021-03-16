@@ -23,6 +23,7 @@
         <item name="colorPrimaryDark">@color/fragment_background_color</item>
         <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:splitMotionEvents">false</item>
         <item name="otp">@color/line_colors</item>
     </style>
@@ -103,13 +104,16 @@
         <item name="textAllCaps">true</item>
         <item name="fontFamily">@font/heebo_medium</item>
         <item name="tabIndicator">@drawable/gradient_astro</item>
+        <item name="colorAccent">#ff0033</item>
+        <item name="colorControlActivated">#af0b8a</item>
+        <item name="colorControlNormal">#5618eb</item>
+
 
     </style>
     <style name="MineCustomTabTextAppearence" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="textAllCaps">true</item>
         <item name="fontFamily">@font/heebo_medium</item>
-        <item name="tabIndicator">@drawable/gradient_astro</item>
 
     </style>
     <style name="MineCustomBottomNavText" parent="TextAppearance.Design.Tab">
@@ -153,8 +157,15 @@
         <item name="colorControlActivated">@color/white</item>
     </style>
 
+<!--    <style name="MySeekBar" parent="@style/Widget.AppCompat.SeekBar">-->
+<!--&lt;!&ndash;        <item name="android:thumb">@drawable/sq_seekbar_clipped</item>&ndash;&gt;-->
+<!--        <item name="colorControlNormal">@color/thumb_color</item>-->
+<!--        <item name="android:progressDrawable">@drawable/sq_seekbar_clipped</item>-->
+<!--&lt;!&ndash;        <item name="android:thumb">@null</item>&ndash;&gt;-->
+<!--    </style>-->
+
     <style name="MySeekBar" parent="@style/Widget.AppCompat.SeekBar">
-        <item name="colorAccent">@color/primary_blue</item>
+        <item name="colorAccent">@color/thumb_color</item>
         <item name="colorControlActivated">@color/primary_blue</item>
         <item name="colorControlNormal">@color/white</item>
     </style>

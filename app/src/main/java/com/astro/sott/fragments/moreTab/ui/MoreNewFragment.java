@@ -1,6 +1,5 @@
 package com.astro.sott.fragments.moreTab.ui;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
@@ -21,22 +20,21 @@ import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
 import com.astro.sott.activities.profile.ui.ChangeEmailConfirmation;
-import com.astro.sott.activities.search.ui.QuickSearchGenre;
+import com.astro.sott.activities.profile.ui.EditEmailActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
+import com.astro.sott.fragments.manageSubscription.ui.ManageSubscriptionFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
+import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
+import com.astro.sott.fragments.transactionhistory.ui.TransactionHistory;
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
-import com.clevertap.android.sdk.CleverTapAPI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,6 +42,7 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBinding> {
+    private SubscriptionViewModel subscriptionViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -93,6 +92,8 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         super.onActivityCreated(savedInstanceState);
         oldLang = new KsPreferenceKey(getActivity()).getAppLangName();
         navBar = getActivity().findViewById(R.id.navigation);
+        modelCall();
+        checkForLoginLogout();
         UIinitialization();
     }
 
@@ -101,14 +102,29 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         super.onAttach(context);
     }
 
+    public void checkForLoginLogout() {
+        if (UserInfo.getInstance(getActivity()).isActive()) {
+            getActiveSubscription();
+        } else {
+            setUiForLogout();
+        }
+    }
+
     private void UIinitialization() {
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().tvVersion.setText("Version " + BuildConfig.VERSION_NAME);
         setClicks();
     }
 
-    private void setClicks() {
+    private void modelCall() {
+        subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel.class);
+    }
 
+    private void setClicks() {
+        getBinding().edit.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditEmailActivity.class);
+            startActivity(intent);
+        });
         getBinding().loginSignupMore.setOnClickListener(view -> {
 
             new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
@@ -128,12 +144,23 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 //                  FragmentTransaction transaction = getFragmentManager().beginTransaction();
 //                  transaction.replace(R.id.relative_layout, fragment).commit();
 
-                navBar.setVisibility(View.GONE);
-                SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
-                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                transaction.commit();
+
+                if (getBinding().subscribe.getText().equals(getResources().getString(R.string.subscribe))) {
+                    navBar.setVisibility(View.GONE);
+                    SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
+                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                    transaction.commit();
+                } else {
+                    navBar.setVisibility(View.GONE);
+                    ManageSubscriptionFragment manageSubscriptionFragment = new ManageSubscriptionFragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.content_frame, manageSubscriptionFragment); // give your fragment container id in first parameter
+                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                    transaction.commit();
+                }
+
             }
         });
         getBinding().rlLinkedAccounts.setOnClickListener(new View.OnClickListener() {
@@ -152,18 +179,27 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             @Override
             public void onClick(View v) {
                 navBar.setVisibility(View.GONE);
+                if (UserInfo.getInstance(getActivity()).isActive()) {
+                    TransactionHistory transactionHistory = new TransactionHistory();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.content_frame, transactionHistory); // give your fragment container id in first parameter
+                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                    transaction.commit();
+                } else {
+                    new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
 
-                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame, quickSearchGenre); // give your fragment container id in first parameter
-                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                transaction.commit();
+                }
+//                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
+//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//                transaction.replace(R.id.content_frame, quickSearchGenre); // give your fragment container id in first parameter
+//                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+//                transaction.commit();
             }
         });
         getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                setUiForLogout();
                 AppCommonMethods.removeUserPrerences(getActivity());
                 getBinding().rlLogout.setVisibility(View.GONE);
                 getBinding().loginSignupMore.setVisibility(View.VISIBLE);
@@ -237,6 +273,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
 
             }
+
 
         });
         getBinding().rlHelp.setOnClickListener(v -> {
@@ -323,7 +360,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             navBar.setVisibility(View.VISIBLE);
         }
 
-
+        checkForLoginLogout();
         updateLang();
         if (UserInfo.getInstance(getActivity()).isActive()) {
             getBinding().loginUi.setVisibility(View.VISIBLE);
@@ -340,6 +377,50 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
 
         }
+    }
+
+    public void setUiForLogout() {
+        getBinding().tvVIPUser.setText(getResources().getString(R.string.guest_user));
+        getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
+        getBinding().tvSubscribeNow.setText(getResources().getString(R.string.subscibe_now));
+        getBinding().subscribe.setText(getResources().getString(R.string.subscribe_more));
+        getBinding().subscribe.setVisibility(View.VISIBLE);
+        getBinding().productCategory.setVisibility(View.GONE);
+
+
+    }
+
+    private void getActiveSubscription() {
+        subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
+            if (evergentCommonResponse.isStatus()) {
+                if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
+                    for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
+                        if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE")) {
+                            if (accountServiceMessageItem.getDisplayName() != null)
+                                getBinding().tvVIPUser.setText(accountServiceMessageItem.getDisplayName());
+                            if (accountServiceMessageItem.getProductCategory() != null) {
+                                getBinding().productCategory.setVisibility(View.VISIBLE);
+                                getBinding().productCategory.setText(accountServiceMessageItem.getProductCategory());
+                            }
+                            if (!accountServiceMessageItem.isRenewal()) {
+                                getBinding().tvSubscribeNow.setVisibility(View.GONE);
+                            } else {
+                                getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
+                                getBinding().tvSubscribeNow.setText("Renew on 25/01/2019");
+                            }
+                            getBinding().subscribe.setVisibility(View.VISIBLE);
+                            getBinding().subscribe.setText(getResources().getString(R.string.manage_subscription));
+                            break;
+                        }
+                    }
+                } else {
+                    setUiForLogout();
+                }
+            } else {
+                setUiForLogout();
+
+            }
+        });
     }
 
 
@@ -371,11 +452,8 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 getBinding().tvVersion.setText("Versi1.045b");
             } else {
                 getBinding().loginSignupMore.setText("Sign In/Sign Up");
-                getBinding().tvVIPUser.setText("Guest user");
                 getBinding().tvBilling.setText("Partner Billing");
                 getBinding().tvRenewDate.setText("Renew on 22/2/21");
-                getBinding().subscribe.setText("Subscribe");
-                getBinding().manageSubscriptionMore.setText("Manage Subscription");
                 getBinding().tvManagePayments.setText("Manage Payments");
                 getBinding().tvTranscHistory.setText("Transaction History");
                 getBinding().tvLanguageSettings.setText("Language Selection");

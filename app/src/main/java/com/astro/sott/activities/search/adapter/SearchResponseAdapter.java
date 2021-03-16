@@ -154,7 +154,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getCollection(activity)) {
             getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
             if (railCommonData.getImages().size() == itemValue.getImages().size())
-                new ActivityLauncher(activity).boxSetDetailActivity(activity, BoxSetDetailActivity.class, railCommonData, AppLevelConstants.Rail3);
+                new ActivityLauncher(activity).boxSetDetailActivity(activity,railCommonData, AppLevelConstants.Rail3);
         } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getLinear(activity)) {
             getRailCommonData(itemValue, activity.getResources().getString(R.string.ugc_video_item_clicked));
             if (railCommonData.getImages().size() == itemValue.getImages().size())

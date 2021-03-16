@@ -31,12 +31,15 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     private fun setCLicks() {
         activityForgotPasswordBinding?.submit?.setOnClickListener {
-            if (checkEmailVaildation()){
+            if (checkEmailVaildation()) {
                 searchAccountv2()
             }
+            activityForgotPasswordBinding?.backIcon?.setOnClickListener({
+                onBackPressed()
+            })
         }
 
-       activityForgotPasswordBinding?.emailMobileEdt?.addTextChangedListener(CustomTextWatcher(this, object : TextWatcherCallBack {
+        activityForgotPasswordBinding?.emailMobileEdt?.addTextChangedListener(CustomTextWatcher(this, object : TextWatcherCallBack {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 activityForgotPasswordBinding?.errorEmail?.visibility = View.GONE
@@ -52,7 +55,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     private fun searchAccountv2() {
         activityForgotPasswordBinding?.progressBar?.visibility = View.VISIBLE
-        astroLoginViewModel?.searchAccountV2(type, email_mobile)?.observe(this, Observer { evergentCommonResponse: EvergentCommonResponse ->
+        astroLoginViewModel?.searchAccountV2(type, email_mobile)?.observe(this, Observer { evergentCommonResponse ->
             if (evergentCommonResponse.isStatus) {
                 createOtp()
             } else {
@@ -63,7 +66,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
     }
 
     private fun createOtp() {
-        astroLoginViewModel!!.createOtp(type, email_mobile).observe(this, Observer { evergentCommonResponse: EvergentCommonResponse ->
+        astroLoginViewModel!!.createOtp(type, email_mobile).observe(this, Observer { evergentCommonResponse ->
             activityForgotPasswordBinding?.progressBar?.visibility = View.GONE
             if (evergentCommonResponse.isStatus) {
                 Toast.makeText(this, "Verification code had be sent to $email_mobile", Toast.LENGTH_SHORT).show()

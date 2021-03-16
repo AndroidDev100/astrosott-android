@@ -56,7 +56,8 @@
     <!--<color name="shimmer_color">#00000000</color>-->
     <color name="trending_title_color">#303434</color>
     <color name="shimmer_back">#dedede</color>
-
+    <color name="plan_period_color">#c7c7cc</color>
+    <color name="cancel_red_color">#ff0033</color>
     <color name="search_underline_editext">#62dfffff</color>
     <color name="search_edit_text_color">#a5a5a5</color>
     <color name="lightgray">#F0F0F0</color>
@@ -105,6 +106,8 @@
     <color name="maya_blue">#5bc3ff</color>
     <color name="radical_red">#ff2954</color>
     <!-- Astro colors-->
+    <color name="dark_toolbar">#151024</color>
+    <color name="grape_purple">#2d1347</color>
     <color name="boxSetBgColor">#2d1347</color>
     <color name="aqua_marine">#2cd8e5</color>
     <color name="yellow_orange">#ffb400</color>
@@ -113,8 +116,11 @@
     <color name="lightBlueColor">#58BAFF</color>
     <color name="lightGreenColor">#00F2B6</color>
     <color name="grey_text">#9b98ab</color>
-
+    <color name="green">#00e895</color>
     <color name="tab_selected">#303255</color>
+    <color name="pale_gray">#f2f2f7</color>
+    <color name="thumb_color">#ff0033</color>
+    <color name="seekbar_color">#262642</color>
 
     <color name="filter_text_selected_color">#151024</color>
     <color name="filter_text_selected_bg">#00e895</color>

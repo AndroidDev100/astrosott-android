@@ -34,6 +34,7 @@ public interface AppLevelConstants {
     String ASSET_COMMON_BEAN = "assetCommonBean";
     String MOVIE_DESCRIPTION_ACTIVITY = "MovieDescriptionActivity";
     String WEB_EPISODE_DESCRIPTION_ACTIVITY = "WebEpisodeDescriptionActivity";
+    String BOX_SET_DETAIL="BoxSetDetailActivity";
     String LIVE_CHANNEL = "LiveChannel";
     String SHORT_FILM_ACTIVITY = "ShortFilmActivity";
     String WEB_SERIES_DESCCRIPTION_ACTIVITY = "WebSeriesDescriptionActivity";

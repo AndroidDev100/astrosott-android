@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">User Managment</string>
+    <string name="app_name">User Management</string>
     <string name="authentication_failed">Authentication Failed</string>
     <string name="account_already_exist">Account with the given CustomerID already exists</string>
     <string name="account_already_exist_sp_account">Account with the given SPAccountID already exists</string>
@@ -46,7 +46,7 @@
     <string name="username_exists">User already exists with the given mobile number</string>
     <string name="logout">Log out successfully</string>
     <string name="invalid_session">Invalid Session Token</string>
-    <string name="passward_given">Your given password Shouldnt be \"Password\</string>
+    <string name="passward_given">Your given password Shouldn\'t be \"Password\</string>
     <string name="invalid_current_password">Invalid current password</string>
     <string name="device_dont_exist">Device does not exist</string>
     <string name="password_character">Password should contain alphabets along with Numerics or special character @#$%^+=!</string>

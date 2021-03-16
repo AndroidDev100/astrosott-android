@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
 
@@ -48,9 +49,9 @@
             android:layout_marginEnd="@dimen/search_item_margin_end"
             android:background="@drawable/ic_clear_black_24dp"
             android:contentDescription="@string/close_icon"
-            android:tint="@color/white"
             android:visibility="gone"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            app:tint="@color/white" />
 
 
     </RelativeLayout>

@@ -604,7 +604,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
         });
         setWatchlist();
         // setRailFragment();
-       // setRailBaseFragment();
+        setRailBaseFragment();
     }
 
 
@@ -764,8 +764,11 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     }
 
     private void getPlayBackControl() {
-        if (yearMap != null)
+        if (yearMap != null) {
             playbackControlValue = viewModel.getPlayBackControl(yearMap);
+        } else {
+            playbackControlValue = true;
+        }
     }
 
 
@@ -780,6 +783,8 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
         }
         if (!xofferValue.equalsIgnoreCase("")) {
             xofferWindowValue = viewModel.isXofferWindow(xofferValue);
+        } else {
+            xofferWindowValue = true;
         }
     }
 

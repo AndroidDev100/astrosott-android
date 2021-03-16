@@ -52,7 +52,6 @@ public class WebViewActivity extends BaseBindingActivity<WebviewBinding> {
                 strWebview = getIntent().getStringExtra(AppLevelConstants.WEBVIEW);
             }
 
-
             setSupportActionBar(getBinding().include.toolbar);
 
             if (getSupportActionBar() != null) {

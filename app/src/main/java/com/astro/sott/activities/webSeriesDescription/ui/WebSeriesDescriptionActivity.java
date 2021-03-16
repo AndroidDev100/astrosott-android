@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -143,8 +144,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         if (getIntent().getExtras() != null) {
             railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
             if (railData != null) {
-                commonData = railData;
-                asset = railData.getObject();
+
                 getDatafromBack();
             }
         }
@@ -168,6 +168,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void getDatafromBack() {
+        commonData = railData;
+        asset = railData.getObject();
         getBinding().setMovieAssestModel(asset);
         map = asset.getTags();
         yearMap = asset.getMetas();
@@ -262,8 +264,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             showAlertDialog("Series " + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
-            getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite), null, null);
-            getBinding().webwatchList.setTextColor(getResources().getColor(R.color.lightBlueColor));
+            getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
+            getBinding().webwatchList.setTextColor(getResources().getColor(R.color.aqua_marine));
 
         } else {
             switch (s.getErrorCode()) {
@@ -283,6 +285,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void setMetas() {
         getMovieYear();
+        setRailBaseFragment();
     }
 
     private void getMovieYear() {
@@ -592,7 +595,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     }
                 }
             });*/
-            setRailBaseFragment();
+
 
             //loadDataFromModel();
 
@@ -607,8 +610,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 if (commonResponse != null) {
                     idfromAssetWatchlist = commonResponse.getAssetID();
                     isAdded = true;
-                    getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite), null, null);
-                    getBinding().webwatchList.setTextColor(getResources().getColor(R.color.lightBlueColor));
+                    getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
+                    getBinding().webwatchList.setTextColor(getResources().getColor(R.color.aqua_marine));
                 } else {
                     isAdded = false;
                     getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
@@ -1078,12 +1081,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
 
-    @Override
-    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
-
-    }
-
-
     private void showDialog(String message) {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(getResources().getString(R.string.dialog), message, getResources().getString(R.string.ok));
@@ -1115,6 +1112,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         mHandler.removeCallbacksAndMessages(null);
         super.onDestroy();
     }
+
 
     private void playerChecks(final RailCommonData railCommonData) {
         new GeoBlockingCheck().aseetAvailableOrNot(WebSeriesDescriptionActivity.this, railData.getObject(), (status, response, totalCount, errorcode, message) -> {
@@ -1167,6 +1165,10 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                         getBinding().playText.setText(getResources().getString(R.string.watch_now));
                         getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                        getBinding().starIcon.setVisibility(View.GONE);
+                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+
+
 
                     });
                     this.vodType = EntitlementCheck.FREE;
@@ -1178,6 +1180,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                 getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                 getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.VISIBLE);
+
                             });
                         }
                         this.vodType = EntitlementCheck.SVOD;
@@ -1187,6 +1191,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                             getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_button));
                             getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                             getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                            getBinding().starIcon.setVisibility(View.GONE);
+
                         }
                         this.vodType = EntitlementCheck.TVOD;
 
@@ -1384,6 +1390,14 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     @Override
     public void onFirstEpisodeData(List<AssetCommonBean> railCommonData) {
 
+    }
+
+    @Override
+    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
+        getBinding().scrollView.scrollTo(0, 0);
+        railData = commonData;
+        getDatafromBack();
+        isActive = UserInfo.getInstance(this).isActive();
     }
 }
 

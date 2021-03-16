@@ -30,7 +30,7 @@
                 android:layout_marginTop="5dp"
                 android:overScrollMode="never" />
 
-            <com.watcho.utils.helpers.ExpandableCardLayout
+            <com.astro.sott.utils.helpers.ExpandableCardLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -41,7 +41,7 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
 
-            </com.watcho.utils.helpers.ExpandableCardLayout>
+            </com.astro.sott.utils.helpers.ExpandableCardLayout>
 
         </LinearLayout>
 
