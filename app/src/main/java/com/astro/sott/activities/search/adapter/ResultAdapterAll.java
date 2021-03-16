@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.R;
 import com.astro.sott.databinding.SearchItemBinding;
+import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.kaltura.client.types.Asset;
@@ -49,13 +50,15 @@ public class ResultAdapterAll extends RecyclerView.Adapter<ResultAdapterAll.Sing
     @Override
     public void onBindViewHolder(@NonNull SingleItemRowHolder viewHolder, final int position) {
         // viewHolder.searchItemBinding.setSingleItem(itemsList.get(position));
-        /*if (itemsList.get(position).getImages().size()>0){
-            ImageHelper.getInstance(viewHolder.searchItemBinding.itemImage.getContext()).loadImageTo(viewHolder.searchItemBinding.itemImage, itemsList.get(position).getImages().get(0).getUrl());
+        if (itemsList.get(position).getImages().size()>0){
+            ImageHelper.getInstance(viewHolder.searchItemBinding.itemImage.getContext()).loadImageToLandscape(viewHolder.searchItemBinding.itemImage, itemsList.get(position).getImages().get(0).getUrl(),R.drawable.landscape);
         }else {
+            ImageHelper.getInstance(viewHolder.searchItemBinding.itemImage.getContext()).loadPlaceHolder(viewHolder.searchItemBinding.itemImage, R.drawable.landscape);
+        }
+        viewHolder.searchItemBinding.tvTitle.setText(itemsList.get(position).getName());
+        viewHolder.searchItemBinding.setSingleItem(itemsList.get(position));
 
-        }*/
-
-        if (itemsList.get(position).getType() == MediaTypeConstant.getLinear(context)) {
+/*        if (itemsList.get(position).getType() == MediaTypeConstant.getLinear(context)) {
 
             Drawable background = viewHolder.searchItemBinding.creatorLay.getBackground();
             PrintLogging.printLog(this.getClass(), "", "circleviewww if" + "--->>");
@@ -83,7 +86,7 @@ public class ResultAdapterAll extends RecyclerView.Adapter<ResultAdapterAll.Sing
             viewHolder.searchItemBinding.hungama.setVisibility(View.VISIBLE);
         }else {
             viewHolder.searchItemBinding.hungama.setVisibility(View.GONE);
-        }
+        }*/
     }
 
     @Override

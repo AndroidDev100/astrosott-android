@@ -138,6 +138,7 @@ public interface AppLevelConstants {
 
 
     String KEY_SUBTITLE_LANGUAGE = "SubtitleLanguages";
+    String KEY_BILLING_ID = "BillingId";
 
     String KEY_CAST_ACTOR = "Actors";
     String KEY_PARENTREF_ID = "TrailerParentRefId";

@@ -126,7 +126,6 @@
                 android:visibility="gone"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="1"
-                android:text="@{ResultAllXmlUtils.setDetails(context,singleItem)}"
                 android:textColor="@color/search_sub_title"
                 android:textSize="@dimen/font_medium_large" />
 

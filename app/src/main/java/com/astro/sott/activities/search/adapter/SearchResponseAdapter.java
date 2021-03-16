@@ -120,7 +120,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         textView.setText(stringBuilder.toString());
         headerSearchCount.setText(stringBuilder2.toString());
 
-        if (count <= 20)
+        if (count < 20)
             all.setVisibility(View.GONE);
 
 
@@ -133,6 +133,8 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onItemClicked(final Asset itemValue, int position) {
+        try {
+
         if (itemValue != null && itemValue.getType() == MediaTypeConstant.getMovie(activity)) {
             getRailCommonData(itemValue, activity.getResources().getString(R.string.movie));
             if (railCommonData.getImages().size() == itemValue.getImages().size())
@@ -174,6 +176,9 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     }
                 }
             });
+        }
+        }catch (Exception ignored){
+
         }
     }
 

@@ -199,7 +199,7 @@ public class SearchRepository {
     }
 
 
-    public LiveData<ArrayList<SearchModel>> matchSetHitApi(String searchString, final Context context, final List<MediaTypeModel> list, int counter) {
+    public LiveData<ArrayList<SearchModel>> matchSetHitApi(String searchString, final Context context, final List<MediaTypeModel> list, int counter,int from,int beginFrom) {
         initRealm(context);
         matchingKeyword(searchString);
         //Log.w("valuesFromList",list.get(counter).getId()+"");
@@ -430,7 +430,38 @@ public class SearchRepository {
         SearchModel Collection = new SearchModel();
         SearchModel Linear = new SearchModel();
         SearchModel Program = new SearchModel();
-        if (counter==0){
+
+        if (list.get(0).getAllItemsInSection()!=null && list.get(0).getAllItemsInSection().size()>0){
+            Asset asset=list.get(0).getAllItemsInSection().get(0);
+            if (asset.getType()==MediaTypeConstant.getMovie(context)){
+                Movie = list.get(0);
+            }else if (asset.getType()==MediaTypeConstant.getCollection(context)){
+                if (AppCommonMethods.isPages(context,asset)){
+                    Collection=list.get(0);
+                }else {
+                    Movie = list.get(0);
+                }
+
+            }
+            else if (asset.getType()==MediaTypeConstant.getSeries(context)){
+                Episode = list.get(0);
+                Series = list.get(0);
+            }
+            else if (asset.getType()==MediaTypeConstant.getEpisode(context)){
+                Episode = list.get(0);
+                Series = list.get(0);
+            }
+            else if (asset.getType()==MediaTypeConstant.getLinear(context)){
+                Linear = list.get(0);
+                Program = list.get(0);
+            }
+            else if (asset.getType()==MediaTypeConstant.getProgram(context)){
+                Linear = list.get(0);
+                Program = list.get(0);
+            }
+        }
+
+        /*if (counter==0){
             Movie = list.get(0);
         }else if (counter==1){
             Episode = list.get(0);
@@ -441,7 +472,7 @@ public class SearchRepository {
         }
         else if (counter==3){
             Collection=list.get(0);
-        }
+        }*/
 
 
         Log.w("valuesFromList S",list.size()+"");
@@ -471,33 +502,33 @@ public class SearchRepository {
             }
         }
 */
-        if (Movie.getAllItemsInSection().size() > 0) {
+        if (Movie.getAllItemsInSection()!=null && Movie.getAllItemsInSection().size() > 0) {
             Movie.setHeaderTitle(SearchModel.SEARCH_VOD);
             allSampleData.add(Movie);
         }
 
-        if (Series.getAllItemsInSection().size() > 0) {
+        if (Series.getAllItemsInSection()!=null && Series.getAllItemsInSection().size() > 0) {
             Series.setHeaderTitle(SearchModel.SEARCH_TV_SHOWS);
             allSampleData.add(Series);
         }
 
 
-        if (Episode.getAllItemsInSection().size() > 0) {
+        if (Episode.getAllItemsInSection()!=null && Episode.getAllItemsInSection().size() > 0) {
             Episode.setHeaderTitle(SearchModel.SEARCH_TV_SHOWS);
             allSampleData.add(Episode);
         }
 
-        if (Collection.getAllItemsInSection().size() > 0) {
+        if (Collection.getAllItemsInSection()!=null && Collection.getAllItemsInSection().size() > 0) {
             Collection.setHeaderTitle(SearchModel.SEARCH_PAGE);
             allSampleData.add(Collection);
         }
 
-        if (Linear.getAllItemsInSection().size() > 0) {
+        if (Linear.getAllItemsInSection()!=null && Linear.getAllItemsInSection().size() > 0) {
             Linear.setHeaderTitle(SearchModel.SEARCH_LIVE);
             allSampleData.add(Linear);
         }
 
-        if (Program.getAllItemsInSection().size() > 0) {
+        if (Program.getAllItemsInSection()!=null && Program.getAllItemsInSection().size() > 0) {
             Linear.setHeaderTitle(SearchModel.SEARCH_LIVE);
             allSampleData.add(Linear);
         }
@@ -507,7 +538,7 @@ public class SearchRepository {
     }
 
 
-    public LiveData<ArrayList<SearchModel>> hitQuickSearchAPI(String searchString, final Context context, final List<MediaTypeModel> list, int counter,String selectedGenre,int from) {
+    public LiveData<ArrayList<SearchModel>> hitQuickSearchAPI(String searchString, final Context context, final List<MediaTypeModel> list, int counter,String selectedGenre,int from,int beginFrom) {
         initRealm(context);
         matchingKeyword(searchString);
         //Log.w("valuesFromList",list.get(counter).getId()+"");

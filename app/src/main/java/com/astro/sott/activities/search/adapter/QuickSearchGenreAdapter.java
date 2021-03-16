@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.astro.sott.R;
+import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.GenreSelectionCallBack;
 import com.astro.sott.databinding.GenreItemLayoutBinding;
@@ -74,7 +75,7 @@ public class QuickSearchGenreAdapter extends RecyclerView.Adapter<QuickSearchGen
             holder.binding.halfCircle.setVisibility(View.GONE);
             holder.binding.imageView.setVisibility(View.VISIBLE);
            // holder.binding.border.setVisibility(View.GONE);
-            holder.binding.border.setBackgroundColor(Color.parseColor("#191a2d"));
+            holder.binding.border.setBackgroundColor(Color.parseColor("#2d1347"));
         }
 
         holder.binding.mainLayout.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +94,13 @@ public class QuickSearchGenreAdapter extends RecyclerView.Adapter<QuickSearchGen
         });
 
         holder.binding.textName.setText(railCommonData.getName());
-        ImageHelper.getInstance(holder.binding.imageView.getContext()).loadImageOfGenre(holder.binding.imageView, "https://images.sgs1.ott.kaltura.com/service.svc/GetImage/p/3209/entry_id/cd0a956e5be4467eb4e6d120ca75530f/version/5", R.drawable.landscape);
+        if (railCommonData.getImages().size() > 0) {
+            AssetCommonImages assetCommonImages = railCommonData.getImages().get(0);
+            ImageHelper.getInstance(holder.binding.imageView.getContext()).loadImageOfGenre(holder.binding.imageView, assetCommonImages.getImageUrl(), R.drawable.placeholder_square);
+        }else {
+            ImageHelper.getInstance(holder.binding.imageView.getContext()).loadPlaceHolder(holder.binding.imageView, R.drawable.placeholder_square);
+        }
+      //  ImageHelper.getInstance(holder.binding.imageView.getContext()).loadImageOfGenre(holder.binding.imageView, "https://images.sgs1.ott.kaltura.com/service.svc/GetImage/p/3209/entry_id/cd0a956e5be4467eb4e6d120ca75530f/version/5", R.drawable.landscape);
         /*if (position%2==0){
             holder.binding.halfCircle.setVisibility(View.GONE);
             holder.binding.imageView.setVisibility(View.VISIBLE);

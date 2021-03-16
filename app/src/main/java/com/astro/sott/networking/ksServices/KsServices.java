@@ -14,6 +14,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.astro.sott.ApplicationMain;
 import com.astro.sott.activities.SelectAccount.SelectAccountModel.DtvMbbHbbModel;
 import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.activities.search.constants.SearchFilterEnum;
+import com.astro.sott.activities.search.constants.SortByEnum;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.subscription.manager.PaymentItemDetail;
 import com.astro.sott.beanModel.VIUChannel;
@@ -2939,7 +2941,7 @@ public class KsServices {
                 tag3 +
                         keyToSearch +
                         tag2;*/
-        assetFilter.setKSql(modifyString);
+        assetFilter.setKSql(KsPreferenceKey.getInstance(context).getSearchKSQL());
         if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getMovie(context)))){
             assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getMovie(context))+","+String.valueOf(MediaTypeConstant.getCollection(context)));
         }else if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getSeries(context))) || mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getEpisode(context)))){
@@ -3140,7 +3142,23 @@ public class KsServices {
         assetFilter.name(searchKeyword);
         assetFilter.setKSql(keyToSearch);
         assetFilter.setTypeIn(currentMediaTypes.get(count).getId());
-        assetFilter.orderBy("RELEVANCY_DESC");
+        if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")){
+            if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())){
+                assetFilter.orderBy(SortByEnum.NAME_ASC.name());
+            }
+            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())){
+                assetFilter.orderBy(SortByEnum.VIEWS_DESC.name());
+            }
+            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())){
+                assetFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
+            }else {
+                assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+            }
+
+        }else {
+            assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+        }
+
       /*  if (count==0){
 
             String str[]=currentMediaTypes.get(count).getId().split(",");
@@ -3164,7 +3182,10 @@ public class KsServices {
 
                             temp.setHeaderTitle(getNameFromType(result.results.getObjects().get(0).getType()));
                             temp.setType(result.results.getObjects().get(0).getType());
-                            if (result.results.getObjects().get(0).getType()==MediaTypeConstant.getMovie(context)
+                            List<Asset> assetss=AppCommonMethods.applyFreePaidFilter(result.results,context);
+                            temp.setAllItemsInSection(assetss);
+                            temp.setTotalCount(assetss.size());
+                           /* if (result.results.getObjects().get(0).getType()==MediaTypeConstant.getMovie(context)
                             || result.results.getObjects().get(0).getType()==MediaTypeConstant.getCollection(context)){
                                 List<Asset> assets=AppCommonMethods.removePagesFromCollection(result.results,context);
                                 temp.setAllItemsInSection(assets);
@@ -3173,7 +3194,7 @@ public class KsServices {
                                 //List<Asset> assets=AppCommonMethods.removePagesFromCollection(result.results);
                                 temp.setTotalCount(result.results.getTotalCount());
                                 temp.setAllItemsInSection(result.results.getObjects());
-                            }
+                            }*/
 
                             temp.setSearchString(searchString);
                             if (!iscategoryAdded(result.results.getObjects().get(0).getType())) {
@@ -6920,7 +6941,7 @@ public class KsServices {
         assetFilter.setKSql(keyToSearch);
         assetFilter.name(searchKeyword);
         assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getCollection(context)));
-        assetFilter.orderBy("RELEVANCY_DESC");
+        assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
 
         AssetService.ListAssetBuilder assetService = AssetService.list(assetFilter, filterPager).setCompletion(result -> {
             if (result.isSuccess()) {

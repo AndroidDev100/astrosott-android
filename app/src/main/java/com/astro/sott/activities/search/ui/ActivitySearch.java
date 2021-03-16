@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -25,6 +27,7 @@ import com.astro.sott.activities.search.adapter.AutoSearchAdapter;
 import com.astro.sott.activities.search.adapter.KeywordListAdapter;
 import com.astro.sott.activities.search.adapter.SearchNormalAdapter;
 import com.astro.sott.activities.search.adapter.SearchResponseAdapter;
+import com.astro.sott.activities.search.constants.SearchFilterEnum;
 import com.astro.sott.activities.search.viewModel.SearchViewModel;
 import com.astro.sott.activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
@@ -35,6 +38,7 @@ import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.callBacks.commonCallBacks.DataLoadedOnFragment;
 import com.astro.sott.db.search.SearchedKeywords;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
@@ -67,11 +71,13 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     private int responseCompleted = 1;
     private int counter = 0;
     private SearchResponseAdapter adapter;
+    boolean searchHappen=false;
+    int searchBeginFrom=0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        KsPreferenceKey.getInstance(ActivitySearch.this).setFilterApply("false");
+        AppCommonMethods.resetFilter(ActivitySearch.this);
         modelCall();
         connectionObserver();
 
@@ -91,16 +97,19 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 getBinding().autoRecyclerView.setVisibility(View.VISIBLE);
                 getBinding().autoRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
                 getBinding().llRecentSearchLayout.setVisibility(View.GONE);
-                if (charSequence.length() > 2) {
-                    if (responseCompleted == 1) {
+                if (!searchHappen){
+                    if (charSequence.length() > 2) {
+                        if (responseCompleted == 1) {
+                            autoCompleteCounter = 0;
+                            autoList.clear();
+                            hitAutoCompleteApi(charSequence);
+                        }
+                    } else {
                         autoCompleteCounter = 0;
-                        autoList.clear();
-                        hitAutoCompleteApi(charSequence);
+                        setAdapter(new ArrayList<>(), null, 0);
                     }
-                } else {
-                    autoCompleteCounter = 0;
-                    setAdapter(new ArrayList<>(), null, 0);
                 }
+
             }
 
             @Override
@@ -217,6 +226,17 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
            // loadDataFromModel();
             addGenreFragment();
+
+            try {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getBinding().toolbar.searchText.setEnabled(true);
+                    }
+                },500);
+            }catch (Exception ignored){
+
+            }
         } else {
 
             noConnectionLayout();
@@ -225,6 +245,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     QuickSearchGenre detailRailFragment;
     private void addGenreFragment() {
+        getBinding().toolbar.searchText.setEnabled(false);
         FragmentManager fm = getSupportFragmentManager();
         detailRailFragment = new QuickSearchGenre();
         fm.beginTransaction().replace(R.id.genre_fragment, detailRailFragment).commitNow();
@@ -240,7 +261,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     private void UIinitialization() {
         getBinding().quickSearchLayout.setVisibility(View.GONE);
-        setMediaType();
+        setMediaType(1);
         setRecyclerProperties(getBinding().searchKeywordRecycler);
         setRecyclerProperties(getBinding().recyclerView);
         setRecyclerProperties(getBinding().rvSearchResult);
@@ -280,11 +301,13 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                     if (selectedGenreValues==null || selectedGenreValues.equalsIgnoreCase("")){
                         ToastHandler.show("Select at least one!", getApplicationContext());
                     }else {
-                        counter = 0;
-                        laodMoreList.clear();
-                        adapter = null;
-                        getBinding().toolbar.filter.setVisibility(View.INVISIBLE);
-                        callQuickSearch("",1);
+                        if (!searchHappen){
+                            counter = 0;
+                            laodMoreList.clear();
+                            adapter = null;
+                            getBinding().toolbar.filter.setVisibility(View.GONE);
+                            callQuickSearch("",1);
+                        }
                     }
                 }
             }
@@ -296,12 +319,14 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                     if ((getBinding().toolbar.searchText.getText().toString().length() > 0)) {
                         String keyword = getBinding().toolbar.searchText.getText().toString().trim();
                         if (!keyword.equalsIgnoreCase("")) {
-                            getBinding().llSearchResultLayout.setVisibility(View.GONE);
-                            counter = 0;
-                            laodMoreList.clear();
-                            adapter = null;
-                            getBinding().toolbar.filter.setVisibility(View.INVISIBLE);
-                            callViewModel(getBinding().toolbar.searchText.getText().toString());
+                            if (!searchHappen){
+                                getBinding().llSearchResultLayout.setVisibility(View.GONE);
+                                counter = 0;
+                                laodMoreList.clear();
+                                adapter = null;
+                                getBinding().toolbar.filter.setVisibility(View.GONE);
+                                callViewModel(getBinding().toolbar.searchText.getText().toString(),1);
+                            }
                         }
                     }
                 } else
@@ -321,15 +346,31 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     }
 
-    private void setMediaType() {
+    private void setMediaType(int contentTypeFilter) {
         mediaList = new ArrayList<>();
-        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_MOVIE, String.valueOf(MediaTypeConstant.getMovie(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getCollection(ActivitySearch.this))));
-        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SERIES, String.valueOf(MediaTypeConstant.getSeries(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getEpisode(ActivitySearch.this))));
-       // mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_EPISODE, ""));
-        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getProgram(ActivitySearch.this))));
-        mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_COLLECTION, String.valueOf(MediaTypeConstant.getCollection(ActivitySearch.this))));
-        //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))));
-        //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_SHORTFILM, String.valueOf(MediaTypeConstant.getShortFilm(ActivitySearch.this))));
+        if (contentTypeFilter==1){
+            mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_MOVIE, String.valueOf(MediaTypeConstant.getMovie(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getCollection(ActivitySearch.this))));
+            mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SERIES, String.valueOf(MediaTypeConstant.getSeries(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getEpisode(ActivitySearch.this))));
+            // mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_EPISODE, ""));
+            mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getProgram(ActivitySearch.this))));
+            mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_COLLECTION, String.valueOf(MediaTypeConstant.getCollection(ActivitySearch.this))));
+            //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))));
+            //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_SHORTFILM, String.valueOf(MediaTypeConstant.getShortFilm(ActivitySearch.this))));
+
+        }else if (contentTypeFilter==2){
+            mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_MOVIE, String.valueOf(MediaTypeConstant.getMovie(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getCollection(ActivitySearch.this))));
+        }else if (contentTypeFilter==3){
+            mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getProgram(ActivitySearch.this))));
+        }else {
+            mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_MOVIE, String.valueOf(MediaTypeConstant.getMovie(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getCollection(ActivitySearch.this))));
+            mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SERIES, String.valueOf(MediaTypeConstant.getSeries(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getEpisode(ActivitySearch.this))));
+            // mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_EPISODE, ""));
+            mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))+","+String.valueOf(MediaTypeConstant.getProgram(ActivitySearch.this))));
+            mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_COLLECTION, String.valueOf(MediaTypeConstant.getCollection(ActivitySearch.this))));
+            //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this))));
+            //mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_SHORTFILM, String.valueOf(MediaTypeConstant.getShortFilm(ActivitySearch.this))));
+
+        }
 
     }
 
@@ -353,54 +394,6 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     }
 
-    private void callViewModel(final String searchString) {
-        if (counter == 0) {
-            getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
-        }
-        if (counter != mediaList.size() && counter < mediaList.size()) {
-            viewModel.getListSearchResult(searchString, mediaList, counter).observe(this, searchmodels -> {
-                if (mediaList.size() > 0) {
-                    if (counter == 4)
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                }
-                if (searchmodels.size() > 0) {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                    getBinding().llSearchResultLayout.setVisibility(View.VISIBLE);
-                    getBinding().rvSearchResult.setVisibility(View.VISIBLE);
-                    getBinding().noResult.setVisibility(View.GONE);
-                    getBinding().popularSearchGroup.setVisibility(View.GONE);
-                    getBinding().llRecentSearchLayout.setVisibility(View.GONE);
-                    setUiComponents(searchmodels);
-                    counter++;
-                    callViewModel(searchString);
-                } else {
-                    if (counter != mediaList.size()) {
-                        counter++;
-                        callViewModel(searchString);
-                    } else {
-                        getBinding().noResult.setVisibility(View.VISIBLE);
-                        getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
-                        getBinding().popularSearchGroup.setVisibility(View.GONE);
-                        getBinding().autoRecyclerView.setVisibility(View.GONE);
-                        getBinding().recyclerView.setVisibility(View.VISIBLE);
-                        loadDataFromModel();
-                    }
-
-                }
-            });
-
-        } else {
-            if (laodMoreList != null && laodMoreList.size() == 0) {
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
-                getBinding().noResult.setVisibility(View.VISIBLE);
-                getBinding().popularSearchGroup.setVisibility(View.GONE);
-                getBinding().autoRecyclerView.setVisibility(View.GONE);
-                getBinding().recyclerView.setVisibility(View.VISIBLE);
-                loadDataFromModel();
-            }
-        }
-    }
 
     private void setUiComponents(ArrayList<SearchModel> searchmodels) {
         try {
@@ -482,11 +475,13 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     public void onItemClicked(SearchedKeywords itemValue) {
         if (NetworkConnectivity.isOnline(ActivitySearch.this)) {
             if (itemValue.getKeyWords().length() > 0) {
-                getBinding().toolbar.searchText.setText(itemValue.getKeyWords());
-                counter = 0;
-                laodMoreList.clear();
-                adapter = null;
-                callViewModel(itemValue.getKeyWords());
+                if (!searchHappen){
+                    getBinding().toolbar.searchText.setText(itemValue.getKeyWords());
+                    counter = 0;
+                    laodMoreList.clear();
+                    adapter = null;
+                    callViewModel(itemValue.getKeyWords(),1);
+                }
             }
         } else
             ToastHandler.show(ActivitySearch.this.getResources().getString(R.string.no_internet_connection), getApplicationContext());
@@ -565,6 +560,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     @Override
     public void isDataLoaded(boolean isLoaded) {
+        getBinding().toolbar.searchText.setEnabled(true);
         if (isLoaded){
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             getBinding().quickSearchLayout.setVisibility(View.VISIBLE);
@@ -578,7 +574,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     private void showRecentSearchLayout(int i) {
             if (i==1){
                 getBinding().genreFragment.setVisibility(View.GONE);
-                getBinding().toolbar.filter.setVisibility(View.INVISIBLE);
+                getBinding().toolbar.filter.setVisibility(View.GONE);
                 List<SearchedKeywords> mList = new ArrayList<>();
                 getBinding().llRecentSearchLayout.setVisibility(View.GONE);
 
@@ -619,14 +615,14 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     }
 
-    private void callQuickSearch(final String searchString,int from) {
-        getBinding().genreFragment.setVisibility(View.GONE);
+    private void callViewModel(final String searchString,int from) {
         getBinding().quickSearchLayout.setVisibility(View.GONE);
         if (counter == 0) {
             getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         }
         if (counter != mediaList.size() && counter < mediaList.size()) {
-            viewModel.getQuickSearchResult(searchString, mediaList, counter,selectedGenreValues,from).observe(this, searchmodels -> {
+            searchHappen=true;
+            viewModel.getListSearchResult(searchString, mediaList, counter,from,searchBeginFrom).observe(this, searchmodels -> {
                 if (mediaList.size() > 0) {
                     if (counter == 4)
                         getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
@@ -638,6 +634,63 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                     getBinding().noResult.setVisibility(View.GONE);
                     getBinding().popularSearchGroup.setVisibility(View.GONE);
                     getBinding().llRecentSearchLayout.setVisibility(View.GONE);
+                    searchBeginFrom=1;
+                    setUiComponents(searchmodels);
+                    counter++;
+                    callViewModel(searchString,from);
+                } else {
+                    if (counter != mediaList.size()) {
+                        counter++;
+                        callViewModel(searchString,from);
+                    } else {
+                        getBinding().noResult.setVisibility(View.VISIBLE);
+                        getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
+                        getBinding().popularSearchGroup.setVisibility(View.GONE);
+                        getBinding().autoRecyclerView.setVisibility(View.GONE);
+                        getBinding().recyclerView.setVisibility(View.VISIBLE);
+                        loadDataFromModel();
+                    }
+
+                }
+            });
+
+        } else {
+            searchHappen=false;
+            if (laodMoreList != null && laodMoreList.size() == 0) {
+                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
+                getBinding().noResult.setVisibility(View.VISIBLE);
+                getBinding().popularSearchGroup.setVisibility(View.GONE);
+                getBinding().autoRecyclerView.setVisibility(View.GONE);
+                getBinding().recyclerView.setVisibility(View.VISIBLE);
+                getBinding().rvSearchResult.setVisibility(View.GONE);
+                loadDataFromModel();
+            }
+        }
+    }
+
+
+    private void callQuickSearch(final String searchString,int from) {
+        getBinding().genreFragment.setVisibility(View.GONE);
+        getBinding().quickSearchLayout.setVisibility(View.GONE);
+        if (counter == 0) {
+            getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+        }
+        if (counter != mediaList.size() && counter < mediaList.size()) {
+            searchHappen=true;
+            viewModel.getQuickSearchResult(searchString, mediaList, counter,selectedGenreValues,from,searchBeginFrom).observe(this, searchmodels -> {
+                if (mediaList.size() > 0) {
+                    if (counter == 4)
+                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                }
+                if (searchmodels.size() > 0) {
+                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().llSearchResultLayout.setVisibility(View.VISIBLE);
+                    getBinding().rvSearchResult.setVisibility(View.VISIBLE);
+                    getBinding().noResult.setVisibility(View.GONE);
+                    getBinding().popularSearchGroup.setVisibility(View.GONE);
+                    getBinding().llRecentSearchLayout.setVisibility(View.GONE);
+                    searchBeginFrom=2;
                     setUiComponents(searchmodels);
                     counter++;
                     callQuickSearch(searchString,from);
@@ -658,6 +711,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             });
 
         } else {
+            searchHappen=false;
             if (laodMoreList != null && laodMoreList.size() == 0) {
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
@@ -665,6 +719,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 getBinding().popularSearchGroup.setVisibility(View.GONE);
                 getBinding().autoRecyclerView.setVisibility(View.GONE);
                 getBinding().recyclerView.setVisibility(View.VISIBLE);
+                getBinding().rvSearchResult.setVisibility(View.GONE);
                 loadDataFromModel();
             }
         }
@@ -679,7 +734,23 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 counter = 0;
                 laodMoreList.clear();
                 adapter = null;
-                callQuickSearch("",2);
+                if (KsPreferenceKey.getInstance(ActivitySearch.this).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ALL.name())){
+                    setMediaType(1);
+                }else if (KsPreferenceKey.getInstance(ActivitySearch.this).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ONDEMAND.name())){
+                    setMediaType(2);
+                }
+                else if (KsPreferenceKey.getInstance(ActivitySearch.this).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.LIVE.name())){
+                    setMediaType(3);
+                }else {
+                    setMediaType(4);
+                }
+                if (searchBeginFrom==1){
+                    callViewModel(getBinding().toolbar.searchText.getText().toString(),1);
+                }else {
+                    selectedGenreValues="";
+                    callQuickSearch("",2);
+                }
+
             }
 
         }

@@ -95,7 +95,7 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
 
         getBinding().toolbar.ivClose.setOnClickListener(view -> onBackPressed());
 
-        getBinding().resultRecycler.hasFixedSize();
+        getBinding().resultRecycler.setHasFixedSize(true);
         getBinding().resultRecycler.setNestedScrollingEnabled(false);
 //        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 //        getBinding().resultRecycler.setLayoutManager(mLayoutManager);
@@ -187,7 +187,13 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
                         new LiveChannelManager().getLiveProgram(ResultActivity.this, itemValue, new CheckLiveProgram() {
                             @Override
                             public void response(CommonResponse asset) {
-                                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                                    }
+                                });
+
                                 if (asset != null) {
                                     if (asset.getStatus()) {
                                         if (asset.getLivePrograme()) {

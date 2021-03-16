@@ -28,12 +28,12 @@ public class SearchViewModel extends AndroidViewModel {
 
     }
 
-    public LiveData<ArrayList<SearchModel>> getListSearchResult(String searchString, List<MediaTypeModel> mediaList,int counter) {
-        return repository.matchSetHitApi(searchString, getApplication().getApplicationContext(), mediaList,counter);
+    public LiveData<ArrayList<SearchModel>> getListSearchResult(String searchString, List<MediaTypeModel> mediaList,int counter,int from,int beginFrom) {
+        return repository.matchSetHitApi(searchString, getApplication().getApplicationContext(), mediaList,counter,from,beginFrom);
     }
 
-    public LiveData<ArrayList<SearchModel>> getQuickSearchResult(String searchString, List<MediaTypeModel> mediaList,int counter,String selectedGenre,int from) {
-        return repository.hitQuickSearchAPI(searchString, getApplication().getApplicationContext(), mediaList,counter,selectedGenre,from);
+    public LiveData<ArrayList<SearchModel>> getQuickSearchResult(String searchString, List<MediaTypeModel> mediaList,int counter,String selectedGenre,int from,int searchBeginFrom) {
+        return repository.hitQuickSearchAPI(searchString, getApplication().getApplicationContext(), mediaList,counter,selectedGenre,from,searchBeginFrom);
     }
 
     public LiveData<ArrayList<SearchModel>> autoCompleteHit(String searchString, List<MediaTypeModel> mediaList,int autoCompleteCounter) {

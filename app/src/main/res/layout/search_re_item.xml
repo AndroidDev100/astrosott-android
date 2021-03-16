@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:gravity="center_vertical"
+                android:layout_marginRight="@dimen/popular_searches_margin_left"
                 android:layout_toStartOf="@id/headerTitleSearchLay"
                 >
 

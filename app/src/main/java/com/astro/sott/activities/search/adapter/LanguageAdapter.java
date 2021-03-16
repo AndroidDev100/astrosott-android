@@ -44,8 +44,8 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Single
     public void onBindViewHolder(@NonNull LanguageAdapter.SingleItemHolder holder, int position) {
         if (filterLanguageList.get(position).isSelected()){
             holder.binding.titleText.setText(filterLanguageList.get(position).getValue());
-            holder.binding.titleText.setTextColor(Color.parseColor("#151024"));
-            holder.binding.titleText.setBackgroundColor(Color.parseColor("#00e895"));
+            holder.binding.titleText.setTextColor(context.getResources().getColor(R.color.filter_text_selected_color));
+            holder.binding.titleText.setBackgroundColor(context.getResources().getColor(R.color.filter_text_selected_bg));
 
         }else {
             holder.binding.titleText.setText(filterLanguageList.get(position).getValue());
@@ -70,11 +70,14 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Single
     }
 
     String selectedGenre="";
+    String selectedGenre2="";
     private void getSelectedValues(List<FilterLanguages> arrayList) {
         StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder1=new StringBuilder();
         for (int i = 0; i<arrayList.size(); i ++){
             if (arrayList.get(i).isSelected()){
                 stringBuilder.append(AppLevelConstants.FILTER_LANGUAGE_CONSTANT +arrayList.get(i).getValue()+"'").append("  ");
+                stringBuilder1.append(arrayList.get(i).getValue()).append(", ");
 
             }
             if (stringBuilder.length() > 0) {
@@ -83,11 +86,19 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Single
             } else {
                 selectedGenre = "";
             }
+
+            if (stringBuilder1.length() > 0) {
+                selectedGenre2 = stringBuilder1.toString();
+                selectedGenre2 = selectedGenre2.substring(0, selectedGenre2.length() - 2);
+            } else {
+                selectedGenre2 = "";
+            }
         }
 
-        Log.w("selectedGenres-:",selectedGenre);
+        Log.w("selectedGenres-:",selectedGenre+"---------->>>"+selectedGenre2);
 
         KsPreferenceKey.getInstance(context).setFilterLanguage(selectedGenre);
+        KsPreferenceKey.getInstance(context).setFilterLanguageSelection(selectedGenre2);
 
     }
 

@@ -59,7 +59,6 @@
 
             <ImageView
                 android:id="@+id/itemImage"
-                setImageUrlSearch="@{singleItem.images.size() > 0 ? singleItem.images.get(0) : null}"
                 android:layout_width="@dimen/list_lds_width"
                 android:layout_height="@dimen/list_lds_height"
                 android:contentDescription="@string/banner_image"
@@ -98,7 +97,6 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_medium"
                 android:maxLines="1"
-                android:text="@{ResultAllXmlUtils.setTitle(singleItem)}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_medium_large" />
 
@@ -111,9 +109,8 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="1"
-                android:text="@{ResultAllXmlUtils.setDetails(context,singleItem)}"
                 android:textColor="@color/search_sub_title"
-                android:textSize="@dimen/font_medium_large" />
+                android:textSize="@dimen/font_medium" />
 
         </LinearLayout>
 
@@ -121,7 +118,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/search_item_seperator_width"
-            android:background="@color/search_toolbar_background"
+            android:background="@color/toolbar_bg"
             app:layout_constraintBottom_toBottomOf="parent" />
 
 

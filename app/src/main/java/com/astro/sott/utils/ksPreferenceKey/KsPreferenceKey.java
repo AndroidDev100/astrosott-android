@@ -19,12 +19,15 @@ public class KsPreferenceKey {
     public static final String AUTO_DURATION = "auto_rotate_duration";
     public static final String GENRE_DATA = "genre_data";
     public static final String FILTER_SELECTED_GENRE = "FILTER_SELECTED_GENRE";
+    public static final String FILTER_SELECTED_GENRE_VALUE = "FILTER_SELECTED_GENRE_VALUE";
     public static final String FILTER_SELECTED_LANGUAGE = "FILTER_SELECTED_LANGUAGE";
+    public static final String FILTER_SELECTED_LANGUAGE_VALUES = "FILTER_SELECTED_LANGUAGE_VALUES";
 
     public static final String FILTER_SORT_BY = "FILTER_SORT_BY";
     public static final String FILTER_CONTENT_TYPE = "FILTER_CONTENT_TYPE";
     public static final String FILTER_FREE_PAID = "FILTER_FREE_PAID";
     public static final String FILTER_APPLY = "FILTER_APPLY";
+    public static final String SEARCH_KSQL = "SEARCH_KSQL";
 
 
 
@@ -381,6 +384,15 @@ public class KsPreferenceKey {
     }
 
 
+    public void setFilterGenreSelection(String profileData) {
+        session.setString(FILTER_SELECTED_GENRE_VALUE, profileData);
+    }
+
+    public String getFilterGenreSelection() {
+        return session.getString(FILTER_SELECTED_GENRE_VALUE, "");
+    }
+
+
     public void setFilterLanguage(String profileData) {
         session.setString(FILTER_SELECTED_LANGUAGE, profileData);
     }
@@ -389,12 +401,20 @@ public class KsPreferenceKey {
         return session.getString(FILTER_SELECTED_LANGUAGE, "");
     }
 
+    public void setFilterLanguageSelection(String profileData) {
+        session.setString(FILTER_SELECTED_LANGUAGE_VALUES, profileData);
+    }
+
+    public String getFilterLanguageSelection() {
+        return session.getString(FILTER_SELECTED_LANGUAGE_VALUES, "");
+    }
+
     public void setFilterSortBy(String profileData) {
-        session.setString(FILTER_SELECTED_LANGUAGE, profileData);
+        session.setString(FILTER_SORT_BY, profileData);
     }
 
     public String getFilterSortBy() {
-        return session.getString(FILTER_SELECTED_LANGUAGE, "");
+        return session.getString(FILTER_SORT_BY, "");
     }
 
 
@@ -402,7 +422,7 @@ public class KsPreferenceKey {
         session.setString(FILTER_CONTENT_TYPE, profileData);
     }
 
-    public String setFilterContentType() {
+    public String getFilterContentType() {
         return session.getString(FILTER_CONTENT_TYPE, "");
     }
 
@@ -420,6 +440,14 @@ public class KsPreferenceKey {
 
     public String getFilterApply() {
         return session.getString(FILTER_APPLY, "");
+    }
+
+    public void setSearchKSQL(String profileData) {
+        session.setString(SEARCH_KSQL, profileData);
+    }
+
+    public String getSearchKSQL() {
+        return session.getString(SEARCH_KSQL, "");
     }
 
 

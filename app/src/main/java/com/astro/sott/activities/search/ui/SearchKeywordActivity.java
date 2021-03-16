@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.View;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.search.adapter.SearchKeywordAdapter;
+import com.astro.sott.activities.search.constants.SearchFilterEnum;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.databinding.ActivitySearchKeywordBinding;
@@ -22,6 +24,7 @@ import com.astro.sott.modelClasses.dmsResponse.FilterLanguages;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -65,19 +68,56 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
             noConnectionLayout();
         }
     }
+    List<SearchedKeywords> newObjectNew;
     List<SearchedKeywords> newObject;
     private ResponseDmsModel responseDmsModel;
     private ArrayList<FilterLanguages> filterLanguageList;
+    private ArrayList<FilterLanguages> filterLanguageListNew;
+    List<String> filterLanguageSavedList;
+    List<String> filterGenreSavedList;
     private void callGenreData() {
         try {
+            filterLanguageSavedList=new ArrayList<>();
+            filterLanguageList=new ArrayList<>();
+            newObject=new ArrayList<>();
             Gson gson = new Gson();
             String json = KsPreferenceKey.getInstance(SearchKeywordActivity.this).getUserProfileData();
             Type type = new TypeToken<List<SearchedKeywords>>() {}.getType();
-            newObject = gson.fromJson(json, type);
-            Log.w("savedGenre",newObject.get(0).getKeyWords());
+            newObjectNew = gson.fromJson(json, type);
+            Log.w("savedGenre",newObjectNew.get(0).getKeyWords());
+
+            filterGenreSavedList=AppCommonMethods.createFilterGenreList(KsPreferenceKey.getInstance(this).getFilterGenreSelection());
+
+            for (int i=0;i<newObjectNew.size();i++){
+                SearchedKeywords filterLanguages=new SearchedKeywords();
+                filterLanguages.setKeyWords(newObjectNew.get(i).getKeyWords());
+                if(AppCommonMethods.checkLangeageAdded(newObjectNew.get(i).getKeyWords(),filterGenreSavedList)){
+                    filterLanguages.setSelected(true);
+                }else {
+                    filterLanguages.setSelected(false);
+                }
+
+                newObject.add(filterLanguages);
+            }
+
 
             responseDmsModel = AppCommonMethods.callpreference(this);
-            filterLanguageList = responseDmsModel.getFilterLanguageList();
+            filterLanguageListNew = responseDmsModel.getFilterLanguageList();
+            filterLanguageSavedList=AppCommonMethods.createFilterLanguageList(KsPreferenceKey.getInstance(this).getFilterLanguageSelection());
+
+            for (int i=0;i<filterLanguageListNew.size();i++){
+                FilterLanguages filterLanguages=new FilterLanguages();
+                filterLanguages.setValue(filterLanguageListNew.get(i).getValue());
+                filterLanguages.setKey(filterLanguageListNew.get(i).getKey());
+                if(AppCommonMethods.checkLangeageAdded(filterLanguageListNew.get(i).getValue(),filterLanguageSavedList)){
+                    filterLanguages.setSelected(true);
+                }else {
+                    filterLanguages.setSelected(false);
+                }
+
+                filterLanguageList.add(filterLanguages);
+            }
+
         }catch (Exception ignored){
 
         }
@@ -85,11 +125,27 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
     }
 
     private void setClicks() {
+        checkFilterSoted(this);
+        getBinding().clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCommonMethods.resetFilter(SearchKeywordActivity.this);
+                searchKeywordAdapter=null;
+                sortClickHandling(4);
+                contentTypeClickHandling(4);
+                freePiadClickHandling(4);
+                connectionObserver();
+            }
+        });
         getBinding().apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterApply("true");
-                onBackPressed();
+                if(checkSelections()){
+                    KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterApply("true");
+                    onBackPressed();
+                }else {
+                    ToastHandler.show("Selection Required", getApplicationContext());
+                }
             }
         });
         getBinding().backIcon.setOnClickListener(new View.OnClickListener() {
@@ -162,16 +218,43 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
             }
         });
 
+    }
 
+    private void checkFilterSoted(Context context) {
+        if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())){
+            sortClickHandling(1);
+        }
+        else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())){
+            sortClickHandling(2);
+        }
+        else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())){
+            sortClickHandling(3);
+        }
 
+        if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ALL.name())){
+            contentTypeClickHandling(1);
+        }else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ONDEMAND.name())){
+            contentTypeClickHandling(2);
+        }
+        else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.LIVE.name())){
+            contentTypeClickHandling(3);
+        }
 
+        if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.ALL.name())){
+            freePiadClickHandling(1);
+        }else if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.FREE.name())){
+            freePiadClickHandling(2);
+        }
+        else if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.PAID.name())){
+            freePiadClickHandling(3);
+        }
     }
 
     private void freePiadClickHandling(int itemPosition) {
         if (itemPosition==1){
-            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterFreePaid("All");
-            getBinding().freePaidAll.setTextColor(Color.parseColor("#151024"));
-            getBinding().freePaidAll.setBackgroundColor(Color.parseColor("#00e895"));
+            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterFreePaid(SearchFilterEnum.ALL.name());
+            getBinding().freePaidAll.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
+            getBinding().freePaidAll.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
 
             getBinding().freePaidFree.setTextColor(getResources().getColor(R.color.grey_text));
             getBinding().freePaidFree.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
@@ -181,19 +264,28 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
 
         }
         else if (itemPosition==2){
-            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterFreePaid("Free");
-            getBinding().freePaidFree.setTextColor(Color.parseColor("#151024"));
-            getBinding().freePaidFree.setBackgroundColor(Color.parseColor("#00e895"));
+            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterFreePaid(SearchFilterEnum.FREE.name());
+            getBinding().freePaidFree.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
+            getBinding().freePaidFree.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
 
             getBinding().freePaidAll.setTextColor(getResources().getColor(R.color.grey_text));
             getBinding().freePaidAll.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
 
             getBinding().freePaidPaid.setTextColor(getResources().getColor(R.color.grey_text));
             getBinding().freePaidPaid.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+        }else if (itemPosition==3){
+            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterFreePaid(SearchFilterEnum.PAID.name());
+            getBinding().freePaidPaid.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
+            getBinding().freePaidPaid.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+
+            getBinding().freePaidFree.setTextColor(getResources().getColor(R.color.grey_text));
+            getBinding().freePaidFree.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+
+            getBinding().freePaidAll.setTextColor(getResources().getColor(R.color.grey_text));
+            getBinding().freePaidAll.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
         }else {
-            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterFreePaid("Paid");
-            getBinding().freePaidPaid.setTextColor(Color.parseColor("#151024"));
-            getBinding().freePaidPaid.setBackgroundColor(Color.parseColor("#00e895"));
+            getBinding().freePaidPaid.setTextColor(getResources().getColor(R.color.grey_text));
+            getBinding().freePaidPaid.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
 
             getBinding().freePaidFree.setTextColor(getResources().getColor(R.color.grey_text));
             getBinding().freePaidFree.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
@@ -205,9 +297,9 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
 
     private void contentTypeClickHandling(int itemPosition) {
         if (itemPosition==1){
-            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterContentType("All");
-            getBinding().contentTypeAll.setTextColor(Color.parseColor("#151024"));
-            getBinding().contentTypeAll.setBackgroundColor(Color.parseColor("#00e895"));
+            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterContentType(SearchFilterEnum.ALL.name());
+            getBinding().contentTypeAll.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
+            getBinding().contentTypeAll.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
 
             getBinding().contentTypeOnDemand.setTextColor(getResources().getColor(R.color.grey_text));
             getBinding().contentTypeOnDemand.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
@@ -216,9 +308,9 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
             getBinding().contentTypeLive.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
 
         }else if (itemPosition==2){
-            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterContentType("On Demand");
-            getBinding().contentTypeOnDemand.setTextColor(Color.parseColor("#151024"));
-            getBinding().contentTypeOnDemand.setBackgroundColor(Color.parseColor("#00e895"));
+            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterContentType(SearchFilterEnum.ONDEMAND.name());
+            getBinding().contentTypeOnDemand.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
+            getBinding().contentTypeOnDemand.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
 
             getBinding().contentTypeAll.setTextColor(getResources().getColor(R.color.grey_text));
             getBinding().contentTypeAll.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
@@ -226,10 +318,20 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
             getBinding().contentTypeLive.setTextColor(getResources().getColor(R.color.grey_text));
             getBinding().contentTypeLive.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
 
+        }else if (itemPosition==3){
+            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterContentType(SearchFilterEnum.LIVE.name());
+            getBinding().contentTypeLive.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
+            getBinding().contentTypeLive.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+
+            getBinding().contentTypeOnDemand.setTextColor(getResources().getColor(R.color.grey_text));
+            getBinding().contentTypeOnDemand.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+
+            getBinding().contentTypeAll.setTextColor(getResources().getColor(R.color.grey_text));
+            getBinding().contentTypeAll.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+
         }else {
-            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterContentType("Live");
-            getBinding().contentTypeLive.setTextColor(Color.parseColor("#151024"));
-            getBinding().contentTypeLive.setBackgroundColor(Color.parseColor("#00e895"));
+            getBinding().contentTypeLive.setTextColor(getResources().getColor(R.color.grey_text));
+            getBinding().contentTypeLive.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
 
             getBinding().contentTypeOnDemand.setTextColor(getResources().getColor(R.color.grey_text));
             getBinding().contentTypeOnDemand.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
@@ -242,9 +344,9 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
 
     private void sortClickHandling(int itemPosition) {
         if (itemPosition==1){
-            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterSortBy("A-Z");
-            getBinding().sortATZ.setTextColor(Color.parseColor("#151024"));
-            getBinding().sortATZ.setBackgroundColor(Color.parseColor("#00e895"));
+            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterSortBy(SearchFilterEnum.AZ.name());
+            getBinding().sortATZ.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
+            getBinding().sortATZ.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
 
             getBinding().sortPopular.setTextColor(getResources().getColor(R.color.grey_text));
             getBinding().sortPopular.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
@@ -253,19 +355,28 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
             getBinding().sortNewest.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
 
         }else if (itemPosition==2){
-            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterSortBy("Popular");
-            getBinding().sortPopular.setTextColor(Color.parseColor("#151024"));
-            getBinding().sortPopular.setBackgroundColor(Color.parseColor("#00e895"));
+            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterSortBy(SearchFilterEnum.POPULAR.name());
+            getBinding().sortPopular.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
+            getBinding().sortPopular.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
 
             getBinding().sortATZ.setTextColor(getResources().getColor(R.color.grey_text));
             getBinding().sortATZ.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
 
             getBinding().sortNewest.setTextColor(getResources().getColor(R.color.grey_text));
             getBinding().sortNewest.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+        }else if (itemPosition==3){
+            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterSortBy(SearchFilterEnum.NEWEST.name());
+            getBinding().sortNewest.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
+            getBinding().sortNewest.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+
+            getBinding().sortPopular.setTextColor(getResources().getColor(R.color.grey_text));
+            getBinding().sortPopular.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+
+            getBinding().sortATZ.setTextColor(getResources().getColor(R.color.grey_text));
+            getBinding().sortATZ.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
         }else {
-            KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterSortBy("Newest");
-            getBinding().sortNewest.setTextColor(Color.parseColor("#151024"));
-            getBinding().sortNewest.setBackgroundColor(Color.parseColor("#00e895"));
+            getBinding().sortNewest.setTextColor(getResources().getColor(R.color.grey_text));
+            getBinding().sortNewest.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
 
             getBinding().sortPopular.setTextColor(getResources().getColor(R.color.grey_text));
             getBinding().sortPopular.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
@@ -274,9 +385,9 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
             getBinding().sortATZ.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
         }
     }
-
+    SearchKeywordAdapter searchKeywordAdapter;
     private void loadDataFromModel() {
-        SearchKeywordAdapter searchKeywordAdapter = new SearchKeywordAdapter(SearchKeywordActivity.this,newObject,filterLanguageList);
+        searchKeywordAdapter = new SearchKeywordAdapter(SearchKeywordActivity.this,newObject,filterLanguageList);
         getBinding().recyclerView.setAdapter(searchKeywordAdapter);
     }
 
@@ -292,4 +403,32 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
         getBinding().noConnectionLayout.setVisibility(View.VISIBLE);
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
     }
+
+    private boolean checkSelections() {
+        boolean selected=false;
+        if (!KsPreferenceKey.getInstance(this).getFilterSortBy().equalsIgnoreCase("")){
+            selected=true;
+            return selected;
+        }
+        else if (!KsPreferenceKey.getInstance(this).getFilterContentType().equalsIgnoreCase("")){
+            selected=true;
+            return selected;
+        }
+        else if (!KsPreferenceKey.getInstance(this).getFilterFreePaid().equalsIgnoreCase("")){
+            selected=true;
+            return selected;
+        }
+        else if (!KsPreferenceKey.getInstance(this).getFilterLanguageSelection().equalsIgnoreCase("")){
+            selected=true;
+            return selected;
+        }
+        else if (!KsPreferenceKey.getInstance(this).getFilterGenreSelection().equalsIgnoreCase("")){
+            selected=true;
+            return selected;
+        }else {
+            return selected;
+        }
+
+    }
+
 }
