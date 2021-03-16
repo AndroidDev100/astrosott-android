@@ -1029,6 +1029,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().ivCancel.setVisibility(View.GONE);
         getBinding().loading.setVisibility(View.VISIBLE);
         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
+        getBinding().slash.setVisibility(View.GONE);
+        getBinding().nextEpisode.setVisibility(View.GONE);
+        getBinding().episode.setVisibility(View.GONE);
+        getBinding().subtitleAudio.setVisibility(View.GONE);
+        getBinding().quality.setVisibility(View.GONE);
       //  getBinding().shareWith.setVisibility(View.GONE);
 
     }
@@ -1051,6 +1056,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 //   getBinding().ivQuality.setVisibility(View.VISIBLE);
                 getBinding().name.setVisibility(View.VISIBLE);
                 getBinding().ivCancel.setVisibility(View.VISIBLE);
+                getBinding().slash.setVisibility(View.VISIBLE);
+                getBinding().nextEpisode.setVisibility(View.VISIBLE);
+                getBinding().episode.setVisibility(View.VISIBLE);
+                getBinding().subtitleAudio.setVisibility(View.VISIBLE);
+                getBinding().quality.setVisibility(View.VISIBLE);
                // getBinding().shareWith.setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 // Log.e("Exception",e.getMessage());
@@ -1078,6 +1088,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     getBinding().currentTime.setVisibility(View.VISIBLE);
                     getBinding().totalDuration.setVisibility(View.VISIBLE);
                     getBinding().ivCancel.setVisibility(View.VISIBLE);
+                    getBinding().slash.setVisibility(View.VISIBLE);
+                    getBinding().nextEpisode.setVisibility(View.VISIBLE);
+                    getBinding().episode.setVisibility(View.VISIBLE);
+                    getBinding().subtitleAudio.setVisibility(View.VISIBLE);
+                    getBinding().quality.setVisibility(View.VISIBLE);
                 }
 
             } else {
@@ -1361,6 +1376,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().playCatchup.setVisibility(View.GONE);
         getBinding().goLive.setVisibility(View.GONE);
         getBinding().seekBar.setVisibility(View.GONE);
+        getBinding().slash.setVisibility(View.GONE);
+        getBinding().nextEpisode.setVisibility(View.GONE);
+        getBinding().episode.setVisibility(View.GONE);
+        getBinding().subtitleAudio.setVisibility(View.GONE);
+        getBinding().quality.setVisibility(View.GONE);
     }
 
     private void noCatchupEnabledDialog() {
@@ -2664,6 +2684,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().backward.setVisibility(View.GONE);
         getBinding().pBar.setVisibility(View.GONE);
         getBinding().playericon.setVisibility(View.GONE);
+        getBinding().slash.setVisibility(View.GONE);
+        getBinding().nextEpisode.setVisibility(View.GONE);
+        getBinding().episode.setVisibility(View.GONE);
+        getBinding().subtitleAudio.setVisibility(View.GONE);
+        getBinding().quality.setVisibility(View.GONE);
         //  getBinding().ivQuality.setVisibility(View.GONE);
         getBinding().goLive.setVisibility(View.GONE);
 
@@ -2706,6 +2731,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().backward.setVisibility(View.GONE);
         getBinding().pBar.setVisibility(View.GONE);
         getBinding().playericon.setVisibility(View.GONE);
+        getBinding().slash.setVisibility(View.GONE);
+        getBinding().nextEpisode.setVisibility(View.GONE);
+        getBinding().episode.setVisibility(View.GONE);
+        getBinding().subtitleAudio.setVisibility(View.GONE);
+        getBinding().quality.setVisibility(View.GONE);
         //   getBinding().ivQuality.setVisibility(View.GONE);
     }
 
@@ -2769,6 +2799,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         getBinding().seekBar.setVisibility(View.VISIBLE);
                         getBinding().currentTime.setVisibility(View.VISIBLE);
                         getBinding().listViewSettings.setVisibility(View.GONE);
+                        getBinding().slash.setVisibility(View.VISIBLE);
+                        getBinding().nextEpisode.setVisibility(View.VISIBLE);
+                        getBinding().episode.setVisibility(View.VISIBLE);
+                        getBinding().subtitleAudio.setVisibility(View.VISIBLE);
+                        getBinding().quality.setVisibility(View.VISIBLE);
                     }
                 }
                 getBinding().rl1.startAnimation(animationFadeIn);
@@ -3681,6 +3716,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             getBinding().fullscreen.setVisibility(View.GONE);
             getBinding().forward.setVisibility(View.GONE);
             getBinding().backward.setVisibility(View.GONE);
+            getBinding().slash.setVisibility(View.VISIBLE);
+            getBinding().nextEpisode.setVisibility(View.GONE);
+            getBinding().episode.setVisibility(View.GONE);
+            getBinding().subtitleAudio.setVisibility(View.GONE);
+            getBinding().quality.setVisibility(View.GONE);
             //  getBinding().ivQuality.setVisibility(View.VISIBLE);
 
 
@@ -3697,6 +3737,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             getBinding().fullscreen.setVisibility(View.GONE);
             getBinding().forward.setVisibility(View.VISIBLE);
             getBinding().backward.setVisibility(View.VISIBLE);
+            getBinding().slash.setVisibility(View.VISIBLE);
+            getBinding().nextEpisode.setVisibility(View.VISIBLE);
+            getBinding().episode.setVisibility(View.VISIBLE);
+            getBinding().subtitleAudio.setVisibility(View.VISIBLE);
+            getBinding().quality.setVisibility(View.VISIBLE);
             //  getBinding().ivQuality.setVisibility(View.VISIBLE);
 
         }
