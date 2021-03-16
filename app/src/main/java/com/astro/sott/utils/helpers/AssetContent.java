@@ -2,6 +2,7 @@ package com.astro.sott.utils.helpers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -122,6 +123,19 @@ public class AssetContent {
         }
 
         return ref_id;
+    }
+
+    public static boolean isAdsEnable(Map<String, Value> metas) {
+        BooleanValue adsValue = null;
+        if (metas != null) {
+            adsValue = (BooleanValue) metas.get(AppLevelConstants.NOADS);
+        }
+        if (adsValue != null) {
+            boolean value = adsValue.getValue();
+            return value;
+        } else {
+            return false;
+        }
     }
 
     public static List<Integer> getSeasonNumber(Response<ListResponse<Asset>> result) {
@@ -320,6 +334,30 @@ public class AssetContent {
         return rating;
     }
 
+
+    public static boolean getBillingId(Map<String, MultilingualStringValueArray> map) {
+        List<MultilingualStringValue> cast_value = new ArrayList<>();
+        MultilingualStringValueArray rating_list = map.get(AppLevelConstants.BILLING_ID);
+        if (rating_list != null) {
+            cast_value.addAll(rating_list.getObjects());
+            if (cast_value.size() > 0 && cast_value.get(0).getValue() != null) {
+                String cast = cast_value.get(0).getValue().trim();
+                if (!cast.equalsIgnoreCase("")) {
+                    return true;
+
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+
+    }
+
     public static int getParentalRatingForChecks(Map<String, MultilingualStringValueArray> map, Context applicationContext) {
         String rating;
         int priorityRestrictionLevel = -1;
@@ -506,6 +544,31 @@ public class AssetContent {
         }
         connection.postValue(genre + "");
         return connection;
+    }
+
+    public static String getKeyworddata(Map<String, MultilingualStringValueArray> map) {
+        String keyword;
+        List<MultilingualStringValue> genre_values = new ArrayList<>();
+        MultilingualStringValueArray genre_list = map.get(AppLevelConstants.KEY_KEYWORD);
+        if (genre_list != null)
+
+            genre_values.addAll(genre_list.getObjects());
+//            for (MultilingualStringValue value : genre_list.getObjects()) {
+//                genre_values.add(value);
+//            }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= genre_values.size() - 1; i++) {
+            stringBuilder.append(genre_values.get(i).getValue()).append(", ");
+        }
+
+        if (stringBuilder.length() > 0) {
+            keyword = stringBuilder.toString();
+            keyword = keyword.substring(0, keyword.length() - 2);
+
+        } else {
+            keyword = "";
+        }
+        return keyword;
     }
 
     public static LiveData<String> getSubGenredata(Map<String, MultilingualStringValueArray> map) {
@@ -721,6 +784,30 @@ public class AssetContent {
         }
         connection.postValue(crew + "");
         return connection;
+    }
+
+    public static String getProvider(Map<String, MultilingualStringValueArray> map) {
+        String provider;
+        List<MultilingualStringValue> crew_value = new ArrayList<>();
+        MultilingualStringValueArray crew_list = map.get(AppLevelConstants.PROVIDER);
+        if (crew_list != null)
+//            for (MultilingualStringValue value : crew_list.getObjects()) {
+//                crew_value.add(value);
+//            }
+            crew_value.addAll(crew_list.getObjects());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= crew_value.size() - 1; i++) {
+            stringBuilder.append(crew_value.get(i).getValue()).append(", ");
+        }
+
+        if (stringBuilder.length() > 0) {
+            provider = stringBuilder.toString();
+            provider = provider.substring(0, provider.length() - 2);
+        } else {
+            provider = "";
+        }
+
+        return provider;
     }
 
     public static int getVideoPosition(Context context, int j, int assetId) {
@@ -1229,5 +1316,78 @@ public class AssetContent {
 
         }
         return diffSeconds1;
+    }
+
+    public static List<String> getRibbon(Map<String, MultilingualStringValueArray> map) {
+        List<String> ribbonList = new ArrayList<>();
+        List<MultilingualStringValue> crew_value = new ArrayList<>();
+        MultilingualStringValueArray crew_list = map.get(AppLevelConstants.RIBBON);
+        if (crew_list != null)
+            crew_value.addAll(crew_list.getObjects());
+        for (int i = 0; i <= crew_value.size() - 1; i++) {
+            if (crew_value.get(i) != null) {
+                try {
+                    String[] splitString = crew_value.get(i).getValue().split("\\|");
+                    String label = splitString[0];
+                    String startTimeSplit = splitString[1];
+                    String endTimeSplit = splitString[2];
+                    String[] startTimeArray = startTimeSplit.split("=");
+                    String[] endTimeArray = endTimeSplit.split("=");
+                    String startTime = startTimeArray[1];
+                    String endTime = endTimeArray[1];
+                    boolean isVisible = AppCommonMethods.compareStartEndTime(startTime, endTime);
+                    if (isVisible) {
+                        ribbonList.add(label);
+                    }
+                } catch (Exception e) {
+
+                }
+
+
+            }
+
+            // stringBuilder.append(crew_value.get(i).getValue()).append(", ");
+        }
+        return ribbonList;
+
+    }
+
+    public static boolean plabackControl(Map<String, Value> metas) {
+        StringValue startValue, endValue;
+        String startDate, endDate;
+        startValue = (StringValue) metas.get(AppLevelConstants.PLAYBACK_START_DATE);
+        endValue = (StringValue) metas.get(AppLevelConstants.PLAYBACK_END_DATE);
+
+        if (startValue != null && endValue != null) {
+            startDate = startValue.getValue();
+            endDate = endValue.getValue();
+            if (startDate != null && endDate != null && !startDate.equalsIgnoreCase("") && !endDate.equalsIgnoreCase("")) {
+                return AppCommonMethods.comparePlaybackStartEndTime(startDate, endDate);
+            } else {
+                return true;
+            }
+
+        } else {
+            return true;
+        }
+
+
+    }
+
+    public static boolean isSponsored(Map<String, Value> metas) {
+        BooleanValue sponsoredValue;
+        if (metas != null) {
+            sponsoredValue = (BooleanValue) metas.get(AppLevelConstants.IS_SPONSORED);
+            if (sponsoredValue != null) {
+                return sponsoredValue.getValue();
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
+
     }
 }

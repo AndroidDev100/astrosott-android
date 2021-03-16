@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentSubscriptionLandingBinding;
+import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +23,7 @@ import com.astro.sott.databinding.FragmentSubscriptionLandingBinding;
  * create an instance of this fragment.
  */
 public class SubscriptionLandingFragment extends BaseBindingFragment<FragmentSubscriptionLandingBinding> {
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,22 +65,26 @@ public class SubscriptionLandingFragment extends BaseBindingFragment<FragmentSub
         }
 
 
-
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setClick();
+
     }
+
 
     private void setClick() {
         getBinding().continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SubscriptionPacksFragment someFragment = new SubscriptionPacksFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("from", "more");
+                someFragment.setArguments(bundle);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame, someFragment ); // give your fragment container id in first parameter
+                transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
                 transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                 transaction.commit();
             }

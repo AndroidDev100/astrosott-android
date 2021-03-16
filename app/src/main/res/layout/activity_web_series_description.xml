@@ -38,6 +38,7 @@
         android:filterTouchesWhenObscured="true">
 
         <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/detailBGColor">
@@ -127,9 +128,8 @@
                                 android:layout_marginTop="@dimen/_15sdp"
                                 android:orientation="horizontal"
                                 android:weightSum="3">
-
                                 <TextView
-                                    android:id="@+id/shareWith"
+                                    android:id="@+id/webwatchList"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/share_margin_top"
@@ -140,11 +140,12 @@
                                     android:fontFamily="@font/heebo_regular"
                                     android:gravity="center"
                                     android:text="@string/my_list"
-                                    android:textColor="@color/lightBlueColor"
+                                    android:textColor="@color/grey"
                                     android:textSize="@dimen/font_small"
-                                    app:drawableTopCompat="@drawable/favorite" />
+                                    app:drawableTopCompat="@drawable/favorite_unselected" />
 
                                 <TextView
+                                    android:id="@+id/shareWith"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/share_margin_top"
@@ -156,7 +157,7 @@
                                     android:fontFamily="@font/heebo_regular"
                                     android:gravity="center"
                                     android:text="@string/share"
-                                    android:textColor="@color/lightBlueColor"
+                                    android:textColor="@color/grey"
                                     android:textSize="@dimen/font_small" />
 
                                 <TextView
@@ -179,35 +180,31 @@
 
                             </LinearLayout>
 
+
                             <LinearLayout
+                                android:id="@+id/iv_play_icon"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_20sdp">
+                                android:layout_height="50dp"
+                                android:visibility="gone"
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:background="@drawable/gradient_button">
 
-                                <LinearLayout
-                                    android:id="@+id/iv_play_icon"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="50dp"
-                                    android:background="@drawable/gradient_button">
+                                <TextView
+                                    android:id="@id/play_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/share_margin_top"
+                                    android:layout_weight="1"
+                                    android:drawablePadding="7dp"
+                                    android:fontFamily="@font/heebo_medium"
+                                    android:gravity="center"
+                                    android:text="@string/play_now"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/font_medium_large" />
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/share_margin_top"
-                                        android:layout_weight="1"
-                                        android:clickable="true"
-                                        android:drawablePadding="7dp"
-                                        android:focusable="true"
-                                        android:fontFamily="@font/heebo_medium"
-                                        android:gravity="center"
-                                        android:text="@string/play_now"
-                                        android:textColor="@color/white"
-                                        android:textSize="@dimen/font_medium_large" />
-
-
-                                </LinearLayout>
 
                             </LinearLayout>
+
 
                             <LinearLayout
                                 android:layout_width="match_parent"

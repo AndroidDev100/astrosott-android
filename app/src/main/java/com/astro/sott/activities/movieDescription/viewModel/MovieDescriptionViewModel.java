@@ -15,9 +15,11 @@ import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.repositories.dtv.DTVRepository;
 import com.astro.sott.repositories.movieDescription.MovieDescriptionRepository;
 import com.astro.sott.repositories.player.PlayerRepository;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MultilingualStringValueArray;
+import com.kaltura.client.types.Value;
 
 import java.util.List;
 import java.util.Map;
@@ -119,5 +121,17 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
 
     public LiveData<String> getDtvAccountList() {
         return DTVRepository.getInstance().getDtvAccountList(getApplication().getApplicationContext());
+    }
+
+    public boolean isXofferWindow(String xofferValue) {
+        return AppCommonMethods.isXofferWindow(xofferValue);
+    }
+
+    public List<String> getRibbon(Map<String, MultilingualStringValueArray> tags) {
+        return AssetContent.getRibbon(tags);
+    }
+
+    public boolean getPlayBackControl(Map<String, Value> metas) {
+        return AssetContent.plabackControl(metas);
     }
 }

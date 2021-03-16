@@ -4,6 +4,7 @@ import android.app.Activity;
 import androidx.databinding.DataBindingUtil;
 import android.os.SystemClock;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardSize;
 import com.kaltura.client.types.BooleanValue;
+import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 
 import java.util.Iterator;
@@ -142,6 +144,8 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
 
             try {
+                setRecycler(potraitItemBinding.metas.recyclerView, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory);
                 potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -188,6 +192,8 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
 
             try {
+                setRecycler(potraitItemBinding.metas.recyclerView, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory);
                 potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -228,6 +234,8 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
 
             try {
+                setRecycler(potraitItemBinding.metas.recyclerView, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory);
                 potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -248,7 +256,12 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
     }
+    private void setRecycler(RecyclerView recyclerView, Map<String, MultilingualStringValueArray> tags) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        RibbonAdapter ribbonAdapter = new RibbonAdapter(AssetContent.getRibbon(tags));
+        recyclerView.setAdapter(ribbonAdapter);
 
+    }
     private void getPremimumMark(int position, ExclusiveItemBinding exclusiveLayout) {
         exclusiveLayout.exclLay.setVisibility(View.GONE);
         Map<String, Value> map = itemsList.get(position).getObject().getMetas();

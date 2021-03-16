@@ -27,12 +27,11 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-
-
-        <activity android:name=".activities.forgotPassword.ui.DetailsConfirmationActivity"></activity>
-        <activity android:name=".activities.forgotPassword.ui.IsThisYouActivity">
-
-        </activity>
+        <activity
+            android:name=".activities.subscriptionActivity.ui.SubscriptionDetailActivity"
+            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar"></activity>
+        <activity android:name=".activities.forgotPassword.ui.DetailsConfirmationActivity" />
+        <activity android:name=".activities.forgotPassword.ui.IsThisYouActivity"></activity>
         <activity android:name=".activities.search.ui.SearchKeywordActivity" />
         <activity android:name=".activities.manageDevice.ui.ManageDeviceActivity" />
         <activity android:name=".activities.ForgetPassword.ForgetPasswordActivity" />
@@ -45,6 +44,12 @@
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.loginActivity.ui.AstrLoginActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.sponsored.ui.SponsoredDetailActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.boxSet.ui.BoxSetDetailActivity"
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.forgotPassword.ui.ForgotPasswordActivity"
@@ -114,15 +119,24 @@
         <activity
             android:name=".activities.SelectAccount.UI.SelectDtvAccountActivity"
             android:screenOrientation="locked" />
+        <activity
+            android:name="com.clevertap.android.sdk.InAppNotificationActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+        <meta-data
+            android:name="CLEVERTAP_INAPP_EXCLUDE"
+            android:value=".activities.splash.ui.SplashActivity" />
         <meta-data
             android:name="CLEVERTAP_ACCOUNT_ID"
             android:value="TEST-775-W65-ZZ6Z" />
-
         <meta-data
             android:name="CLEVERTAP_TOKEN"
             android:value="TEST-560-5aa" />
-
+        <!--
+ <meta-data
+             android:name="CLEVERTAP_USE_CUSTOM_ID"
+             android:value="1"/>
+        -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -145,10 +159,8 @@
             android:launchMode="singleTask"
             android:screenOrientation="locked"
             android:theme="@style/splashtheme">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -281,9 +293,8 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
-
-
-        <!--<service
+        <!--
+<service
             android:name="com.clevertap.android.sdk.FcmTokenListenerService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
@@ -295,15 +306,17 @@
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
-        </service>-->
+        </service>
+        -->
         <service android:name=".thirdParty.fcm.DialogFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="FCM_SENDER_ID"
-            android:value="id:929669716426"/>
+            android:value="id:929669716426" />
 
         <service android:name=".thirdParty.fcm.WatchoFirebaseInstanceIdService">
             <intent-filter>

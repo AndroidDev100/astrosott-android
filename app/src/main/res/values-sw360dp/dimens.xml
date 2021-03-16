@@ -23,7 +23,8 @@
 
     <dimen name="landscape_item_width">160dp</dimen>
     <dimen name="landscape_item_height">90dp</dimen>
-
+    <dimen name="related_item_width">160dp</dimen>
+    <dimen name="related_item_height">90dp</dimen>
     <dimen name="landscape_item_width_small">106dp</dimen>
     <dimen name="landscape_item_height_small">60dp</dimen>
 

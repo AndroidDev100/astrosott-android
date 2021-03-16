@@ -3,10 +3,10 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/blue_bg">
+    android:background="@color/grape_purple">
     <LinearLayout
         android:layout_width="match_parent"
-        android:background="@color/edit_text_blue_bg"
+        android:background="@color/dark_toolbar"
         android:layout_height="@dimen/_37dp"
         android:id="@+id/ll1">
         <TextView
@@ -29,6 +29,7 @@
         android:layout_marginStart="@dimen/dimen16dp"
         >
         <TextView
+            android:id="@+id/orderName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
@@ -36,15 +37,16 @@
             android:fontFamily="@font/heebo_regular"
             android:text="@string/watch_movie"
             android:textSize="@dimen/_16sp"/>
+
         <TextView
+            android:id="@+id/currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_marginEnd="@dimen/dimen16dp"
             android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/dimen16dp"
             android:fontFamily="@font/heebo_medium"
-            android:text="MYR 20.00"
-            android:textSize="@dimen/_16sp"/>
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp" />
 
     </RelativeLayout>
     <TextView
@@ -75,6 +77,7 @@
             android:text="@string/payment_method"
             android:textSize="@dimen/_14sp"/>
         <TextView
+            android:id="@+id/credit_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"

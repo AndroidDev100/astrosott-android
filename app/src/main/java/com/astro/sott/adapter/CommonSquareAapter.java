@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 
 import android.os.SystemClock;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.astro.sott.utils.helpers.ToastHandler;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardSize;
 import com.kaltura.client.types.BooleanValue;
+import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 
 import java.util.Iterator;
@@ -138,6 +140,8 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             try {
+                setRecycler(squareItemBinding.metas.recyclerView, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory);
                 squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -181,6 +185,8 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             try {
+                setRecycler(squareItemBinding.metas.recyclerView, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory);
                 squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -224,6 +230,8 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             try {
+                setRecycler(squareItemBinding.metas.recyclerView, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory);
                 squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -237,7 +245,12 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             PrintLogging.printLog("Exception", "", "" + e);
         }
     }
+    private void setRecycler(RecyclerView recyclerView, Map<String, MultilingualStringValueArray> tags) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        RibbonAdapter ribbonAdapter = new RibbonAdapter(AssetContent.getRibbon(tags));
+        recyclerView.setAdapter(ribbonAdapter);
 
+    }
     private void getPremimumMark(int position, ExclusiveItemBinding exclusiveLayout) {
         exclusiveLayout.exclLay.setVisibility(View.GONE);
         Map<String, Value> map = itemsList.get(position).getObject().getMetas();

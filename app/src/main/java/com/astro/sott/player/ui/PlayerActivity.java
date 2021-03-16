@@ -4,8 +4,11 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.provider.Settings;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
+
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,8 @@ import android.view.WindowManager;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.WindowFocusCallback;
+import com.astro.sott.thirdParty.conViva.ConvivaManager;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
@@ -85,10 +90,19 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
                 railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
                 if (railData != null) {
                     Asset asset = railData.getObject();
+                    getDuration(asset);
+                    ConvivaManager.setreportPlaybackRequested(this, railData, duraton, isLivePlayer);
+
                     getUrlToPlay(asset);
                 }
             }
         }
+    }
+
+    private String duraton;
+
+    private void getDuration(Asset asset) {
+        duraton = AppCommonMethods.getDuration(asset);
     }
 
     private void getUrlToPlay(final Asset asset) {
@@ -172,5 +186,6 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
     @Override
     protected void onStop() {
         super.onStop();
+        ConvivaManager.convivaPlayerAppBackgrounded(this);
     }
 }

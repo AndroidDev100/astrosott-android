@@ -266,7 +266,6 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 counter = position + 1;
                 callEpisodes();
                 getBinding().seasonText.setText(holder.season.getText());
-                getEpisodes(selectedIndex);
 
             });
         }
@@ -302,7 +301,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 getBinding().seasonText.setText(closedSeriesData.get(0).getTitle());
 
                 seriesNumberList = TabsData.getInstance().getSeasonList();
-                setUIComponets(TabsData.getInstance().getClosedSeriesData());
+                setClosedUIComponets(TabsData.getInstance().getClosedSeriesData());
             } else {
                 getOpenSeriesData();
             }
@@ -318,11 +317,8 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             @Override
             public void onClick(View view) {
                 counter++;
-                if (openSeriesData == null && openSeriesData.size() == 0) {
-                    callSeasonEpisodes(seriesNumberList);
-                } else {
-                    callEpisodes();
-                }
+                callSeasonEpisodes(seriesNumberList);
+
             }
         });
 
@@ -352,8 +348,6 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                     tabsVisibility(false);
                     callSeasonEpisodes(seriesNumberList);
                 } else {
-
-
                     // tabsVisibility(true);
                 }
             } else {
@@ -460,25 +454,23 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     }
 
     private void callSeasonEpisodes(List<Integer> seriesNumberList) {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         getBinding().loadMoreTxt.setText(getActivity().getResources().getString(R.string.loading));
         viewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
             getBinding().loadMoreTxt.setText("Load More");
+            getBinding().progressBar.setVisibility(View.GONE);
+
             if (assetCommonBeans.get(0).getStatus()) {
                 getBinding().retryTxt.setVisibility(View.GONE);
                 getBinding().seasonText.setText(assetCommonBeans.get(0).getTitle());
                 getBinding().season.setVisibility(View.VISIBLE);
                 getBinding().recyclerView.setVisibility(View.VISIBLE);
-                //  _mClickListener.onFirstEpisodeData(assetCommonBeans);
-                setUIComponets(assetCommonBeans);
-                //callSeasonEpisodes(seriesNumberList);
+                setClosedUIComponets(assetCommonBeans);
             } else {
-                getBinding().retryTxt.setVisibility(View.VISIBLE);
             }
 
         });
-        getBinding().retryTxt.setOnClickListener(view -> {
-            getSeasons();
-        });
+
 
     }
 
@@ -492,12 +484,12 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 setUIComponets(assetCommonBeans);
                 //callSeasonEpisodes(seriesNumberList);
             } else {
-                getBinding().retryTxt.setVisibility(View.VISIBLE);
+                //getBinding().retryTxt.setVisibility(View.VISIBLE);
             }
 
         });
         getBinding().retryTxt.setOnClickListener(view -> {
-            getSeasons();
+          //  getSeasons();
         });
 
     }
@@ -509,8 +501,6 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             for (int i = 0; i < loadedList.size(); i++) {
                 list.add(i, loadedList.get(i));
             }
-
-            checkExpiry(list);
             adapter = new EpisodeAdapter(getActivity(), loadedList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
             getBinding().recyclerView.setAdapter(adapter);
 
@@ -523,6 +513,32 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             } else {
                 getBinding().loadMoreButton.setVisibility(View.VISIBLE);
             }*/
+
+        } catch (Exception e) {
+
+            PrintLogging.printLog("ExceptionloadMore", "" + e);
+        }
+
+    }
+
+    private void setClosedUIComponets(List<AssetCommonBean> assetCommonBeans) {
+        try {
+            loadedList.addAll(assetCommonBeans.get(0).getRailAssetList());
+            list = new ArrayList<>();
+            for (int i = 0; i < loadedList.size(); i++) {
+                list.add(i, loadedList.get(i));
+            }
+
+            checkExpiry(list);
+            adapter = new EpisodeAdapter(getActivity(), loadedList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
+            getBinding().recyclerView.setAdapter(adapter);
+
+            int count = adapter.getItemCount();
+            if (count >= assetCommonBeans.get(0).getTotalCount()) {
+                getBinding().loadMoreButton.setVisibility(View.GONE);
+            } else {
+                getBinding().loadMoreButton.setVisibility(View.VISIBLE);
+            }
 
         } catch (Exception e) {
 
@@ -689,6 +705,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     public void getEpisodes(int seasonNumber) {
         loadedList.clear();
+        counter=1;
         adapter = null;
         seasonCounter = selectedIndex;
         callSeasonEpisodes(seriesNumberList);

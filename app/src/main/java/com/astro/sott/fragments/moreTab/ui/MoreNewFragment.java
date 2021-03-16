@@ -21,13 +21,16 @@ import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
 import com.astro.sott.activities.profile.ui.ChangeEmailConfirmation;
+import com.astro.sott.activities.profile.ui.EditEmailActivity;
 import com.astro.sott.activities.search.ui.QuickSearchGenre;
+import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
 import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.fragments.transactionhistory.ui.TransactionHistory;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.clevertap.android.sdk.CleverTapAPI;
@@ -107,7 +110,10 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void setClicks() {
-
+        getBinding().edit.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditEmailActivity.class);
+            startActivity(intent);
+        });
         getBinding().loginSignupMore.setOnClickListener(view -> {
 
             new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
@@ -151,11 +157,16 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             @Override
             public void onClick(View v) {
                 navBar.setVisibility(View.GONE);
-                TransactionHistory transactionHistory = new TransactionHistory();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame, transactionHistory); // give your fragment container id in first parameter
-                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                transaction.commit();
+                if (UserInfo.getInstance(getActivity()).isActive()) {
+                    TransactionHistory transactionHistory = new TransactionHistory();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.content_frame, transactionHistory); // give your fragment container id in first parameter
+                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                    transaction.commit();
+                } else {
+                    new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
+
+                }
 //                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
 //                FragmentTransaction transaction = getFragmentManager().beginTransaction();
 //                transaction.replace(R.id.content_frame, quickSearchGenre); // give your fragment container id in first parameter
@@ -241,6 +252,11 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
             }
 
+        });
+        getBinding().rlHelp.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+            intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
+            startActivity(intent);
         });
 //
 //       getBinding().subscribe.setOnClickListener(new View.OnClickListener() {

@@ -18,7 +18,15 @@
         card_view:cardMaxElevation="1dp"
         card_view:cardPreventCornerOverlap="false"
         card_view:cardUseCompatPadding="true">
-
+        <include
+            android:id="@+id/metas"
+            layout="@layout/metas_layout"
+            android:layout_width="wrap_content"
+            android:visibility="visible"
+            android:layout_gravity="top|right"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"></include>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -69,8 +69,8 @@ android {
     productFlavors {
         qa {
             dimension 'default'
-            versionCode 11
-            versionName "1.4"
+            versionCode 12
+            versionName "1.5"
             applicationId "com.astro.stagingsott"
             buildConfigField "String", "KALTURA_BASE_URL", "\"https://rest-sgs1.ott.kaltura.com/api_v3/service/\""
             buildConfigField "int", "KAVA_PARTNER_ID", "3089623"
@@ -99,15 +99,17 @@ android {
             versionCode 63
             versionName "7.2"
             applicationId "com.astro.sott"
-            buildConfigField "String", "KALTURA_BASE_URL", "\"https://rest-as.ott.kaltura.com/api_v3/service/\""
+            buildConfigField "String", "KALTURA_BASE_URL", "\"https://rest-sgs1.ott.kaltura.com/api_v3/service/\""
             buildConfigField "String", "YOUBORA_ACCOUNT_TYPE", "\"dialog\""
             buildConfigField "int", "KAVA_PARTNER_ID", "2455471"
-            buildConfigField "String", "PHOEINIX_BASE_URL", "\"https://rest-sgs1.ott.kaltura.com/api_v3\""
-            buildConfigField "String", "KALTURA_API_VERSION", "\"5.2.8\""
-            buildConfigField "String", "KALTURA_APPLICATION_NAME", "\"com.dialog.mobile.app\""
-            buildConfigField "String", "KALTURA_CLIENT_VERSION", "\"1.0.3\""
+            buildConfigField "String", "KALTURA_API_VERSION", "\"5.8.0\""
+            buildConfigField "String", "KALTURA_APPLICATION_NAME", "\"com.kaltura.astro.mobile\""
+            buildConfigField "String", "KALTURA_CLIENT_VERSION", "\"0.0.1\""
             buildConfigField "String", "KALTURA_PLATFORM", "\"android\""
-            buildConfigField "String", "KALTURA_TAG", "\"dialog\""
+            buildConfigField "String", "KALTURA_PARTNER_ID", "\"3209\""
+            buildConfigField "String", "KALTURA_TAG", "\"AstroQA\""
+
+            buildConfigField "String", "PHOEINIX_BASE_URL", "\"https://rest-sgs1.ott.kaltura.com/api_v3\""
             buildConfigField "String", "TOKEN_BASE_URL", "\"https://ro840hb5x0.execute-api.ap-southeast-1.amazonaws.com/\""
             buildConfigField "String", "AUTO_MSISDN_MOCK", "\"http://13.250.154.211/msisdn/fetch/\""
             buildConfigField "String", "SMS_BASE_URL", "\"https://qpkkcgi038.execute-api.ap-southeast-1.amazonaws.com/prod/v4/\""
@@ -178,7 +180,9 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
+//conviva
 
+    implementation 'com.conviva.sdk:conviva-core-sdk:4.0+'
     // Required Dependency by Audience Network SDK
     implementation 'com.gmail.samehadar:iosdialog:1.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
@@ -193,7 +197,7 @@ dependencies {
     implementation 'io.branch.sdk.android:library:5.+'
     // required if your app is in the Google Play Store (tip: avoid using bundled play services libs)
 
-   // implementation 'io.branch.sdk.android:library:2.19.5'
+    // implementation 'io.branch.sdk.android:library:2.19.5'
 
     implementation 'com.squareup.okhttp:okhttp:2.7.5'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
@@ -210,7 +214,7 @@ dependencies {
 //    }
 
     //Image Cropping
-   // implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
+    // implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
 
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
     implementation 'com.facebook.android:audience-network-sdk:5.1.0'

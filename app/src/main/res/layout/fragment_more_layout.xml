@@ -372,6 +372,7 @@
                 android:id="@+id/rl_downloads_more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_12sdp"
@@ -469,6 +470,7 @@
 
             <RelativeLayout
                 android:id="@+id/rl_coupan_redem"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_12sdp"

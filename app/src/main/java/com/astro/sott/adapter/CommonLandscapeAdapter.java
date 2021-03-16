@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil;
 import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ import com.astro.sott.utils.helpers.ToastHandler;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardSize;
 import com.kaltura.client.types.BooleanValue;
+import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 
 import java.util.Iterator;
@@ -151,17 +153,11 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     }
 
+
     private void setLargeValues(LandscapeItemLargeBinding landscapeItemBinding, int i) {
         RailCommonData singleItem = itemsList.get(i);
         PrintLogging.printLog(CommonLandscapeAdapter.class, "", itemsList.get(0).getType() + "assettypeassest");
         try {
-
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable) {
-                landscapeItemBinding.hungama.setVisibility(View.VISIBLE);
-            } else {
-                landscapeItemBinding.hungama.setVisibility(View.GONE);
-            }
 
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
@@ -175,6 +171,8 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             try {
+                setRecycler(landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -198,12 +196,6 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         PrintLogging.printLog(CommonLandscapeAdapter.class, "", itemsList.get(0).getType() + "assettypeassest");
         try {
 
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable) {
-                landscapeItemBinding.hungama.setVisibility(View.VISIBLE);
-            } else {
-                landscapeItemBinding.hungama.setVisibility(View.GONE);
-            }
 
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
@@ -217,6 +209,8 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             try {
+                setRecycler(landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -252,6 +246,8 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             try {
+                setRecycler(landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -268,6 +264,13 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);
         }
+    }
+
+    private void setRecycler(RecyclerView recyclerView, Map<String, MultilingualStringValueArray> tags) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        RibbonAdapter ribbonAdapter = new RibbonAdapter(AssetContent.getRibbon(tags));
+        recyclerView.setAdapter(ribbonAdapter);
+
     }
 
     private void getPremimumMark(int position, ExclusiveItemBinding exclusiveLayout) {

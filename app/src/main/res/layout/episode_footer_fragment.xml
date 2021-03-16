@@ -94,7 +94,7 @@
                     android:id="@+id/load_more_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
+                    android:fontFamily="@font/heebo_regular"
                     android:gravity="center"
                     android:text="Load More"
                     android:textColor="@color/white"

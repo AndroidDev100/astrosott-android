@@ -9,6 +9,124 @@ public interface AppConstants {
     int VIDEO_TAB_ID = 3235;
 
 
+
+
+    public static String POSTER = "POSTER";
+
+    public static final int Rail1 = 0;
+    public static final int Rail2 = 1;
+    public static final int Rail3 = 2;
+    public static final int Rail4 = 3;
+    public static final int Rail5 = 4;
+    public static final int Rail6 = 5;
+    public static final int Rail7 = 6;
+    public static final int Rail8 = 7;
+    public static final int Rail9 = 8;
+    public static final int Rail10 = 9;
+    public static final int Rail11 = 10;
+    public static final int Rail12 = 11;
+    public static String WIDTH = "/width/";
+    public static String HEIGHT = "/height/";
+    public static String QUALITY = "/quality/100";
+    public static String WEBP_URL = "https://d33ziwki8ny9c1.cloudfront.net/filters:format(webp):quality(60)/";
+    public static final int CAROUSEL_LDS_BANNER = 10;
+    public static final int CAROUSEL_LDS_LANDSCAPE = 11;
+    public static final int CAROUSEL_PR_POTRAIT = 12;
+    public static final int CAROUSEL_PR_POSTER = 13;
+    public static final int CAROUSEL_SQR_SQUARE = 14;
+    public static final int CAROUSEL_CIR_CIRCLE = 15;
+    public static final int CAROUSEL_CST_CUSTOM = 16;
+
+    public static final int HERO_LDS_LANDSCAPE = 20;
+    public static final int HERO_LDS_BANNER = 21;
+    public static final int HERO_RCG_BANNER = 27;
+
+    public static final int HERO_PR_POTRAIT = 22;
+    public static final int HERO_PR_POSTER = 23;
+    public static final int HERO_SQR_SQUARE = 24;
+    public static final int HERO_CIR_CIRCLE = 25;
+
+    public static final int HERO_CST_CUSTOM = 26;
+
+    public static final int HORIZONTAL_LDS_LANDSCAPE = 31;
+    public static final int HORIZONTAL_LDS_BANNER = 32;
+    public static final int HORIZONTAL_PR_POTRAIT = 33;
+    public static final int HORIZONTAL_PR_POSTER = 34;
+    public static final int HORIZONTAL_SQR_SQUARE = 35;
+    public static final int HORIZONTAL_CIR_CIRCLE = 36;
+    public static final int HORIZONTAL_CST_CUSTOM = 37;
+
+    public static final int RAIL_CONTINUE_WATCHING = 61;
+    public static final int RAIL_MY_WATCHLIST = 62;
+
+    public static final int PDF_TARGET_LGN = 51;
+    public static final int PDF_TARGET_IFP = 52;
+    public static final int PDF_TARGET_SRH = 53;
+
+
+    public static final int RAIL_FAN_TABLET = 71;
+    public static final int RAIL_FAN_MOBILE = 72;
+
+    public static final int RAIL_RECOMMENDED = 81;
+
+    public static final String CAROUSEL_LANDSCAPE = "CAROUSEL_LANDSCAPE";
+    public static final String CAROUSEL_POTRAIT = "CAROUSEL_POTRAIT";
+    public static final String CAROUSEL_SQUARE = "CAROUSEL_SQUARE";
+    public static final String CAROUSEL_CUSTOM = "CAROUSEL_CUSTOM";
+
+
+    public static final String HORIZONTAL_LANDSCAPE = "HORIZONTAL_LANDSCAPE";
+    public static final String HORIZONTAL_POTRAIT = "HORIZONTAL_POTRAIT";
+    public static final String HORIZONTAL_POSTER = "HORIZONTAL_POSTER";
+    public static final String HORIZONTAL_SQUARE = "HORIZONTAL_SQUARE";
+    public static final String HORIZONTAL_CIRCLE = "HORIZONTAL_CIRCLE";
+    public static final String KEY_DFP_ADS = "DFP";
+    public static final String KEY_MREC = "MREC";
+    public static final String KEY_BANNER = "BANNER";
+    public static final String KEY_TABLET = "TAB";
+    public static final String KEY_PHONE = "PHONE";
+    public static final String KEY_CONTENT_PREFRENCES = "ContentPrefrences";
+    public static final String KEY_CONTINUE_WATCHING = "ContinueWatching";
+    public static final String KEY_RECOMMENDED = "RECOMMENDED";
+    public static final String KEY_FB_FAN = "FAN-ANDROID-NATIVE-";
+    public static final String KEY_FB_FANWEB = "FAN-WEB-NATIVE-";
+    public static final String KEY_FB_FANIOS = "FAN-IOS-NATIVE-";
+    public static final String KEY_FB_FANTABLET = "FAN-TABLET-NATIVE-";
+
+
+    public static String TYPE1 = "CAROUSEL";
+    public static String TYPE2 = "CIRCLE";
+    public static String TYPE3 = "PORTRAIT";
+    public static String TYPE4 = "SQUARE";
+    public static String TYPE5 = "LANDSCAPE";
+    public static String TYPE6 = "CONTINUE_WATCHING";
+    public static String TYPE7 = "RECOMMENDED";
+    public static String TYPE8 = "UGCIFP";
+    public static final String TYPE9 = "FAN";
+    public static final String TYPE10 = "SERIESBANNER";
+    public static final String TYPE11 = "DFP_BANNER";
+    public static int CONTINUE_WATCHING = 3;
+    public static final int SIMILLAR_UGC_VIDEOS = 7;
+    public static int YOU_MAY_LIKE = 1;
+    public static final int ADS_BANNER = 41;
+    public static final int ADS_MREC = 42;
+    public static final int LIVE_CHANNEL_LIST = 9;
+
+    public static final int INDICATOR_BOTTOM = 25;
+    public static String WIDGET_TYPE_AD = "ADS";
+    public static String WIDGET_TYPE_CONTENT = "CNT";
+    public static String SORT_VALUE = "";
+    public static final String WATCHLIST_PARTNER_TYPE = "1";
+    public static final String FOLLOW_USER_PARTNER_TYPE = "2";
+    public static String API_KEY_MOB = "bxwlpovuvcefasfegfonsxtzgzzyggrelwoyqebo";
+    public static String API_KEY_TAB = "pdmlwglmihraeslyzcbluzxgthrlvjlpllgqumsc";
+    public static final int TYPE_LANGUAGE =1;
+    public static final int TYPE_GENRE =2;
+    public static final String KEY_MY_WATCHLIST = "My Watchlist";
+    public static final int PORTRAIT_SPACING = 6;
+    public static final int LANSCAPE_SPACING = 8;
+    public static final int SPAN_COUNT_PORTRAIT = 3;
+    public static final int SPAN_COUNT_LANDSCAPE = 2;
     int SPOTLIGHT_TAB_ID = 3208;
     int MORE_LIVETV_ID = 3212;
     int MORE_TRENDING_ID = 3213;
@@ -28,7 +146,7 @@ public interface AppConstants {
 
     String END_POINT = "https://rest-as.ott.kaltura.com";
     String TNC_URL = "https://www.dialog.lk/browse/termsAndConditions.jsp?id=rpb4deb831863ff58e428067028c98d4b50";
-    String HELP_URL = "https://www.dialog.lk/browse/contactUs.jsp";
+    String HELP_URL = "https://astrosott.zendesk.com/hc/en-us";
     String HD = "HD";
     String SD= "SD";
     String Mobile_Dash_HD="Mobile_Dash_HD";
@@ -44,6 +162,7 @@ public interface AppConstants {
     String TAB_LIVE_TV_DETAILS_KEY = "Live TV Detail";
     String TAB_FORWARDED_EPG_DETAIL_KEY = "Forward EPG Detail";
     String DASH = "DASH_Main";
+    String CON_VIVA_CUSTOMER_KEY = "1fad96d91f4f519fc79753650a57dad992c44af2";
 
     String FB_PLACEMENT_ID = "367519410486408_367519577153058";
     String SL_COUNTRY_CODE = "94";
@@ -93,6 +212,16 @@ public interface AppConstants {
     long Family = 337292;
     long Kids=337293;
     long Documentary=337294;
+    public static int TAB_FIRST = 0;
+    public static int TAB_SECOND = 1;
+    public static int TAB_THIRD = 2;
+    public static int TAB_FOUR = 3;
+    public static int TAB_FIVE = 4;
+    public static int TAB_SIX = 5;
+
+    String KEY_SEASON_NUMBER = "Season number";
+    String EPISODE_NUMBER = "EPISODE NUMBER";
+    public static final int SIMILLAR_UGC_CREATOR = 8;
 
 
     long Reality = 337295;
@@ -105,6 +234,16 @@ public interface AppConstants {
 
     long Lifestyle=337301;
     long Comedy=337302;
+
+
+    public static int SIMILAR_MOVIES = 2;
+    public static final int CATEGORY = 4;
+    public static final int WEB_EPISODE = 5;
+
+    public static final int SPOTLIGHT_EPISODE = 6;
+    public static final int SIMILLAR_CHANNEL_LIST = 10;
+    public static final String KS_EXPIRE = "500016";
+    public static String SUBSCRIPTION_BASE_URL = "";
 
 
 

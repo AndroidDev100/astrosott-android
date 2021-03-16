@@ -98,6 +98,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void setClicks() {
         getBinding().resendOtp.setOnClickListener(view -> {
+            getBinding().pin.setText("");
             createOtp();
         });
         getBinding().verify.setOnClickListener(view -> {
@@ -160,6 +161,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 }
             });
         } else {
+            getBinding().progressBar.setVisibility(View.GONE);
+
             getBinding().invalidOtp.setVisibility(View.VISIBLE);
         }
     }

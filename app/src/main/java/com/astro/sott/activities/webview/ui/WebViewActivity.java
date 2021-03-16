@@ -68,12 +68,12 @@ public class WebViewActivity extends BaseBindingActivity<WebviewBinding> {
 
             if (!TextUtils.isEmpty(strWebview)) {
 
-                if (strWebview.equalsIgnoreCase(AppLevelConstants.TNC)) {
+              /*  if (strWebview.equalsIgnoreCase(AppLevelConstants.TNC)) {
                     getBinding().webview.loadUrl(AppConstants.TNC_URL);
 
-                } else if (strWebview.equalsIgnoreCase(AppLevelConstants.HELP)) {
+                } else if (strWebview.equalsIgnoreCase(AppLevelConstants.HELP)) {*/
                     getBinding().webview.loadUrl(AppConstants.HELP_URL);
-                }
+               /* }*/
             }
 
         } else {

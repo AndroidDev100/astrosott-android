@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.BuildConfig;
@@ -218,7 +219,7 @@ public class PlayerRepository {
         final MutableLiveData<Boolean> playPause = new MutableLiveData<>();
         if (player != null) {
             if (player.isPlaying()) {
-
+                ConvivaManager.convivaPlayerPauseReportRequest();
                 playPause.postValue(false);
                 player.pause();
 
@@ -638,10 +639,13 @@ public class PlayerRepository {
                     break;
                 case READY:
                     booleanMutableLiveData.postValue(true);
+                    ConvivaManager.convivaPlayerPlayReportRequest();
+
                     //  log.d("StateChange Ready");
                     //  mPlayerControlsView.setProgressBarVisibility(false);
                     break;
                 case BUFFERING:
+                    ConvivaManager.convivaPlayerBufferReportRequest();
                     // log.e("StateChange Buffering");
                     // mPlayerControlsView.setProgressBarVisibility(true);
                     // booleanMutableLiveData.postValue(false);
@@ -725,12 +729,16 @@ public class PlayerRepository {
             if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
                 PrintLogging.printLog("ValueIS", "0");
             } else {
-                if (AppCommonMethods.isAdsEnable)
-                    addIMAConfig(context, playerPluginConfig);
+                if (AppCommonMethods.isAdsEnable) {
+                    if (AssetContent.isAdsEnable(asset.getMetas())) {
+                        addIMAConfig(context, playerPluginConfig);
+                    }
+                }
             }
 
 
             player = PlayKitManager.loadPlayer(context, playerPluginConfig);
+
             playerMutableLiveData.postValue(player);
 
             KalturaPlaybackRequestAdapter.install(player, "com.astro.sott"); // in case app developer wants to give customized referrer instead the default referrer in the playmanifest
@@ -753,7 +761,7 @@ public class PlayerRepository {
             subscribePhoenixAnalyticsReportEvent();
 
 //            player.getSettings().setABRSettings(new ABRSettings().setMinVideoBitrate(200000).setInitialBitrateEstimate(150000));
-         //   player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(550000));
+            //   player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(550000));
 
             player.prepare(mediaConfig);
             player.play();
@@ -797,6 +805,7 @@ public class PlayerRepository {
 
     }
 
+
     private void addIMAConfig(Context context, PKPluginConfigs playerPluginConfig) {
 
         //   String imaVastTag = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=";
@@ -812,7 +821,7 @@ public class PlayerRepository {
 
         imaConfig = new IMAConfig();
         imaConfig.setAdTagUrl(imaVastTag);
-        imaConfig.setAdLoadTimeOut(12);
+        imaConfig.setAdLoadTimeOut(25);
         imaConfig.enableDebugMode(true);
 
         playerPluginConfig.setPluginConfig(IMAPlugin.factory.getName(), imaConfig);

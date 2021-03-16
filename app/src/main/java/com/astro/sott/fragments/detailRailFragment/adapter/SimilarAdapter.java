@@ -1,24 +1,36 @@
 package com.astro.sott.fragments.detailRailFragment.adapter;
 
+import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.R;
 import com.astro.sott.adapter.CommonLandscapeAdapter;
+import com.astro.sott.adapter.RibbonAdapter;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
+import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
+import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.astro.sott.databinding.ExclusiveItemBinding;
 import com.astro.sott.databinding.LandscapeItemBinding;
 import com.astro.sott.databinding.RelatedItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.constants.AppConstants;
+import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
+import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.kaltura.client.types.BooleanValue;
+import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 
 import java.util.Iterator;
@@ -28,9 +40,18 @@ import java.util.Set;
 
 public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SingleItemViewHolder> {
     private List<RailCommonData> similarItemList;
+    private Activity mContext;
+    private DetailRailClick detailRailClick;
 
-    public SimilarAdapter(List<RailCommonData> loadedList) {
+
+    public SimilarAdapter(Activity context, List<RailCommonData> loadedList) {
         similarItemList = loadedList;
+        mContext = context;
+        try {
+            this.detailRailClick = ((DetailRailClick) context);
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement AdapterCallback.");
+        }
     }
 
     @NonNull
@@ -53,7 +74,22 @@ public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SingleIt
             ImageHelper.getInstance(holder.landscapeItemBinding.image.getContext()).loadImageToPlaceholder(holder.landscapeItemBinding.image, AppCommonMethods.getImageURI(R.drawable.landscape, holder.landscapeItemBinding.image), R.drawable.landscape);
 
         }
+        try {
+            setRecycler(holder.landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
+            AppCommonMethods.setBillingUi(holder.landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
+
+        } catch (Exception e) {
+
+        }
+
         holder.landscapeItemBinding.lanscapeTitle.setText(singleItem.getName());
+
+    }
+
+    private void setRecycler(RecyclerView recyclerView, Map<String, MultilingualStringValueArray> tags) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        RibbonAdapter ribbonAdapter = new RibbonAdapter(AssetContent.getRibbon(tags));
+        recyclerView.setAdapter(ribbonAdapter);
 
     }
 
@@ -93,7 +129,25 @@ public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SingleIt
         public SingleItemViewHolder(@NonNull RelatedItemBinding itemView) {
             super(itemView.getRoot());
             landscapeItemBinding = itemView;
+            final String name = mContext.getClass().getSimpleName();
+
+
+            landscapeItemBinding.cardView.setOnClickListener(v -> {
+                new ActivityLauncher(mContext).railClickCondition("", "", name, similarItemList.get(getLayoutPosition()), getLayoutPosition(), AppConstants.Rail5, similarItemList, new MediaTypeCallBack() {
+                    @Override
+                    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
+                        if (NetworkConnectivity.isOnline(mContext)) {
+                             detailRailClick.detailItemClicked(_url, position, type, commonData);
+                        } else {
+                            ToastHandler.show(mContext.getResources().getString(R.string.no_internet_connection), mContext);
+                        }
+                    }
+                });
+            });
+
         }
+
+
     }
 
 }

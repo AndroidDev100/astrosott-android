@@ -1,42 +1,48 @@
 {
   "project_info": {
-    "project_number": "846720589777",
-    "firebase_url": "https://dialog-viu.firebaseio.com",
-    "project_id": "dialog-viu",
-    "storage_bucket": "dialog-viu.appspot.com"
+    "project_number": "456838347753",
+    "project_id": "astro-sott-production",
+    "storage_bucket": "astro-sott-production.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:846720589777:android:393458265dd26ac5",
+        "mobilesdk_app_id": "1:456838347753:android:c41b3f50bfe2af44c3e978",
         "android_client_info": {
-          "package_name": "com.dialog.dialoggo"
+          "package_name": "com.astro.sott"
         }
       },
       "oauth_client": [
         {
-          "client_id": "846720589777-oh9u3lldmbk2qvdp05aeej31b85qbmvr.apps.googleusercontent.com",
+          "client_id": "456838347753-rq66dotelo949htt4ohj0blnaohh37fj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.astro.sott",
+            "certificate_hash": "abcbe75564b1198df627f0d8c25a6e2a35687a9f"
+          }
+        },
+        {
+          "client_id": "456838347753-ia8d79bcmfrm2dv7sgmtfb0iap2ncndo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDOKuKodNgTxUCD6HF3bCnsVdo9zYu3cd8"
+          "current_key": "AIzaSyCapeCspvAVBjV3r4XejEWnNpkzT6iuhOU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "846720589777-tn1umssgupcuvfcfs5tul6fo7n2louks.apps.googleusercontent.com",
+              "client_id": "456838347753-ia8d79bcmfrm2dv7sgmtfb0iap2ncndo.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "846720589777-p6kqfket76bcb7d4bmes84d3unckha4a.apps.googleusercontent.com",
+              "client_id": "456838347753-9k7u53h03oc4sadt9i2ckg61bmrkggjv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "lk.inova.ios.viu",
-                "app_store_id": "1134950525"
+                "bundle_id": "com.astro.sott"
               }
             }
           ]
