@@ -104,13 +104,16 @@
         <item name="textAllCaps">true</item>
         <item name="fontFamily">@font/heebo_medium</item>
         <item name="tabIndicator">@drawable/gradient_astro</item>
+        <item name="colorAccent">#ff0033</item>
+        <item name="colorControlActivated">#af0b8a</item>
+        <item name="colorControlNormal">#5618eb</item>
+
 
     </style>
     <style name="MineCustomTabTextAppearence" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="textAllCaps">true</item>
         <item name="fontFamily">@font/heebo_medium</item>
-        <item name="tabIndicator">@drawable/gradient_astro</item>
 
     </style>
     <style name="MineCustomBottomNavText" parent="TextAppearance.Design.Tab">
