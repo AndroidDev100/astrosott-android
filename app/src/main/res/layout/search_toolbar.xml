@@ -82,12 +82,26 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_gravity="center"
-                 android:layout_marginStart="8dp"
+                 android:layout_marginStart="4dp"
                  android:layout_marginEnd="16dp"
-                 android:visibility="gone"
+                 android:visibility="visible"
                  android:layout_centerInParent="true"
                  android:layout_alignParentRight="true"
                  android:src="@drawable/ic_filter_24px"/>
+
+            <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:theme="@style/progressBarBlue"
+                android:visibility="visible"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="11dp"
+                android:layout_centerInParent="true"
+                android:layout_alignParentRight="true"
+                android:elevation="@dimen/dp50"/>
+
 
         </RelativeLayout>
 

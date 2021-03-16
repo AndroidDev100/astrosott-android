@@ -408,6 +408,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 getBinding().rvSearchResult.setAdapter(adapter);
             }
             if (laodMoreList.size()>0){
+                getBinding().toolbar.progressBar.setVisibility(View.VISIBLE);
                 getBinding().toolbar.filter.setVisibility(View.VISIBLE);
             }
         } catch (Exception ignored) {
@@ -658,6 +659,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
         } else {
             searchHappen=false;
+            getBinding().toolbar.progressBar.setVisibility(View.INVISIBLE);
             if (laodMoreList != null && laodMoreList.size() == 0) {
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
@@ -680,6 +682,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         }
         if (counter != mediaList.size() && counter < mediaList.size()) {
             searchHappen=true;
+           // getBinding().toolbar.progressBar.setVisibility(View.VISIBLE);
             viewModel.getQuickSearchResult(searchString, mediaList, counter,selectedGenreValues,from,searchBeginFrom).observe(this, searchmodels -> {
                 if (mediaList.size() > 0) {
                     if (counter == 4)
@@ -714,6 +717,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
         } else {
             searchHappen=false;
+            getBinding().toolbar.progressBar.setVisibility(View.INVISIBLE);
             if (laodMoreList != null && laodMoreList.size() == 0) {
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
