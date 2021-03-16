@@ -78,6 +78,9 @@ class EvergentServices {
                         }
                     }
 
+                }else{
+                    searchAccountCallBack.onFailure("Something Went Wrong", "")
+
                 }
             }
         }
@@ -123,6 +126,9 @@ class EvergentServices {
                             evergentCreateOtpCallBack.onFailure("Something Went Wrong", "")
                         }
                     }
+
+                }else{
+                    evergentCreateOtpCallBack.onFailure("Something Went Wrong", "")
 
                 }
             }
@@ -171,6 +177,9 @@ class EvergentServices {
                         }
                     }
 
+                }else{
+                    evergentConfirmOtpCallBack.onFailure("Something Went Wrong", "")
+
                 }
             }
         }
@@ -211,6 +220,9 @@ class EvergentServices {
                             evergentResetPasswordCallBack.onFailure("Something Went Wrong", "")
                         }
                     }
+
+                }else{
+                    evergentResetPasswordCallBack.onFailure("Something Went Wrong", "")
 
                 }
             }
@@ -284,6 +296,9 @@ class EvergentServices {
                         }
                     }
 
+                }else{
+                    evergentCreateUserCallback.onFailure("Something Went Wrong", "")
+
                 }
             }
         }
@@ -343,6 +358,9 @@ class EvergentServices {
                         }
                     }
 
+                }else{
+                    evergentCreateUserCallback.onFailure("Something Went Wrong", "")
+
                 }
             }
         }
@@ -387,6 +405,9 @@ class EvergentServices {
                         }
                     }
 
+                }else{
+                    evergentCreateUserCallback.onFailure("Something Went Wrong", "")
+
                 }
             }
         }
@@ -426,6 +447,9 @@ class EvergentServices {
                         }
                     }
 
+                }else{
+                    evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+
                 }
             }
         }
@@ -463,6 +487,9 @@ class EvergentServices {
                             evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
                         }
                     }
+
+                }else{
+                    evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
 
                 }
             }
@@ -505,6 +532,9 @@ class EvergentServices {
                             evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
                         }
                     }
+
+                }else{
+                    evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
 
                 }
             }
@@ -550,6 +580,9 @@ class EvergentServices {
                         }
                     }
 
+                }else{
+                    evergentRefreshToken.onFailure("Something Went Wrong", "")
+
                 }
             }
         }
@@ -588,6 +621,9 @@ class EvergentServices {
                             evergentRefreshToken.onFailure("Something Went Wrong", "")
                         }
                     }
+
+                }else{
+                    evergentRefreshToken.onFailure("Something Went Wrong", "")
 
                 }
             }
@@ -629,6 +665,9 @@ class EvergentServices {
                             evergentRefreshToken.onFailure("Something Went Wrong", "")
                         }
                     }
+
+                }else{
+                    evergentRefreshToken.onFailure("Something Went Wrong", "")
 
                 }
             }
