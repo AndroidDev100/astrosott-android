@@ -193,15 +193,6 @@ class SignUpActivity : AppCompatActivity() {
         })
     }
 
-    private fun createUser(type: String, email_mobile: String, password: String) {
-        astroLoginViewModel!!.createUser(type, email_mobile, password).observe(this, Observer { evergentCommonResponse ->
-            if (evergentCommonResponse.isStatus) {
-                Toast.makeText(this, evergentCommonResponse.createUserResponse.createUserResponseMessage?.message, Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
 
 
 }
