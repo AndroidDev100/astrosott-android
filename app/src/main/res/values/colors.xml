@@ -118,6 +118,9 @@
     <color name="grey_text">#9b98ab</color>
     <color name="green">#00e895</color>
     <color name="tab_selected">#303255</color>
+    <color name="pale_gray">#f2f2f7</color>
+    <color name="thumb_color">#ff0033</color>
+    <color name="seekbar_color">#262642</color>
 
 
 </resources>
