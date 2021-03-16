@@ -46,15 +46,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     android:layout_toLeftOf="@+id/iv_quality"
                     android:layout_toRightOf="@id/iv_cancel"
-                    android:fontFamily="@font/roboto_regular"
+                    android:fontFamily="@font/heebo_regular"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_large"
+                    android:lineHeight="32sp"
+                    android:textColor="@color/pale_gray"
+                    android:textSize="@dimen/dimen20sp"
                     android:visibility="gone" />
 
                 <ImageView
@@ -73,6 +74,16 @@
                     android:padding="@dimen/dp10"
                     android:src="@drawable/ic_settings"
                     tools:ignore="ContentDescription" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_24sdp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_sooka_background"
+                    android:contentDescription=""
+                    tools:ignore="ContentDescription"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:layout_marginEnd="@dimen/already_user_text_margin_top"
+                    android:layout_alignParentEnd="true"/>
 
                 <TextView
                     android:id="@+id/shareWith"
@@ -114,14 +125,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="4dp"
                     android:layout_marginRight="16dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="36dp"
                     android:clickable="true"
                     android:contentDescription="@string/cancel_icon"
                     android:focusable="true"
-                    android:padding="@dimen/dp10"
-                    android:src="@drawable/ic_arrow_back_black_24dp"
+                    android:padding="@dimen/dimen5dp"
+                    android:src="@drawable/ic_player_back_icon"
                     tools:ignore="ContentDescription" />
 
 
@@ -165,9 +176,11 @@
                 android:layout_marginEnd="@dimen/seek_bar_margin_start"
                 android:layout_marginBottom="70dp"
                 android:paddingBottom="2dp"
+                android:maxHeight="6dp"
                 android:layout_marginStart="@dimen/seek_bar_margin_start"
-                android:theme="@style/MySeekBar"
-                android:visibility="visible" />
+                android:progressDrawable="@drawable/seekbarprogress_style"
+                android:visibility="visible"
+                android:thumb="@drawable/ic_thumb_icon" />
 
 
             <RelativeLayout
@@ -210,7 +223,7 @@
                     android:visibility="visible"
                     android:text=""
                     android:padding="@dimen/_1sdp"
-                    android:layout_marginStart="11dp"/>
+                    android:layout_marginStart="13dp"/>
                 <TextView
                     android:id="@+id/slash"
                     android:layout_width="wrap_content"
@@ -243,7 +256,7 @@
                     android:layout_marginTop="@dimen/_4dp"
                     android:textColor="@color/pale_gray"
                     android:textSize="@dimen/_16sp"
-                    android:layout_marginEnd="13dp"></TextView>
+                    android:layout_marginEnd="13.5dp"></TextView>
 
                 <TextView
                     android:id="@+id/episode"
