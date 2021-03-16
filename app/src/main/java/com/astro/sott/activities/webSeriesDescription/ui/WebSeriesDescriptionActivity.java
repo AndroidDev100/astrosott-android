@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -263,8 +264,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             showAlertDialog("Series " + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
-            getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite), null, null);
-            getBinding().webwatchList.setTextColor(getResources().getColor(R.color.lightBlueColor));
+            getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
+            getBinding().webwatchList.setTextColor(getResources().getColor(R.color.aqua_marine));
 
         } else {
             switch (s.getErrorCode()) {
@@ -609,8 +610,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 if (commonResponse != null) {
                     idfromAssetWatchlist = commonResponse.getAssetID();
                     isAdded = true;
-                    getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite), null, null);
-                    getBinding().webwatchList.setTextColor(getResources().getColor(R.color.lightBlueColor));
+                    getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
+                    getBinding().webwatchList.setTextColor(getResources().getColor(R.color.aqua_marine));
                 } else {
                     isAdded = false;
                     getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
@@ -1164,6 +1165,10 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                         getBinding().playText.setText(getResources().getString(R.string.watch_now));
                         getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                        getBinding().starIcon.setVisibility(View.GONE);
+                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+
+
 
                     });
                     this.vodType = EntitlementCheck.FREE;
@@ -1175,6 +1180,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                 getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                 getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.VISIBLE);
+
                             });
                         }
                         this.vodType = EntitlementCheck.SVOD;
@@ -1184,6 +1191,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                             getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_button));
                             getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                             getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                            getBinding().starIcon.setVisibility(View.GONE);
+
                         }
                         this.vodType = EntitlementCheck.TVOD;
 

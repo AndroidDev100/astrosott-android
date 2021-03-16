@@ -413,6 +413,10 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                         getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                         getBinding().playText.setText(getResources().getString(R.string.watch_now));
                         getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                        getBinding().starIcon.setVisibility(View.GONE);
+                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+
+
 
                     });
                     this.vodType = EntitlementCheck.FREE;
@@ -424,6 +428,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.VISIBLE);
                             });
                         }
                         this.vodType = EntitlementCheck.SVOD;
@@ -434,6 +439,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_button));
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+
                             });
                         }
 
@@ -1030,8 +1037,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             showAlertDialog(getApplicationContext().getResources().getString(R.string.movie_text) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
-            getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite), null, null);
-            getBinding().watchList.setTextColor(getResources().getColor(R.color.lightBlueColor));
+            getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
+            getBinding().watchList.setTextColor(getResources().getColor(R.color.aqua_marine));
 
         } else {
             switch (s.getErrorCode()) {
@@ -1056,8 +1063,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 if (commonResponse != null) {
                     idfromAssetWatchlist = commonResponse.getAssetID();
                     isAdded = true;
-                    getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite), null, null);
-                    getBinding().watchList.setTextColor(getResources().getColor(R.color.lightBlueColor));
+                    getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
+                    getBinding().watchList.setTextColor(getResources().getColor(R.color.aqua_marine));
                 } else {
                     isAdded = false;
                     getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);

@@ -159,7 +159,7 @@
                                     android:ellipsize="end"
                                     android:fontFamily="@font/roboto_regular"
                                     android:lineSpacingExtra="2dp"
-                                    android:maxLines="2"
+                                    android:maxLines="3"
                                     android:text="@{movieAssestModel.description}"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/font_medium" />
@@ -189,7 +189,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:fontFamily="@font/roboto_bold"
                                                 android:text="@string/actors"
-                                                android:textColor="@color/cast_and_crew_title"
+                                                android:textColor="@color/white"
                                                 android:textSize="@dimen/font_medium" />
 
                                             <TextView
@@ -198,7 +198,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:fontFamily="@font/roboto_regular"
                                                 android:text="@{castValue}"
-                                                android:textColor="@color/cast_and_crew_title"
+                                                android:textColor="@color/white"
                                                 android:textSize="@dimen/font_medium" />
                                         </LinearLayout>
 
@@ -213,7 +213,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:fontFamily="@font/roboto_bold"
                                                 android:text="@string/directors"
-                                                android:textColor="@color/cast_and_crew_title"
+                                                android:textColor="@color/white"
                                                 android:textSize="@dimen/font_medium" />
 
                                             <TextView
@@ -222,7 +222,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:fontFamily="@font/roboto_regular"
                                                 android:text="@{crewValue}"
-                                                android:textColor="@color/cast_and_crew_title"
+                                                android:textColor="@color/white"
                                                 android:textSize="@dimen/font_medium" />
                                         </LinearLayout>
                                     </LinearLayout>
@@ -234,7 +234,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="end"
                                     android:layout_marginTop="@dimen/less_button_margin_top"
-                                    android:background="@color/fragment_background_color"
+                                    android:background="@color/grape_purple"
                                     android:gravity="center"
                                     android:orientation="horizontal">
                                     <TextView
@@ -266,7 +266,7 @@
                                     android:fontFamily="@font/roboto_regular"
                                     android:text="@string/share"
                                     android:textColor="@color/white"
-                                    android:drawableTop="@drawable/share"
+                                    android:drawableTop="@drawable/ic_share_24_px"
                                     android:textSize="@dimen/font_medium"
                                     android:drawablePadding="@dimen/watchlist_margin_top"
                                     android:focusable="true"
@@ -326,7 +326,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:ignore="ContentDescription"
-                        android:background="@drawable/ic_arrow_back_black_24dp"
+                        android:background="@drawable/ic_arrow_back_24px"
 
                         android:contentDescription="@string/back_icon" />
                 </RelativeLayout>

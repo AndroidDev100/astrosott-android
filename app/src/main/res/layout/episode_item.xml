@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:background="@color/blue_bg"
+        android:background="@color/grape_purple"
         android:orientation="vertical">
 
 
@@ -81,7 +81,7 @@
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/heebo_regular"
                     android:maxLines="2"
-                    android:textColor="@color/title_color"
+                    android:textColor="@color/yellow_orange"
                     android:textSize="14sp" />
 
             </LinearLayout>

@@ -1,0 +1,50 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="M12.0012,13.2631L16.369,17.6309L12.0012,21.9987L7.6334,17.6309z"
+      android:fillColor="#47915c"/>
+  <path
+      android:pathData="M3.264,4.527a6.176,6.176 0,0 0,0 8.736l4.368,-4.368z"
+      android:fillColor="#ff002c"/>
+  <path
+      android:pathData="M20.736,4.527a6.177,6.177 0,0 0,-8.736 0l4.369,4.368z"
+      android:fillColor="#34e0ff"/>
+  <path
+      android:pathData="M12.001,4.527a6.176,6.176 0,0 0,-8.736 0l4.368,4.368z"
+      android:fillColor="#ff002c"/>
+  <path
+      android:pathData="M20.737,13.263a6.177,6.177 0,0 0,0 -8.736l-4.368,4.368z"
+      android:fillColor="#34e0ff"/>
+  <path
+      android:pathData="M7.6331,8.8948L12.0009,13.2626L7.6331,17.6304L3.2653,13.2626z"
+      android:fillColor="#ab8034"/>
+  <group>
+    <clip-path
+        android:pathData="M12.001,13.264l-4.368,-4.368 -4.368,4.368 4.368,4.368 4.368,4.368 4.368,-4.368z"/>
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M3.263,13.264a6.179,6.179 0,0 0,8.736 0l-4.368,-4.369z"
+        android:strokeAlpha="0.2"
+        android:fillAlpha="0.2"/>
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M12.001,21.995a6.177,6.177 0,0 1,0 -8.737l4.368,4.368z"
+        android:strokeAlpha="0.2"
+        android:fillAlpha="0.2"/>
+  </group>
+  <path
+      android:pathData="M3.264,13.263a6.176,6.176 0,0 0,8.736 0l-4.368,-4.368z"
+      android:fillColor="#ffb62b"/>
+  <path
+      android:pathData="M12.002,21.995a6.178,6.178 0,0 1,0 -8.736l4.368,4.369z"
+      android:fillColor="#2dd37b"/>
+  <path
+      android:pathData="M12.0014,4.5266L16.3692,8.8944L12.0014,13.2622L7.6336,8.8944z"
+      android:fillColor="#ffb62b"/>
+  <path
+      android:pathData="M16.3686,8.8954L20.7364,13.2632L16.3686,17.631L12.0008,13.2632z"
+      android:fillColor="#2dd37b"/>
+</vector>
