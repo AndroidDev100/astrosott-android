@@ -162,8 +162,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="@dimen/player_seekbar_margin_right"
-                android:layout_marginBottom="34dp"
+                android:layout_marginEnd="@dimen/seek_bar_margin_start"
+                android:layout_marginBottom="70dp"
                 android:paddingBottom="2dp"
                 android:layout_marginStart="@dimen/seek_bar_margin_start"
                 android:theme="@style/MySeekBar"
@@ -173,44 +173,130 @@
             <RelativeLayout
                 android:id="@+id/rl_down"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/player_rl_height"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/above_dark_shadow"
-                android:paddingBottom="@dimen/player_imageview_margin_left">
+                android:layout_marginBottom="33dp"
+                android:layout_marginStart="@dimen/seek_bar_margin_start"
+                android:layout_marginEnd="@dimen/seek_bar_margin_start">
 
 
                 <TextView
                     android:id="@+id/total_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="@dimen/player_textview_margin_right"
-                    android:layout_marginBottom="30dp"
                     android:text=""
-                    android:textColor="#fff"
-                    android:textSize="@dimen/player_small_text_size"
-                    android:visibility="visible" />
+                    android:lineHeight="32sp"
+                    android:gravity="center"
+                    android:padding="@dimen/_1sdp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:textColor="@color/pale_gray"
+                    android:textSize="@dimen/_16sp"
+                    android:visibility="visible"
+                    android:layout_marginStart="@dimen/_3dp"
+                    android:layout_toRightOf="@+id/slash"/>
 
                 <TextView
                     android:id="@+id/current_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="@dimen/player_textview_margin_left"
-                    android:layout_marginBottom="30dp"
-                    android:textColor="#fff"
-                    android:textSize="@dimen/player_small_text_size"
+                    android:textColor="@color/pale_gray"
+                    android:textSize="@dimen/_16sp"
+                    android:lineHeight="32sp"
+                    android:gravity="center"
+                    android:fontFamily="@font/heebo_regular"
                     android:visibility="visible"
-                    android:text=""/>
+                    android:text=""
+                    android:padding="@dimen/_1sdp"
+                    android:layout_marginStart="11dp"/>
+                <TextView
+                    android:id="@+id/slash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/pale_gray"
+                    android:textSize="@dimen/_16sp"
+                    android:lineHeight="32sp"
+                    android:gravity="center"
+                    android:fontFamily="@font/heebo_regular"
+                    android:visibility="visible"
+                    android:text="/"
+                    android:padding="@dimen/_1sdp"
+                    android:layout_marginStart="@dimen/_3dp"
+                    android:layout_toRightOf="@+id/current_time"/>
 
+                <TextView
+                    android:id="@+id/next_episode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_video_quality"
+                    android:drawablePadding="@dimen/_6dp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:padding="@dimen/_1sdp"
+                    android:text="@string/next_episode"
+                    android:textAllCaps="false"
+                    android:lineHeight="32sp"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center"
+                    android:textColor="@color/pale_gray"
+                    android:textSize="@dimen/_16sp"
+                    android:layout_marginEnd="12dp"></TextView>
+
+                <TextView
+                    android:id="@+id/episode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_video_quality"
+                    android:drawablePadding="@dimen/_6dp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:padding="@dimen/_1sdp"
+                    android:text="@string/episode"
+                    android:textAllCaps="false"
+                    android:lineHeight="32sp"
+                    android:gravity="center"
+                    android:textColor="@color/pale_gray"
+                    android:textSize="@dimen/_16sp"
+                    android:layout_marginEnd="13dp"
+                    android:layout_toLeftOf="@+id/next_episode"></TextView>
+                <TextView
+                    android:id="@+id/subtitle_audio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/episode"
+                    android:drawablePadding="@dimen/_6dp"
+                    android:drawableLeft="@drawable/ic_video_quality"
+                    android:fontFamily="@font/heebo_regular"
+                    android:padding="@dimen/_1sdp"
+                    android:lineHeight="32sp"
+                    android:gravity="center"
+                    android:text="@string/subtitle_audio"
+                    android:textAllCaps="false"
+                    android:textColor="@color/pale_gray"
+                    android:textSize="@dimen/_16sp"
+                    android:layout_marginEnd="13dp"></TextView>
+                <TextView
+                    android:id="@+id/quality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_video_quality"
+                    android:drawablePadding="@dimen/_6dp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:layout_toLeftOf="@+id/subtitle_audio"
+                    android:padding="@dimen/_1sdp"
+                    android:gravity="center"
+                    android:text="@string/manage_quality"
+                    android:textAllCaps="false"
+                    android:layout_marginEnd="13dp"
+                    android:lineHeight="32sp"
+                    android:textColor="@color/pale_gray"
+                    android:textSize="@dimen/_16sp"
+                    android:layout_marginStart="@dimen/_16sp"></TextView>
 
                 <RelativeLayout
                     android:id="@+id/fullscreen"
                     android:layout_width="@dimen/player_rl_full_sereen_width"
                     android:layout_height="@dimen/player_rl_full_screen_height"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginBottom="30dp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="@dimen/player_rl_full_margin_left"
                     android:visibility="gone">
@@ -278,6 +364,8 @@
                 tools:ignore="ContentDescription" />
 
 
+
+
             <RelativeLayout
                 android:id="@+id/player_media_controls"
                 android:layout_width="match_parent"
@@ -297,7 +385,6 @@
                     android:visibility="visible"
                     tools:ignore="ContentDescription" />
 
-
                 <ImageButton
                     android:id="@+id/backward"
                     style="?android:attr/borderlessButtonStyle"
@@ -316,8 +403,8 @@
                 <ImageButton
                     android:id="@+id/play_button"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="@dimen/player_button_sizes"
-                    android:layout_height="@dimen/player_button_sizes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:contentDescription="@string/play_icon"
                     android:src="@drawable/ic_pause"

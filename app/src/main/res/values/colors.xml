@@ -117,6 +117,7 @@
     <color name="grey_text">#9b98ab</color>
 
     <color name="tab_selected">#303255</color>
+    <color name="pale_gray">#f2f2f7</color>
 
 
 </resources>
