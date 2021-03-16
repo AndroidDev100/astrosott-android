@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import com.astro.sott.repositories.loginRepository.AstrLoginRepository;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
+import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 
 public class AstroLoginViewModel extends AndroidViewModel {
     public AstroLoginViewModel(@NonNull Application application) {
@@ -18,7 +19,7 @@ public class AstroLoginViewModel extends AndroidViewModel {
         return AstrLoginRepository.getInstance().searchAccountV2(getApplication(), type, emailMobile);
     }
 
-    public LiveData<EvergentCommonResponse> createOtp(String type, String emailMobile) {
+    public LiveData<EvergentCommonResponse<CreateOtpResponse>> createOtp(String type, String emailMobile) {
         return AstrLoginRepository.getInstance().createOtp(getApplication(), type, emailMobile);
     }
 
@@ -40,19 +41,16 @@ public class AstroLoginViewModel extends AndroidViewModel {
     }
 
     public LiveData<EvergentCommonResponse> getContact(String acessToken) {
-        return AstrLoginRepository.getInstance().getContact(getApplication(),acessToken);
+        return AstrLoginRepository.getInstance().getContact(getApplication(), acessToken);
     }
 
     public LiveData<EvergentCommonResponse> getDevice(String acessToken) {
-        return AstrLoginRepository.getInstance().getDevice(getApplication(),acessToken);
+        return AstrLoginRepository.getInstance().getDevice(getApplication(), acessToken);
     }
 
-    public LiveData<EvergentCommonResponse> removeDevice(String acessToken,String serial) {
-        return AstrLoginRepository.getInstance().removeDevice(getApplication(),acessToken,serial);
+    public LiveData<EvergentCommonResponse> removeDevice(String acessToken, String serial) {
+        return AstrLoginRepository.getInstance().removeDevice(getApplication(), acessToken, serial);
     }
-
-
-
 
 
     public void addToken(String ks) {

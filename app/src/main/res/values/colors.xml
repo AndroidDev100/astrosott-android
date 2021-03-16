@@ -56,7 +56,8 @@
     <!--<color name="shimmer_color">#00000000</color>-->
     <color name="trending_title_color">#303434</color>
     <color name="shimmer_back">#dedede</color>
-
+    <color name="plan_period_color">#c7c7cc</color>
+    <color name="cancel_red_color">#ff0033</color>
     <color name="search_underline_editext">#62dfffff</color>
     <color name="search_edit_text_color">#a5a5a5</color>
     <color name="lightgray">#F0F0F0</color>
@@ -115,7 +116,7 @@
     <color name="lightBlueColor">#58BAFF</color>
     <color name="lightGreenColor">#00F2B6</color>
     <color name="grey_text">#9b98ab</color>
-
+    <color name="green">#00e895</color>
     <color name="tab_selected">#303255</color>
 
 

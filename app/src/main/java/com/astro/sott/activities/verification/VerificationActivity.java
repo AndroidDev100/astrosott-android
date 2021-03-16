@@ -196,8 +196,6 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
                 getBinding().progressBar.setVisibility(View.GONE);
-
-
             }
         });
     }

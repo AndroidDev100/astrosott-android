@@ -10,24 +10,24 @@
             android:id="@+id/ll_more"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/blue_bg"
+            android:background="@color/grape_purple"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/toolbar_bg">
+                android:background="@color/dark_toolbar">
 
                 <ImageView
                     android:id="@+id/back_button"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_23sdp"
-                    android:visibility="gone"
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_marginStart="@dimen/_16sdp"
-                    android:src="@drawable/ic_arrow_back_24px" />
+                    android:src="@drawable/ic_arrow_back_24px"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/title"
@@ -121,9 +121,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="right"
-                    android:visibility="gone"
                     android:src="@drawable/ic_edit_24px"
-                     />
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -145,12 +144,11 @@
 
                 <TextView
                     android:id="@+id/tv_VIP_user"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_200sdp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/heebo_medium"
                     android:padding="@dimen/_2sdp"
-                    android:text="@string/guest_user"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16sp"></TextView>
@@ -164,10 +162,23 @@
                     android:fontFamily="@font/heebo_regular"
                     android:maxLines="2"
                     android:padding="@dimen/_1sdp"
-                    android:text="@string/subscibe_now"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="14sp"></TextView>
+
+                <TextView
+                    android:id="@+id/productCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_subscribe_now"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/heebo_regular"
+                    android:maxLines="2"
+                    android:padding="@dimen/_1sdp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:visibility="gone"></TextView>
 
                 <TextView
                     android:id="@+id/tv_renew_date"
@@ -199,7 +210,7 @@
 
                 <Button
                     android:id="@+id/subscribe"
-                    android:layout_width="@dimen/_65sdp"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/_29sdp"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
@@ -207,27 +218,16 @@
                     android:layout_marginTop="@dimen/_26sdp"
                     android:background="@drawable/white_outline_button"
                     android:fontFamily="@font/heebo_regular"
+                    android:paddingLeft="8dp"
+                    android:visibility="gone"
+                    android:paddingTop="4dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="4dp"
                     android:text="@string/subscribe_more"
                     android:textAllCaps="false"
                     android:textColor="@color/light_blue_text_color"
                     android:textSize="14sp" />
 
-                <Button
-                    android:id="@+id/manage_subscription_more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_18sdp"
-                    android:background="@drawable/white_outline_button"
-                    android:fontFamily="@font/heebo_regular"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/manage_subscription_more"
-                    android:textAllCaps="false"
-                    android:textColor="@color/light_blue"
-                    android:textSize="@dimen/_14sp"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -237,6 +237,7 @@
                 android:layout_below="@+id/rl1_more"
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@color/toolbar_bg" />
+
             <RelativeLayout
                 android:id="@+id/rl_linked_accounts"
                 android:layout_width="match_parent"
@@ -269,6 +270,7 @@
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_manage_payment"
                 android:layout_width="match_parent"
@@ -372,11 +374,11 @@
                 android:id="@+id/rl_downloads_more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_10sdp">
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_downloads"
@@ -470,13 +472,13 @@
 
             <RelativeLayout
                 android:id="@+id/rl_coupan_redem"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_10sdp">
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_coupan_redemption"
@@ -543,8 +545,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_logout"

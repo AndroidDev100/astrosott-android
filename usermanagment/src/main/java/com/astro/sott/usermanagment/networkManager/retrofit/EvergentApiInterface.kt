@@ -1,5 +1,6 @@
 package com.astro.sott.usermanagment.networkManager.retrofit
 
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
@@ -56,6 +57,9 @@ interface EvergentApiInterface {
 
     @POST("astro/getAccountDevices")
     fun getDevice(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<GetDevicesResponse?>?
+
+    @POST("astro/getActiveSubscriptions")
+    fun getActiveSubscription(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<GetActiveResponse?>?
 
 
 }

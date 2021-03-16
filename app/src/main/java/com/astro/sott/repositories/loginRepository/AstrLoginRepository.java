@@ -71,8 +71,8 @@ public class AstrLoginRepository {
         new KsServices(context).kalturaAddToken(ks);
     }
 
-    public LiveData<EvergentCommonResponse> createOtp(Context context, String type, String emailMobile) {
-        MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
+    public LiveData<EvergentCommonResponse<CreateOtpResponse>> createOtp(Context context, String type, String emailMobile) {
+        MutableLiveData<EvergentCommonResponse<CreateOtpResponse>> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
         EvergentServices.Companion.getInstance().createOtp(context, type, emailMobile, new EvergentCreateOtpCallBack() {
 

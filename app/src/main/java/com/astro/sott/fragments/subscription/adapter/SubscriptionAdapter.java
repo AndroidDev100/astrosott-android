@@ -42,7 +42,7 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SingleItemHolder holder, int position) {
-        holder.binding.packName.setText(productsResponseMessageItems.get(position).getProductName());
+        holder.binding.packName.setText(productsResponseMessageItems.get(position).getDisplayName());
         StringBuilder description = new StringBuilder();
         if (productsResponseMessageItems.get(position).getDuration() != null && productsResponseMessageItems.get(position).getPeriod() != null) {
             description.append(productsResponseMessageItems.get(position).getDuration() + " " + productsResponseMessageItems.get(position).getPeriod());

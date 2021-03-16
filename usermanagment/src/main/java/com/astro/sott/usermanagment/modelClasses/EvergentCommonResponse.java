@@ -13,11 +13,12 @@ import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceRespon
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse;
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response;
 
-public class EvergentCommonResponse {
+public class EvergentCommonResponse<T> {
 
     private String errorMessage;
     private String errorCode;
 
+    private T response;
     private boolean status;
     private SearchAccountv2Response searchAccountv2Response;
 
@@ -43,6 +44,14 @@ public class EvergentCommonResponse {
 
     public void setPaymentV2Response(PaymentV2Response paymentV2Response) {
         this.paymentV2Response = paymentV2Response;
+    }
+
+    public void setResponse(T response) {
+        this.response = response;
+    }
+
+    public T getResponse() {
+        return response;
     }
 
     public GetProductResponse getGetProductResponse() {

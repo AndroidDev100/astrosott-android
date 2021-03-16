@@ -24,6 +24,9 @@
     <string name="version_more">Versi1.045b</string>
     <string name="siginup_more">Log masuk / Daftar</string>
     <string name="guest_user">Pengguna tetamu</string>
+    <string name="manage_subscription">Manage Subscriptions</string>
+    <string name="cancel_plan"><u>CANCEL</u></string>
+    <string name="change_plan"></string>
     <string name="partner_billing">Bil Rakan Kongsi</string>
     <string name="subscribe_more">Langgan</string>
     <string name="manage_subscription_more">Urus Langganan</string>

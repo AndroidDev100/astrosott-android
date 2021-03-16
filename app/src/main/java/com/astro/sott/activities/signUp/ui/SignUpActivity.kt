@@ -160,7 +160,7 @@ class SignUpActivity : AppCompatActivity() {
     private fun searchAccountv2(type: String, emailMobile: String, password: String) {
         activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
 
-        astroLoginViewModel!!.searchAccountV2(type, emailMobile).observe(this, Observer { evergentCommonResponse: EvergentCommonResponse ->
+        astroLoginViewModel!!.searchAccountV2(type, emailMobile).observe(this, Observer { evergentCommonResponse->
             if (evergentCommonResponse.isStatus) {
                 activitySinUpBinding?.progressBar?.visibility = View.GONE
                 // Toast.makeText(this, evergentCommonResponse.searchAccountv2Response.searchAccountV2ResponseMessage!!.message, Toast.LENGTH_SHORT).show()
@@ -176,7 +176,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun createOtp(type: String, emailMobile: String, password: String) {
-        astroLoginViewModel!!.createOtp(type, emailMobile).observe(this, Observer { evergentCommonResponse: EvergentCommonResponse ->
+        astroLoginViewModel!!.createOtp(type, emailMobile).observe(this, Observer { evergentCommonResponse ->
             activitySinUpBinding?.progressBar?.visibility = View.GONE
 
             if (evergentCommonResponse.isStatus) {
@@ -194,7 +194,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun createUser(type: String, email_mobile: String, password: String) {
-        astroLoginViewModel!!.createUser(type, email_mobile, password).observe(this, Observer<EvergentCommonResponse> { evergentCommonResponse: EvergentCommonResponse ->
+        astroLoginViewModel!!.createUser(type, email_mobile, password).observe(this, Observer { evergentCommonResponse ->
             if (evergentCommonResponse.isStatus) {
                 Toast.makeText(this, evergentCommonResponse.createUserResponse.createUserResponseMessage?.message, Toast.LENGTH_SHORT).show()
             } else {

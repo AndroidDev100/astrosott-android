@@ -474,11 +474,14 @@
     <string name="version_more">Version1.045b</string>
     <string name="siginup_more">Sign In / Sign Up</string>
     <string name="guest_user">Guest user</string>
+    <string name="manage_subscription">Manage Subscriptions</string>
     <string name="partner_billing">Partner Billing</string>
     <string name="subscribe_more">Subscribe</string>
     <string name="manage_subscription_more">Manage Subscription</string>
     <string name="renew_date">Renew on 22/2/21</string>
     <string name="transac_history">Transaction History</string>
+    <string name="cancel_plan"><u>CANCEL</u></string>
+    <string name="change_plan"><u>CHANGE PLAN</u></string>
     <string name="lang_selection">Language Selection</string>
     <string name="downloads">Downloads</string>
     <string name="mannage_device">Manage Device</string>

@@ -13,7 +13,9 @@ import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.usermanagment.EvergentServices.EvergentServices;
 import com.astro.sott.usermanagment.callBacks.EvergentGetProductsCallBack;
 import com.astro.sott.usermanagment.callBacks.EvergentPaymentV2Callback;
+import com.astro.sott.usermanagment.callBacks.EvergentResponseCallBack;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse;
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response;
 import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse;
 import com.kaltura.client.types.Asset;
@@ -87,6 +89,31 @@ public class MySubscriptionPlanRepository {
             public void onSuccess(@NotNull PaymentV2Response getDevicesResponse) {
                 evergentCommonResponse.setStatus(true);
                 evergentCommonResponse.setPaymentV2Response(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
+
+    public LiveData<EvergentCommonResponse<GetActiveResponse>> getActiveSubscription(Context context, String acessToken) {
+        MutableLiveData<EvergentCommonResponse<GetActiveResponse>> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().getActiveSubscripton(context, acessToken, new EvergentResponseCallBack<GetActiveResponse>() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull GetActiveResponse getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setResponse(getDevicesResponse);
                 mutableLiveData.postValue(evergentCommonResponse);
             }
         });
