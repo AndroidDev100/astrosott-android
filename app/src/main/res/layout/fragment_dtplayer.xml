@@ -193,6 +193,7 @@
                     android:textSize="@dimen/_16sp"
                     android:visibility="visible"
                     android:layout_marginStart="@dimen/_3dp"
+                    android:layout_marginTop="@dimen/_4dp"
                     android:layout_toRightOf="@+id/slash"/>
 
                 <TextView
@@ -203,6 +204,7 @@
                     android:textColor="@color/pale_gray"
                     android:textSize="@dimen/_16sp"
                     android:lineHeight="32sp"
+                    android:layout_marginTop="@dimen/_4dp"
                     android:gravity="center"
                     android:fontFamily="@font/heebo_regular"
                     android:visibility="visible"
@@ -215,6 +217,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/pale_gray"
                     android:textSize="@dimen/_16sp"
+                    android:layout_marginTop="@dimen/_4dp"
                     android:lineHeight="32sp"
                     android:gravity="center"
                     android:fontFamily="@font/heebo_regular"
@@ -228,7 +231,7 @@
                     android:id="@+id/next_episode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_video_quality"
+                    android:drawableLeft="@drawable/ic_next_episode"
                     android:drawablePadding="@dimen/_6dp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
@@ -237,15 +240,16 @@
                     android:lineHeight="32sp"
                     android:layout_alignParentEnd="true"
                     android:gravity="center"
+                    android:layout_marginTop="@dimen/_4dp"
                     android:textColor="@color/pale_gray"
                     android:textSize="@dimen/_16sp"
-                    android:layout_marginEnd="12dp"></TextView>
+                    android:layout_marginEnd="13dp"></TextView>
 
                 <TextView
                     android:id="@+id/episode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_video_quality"
+                    android:drawableLeft="@drawable/ic_episodes"
                     android:drawablePadding="@dimen/_6dp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
@@ -255,7 +259,8 @@
                     android:gravity="center"
                     android:textColor="@color/pale_gray"
                     android:textSize="@dimen/_16sp"
-                    android:layout_marginEnd="13dp"
+                    android:layout_marginEnd="@dimen/_16sp"
+                    android:layout_marginTop="@dimen/_4dp"
                     android:layout_toLeftOf="@+id/next_episode"></TextView>
                 <TextView
                     android:id="@+id/subtitle_audio"
@@ -263,7 +268,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/episode"
                     android:drawablePadding="@dimen/_6dp"
-                    android:drawableLeft="@drawable/ic_video_quality"
+                    android:drawableLeft="@drawable/ic_subtitle"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:lineHeight="32sp"
@@ -272,7 +277,8 @@
                     android:textAllCaps="false"
                     android:textColor="@color/pale_gray"
                     android:textSize="@dimen/_16sp"
-                    android:layout_marginEnd="13dp"></TextView>
+                    android:layout_marginTop="@dimen/_4dp"
+                    android:layout_marginEnd="@dimen/_16sp"></TextView>
                 <TextView
                     android:id="@+id/quality"
                     android:layout_width="wrap_content"
@@ -285,7 +291,7 @@
                     android:gravity="center"
                     android:text="@string/manage_quality"
                     android:textAllCaps="false"
-                    android:layout_marginEnd="13dp"
+                    android:layout_marginEnd="@dimen/_16sp"
                     android:lineHeight="32sp"
                     android:textColor="@color/pale_gray"
                     android:textSize="@dimen/_16sp"
