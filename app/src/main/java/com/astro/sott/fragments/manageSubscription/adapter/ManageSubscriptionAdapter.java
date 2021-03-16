@@ -35,6 +35,11 @@ public class ManageSubscriptionAdapter extends RecyclerView.Adapter<ManageSubscr
     public void onBindViewHolder(@NonNull SingleItem holder, int position) {
         holder.manageSubscriptionItemBinding.planName.setText(accountServiceMessageItems.get(position).getDisplayName());
         holder.manageSubscriptionItemBinding.currency.setText(accountServiceMessageItems.get(position).getCurrencyCode() + " " + accountServiceMessageItems.get(position).getPlanPrice());
+        if (accountServiceMessageItems.get(position).getStatus().equalsIgnoreCase("ACTIVE")) {
+            holder.manageSubscriptionItemBinding.change.setVisibility(View.VISIBLE);
+        } else {
+            holder.manageSubscriptionItemBinding.change.setVisibility(View.GONE);
+        }
     }
 
     @Override

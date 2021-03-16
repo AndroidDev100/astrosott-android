@@ -553,6 +553,7 @@ class EvergentServices {
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty("dmaID", "001");
         json.addProperty("returnAppChannels", "T");
+        appChannelJson.addProperty("appChannel","Google Wallet")
         json.add("appChannels", appChannelJson)
         createUserJson.add("GetProductsRequestMessage", json)
 
