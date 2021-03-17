@@ -14,6 +14,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.astro.sott.ApplicationMain;
 import com.astro.sott.activities.SelectAccount.SelectAccountModel.DtvMbbHbbModel;
 import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.activities.search.constants.SearchFilterEnum;
+import com.astro.sott.activities.search.constants.SortByEnum;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.subscription.manager.PaymentItemDetail;
 import com.astro.sott.beanModel.VIUChannel;
@@ -35,6 +37,7 @@ import com.astro.sott.callBacks.commonCallBacks.InvokeApiCallBack;
 import com.astro.sott.callBacks.commonCallBacks.MBBAccountCallBack;
 import com.astro.sott.callBacks.commonCallBacks.MBBAccountListCallBack;
 import com.astro.sott.callBacks.commonCallBacks.PurchaseSubscriptionCallBack;
+import com.astro.sott.callBacks.commonCallBacks.RecentSearchCallBack;
 import com.astro.sott.callBacks.commonCallBacks.RemovePaymentCallBack;
 import com.astro.sott.callBacks.commonCallBacks.SubscriptionAssetListResponse;
 import com.astro.sott.callBacks.commonCallBacks.SubscriptionResponseCallBack;
@@ -77,8 +80,10 @@ import com.astro.sott.callBacks.otpCallbacks.AutoMsisdnCallback;
 import com.astro.sott.callBacks.otpCallbacks.DTVAccountCallback;
 import com.astro.sott.callBacks.otpCallbacks.OtpCallback;
 import com.astro.sott.callBacks.otpCallbacks.OtpVerificationCallback;
+import com.astro.sott.db.search.SearchedKeywords;
 import com.astro.sott.modelClasses.DTVContactInfoModel;
 import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
+import com.astro.sott.modelClasses.dmsResponse.FilterLanguages;
 import com.astro.sott.modelClasses.dmsResponse.FilterValues;
 import com.astro.sott.modelClasses.dmsResponse.ParentalDescription;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
@@ -154,6 +159,7 @@ import com.kaltura.client.services.ParentalRuleService;
 import com.kaltura.client.services.PersonalListService;
 import com.kaltura.client.services.PinService;
 import com.kaltura.client.services.ProductPriceService;
+import com.kaltura.client.services.SearchHistoryService;
 import com.kaltura.client.services.SubscriptionService;
 import com.kaltura.client.services.TransactionService;
 import com.kaltura.client.services.UserAssetRuleService;
@@ -197,6 +203,8 @@ import com.kaltura.client.types.ProductPriceFilter;
 import com.kaltura.client.types.Purchase;
 import com.kaltura.client.types.RelatedFilter;
 import com.kaltura.client.types.SearchAssetFilter;
+import com.kaltura.client.types.SearchHistory;
+import com.kaltura.client.types.SearchHistoryFilter;
 import com.kaltura.client.types.StringValue;
 import com.kaltura.client.types.Subscription;
 import com.kaltura.client.types.SubscriptionEntitlement;
@@ -217,9 +225,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -2922,15 +2933,43 @@ public class KsServices {
 
         // PrintLogging.printLog(this.getClass(),"", "counter value  :" + counter);
         final SearchAssetFilter assetFilter = new SearchAssetFilter();
-        String tag3 = "name ~ '";
+        String modifyString=AppCommonMethods.getSearchFieldsKsql(keyToSearch,"",1,context);
+        /*String tag3 = "name ~ '";
         String tag2 = "'";
 
         final String modifyString =
                 tag3 +
                         keyToSearch +
-                        tag2;
-        assetFilter.setKSql(modifyString);
-        assetFilter.setTypeIn(mediaType);
+                        tag2;*/
+        assetFilter.setKSql(KsPreferenceKey.getInstance(context).getSearchKSQL());
+        if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getMovie(context)))){
+            assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getMovie(context))+","+String.valueOf(MediaTypeConstant.getCollection(context)));
+        }else if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getSeries(context))) || mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getEpisode(context)))){
+            assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getSeries(context))+","+String.valueOf(MediaTypeConstant.getEpisode(context)));
+        }else if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getLinear(context))) || mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getProgram(context)))){
+            assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getLinear(context))+","+String.valueOf(MediaTypeConstant.getProgram(context)));
+        }
+        else {
+            assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getCollection(context)));
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")){
+            if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())){
+                assetFilter.orderBy(SortByEnum.NAME_ASC.name());
+            }
+            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())){
+                assetFilter.orderBy(SortByEnum.VIEWS_DESC.name());
+            }
+            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())){
+                assetFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
+            }else {
+                assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+            }
+
+        }else {
+            assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+        }
+
         Runnable runnable = () -> {
 
             clientSetupKs();
@@ -2943,7 +2982,12 @@ public class KsServices {
                             SearchModel temp = new SearchModel();
                             temp.setTotalCount(result.results.getTotalCount());
                             temp.setType(result.results.getObjects().get(0).getType());
-                            temp.setAllItemsInSection(result.results.getObjects());
+                           // temp.setAllItemsInSection(result.results.getObjects());
+
+                            List<Asset> assetss=AppCommonMethods.applyFreePaidFilter(result.results,context);
+                            temp.setAllItemsInSection(assetss);
+                          //  temp.setTotalCount(assetss.size());
+
                             temp.setSearchString(keyToSearch);
                             searchOutputModel.add(temp);
                             searchResultCallBack.response(true, searchOutputModel, "resultFound");
@@ -3033,17 +3077,17 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
     }
 
-    public void searchKeyword(Context context, final String keyToSearch, final List<MediaTypeModel> model, int counter, SearchResultCallBack CallBack) {
+    public void searchKeyword(Context context, final String keyToSearch, final List<MediaTypeModel> model, int counter, SearchResultCallBack CallBack,String searchKeyword,String selectedGenre) {
         searchResultCallBack = CallBack;
         searchOutputModel = new ArrayList<>();
         currentMediaTypes = model;
         listAssetBuilders = new ArrayList<>();
         clientSetupKs();
-        Runnable runnable = () -> setSearchBuilder(context, keyToSearch, model, counter, CallBack);
+        Runnable runnable = () -> setQuickSearchBuilder(context, keyToSearch, model, counter, CallBack,searchKeyword,selectedGenre);
         new Thread(runnable).start();
     }
 
-    public void searchKeywordAuto(int autoCompleteCounter, Context context, final String keyToSearch, final List<MediaTypeModel> model, SearchResultCallBack CallBack) {
+    public void searchKeywordAuto(int autoCompleteCounter, Context context, final String keyToSearch, final List<MediaTypeModel> model, SearchResultCallBack CallBack,String searchKeyword,String selectedGenre) {
         searchResultCallBack = CallBack;
         searchOutputModel = new ArrayList<>();
         currentMediaTypes = model;
@@ -3052,13 +3096,13 @@ public class KsServices {
         listAssetBuilders = new ArrayList<>();
         clientSetupKs();
         PrintLogging.printLog(this.getClass(), "", "model.size()" + model.size());
-        Runnable runnable = () -> setSearchBuilderAuto(context, keyToSearch, model, autoCompleteCounter, CallBack);
+        Runnable runnable = () -> setSearchBuilderAuto(context, keyToSearch, model, autoCompleteCounter, CallBack,searchKeyword,selectedGenre);
         new Thread(runnable).start();
 
 
     }
 
-    private void setSearchBuilderAuto(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack) {
+    private void setSearchBuilderAuto(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack,String searchKeyword,String selectredGenre) {
         final FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
         filterPager.setPageSize(20);
@@ -3102,12 +3146,108 @@ public class KsServices {
                 }
             } else {
                 if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
-                    searchKeyword(context, keyToSearch, model, count, CallBack);
+                    searchKeyword(context, keyToSearch, model, count, CallBack,searchKeyword,selectredGenre);
                 }
             }
         });
         getRequestQueue().queue(assetService.build(client));
     }
+
+    private void setQuickSearchBuilder(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack,String searchKeyword,String selectedGenre) {
+        final FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(20);
+
+        Log.e(String.valueOf(count) + "====>", currentMediaTypes.get(count).getId());
+
+        final SearchAssetFilter assetFilter = new SearchAssetFilter();
+        assetFilter.name(searchKeyword);
+        assetFilter.setKSql(keyToSearch);
+        assetFilter.setTypeIn(currentMediaTypes.get(count).getId());
+        if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")){
+            if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())){
+                assetFilter.orderBy(SortByEnum.NAME_ASC.name());
+            }
+            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())){
+                assetFilter.orderBy(SortByEnum.VIEWS_DESC.name());
+            }
+            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())){
+                assetFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
+            }else {
+                assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+            }
+
+        }else {
+            assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+        }
+
+      /*  if (count==0){
+
+            String str[]=currentMediaTypes.get(count).getId().split(",");
+            if (str[0].equalsIgnoreCase(String.valueOf(MediaTypeConstant.getMovie(context)))){
+                assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getMovie(context)));
+            }else {
+                assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getCollection(context)));
+            }
+
+        }else {
+            assetFilter.setTypeIn(currentMediaTypes.get(count).getId());
+        }*/
+
+
+        AssetService.ListAssetBuilder assetService = AssetService.list(assetFilter, filterPager).setLanguage("may").setCompletion(result -> {
+            if (result.isSuccess()) {
+                if (result.results.getTotalCount() > 0) {
+                    if (result.results.getObjects() != null) {
+                        if (result.results.getObjects().size() > 0) {
+                            SearchModel temp = new SearchModel();
+
+                            temp.setHeaderTitle(getNameFromType(result.results.getObjects().get(0).getType()));
+                            temp.setType(result.results.getObjects().get(0).getType());
+                            List<Asset> assetss=AppCommonMethods.applyFreePaidFilter(result.results,context);
+                            temp.setAllItemsInSection(assetss);
+                            temp.setTotalCount(assetss.size());
+                           /* if (result.results.getObjects().get(0).getType()==MediaTypeConstant.getMovie(context)
+                            || result.results.getObjects().get(0).getType()==MediaTypeConstant.getCollection(context)){
+                                List<Asset> assets=AppCommonMethods.removePagesFromCollection(result.results,context);
+                                temp.setAllItemsInSection(assets);
+                                temp.setTotalCount(assets.size());
+                            }else {
+                                //List<Asset> assets=AppCommonMethods.removePagesFromCollection(result.results);
+                                temp.setTotalCount(result.results.getTotalCount());
+                                temp.setAllItemsInSection(result.results.getObjects());
+                            }*/
+
+                            temp.setSearchString(searchString);
+                            if (!iscategoryAdded(result.results.getObjects().get(0).getType())) {
+                                searchOutputModel.add(temp);
+                            }
+                            Log.e("SEARCH SIZE", String.valueOf(searchOutputModel.size()));
+                            if (searchOutputModel.size() > 0) {
+                                searchResultCallBack.response(true, searchOutputModel, "resultFound");
+                            } else {
+                                searchResultCallBack.response(true, searchOutputModel, "noResultFound");
+                            }
+                        } else {
+                            searchResultCallBack.response(true, searchOutputModel, "noResultFound");
+                        }
+
+                    } else {
+                        searchResultCallBack.response(true, searchOutputModel, "noResultFound");
+                    }
+
+                } else {
+                    searchResultCallBack.response(true, searchOutputModel, "noResultFound");
+                }
+            } else {
+                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
+                    searchKeyword(context, keyToSearch, model, count, CallBack,searchKeyword,selectedGenre);
+                }
+            }
+        });
+        getRequestQueue().queue(assetService.build(client));
+    }
+
 
     private void setSearchBuilder(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack) {
         final FilterPager filterPager = new FilterPager();
@@ -3157,7 +3297,7 @@ public class KsServices {
                 }
             } else {
                 if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
-                    searchKeyword(context, keyToSearch, model, count, CallBack);
+                    searchKeyword(context, keyToSearch, model, count, CallBack,keyToSearch,"");
                 }
             }
         });
@@ -3318,6 +3458,18 @@ public class KsServices {
                 if (responseDmsModel == null) {
                     return;
                 }
+
+                ArrayList<FilterLanguages> fliterLanguageList = new ArrayList<>();
+                for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getFilterLanguages().entrySet()) {
+                    FilterLanguages levels = new FilterLanguages();
+                    levels.setKey(entry.getKey());
+                    levels.setValue(entry.getValue().getAsString());
+                    levels.setSelected(false);
+                    fliterLanguageList.add(levels);
+                }
+
+                responseDmsModel.setFilterLanguageList(fliterLanguageList);
+
                 ArrayList<AudioLanguages> audioLanguageList = new ArrayList<>();
                 for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getAudioLanguages().entrySet()) {
                     AudioLanguages levels = new AudioLanguages();
@@ -3392,7 +3544,7 @@ public class KsServices {
                         ParentalMapping parentalMapping = new ParentalMapping();
                         parentalMapping.setKey(entry2.getKey());
                         parentalMapping.setMappingList(entry2.getValue());
-                        parentalMappingArray.add(parentalMapping);
+                        parentalMappingArray.add(parentalMapping);F
 
 
                     }
@@ -6657,5 +6809,270 @@ public class KsServices {
 
         getRequestQueue().queue(builder.build(client));
     }
+
+    public void getAssetListBasedOnMediaType(Context context,int mediatype, final HomechannelCallBack callBack) {
+        responseList = new ArrayList<Response<ListResponse<Asset>>>();
+        homechannelCallBack = callBack;
+        clientSetupKs();
+        SearchAssetFilter relatedFilter = new SearchAssetFilter();
+        relatedFilter.setTypeIn(String.valueOf(mediatype));
+
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(100);
+
+        AssetService.ListAssetBuilder builder = AssetService.list(relatedFilter, filterPager).setCompletion(result -> {
+            try {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null) {
+                            if (result.results.getObjects().size() > 0) {
+                                responseList.add(result);
+                                homechannelCallBack.response(true, responseList,null);
+                            } else {
+                                responseList.add(null);
+                                homechannelCallBack.response(false, responseList,null);
+                            }
+                        } else {
+                            responseList.add(null);
+                            homechannelCallBack.response(false, responseList,null);
+                        }
+                    } else {
+                        responseList.add(null);
+                        homechannelCallBack.response(false,responseList, null);
+                    }
+                } else {
+
+                    if (result.error != null) {
+
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getAssetListBasedOnMediaType(context,mediatype, homechannelCallBack);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        responseList.add(null);
+                                        homechannelCallBack.response(false,responseList, null);
+
+                                    }
+                                }
+                            });
+                        else {
+                            responseList.add(null);
+                            homechannelCallBack.response(false,responseList, null);
+
+                        }
+                    } else {
+                        responseList.add(null);
+                        homechannelCallBack.response(false,responseList, null);
+
+                    }
+
+
+                }
+            } catch (Exception e) {
+                PrintLogging.printLog(this.getClass(), "Exception", "" + e);
+
+            }
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
+    public void searchMovieKeyword(Context context, final String keyToSearch, final List<MediaTypeModel> model, int counter, SearchResultCallBack CallBack) {
+        searchResultCallBack = CallBack;
+        searchOutputModel = new ArrayList<>();
+        currentMediaTypes = model;
+        listAssetBuilders = new ArrayList<>();
+        clientSetupKs();
+        Runnable runnable = () -> setMovieQuickSearchBuilder(context, keyToSearch, model, counter, CallBack);
+        new Thread(runnable).start();
+    }
+
+    private void setMovieQuickSearchBuilder(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack) {
+        final FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(20);
+
+        Log.e(String.valueOf(count) + "====>", currentMediaTypes.get(count).getId());
+
+        final SearchAssetFilter assetFilter = new SearchAssetFilter();
+        assetFilter.setKSql(keyToSearch);
+        assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getMovie(context)));
+
+        AssetService.ListAssetBuilder assetService = AssetService.list(assetFilter, filterPager).setCompletion(result -> {
+            if (result.isSuccess()) {
+                if (result.results.getTotalCount() > 0) {
+                    if (result.results.getObjects() != null) {
+                        if (result.results.getObjects().size() > 0) {
+                            SearchModel temp = new SearchModel();
+                            temp.setTotalCount(result.results.getTotalCount());
+                            temp.setHeaderTitle(getNameFromType(result.results.getObjects().get(0).getType()));
+                            temp.setType(result.results.getObjects().get(0).getType());
+                            temp.setAllItemsInSection(result.results.getObjects());
+                            temp.setSearchString(searchString);
+                            if (!iscategoryAdded(result.results.getObjects().get(0).getType())) {
+                                searchOutputModel.add(temp);
+                            }
+                            Log.e("SEARCH SIZE", String.valueOf(searchOutputModel.size()));
+                            if (searchOutputModel.size() > 0) {
+                                searchResultCallBack.response(true, searchOutputModel, "resultFound");
+                            } else {
+                                searchResultCallBack.response(true, searchOutputModel, "noResultFound");
+                            }
+                        } else {
+                            searchResultCallBack.response(true, searchOutputModel, "noResultFound");
+                        }
+
+                    } else {
+                        searchResultCallBack.response(true, searchOutputModel, "noResultFound");
+                    }
+
+                } else {
+                    searchResultCallBack.response(true, searchOutputModel, "noResultFound");
+                }
+            } else {
+                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
+                    searchMovieKeyword(context, keyToSearch, model, count, CallBack);
+                }
+            }
+        });
+        getRequestQueue().queue(assetService.build(client));
+    }
+
+    public void searchVodCollectionKeyword(Context context, final String keyToSearch, final List<MediaTypeModel> model, int counter, SearchResultCallBack CallBack,String searchKeyword,String selectedGenre) {
+        searchResultCallBack = CallBack;
+        searchOutputModel = new ArrayList<>();
+        currentMediaTypes = model;
+        listAssetBuilders = new ArrayList<>();
+        clientSetupKs();
+        Runnable runnable = () -> setVodCollectionQuickSearchBuilder(context, keyToSearch, model, counter, CallBack,searchKeyword,selectedGenre);
+        new Thread(runnable).start();
+    }
+
+    private void setVodCollectionQuickSearchBuilder(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack,String searchKeyword,String selectedGenre) {
+        final FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(20);
+
+        Log.e(String.valueOf(count) + "====>", currentMediaTypes.get(count).getId());
+
+        final SearchAssetFilter assetFilter = new SearchAssetFilter();
+        assetFilter.setKSql(keyToSearch);
+        assetFilter.name(searchKeyword);
+        assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getCollection(context)));
+        //assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+
+        if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")){
+            if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())){
+                assetFilter.orderBy(SortByEnum.NAME_ASC.name());
+            }
+            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())){
+                assetFilter.orderBy(SortByEnum.VIEWS_DESC.name());
+            }
+            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())){
+                assetFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
+            }else {
+                assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+            }
+
+        }else {
+            assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+        }
+
+        AssetService.ListAssetBuilder assetService = AssetService.list(assetFilter, filterPager).setCompletion(result -> {
+            if (result.isSuccess()) {
+                if (result.results.getTotalCount() > 0) {
+                    if (result.results.getObjects() != null) {
+                        if (result.results.getObjects().size() > 0) {
+                            SearchModel temp = new SearchModel();
+                            temp.setTotalCount(result.results.getTotalCount());
+                            temp.setHeaderTitle(getNameFromType(result.results.getObjects().get(0).getType()));
+                            temp.setType(result.results.getObjects().get(0).getType());
+                           // List<Asset> assetss=AppCommonMethods.applyFreePaidFilter(result.results,context);
+                            //temp.setAllItemsInSection(assetss);
+                            //temp.setTotalCount(assetss.size());
+
+                            if (result.results.getObjects().get(0).getType()==MediaTypeConstant.getMovie(context)
+                                    || result.results.getObjects().get(0).getType()==MediaTypeConstant.getCollection(context)){
+                                List<Asset> assets=AppCommonMethods.addPagesFromCollection(result.results,context);
+                                temp.setAllItemsInSection(assets);
+                                temp.setTotalCount(assets.size());
+                            }else {
+                                //List<Asset> assets=AppCommonMethods.removePagesFromCollection(result.results);
+                                temp.setTotalCount(result.results.getTotalCount());
+                                temp.setAllItemsInSection(result.results.getObjects());
+                            }
+
+                            // temp.setAllItemsInSection(result.results.getObjects());
+                            temp.setSearchString(searchString);
+                            if (!iscategoryAdded(result.results.getObjects().get(0).getType())) {
+                                searchOutputModel.add(temp);
+                            }
+                            Log.e("SEARCH SIZE", String.valueOf(searchOutputModel.size()));
+                            if (searchOutputModel.size() > 0) {
+                                searchResultCallBack.response(true, searchOutputModel, "resultFound");
+                            } else {
+                                searchResultCallBack.response(true, searchOutputModel, "noResultFound");
+                            }
+                        } else {
+                            searchResultCallBack.response(true, searchOutputModel, "noResultFound");
+                        }
+
+                    } else {
+                        searchResultCallBack.response(true, searchOutputModel, "noResultFound");
+                    }
+
+                } else {
+                    searchResultCallBack.response(true, searchOutputModel, "noResultFound");
+                }
+            } else {
+                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
+                    searchVodCollectionKeyword(context, keyToSearch, model, count, CallBack,searchKeyword,selectedGenre);
+                }
+            }
+        });
+        getRequestQueue().queue(assetService.build(client));
+    }
+
+    RecentSearchCallBack recentSearchCallBack;
+    public void recentSearchKaltura(Context context, RecentSearchCallBack CallBack) {
+        recentSearchCallBack = CallBack;
+        final SearchHistoryFilter filterPager = new SearchHistoryFilter();
+        filterPager.setOrderBy("NONE");
+
+        FilterPager filterPager1=new FilterPager();
+        filterPager1.setPageIndex(1);
+        filterPager1.setPageSize(500);
+        List<SearchedKeywords> searchedKeywordsList=new ArrayList<>();
+        LinkedHashSet<String> unique = new LinkedHashSet<String>();
+
+
+            clientSetupKs();
+            SearchHistoryService.ListSearchHistoryBuilder searchHistoryBuilder=SearchHistoryService.list(filterPager,filterPager1).setCompletion(new OnCompletion<Response<ListResponse<SearchHistory>>>() {
+                @Override
+                public void onComplete(Response<ListResponse<SearchHistory>> result) {
+                        if (result!=null && result.results!=null && result.results.getObjects()!=null && result.results.getObjects().size()>0){
+                            for (int i=0;i<result.results.getObjects().size();i++){
+                                unique.add(result.results.getObjects().get(i).getName());
+                            }
+
+                            for (String x : unique){
+                                SearchedKeywords searchedKeywords=new SearchedKeywords();
+                                searchedKeywords.setKeyWords(x);
+                                searchedKeywordsList.add(searchedKeywords);
+                            }
+                            recentSearchCallBack.recentSearches(searchedKeywordsList);
+                        }else {
+                            recentSearchCallBack.recentSearches(new ArrayList<>());
+                        }
+                }
+            });
+
+            getRequestQueue().queue(searchHistoryBuilder.build(client));
+    }
+
 
 }

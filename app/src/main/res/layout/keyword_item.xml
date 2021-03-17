@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -21,14 +22,27 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginStart="@dimen/popular_searches_margin_left"
             android:paddingBottom="@dimen/search_keyword_item_padding"
             android:paddingTop="@dimen/search_keyword_item_padding">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="ContentDescription"
+                android:visibility="visible"
+                android:src="@drawable/recent_search_list_icon"
+                android:contentDescription="@string/delete_icon" />
+
 
             <TextView
                 android:id="@+id/keyword_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="8sp"
+                android:layout_marginLeft="@dimen/_11sdp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@{rowItem.keyWords}"
                 android:textColor="@color/white"

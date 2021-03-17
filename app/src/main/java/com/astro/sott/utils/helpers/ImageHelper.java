@@ -10,6 +10,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.astro.sott.utils.GlideApp;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 
@@ -150,4 +152,27 @@ public class ImageHelper {
 
     }
 
+    public void loadImageOfGenre(ImageView imageView, String imageUrl, int placeholder) {
+        requestOptions.placeholder(placeholder);
+        GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
+                load(imageUrl).thumbnail(0.6f).into(imageView);
+
+
+    }
+
+    public void loadQuickSearchImage(ImageView imageView, String imageUrl, int placeholder) {
+        requestOptions.placeholder(placeholder);
+        GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
+                load(imageUrl).transition(DrawableTransitionOptions.withCrossFade(250)).thumbnail(0.6f).into(imageView);
+
+
+    }
+
+
+    public void loadPlaceHolder(ImageView imageView, int placeholder_square) {
+        requestOptions.placeholder(placeholder_square);
+        GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
+                load(placeholder_square).thumbnail(0.6f).into(imageView);
+
+    }
 }

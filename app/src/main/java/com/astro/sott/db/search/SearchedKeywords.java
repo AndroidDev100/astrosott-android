@@ -7,6 +7,7 @@ public class SearchedKeywords extends RealmObject {
 
     private String keywords;
     private Long timeStamp;
+    boolean isSelected=false;
 
 
     public Long getTimeStamp() {
@@ -25,4 +26,11 @@ public class SearchedKeywords extends RealmObject {
         this.keywords = keyords;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 }
