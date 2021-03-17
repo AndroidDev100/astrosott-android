@@ -1,57 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/video_quality__layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent">
-
+    android:layout_height="@dimen/dimen40dp"
+    android:background="@color/transparentColor">
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/_8dp"
+        >
+    </ImageView>
 
     <TextView
         android:id="@+id/quality_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:fontFamily="@font/roboto_regular"
+        android:fontFamily="@font/heebo_regular"
         android:textColor="@color/white"
         android:textSize="@dimen/font_medium_large"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text=""
+        android:lineHeight="32sp"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@+id/img"
+        android:layout_marginLeft="@dimen/_8dp"/>
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="@dimen/video_quality_description_width"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:paddingLeft="10dp"
-        android:fontFamily="@font/roboto_regular"
-        android:textColor="@color/search_sub_title"
-        android:textSize="@dimen/font_medium"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/quality_text" />
+<!--    <TextView-->
+<!--        android:id="@+id/description"-->
+<!--        android:layout_width="@dimen/video_quality_description_width"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="2dp"-->
+<!--        android:paddingLeft="10dp"-->
+<!--        android:fontFamily="@font/roboto_regular"-->
+<!--        android:textColor="@color/search_sub_title"-->
+<!--        android:textSize="@dimen/font_medium"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/quality_text" />-->
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/video_quality_seprate_line_margin"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="@dimen/video_quality_seprate_line_margin"
-        android:background="@color/search_edit_underline_color"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/description">
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:layout_marginLeft="@dimen/video_quality_seprate_line_margin"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginRight="@dimen/video_quality_seprate_line_margin"-->
+<!--        android:background="@color/search_edit_underline_color"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/description">-->
 
-    </View>
 
     <ImageView
         android:id="@+id/tick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginRight="@dimen/_8dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"/>
 
     <!--<RelativeLayout
         android:id="@+id/tracksQuality"
@@ -79,4 +86,4 @@
             android:textSize="15sp" />
     </RelativeLayout>-->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

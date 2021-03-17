@@ -243,10 +243,10 @@ public interface AppLevelConstants {
     String YOUBORA = "Youbora";
     String PHOENIX_ANALYTICS = "PhoenixAnalyticsPlugin.factory.getName()";
     String AUTO = "Auto";
-    String LOW = "Low";
+    String LOW = "Low Quality";
     String DEFAULT = "Default";
-    String MEDIUM = "Medium";
-    String HIGH = "High";
+    String MEDIUM = "Medium Quality";
+    String HIGH = "High Quality";
     String MOBILE = "Mobile";
     String TAG_FRAGMENT_ALERT = "fragment_alert";
     String PROGRAM_CLICKED = "asdas";

@@ -8,39 +8,23 @@
     <RelativeLayout
         android:id="@+id/tracksCaption"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="vertical">
+        android:layout_height="@dimen/dimen24dp"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dimen16dp"
+        >
 
-        <ImageView
-            android:id="@+id/tick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/tick"
-            android:contentDescription="@string/tick_icon"
-            tools:ignore="ContentDescription" />
+
 
         <TextView
             android:id="@+id/playbackCaption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textColor="@color/heather"
+            android:textSize="@dimen/_16sp"
+            android:lineHeight="32sp"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/heebo_regular"/>
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/video_quality_seprate_line_margin"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="@dimen/video_quality_seprate_line_margin"
-        android:background="@color/search_edit_underline_color">
-
-    </View>
 
 </LinearLayout>

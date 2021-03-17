@@ -13,6 +13,8 @@
         android:keepScreenOn="true">
 
 
+
+
         <RelativeLayout
             android:id="@+id/rl"
             android:layout_width="match_parent"
@@ -33,7 +35,6 @@
             android:layout_marginTop="@dimen/movie_detail_rl_margin_top"
             android:layout_marginEnd="@dimen/movie_detail_rl_margin_end"
             android:alpha="0.9">
-
 
             <RelativeLayout
                 android:id="@+id/rl_up"
@@ -165,6 +166,33 @@
                 android:textColor="#fff"
                 android:textSize="@dimen/player_small_text_size"
                 android:visibility="gone" />
+            <LinearLayout
+                android:id="@+id/video_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="183dp"
+                android:layout_marginTop="@dimen/dimen15dp"
+                android:visibility="gone">
+                <include
+                    android:id="@+id/video_quality"
+                    layout="@layout/layout_dialog_settings"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/audio_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone">
+                <include
+                    android:id="@+id/audio_quality"
+                    layout="@layout/layout_caption_audio_setting"
+                    />
+            </LinearLayout>
             <!--</RelativeLayout>-->
 
 
@@ -240,47 +268,13 @@
                     android:layout_marginStart="@dimen/_3dp"
                     android:layout_toRightOf="@+id/current_time"/>
 
-                <TextView
-                    android:id="@+id/next_episode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_next_episode"
-                    android:drawablePadding="@dimen/_6dp"
-                    android:fontFamily="@font/heebo_regular"
-                    android:padding="@dimen/_1sdp"
-                    android:text="@string/next_episode"
-                    android:textAllCaps="false"
-                    android:lineHeight="32sp"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="center"
-                    android:layout_marginTop="@dimen/_4dp"
-                    android:textColor="@color/pale_gray"
-                    android:textSize="@dimen/_16sp"
-                    android:layout_marginEnd="13.5dp"></TextView>
 
-                <TextView
-                    android:id="@+id/episode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_episodes"
-                    android:drawablePadding="@dimen/_6dp"
-                    android:fontFamily="@font/heebo_regular"
-                    android:padding="@dimen/_1sdp"
-                    android:text="@string/episode"
-                    android:textAllCaps="false"
-                    android:lineHeight="32sp"
-                    android:gravity="center"
-                    android:textColor="@color/pale_gray"
-                    android:textSize="@dimen/_16sp"
-                    android:layout_marginEnd="@dimen/_16sp"
-                    android:layout_marginTop="@dimen/_4dp"
-                    android:layout_toLeftOf="@+id/next_episode"></TextView>
                 <TextView
                     android:id="@+id/subtitle_audio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/episode"
                     android:drawablePadding="@dimen/_6dp"
+                    android:layout_alignParentEnd="true"
                     android:drawableLeft="@drawable/ic_subtitle"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
@@ -292,6 +286,8 @@
                     android:textSize="@dimen/_16sp"
                     android:layout_marginTop="@dimen/_4dp"
                     android:layout_marginEnd="@dimen/_16sp"></TextView>
+
+
                 <TextView
                     android:id="@+id/quality"
                     android:layout_width="wrap_content"
