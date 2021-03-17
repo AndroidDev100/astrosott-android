@@ -205,15 +205,16 @@ public class SearchRepository {
         //Log.w("valuesFromList",list.get(counter).getId()+"");
         final MutableLiveData<ArrayList<SearchModel>> connection = new MutableLiveData<>();
         final KsServices ksServices = new KsServices(context);
-        if (counter==0){
+        callNonCollectiondata(searchString,context,list,counter,ksServices,connection,"",1);
+       /* if (counter==0){
             callNonCollectiondata(searchString,context,list,counter,ksServices,connection,"",1);
-           // callMovieCollectiondata(searchString,context,list,counter,ksServices,connection);
+
         }else if (counter==3){
            // callNonCollectiondata(searchString,context,list,counter,ksServices,connection);
             callCollectiondata(searchString,context,list,counter,ksServices,connection,"",1);
         }else {
             callNonCollectiondata(searchString,context,list,counter,ksServices,connection,"",1);
-        }
+        }*/
       /*  if (list.get(counter).getId().contains(",")){
             if (counter==0){
                 callMovieCollectiondata(searchString,context,list,counter,ksServices,connection);
@@ -338,9 +339,24 @@ public class SearchRepository {
 
     }
 
+    String searchKsql="";
     private void callNonCollectiondata(String searchString, Context context, List<MediaTypeModel> list, int counter,KsServices ksServices,MutableLiveData<ArrayList<SearchModel>> connection,String selectedGenre,int from) {
         Log.w("valuesFromList N",list.get(counter).getId()+"");
-        String searchKsql=AppCommonMethods.getSearchFieldsKsql(searchString,selectedGenre,from,context);
+        searchKsql =AppCommonMethods.getVODSearchKsql(searchString,selectedGenre,from,context);
+        if (list.get(counter).getId().contains(",")){
+            String []mediaTypes=list.get(counter).getId().split(",");
+            String one=mediaTypes[0];
+            String two=mediaTypes[1];
+            if (one.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getLinear(context))) && two.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getProgram(context)))){
+               searchKsql =AppCommonMethods.getLiveSearchKsql(searchString,selectedGenre,from,context);
+            }else {
+                searchKsql =AppCommonMethods.getVODSearchKsql(searchString,selectedGenre,from,context);
+            }
+        }
+        else{
+            searchKsql =AppCommonMethods.getPagesSearchKsql(searchString,selectedGenre,from,context);
+        }
+
         Log.w("SearchKsql-->>",searchKsql);
         String tag3 = "name ~ '";
         String tag2 = "'";
@@ -356,13 +372,32 @@ public class SearchRepository {
             public void configuration(boolean status) {
                 if (status) {
                     ksServices.searchKeyword(context, searchKsql, list,counter, (status1, result, remarks) -> {
-                        if (status1) {
+                        try {
+                            if (status1) {
 
-                            if (remarks.equalsIgnoreCase(AppLevelConstants.NO_RESULT_FOUND)) {
-                                connection.postValue(new ArrayList<>());
-                            } else
-                                connection.postValue(sortMediaTypeList(context, result,counter));
+                                if (remarks.equalsIgnoreCase(AppLevelConstants.NO_RESULT_FOUND)) {
+                                    connection.postValue(new ArrayList<>());
+                                } else{
+                                    if (list.get(counter).getId().contains(",")){
+                                        connection.postValue(sortMediaTypeList(context, result,counter));
+                                    }else {
+                                        if (result.get(0).getAllItemsInSection()!=null && result.get(0).getAllItemsInSection().size()>0) {
+                                            Asset asset = result.get(0).getAllItemsInSection().get(0);
+                                            if (AppCommonMethods.isPages(context,asset)){
+                                                connection.postValue(sortMediaTypeList2(context, result,counter));
+                                            }else {
+                                                connection.postValue(new ArrayList<>());
+                                            }
+                                        }else{
+                                            connection.postValue(new ArrayList<>());
+                                        }
 
+                                    }
+                                }
+                            }
+
+                        }catch (Exception e){
+                            connection.postValue(new ArrayList<>());
                         }
                     },searchString,selectedGenre);
                 }
@@ -417,6 +452,123 @@ public class SearchRepository {
 
 
         return connection;
+    }
+
+    private ArrayList<SearchModel> sortMediaTypeList2(Context context, ArrayList<SearchModel> list,int counter) {
+        ArrayList<SearchModel> allSampleData = new ArrayList<>();
+
+        //please do not break sequence
+        SearchModel Movie = new SearchModel();
+        SearchModel Series = new SearchModel();
+        SearchModel Episode = new SearchModel();
+        SearchModel Collection = new SearchModel();
+        SearchModel Linear = new SearchModel();
+        SearchModel Program = new SearchModel();
+
+        if (list.get(0).getAllItemsInSection()!=null && list.get(0).getAllItemsInSection().size()>0){
+            Asset asset=list.get(0).getAllItemsInSection().get(0);
+            if (asset.getType()==MediaTypeConstant.getMovie(context)){
+                Movie = list.get(0);
+            }else if (asset.getType()==MediaTypeConstant.getCollection(context)){
+                if (AppCommonMethods.isPages(context,asset)){
+                    Collection=list.get(0);
+                }else {
+                    Movie = list.get(0);
+                }
+
+            }
+            else if (asset.getType()==MediaTypeConstant.getSeries(context)){
+                Episode = list.get(0);
+                Series = list.get(0);
+            }
+            else if (asset.getType()==MediaTypeConstant.getEpisode(context)){
+                Episode = list.get(0);
+                Series = list.get(0);
+            }
+            else if (asset.getType()==MediaTypeConstant.getLinear(context)){
+                Linear = list.get(0);
+                Program = list.get(0);
+            }
+            else if (asset.getType()==MediaTypeConstant.getProgram(context)){
+                Linear = list.get(0);
+                Program = list.get(0);
+            }
+        }
+
+        /*if (counter==0){
+            Movie = list.get(0);
+        }else if (counter==1){
+            Episode = list.get(0);
+            Series = list.get(0);
+        }else if (counter==2){
+            Linear = list.get(0);
+            Program = list.get(0);
+        }
+        else if (counter==3){
+            Collection=list.get(0);
+        }*/
+
+
+        Log.w("valuesFromList S",list.size()+"");
+/*
+        for (int i = 0; i < list.size(); i++) {
+
+            String checkId = String.valueOf(list.get(i).getType());
+            PrintLogging.printLog(this.getClass(), "", "checkSearchId" + checkId);
+
+            if (checkId.equals(String.valueOf(MediaTypeConstant.getMovie(context)))) {
+                Movie = list.get(i);
+
+            } else if (checkId.equals(String.valueOf(MediaTypeConstant.getEpisode(context)))) {
+                Episode = list.get(i);
+
+            } else if (checkId.equals(String.valueOf(MediaTypeConstant.getSeries(context)))) {
+                Series = list.get(i);
+
+            }
+            else if (checkId.equals(String.valueOf(MediaTypeConstant.getCollection(context)))) {
+                Collection = list.get(i);
+
+            }
+            else if (checkId.equals(String.valueOf(MediaTypeConstant.getLinear(context)))) {
+                Linear = list.get(i);
+
+            }
+        }
+*/
+        if (Movie.getAllItemsInSection()!=null && Movie.getAllItemsInSection().size() > 0) {
+            Movie.setHeaderTitle(SearchModel.SEARCH_VOD);
+            allSampleData.add(Movie);
+        }
+
+        if (Series.getAllItemsInSection()!=null && Series.getAllItemsInSection().size() > 0) {
+            Series.setHeaderTitle(SearchModel.SEARCH_TV_SHOWS);
+            allSampleData.add(Series);
+        }
+
+
+        if (Episode.getAllItemsInSection()!=null && Episode.getAllItemsInSection().size() > 0) {
+            Episode.setHeaderTitle(SearchModel.SEARCH_TV_SHOWS);
+            allSampleData.add(Episode);
+        }
+
+        if (Collection.getAllItemsInSection()!=null && Collection.getAllItemsInSection().size() > 0) {
+            Collection.setHeaderTitle(SearchModel.SEARCH_PAGE);
+            allSampleData.add(Collection);
+        }
+
+        if (Linear.getAllItemsInSection()!=null && Linear.getAllItemsInSection().size() > 0) {
+            Linear.setHeaderTitle(SearchModel.SEARCH_LIVE);
+            allSampleData.add(Linear);
+        }
+
+        if (Program.getAllItemsInSection()!=null && Program.getAllItemsInSection().size() > 0) {
+            Linear.setHeaderTitle(SearchModel.SEARCH_LIVE);
+            allSampleData.add(Linear);
+        }
+
+
+        return allSampleData;
     }
 
 

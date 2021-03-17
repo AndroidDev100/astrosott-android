@@ -294,6 +294,10 @@ public class AppCommonMethods {
 
 
     private static String getTimeStamp(String todayDate, int type) {
+        /*Calendar currnetDateTime = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss a");
+        String  currentTime = df.format(currnetDateTime.getTime());
+        Log.w("currentTime-->>",currentTime);*/
         long timestamp = 0;
         String startTime = " 00:00:00 AM";
         String dateStr;
@@ -1849,5 +1853,227 @@ public class AppCommonMethods {
             }
         }
         return contains;
+    }
+
+    public static String getVODSearchKsql(String searchString, String selectedGenre, int from, Context context) {
+        StringBuilderHolder.getInstance().clear();
+
+        if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
+            StringBuilderHolder.getInstance().append("(and ");
+            StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
+            StringBuilderHolder.getInstance().append("");
+        }else {
+            if (selectedGenre!=null && !selectedGenre.equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(selectedGenre);
+                StringBuilderHolder.getInstance().append("");
+            }else {
+                StringBuilderHolder.getInstance().append("");
+            }
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")){
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append(" ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            }else {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            }
+
+        }else {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append(" ");
+            }else {
+                if (selectedGenre!=null && !selectedGenre.equalsIgnoreCase("")){
+                    StringBuilderHolder.getInstance().append(" ");
+                }else {
+                    StringBuilderHolder.getInstance().append(" ");
+                }
+
+            }
+        }
+
+        StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("description~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        if (StringBuilderHolder.getInstance().getText().toString().contains("(and")){
+            StringBuilderHolder.getInstance().append("'))");
+        }else {
+            StringBuilderHolder.getInstance().append("')");
+        }
+
+
+        KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
+        return StringBuilderHolder.getInstance().getText().toString();
+    }
+
+    public static String getLiveSearchKsql(String searchString, String selectedGenre, int from, Context context) {
+        StringBuilderHolder.getInstance().clear();
+
+        if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
+            StringBuilderHolder.getInstance().append("(and ");
+            StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
+            StringBuilderHolder.getInstance().append("");
+        }else {
+            if (selectedGenre!=null && !selectedGenre.equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(selectedGenre);
+                StringBuilderHolder.getInstance().append("");
+            }else {
+                StringBuilderHolder.getInstance().append("");
+            }
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")){
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append(" ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            }else {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            }
+
+        }else {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append(" ");
+            }else {
+                if (selectedGenre!=null && !selectedGenre.equalsIgnoreCase("")){
+                    StringBuilderHolder.getInstance().append(" ");
+                }else {
+                    StringBuilderHolder.getInstance().append(" ");
+                }
+
+            }
+        }
+
+        if (StringBuilderHolder.getInstance().getText().toString()!=null && !StringBuilderHolder.getInstance().getText().toString().equalsIgnoreCase("") && StringBuilderHolder.getInstance().getText().toString().contains("(and")){
+            StringBuilderHolder.getInstance().append(" start_date>='0' ");
+        }else {
+            StringBuilderHolder.getInstance().append("(and start_date>='0' ");
+        }
+
+        StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("description~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        if (StringBuilderHolder.getInstance().getText().toString().contains("(and")){
+            StringBuilderHolder.getInstance().append("'))");
+        }else {
+            StringBuilderHolder.getInstance().append("')");
+        }
+
+
+        KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
+        return StringBuilderHolder.getInstance().getText().toString();
+    }
+
+    public static String getPagesSearchKsql(String searchString, String selectedGenre, int from, Context context) {
+        StringBuilderHolder.getInstance().clear();
+
+        if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
+            StringBuilderHolder.getInstance().append("(and ");
+            StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
+            StringBuilderHolder.getInstance().append("");
+        }else {
+            if (selectedGenre!=null && !selectedGenre.equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(selectedGenre);
+                StringBuilderHolder.getInstance().append("");
+            }else {
+                StringBuilderHolder.getInstance().append("");
+            }
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")){
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append(" ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            }else {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            }
+
+        }else {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append(" ");
+            }else {
+                if (selectedGenre!=null && !selectedGenre.equalsIgnoreCase("")){
+                    StringBuilderHolder.getInstance().append(" ");
+                }else {
+                    StringBuilderHolder.getInstance().append(" ");
+                }
+
+            }
+        }
+
+        if (StringBuilderHolder.getInstance().getText().toString()!=null && !StringBuilderHolder.getInstance().getText().toString().equalsIgnoreCase("") && StringBuilderHolder.getInstance().getText().toString().contains("(and")){
+            StringBuilderHolder.getInstance().append(" IsSponsored='1' ");
+        }else {
+            StringBuilderHolder.getInstance().append("(and IsSponsored='1' ");
+        }
+
+        StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("description~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        if (StringBuilderHolder.getInstance().getText().toString().contains("(and")){
+            StringBuilderHolder.getInstance().append("'))");
+        }else {
+            StringBuilderHolder.getInstance().append("')");
+        }
+
+
+        KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
+        return StringBuilderHolder.getInstance().getText().toString();
     }
 }

@@ -169,9 +169,10 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         getProgramRailCommonData(asset.getCurrentProgram(), "liveChannelCall-->>" + asset.getStatus() + "--" + asset.getProgramTime());
                         if (asset.getProgramTime() == 1) {
                             getProgramRailCommonData(asset.getCurrentProgram(), "Program VideoItemClicked");
-                            new ActivityLauncher(activity).catchUpActivity(activity, CatchupActivity.class, railCommonData);
+                           // new ActivityLauncher(activity).catchUpActivity(activity, CatchupActivity.class, railCommonData);
                         } else {
-                            //  new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
+                           //   new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
+                            new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, railCommonData);
                         }
                     }
                 }
