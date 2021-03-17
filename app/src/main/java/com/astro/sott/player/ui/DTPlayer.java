@@ -1030,8 +1030,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().loading.setVisibility(View.VISIBLE);
         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
-        getBinding().nextEpisode.setVisibility(View.GONE);
-        getBinding().episode.setVisibility(View.GONE);
         getBinding().subtitleAudio.setVisibility(View.GONE);
         getBinding().quality.setVisibility(View.GONE);
       //  getBinding().shareWith.setVisibility(View.GONE);
@@ -1057,8 +1055,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().name.setVisibility(View.VISIBLE);
                 getBinding().ivCancel.setVisibility(View.VISIBLE);
                 getBinding().slash.setVisibility(View.VISIBLE);
-                getBinding().nextEpisode.setVisibility(View.VISIBLE);
-                getBinding().episode.setVisibility(View.VISIBLE);
                 getBinding().subtitleAudio.setVisibility(View.VISIBLE);
                 getBinding().quality.setVisibility(View.VISIBLE);
                // getBinding().shareWith.setVisibility(View.VISIBLE);
@@ -1089,8 +1085,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     getBinding().totalDuration.setVisibility(View.VISIBLE);
                     getBinding().ivCancel.setVisibility(View.VISIBLE);
                     getBinding().slash.setVisibility(View.VISIBLE);
-                    getBinding().nextEpisode.setVisibility(View.VISIBLE);
-                    getBinding().episode.setVisibility(View.VISIBLE);
                     getBinding().subtitleAudio.setVisibility(View.VISIBLE);
                     getBinding().quality.setVisibility(View.VISIBLE);
                 }
@@ -1377,8 +1371,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().goLive.setVisibility(View.GONE);
         getBinding().seekBar.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
-        getBinding().nextEpisode.setVisibility(View.GONE);
-        getBinding().episode.setVisibility(View.GONE);
         getBinding().subtitleAudio.setVisibility(View.GONE);
         getBinding().quality.setVisibility(View.GONE);
     }
@@ -2685,8 +2677,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().pBar.setVisibility(View.GONE);
         getBinding().playericon.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
-        getBinding().nextEpisode.setVisibility(View.GONE);
-        getBinding().episode.setVisibility(View.GONE);
         getBinding().subtitleAudio.setVisibility(View.GONE);
         getBinding().quality.setVisibility(View.GONE);
         //  getBinding().ivQuality.setVisibility(View.GONE);
@@ -2732,8 +2722,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().pBar.setVisibility(View.GONE);
         getBinding().playericon.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
-        getBinding().nextEpisode.setVisibility(View.GONE);
-        getBinding().episode.setVisibility(View.GONE);
         getBinding().subtitleAudio.setVisibility(View.GONE);
         getBinding().quality.setVisibility(View.GONE);
         //   getBinding().ivQuality.setVisibility(View.GONE);
@@ -2800,8 +2788,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         getBinding().currentTime.setVisibility(View.VISIBLE);
                         getBinding().listViewSettings.setVisibility(View.GONE);
                         getBinding().slash.setVisibility(View.VISIBLE);
-                        getBinding().nextEpisode.setVisibility(View.VISIBLE);
-                        getBinding().episode.setVisibility(View.VISIBLE);
                         getBinding().subtitleAudio.setVisibility(View.VISIBLE);
                         getBinding().quality.setVisibility(View.VISIBLE);
                     }
@@ -3038,6 +3024,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
         // getBinding().ivQuality.setOnClickListener(view -> chooseQuality_Caption_Audio());
+        getBinding().quality.setOnClickListener(view ->chooseVideoquality());
 
         getBinding().fullscreen.setOnClickListener(view -> getBinding().ivCancel.performClick());
 
@@ -3340,16 +3327,19 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void chooseVideoquality() {
+        getBinding().videoDialog.setVisibility(View.VISIBLE);
+        getBinding().videoDialog.bringToFront();
         final RecyclerView recycleview;
         callHandler();
-        dialogQuality = new Dialog(getBaseActivity(), R.style.AppAlertTheme);
-        dialogQuality.setContentView(R.layout.layout_dialog_settings);
-        dialogQuality.setTitle(getString(R.string.title_video_quality));
-        recycleview = dialogQuality.findViewById(R.id.recycleview);
-        Button closeButton = dialogQuality.findViewById(R.id.close);
-        closeButton.setOnClickListener(v -> dialogQuality.cancel());
-        if (recycleview != null) {
-            recycleview.setLayoutManager(new LinearLayoutManager(baseActivity));
+       // dialogQuality = new Dialog(getBaseActivity(), R.style.AppAlertTheme);
+      //  dialogQuality.setContentView(R.layout.layout_dialog_settings);
+      //  dialogQuality.setTitle(getString(R.string.title_video_quality));
+       // recycleview = dialogQuality.findViewById(R.id.recycleview);
+
+//        Button closeButton = dialogQuality.findViewById(R.id.close);
+//        closeButton.setOnClickListener(v -> dialogQuality.cancel());
+        if (getBinding().videoQuality.recycleview != null) {
+            getBinding().videoQuality.recycleview.setLayoutManager(new LinearLayoutManager(baseActivity));
             viewModel.loadVideotracksWithPlayer().observe(this, videoTracks -> {
                 if (videoTracks != null && videoTracks.size() > 0) {
                     viewModel.getVideoTrackItems().observe(baseActivity, trackItems -> {
@@ -3370,8 +3360,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 }
                             }
                             VideoTracksAdapter videoTracksAdapter = new VideoTracksAdapter(trackItems);
-                            recycleview.setAdapter(videoTracksAdapter);
-                            dialogQuality.show();
+                            getBinding().videoQuality.recycleview.setAdapter(videoTracksAdapter);
+                           // dialogQuality.show();
 
                         } else {
                             ToastHandler.show(baseActivity.getResources().getString(R.string.no_video_available), baseActivity.getApplicationContext());
@@ -3717,8 +3707,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             getBinding().forward.setVisibility(View.GONE);
             getBinding().backward.setVisibility(View.GONE);
             getBinding().slash.setVisibility(View.VISIBLE);
-            getBinding().nextEpisode.setVisibility(View.GONE);
-            getBinding().episode.setVisibility(View.GONE);
             getBinding().subtitleAudio.setVisibility(View.GONE);
             getBinding().quality.setVisibility(View.GONE);
             //  getBinding().ivQuality.setVisibility(View.VISIBLE);
@@ -3738,8 +3726,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             getBinding().forward.setVisibility(View.VISIBLE);
             getBinding().backward.setVisibility(View.VISIBLE);
             getBinding().slash.setVisibility(View.VISIBLE);
-            getBinding().nextEpisode.setVisibility(View.VISIBLE);
-            getBinding().episode.setVisibility(View.VISIBLE);
             getBinding().subtitleAudio.setVisibility(View.VISIBLE);
             getBinding().quality.setVisibility(View.VISIBLE);
             //  getBinding().ivQuality.setVisibility(View.VISIBLE);
@@ -3921,11 +3907,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     static class ViewHolder1 extends RecyclerView.ViewHolder {
 
         RelativeLayout tracksQuality;
-        ImageView tick;
+        ImageView tick,imgQuality;
         private TextView qualityText, description;
         private AppCompatRadioButton playbackQualityRadio;
         private Button closeButton;
-        private ConstraintLayout layout;
+        private RelativeLayout layout;
 
         private ViewHolder1(View itemView) {
             super(itemView);
@@ -3934,6 +3920,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             qualityText = itemView.findViewById(R.id.quality_text);
             description = itemView.findViewById(R.id.description);
             tick = itemView.findViewById(R.id.tick);
+            imgQuality = itemView.findViewById(R.id.img);
             layout = itemView.findViewById(R.id.video_quality__layout);
         }
     }
@@ -3988,32 +3975,31 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder1 holder, final int position) {
-            /*try {
-                if (trackName.equals("")) {
-                    // holder.tick.setBackgroundResource(0);
-                    //     holder.playbackQualityRadio.setChecked(false);
-                } else {
-                    String compareName = tracks.get(position).getTrackName();
-                    if (trackName.equals(compareName)) {
-                       *//* selectedTrack = tracks.get(position).getTrackName();
-                        holder.tick.setBackgroundResource(R.drawable.tick);
-                    selectedIndex = position;*//*
-                        //   tracks.get(position).setSelected(true);
-
-                        //  holder.playbackQualityRadio.setChecked(true);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
             if (trackItemList.get(position).isSelected()) {
                 holder.tick.setBackgroundResource(R.drawable.tick);
+                holder.layout.setBackgroundColor(getResources().getColor(R.color.grape_purple));
             } else {
                 holder.tick.setBackgroundResource(0);
+                holder.layout.setBackgroundColor(getResources().getColor(R.color.transparentColor));
                 //viewHolder.notificationItemBinding.titleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
             holder.qualityText.setText(tracks.get(position).getTrackName());
-            holder.description.setText(tracks.get(position).getTrackDescription());
+
+            if (tracks.get(position).getTrackName().equalsIgnoreCase("Auto")){
+                holder.imgQuality.setBackgroundResource(R.drawable.ic_low_quality);
+
+            }else if(tracks.get(position).getTrackName().equalsIgnoreCase("Low")){
+                holder.imgQuality.setBackgroundResource(R.drawable.ic_low_quality);
+
+            }else if(tracks.get(position).getTrackName().equalsIgnoreCase("Medium")){
+                holder.imgQuality.setBackgroundResource(R.drawable.ic_medium_quality);
+
+            }else if(tracks.get(position).getTrackName().equalsIgnoreCase("High")){
+                holder.imgQuality.setBackgroundResource(R.drawable.ic_video_quality);
+
+            }
+
+//            holder.description.setText(tracks.get(position).getTrackDescription());
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -4023,7 +4009,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                         trackItemList.get(position).setSelected(true);
                         trackName = trackItemList.get(position).getTrackName();
-                        dialogQuality.cancel();
+                        getBinding().videoDialog.setVisibility(View.GONE);
                         hideSoftKeyButton();
                         getBinding().pBar.setVisibility(View.VISIBLE);
                         isDialogShowing = false;
@@ -4036,13 +4022,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         });
                     } else {
                         if (trackItemList.get(position).getTrackName() == trackName) {
-                            dialogQuality.cancel();
+                            getBinding().videoDialog.setVisibility(View.GONE);
                             hideSoftKeyButton();
                         } else {
                             trackItemList.get(index).setSelected(false);
                             trackItemList.get(position).setSelected(true);
                             trackName = trackItemList.get(position).getTrackName();
-                            dialogQuality.cancel();
+                            getBinding().videoDialog.setVisibility(View.GONE);
                             hideSoftKeyButton();
                             getBinding().pBar.setVisibility(View.VISIBLE);
                             isDialogShowing = false;
