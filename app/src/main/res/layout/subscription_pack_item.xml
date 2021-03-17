@@ -63,7 +63,7 @@
                         android:layout_height="@dimen/dimen48dp"
                         android:layout_gravity="bottom|end"
                         android:layout_marginTop="@dimen/dimen24dp"
-                        android:background="@drawable/gradient_button"
+                        android:background="@drawable/gradient_svod"
                         android:fontFamily="@font/heebo_medium"
                         android:padding="@dimen/_10sdp"
                         android:text="BUY @ RM XX.XX"

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidDomInspection -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.astro.sott">
@@ -34,7 +35,7 @@
         <activity android:name=".activities.forgotPassword.ui.IsThisYouActivity"></activity>
         <activity android:name=".activities.search.ui.SearchKeywordActivity" />
         <activity android:name=".activities.manageDevice.ui.ManageDeviceActivity" />
-        <activity android:name=".activities.ForgetPassword.ForgetPasswordActivity" />
+        <activity android:name=".activities.forgotPassword.ui.ForgotPasswordActivity" />
         <activity android:name=".activities.profile.ui.EditPasswordActivity" />
         <activity android:name=".activities.profile.ui.EditEmailActivity" />
         <activity android:name=".activities.profile.ui.EditProfileActivity" />
@@ -51,9 +52,7 @@
         <activity
             android:name=".activities.boxSet.ui.BoxSetDetailActivity"
             android:screenOrientation="locked" />
-        <activity
-            android:name=".activities.forgotPassword.ui.ForgotPasswordActivity"
-            android:screenOrientation="locked" />
+
         <activity
             android:name=".activities.verification.VerificationActivity"
             android:screenOrientation="locked" />
@@ -264,9 +263,9 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="a7aeb763e54688f03f8c53dd891bed7107e7d7d2" />
-        <meta-data
+        <!--<meta-data
             android:name="io.branch.sdk.BranchKey"
-            android:value="@string/branch_key" />
+            android:value="@string/branch_key" />-->
         <!--
 <meta-data
             android:name="io.branch.sdk.BranchKey.test"
@@ -286,9 +285,11 @@
             android:resource="@drawable/noti_icon" /> <!-- <meta-data -->
         <!-- android:name="com.google.firebase.messaging.default_notification_color" -->
         <!-- android:resource="@color/colorPrimary" /> -->
+
         <receiver
             android:name="io.branch.referral.InstallListener"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="MissingClass">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>

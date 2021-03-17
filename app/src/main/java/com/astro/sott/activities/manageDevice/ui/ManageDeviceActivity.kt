@@ -52,7 +52,7 @@ class ManageDeviceActivity : AppCompatActivity(), DeviceDeleteCallBack {
                 }
             } else {
                 if (it.errorCode.equals("eV2124", ignoreCase = true) || it.errorCode.equals("111111111", ignoreCase = true)) {
-                    EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).refreshToken).observe(this, Observer { evergentCommonResponse1: EvergentCommonResponse? ->
+                    EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).refreshToken).observe(this, Observer { evergentCommonResponse1 ->
                         if (it.isStatus()) {
                             getDevices()
                         } else {

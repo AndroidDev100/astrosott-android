@@ -31,6 +31,8 @@
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
                 android:drawableStart="@drawable/notification_icon_grey"
                 android:drawablePadding="16dp"
                 android:focusable="true"

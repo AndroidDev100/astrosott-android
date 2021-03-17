@@ -1,5 +1,6 @@
 package com.astro.sott.utils.helpers;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
@@ -38,6 +39,7 @@ public class CommonPlaylistDialog implements PlaylistCallback {
     }
 
 
+    @SuppressLint("WrongConstant")
     public void createBottomSheet(Activity context, List<PersonalList> playlist, PlaylistCallback movieDescriptionActivity) {
 
         BottomSheetDialog dialog;

@@ -10,25 +10,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_bg"
+    android:background="@color/grape_purple"
     android:id="@+id/relative_layout"
     tools:context=".fragments.subscription.ui.SubscriptionLandingFragment">
 
 
-    <ImageView
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
-        android:src="@drawable/astro_white"
-        android:id="@+id/astro_logo"
-        android:layout_marginStart="@dimen/dimen16dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/_6dp"
-        />
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:background="@color/dark_toolbar">
+
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/sooka_landscape"></ImageView>
+    </LinearLayout>
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@id/astro_logo"
+    android:layout_below="@id/toolbar"
     android:id="@+id/rl1"
     android:layout_marginStart="@dimen/dimen16dp"
     android:layout_marginTop="@dimen/margin58dp">
@@ -36,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/txt24sp"
-        android:textColor="@color/white"
+        android:textColor="@color/title_color"
         android:id="@+id/unlock_your_membership"
         android:text="@string/unlock_your_membership"
         android:fontFamily="@font/heebo_medium"/>
@@ -44,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_16sp"
-        android:textColor="@color/white"
+        android:textColor="@color/title_color"
         android:id="@+id/para"
         android:layout_marginEnd="@dimen/dimen16dp"
         android:layout_marginTop="@dimen/dimen8dp"
@@ -55,13 +59,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_16sp"
-        android:textColor="@color/white"
+        android:textColor="@color/title_color"
         android:id="@+id/get_access"
         android:layout_marginEnd="@dimen/dimen16dp"
         android:layout_marginTop="@dimen/dimen24dp"
         android:layout_below="@id/para"
+        android:gravity="center_vertical"
         android:drawablePadding="@dimen/dimen16dp"
-        android:drawableLeft="@drawable/baseline_subscriptions_24px"
+        android:drawableLeft="@drawable/ic_lock_open_24_px"
         android:text="@string/get_access_to_vip"
         android:fontFamily="@font/heebo_regular"/>
     <TextView
@@ -69,12 +74,13 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/_16sp"
         android:id="@+id/registered_devices"
-        android:textColor="@color/white"
+        android:textColor="@color/title_color"
+        android:gravity="center"
         android:layout_marginEnd="@dimen/dimen16dp"
         android:layout_marginTop="@dimen/dimen24dp"
         android:layout_below="@id/get_access"
         android:drawablePadding="@dimen/dimen16dp"
-        android:drawableLeft="@drawable/ic_baseline_laptop_24"
+        android:drawableLeft="@drawable/ic_phonelink_24_px"
         android:text="@string/registered_devices"
         android:fontFamily="@font/heebo_regular"/>
     <TextView
@@ -82,12 +88,13 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/_16sp"
         android:id="@+id/concurrency"
-        android:textColor="@color/white"
+        android:textColor="@color/title_color"
+        android:gravity="center"
         android:layout_marginEnd="@dimen/dimen16dp"
         android:layout_marginTop="@dimen/dimen24dp"
         android:layout_below="@id/registered_devices"
         android:drawablePadding="@dimen/dimen16dp"
-        android:drawableLeft="@drawable/ic_android_24px"
+        android:drawableLeft="@drawable/ic_play_concurrency_2472"
         android:text="@string/concurrency"
         android:fontFamily="@font/heebo_regular"/>
 
@@ -96,12 +103,13 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/_16sp"
         android:id="@+id/noAds"
-        android:textColor="@color/white"
+        android:textColor="@color/title_color"
+        android:gravity="center"
         android:layout_marginEnd="@dimen/dimen16dp"
         android:layout_marginTop="@dimen/dimen24dp"
         android:layout_below="@id/concurrency"
         android:drawablePadding="@dimen/dimen16dp"
-        android:drawableLeft="@drawable/tick"
+        android:drawableLeft="@drawable/ic_no_ads"
         android:text="@string/noAds"
         android:fontFamily="@font/heebo_regular"/>
 

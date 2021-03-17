@@ -90,7 +90,7 @@ public class Network {
             return true;
         }
     }
-    public static String CheckNetworkType(Context context,NetworkInfo active_network) {
+    /*public static String CheckNetworkType(Context context,NetworkInfo active_network) {
         if(active_network==null){
             ConnectivityManager connectivityManager
                     = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -135,7 +135,7 @@ public class Network {
             networkType="NA";
         }
         return networkType;
-    }
+    }*/
 
 
 

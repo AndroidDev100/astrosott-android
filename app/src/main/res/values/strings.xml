@@ -108,10 +108,10 @@
     <string name="on_Dialog">on Dialog SOTT!</string>
     <string name="added_to_watchlist">added to your watchlist</string>
 
-    <string name="watch_now">WATCH NOW</string>
     <string name="become_vip">BECOME A VIP</string>
     <string name="rent_movie">RENT MOVIE FOR RM XX.XX</string>
     <string name="rooted_failure_msg">Tsk tsk tsk…you cannot run this app on jailbreak or rooted devices!</string>
+    <string name="watch_now">WATCH NOW</string>
 
 
     //dialog buttons
@@ -204,7 +204,7 @@
     <string name="concurrency_error">Sorry, your device limit is exceeded</string>
     <string name="loading">Loading</string>
     <string name="subscription_dialouge_for_logged_in">Get your susbcription now</string>
-    <string name="purchase_dialouge_for_logged_in">Sorry, you cant view this video. Do you want to subscribe now?</string>
+    <string name="purchase_dialouge_for_logged_in">Sorry, you can\'t view this video. Do you want to subscribe now?</string>
     <string name="text_error">Error</string>
     <string name="pls_enter_device_name">Please enter device name.</string>
     <string name="pls_enter_title">Please give a name for the playlist</string>
@@ -216,8 +216,8 @@
     <string name="account_no_required">Oops! Account number cannot be blank</string>
     <string name="mobile_no_required">Oops! Mobile number cannot be blank</string>
     <string name="incorrect_phone_number">Incorrect mobile number. Try again</string>
-    <string name="incorrect_account_number">Oh no, that cant be right. Lets recheck the account number</string>
-    <string name="incorrect_mobile_number">Oh no, that cant be right. Lets recheck the mobile number</string>
+    <string name="incorrect_account_number">Oh no, that can\'t be right. Lets recheck the account number</string>
+    <string name="incorrect_mobile_number">Oh no, that can\'t be right. Lets recheck the mobile number</string>
     <string name="dialog">SOTT</string>
     <string name="new_version">New Version Available</string>
     <string name="pin_required">PIN cannot be blank</string>
@@ -474,11 +474,14 @@
     <string name="version_more">Version1.045b</string>
     <string name="siginup_more">Sign In / Sign Up</string>
     <string name="guest_user">Guest user</string>
+    <string name="manage_subscription">Manage Subscriptions</string>
     <string name="partner_billing">Partner Billing</string>
     <string name="subscribe_more">Subscribe</string>
     <string name="manage_subscription_more">Manage Subscription</string>
     <string name="renew_date">Renew on 22/2/21</string>
     <string name="transac_history">Transaction History</string>
+    <string name="cancel_plan"><u>CANCEL</u></string>
+    <string name="change_plan"><u>CHANGE PLAN</u></string>
     <string name="lang_selection">Language Selection</string>
     <string name="downloads">Downloads</string>
     <string name="mannage_device">Manage Device</string>
@@ -579,6 +582,10 @@
     <string name="key_in_pswd">Please key in your password \n to update email.</string>
     <string name="quick_search_text">QUICK SEARCH</string>
     <string name="successful">successful</string>
+    <string name="manage_quality">Quality</string>
+    <string name="subtitle_audio">Subtitle | Audio</string>
+    <string name="episode_">Episode</string>
+    <string name="next_episode">Next Episode</string>
 
 
 </resources>
