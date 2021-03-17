@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
+import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse
 import com.astro.sott.usermanagment.callBacks.*
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
@@ -26,7 +27,6 @@ import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.reflect.Method
 
 class EvergentServices {
 
@@ -78,7 +78,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     searchAccountCallBack.onFailure("Something Went Wrong", "")
 
                 }
@@ -127,7 +127,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     evergentCreateOtpCallBack.onFailure("Something Went Wrong", "")
 
                 }
@@ -177,7 +177,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     evergentConfirmOtpCallBack.onFailure("Something Went Wrong", "")
 
                 }
@@ -221,7 +221,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     evergentResetPasswordCallBack.onFailure("Something Went Wrong", "")
 
                 }
@@ -296,7 +296,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     evergentCreateUserCallback.onFailure("Something Went Wrong", "")
 
                 }
@@ -358,7 +358,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     evergentCreateUserCallback.onFailure("Something Went Wrong", "")
 
                 }
@@ -405,7 +405,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     evergentCreateUserCallback.onFailure("Something Went Wrong", "")
 
                 }
@@ -447,7 +447,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
 
                 }
@@ -458,6 +458,63 @@ class EvergentServices {
 
 
     }
+
+    fun addSubscription(context: Context, productId: String, token: String, acessToken: String, evergentGetDeviceCallback: EvergentResponseCallBack<AddSubscriptionResponse>) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        var paymentMethodJson = JsonObject()
+        var transactionRefMsgJson = JsonObject()
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        json.addProperty("cpCustomerID", "")
+        json.addProperty("rateType", "")
+        json.addProperty("serviceType", "PRODUCT")
+        json.addProperty("serviceID", "")
+        json.addProperty("appServiceID", productId)
+        json.addProperty("priceCharged", "")
+        paymentMethodJson.addProperty("label", "Google Wallet")
+        transactionRefMsgJson.addProperty("amount", "")
+        transactionRefMsgJson.addProperty("txID", token)
+
+        paymentMethodJson.add("transactionReferenceMsg", transactionRefMsgJson)
+        json.add("paymentmethodInfo", paymentMethodJson)
+        createUserJson.add("AddSubscriptionRequestMessage", json)
+
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.addSubscription("Bearer $acessToken", createUserJson)
+        call?.enqueue(object : Callback<AddSubscriptionResponse?> {
+            override fun onFailure(call: Call<AddSubscriptionResponse?>, t: Throwable) {
+                evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<AddSubscriptionResponse?>, response: Response<AddSubscriptionResponse?>) {
+                if (response.body() != null && response.body()?.addSubscriptionResponseMessage != null && response.body()?.addSubscriptionResponseMessage?.responseCode != null) {
+                    if (response.body()?.addSubscriptionResponseMessage?.responseCode.equals("1", true)) {
+                        evergentGetDeviceCallback.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.addSubscriptionResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.addSubscriptionResponseMessage?.failureMessage, context)
+                            evergentGetDeviceCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                } else {
+                    evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
     fun getDevice(context: Context, acessToken: String, evergentGetDeviceCallback: EvergentGetDeviceCallback) {
 
         var createUserJson = JsonObject()
@@ -488,7 +545,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
 
                 }
@@ -533,7 +590,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
 
                 }
@@ -553,7 +610,7 @@ class EvergentServices {
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty("dmaID", "001");
         json.addProperty("returnAppChannels", "T");
-        appChannelJson.addProperty("appChannel","Google Wallet")
+        appChannelJson.addProperty("appChannel", "Google Wallet")
         json.add("appChannels", appChannelJson)
         createUserJson.add("GetProductsRequestMessage", json)
 
@@ -581,7 +638,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     evergentRefreshToken.onFailure("Something Went Wrong", "")
 
                 }
@@ -623,7 +680,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     evergentRefreshToken.onFailure("Something Went Wrong", "")
 
                 }
@@ -667,7 +724,7 @@ class EvergentServices {
                         }
                     }
 
-                }else{
+                } else {
                     evergentRefreshToken.onFailure("Something Went Wrong", "")
 
                 }

@@ -238,73 +238,9 @@
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@color/toolbar_bg" />
 
-            <RelativeLayout
-                android:id="@+id/rl_linked_accounts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_12sdp"
-                android:visibility="gone"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_10sdp">
 
-                <TextView
-                    android:id="@+id/tv_linked_accounts"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_add_black_24dp"
-                    android:drawablePadding="@dimen/_14sdp"
-                    android:fontFamily="@font/heebo_regular"
-                    android:padding="@dimen/_1sdp"
-                    android:text="@string/linked_accounts"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"></TextView>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
-            </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_manage_payment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginLeft="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_10sdp">
-
-                <TextView
-                    android:id="@+id/tv_manage_payments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_credit_card_24px"
-                    android:drawablePadding="@dimen/_14sdp"
-                    android:fontFamily="@font/heebo_regular"
-                    android:padding="@dimen/_1sdp"
-                    android:text="@string/manage_payments"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
-            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_transaction_history"
@@ -580,6 +516,74 @@
                 android:textAllCaps="false"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_16sp"></TextView>
+            <RelativeLayout
+                android:id="@+id/rl_linked_accounts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:clickable="false"
+                android:visibility="invisible"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/tv_linked_accounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_add_black_24dp"
+                    android:drawablePadding="@dimen/_14sdp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:padding="@dimen/_1sdp"
+                    android:text="@string/linked_accounts"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"></TextView>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_manage_payment"
+                android:layout_width="match_parent"
+                android:clickable="false"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/tv_manage_payments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_credit_card_24px"
+                    android:drawablePadding="@dimen/_14sdp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:padding="@dimen/_1sdp"
+                    android:text="@string/manage_payments"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16sp"></TextView>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </layout>

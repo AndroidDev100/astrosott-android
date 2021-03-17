@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.astro.sott.repositories.loginRepository.AstrLoginRepository;
 import com.astro.sott.repositories.mysubscriptionplan.MySubscriptionPlanRepository;
+import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse;
 
@@ -26,6 +26,10 @@ public class SubscriptionViewModel extends AndroidViewModel {
 
     public LiveData<EvergentCommonResponse<GetActiveResponse>> getActiveSubscription(String acessToken) {
         return MySubscriptionPlanRepository.getInstance().getActiveSubscription(getApplication(), acessToken);
+    }
+
+    public LiveData<EvergentCommonResponse<AddSubscriptionResponse>> addSubscription(String acessToken, String productId, String token) {
+        return MySubscriptionPlanRepository.getInstance().addSubscription(getApplication(), acessToken, productId, token);
     }
 
 }

@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.search.adapter.LanguageAdapter;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.LanguagePreferenceItemBinding;
@@ -18,15 +20,17 @@ import com.astro.sott.databinding.SubscriptionPackItemBinding;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.modelClasses.InApp.PackDetail;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
+import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.List;
 
 public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapter.SingleItemHolder> {
-    Fragment fragment;
+    Activity fragment;
     private List<PackDetail> packDetailList;
     private CardCLickedCallBack cardCLickedCallBack;
 
-    public SubscriptionAdapter(SubscriptionPacksFragment ctx, List<PackDetail> productsResponseMessage) {
+    public SubscriptionAdapter(Activity ctx, List<PackDetail> productsResponseMessage) {
         this.fragment = ctx;
         packDetailList = productsResponseMessage;
         cardCLickedCallBack = (CardCLickedCallBack) ctx;
@@ -52,10 +56,17 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
             description.append(" recurring subscription");
         }
         holder.binding.packDescription.setText(description);
-        holder.binding.cardLayout.setOnClickListener(v -> {
-            cardCLickedCallBack.onCardClicked(packDetailList.get(position).getProductsResponseMessageItem().getAppChannels().get(0).getAppID());
+        holder.binding.btnBuy.setOnClickListener(v -> {
+            if (UserInfo.getInstance(fragment).isActive()) {
+                cardCLickedCallBack.onCardClicked(packDetailList.get(position).getProductsResponseMessageItem().getAppChannels().get(0).getAppID());
+
+            } else {
+                new ActivityLauncher(fragment).astrLoginActivity(fragment, AstrLoginActivity.class);
+
+            }
         });
-        holder.binding.btnBuy.setText("BUY @ " + packDetailList.get(position).getSkuDetails().currency + " "+packDetailList.get(position).getSkuDetails().priceValue);
+        holder.binding.btnBuy.setText("BUY @ " + packDetailList.get(position).getSkuDetails().currency + " " + packDetailList.get(position).getSkuDetails().priceValue);
+
     }
 
     @Override

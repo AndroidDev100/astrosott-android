@@ -89,8 +89,10 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
                     loadData(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
                 } else {
+                    getBinding().nodataLayout.setVisibility(View.VISIBLE);
                 }
             } else {
+                getBinding().nodataLayout.setVisibility(View.VISIBLE);
 
             }
         });

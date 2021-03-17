@@ -19,6 +19,7 @@ import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.SkuDetails;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.R;
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.search.adapter.SearchKeywordAdapter;
 import com.astro.sott.activities.search.ui.SearchKeywordActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
@@ -28,7 +29,6 @@ import com.astro.sott.fragments.subscription.adapter.SubscriptionAdapter;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.modelClasses.InApp.PackDetail;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
-import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +38,8 @@ import java.util.List;
  * Use the {@link SubscriptionPacksFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubscriptionPacksBinding> implements BillingProcessor.IBillingHandler, CardCLickedCallBack {
+public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubscriptionPacksBinding> implements CardCLickedCallBack {
     private SubscriptionViewModel subscriptionViewModel;
-    private BillingProcessor billingProcessor;
     private SkuDetails skuDetails;
     private List<PackDetail> packDetailList;
 
@@ -89,30 +88,19 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        intializeBilling();
         UIinitialization();
         modelCall();
         getProducts();
 
     }
 
-    private void intializeBilling() {
-
-        String tempBase64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhiyDBLi/JpQLoxikmVXqxK8M3ZhJNfW2tAdjnGnr7vnDiYOiyk+NomNLqmnLfQwkC+TNWn50A5XmA8FEuZmuqOzKNRQHw2P1Spl27mcZsjXcCFwj2Vy+eso3pPLjG4DfqCmQN2jZo97TW0EhsROdkWflUMepy/d6sD7eNfncA1Z0ECEDuSuOANlMQLJk7Ci5PwUHKYnUAIwbq0fU9LP6O8Ejx5BK6o5K7rtTBttCbknTiZGLo6rB+8RcSB4Z0v3Di+QPyvxjIvfSQXlWhRdyxAs/EZ/F4Hdfn6TB7mLZkKZZwI0xzOObJp2BiesclMi1wHQsNSgQ8pnZ8T52aJczpQIDAQAB";
-        Log.w("billingProcessor_play", getActivity().getClass().getName() + "");
-
-        billingProcessor = new BillingProcessor(getActivity(), tempBase64, SubscriptionPacksFragment.this);
-        billingProcessor.initialize();
-
-        billingProcessor.loadOwnedPurchasesFromGoogle();
-    }
 
     private void modelCall() {
         subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel.class);
     }
 
     private void loadDataFromModel(List<PackDetail> productsResponseMessage) {
-        SubscriptionAdapter adapter = new SubscriptionAdapter(SubscriptionPacksFragment.this, productsResponseMessage);
+        SubscriptionAdapter adapter = new SubscriptionAdapter(getActivity(), productsResponseMessage);
         getBinding().recyclerView.setAdapter(adapter);
 
     }
@@ -136,7 +124,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         packDetailList = new ArrayList<>();
         for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
             if (responseMessageItem.getAppChannels() != null && responseMessageItem.getAppChannels().get(0) != null && responseMessageItem.getAppChannels().get(0).getAppChannel() != null && responseMessageItem.getAppChannels().get(0).getAppChannel().equalsIgnoreCase("Google Wallet") && responseMessageItem.getAppChannels().get(0).getAppID() != null) {
-                skuDetails = billingProcessor.getSubscriptionListingDetails(responseMessageItem.getAppChannels().get(0).getAppID());
+                skuDetails = ((HomeActivity) getActivity()).getSubscriptionDetail(responseMessageItem.getAppChannels().get(0).getAppID());
                 if (skuDetails != null) {
                     PackDetail packDetail = new PackDetail();
                     packDetail.setSkuDetails(skuDetails);
@@ -166,41 +154,9 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         return FragmentSubscriptionPacksBinding.inflate(inflater);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!billingProcessor.handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-
-    @Override
-    public void onProductPurchased(String productId, TransactionDetails details) {
-        Log.w("billingProcessor_play", "fragment");
-
-    }
-
-    @Override
-    public void onPurchaseHistoryRestored() {
-        Log.w("billingProcessor_play", "history");
-
-
-    }
-
-    @Override
-    public void onBillingError(int errorCode, Throwable error) {
-        Log.w("billingProcessor_play", "error");
-
-    }
-
-    @Override
-    public void onBillingInitialized() {
-        Log.w("billingProcessor_play", "intialized");
-    }
 
     @Override
     public void onCardClicked(String productId) {
-        billingProcessor.purchase(getActivity(), productId, "DEVELOPER PAYLOAD HERE");
 
     }
 }
