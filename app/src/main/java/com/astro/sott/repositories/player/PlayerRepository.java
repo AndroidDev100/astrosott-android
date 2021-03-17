@@ -335,14 +335,14 @@ public class PlayerRepository {
                 AudioTrack audioTrackInfo = audioTracks.get(i);
                 String label = audioTrackInfo.getLabel() != null ? audioTrackInfo.getLabel() : audioTrackInfo.getLanguage();
                 // String bitrate = (audioTrackInfo.getBitrate() > 0) ? "" + audioTrackInfo.getBitrate() : "";
-                String label2 = audioTracks.get(0).getLabel();
+                String label2 = audioTracks.get(0).getLanguage();
                 if (label2 != null) {
-                    String label1 = audioTrackInfo.getLabel();
+                    String label1 = audioTrackInfo.getLanguage();
                     PrintLogging.printLog("", "Languageis" + label);
                     trackItems[i] = new TrackItem(label1 + " ", audioTrackInfo.getUniqueId());
 
                 } else {
-
+                    trackItems[i] = new TrackItem("Default" + " ", audioTrackInfo.getUniqueId());
                 }
             }
         }
@@ -364,7 +364,7 @@ public class PlayerRepository {
         for (int i = 0; i < textTracks.size(); i++) {
             if (i == 0) {
                 TextTrack textTrackInfo = textTracks.get(i);
-                String name = "Off";
+                String name = "None";
                 trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId());
             } else {
                 TextTrack textTrackInfo = textTracks.get(i);

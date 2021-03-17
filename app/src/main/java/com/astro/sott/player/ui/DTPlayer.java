@@ -3024,7 +3024,28 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
         // getBinding().ivQuality.setOnClickListener(view -> chooseQuality_Caption_Audio());
-        getBinding().quality.setOnClickListener(view ->chooseVideoquality());
+
+
+
+        getBinding().quality.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getBinding().audioDialog.getVisibility() == View.VISIBLE){
+                    getBinding().audioDialog.setVisibility(View.GONE);
+                }
+                chooseVideoquality();
+            }
+        });
+
+        getBinding().subtitleAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getBinding().videoDialog.getVisibility() == View.VISIBLE){
+                    getBinding().videoDialog.setVisibility(View.GONE);
+                }
+                chooseAudio();
+            }
+        });
 
         getBinding().fullscreen.setOnClickListener(view -> getBinding().ivCancel.performClick());
 
@@ -3238,86 +3259,82 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void chooseCaption() {
-        TextView captionTitle;
-        final RecyclerView recycleview;
-        dialogQuality = new Dialog(getBaseActivity(), R.style.AppAlertTheme);
-        dialogQuality.setContentView(R.layout.layout_dialog_settings);
-        captionTitle = dialogQuality.findViewById(R.id.title_video);
-        captionTitle.setText(getString(R.string.title_caption));
-        dialogQuality.show();
-        recycleview = dialogQuality.findViewById(R.id.recycleview);
-        if (recycleview != null) {
-            recycleview.setLayoutManager(new LinearLayoutManager(baseActivity));
-            viewModel.loadCaptionWithPlayer().observe(this, textTracks -> {
-                if (textTracks != null && textTracks.size() > 0) {
-
-                    viewModel.getTextTrackItems().observe(baseActivity, trackItems -> {
-                        captionList = trackItems;
-                        if (captionName == "") {
-                            captionList[0].setSelected(true);
-                            captionName = captionList[0].getTrackName();
-                        }
-                        CaptionAdapter captionAdapter = new CaptionAdapter(trackItems);
-                        recycleview.setAdapter(captionAdapter);
-                    });
 
 
-                } else {
-                    dialogQuality.cancel();
-//                    hideSoftKeyButton();
-                    callHandler();
-                    ToastHandler.show(baseActivity.getResources().getString(R.string.no_caption_available), baseActivity.getApplicationContext());
-                }
-
-            });
-        }
     }
 
     private void chooseAudio() {
-        final RecyclerView recycleview;
-        TextView audioTitle;
-        dialogQuality = new Dialog(getBaseActivity(), R.style.AppAlertTheme);
-        dialogQuality.setContentView(R.layout.layout_dialog_settings);
-        audioTitle = dialogQuality.findViewById(R.id.title_video);
-        audioTitle.setText(getString(R.string.title_audio_track));
-        dialogQuality.show();
-        recycleview = dialogQuality.findViewById(R.id.recycleview);
-        if (recycleview != null) {
-            recycleview.setLayoutManager(new LinearLayoutManager(baseActivity));
+        getBinding().audioDialog.setVisibility(View.VISIBLE);
+        getBinding().audioDialog.bringToFront();
+        if (getBinding().audioQuality.recycleviewAudio != null) {
+            getBinding().audioQuality.recycleviewAudio.setLayoutManager(new LinearLayoutManager(baseActivity));
+            getBinding().audioQuality.recycleviewAudio.setNestedScrollingEnabled(false);
             viewModel.loadAudioWithPlayer().observe(this, audioTracks -> {
                 if (audioTracks != null && audioTracks.size() > 0) {
 
                     viewModel.getAudioTrackItems().observe(baseActivity, trackItems -> {
                         if (trackItems.length > 0) {
-                            for (int i = 0; i < trackItems.length; i++) {
-                                if (audioTrackName == "") {
-                                    if (trackItems[0] != null) {
-                                        audioTrackName = trackItems[0].getTrackName();
-                                        trackItems[0].setSelected(true);
-                                    }
-                                    break;
-                                } else {
-                                    String compareName = trackItems[i].getTrackName();
-                                    if (compareName == audioTrackName) {
-                                        trackItems[i].setSelected(true);
-                                        audioTrackName = trackItems[i].getTrackName();
-                                    } else {
-                                        trackItems[i].setSelected(false);
-                                    }
-                                }
-
-                            }
+//                            for (int i = 0; i < trackItems.length; i++) {
+//                                if (audioTrackName == "") {
+//                                    if (trackItems[0] != null) {
+//                                        audioTrackName = trackItems[0].getTrackName();
+//                                        trackItems[0].setSelected(true);
+//                                    }
+//                                    break;
+//                                } else {
+//                                    String compareName = trackItems[i].getTrackName();
+//                                    if (compareName == audioTrackName) {
+//                                        trackItems[i].setSelected(true);
+//                                        audioTrackName = trackItems[i].getTrackName();
+//                                    } else {
+//                                        trackItems[i].setSelected(false);
+//                                    }
+//                                }
+//
+//                            }
                             AudioAdapter audioAdapter = new AudioAdapter(trackItems);
-                            recycleview.setAdapter(audioAdapter);
+                            getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
                         }
 
                     });
 
 
                 } else {
-                    dialogAudio.cancel();
+                   // dialogAudio.cancel();
+                    getBinding().audioQuality.recycleviewAudio.setVisibility(View.GONE);
+                    getBinding().audioQuality.titleAudio.setVisibility(View.GONE);
                     callHandler();
-                    ToastHandler.show(baseActivity.getResources().getString(R.string.no_tracks_available), baseActivity.getApplicationContext());
+                   // ToastHandler.show(baseActivity.getResources().getString(R.string.no_tracks_available), baseActivity.getApplicationContext());
+                }
+
+            });
+        }
+
+
+        if (getBinding().audioQuality.recycleviewSubtitle != null) {
+            getBinding().audioQuality.recycleviewSubtitle.setLayoutManager(new LinearLayoutManager(baseActivity));
+            getBinding().audioQuality.recycleviewSubtitle.setNestedScrollingEnabled(false);
+            viewModel.loadCaptionWithPlayer().observe(this, textTracks -> {
+                if (textTracks != null && textTracks.size() > 0) {
+
+                    viewModel.getTextTrackItems().observe(baseActivity, trackItems -> {
+                        captionList = trackItems;
+//                        if (captionName == "") {
+//                            captionList[0].setSelected(true);
+//                            captionName = captionList[0].getTrackName();
+//                        }
+                        CaptionAdapter captionAdapter = new CaptionAdapter(trackItems);
+                        getBinding().audioQuality.recycleviewSubtitle.setAdapter(captionAdapter);
+                    });
+
+
+                } else {
+                   // dialogQuality.cancel();
+//                    hideSoftKeyButton();
+                    callHandler();
+                    getBinding().audioQuality.recycleviewSubtitle.setVisibility(View.GONE);
+                    getBinding().audioQuality.titleSubtitle.setVisibility(View.GONE);
+                    //ToastHandler.show(baseActivity.getResources().getString(R.string.no_caption_available), baseActivity.getApplicationContext());
                 }
 
             });
@@ -4086,9 +4103,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             if (captionList[position].isSelected()) {
                 index = position;
-                holder.tick.setBackgroundResource(R.drawable.tick);
+                holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
+              //  holder.tick.setBackgroundResource(R.drawable.tick);
             } else {
-                holder.tick.setBackgroundResource(0);
+                holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
+               // holder.tick.setBackgroundResource(0);
                 //viewHolder.notificationItemBinding.titleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
             holder.playbackCaption.setText(captionList[position].getTrackName());
@@ -4099,10 +4118,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 captionList[position].setSelected(true);
                 captionName = captionList[position].getTrackName();
                 viewModel.changeTextTrack(captionList[position].getUniqueId());
-                dialogQuality.cancel();
+                getBinding().audioDialog.setVisibility(View.GONE);
+               // dialogQuality.cancel();
                 hideSoftKeyButton();
 
-
+                notifyDataSetChanged();
             });
 
 
@@ -4138,9 +4158,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 if (tracks[position].isSelected()) {
                     index = position;
-                    holder.tick.setBackgroundResource(R.drawable.tick);
+                   // holder.tick.setBackgroundResource(R.drawable.tick);
                 } else {
-                    holder.tick.setBackgroundResource(0);
+                  //  holder.tick.setBackgroundResource(0);
                     //viewHolder.notificationItemBinding.titleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 }
                 int finalIndex = index;
@@ -4150,7 +4170,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     audioTrackName = tracks[position].getTrackName();
                     //   holder.tick.setVisibility(View.VISIBLE);
                     viewModel.changeAudioTrack(tracks[position].getUniqueId());
-                    dialogQuality.cancel();
+                  //  dialogQuality.cancel();
                     hideSoftKeyButton();
 
 
