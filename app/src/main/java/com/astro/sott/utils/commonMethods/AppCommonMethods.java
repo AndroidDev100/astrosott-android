@@ -285,6 +285,19 @@ public class AppCommonMethods {
         return getTimeStamp(formattedDate, type);
     }
 
+    public static String getDateFromTimeStamp(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
 
     private static String getTimeStamp(String todayDate, int type) {
         long timestamp = 0;

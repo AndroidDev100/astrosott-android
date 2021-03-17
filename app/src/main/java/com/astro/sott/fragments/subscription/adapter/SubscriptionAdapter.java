@@ -52,7 +52,7 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
         if (packDetailList.get(position).getProductsResponseMessageItem().getDuration() != null && packDetailList.get(position).getProductsResponseMessageItem().getPeriod() != null) {
             description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
         }
-        if (packDetailList.get(position).getProductsResponseMessageItem().getRenewable() != null) {
+        if (packDetailList.get(position).getProductsResponseMessageItem().getRenewable() != null&&packDetailList.get(position).getProductsResponseMessageItem().getRenewable() ) {
             description.append(" recurring subscription");
         }
         holder.binding.packDescription.setText(description);

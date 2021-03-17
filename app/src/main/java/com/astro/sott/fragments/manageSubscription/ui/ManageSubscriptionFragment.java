@@ -103,7 +103,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     }
 
     private void loadData(List<AccountServiceMessageItem> accountServiceMessage) {
-        ManageSubscriptionAdapter manageSubscriptionAdapter = new ManageSubscriptionAdapter(accountServiceMessage, this);
+        ManageSubscriptionAdapter manageSubscriptionAdapter = new ManageSubscriptionAdapter(accountServiceMessage, getActivity(),this);
         getBinding().planRecycler.setAdapter(manageSubscriptionAdapter);
     }
 
