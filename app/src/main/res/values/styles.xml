@@ -103,10 +103,6 @@
         <item name="android:textSize">12sp</item>
         <item name="textAllCaps">true</item>
         <item name="fontFamily">@font/heebo_medium</item>
-        <item name="tabIndicator">@drawable/gradient_astro</item>
-        <item name="colorAccent">#ff0033</item>
-        <item name="colorControlActivated">#af0b8a</item>
-        <item name="colorControlNormal">#5618eb</item>
 
 
     </style>

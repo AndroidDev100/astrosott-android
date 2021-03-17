@@ -586,6 +586,8 @@
     <string name="subtitle_audio">Subtitle | Audio</string>
     <string name="episode_">Episode</string>
     <string name="next_episode">Next Episode</string>
+    <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
+    <string name="privacy_polices">Privacy Policies</string>
 
 
 </resources>

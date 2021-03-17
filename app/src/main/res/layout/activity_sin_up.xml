@@ -6,21 +6,22 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blue_bg">
+        android:background="@color/grape_purple">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="48dp"
-            android:background="@color/blue_bg"
+            android:background="@color/grape_purple"
             tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
 
             <ImageView
                 android:id="@+id/back_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="7dp"
                 android:background="@drawable/ic_arrow_back_24px"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"></ImageView>
@@ -38,7 +39,7 @@
                     android:layout_width="@dimen/_70sdp"
                     android:layout_height="@dimen/_70sdp"
                     android:layout_marginTop="40dp"
-                    android:background="@drawable/astro_white"
+                    android:background="@drawable/sooka"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"></ImageView>
@@ -47,7 +48,6 @@
                     android:id="@+id/forgot_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
                     android:fontFamily="@font/heebo_medium"
                     android:text="@string/sign_up_text"
                     android:textColor="@color/white"
@@ -73,10 +73,10 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="18dp"
-                    android:background="@color/edit_text_blue_bg"
+                    android:layout_marginLeft="@dimen/dimen16dp"
+                    android:layout_marginTop="@dimen/dimen10dp"
+                    android:layout_marginRight="@dimen/dimen18dp"
+                    android:background="@drawable/search_linear_bg"
                     android:orientation="vertical"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -86,8 +86,8 @@
                         android:id="@+id/mobile_email_edt"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="18dp"
-                        android:layout_marginRight="18dp"
+                        android:layout_marginLeft="@dimen/margin_18dp"
+                        android:layout_marginRight="@dimen/dimen18dp"
                         android:layout_weight="1.9"
                         android:background="@null"
                         android:cursorVisible="true"
@@ -100,14 +100,14 @@
                         android:textColor="@color/white"
                         android:textColorHint="@color/grey"
                         android:textCursorDrawable="@drawable/cursor_color"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/_16sp" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/error_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="18dp"
+                    android:layout_marginLeft="@dimen/dimen18dp"
                     android:textColor="@color/red_live"
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -118,10 +118,10 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginRight="18dp"
-                    android:background="@color/edit_text_blue_bg"
+                    android:layout_marginLeft="@dimen/dimen18dp"
+                    android:layout_marginTop="@dimen/dimen25dp"
+                    android:layout_marginRight="@dimen/dimen18dp"
+                    android:background="@drawable/search_linear_bg"
                     android:orientation="horizontal"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -225,7 +225,7 @@
                     android:text="@string/terms_and_conditions"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/_14sp"
                     app:layout_constraintLeft_toRightOf="@id/checkbox"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
                     app:layout_goneMarginTop="39dp"></TextView>
@@ -272,7 +272,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/or"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.734" />
+                    app:layout_constraintVertical_bias="0.749" />
 
                 <View
                     android:layout_width="@dimen/_60dp"
@@ -284,7 +284,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/or"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.734" />
+                    app:layout_constraintVertical_bias="0.747" />
 
                 <TextView
                     android:id="@+id/or"
@@ -303,32 +303,40 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/already_have_account"></TextView>
 
-                <TextView
+                <Button
                     android:id="@+id/google"
                     android:layout_width="250dp"
-                    android:layout_height="45dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="24dp"
-                    android:background="@color/dark_blue"
+                    android:background="@drawable/google_btn"
                     android:fontFamily="@font/heebo_medium"
                     android:gravity="center"
                     android:text="@string/sign_in_google"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:drawableLeft="@drawable/ic_google_button"
+                    android:textSize="@dimen/_14sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/or"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/or"></Button>
+
+
 
                 <TextView
                     android:id="@+id/fb"
                     android:layout_width="250dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@color/light_blue"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="@dimen/dimen16dp"
+                    android:background="@drawable/facebook_button"
                     android:fontFamily="@font/heebo_medium"
                     android:gravity="center"
+                    android:textAlignment="center"
+                    android:paddingLeft="@dimen/dimen30dp"
+                    android:paddingEnd="@dimen/dimen30dp"
+                    android:drawableLeft="@drawable/ic_fb_btn"
                     android:text="@string/sign_in_fb"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/_14sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/google"></TextView>
@@ -336,14 +344,17 @@
                 <TextView
                     android:id="@+id/apple"
                     android:layout_width="250dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="@dimen/dimen16dp"
                     android:background="@color/white"
                     android:fontFamily="@font/heebo_medium"
                     android:gravity="center"
+                    android:drawableLeft="@drawable/ic_apple_btn"
                     android:text="@string/sign_in_apple"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
+                    android:paddingLeft="@dimen/dimen50dp"
+                    android:paddingEnd="@dimen/dimen55dp"
+                    android:textSize="@dimen/_14sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/fb"></TextView>
