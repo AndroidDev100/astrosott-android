@@ -2,12 +2,11 @@
 <layout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="190dp"
+        android:layout_height="135dp"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:padding="4dp"
-        android:layout_margin="32dp"
+        android:layout_margin="20dp"
         android:background="@drawable/video_quality_bg">
 
         <TextView
@@ -25,10 +24,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleview"
             android:layout_width="190dp"
-            android:layout_height="144dp"
+            android:layout_height="135dp"
             android:layout_below="@+id/title_video"
             android:overScrollMode="never"
-            >
+            android:padding="4dp">
 
         </androidx.recyclerview.widget.RecyclerView>
 

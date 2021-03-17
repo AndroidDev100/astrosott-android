@@ -3352,10 +3352,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 } else {
                                     String compareName = trackItemList.get(i).getTrackName();
                                     if (trackName.equals(compareName)) {
-                                        trackItemList.get(i).setSelected(true);
+                                       // trackItemList.get(i).setSelected(true);
                                         // break;
                                     } else {
-                                        trackItemList.get(i).setSelected(false);
+                                       // trackItemList.get(i).setSelected(false);
                                     }
                                 }
                             }
@@ -3976,25 +3976,22 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder1 holder, final int position) {
             if (trackItemList.get(position).isSelected()) {
-                holder.tick.setBackgroundResource(R.drawable.tick);
+               // holder.tick.setBackgroundResource(R.drawable.tick);
                 holder.layout.setBackgroundColor(getResources().getColor(R.color.grape_purple));
             } else {
-                holder.tick.setBackgroundResource(0);
+               // holder.tick.setBackgroundResource(0);
                 holder.layout.setBackgroundColor(getResources().getColor(R.color.transparentColor));
                 //viewHolder.notificationItemBinding.titleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
             holder.qualityText.setText(tracks.get(position).getTrackName());
 
-            if (tracks.get(position).getTrackName().equalsIgnoreCase("Auto")){
+             if(tracks.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.LOW)){
                 holder.imgQuality.setBackgroundResource(R.drawable.ic_low_quality);
 
-            }else if(tracks.get(position).getTrackName().equalsIgnoreCase("Low")){
-                holder.imgQuality.setBackgroundResource(R.drawable.ic_low_quality);
-
-            }else if(tracks.get(position).getTrackName().equalsIgnoreCase("Medium")){
+            }else if(tracks.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.MEDIUM)){
                 holder.imgQuality.setBackgroundResource(R.drawable.ic_medium_quality);
 
-            }else if(tracks.get(position).getTrackName().equalsIgnoreCase("High")){
+            }else if(tracks.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.HIGH)){
                 holder.imgQuality.setBackgroundResource(R.drawable.ic_video_quality);
 
             }
@@ -4004,6 +4001,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 @Override
                 public void onClick(View view) {
                     int index = trackItemList.indexOf(new TrackItem("", "", true));
+                    getBinding().quality.setText(trackItemList.get(position).getTrackName());
+                    if (trackItemList.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.LOW)){
+                        getBinding().quality.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_low_quality,0,0,0);
+                    }else  if (trackItemList.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.MEDIUM)){
+                        getBinding().quality.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_medium_quality,0,0,0);
+                    }else  if (trackItemList.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.HIGH)){
+                        getBinding().quality.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_video_quality,0,0,0);
+                    }
 
                     if (index == -1) {
 
@@ -4028,6 +4033,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             trackItemList.get(index).setSelected(false);
                             trackItemList.get(position).setSelected(true);
                             trackName = trackItemList.get(position).getTrackName();
+
                             getBinding().videoDialog.setVisibility(View.GONE);
                             hideSoftKeyButton();
                             getBinding().pBar.setVisibility(View.VISIBLE);

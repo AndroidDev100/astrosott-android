@@ -267,7 +267,7 @@ public class PlayerRepository {
             VideoTrack videoTrackInfo = videoTracks.get(i);
             Log.e("tracksVideo", videoTracks.get(i).getBitrate() + "");
             if (videoTrackInfo.isAdaptive()) {
-                arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
+               // arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
             } else {
                 if (i == 1) {
                     arrayList.add(new TrackItem(AppLevelConstants.LOW, videoTrackInfo.getUniqueId(), context.getString(R.string.low_description)));
@@ -392,18 +392,19 @@ public class PlayerRepository {
         PrintLogging.printLog(this.getClass(), "", "uniqueIdss-->>" + UniqueId);
         MutableLiveData<Boolean> booleanMutableLiveData = new MutableLiveData<>();
         if (tracks != null) {
-            if (UniqueId.equalsIgnoreCase("Auto")) {
+//            if (UniqueId.equalsIgnoreCase(AppLevelConstants.AUTO)) {
+//                String selected = getSelectedIndex(1, tracks.getVideoTracks());
+//                if (!selected.equalsIgnoreCase("")) {
+//                    player.changeTrack(selected);
+//                    trackListener(booleanMutableLiveData);
+//                    // getPlayerState(booleanMutableLiveData);
+//                } else {
+//                    booleanMutableLiveData.postValue(true);
+//                }
+//
+//            }
+             if (UniqueId.equalsIgnoreCase(AppLevelConstants.LOW)) {
                 String selected = getSelectedIndex(1, tracks.getVideoTracks());
-                if (!selected.equalsIgnoreCase("")) {
-                    player.changeTrack(selected);
-                    trackListener(booleanMutableLiveData);
-                    // getPlayerState(booleanMutableLiveData);
-                } else {
-                    booleanMutableLiveData.postValue(true);
-                }
-
-            } else if (UniqueId.equalsIgnoreCase("Low")) {
-                String selected = getSelectedIndex(2, tracks.getVideoTracks());
                 PrintLogging.printLog(this.getClass(), "", "selctedIndex" + selected);
                 if (!selected.equalsIgnoreCase("")) {
                     player.changeTrack(selected);
@@ -415,8 +416,8 @@ public class PlayerRepository {
                     booleanMutableLiveData.postValue(true);
                 }
 
-            } else if (UniqueId.equalsIgnoreCase("Medium")) {
-                String selected = getSelectedIndex(3, tracks.getVideoTracks());
+            } else if (UniqueId.equalsIgnoreCase(AppLevelConstants.MEDIUM)) {
+                String selected = getSelectedIndex(2, tracks.getVideoTracks());
                 if (!selected.equalsIgnoreCase("")) {
                     player.changeTrack(selected);
                     trackListener(booleanMutableLiveData);
@@ -426,8 +427,8 @@ public class PlayerRepository {
                     booleanMutableLiveData.postValue(true);
                 }
 
-            } else if (UniqueId.equalsIgnoreCase("High")) {
-                String selected = getSelectedIndex(4, tracks.getVideoTracks());
+            } else if (UniqueId.equalsIgnoreCase(AppLevelConstants.HIGH)) {
+                String selected = getSelectedIndex(3, tracks.getVideoTracks());
                 if (!selected.equalsIgnoreCase("")) {
                     player.changeTrack(selected);
                     trackListener(booleanMutableLiveData);
@@ -454,22 +455,23 @@ public class PlayerRepository {
 
     private String getSelectedIndex(int type, List<VideoTrack> videoTracks) {
         String selectedIndex = "";
-        if (type == 1) {
-            for (int i = 0; i < videoTracks.size(); i++) {
-                VideoTrack videoTrackInfo = videoTracks.get(i);
-                Gson gson = new Gson();
-                if (videoTrackInfo.isAdaptive()) {
-                    selectedIndex = videoTrackInfo.getUniqueId();
-                }
-            }
-        } else if (type == 2) {
+//        if (type == 1) {
+//            for (int i = 0; i < videoTracks.size(); i++) {
+//                VideoTrack videoTrackInfo = videoTracks.get(i);
+//                Gson gson = new Gson();
+//                if (videoTrackInfo.isAdaptive()) {
+//                    selectedIndex = videoTrackInfo.getUniqueId();
+//                }
+//            }
+//        }
+         if (type == 1) {
             for (int i = 0; i < videoTracks.size(); i++) {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
                 if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate() < 360000) {
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
-        } else if (type == 3) {
+        } else if (type == 2) {
             // 450001, 600000
             for (int i = 0; i < videoTracks.size(); i++) {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
@@ -478,7 +480,7 @@ public class PlayerRepository {
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
-        } else if (type == 4) {
+        } else if (type == 3) {
             // 600001, 1000000
             for (int i = 0; i < videoTracks.size(); i++) {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
