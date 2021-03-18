@@ -2738,6 +2738,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void ShowAndHideView() {
         Log.d("DragValueIs", drag + "");
+
+
+
         if (drag)
             return;
 
@@ -2771,6 +2774,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 Log.d("HideView", "True");
                 getBinding().rl1.startAnimation(animationFadeOut);
                 getBinding().rl1.setVisibility(View.GONE);
+                if (getBinding().videoDialog.getVisibility() == View.VISIBLE || getBinding().audioDialog.getVisibility() == View.VISIBLE){
+                    getBinding().audioDialog.setVisibility(View.GONE);
+                    getBinding().videoDialog.setVisibility(View.GONE);
+                }
                 getBinding().listViewSettings.setVisibility(View.GONE);
                 timer = true;
                 hideSoftKeyButton();
@@ -4103,10 +4110,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             if (captionList[position].isSelected()) {
                 index = position;
-                holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
+              //  holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
               //  holder.tick.setBackgroundResource(R.drawable.tick);
             } else {
-                holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
+               // holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
                // holder.tick.setBackgroundResource(0);
                 //viewHolder.notificationItemBinding.titleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
@@ -4118,12 +4125,17 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 captionList[position].setSelected(true);
                 captionName = captionList[position].getTrackName();
                 viewModel.changeTextTrack(captionList[position].getUniqueId());
-                getBinding().audioDialog.setVisibility(View.GONE);
+               // getBinding().audioDialog.setVisibility(View.GONE);
                // dialogQuality.cancel();
                 hideSoftKeyButton();
 
                 notifyDataSetChanged();
             });
+            if (captionList[position].getTrackName().equalsIgnoreCase(captionName)){
+                holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
+            }else {
+                holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
+            }
 
 
         }
@@ -4172,9 +4184,15 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     viewModel.changeAudioTrack(tracks[position].getUniqueId());
                   //  dialogQuality.cancel();
                     hideSoftKeyButton();
+                    notifyDataSetChanged();
 
 
                 });
+                if (tracks[position].getTrackName().equalsIgnoreCase(audioTrackName)){
+                    holder.audioTracks.setTextColor(getResources().getColor(R.color.green));
+                }else {
+                    holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
+                }
             }
 
 
