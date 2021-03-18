@@ -10,6 +10,7 @@ import com.astro.sott.repositories.mysubscriptionplan.MySubscriptionPlanReposito
 import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse;
+import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 
 import java.text.SimpleDateFormat;
@@ -34,7 +35,9 @@ public class SubscriptionViewModel extends AndroidViewModel {
         return MySubscriptionPlanRepository.getInstance().getActiveSubscription(getApplication(), acessToken);
     }
 
-
+    public LiveData<EvergentCommonResponse<RemoveSubscriptionResponse>> removeSubscription(String acessToken, String productId) {
+        return MySubscriptionPlanRepository.getInstance().removeSubscription(getApplication(), acessToken, productId);
+    }
 
     public LiveData<EvergentCommonResponse<AddSubscriptionResponse>> addSubscription(String acessToken, String productId, String token) {
         return MySubscriptionPlanRepository.getInstance().addSubscription(getApplication(), acessToken, productId, token);

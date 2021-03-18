@@ -17,6 +17,7 @@ import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse
 import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceResponse
+import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
 import com.astro.sott.usermanagment.networkManager.retrofit.EvergentApiInterface
@@ -673,6 +674,50 @@ class EvergentServices {
                     } else {
                         if (response.body()?.getPaymentsV2ResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.getPaymentsV2ResponseMessage?.failureMessage, context)
+                            evergentRefreshToken.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentRefreshToken.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                } else {
+                    evergentRefreshToken.onFailure("Something Went Wrong", "")
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
+    fun removeSubscription(context: Context, productId: String, acessToken: String, evergentRefreshToken: EvergentResponseCallBack<RemoveSubscriptionResponse>) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        json.addProperty("serviceType", "PRODUCT")
+        json.addProperty("serviceID", productId)
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        createUserJson.add("GetPaymentsV2RequestMessage", json)
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.getRemoveSubscription("Bearer $acessToken", createUserJson)
+        call?.enqueue(object : Callback<RemoveSubscriptionResponse?> {
+            override fun onFailure(call: Call<RemoveSubscriptionResponse?>, t: Throwable) {
+                evergentRefreshToken.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<RemoveSubscriptionResponse?>, response: Response<RemoveSubscriptionResponse?>) {
+                if (response.body() != null && response.body()?.removeSubscriptionResponseMessage != null && response.body()?.removeSubscriptionResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.removeSubscriptionResponseMessage?.responseCode.equals("1", true)) {
+                        evergentRefreshToken.onSuccess(response.body()!!)
+                    } else {
+                        if (response.body()?.removeSubscriptionResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.removeSubscriptionResponseMessage?.failureMessage, context)
                             evergentRefreshToken.onFailure(errorModel.errorMessage, errorModel.errorCode)
 
                         } else {

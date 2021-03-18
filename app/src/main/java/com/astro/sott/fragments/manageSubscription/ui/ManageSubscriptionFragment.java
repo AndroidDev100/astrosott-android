@@ -4,7 +4,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,10 +19,12 @@ import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.callBacks.commonCallBacks.ChangePlanCallBack;
 import com.astro.sott.databinding.FragmentManageSubscriptionBinding;
+import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
 import com.astro.sott.fragments.manageSubscription.adapter.ManageSubscriptionAdapter;
 import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.ArrayList;
@@ -31,9 +35,10 @@ import java.util.List;
  * Use the {@link ManageSubscriptionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentManageSubscriptionBinding> implements ChangePlanCallBack {
+public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentManageSubscriptionBinding> implements ChangePlanCallBack, CancelDialogFragment.EditDialogListener {
     private SubscriptionViewModel subscriptionViewModel;
     private ArrayList<String> productIdList;
+    private String cancelId;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -142,5 +147,26 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
         transaction.replace(R.id.content_frame, someFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void onCancel(String serviceId) {
+        cancelId = serviceId;
+        FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+        CancelDialogFragment cancelDialogFragment = CancelDialogFragment.newInstance(getActivity().getResources().getString(R.string.create_playlist_name_title), "");
+        cancelDialogFragment.setEditDialogCallBack(ManageSubscriptionFragment.this);
+        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+    }
+
+    @Override
+    public void onFinishEditDialog() {
+        subscriptionViewModel.removeSubscription(UserInfo.getInstance(getActivity()).getAccessToken(), cancelId).observe(this, evergentCommonResponse -> {
+            if (evergentCommonResponse.isStatus()) {
+
+            } else {
+
+            }
+
+        });
     }
 }

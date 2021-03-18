@@ -20,8 +20,10 @@ import com.anjlab.android.iab.v3.SkuDetails;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.R;
 import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.search.adapter.SearchKeywordAdapter;
 import com.astro.sott.activities.search.ui.SearchKeywordActivity;
+import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.FragmentSubscriptionPacksBinding;
@@ -102,7 +104,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     }
 
     private void loadDataFromModel(List<PackDetail> productsResponseMessage) {
-        SubscriptionAdapter adapter = new SubscriptionAdapter(getActivity(), productsResponseMessage,productList);
+        SubscriptionAdapter adapter = new SubscriptionAdapter(getActivity(), productsResponseMessage, productList);
         getBinding().recyclerView.setAdapter(adapter);
 
     }
@@ -126,7 +128,12 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         packDetailList = new ArrayList<>();
         for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
             if (responseMessageItem.getAppChannels() != null && responseMessageItem.getAppChannels().get(0) != null && responseMessageItem.getAppChannels().get(0).getAppChannel() != null && responseMessageItem.getAppChannels().get(0).getAppChannel().equalsIgnoreCase("Google Wallet") && responseMessageItem.getAppChannels().get(0).getAppID() != null) {
-                skuDetails = ((HomeActivity) getActivity()).getSubscriptionDetail(responseMessageItem.getAppChannels().get(0).getAppID());
+                Log.w("avname", getActivity().getClass().getName() + "");
+                if (getActivity() instanceof HomeActivity) {
+                    skuDetails = ((HomeActivity) getActivity()).getSubscriptionDetail(responseMessageItem.getAppChannels().get(0).getAppID());
+                } else if (getActivity() instanceof SubscriptionDetailActivity) {
+                    skuDetails = ((SubscriptionDetailActivity) getActivity()).getSubscriptionDetail(responseMessageItem.getAppChannels().get(0).getAppID());
+                }
                 if (skuDetails != null) {
                     PackDetail packDetail = new PackDetail();
                     packDetail.setSkuDetails(skuDetails);

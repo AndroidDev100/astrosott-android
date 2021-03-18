@@ -80,6 +80,10 @@ public class ManageSubscriptionAdapter extends RecyclerView.Adapter<ManageSubscr
         holder.manageSubscriptionItemBinding.change.setOnClickListener(v -> {
             changePlanCallBack.onClick();
         });
+        holder.manageSubscriptionItemBinding.cancel.setOnClickListener(v -> {
+            if (accountServiceMessageItems.get(position).getServiceID() != null)
+                changePlanCallBack.onCancel();
+        });
     }
 
     @Override

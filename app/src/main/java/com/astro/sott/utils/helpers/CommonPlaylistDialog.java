@@ -74,11 +74,11 @@ public class CommonPlaylistDialog implements PlaylistCallback {
         });
 
         addPlaylist.setOnClickListener(view -> {
-            FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
+          /*  FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
             PlaylistDialogFragment playlistDialogFragment = PlaylistDialogFragment.newInstance(context.getResources().getString(R.string.create_playlist_name_title), "");
             playlistDialogFragment.setEditDialogCallBack((PlaylistDialogFragment.EditDialogListener) context);
             playlistDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
-            dialog.dismiss();
+            dialog.dismiss();*/
         });
     }
 

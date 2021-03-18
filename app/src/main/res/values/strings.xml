@@ -124,6 +124,8 @@
     <string name="something_went_wrong_try_again">Oops, something went wrong. Please try again later</string>
     <string name="subscribe">Package Details</string>
     <string name="no_active_subs">Currently no Active Subscription</string>
+    <string name="sad_to_see">Sad to See You Go</string>
+    <string name="cancel_description">But goodbyes are not forever. You can \n always re-subscribe again! \n Your current subscription is valid until</string>
     <string name="no_feeds_available">No feeds available.</string>
     <string name="no_catchup_available">Sorry, Catch Up feature is not available for this channel.</string>
     <string name="force_update">Update</string>
@@ -224,6 +226,8 @@
     <string name="incorrect_pin">Incorrect PIN. Try again</string>
     <string name="no_content_available">No Content Available</string>
     <string name="login">Login</string>
+    <string name="not_yet">NOT YET!</string>
+    <string name="sorry_have_to_go">Sorry, I have to go...</string>
     <string name="error_sms_failure">Sorry verification PIN cannot be sent right now. Please try again later</string>
     <string name="error_verification_failure">Invalid OTP</string>
     <string name="default_password">123456</string>
