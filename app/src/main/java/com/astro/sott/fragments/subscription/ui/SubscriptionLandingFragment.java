@@ -17,6 +17,8 @@ import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentSubscriptionLandingBinding;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SubscriptionLandingFragment#newInstance} factory method to
@@ -25,6 +27,7 @@ import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 public class SubscriptionLandingFragment extends BaseBindingFragment<FragmentSubscriptionLandingBinding> {
 
 
+    private ArrayList<String> productIdList;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,6 +66,7 @@ public class SubscriptionLandingFragment extends BaseBindingFragment<FragmentSub
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        productIdList = (ArrayList<String>) getArguments().getSerializable("productList");
 
 
     }
@@ -82,6 +86,7 @@ public class SubscriptionLandingFragment extends BaseBindingFragment<FragmentSub
                 SubscriptionPacksFragment someFragment = new SubscriptionPacksFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("from", "more");
+                bundle.putSerializable("productList", productIdList);
                 someFragment.setArguments(bundle);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter

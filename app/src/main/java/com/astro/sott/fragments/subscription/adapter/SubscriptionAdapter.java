@@ -29,11 +29,13 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
     Activity fragment;
     private List<PackDetail> packDetailList;
     private CardCLickedCallBack cardCLickedCallBack;
+    private List<String> productList;
 
-    public SubscriptionAdapter(Activity ctx, List<PackDetail> productsResponseMessage) {
+    public SubscriptionAdapter(Activity ctx, List<PackDetail> productsResponseMessage, List<String> productList) {
         this.fragment = ctx;
         packDetailList = productsResponseMessage;
         cardCLickedCallBack = (CardCLickedCallBack) ctx;
+        this.productList = productList;
     }
 
     @NonNull
@@ -52,21 +54,39 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
         if (packDetailList.get(position).getProductsResponseMessageItem().getDuration() != null && packDetailList.get(position).getProductsResponseMessageItem().getPeriod() != null) {
             description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
         }
-        if (packDetailList.get(position).getProductsResponseMessageItem().getRenewable() != null&&packDetailList.get(position).getProductsResponseMessageItem().getRenewable() ) {
+        if (packDetailList.get(position).getProductsResponseMessageItem().getRenewable() != null && packDetailList.get(position).getProductsResponseMessageItem().getRenewable()) {
             description.append(" recurring subscription");
         }
+        if (packDetailList.get(position).getProductsResponseMessageItem().getSkuORQuickCode() != null && productList != null) {
+            if (checkActiveOrNot(packDetailList.get(position).getProductsResponseMessageItem().getSkuORQuickCode())) {
+                holder.binding.btnBuy.setText("SUBSCRIBED");
+            } else {
+                holder.binding.btnBuy.setText("BUY @ " + packDetailList.get(position).getSkuDetails().currency + " " + packDetailList.get(position).getSkuDetails().priceValue);
+            }
+        } else {
+            holder.binding.btnBuy.setText("BUY @ " + packDetailList.get(position).getSkuDetails().currency + " " + packDetailList.get(position).getSkuDetails().priceValue);
+
+        }
+
         holder.binding.packDescription.setText(description);
         holder.binding.btnBuy.setOnClickListener(v -> {
             if (UserInfo.getInstance(fragment).isActive()) {
                 cardCLickedCallBack.onCardClicked(packDetailList.get(position).getProductsResponseMessageItem().getAppChannels().get(0).getAppID());
-
             } else {
                 new ActivityLauncher(fragment).astrLoginActivity(fragment, AstrLoginActivity.class);
 
             }
         });
-        holder.binding.btnBuy.setText("BUY @ " + packDetailList.get(position).getSkuDetails().currency + " " + packDetailList.get(position).getSkuDetails().priceValue);
 
+
+    }
+
+    private boolean checkActiveOrNot(String skuORQuickCode) {
+        boolean matched = false;
+        for (String productId : productList) {
+            matched = productId.equalsIgnoreCase(skuORQuickCode);
+        }
+        return matched;
     }
 
     @Override

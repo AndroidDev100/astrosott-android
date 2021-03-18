@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -22,6 +23,7 @@ import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.userInfo.UserInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +33,7 @@ import java.util.List;
  */
 public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentManageSubscriptionBinding> implements ChangePlanCallBack {
     private SubscriptionViewModel subscriptionViewModel;
+    private ArrayList<String> productIdList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -87,6 +90,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
+                    getListofActivePacks(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
                     loadData(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
                 } else {
                     getBinding().nodataLayout.setVisibility(View.VISIBLE);
@@ -98,12 +102,23 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
         });
     }
 
+    private void getListofActivePacks(List<AccountServiceMessageItem> accountServiceMessage) {
+        productIdList = new ArrayList<>();
+        for (AccountServiceMessageItem accountServiceMessageItem : accountServiceMessage) {
+            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE")) {
+                if (accountServiceMessageItem.getServiceID() != null)
+                    productIdList.add(accountServiceMessageItem.getServiceID());
+
+            }
+        }
+    }
+
     private void modelCall() {
         subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel.class);
     }
 
     private void loadData(List<AccountServiceMessageItem> accountServiceMessage) {
-        ManageSubscriptionAdapter manageSubscriptionAdapter = new ManageSubscriptionAdapter(accountServiceMessage, getActivity(),this);
+        ManageSubscriptionAdapter manageSubscriptionAdapter = new ManageSubscriptionAdapter(accountServiceMessage, getActivity(), this);
         getBinding().planRecycler.setAdapter(manageSubscriptionAdapter);
     }
 
@@ -121,6 +136,9 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     public void onClick() {
         SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("productList", productIdList);
+        someFragment.setArguments(bundle);
         transaction.replace(R.id.content_frame, someFragment);
         transaction.addToBackStack(null);
         transaction.commit();

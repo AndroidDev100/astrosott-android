@@ -36,6 +36,8 @@ import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MoreNewFragment#newInstance} factory method to
@@ -144,6 +146,9 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 if (!UserInfo.getInstance(getActivity()).isActive()) {
                     navBar.setVisibility(View.GONE);
                     SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("productList", new ArrayList<String>());
+                    someFragment.setArguments(bundle);
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack

@@ -42,6 +42,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     private SubscriptionViewModel subscriptionViewModel;
     private SkuDetails skuDetails;
     private List<PackDetail> packDetailList;
+    private List<String> productList;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -83,6 +84,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
             mParam2 = getArguments().getString(ARG_PARAM2);
             from = getArguments().getString("from");
         }
+        productList = (ArrayList<String>) getArguments().getSerializable("productList");
     }
 
     @Override
@@ -100,7 +102,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     }
 
     private void loadDataFromModel(List<PackDetail> productsResponseMessage) {
-        SubscriptionAdapter adapter = new SubscriptionAdapter(getActivity(), productsResponseMessage);
+        SubscriptionAdapter adapter = new SubscriptionAdapter(getActivity(), productsResponseMessage,productList);
         getBinding().recyclerView.setAdapter(adapter);
 
     }
