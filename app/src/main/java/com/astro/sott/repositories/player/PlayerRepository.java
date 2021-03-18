@@ -333,17 +333,24 @@ public class PlayerRepository {
         if (trackItems.length > 0) {
             for (int i = 0; i < audioTracks.size(); i++) {
                 AudioTrack audioTrackInfo = audioTracks.get(i);
-                String label = audioTrackInfo.getLabel() != null ? audioTrackInfo.getLabel() : audioTrackInfo.getLanguage();
-                // String bitrate = (audioTrackInfo.getBitrate() > 0) ? "" + audioTrackInfo.getBitrate() : "";
-                String label2 = audioTracks.get(0).getLanguage();
-                if (label2 != null) {
-                    String label1 = audioTrackInfo.getLanguage();
-                    PrintLogging.printLog("", "Languageis" + label);
-                    trackItems[i] = new TrackItem(label1 + " ", audioTrackInfo.getUniqueId());
 
-                } else {
-                    trackItems[i] = new TrackItem("Default" + " ", audioTrackInfo.getUniqueId());
+                if (audioTrackInfo.isAdaptive()) {
+                    // arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
+                }else {
+                    trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId());
                 }
+
+//                String label = audioTrackInfo.getLabel() != null ? audioTrackInfo.getLabel() : audioTrackInfo.getLanguage();
+//                // String bitrate = (audioTrackInfo.getBitrate() > 0) ? "" + audioTrackInfo.getBitrate() : "";
+//                String label2 = audioTracks.get(0).getLanguage();
+//                if (label2 != null) {
+//                    String label1 = audioTrackInfo.getLanguage();
+//                    PrintLogging.printLog("", "Languageis" + label);
+//                    trackItems[i] = new TrackItem(label1 + " ", audioTrackInfo.getUniqueId());
+//
+//                } else {
+//                    trackItems[i] = new TrackItem("Default" + " ", audioTrackInfo.getUniqueId());
+//                }
             }
         }
 
