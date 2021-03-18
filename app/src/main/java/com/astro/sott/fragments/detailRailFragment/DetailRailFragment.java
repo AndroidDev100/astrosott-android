@@ -1,6 +1,7 @@
 package com.astro.sott.fragments.detailRailFragment;
 
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingFragment;
@@ -50,7 +53,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     private int seasonCounter = 0;
     int counter = 1;
     private String externalId = "";
-
+    private int indicatorWidth;
 
     public DetailRailFragment() {
 
@@ -269,14 +272,31 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
             getBinding().pager.setAdapter(detailPagerAdapter);
             getBinding().pager.disableScroll(true);
             getBinding().tabLayout.setupWithViewPager(getBinding().pager);
+            getBinding().tabLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
+
+                    //Assign new width
+                   RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                    indicatorParams.width = indicatorWidth;
+                    getBinding().indicator.setLayoutParams(indicatorParams);
+                }
+            });
             getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
-                public void onPageScrolled(int i, float v, int i1) {
+                public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
 
+                    //Multiply positionOffset with indicatorWidth to get translation
+                    float translationOffset =  (positionOffset+i) * (indicatorWidth);
+                    params.leftMargin = (int) translationOffset;
+                    getBinding().indicator.setLayoutParams(params);
                 }
 
                 @Override
                 public void onPageSelected(int i) {
+
                     getBinding().pager.reMeasureCurrentPage(i);
                 }
 
@@ -285,6 +305,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
                 }
             });
+            getBinding().indicator.setVisibility(View.VISIBLE);
             getBinding().tabLayout.setVisibility(View.VISIBLE);
         } catch (IllegalStateException e) {
 

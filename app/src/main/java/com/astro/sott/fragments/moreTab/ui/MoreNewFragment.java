@@ -140,12 +140,8 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                 SubscriptionLandingFragment fragment =new SubscriptionLandingFragment();
-//                  FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                  transaction.replace(R.id.relative_layout, fragment).commit();
 
-
-                if (getBinding().subscribe.getText().equals(getResources().getString(R.string.subscribe))) {
+                if (!UserInfo.getInstance(getActivity()).isActive()) {
                     navBar.setVisibility(View.GONE);
                     SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();

@@ -2,35 +2,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.astro.sott.com.astro.dialoggo.fragments.detailRailFragment.DetailRailFragment">
+<!--<View-->
+<!--    android:layout_height="50dp"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:background="@drawable/tab_background"-->
+<!--    app:layout_constraintLeft_toLeftOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+
+<!--    />-->
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/grape_purple"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tabBackground="@color/tab_selected"
+            android:layout_marginTop="@dimen/dimen10dp"
+            android:background="@drawable/ic_group_3776"
+            app:tabBackground="@drawable/ic_group_3776"
+            app:tabIndicator="@color/transparentColor"
             app:tabSelectedTextColor="@color/white"
             app:tabTextAppearance="@style/MineCustomTabText"
             app:tabTextColor="@color/grey"
+            >
+        </com.google.android.material.tabs.TabLayout>
+        <View
+            android:id="@+id/indicator"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_below="@id/tabLayout"
+            android:background="@drawable/tab_indicator"/>
 
-            />
 
         <com.astro.sott.utils.helpers.LiveTvViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:background="@color/blue_bg"
-            app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+            android:layout_below="@id/indicator"
+            android:background="@color/grape_purple"
+             />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </layout>
