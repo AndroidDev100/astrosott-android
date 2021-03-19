@@ -596,5 +596,8 @@
     <dimen name="_56dp">56dp</dimen>
     <dimen name="_23dp">23dp</dimen>
     <dimen name="_2dp">2dp</dimen>
+    <dimen name="_311dp">311dp</dimen>
+    <dimen name="_276dp">276dp</dimen>
+    <dimen name="dimen23dp">23dp</dimen>
 
 </resources>

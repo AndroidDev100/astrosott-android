@@ -589,6 +589,10 @@
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="privacy_polices">Privacy Policies</string>
     <string name="onetime_pass_code_text"><![CDATA[One time passcode had been sent to registered \n <email/mobile number>]]></string>
+    <string name="link"><u>Link</u></string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
+    <string name="apple">Apple</string>
 
 
 </resources>

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grape_purple"
+        >
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grape_purple"
@@ -65,6 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_13sdp"
         android:layout_marginEnd="@dimen/_13sdp"
+        android:id="@+id/ll1"
         android:layout_below="@+id/change_profilePhoto"
         android:layout_marginTop="@dimen/_20sdp"
         android:orientation="vertical"
@@ -214,10 +221,128 @@
             android:text="@string/update_profile"
             android:textAllCaps="true"
             android:textSize="@dimen/_16sp"
+            android:visibility="gone"
             android:fontFamily="@font/heebo_medium"
             android:textColor="@color/white"
             android:background="@drawable/gradient_button"/>
 
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/ll1"
+        android:id="@+id/rl1"
+        android:layout_marginTop="@dimen/dimen32dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_16sp"
+            android:id="@+id/linked_accounts"
+            android:fontFamily="@font/heebo_bold"
+            android:textColor="@color/white"
+            android:layout_marginStart="@dimen/dimen16dp"
+            android:text="@string/linked_accounts"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen18dp"
+            android:layout_below="@id/linked_accounts"
+            android:id="@+id/rl2">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_16sp"
+                android:layout_gravity="left"
+                android:drawableLeft="@drawable/fb_white_icon"
+                android:fontFamily="@font/heebo_regular"
+                android:textColor="@color/white"
+                android:drawablePadding="@dimen/_8dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="@dimen/dimen16dp"
+                android:text="@string/facebook"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_16sp"
+                android:layout_gravity="end"
+                android:padding="@dimen/_6dp"
+                android:id="@+id/link_fb"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/heebo_regular"
+                android:textColor="@color/aqua_marine"
+                android:layout_marginEnd="@dimen/dimen16dp"
+                android:text="@string/link"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen32dp"
+            android:layout_below="@id/rl2"
+            android:id="@+id/rl3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_16sp"
+                android:layout_gravity="left"
+                android:drawableLeft="@drawable/google_white_icon"
+                android:fontFamily="@font/heebo_regular"
+                android:textColor="@color/white"
+                android:drawablePadding="@dimen/_8dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="@dimen/dimen16dp"
+                android:text="@string/google"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_16sp"
+                android:layout_gravity="end"
+                android:id="@+id/link_google"
+                android:padding="@dimen/_6dp"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/heebo_regular"
+                android:textColor="@color/aqua_marine"
+                android:layout_marginEnd="@dimen/dimen16dp"
+                android:text="@string/link"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen32dp"
+            android:layout_below="@id/rl3"
+            android:layout_marginBottom="@dimen/dimen60dp"
+            android:id="@+id/rl4">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_16sp"
+                android:layout_gravity="left"
+                android:drawableLeft="@drawable/apple_white_icon"
+                android:fontFamily="@font/heebo_regular"
+                android:textColor="@color/white"
+                android:drawablePadding="@dimen/_8dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="@dimen/dimen16dp"
+                android:text="@string/apple"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_16sp"
+                android:layout_gravity="end"
+                android:padding="@dimen/_6dp"
+                android:id="@+id/link_apple"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/heebo_regular"
+                android:textColor="@color/aqua_marine"
+                android:layout_marginEnd="@dimen/dimen16dp"
+                android:text="@string/link"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
 </RelativeLayout>
+    </ScrollView>
 </layout>
