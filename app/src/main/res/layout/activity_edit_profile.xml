@@ -5,20 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_bg"
+    android:background="@color/grape_purple"
     tools:context=".activities.profile.ui.EditProfileActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/toolbar_bg"
+        android:background="@color/dark_toolbar"
         android:id="@+id/toolbar">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/back_button"
+            android:padding="7dp"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_margin="@dimen/_7sdp"
             android:src="@drawable/ic_arrow_back_24px"/>
         <TextView
             android:layout_width="wrap_content"
@@ -27,7 +28,7 @@
             android:id="@+id/title"
             android:textAllCaps="true"
             android:textAlignment="center"
-            android:textSize="14sp"
+            android:textSize="@dimen/_14sp"
             android:letterSpacing="0.09"
             android:fontFamily="@font/heebo_medium"
             android:layout_gravity="center"
@@ -55,7 +56,7 @@
     android:layout_centerInParent="true"
     android:layout_marginTop="@dimen/_10sdp"
      android:textColor="@color/white"
-    android:textSize="14sp"
+    android:textSize="@dimen/_14sp"
     android:fontFamily="@font/heebo_regular"
     android:id="@+id/change_profilePhoto"
     android:text="@string/change_profile_photo"/>
@@ -83,7 +84,7 @@
               android:hint="@string/name"
               android:id="@+id/name"
               android:fontFamily="@font/heebo_regular"
-              android:textSize="16sp"
+              android:textSize="@dimen/_16sp"
               android:textColor="@color/white"
               android:textColorHint="@color/grey"
               android:backgroundTint="@color/white"
@@ -150,7 +151,7 @@
                 android:textColorHint="@color/white"
                 android:backgroundTint="@color/white"
                 android:maxLength="10"
-                android:textSize="16sp"
+                android:textSize="@dimen/_16sp"
                 android:fontFamily="@font/heebo_regular"
                 android:id="@+id/mobile_no"
                 android:foregroundTint="@color/white"
@@ -212,7 +213,7 @@
             android:layout_marginEnd="@dimen/_45sdp"
             android:text="@string/update_profile"
             android:textAllCaps="true"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16sp"
             android:fontFamily="@font/heebo_medium"
             android:textColor="@color/white"
             android:background="@drawable/gradient_button"/>

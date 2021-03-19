@@ -72,8 +72,8 @@
                     android:id="@+id/email"
 
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="@dimen/dimen16dp"
+                    android:layout_height="@dimen/_56dp"
+                    android:layout_marginLeft="@dimen/dimen18dp"
                     android:layout_marginTop="@dimen/dimen10dp"
                     android:layout_marginRight="@dimen/dimen18dp"
                     android:background="@drawable/search_linear_bg"
@@ -117,7 +117,7 @@
                     android:id="@+id/password"
 
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="@dimen/_56dp"
                     android:layout_marginLeft="@dimen/dimen18dp"
                     android:layout_marginTop="@dimen/dimen25dp"
                     android:layout_marginRight="@dimen/dimen18dp"
@@ -131,8 +131,8 @@
                         android:id="@+id/password_edt"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="18dp"
-                        android:layout_marginRight="18dp"
+                        android:layout_marginLeft="@dimen/dimen18dp"
+                        android:layout_marginRight="@dimen/dimen18dp"
                         android:layout_weight="1.9"
                         android:background="@null"
                         android:cursorVisible="true"
@@ -145,7 +145,7 @@
                         android:textColor="@color/white"
                         android:textColorHint="@color/grey"
                         android:textCursorDrawable="@drawable/cursor_color"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/_16sp" />
 
                     <ImageView
                         android:id="@+id/eye_icon"
@@ -153,7 +153,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="4dp"
-                        android:layout_marginRight="18dp"
+                        android:layout_marginRight="@dimen/dimen18dp"
                         android:background="@drawable/ic_outline_visibility_off_light"></ImageView>
                 </LinearLayout>
 
@@ -161,8 +161,8 @@
                     android:id="@+id/error_passsword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginRight="18dp"
+                    android:layout_marginLeft="@dimen/dimen18dp"
+                    android:layout_marginRight="@dimen/dimen18dp"
                     android:textColor="@color/radical_red"
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -182,13 +182,13 @@
                     android:id="@+id/pasw_para"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="@dimen/dimen32dp"
+                    android:layout_marginTop="@dimen/_4dp"
                     android:layout_marginEnd="13dp"
                     android:fontFamily="@font/heebo_regular"
                     android:text="@string/password_rules"
                     android:textColor="@color/grey"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/_12sp"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/password"></TextView>
@@ -265,14 +265,14 @@
                 <View
                     android:layout_width="@dimen/_60dp"
                     android:layout_height="1.5dp"
-                    android:layout_margin="4dp"
+                    android:layout_margin="5dp"
                     android:background="@color/white"
                     android:gravity="center"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/or"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.749" />
+                    app:layout_constraintVertical_bias="0.753" />
 
                 <View
                     android:layout_width="@dimen/_60dp"
@@ -284,7 +284,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/or"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.747" />
+                    app:layout_constraintVertical_bias="0.751" />
 
                 <TextView
                     android:id="@+id/or"
