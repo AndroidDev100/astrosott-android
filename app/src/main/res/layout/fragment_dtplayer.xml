@@ -193,7 +193,36 @@
                     layout="@layout/layout_caption_audio_setting"
                     />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/brightness_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                >
+                <include
+                    android:id="@+id/brightness_seek"
+                    layout="@layout/brightness_up_down"
+                    />
+            </LinearLayout>
             <!--</RelativeLayout>-->
+<!--            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--                android:layout_width="@dimen/height150dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:background="@color/black"-->
+<!--                android:rotation="270"-->
+<!--                android:layout_alignParentLeft="true"-->
+<!--                android:orientation="vertical"-->
+<!--                android:layout_above="@+id/seekBar"-->
+<!--                android:layout_marginBottom="@dimen/dimen80dp">-->
+
+
+
+
+
+<!--            </RelativeLayout>-->
 
 
             <SeekBar
