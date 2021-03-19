@@ -168,6 +168,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     List<TrackItem> trackItemList;
     boolean adRunning = false;
     TrackItem[] captionList;
+    TrackItem[] audioList;
+
     boolean isVideoError = false;
     boolean hasPostRoll = false;
     boolean hasMidRoll = false;
@@ -3271,16 +3273,15 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void chooseAudio() {
-        getBinding().audioDialog.setVisibility(View.VISIBLE);
-        getBinding().audioDialog.bringToFront();
+
         if (getBinding().audioQuality.recycleviewAudio != null) {
             getBinding().audioQuality.recycleviewAudio.setLayoutManager(new LinearLayoutManager(baseActivity));
             getBinding().audioQuality.recycleviewAudio.setNestedScrollingEnabled(false);
             viewModel.loadAudioWithPlayer().observe(this, audioTracks -> {
                 if (audioTracks != null && audioTracks.size() > 0) {
-
                     viewModel.getAudioTrackItems().observe(baseActivity, trackItems -> {
                         if (trackItems.length > 0) {
+                            audioList = trackItems;
 //                            for (int i = 0; i < trackItems.length; i++) {
 //                                if (audioTrackName == "") {
 //                                    if (trackItems[0] != null) {
@@ -3301,6 +3302,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                            }
                             AudioAdapter audioAdapter = new AudioAdapter(trackItems);
                             getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
+                        }else {
+                            getBinding().audioQuality.recycleviewAudio.setVisibility(View.GONE);
+                            getBinding().audioQuality.titleAudio.setVisibility(View.GONE);
                         }
 
                     });
@@ -3310,7 +3314,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                    // dialogAudio.cancel();
                     getBinding().audioQuality.recycleviewAudio.setVisibility(View.GONE);
                     getBinding().audioQuality.titleAudio.setVisibility(View.GONE);
-                    callHandler();
+                    //callHandler();
                    // ToastHandler.show(baseActivity.getResources().getString(R.string.no_tracks_available), baseActivity.getApplicationContext());
                 }
 
@@ -3325,20 +3329,25 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (textTracks != null && textTracks.size() > 0) {
 
                     viewModel.getTextTrackItems().observe(baseActivity, trackItems -> {
-                        captionList = trackItems;
+                        if (trackItems.length>0) {
+                            captionList = trackItems;
 //                        if (captionName == "") {
 //                            captionList[0].setSelected(true);
 //                            captionName = captionList[0].getTrackName();
 //                        }
-                        CaptionAdapter captionAdapter = new CaptionAdapter(trackItems);
-                        getBinding().audioQuality.recycleviewSubtitle.setAdapter(captionAdapter);
+                            CaptionAdapter captionAdapter = new CaptionAdapter(trackItems);
+                            getBinding().audioQuality.recycleviewSubtitle.setAdapter(captionAdapter);
+                        }else {
+                            getBinding().audioQuality.recycleviewSubtitle.setVisibility(View.GONE);
+                            getBinding().audioQuality.titleSubtitle.setVisibility(View.GONE);
+                        }
                     });
 
 
                 } else {
                    // dialogQuality.cancel();
 //                    hideSoftKeyButton();
-                    callHandler();
+                   // callHandler();
                     getBinding().audioQuality.recycleviewSubtitle.setVisibility(View.GONE);
                     getBinding().audioQuality.titleSubtitle.setVisibility(View.GONE);
                     //ToastHandler.show(baseActivity.getResources().getString(R.string.no_caption_available), baseActivity.getApplicationContext());
@@ -3347,12 +3356,18 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             });
         }
 
+        if (captionList!=null || audioList!=null){
+            getBinding().audioDialog.setVisibility(View.VISIBLE);
+            getBinding().audioDialog.bringToFront();
+        }else {
+            getBinding().audioDialog.setVisibility(View.GONE);
+        }
+
 
     }
 
     private void chooseVideoquality() {
-        getBinding().videoDialog.setVisibility(View.VISIBLE);
-        getBinding().videoDialog.bringToFront();
+
         final RecyclerView recycleview;
         callHandler();
        // dialogQuality = new Dialog(getBaseActivity(), R.style.AppAlertTheme);
@@ -3368,6 +3383,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (videoTracks != null && videoTracks.size() > 0) {
                     viewModel.getVideoTrackItems().observe(baseActivity, trackItems -> {
                         if (trackItems.size() > 0) {
+                            getBinding().videoDialog.setVisibility(View.VISIBLE);
+                            getBinding().videoDialog.bringToFront();
                             trackItemList = trackItems;
 
                             for (int i = 0; i < trackItemList.size(); i++) {
@@ -3388,13 +3405,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                            // dialogQuality.show();
 
                         } else {
+                            getBinding().videoDialog.setVisibility(View.GONE);
                             ToastHandler.show(baseActivity.getResources().getString(R.string.no_video_available), baseActivity.getApplicationContext());
 
                         }
                     });
 
                 } else {
-                    dialogQuality.cancel();
+                    getBinding().videoDialog.setVisibility(View.GONE);
                     isDialogShowing = false;
                     hideSoftKeyButton();
                     ToastHandler.show(baseActivity.getResources().getString(R.string.no_tracks_available), baseActivity.getApplicationContext());
