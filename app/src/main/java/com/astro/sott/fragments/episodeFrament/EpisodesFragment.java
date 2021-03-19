@@ -43,6 +43,7 @@ import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.kaltura.android.exoplayer2.util.Log;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.MultilingualStringValueArray;
 
 
@@ -59,10 +60,10 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     FirstEpisodeCallback _mClickListener;
     BottomSheetDialog dialog;
     TextView pause_download, resume_download, cancel_download, go_to_mydownload_lay;
-    long estimatedSize;
     WebSeriesDescriptionViewModel viewModel;
     private List<AssetCommonBean> closedSeriesData;
-
+    private StringBuilder listOfAsset;
+    private List<RailCommonData> finalEpisodeList;
     Asset asset;
     LinearLayoutManager mLayoutManager;
     private int seasonNumber = 0;
@@ -81,7 +82,6 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     Timer timer;
     int clickedPosition = -1;
-    int interval = 0;
     int timeInterval = 4000;
     int typeOfDownload = 100;
     int activePosition = -1;
@@ -489,7 +489,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
         });
         getBinding().retryTxt.setOnClickListener(view -> {
-          //  getSeasons();
+            //  getSeasons();
         });
 
     }
@@ -501,22 +501,97 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             for (int i = 0; i < loadedList.size(); i++) {
                 list.add(i, loadedList.get(i));
             }
-            adapter = new EpisodeAdapter(getActivity(), loadedList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
-            getBinding().recyclerView.setAdapter(adapter);
 
-            if (seriesType.equalsIgnoreCase("open")) {
-                if (totalPages > 1)
-                    getBinding().season.setEnabled(true);
-            }
-            /*if (count >= assetCommonBeans.get(0).getTotalCount()) {
-                getBinding().loadMoreButton.setVisibility(View.GONE);
-            } else {
-                getBinding().loadMoreButton.setVisibility(View.VISIBLE);
-            }*/
+            getAssetListForProgress(loadedList);
+/* if (count >= assetCommonBeans.get(0).getTotalCount()) {
+            getBinding().loadMoreButton.setVisibility(View.GONE);
+        } else {
+            getBinding().loadMoreButton.setVisibility(View.VISIBLE);
+        }*/
 
         } catch (Exception e) {
 
             PrintLogging.printLog("ExceptionloadMore", "" + e);
+        }
+
+    }
+
+    int loadListSize = 0;
+
+    private void getAssetListForProgress(List<RailCommonData> loadedList) {
+        listOfAsset = new StringBuilder();
+        try {
+            for (RailCommonData railCommonData : loadedList) {
+                if (railCommonData.getObject() != null && railCommonData.getObject().getId() != null) {
+                    loadListSize++;
+                    if (loadedList.size() != loadListSize) {
+                        listOfAsset.append(railCommonData.getObject().getId() + ",");
+                    } else {
+                        listOfAsset.append(railCommonData.getObject().getId() + "");
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        getProgressList();
+    }
+
+    private void getProgressList() {
+        viewModel.getEpisodeProgress(listOfAsset.toString()).observe(this, bookmarkList -> {
+            if (bookmarkList != null) {
+                matchBookMarkList(bookmarkList);
+            } else {
+                if (seriesType.equalsIgnoreCase("open")) {
+                    setOpenSeriesAdapter(loadedList);
+                } else {
+                    setCLosedSeriesAdapter(loadedList);
+                }
+            }
+        });
+    }
+
+    private void matchBookMarkList(List<Bookmark> bookmarkList) {
+        finalEpisodeList = new ArrayList<>();
+        for (RailCommonData railCommonData : loadedList) {
+            RailCommonData finalEpisode = new RailCommonData();
+            finalEpisode.setObject(railCommonData.getObject());
+            for (Bookmark bookmark : bookmarkList) {
+                if (bookmark.getId().equalsIgnoreCase(railCommonData.getId().toString())) {
+                    finalEpisode.setProgress(bookmark.getPosition());
+                }
+            }
+            finalEpisodeList.add(finalEpisode);
+        }
+        if (seriesType.equalsIgnoreCase("open")) {
+            setOpenSeriesAdapter(finalEpisodeList);
+        } else {
+            setCLosedSeriesAdapter(finalEpisodeList);
+        }
+    }
+
+    private void setCLosedSeriesAdapter(List<RailCommonData> finalEpisodeList) {
+        checkExpiry(list);
+        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
+        getBinding().recyclerView.setAdapter(adapter);
+
+       /* int count = adapter.getItemCount();
+        if (count >= assetCommonBeans.get(0).getTotalCount()) {
+            getBinding().loadMoreButton.setVisibility(View.GONE);
+        } else {
+            getBinding().loadMoreButton.setVisibility(View.VISIBLE);
+        }*/
+
+    }
+
+    private void setOpenSeriesAdapter(List<RailCommonData> finalEpisodeList) {
+        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
+        getBinding().recyclerView.setAdapter(adapter);
+
+        if (seriesType.equalsIgnoreCase("open")) {
+            if (totalPages > 1)
+                getBinding().season.setEnabled(true);
         }
 
     }
@@ -528,8 +603,8 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             for (int i = 0; i < loadedList.size(); i++) {
                 list.add(i, loadedList.get(i));
             }
-
-            checkExpiry(list);
+            getAssetListForProgress(loadedList);
+          /*  checkExpiry(list);
             adapter = new EpisodeAdapter(getActivity(), loadedList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
             getBinding().recyclerView.setAdapter(adapter);
 
@@ -538,7 +613,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 getBinding().loadMoreButton.setVisibility(View.GONE);
             } else {
                 getBinding().loadMoreButton.setVisibility(View.VISIBLE);
-            }
+            }*/
 
         } catch (Exception e) {
 
@@ -705,7 +780,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     public void getEpisodes(int seasonNumber) {
         loadedList.clear();
-        counter=1;
+        counter = 1;
         adapter = null;
         seasonCounter = selectedIndex;
         callSeasonEpisodes(seriesNumberList);

@@ -50,6 +50,7 @@ import com.astro.sott.callBacks.kalturaCallBacks.DMSCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.DeleteDeviceCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.DeleteFromFollowlistCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.DeleteWatchListCallBack;
+import com.astro.sott.callBacks.kalturaCallBacks.EpisodeProgressCallback;
 import com.astro.sott.callBacks.kalturaCallBacks.GenreCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.GetSeriesCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.HomechannelCallBack;
@@ -170,6 +171,7 @@ import com.kaltura.client.types.AssetGroupBy;
 import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.AssetHistoryFilter;
 import com.kaltura.client.types.AssetMetaOrTagGroupBy;
+import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.BookmarkFilter;
 import com.kaltura.client.types.Channel;
 import com.kaltura.client.types.ChannelFilter;
@@ -2933,7 +2935,7 @@ public class KsServices {
 
         // PrintLogging.printLog(this.getClass(),"", "counter value  :" + counter);
         final SearchAssetFilter assetFilter = new SearchAssetFilter();
-        String modifyString=AppCommonMethods.getSearchFieldsKsql(keyToSearch,"",1,context);
+        String modifyString = AppCommonMethods.getSearchFieldsKsql(keyToSearch, "", 1, context);
         /*String tag3 = "name ~ '";
         String tag2 = "'";
 
@@ -2942,31 +2944,28 @@ public class KsServices {
                         keyToSearch +
                         tag2;*/
         assetFilter.setKSql(KsPreferenceKey.getInstance(context).getSearchKSQL());
-        if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getMovie(context)))){
-            assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getMovie(context))+","+String.valueOf(MediaTypeConstant.getCollection(context)));
-        }else if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getSeries(context))) || mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getEpisode(context)))){
-            assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getSeries(context))+","+String.valueOf(MediaTypeConstant.getEpisode(context)));
-        }else if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getLinear(context))) || mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getProgram(context)))){
-            assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getLinear(context))+","+String.valueOf(MediaTypeConstant.getProgram(context)));
-        }
-        else {
+        if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getMovie(context)))) {
+            assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getMovie(context)) + "," + String.valueOf(MediaTypeConstant.getCollection(context)));
+        } else if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getSeries(context))) || mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getEpisode(context)))) {
+            assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getSeries(context)) + "," + String.valueOf(MediaTypeConstant.getEpisode(context)));
+        } else if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getLinear(context))) || mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getProgram(context)))) {
+            assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getLinear(context)) + "," + String.valueOf(MediaTypeConstant.getProgram(context)));
+        } else {
             assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getCollection(context)));
         }
 
-        if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")){
-            if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())){
+        if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")) {
+            if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())) {
                 assetFilter.orderBy(SortByEnum.NAME_ASC.name());
-            }
-            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())){
+            } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())) {
                 assetFilter.orderBy(SortByEnum.VIEWS_DESC.name());
-            }
-            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())){
+            } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())) {
                 assetFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
-            }else {
+            } else {
                 assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
             }
 
-        }else {
+        } else {
             assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
         }
 
@@ -2982,11 +2981,11 @@ public class KsServices {
                             SearchModel temp = new SearchModel();
                             temp.setTotalCount(result.results.getTotalCount());
                             temp.setType(result.results.getObjects().get(0).getType());
-                           // temp.setAllItemsInSection(result.results.getObjects());
+                            // temp.setAllItemsInSection(result.results.getObjects());
 
-                            List<Asset> assetss=AppCommonMethods.applyFreePaidFilter(result.results,context);
+                            List<Asset> assetss = AppCommonMethods.applyFreePaidFilter(result.results, context);
                             temp.setAllItemsInSection(assetss);
-                          //  temp.setTotalCount(assetss.size());
+                            //  temp.setTotalCount(assetss.size());
 
                             temp.setSearchString(keyToSearch);
                             searchOutputModel.add(temp);
@@ -3077,17 +3076,17 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
     }
 
-    public void searchKeyword(Context context, final String keyToSearch, final List<MediaTypeModel> model, int counter, SearchResultCallBack CallBack,String searchKeyword,String selectedGenre) {
+    public void searchKeyword(Context context, final String keyToSearch, final List<MediaTypeModel> model, int counter, SearchResultCallBack CallBack, String searchKeyword, String selectedGenre) {
         searchResultCallBack = CallBack;
         searchOutputModel = new ArrayList<>();
         currentMediaTypes = model;
         listAssetBuilders = new ArrayList<>();
         clientSetupKs();
-        Runnable runnable = () -> setQuickSearchBuilder(context, keyToSearch, model, counter, CallBack,searchKeyword,selectedGenre);
+        Runnable runnable = () -> setQuickSearchBuilder(context, keyToSearch, model, counter, CallBack, searchKeyword, selectedGenre);
         new Thread(runnable).start();
     }
 
-    public void searchKeywordAuto(int autoCompleteCounter, Context context, final String keyToSearch, final List<MediaTypeModel> model, SearchResultCallBack CallBack,String searchKeyword,String selectedGenre) {
+    public void searchKeywordAuto(int autoCompleteCounter, Context context, final String keyToSearch, final List<MediaTypeModel> model, SearchResultCallBack CallBack, String searchKeyword, String selectedGenre) {
         searchResultCallBack = CallBack;
         searchOutputModel = new ArrayList<>();
         currentMediaTypes = model;
@@ -3096,13 +3095,13 @@ public class KsServices {
         listAssetBuilders = new ArrayList<>();
         clientSetupKs();
         PrintLogging.printLog(this.getClass(), "", "model.size()" + model.size());
-        Runnable runnable = () -> setSearchBuilderAuto(context, keyToSearch, model, autoCompleteCounter, CallBack,searchKeyword,selectedGenre);
+        Runnable runnable = () -> setSearchBuilderAuto(context, keyToSearch, model, autoCompleteCounter, CallBack, searchKeyword, selectedGenre);
         new Thread(runnable).start();
 
 
     }
 
-    private void setSearchBuilderAuto(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack,String searchKeyword,String selectredGenre) {
+    private void setSearchBuilderAuto(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack, String searchKeyword, String selectredGenre) {
         final FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
         filterPager.setPageSize(20);
@@ -3146,14 +3145,14 @@ public class KsServices {
                 }
             } else {
                 if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
-                    searchKeyword(context, keyToSearch, model, count, CallBack,searchKeyword,selectredGenre);
+                    searchKeyword(context, keyToSearch, model, count, CallBack, searchKeyword, selectredGenre);
                 }
             }
         });
         getRequestQueue().queue(assetService.build(client));
     }
 
-    private void setQuickSearchBuilder(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack,String searchKeyword,String selectedGenre) {
+    private void setQuickSearchBuilder(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack, String searchKeyword, String selectedGenre) {
         final FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
         filterPager.setPageSize(20);
@@ -3164,20 +3163,18 @@ public class KsServices {
         assetFilter.name(searchKeyword);
         assetFilter.setKSql(keyToSearch);
         assetFilter.setTypeIn(currentMediaTypes.get(count).getId());
-        if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")){
-            if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())){
+        if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")) {
+            if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())) {
                 assetFilter.orderBy(SortByEnum.NAME_ASC.name());
-            }
-            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())){
+            } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())) {
                 assetFilter.orderBy(SortByEnum.VIEWS_DESC.name());
-            }
-            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())){
+            } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())) {
                 assetFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
-            }else {
+            } else {
                 assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
             }
 
-        }else {
+        } else {
             assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
         }
 
@@ -3204,7 +3201,7 @@ public class KsServices {
 
                             temp.setHeaderTitle(getNameFromType(result.results.getObjects().get(0).getType()));
                             temp.setType(result.results.getObjects().get(0).getType());
-                            List<Asset> assetss=AppCommonMethods.applyFreePaidFilter(result.results,context);
+                            List<Asset> assetss = AppCommonMethods.applyFreePaidFilter(result.results, context);
                             temp.setAllItemsInSection(assetss);
                             temp.setTotalCount(assetss.size());
                            /* if (result.results.getObjects().get(0).getType()==MediaTypeConstant.getMovie(context)
@@ -3241,7 +3238,7 @@ public class KsServices {
                 }
             } else {
                 if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
-                    searchKeyword(context, keyToSearch, model, count, CallBack,searchKeyword,selectedGenre);
+                    searchKeyword(context, keyToSearch, model, count, CallBack, searchKeyword, selectedGenre);
                 }
             }
         });
@@ -3297,7 +3294,7 @@ public class KsServices {
                 }
             } else {
                 if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
-                    searchKeyword(context, keyToSearch, model, count, CallBack,keyToSearch,"");
+                    searchKeyword(context, keyToSearch, model, count, CallBack, keyToSearch, "");
                 }
             }
         });
@@ -4396,6 +4393,53 @@ public class KsServices {
                             public void response(CommonResponse response) {
                                 if (response.getStatus()) {
                                     callBookMarking(asset, callBack);
+                                    //getSubCategories(context, subCategoryCallBack);
+                                } else {
+                                    bookmarkingPositionCallBack.position(0);
+                                }
+                            }
+                        });
+                    else {
+                        bookmarkingPositionCallBack.position(0);
+                    }
+                } else {
+                    bookmarkingPositionCallBack.position(0);
+                }
+
+
+            }
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
+
+    public void getEpisodeProgress(String assetList, EpisodeProgressCallback callBack) {
+        clientSetupKs();
+
+        BookmarkFilter bookmarkFilter = new BookmarkFilter();
+        bookmarkFilter.assetIdIn(assetList);
+        bookmarkFilter.assetTypeEqual("MEDIA");
+        BookmarkService.ListBookmarkBuilder builder = BookmarkService.list(bookmarkFilter).setCompletion(result -> {
+            if (result.isSuccess()) {
+                if (result.results.getTotalCount() > 0) {
+                    if (result.results.getObjects() != null) {
+                        callBack.getEpisodeProgressList(result.results.getObjects());
+                    } else {
+                        callBack.getEpisodeProgressList(null);
+                    }
+                } else {
+                    callBack.getEpisodeProgressList(null);
+                }
+
+            } else {
+                if (result.error != null) {
+                    String errorCode = result.error.getCode();
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                            @Override
+                            public void response(CommonResponse response) {
+                                if (response.getStatus()) {
+                                    getEpisodeProgress(assetList, callBack);
                                     //getSubCategories(context, subCategoryCallBack);
                                 } else {
                                     bookmarkingPositionCallBack.position(0);
@@ -6810,7 +6854,7 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
     }
 
-    public void getAssetListBasedOnMediaType(Context context,int mediatype, final HomechannelCallBack callBack) {
+    public void getAssetListBasedOnMediaType(Context context, int mediatype, final HomechannelCallBack callBack) {
         responseList = new ArrayList<Response<ListResponse<Asset>>>();
         homechannelCallBack = callBack;
         clientSetupKs();
@@ -6828,18 +6872,18 @@ public class KsServices {
                         if (result.results.getObjects() != null) {
                             if (result.results.getObjects().size() > 0) {
                                 responseList.add(result);
-                                homechannelCallBack.response(true, responseList,null);
+                                homechannelCallBack.response(true, responseList, null);
                             } else {
                                 responseList.add(null);
-                                homechannelCallBack.response(false, responseList,null);
+                                homechannelCallBack.response(false, responseList, null);
                             }
                         } else {
                             responseList.add(null);
-                            homechannelCallBack.response(false, responseList,null);
+                            homechannelCallBack.response(false, responseList, null);
                         }
                     } else {
                         responseList.add(null);
-                        homechannelCallBack.response(false,responseList, null);
+                        homechannelCallBack.response(false, responseList, null);
                     }
                 } else {
 
@@ -6851,23 +6895,23 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        getAssetListBasedOnMediaType(context,mediatype, homechannelCallBack);
+                                        getAssetListBasedOnMediaType(context, mediatype, homechannelCallBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         responseList.add(null);
-                                        homechannelCallBack.response(false,responseList, null);
+                                        homechannelCallBack.response(false, responseList, null);
 
                                     }
                                 }
                             });
                         else {
                             responseList.add(null);
-                            homechannelCallBack.response(false,responseList, null);
+                            homechannelCallBack.response(false, responseList, null);
 
                         }
                     } else {
                         responseList.add(null);
-                        homechannelCallBack.response(false,responseList, null);
+                        homechannelCallBack.response(false, responseList, null);
 
                     }
 
@@ -6942,17 +6986,17 @@ public class KsServices {
         getRequestQueue().queue(assetService.build(client));
     }
 
-    public void searchVodCollectionKeyword(Context context, final String keyToSearch, final List<MediaTypeModel> model, int counter, SearchResultCallBack CallBack,String searchKeyword,String selectedGenre) {
+    public void searchVodCollectionKeyword(Context context, final String keyToSearch, final List<MediaTypeModel> model, int counter, SearchResultCallBack CallBack, String searchKeyword, String selectedGenre) {
         searchResultCallBack = CallBack;
         searchOutputModel = new ArrayList<>();
         currentMediaTypes = model;
         listAssetBuilders = new ArrayList<>();
         clientSetupKs();
-        Runnable runnable = () -> setVodCollectionQuickSearchBuilder(context, keyToSearch, model, counter, CallBack,searchKeyword,selectedGenre);
+        Runnable runnable = () -> setVodCollectionQuickSearchBuilder(context, keyToSearch, model, counter, CallBack, searchKeyword, selectedGenre);
         new Thread(runnable).start();
     }
 
-    private void setVodCollectionQuickSearchBuilder(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack,String searchKeyword,String selectedGenre) {
+    private void setVodCollectionQuickSearchBuilder(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack, String searchKeyword, String selectedGenre) {
         final FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
         filterPager.setPageSize(20);
@@ -6965,20 +7009,18 @@ public class KsServices {
         assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getCollection(context)));
         //assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
 
-        if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")){
-            if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())){
+        if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")) {
+            if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())) {
                 assetFilter.orderBy(SortByEnum.NAME_ASC.name());
-            }
-            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())){
+            } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())) {
                 assetFilter.orderBy(SortByEnum.VIEWS_DESC.name());
-            }
-            else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())){
+            } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())) {
                 assetFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
-            }else {
+            } else {
                 assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
             }
 
-        }else {
+        } else {
             assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
         }
 
@@ -6991,16 +7033,16 @@ public class KsServices {
                             temp.setTotalCount(result.results.getTotalCount());
                             temp.setHeaderTitle(getNameFromType(result.results.getObjects().get(0).getType()));
                             temp.setType(result.results.getObjects().get(0).getType());
-                           // List<Asset> assetss=AppCommonMethods.applyFreePaidFilter(result.results,context);
+                            // List<Asset> assetss=AppCommonMethods.applyFreePaidFilter(result.results,context);
                             //temp.setAllItemsInSection(assetss);
                             //temp.setTotalCount(assetss.size());
 
-                            if (result.results.getObjects().get(0).getType()==MediaTypeConstant.getMovie(context)
-                                    || result.results.getObjects().get(0).getType()==MediaTypeConstant.getCollection(context)){
-                                List<Asset> assets=AppCommonMethods.addPagesFromCollection(result.results,context);
+                            if (result.results.getObjects().get(0).getType() == MediaTypeConstant.getMovie(context)
+                                    || result.results.getObjects().get(0).getType() == MediaTypeConstant.getCollection(context)) {
+                                List<Asset> assets = AppCommonMethods.addPagesFromCollection(result.results, context);
                                 temp.setAllItemsInSection(assets);
                                 temp.setTotalCount(assets.size());
-                            }else {
+                            } else {
                                 //List<Asset> assets=AppCommonMethods.removePagesFromCollection(result.results);
                                 temp.setTotalCount(result.results.getTotalCount());
                                 temp.setAllItemsInSection(result.results.getObjects());
@@ -7030,7 +7072,7 @@ public class KsServices {
                 }
             } else {
                 if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
-                    searchVodCollectionKeyword(context, keyToSearch, model, count, CallBack,searchKeyword,selectedGenre);
+                    searchVodCollectionKeyword(context, keyToSearch, model, count, CallBack, searchKeyword, selectedGenre);
                 }
             }
         });
@@ -7038,40 +7080,41 @@ public class KsServices {
     }
 
     RecentSearchCallBack recentSearchCallBack;
+
     public void recentSearchKaltura(Context context, RecentSearchCallBack CallBack) {
         recentSearchCallBack = CallBack;
         final SearchHistoryFilter filterPager = new SearchHistoryFilter();
         filterPager.setOrderBy("NONE");
 
-        FilterPager filterPager1=new FilterPager();
+        FilterPager filterPager1 = new FilterPager();
         filterPager1.setPageIndex(1);
         filterPager1.setPageSize(500);
-        List<SearchedKeywords> searchedKeywordsList=new ArrayList<>();
+        List<SearchedKeywords> searchedKeywordsList = new ArrayList<>();
         LinkedHashSet<String> unique = new LinkedHashSet<String>();
 
 
-            clientSetupKs();
-            SearchHistoryService.ListSearchHistoryBuilder searchHistoryBuilder=SearchHistoryService.list(filterPager,filterPager1).setCompletion(new OnCompletion<Response<ListResponse<SearchHistory>>>() {
-                @Override
-                public void onComplete(Response<ListResponse<SearchHistory>> result) {
-                        if (result!=null && result.results!=null && result.results.getObjects()!=null && result.results.getObjects().size()>0){
-                            for (int i=0;i<result.results.getObjects().size();i++){
-                                unique.add(result.results.getObjects().get(i).getName());
-                            }
+        clientSetupKs();
+        SearchHistoryService.ListSearchHistoryBuilder searchHistoryBuilder = SearchHistoryService.list(filterPager, filterPager1).setCompletion(new OnCompletion<Response<ListResponse<SearchHistory>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<SearchHistory>> result) {
+                if (result != null && result.results != null && result.results.getObjects() != null && result.results.getObjects().size() > 0) {
+                    for (int i = 0; i < result.results.getObjects().size(); i++) {
+                        unique.add(result.results.getObjects().get(i).getName());
+                    }
 
-                            for (String x : unique){
-                                SearchedKeywords searchedKeywords=new SearchedKeywords();
-                                searchedKeywords.setKeyWords(x);
-                                searchedKeywordsList.add(searchedKeywords);
-                            }
-                            recentSearchCallBack.recentSearches(searchedKeywordsList);
-                        }else {
-                            recentSearchCallBack.recentSearches(new ArrayList<>());
-                        }
+                    for (String x : unique) {
+                        SearchedKeywords searchedKeywords = new SearchedKeywords();
+                        searchedKeywords.setKeyWords(x);
+                        searchedKeywordsList.add(searchedKeywords);
+                    }
+                    recentSearchCallBack.recentSearches(searchedKeywordsList);
+                } else {
+                    recentSearchCallBack.recentSearches(new ArrayList<>());
                 }
-            });
+            }
+        });
 
-            getRequestQueue().queue(searchHistoryBuilder.build(client));
+        getRequestQueue().queue(searchHistoryBuilder.build(client));
     }
 
 

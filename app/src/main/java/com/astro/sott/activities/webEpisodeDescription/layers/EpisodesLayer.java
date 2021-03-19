@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import android.content.Context;
 
+import com.astro.sott.callBacks.kalturaCallBacks.EpisodeProgressCallback;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
@@ -17,6 +18,7 @@ import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
@@ -67,8 +69,23 @@ public class EpisodesLayer {
         return connection;
     }
 
+
+    public LiveData<List<Bookmark>> getEpisodeProgress(Context context, String assetList) {
+        MutableLiveData<List<Bookmark>> bookmarkMutableLiveData = new MutableLiveData<>();
+
+        new KsServices(context).getEpisodeProgress(assetList, bookmarkList -> {
+            if (bookmarkList != null) {
+                bookmarkMutableLiveData.postValue(bookmarkList);
+            } else {
+                bookmarkMutableLiveData.postValue(null);
+            }
+        });
+        return bookmarkMutableLiveData;
+
+    }
+
     public LiveData<List<AssetCommonBean>> getEpisodesListWithoutSeason(Context context, Asset asset,
-                                                           int assetType, int counter,  int seasonCounter, int layoutType) {
+                                                                        int assetType, int counter, int seasonCounter, int layoutType) {
 
         responseList = new ArrayList<>();
         assetCommonList = new ArrayList<>();
@@ -110,8 +127,8 @@ public class EpisodesLayer {
         assetCommonBean.setID(id);
 
         assetCommonBean.setMoreSeriesID(seriesId);
-        int seriesNumber=0;
-        if (seasonNumberList!=null) {
+        int seriesNumber = 0;
+        if (seasonNumberList != null) {
             assetCommonBean.setMoreID(seasonNumberList.get(i));
             int seriesNumber2 = AssetContent.getSeriesNumber(list.results.getObjects().get(0).getMetas());
 

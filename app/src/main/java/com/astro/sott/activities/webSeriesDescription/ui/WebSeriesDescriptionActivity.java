@@ -1121,6 +1121,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     checkBlockingErrors(response, railCommonData);
                 } else {
                     playerChecksCompleted = true;
+                    this.errorCode = AppLevelConstants.NO_ERROR;
                     checkErrors(railCommonData);
                 }
             } else {
@@ -1146,6 +1147,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 //                        break;
                     default:
                         playerChecksCompleted = true;
+                        this.errorCode = AppLevelConstants.NO_ERROR;
                         checkErrors(railCommonData);
                         break;
                 }
@@ -1158,7 +1160,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
 
         new EntitlementCheck().checkAssetPurchaseStatus(WebSeriesDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
-            this.errorCode = AppLevelConstants.NO_ERROR;
             if (apiStatus) {
                 if (purchasedStatus) {
                     runOnUiThread(() -> {
