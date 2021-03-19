@@ -1071,6 +1071,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().subtitleAudio.setVisibility(View.VISIBLE);
                 getBinding().quality.setVisibility(View.VISIBLE);
                 getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+                getBinding().volumeDialog.setVisibility(View.VISIBLE);
                // getBinding().shareWith.setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 // Log.e("Exception",e.getMessage());
@@ -2835,11 +2836,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().seekBar.setOnSeekBarChangeListener(this);
 
 
-//        volumeSeekbar.setOnSeekBarChangeListener(this);
-//        audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
-//        brightnessSeekbar.setProgress(50);
-//        volumeSeekbar.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-//        volumeSeekbar.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+        getBinding().volumeSeek.seekBar2.setOnSeekBarChangeListener(this);
+        audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+
+        getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+        getBinding().volumeSeek.seekBar2.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
 
 
 //        getBinding().rl.setOnClickListener(view -> {
@@ -3499,10 +3500,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             layout.screenBrightness = progress / 100F;
             getActivity().getWindow().setAttributes(layout);
         }
-//        else if (seekbar.getId() == R.id.seekBar1){
-//            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
-//        }
-        else if (seekbar.getId() == R.id.seekBar){
+        else if (seekbar.getId() == R.id.seekBar2){
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+        }
+        else {
             viewModel.sendSeekBarProgress(seekbar.getProgress()).observe(this, s -> getBinding().currentTime.setText(s));
         }
 
@@ -3513,7 +3514,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         if (seekBar.getId() == R.id.seekBar1){
 
-        }else {
+        }else if (seekBar.getId() == R.id.seekBar2){
+
+        }
+        else {
 
             viewModel.removeCallBack();
             ConvivaManager.convivaPlayerSeekStartedReportRequest(baseActivity);
@@ -3537,7 +3541,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (seekBar.getId() == R.id.seekBar1){
 
-        }else {
+        }else if (seekBar.getId() == R.id.seekBar2){
+
+        }
+        else {
 
             ConvivaManager.convivaPlayerSeekStoppedReportRequest(baseActivity);
             getBinding().pBar.setVisibility(View.VISIBLE);
@@ -4019,8 +4026,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (getBinding().brightnessSeek.seekBar1.getProgress() <= 100)
                 getBinding().brightnessSeek.seekBar1.setProgress(getBinding().brightnessSeek.seekBar1.getProgress() + 1);
         } else {
-//            if (volumeSeekbar.getProgress() <= volumeSeekbar.getMax())
-//                volumeSeekbar.setProgress(volumeSeekbar.getProgress() + 1);
+            if (getBinding().volumeSeek.seekBar2.getProgress() <= getBinding().volumeSeek.seekBar2.getMax())
+                getBinding().volumeSeek.seekBar2.setProgress(getBinding().volumeSeek.seekBar2.getProgress() + 1);
         }
 
     }
@@ -4036,8 +4043,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (getBinding().brightnessSeek.seekBar1.getProgress() >= 1)
                 getBinding().brightnessSeek.seekBar1.setProgress(getBinding().brightnessSeek.seekBar1.getProgress() - 1);
         } else {
-//            if (volumeSeekbar.getProgress() <= volumeSeekbar.getMax())
-//                volumeSeekbar.setProgress(volumeSeekbar.getProgress() - 1);
+            if (getBinding().volumeSeek.seekBar2.getProgress() <= getBinding().volumeSeek.seekBar2.getMax())
+                getBinding().volumeSeek.seekBar2.setProgress(getBinding().volumeSeek.seekBar2.getProgress() - 1);
         }
     }
 
