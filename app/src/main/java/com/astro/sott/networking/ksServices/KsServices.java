@@ -1061,7 +1061,7 @@ public class KsServices {
     }
 
 
-    public void callSeasonEpisodes(int counter, String seriesId, int assetType, List<Integer> results, int seasonCounter, SimilarMovieCallBack callBack) {
+    public void callSeasonEpisodes(int counter, String seriesId, int assetType, List<Integer> results, int seasonCounter,String sortType, SimilarMovieCallBack callBack) {
         clientSetupKs();
         similarMovieCallBack = callBack;
         final CommonResponse commonResponse = new CommonResponse();
@@ -1085,7 +1085,7 @@ public class KsServices {
 
             // searchAssetFilter.typeIn("603");
             DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
-            dynamicOrderBy.setName("EpisodeNumber");
+            dynamicOrderBy.setName(sortType);
             dynamicOrderBy.orderBy("META_ASC");
             searchAssetFilter.setDynamicOrderBy(dynamicOrderBy);
 
@@ -1148,7 +1148,7 @@ public class KsServices {
     }
 
 
-    public void callEpisodes(int counter, String seriesId, int assetType, SimilarMovieCallBack callBack) {
+    public void callEpisodes(int counter, String seriesId, int assetType, String sortType, SimilarMovieCallBack callBack) {
         clientSetupKs();
         similarMovieCallBack = callBack;
         final CommonResponse commonResponse = new CommonResponse();
@@ -1173,7 +1173,7 @@ public class KsServices {
 
             // searchAssetFilter.typeIn("603");
             DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
-            dynamicOrderBy.setName("EpisodeNumber");
+            dynamicOrderBy.setName(sortType);
             dynamicOrderBy.orderBy("META_ASC");
             searchAssetFilter.setDynamicOrderBy(dynamicOrderBy);
 
@@ -1210,7 +1210,7 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        callEpisodes(counter, seriesId, assetType, callBack);
+                                        callEpisodes(counter, seriesId, assetType,sortType, callBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         similarMovieCallBack.response(false, commonResponse);

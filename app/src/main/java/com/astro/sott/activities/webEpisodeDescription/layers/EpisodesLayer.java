@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import android.content.Context;
 
-import com.astro.sott.callBacks.kalturaCallBacks.EpisodeProgressCallback;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
@@ -20,13 +19,10 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.ListResponse;
-import com.kaltura.client.types.MultilingualStringValueArray;
-import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class EpisodesLayer {
 
@@ -46,7 +42,7 @@ public class EpisodesLayer {
     private List<AssetCommonBean> assetCommonList;
 
     public LiveData<List<AssetCommonBean>> getEpisodesList(Context context, Asset asset,
-                                                           int assetType, int counter, List<Integer> seasonNumberList, int seasonCounter, int layoutType) {
+                                                           int assetType, int counter, List<Integer> seasonNumberList, int seasonCounter, int layoutType,String sortType) {
 
         responseList = new ArrayList<>();
         assetCommonList = new ArrayList<>();
@@ -54,7 +50,7 @@ public class EpisodesLayer {
         assetCommonBean = new AssetCommonBean();
         seriesId = asset.getExternalId();
         KsServices ksServices = new KsServices(context);
-        ksServices.callSeasonEpisodes(counter, seriesId, assetType, seasonNumberList, seasonCounter, (status, commonResponse) -> {
+        ksServices.callSeasonEpisodes(counter, seriesId, assetType, seasonNumberList, seasonCounter,sortType, (status, commonResponse) -> {
 
             if (status) {
                 assetCommonBean.setStatus(true);
@@ -85,7 +81,7 @@ public class EpisodesLayer {
     }
 
     public LiveData<List<AssetCommonBean>> getEpisodesListWithoutSeason(Context context, Asset asset,
-                                                                        int assetType, int counter, int seasonCounter, int layoutType) {
+                                                                        int assetType, int counter, int seasonCounter, int layoutType, String sortType) {
 
         responseList = new ArrayList<>();
         assetCommonList = new ArrayList<>();
@@ -93,7 +89,7 @@ public class EpisodesLayer {
         assetCommonBean = new AssetCommonBean();
         seriesId = asset.getExternalId();
         KsServices ksServices = new KsServices(context);
-        ksServices.callEpisodes(counter, seriesId, assetType, (status, commonResponse) -> {
+        ksServices.callEpisodes(counter, seriesId, assetType,sortType, (status, commonResponse) -> {
 
             if (status) {
                 assetCommonBean.setStatus(true);

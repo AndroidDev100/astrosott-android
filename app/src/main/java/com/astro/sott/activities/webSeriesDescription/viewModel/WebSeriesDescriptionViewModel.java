@@ -39,8 +39,8 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
         return AssetContent.getSubGenredata(map);
     }
 
-    public LiveData<List<AssetCommonBean>> callEpisodes(Asset map, int assetType, int counter, int seasonCounter, int layoutType) {
-        return EpisodesLayer.getInstance().getEpisodesListWithoutSeason(getApplication().getApplicationContext(), map, assetType, counter, seasonCounter, layoutType);
+    public LiveData<List<AssetCommonBean>> callEpisodes(Asset map, int assetType, int counter, int seasonCounter, int layoutType, String sortType) {
+        return EpisodesLayer.getInstance().getEpisodesListWithoutSeason(getApplication().getApplicationContext(), map, assetType, counter, seasonCounter, layoutType, sortType);
     }
 
     public LiveData<String> getSubTitleLanguageLiveData(Map<String, MultilingualStringValueArray> map) {
@@ -143,8 +143,8 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
         return WebSeriesDescriptionRepository.getInstance().getNumberOfEpisode(asset, getApplication().getApplicationContext());
     }
 
-    public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType) {
-        return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType);
+    public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType, String sortType) {
+        return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType,sortType);
     }
 
     public LiveData<AssetCommonBean> getChannelList(int screen_id) {

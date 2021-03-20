@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.SkuDetails;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseActivity;
@@ -25,20 +26,19 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
     protected ActivityEditEmailBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
         return ActivityEditEmailBinding.inflate(inflater);
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         intializeBilling();
         getBinding().button.setOnClickListener(v -> {
             billingProcessor.purchase(this, "com.sott.astro.com.my.tvod.1290", "DEVELOPER PAYLOAD HERE");
-//            List<String> purchases = billingProcessor.listOwnedProducts();
-//
-//            for (String purchase: purchases){
-//                Log.w("Purchased Item", purchase);
-//            }
+         /* List<String> purchases = billingProcessor.listOwnedProducts();
 
-         //   billingProcessor.consumePurchase("com.sott.astro.com.my.tvod.1290");
+            for (String purchase: purchases){
+                Log.w("Purchased Item", purchase);
+            }
+*/
+            //  billingProcessor.consumePurchase("com.sott.astro.com.my.tvod.1290");
         });
     }
 

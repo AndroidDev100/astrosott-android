@@ -99,6 +99,9 @@ public interface AppLevelConstants {
     String KEY_SHORT_DESCRIPTION = "ShortDescription";
 
     String KEY_EPISODE_NUMBER = "EpisodeNumber";
+    String KEY_TITLE_SORT = "TitleSortName";
+
+
 
     String KEY_EXTERNAL_URL = "External URL";
     String KEY_PROGRAM_ID = "Program Id";

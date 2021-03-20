@@ -123,7 +123,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     }
 
     private void getOpenSeriesEpisodes() {
-        trailerFragmentViewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, AppConstants.Rail5).observe(this, assetCommonBeans -> {
+        trailerFragmentViewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, AppConstants.Rail5,AppLevelConstants.KEY_EPISODE_NUMBER,this).observe(this, assetCommonBeans -> {
             if (assetCommonBeans.get(0).getStatus()) {
                 trailerFragmentViewModel.setOpenSeriesData(assetCommonBeans);
                 isTrailerCount = 1;
@@ -139,7 +139,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     }
 
     private void getEpisode(List<Integer> seriesNumberList) {
-        trailerFragmentViewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, AppConstants.Rail5).observe(this, assetCommonBeans -> {
+        trailerFragmentViewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, AppConstants.Rail5,AppLevelConstants.KEY_EPISODE_NUMBER,this).observe(this, assetCommonBeans -> {
             if (assetCommonBeans.get(0).getStatus()) {
                 trailerFragmentViewModel.setClosedSeriesData(assetCommonBeans);
                 isTrailerCount = 1;

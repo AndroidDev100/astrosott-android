@@ -6,17 +6,17 @@
     android:viewportHeight="175">
 
     <path
-        android:fillColor="@color/lightGreenColor"
+        android:fillColor="#fff"
         android:fillAlpha="0.3"
         android:strokeAlpha="0.3"
         android:strokeWidth="1"
         android:pathData="M 87.969 1.969 C 135.465488485 1.969 173.969 40.4725115146 173.969 87.969 C 173.969 135.465488485 135.465488485 173.969 87.969 173.969 C 40.4725115146 173.969 1.969 135.465488485 1.969 87.969 C 1.969 40.4725115146 40.4725115146 1.969 87.969 1.969 Z" />
     <path
-        android:strokeColor="@color/green"
+        android:strokeColor="#fff"
         android:strokeWidth="2"
         android:pathData="M 87.5 1 C 135.27263086 1 174 39.7273691396 174 87.5 C 174 135.27263086 135.27263086 174 87.5 174 C 39.7273691396 174 1 135.27263086 1 87.5 C 1 39.7273691396 39.7273691396 1 87.5 1 Z" />
     <path
-        android:fillColor="@color/dark_toolbar"
+        android:fillColor="#fff"
         android:fillType="evenOdd"
         android:pathData="M71.783,52.126V125.84l49.143-37.349Z" />
 </vector>
