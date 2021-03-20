@@ -1,5 +1,6 @@
 package com.astro.sott.activities.splash.ui;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -13,6 +14,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -112,6 +115,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     @Override
     public ActivitySplashBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+
         return ActivitySplashBinding.inflate(inflater);
     }
 
@@ -811,7 +815,10 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         processIntent(getIntent());
         super.onCreate(savedInstanceState);
 
-
+//        View decorView = getWindow().getDecorView();
+//        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+//        decorView.setSystemUiVisibility(uiOptions);
         Bundle bundle = getIntent().getExtras();
 
         if (bundle != null) {

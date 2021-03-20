@@ -167,9 +167,11 @@
     </style>
 
     <style name="splashtheme"  parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+<!--        <item name="android:windowBackground">@drawable/splash_background</item>-->
         <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
         <item name="android:gravity">center</item>
+
     </style>
 
     <style name="Custom.Widget.CardView" parent="CardView">
