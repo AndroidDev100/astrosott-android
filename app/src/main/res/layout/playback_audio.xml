@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen24dp"
         android:orientation="vertical"
-        >
+        android:layout_marginTop="@dimen/dimen10dp">
 
 
 

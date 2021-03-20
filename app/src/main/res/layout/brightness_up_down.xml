@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="190dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/dimen30dp">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/brightness"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/_42dp"
+            android:src="@drawable/ic_brightness_up" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/brightness"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/_42dp"
+            android:src="@drawable/ic_brightness_down"
+            />
+
+        <FrameLayout
+
+            android:id="@+id/brightness"
+            android:layout_width="@dimen/dimen32dp"
+            android:layout_height="140dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen40dp">
+
+
+            <SeekBar
+                android:id="@+id/seekBar1"
+                android:layout_width="140dp"
+                android:layout_height="@dimen/dimen32dp"
+                android:layout_gravity="center"
+                android:maxHeight="6dp"
+                android:progress="30"
+                android:progressDrawable="@drawable/seekbarprogress_style"
+                android:rotation="270"
+                android:thumb="@drawable/ic_thumb_icon"
+                android:visibility="visible" />
+
+
+        </FrameLayout>
+    </RelativeLayout>
+</layout>
