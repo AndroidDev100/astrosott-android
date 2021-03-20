@@ -329,23 +329,30 @@ public class PlayerRepository {
     }
 
     private TrackItem[] buildAudioTrackItems(List<AudioTrack> audioTracks) {
-        TrackItem[] trackItems = new TrackItem[audioTracks.size()];
-        if (trackItems.length > 0) {
+        TrackItem[] trackItems = {};
+
             for (int i = 0; i < audioTracks.size(); i++) {
                 AudioTrack audioTrackInfo = audioTracks.get(i);
-                String label = audioTrackInfo.getLabel() != null ? audioTrackInfo.getLabel() : audioTrackInfo.getLanguage();
-                // String bitrate = (audioTrackInfo.getBitrate() > 0) ? "" + audioTrackInfo.getBitrate() : "";
-                String label2 = audioTracks.get(0).getLanguage();
-                if (label2 != null) {
-                    String label1 = audioTrackInfo.getLanguage();
-                    PrintLogging.printLog("", "Languageis" + label);
-                    trackItems[i] = new TrackItem(label1 + " ", audioTrackInfo.getUniqueId());
 
-                } else {
-                    trackItems[i] = new TrackItem("Default" + " ", audioTrackInfo.getUniqueId());
+                if (audioTrackInfo.isAdaptive()) {
+                    // arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
+                }else {
+                    trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId());
                 }
+
+//                String label = audioTrackInfo.getLabel() != null ? audioTrackInfo.getLabel() : audioTrackInfo.getLanguage();
+//                // String bitrate = (audioTrackInfo.getBitrate() > 0) ? "" + audioTrackInfo.getBitrate() : "";
+//                String label2 = audioTracks.get(0).getLanguage();
+//                if (label2 != null) {
+//                    String label1 = audioTrackInfo.getLanguage();
+//                    PrintLogging.printLog("", "Languageis" + label);
+//                    trackItems[i] = new TrackItem(label1 + " ", audioTrackInfo.getUniqueId());
+//
+//                } else {
+//                    trackItems[i] = new TrackItem("Default" + " ", audioTrackInfo.getUniqueId());
+//                }
             }
-        }
+
 
         return trackItems;
     }
@@ -364,7 +371,7 @@ public class PlayerRepository {
         for (int i = 0; i < textTracks.size(); i++) {
             if (i == 0) {
                 TextTrack textTrackInfo = textTracks.get(i);
-                String name = "None";
+                String name = "none";
                 trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId());
             } else {
                 TextTrack textTrackInfo = textTracks.get(i);

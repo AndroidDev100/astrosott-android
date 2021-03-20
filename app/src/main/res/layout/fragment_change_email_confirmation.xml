@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_three"
     android:orientation="vertical"
     android:gravity="center"
     tools:context=".activities.profile.ui.ChangeEmailConfirmation">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
-        android:layout_width="311dp"
-        android:layout_height="276dp"
+        android:layout_width="@dimen/_311dp"
+        android:layout_height="@dimen/_276dp"
         android:layout_centerInParent="true"
         android:background="@drawable/corner_bg"
         >
@@ -53,7 +52,7 @@
             android:layout_marginLeft="@dimen/dimen16dp"
             android:layout_marginTop="@dimen/dimen24dp"
             android:layout_marginRight="@dimen/dimen16dp"
-            android:background="@color/edit_text_blue_bg"
+            android:background="@drawable/search_linear_bg"
             android:orientation="horizontal"
            >
 
@@ -61,8 +60,8 @@
                 android:id="@+id/password_edt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="18dp"
-                android:layout_marginRight="18dp"
+                android:layout_marginLeft="@dimen/dimen18dp"
+                android:layout_marginRight="@dimen/dimen18dp"
                 android:layout_weight="1.9"
                 android:background="@null"
                 android:cursorVisible="true"
@@ -83,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="4dp"
-                android:layout_marginRight="18dp"
+                android:layout_marginRight="@dimen/dimen18dp"
                 android:background="@drawable/ic_outline_visibility_off_light"></ImageView>
         </LinearLayout>
                   <Button

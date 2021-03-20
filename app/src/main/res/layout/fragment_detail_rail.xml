@@ -24,6 +24,7 @@
             app:tabBackground="@drawable/ic_group_3776"
             app:tabIndicator="@color/transparentColor"
             app:tabSelectedTextColor="@color/white"
+          android:paddingEnd="25dp"
             app:tabTextAppearance="@style/MineCustomTabText"
             app:tabTextColor="@color/grey"
             >

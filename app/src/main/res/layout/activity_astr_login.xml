@@ -79,9 +79,8 @@
 
                 <LinearLayout
                     android:id="@+id/email"
-
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="56dp"
                     android:layout_marginLeft="18dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="18dp"
@@ -169,7 +168,7 @@
                     android:id="@+id/password_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="18dp"
+                    android:layout_marginLeft="@dimen/dimen20dp"
                     android:text="@string/password_error"
                     android:textColor="@color/red_live"
                     android:visibility="gone"
@@ -186,7 +185,7 @@
                     android:fontFamily="@font/heebo_regular"
                     android:gravity="center"
                     android:text="@string/forgt_psw"
-                    android:textColor="@color/maya_blue"
+                    android:textColor="@color/aqua_marine"
                     android:textSize="16sp"
                     android:visibility="visible"
                     app:layout_constraintRight_toRightOf="parent"
@@ -195,7 +194,7 @@
 
                 <TextView
                     android:id="@+id/login_btn"
-                    android:layout_width="250dp"
+                    android:layout_width="@dimen/dimen250dp"
                     android:layout_height="45dp"
                     android:layout_marginTop="28dp"
                     android:background="@drawable/gradient_button"
@@ -204,7 +203,7 @@
                     android:text="@string/login"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/_16sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/forgot_text"></TextView>
@@ -236,7 +235,7 @@
                     android:gravity="center"
                     android:padding="2dp"
                     android:text="@string/sign_up_text"
-                    android:textColor="@color/maya_blue"
+                    android:textColor="@color/aqua_marine"
                     android:textSize="16sp"
                     app:layout_constraintLeft_toRightOf="@id/dont_have_account"
                     app:layout_constraintTop_toBottomOf="@id/login_btn"></TextView>
@@ -254,7 +253,7 @@
                     android:paddingRight="5dp"
                     android:text="@string/sign_in_with"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/_14sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/dont_have_account"></TextView>
@@ -269,7 +268,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/or"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.751" />
+                    app:layout_constraintVertical_bias="0.753" />
 
                 <View
                     android:layout_width="60dp"
@@ -281,7 +280,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/or"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.75" />
+                    app:layout_constraintVertical_bias="0.751" />
 
                 <Button
                     android:id="@+id/google"
@@ -302,7 +301,7 @@
 
                 <TextView
                     android:id="@+id/fb"
-                    android:layout_width="250dp"
+                    android:layout_width="@dimen/dimen250dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="@dimen/dimen16dp"
                     android:background="@drawable/facebook_button"
@@ -324,7 +323,7 @@
                     android:layout_width="250dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="@dimen/dimen16dp"
-                    android:background="@color/white"
+                    android:background="@drawable/apple_button"
                     android:fontFamily="@font/heebo_medium"
                     android:gravity="center"
                     android:drawableLeft="@drawable/ic_apple_btn"
