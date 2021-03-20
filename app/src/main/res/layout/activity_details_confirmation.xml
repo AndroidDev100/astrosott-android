@@ -5,7 +5,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_bg"
+    android:background="@color/grape_purple"
     tools:context=".activities.forgotPassword.ui.DetailsConfirmationActivity">
 
     <ImageView
@@ -43,7 +43,7 @@
             android:id="@+id/logo"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
-            android:background="@drawable/astro_white"
+            android:background="@drawable/sooka"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"></ImageView>
@@ -203,7 +203,7 @@
                 android:fontFamily="@font/heebo_regular"
                 android:gravity="center"
                 android:text="@string/privacy_terms"
-                android:textColor="@color/maya_blue"
+                android:textColor="@color/aqua_marine"
                 android:textSize="@dimen/_14sp"
                 android:visibility="visible"
                 android:padding="3dp"
@@ -211,6 +211,24 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/email"
                 app:layout_goneMarginTop="10dp"></TextView>
+
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/privacy_terms"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="@dimen/button_height"-->
+<!--                android:fontFamily="@font/heebo_regular"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/privacy_terms"-->
+<!--                android:textColor="@color/aqua_marine"-->
+<!--                android:textSize="@dimen/_14sp"-->
+<!--                android:visibility="visible"-->
+<!--                android:padding="3dp"-->
+<!--                app:layout_constraintLeft_toRightOf="@id/forgot_text"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/email"-->
+<!--                app:layout_goneMarginTop="10dp"></TextView>-->
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
