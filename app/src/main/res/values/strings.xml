@@ -132,6 +132,7 @@
     <string name="catchup_message">Catch up programmes will be avaiable soon</string>
     //error messages
     <string name="movie">Movie</string>
+    <string name="series">Series</string>
     <string name="video">Video</string>
     <string name="episode">Episode</string>
 

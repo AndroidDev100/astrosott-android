@@ -1075,7 +1075,6 @@ public class KsServices {
             String kSQL = one + seriesId + two + iid + three;
             // Log.w("idsssoftiles", "idsprints" + idd + "-->>" + kSQL);
             SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
-
             searchAssetFilter.setKSql(kSQL);
             Log.e("ASSET TYPE", String.valueOf(assetType));
             if (assetType == MediaTypeConstant.getSeries(activity)) {
@@ -4442,15 +4441,15 @@ public class KsServices {
                                     getEpisodeProgress(assetList, callBack);
                                     //getSubCategories(context, subCategoryCallBack);
                                 } else {
-                                    bookmarkingPositionCallBack.position(0);
+                                    callBack.getEpisodeProgressList(null);
                                 }
                             }
                         });
                     else {
-                        bookmarkingPositionCallBack.position(0);
+                        callBack.getEpisodeProgressList(null);
                     }
                 } else {
-                    bookmarkingPositionCallBack.position(0);
+                    callBack.getEpisodeProgressList(null);
                 }
 
 

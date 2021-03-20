@@ -40,6 +40,7 @@ import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.kaltura.android.exoplayer2.util.Log;
 import com.kaltura.client.types.Asset;
@@ -364,10 +365,11 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     private List<AssetCommonBean> openSeriesData;
     private int total;
+    private double totalCount;
 
     private void getOpenSeriesData() {
         openSeriesData = TabsData.getInstance().getOpenSeriesData();
-        double totalCount = openSeriesData.get(0).getTotalCount();
+        totalCount = openSeriesData.get(0).getTotalCount();
         if (openSeriesData != null && openSeriesData.size() > 0) {
             double a = totalCount / 20;
             totalPages = (int) Math.ceil(a);
@@ -478,7 +480,8 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         getBinding().progressBar.setVisibility(View.VISIBLE);
         viewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, layoutType).observe(this, assetCommonBeans -> {
             getBinding().progressBar.setVisibility(View.GONE);
-
+            if (listOfAsset != null)
+                listOfAsset.setLength(0);
             if (assetCommonBeans.get(0).getStatus()) {
                 //  _mClickListener.onFirstEpisodeData(assetCommonBeans);
                 setUIComponets(assetCommonBeans);
@@ -501,8 +504,11 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             for (int i = 0; i < loadedList.size(); i++) {
                 list.add(i, loadedList.get(i));
             }
-
-            getAssetListForProgress(loadedList);
+            if (UserInfo.getInstance(getActivity()).isActive()) {
+                getAssetListForProgress(loadedList);
+            } else {
+                setOpenSeriesAdapter(loadedList);
+            }
 /* if (count >= assetCommonBeans.get(0).getTotalCount()) {
             getBinding().loadMoreButton.setVisibility(View.GONE);
         } else {
@@ -519,6 +525,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     int loadListSize = 0;
 
     private void getAssetListForProgress(List<RailCommonData> loadedList) {
+
         listOfAsset = new StringBuilder();
         try {
             for (RailCommonData railCommonData : loadedList) {
@@ -576,12 +583,12 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
         getBinding().recyclerView.setAdapter(adapter);
 
-       /* int count = adapter.getItemCount();
-        if (count >= assetCommonBeans.get(0).getTotalCount()) {
+        int count = adapter.getItemCount();
+        if (count >= totalCount) {
             getBinding().loadMoreButton.setVisibility(View.GONE);
         } else {
             getBinding().loadMoreButton.setVisibility(View.VISIBLE);
-        }*/
+        }
 
     }
 
@@ -603,7 +610,13 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             for (int i = 0; i < loadedList.size(); i++) {
                 list.add(i, loadedList.get(i));
             }
-            getAssetListForProgress(loadedList);
+            totalCount = assetCommonBeans.get(0).getTotalCount();
+            if (UserInfo.getInstance(getActivity()).isActive()) {
+                getAssetListForProgress(loadedList);
+            } else {
+                setCLosedSeriesAdapter(loadedList);
+            }
+
           /*  checkExpiry(list);
             adapter = new EpisodeAdapter(getActivity(), loadedList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
             getBinding().recyclerView.setAdapter(adapter);

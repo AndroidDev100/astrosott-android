@@ -319,8 +319,7 @@ class EvergentServices {
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
 
         if (type.equals("email", true)) {
-            json.addProperty("email", emailMobile)
-
+            json.addProperty("contactUserName", emailMobile)
         } else if (type.equals("mobile", true)) {
             json.addProperty("alternateUserName", emailMobile)
 
