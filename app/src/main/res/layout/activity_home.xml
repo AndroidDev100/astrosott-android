@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         android:background="@color/blue_bg">
-
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            android:id="@+id/appbar">
+            android:id="@+id/appbar"
+            >
             <include
                 android:id="@+id/toolbar"
                 layout="@layout/app_toolbar"
@@ -23,7 +22,6 @@
                 android:minHeight="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
@@ -33,12 +31,8 @@
                 app:tabSelectedTextColor="@color/white"
                 app:tabTextAppearance="@style/MineCustomTabTextAppearence"
                 app:tabTextColor="@color/grey">
-
             </com.google.android.material.tabs.TabLayout>
-
-
         </com.google.android.material.appbar.AppBarLayout>
-
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
@@ -46,9 +40,7 @@
             android:layout_marginBottom="50dp"
             android:visibility="visible"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
         </androidx.viewpager2.widget.ViewPager2>
-
         <LinearLayout
             android:id="@+id/main_layout"
             android:layout_width="match_parent"
@@ -58,44 +50,32 @@
             android:filterTouchesWhenObscured="true"
             android:orientation="vertical"
             android:visibility="visible">
-
-
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <com.facebook.ads.NativeAdLayout
                     android:id="@+id/native_ad_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </ScrollView>
-
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent">
-
                 <FrameLayout
                     android:id="@+id/content_frame"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white" />
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="4dp"
                     android:background="@drawable/grey_above_shadow"
                     android:visibility="gone" />
-
-
             </RelativeLayout>
-
-
         </LinearLayout>
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"
@@ -107,6 +87,18 @@
             app:labelVisibilityMode="unlabeled"
             app:menu="@menu/navigation" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
 </layout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
