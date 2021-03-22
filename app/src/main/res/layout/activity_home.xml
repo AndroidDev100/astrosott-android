@@ -106,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@drawable/gradient_bottom_nav"
+            android:background="@drawable/bottom_nav_bg"
             app:itemIconTint="@color/bottom_navigation_selected"
             app:itemTextColor="@color/bottom_navigation_selected"
             app:labelVisibilityMode="unlabeled"

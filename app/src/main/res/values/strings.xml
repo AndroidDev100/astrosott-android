@@ -599,6 +599,9 @@
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
     <string name="apple">Apple</string>
+    <string name="you_are_offline">You\'re offline</string>
+    <string name="no_internet_description_text">It seems like there is a problem with your internet connection. Please check your connection and try again!</string>
+    <string name="reload_app">Reload App</string>
 
 
 </resources>

@@ -5,8 +5,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:filterTouchesWhenObscured="true"
-        android:background="@drawable/gradient_bg_splash">
+        android:background="@color/grape_purple">
 
         <ImageView
             android:id="@+id/splash_image"
@@ -21,7 +22,6 @@
             android:id="@+id/no_connection_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
             android:visibility="gone">
 
             <include
