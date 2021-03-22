@@ -104,9 +104,8 @@ public class WebEpisodeDescriptionViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType) {
-        return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType);
+        return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType,"");
     }
-
 
 
     public LiveData<AssetCommonBean> getChannelList(int screen_id) {

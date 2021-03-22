@@ -1122,7 +1122,7 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        callSeasonEpisodes(counter, seriesId, assetType, results, seasonCounter, callBack);
+                                        callSeasonEpisodes(counter, seriesId, assetType, results, seasonCounter,sortType, callBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         similarMovieCallBack.response(false, commonResponse);
@@ -3743,7 +3743,6 @@ public class KsServices {
         FilterPager pagerFilter = new FilterPager();
         pagerFilter.setPageIndex(1);
         pagerFilter.setPageSize(100);
-
 
         AssetHistoryService.ListAssetHistoryBuilder builder = new AssetHistoryService.ListAssetHistoryBuilder(assetHistoryFilter, pagerFilter).setCompletion(new OnCompletion<Response<ListResponse<AssetHistory>>>() {
             @Override

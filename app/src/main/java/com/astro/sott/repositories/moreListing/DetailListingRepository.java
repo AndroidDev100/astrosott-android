@@ -171,7 +171,7 @@ public class DetailListingRepository {
         if (listingType == 3) {
             List<Integer> seasonNumberList = new ArrayList<>();
             seasonNumberList.add(assetCommonBean.getMoreID());
-            ksServices.callSeasonEpisodes(counter, assetCommonBean.getMoreSeriesID(), MediaTypeConstant.getWebEpisode(context), seasonNumberList, 0, new SimilarMovieCallBack() {
+            ksServices.callSeasonEpisodes(counter, assetCommonBean.getMoreSeriesID(), MediaTypeConstant.getWebEpisode(context), seasonNumberList, 0,"", new SimilarMovieCallBack() {
                 @Override
                 public void response(boolean status, CommonResponse commonResponse) {
                     if (commonResponse.getStatus()) {

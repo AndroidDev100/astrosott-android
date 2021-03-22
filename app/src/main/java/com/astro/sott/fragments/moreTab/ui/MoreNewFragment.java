@@ -440,7 +440,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 getBinding().tvBilling.setText("Bil Rakan Kongsi");
                 getBinding().tvRenewDate.setText("Diperbaharui pada 22/2/21");
                 getBinding().subscribe.setText("Langgan");
-                getBinding().manageSubscriptionMore.setText("Urus Langganan");
+//                getBinding().manageSubscriptionMore.setText("Urus Langganan");
                 getBinding().tvManagePayments.setText("Urus Pembayaran");
                 getBinding().tvTranscHistory.setText("sejarah transaksi");
                 getBinding().tvLanguageSettings.setText("Pemilihan Bahasa");
@@ -450,7 +450,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 getBinding().tvCoupanRedemption.setText("Penebusan Kupon");
                 getBinding().tvHelp.setText("Tolonglah");
                 getBinding().tvLogout.setText("Log keluar");
-                getBinding().tvVersion.setText("Versi1.045b");
+                getBinding().tvVersion.setText("Versi" + BuildConfig.VERSION_NAME);
             } else {
                 getBinding().loginSignupMore.setText("Sign In/Sign Up");
                 getBinding().tvBilling.setText("Partner Billing");
@@ -464,7 +464,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 getBinding().tvCoupanRedemption.setText("Coupon Redemption");
                 getBinding().tvHelp.setText("Help");
                 getBinding().tvLogout.setText("Logout");
-                getBinding().tvVersion.setText("Version1.045b");
+                getBinding().tvVersion.setText("Version" + BuildConfig.VERSION_NAME);
             }
 
 

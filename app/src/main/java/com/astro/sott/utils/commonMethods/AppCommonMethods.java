@@ -23,16 +23,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.astro.sott.activities.search.constants.SearchFilterEnum;
-import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.baseModel.PrefrenceBean;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.kalturaCallBacks.DMSCallBack;
-import com.astro.sott.db.search.SearchedKeywords;
-import com.astro.sott.modelClasses.dmsResponse.FilterLanguages;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.ksServices.KsServices;
+import com.astro.sott.usermanagment.modelClasses.getDevice.AccountDeviceDetailsItem;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
@@ -64,7 +62,6 @@ import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -86,9 +83,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
-
-import io.branch.indexing.BranchUniversalObject;
-import io.branch.referral.util.LinkProperties;
 
 public class AppCommonMethods {
     private static String progDuration;
@@ -2101,5 +2095,19 @@ public class AppCommonMethods {
 
         KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
         return StringBuilderHolder.getInstance().getText().toString();
+    }
+
+    public static List<AccountDeviceDetailsItem> checkCurrentDevice(List<AccountDeviceDetailsItem> accountDeviceDetails, Context context) {
+        List<AccountDeviceDetailsItem> deviceDetailsItems = new ArrayList<>();
+        deviceDetailsItems = accountDeviceDetails;
+
+        List<String> deviceList = new ArrayList<>();
+        for (AccountDeviceDetailsItem a : accountDeviceDetails) {
+            deviceList.add(a.getSerialNo());
+        }
+        int index = deviceList.indexOf(AppCommonMethods.getDeviceId(context.getContentResolver()));
+        deviceDetailsItems.add(0, deviceDetailsItems.get(index));
+        deviceDetailsItems.remove(index + 1);
+        return deviceDetailsItems;
     }
 }

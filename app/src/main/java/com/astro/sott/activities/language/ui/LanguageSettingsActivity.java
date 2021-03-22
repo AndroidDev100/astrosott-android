@@ -17,11 +17,24 @@ import com.astro.sott.activities.search.adapter.SearchKeywordAdapter;
 import com.astro.sott.activities.search.ui.SearchKeywordActivity;
 import com.astro.sott.activities.subtitle.ui.SubtitleLanguageActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
+import com.astro.sott.callBacks.commonCallBacks.ItemClickListener;
 import com.astro.sott.databinding.ActivityLanguageSettingsBinding;
+import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
+import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.modelClasses.dmsResponse.SubtitleLanguages;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 
-public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLanguageSettingsBinding> {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLanguageSettingsBinding> implements ItemClickListener {
     private String oldLang, newLang;
+    private List<String> headerList;
+    private List<String> audioList, subTitleList, appLanguageList;
+    private HashMap<String, List<String>> listHashMap;
+
 
     @Override
     protected ActivityLanguageSettingsBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -33,33 +46,47 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
         super.onCreate(savedInstanceState);
         oldLang = new KsPreferenceKey(LanguageSettingsActivity.this).getAppLangName();
         setClicks();
-       // UIinitialization();
+
+        initData();
+
+    }
+
+    private void initData() {
+        headerList = new ArrayList<>();
+        audioList = new ArrayList<>();
+        subTitleList = new ArrayList<>();
+        appLanguageList = new ArrayList<>();
+
+        listHashMap = new HashMap<>();
+
+        headerList.add(getResources().getString(R.string.App_language));
+        headerList.add(getResources().getString(R.string.Audio_language));
+        headerList.add(getResources().getString(R.string.Subtitle_language));
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(this);
+        List<AudioLanguages> audioLanguageList = responseDmsModel.getAudioLanguageList();
+        List<SubtitleLanguages> subtitleLanguageList = responseDmsModel.getSubtitleLanguageList();
+
+        for (AudioLanguages audioLanguages : audioLanguageList) {
+            if (audioLanguages.getKey() != null && !audioLanguages.getKey().equalsIgnoreCase(""))
+                audioList.add(audioLanguages.getKey());
+        }
+        appLanguageList.add("English");
+        appLanguageList.add("Malay");
+
+        for (SubtitleLanguages subtitleLanguages : subtitleLanguageList) {
+            if (subtitleLanguages.getKey() != null && !subtitleLanguages.getKey().equalsIgnoreCase(""))
+                subTitleList.add(subtitleLanguages.getKey());
+        }
+        listHashMap.put(headerList.get(0), appLanguageList);
+        listHashMap.put(headerList.get(1), audioList);
+        listHashMap.put(headerList.get(2), subTitleList);
+
+
         loadDataFromModel();
 
     }
 
     private void setClicks() {
-//        getBinding().rlAppLang.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent1 = new Intent(LanguageSettingsActivity.this, ChangeLanguageActivity.class);
-//                startActivity(intent1);
-//            }
-//        });
-//        getBinding().rlAudioLang.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent1 = new Intent(LanguageSettingsActivity.this, AudioLanguageActivity.class);
-//                startActivity(intent1);
-//            }
-//        });
-//        getBinding().rlSubtitleLang.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent1 = new Intent(LanguageSettingsActivity.this, SubtitleLanguageActivity.class);
-//                startActivity(intent1);
-//            }
-//        });
         getBinding().backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,8 +95,9 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
         });
 
     }
+
     private void loadDataFromModel() {
-        AppLanguageAdapter adapter = new AppLanguageAdapter(LanguageSettingsActivity.this);
+        AppLanguageAdapter adapter = new AppLanguageAdapter(headerList, listHashMap, LanguageSettingsActivity.this);
         getBinding().expandableListView.setAdapter(adapter);
     }
 
@@ -79,15 +107,9 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
             oldLang = newLang;
             if (newLang.equalsIgnoreCase("ms")) {
                 getBinding().title.setText("Pemilihan Bahasa");
-//                getBinding().tvAppLanguage.setText("Bahasa Aplikasi");
-//                getBinding().tvAudioLanguage.setText("Bahasa Audio");
-//                getBinding().tvSubtitleLanguage.setText("Bahasa Sari kata");
+
             } else {
                 getBinding().title.setText("Language Selection");
-//                getBinding().tvAppLanguage.setText("App Language");
-//                getBinding().tvAudioLanguage.setText("Audio Language");
-//                getBinding().tvSubtitleLanguage.setText("Subtitle Language");
-
             }
         }
     }
@@ -95,6 +117,12 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
     @Override
     public void onResume() {
         super.onResume();
+        // updateLang();
+    }
+
+    @Override
+    public void onClick(int caption) {
         updateLang();
+        initData();
     }
 }
