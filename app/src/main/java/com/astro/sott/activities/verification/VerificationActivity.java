@@ -149,6 +149,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                     } else if (from.equalsIgnoreCase("signUp")) {
                         createUser();
 
+                    } else if (from.equalsIgnoreCase("changePassword")) {
+                        Toast.makeText(this, "Change Password", Toast.LENGTH_SHORT).show();
                     }
 
                 } else {

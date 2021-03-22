@@ -39,8 +39,8 @@ public class SubscriptionViewModel extends AndroidViewModel {
         return MySubscriptionPlanRepository.getInstance().removeSubscription(getApplication(), acessToken, productId);
     }
 
-    public LiveData<EvergentCommonResponse<AddSubscriptionResponse>> addSubscription(String acessToken, String productId, String token) {
-        return MySubscriptionPlanRepository.getInstance().addSubscription(getApplication(), acessToken, productId, token);
+    public LiveData<EvergentCommonResponse<AddSubscriptionResponse>> addSubscription(String acessToken, String productId, String token,String orderId) {
+        return MySubscriptionPlanRepository.getInstance().addSubscription(getApplication(), acessToken, productId, token,orderId);
     }
 
 }

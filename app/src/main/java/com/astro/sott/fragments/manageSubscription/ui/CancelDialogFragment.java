@@ -83,6 +83,7 @@ public class CancelDialogFragment extends DialogFragment {
 
             btnContinue.setOnClickListener(v -> {
                 editDialogListener.onFinishEditDialog();
+                dismiss();
             });
         }
         return view;

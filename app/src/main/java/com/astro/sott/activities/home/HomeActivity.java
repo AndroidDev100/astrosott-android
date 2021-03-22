@@ -583,18 +583,27 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
-        if (details.purchaseToken != null)
-            subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), productId, details.purchaseToken).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+        if (details.purchaseInfo != null && details.purchaseInfo.purchaseData != null && details.purchaseInfo.purchaseData.purchaseToken != null) {
+            String orderId;
+            Log.w("billingProcessor_play", UserInfo.getInstance(this).getAccessToken() + "------" + details);
+            if (details.purchaseInfo.purchaseData.orderId != null) {
+                orderId = details.purchaseInfo.purchaseData.orderId;
+            } else {
+                orderId = "";
+            }
+            subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), productId, details.purchaseInfo.purchaseData.purchaseToken, orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
                 if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
 
                     if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
                         Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             });
+        }
+
     }
 
     @Override

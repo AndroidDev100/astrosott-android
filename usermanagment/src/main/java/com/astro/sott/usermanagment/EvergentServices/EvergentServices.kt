@@ -4,9 +4,11 @@ import android.content.ContentResolver
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
-import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse
+import android.util.Base64
+import android.util.Log
 import com.astro.sott.usermanagment.callBacks.*
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
+import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
@@ -22,12 +24,14 @@ import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResp
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
 import com.astro.sott.usermanagment.networkManager.retrofit.EvergentApiInterface
 import com.astro.sott.usermanagment.networkManager.retrofit.EvergentNetworkClass
+import com.astro.sott.usermanagment.utils.CryptUtil
 import com.astro.sott.usermanagment.utils.EvergentErrorHandling
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class EvergentServices {
 
@@ -39,6 +43,9 @@ class EvergentServices {
     private val CHANNEL_PARTNER_ID_VALUE: String = "ASTRO"
     private val API_USER_VALUE: String = "astrosottapiuser"
     private val MOBILE_NUMBER: String = "mobileNumber"
+
+    private val SERVICE_TYPE: String = "serviceType"
+    private val SERVICE_TYPE_VALUE: String = "PRODUCT"
 
     private val EMAIL: String = "email"
     private val API_USER: String = "apiUser"
@@ -417,6 +424,49 @@ class EvergentServices {
 
     }
 
+
+    fun changePassword(context: Context, acessToken: String, evergentGetDeviceCallback: EvergentResponseCallBack<GetActiveResponse>) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        createUserJson.add("GetActiveSubscriptionsRequestMessage", json)
+
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.getActiveSubscription("Bearer $acessToken", createUserJson)
+        call?.enqueue(object : Callback<GetActiveResponse?> {
+            override fun onFailure(call: Call<GetActiveResponse?>, t: Throwable) {
+                evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<GetActiveResponse?>, response: Response<GetActiveResponse?>) {
+                if (response.body() != null && response.body()?.getActiveSubscriptionsResponseMessage != null && response.body()?.getActiveSubscriptionsResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.getActiveSubscriptionsResponseMessage?.responseCode.equals("1", true)) {
+                        evergentGetDeviceCallback.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.getActiveSubscriptionsResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.getActiveSubscriptionsResponseMessage?.failureMessage, context)
+                            evergentGetDeviceCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                } else {
+                    evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
     fun getActiveSubscripton(context: Context, acessToken: String, evergentGetDeviceCallback: EvergentResponseCallBack<GetActiveResponse>) {
 
         var createUserJson = JsonObject()
@@ -459,7 +509,13 @@ class EvergentServices {
 
     }
 
-    fun addSubscription(context: Context, productId: String, token: String, acessToken: String, evergentGetDeviceCallback: EvergentResponseCallBack<AddSubscriptionResponse>) {
+    fun addSubscription(context: Context, productId: String, token: String, acessToken: String, orderId: String, evergentGetDeviceCallback: EvergentResponseCallBack<AddSubscriptionResponse>) {
+
+        var purchaseTokenKJson = JsonObject()
+        purchaseTokenKJson.addProperty("purchaseToken", token)
+        purchaseTokenKJson.addProperty("orderId", orderId)
+
+        var txId = Base64.encodeToString(purchaseTokenKJson.toString().toByteArray(), 1)
 
         var createUserJson = JsonObject()
         var json = JsonObject()
@@ -468,13 +524,13 @@ class EvergentServices {
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty("cpCustomerID", "")
         json.addProperty("rateType", "")
-        json.addProperty("serviceType", "PRODUCT")
+        json.addProperty(SERVICE_TYPE, SERVICE_TYPE_VALUE)
         json.addProperty("serviceID", "")
         json.addProperty("appServiceID", productId)
         json.addProperty("priceCharged", "")
         paymentMethodJson.addProperty("label", "Google Wallet")
         transactionRefMsgJson.addProperty("amount", "")
-        transactionRefMsgJson.addProperty("txID", token)
+        transactionRefMsgJson.addProperty("txID", txId)
 
         paymentMethodJson.add("transactionReferenceMsg", transactionRefMsgJson)
         json.add("paymentmethodInfo", paymentMethodJson)
@@ -483,37 +539,37 @@ class EvergentServices {
 
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
         val call = apiInterface?.addSubscription("Bearer $acessToken", createUserJson)
-        call?.enqueue(object : Callback<AddSubscriptionResponse?> {
-            override fun onFailure(call: Call<AddSubscriptionResponse?>, t: Throwable) {
-                evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+         call?.enqueue(object : Callback<AddSubscriptionResponse?> {
+             override fun onFailure(call: Call<AddSubscriptionResponse?>, t: Throwable) {
+                 evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
 
-            }
+             }
 
-            override fun onResponse(call: Call<AddSubscriptionResponse?>, response: Response<AddSubscriptionResponse?>) {
-                if (response.body() != null && response.body()?.addSubscriptionResponseMessage != null && response.body()?.addSubscriptionResponseMessage?.responseCode != null) {
-                    if (response.body()?.addSubscriptionResponseMessage?.responseCode.equals("1", true)) {
-                        evergentGetDeviceCallback.onSuccess(response.body()!!);
-                    } else {
-                        if (response.body()?.addSubscriptionResponseMessage?.failureMessage != null) {
-                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.addSubscriptionResponseMessage?.failureMessage, context)
-                            evergentGetDeviceCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
+             override fun onResponse(call: Call<AddSubscriptionResponse?>, response: Response<AddSubscriptionResponse?>) {
+                 if (response.body() != null && response.body()?.addSubscriptionResponseMessage != null && response.body()?.addSubscriptionResponseMessage?.responseCode != null) {
+                     if (response.body()?.addSubscriptionResponseMessage?.responseCode.equals("1", true)) {
+                         evergentGetDeviceCallback.onSuccess(response.body()!!);
+                     } else {
+                         if (response.body()?.addSubscriptionResponseMessage?.failureMessage != null) {
+                             var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.addSubscriptionResponseMessage?.failureMessage, context)
+                             evergentGetDeviceCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
 
-                        } else {
-                            evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
-                        }
-                    }
+                         } else {
+                             evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+                         }
+                     }
 
-                } else {
-                    evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+                 } else {
+                     evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
 
-                }
-            }
-        }
+                 }
+             }
+         }
 
-        )
-
+         )
 
     }
+
 
     fun getDevice(context: Context, acessToken: String, evergentGetDeviceCallback: EvergentGetDeviceCallback) {
 
@@ -696,10 +752,10 @@ class EvergentServices {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
-        json.addProperty("serviceType", "PRODUCT")
+        json.addProperty(SERVICE_TYPE, SERVICE_TYPE_VALUE)
         json.addProperty("serviceID", productId)
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
-        createUserJson.add("GetPaymentsV2RequestMessage", json)
+        createUserJson.add("RemoveSubscriptionRequestMessage", json)
 
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
         val call = apiInterface?.getRemoveSubscription("Bearer $acessToken", createUserJson)

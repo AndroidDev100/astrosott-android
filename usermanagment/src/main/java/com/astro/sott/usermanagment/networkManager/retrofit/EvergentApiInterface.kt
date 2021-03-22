@@ -68,5 +68,6 @@ interface EvergentApiInterface {
     @POST("astro/addSubscription")
     fun addSubscription(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<AddSubscriptionResponse?>?
 
-
+    @POST("astro/changePassword")
+    fun changePassword(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<CreateUserResponse?>?
 }

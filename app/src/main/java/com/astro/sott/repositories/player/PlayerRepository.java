@@ -330,10 +330,9 @@ public class PlayerRepository {
 
     private TrackItem[] buildAudioTrackItems(List<AudioTrack> audioTracks) {
         TrackItem[] trackItems = {};
-
+        
             for (int i = 0; i < audioTracks.size(); i++) {
                 AudioTrack audioTrackInfo = audioTracks.get(i);
-
                 if (audioTrackInfo.isAdaptive()) {
                     // arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
                 }else {

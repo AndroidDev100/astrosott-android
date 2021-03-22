@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingFragment;
@@ -23,7 +24,9 @@ import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
 import com.astro.sott.fragments.manageSubscription.adapter.ManageSubscriptionAdapter;
 import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
+import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 
@@ -160,11 +163,25 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
 
     @Override
     public void onFinishEditDialog() {
+        removeSubscription();
+    }
+
+    private void removeSubscription() {
         subscriptionViewModel.removeSubscription(UserInfo.getInstance(getActivity()).getAccessToken(), cancelId).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
-
+                Toast.makeText(getActivity(), "Subscription Successfully Cancelled", Toast.LENGTH_SHORT).show();
             } else {
-
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
+                    EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentResponse1 -> {
+                        if (evergentResponse1.isStatus()) {
+                            removeSubscription();
+                        } else {
+                            AppCommonMethods.removeUserPrerences(getActivity());
+                        }
+                    });
+                } else {
+                    Toast.makeText(getActivity(), evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
 
         });

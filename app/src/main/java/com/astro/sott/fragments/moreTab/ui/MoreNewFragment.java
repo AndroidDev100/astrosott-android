@@ -21,6 +21,7 @@ import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
 import com.astro.sott.activities.profile.ui.ChangeEmailConfirmation;
 import com.astro.sott.activities.profile.ui.EditEmailActivity;
+import com.astro.sott.activities.profile.ui.EditProfileActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
@@ -123,6 +124,11 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void setClicks() {
+
+        getBinding().circularImageViewMore.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            startActivity(intent);
+        });
         getBinding().edit.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditEmailActivity.class);
             startActivity(intent);
