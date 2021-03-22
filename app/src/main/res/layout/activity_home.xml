@@ -7,12 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:background="@color/blue_bg">
+        android:background="@color/grape_purple">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
+            android:background="@drawable/app_bar_bg"
             android:id="@+id/appbar"
 
             >
@@ -34,7 +35,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
-                android:background="@drawable/tab_background"
                 app:tabSelectedTextColor="@color/white"
                 app:tabTextAppearance="@style/MineCustomTabTextAppearence"
                 app:tabTextColor="@color/grey">
@@ -87,7 +87,8 @@
                     android:id="@+id/content_frame"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white" />
+
+                    android:background="@color/grape_purple" />
 
                 <View
                     android:layout_width="match_parent"
@@ -106,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@drawable/gradient_bottom_nav"
+            android:background="@drawable/bottom_nav_bg"
             app:itemIconTint="@color/bottom_navigation_selected"
             app:itemTextColor="@color/bottom_navigation_selected"
             app:labelVisibilityMode="unlabeled"
