@@ -1,26 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/dimen16dp">
-    <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/dimen156dp"
-        android:layout_height="@dimen/dimen57dp"
-        app:cardBackgroundColor="@color/toolbar_bg"
-        app:cardCornerRadius="@dimen/_4dp"
-        android:layout_marginBottom="@dimen/dimen24dp"
-        app:cardElevation="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/dimen16dp">
-         <TextView
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:fontFamily="@font/heebo_regular"
-             android:textColor="@color/white"
-             android:layout_marginStart="@dimen/_8dp"
-             android:layout_gravity="center|left"
-             android:text="@string/watch_movie"
-             android:textSize="@dimen/_14sp"/>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:filterTouchesWhenObscured="true"
+        card_view:cardBackgroundColor="#303255"
+        card_view:cardCornerRadius="@dimen/_4sdp"
+        card_view:cardElevation="1dp"
+        card_view:cardMaxElevation="1dp"
+        card_view:cardPreventCornerOverlap="false"
+        card_view:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/border"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="#13ff78"
+                android:layout_height="match_parent">
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/main_layout"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginRight="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:background="#303255"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/heebo_regular"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/white"
+                    android:singleLine="true"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:text=""
+                    android:textSize="@dimen/_14sp"/>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="80dp"
+                        android:visibility="visible"
+                        android:layout_marginTop="-3dp"
+                        android:layout_marginBottom="-3dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="-25dp"
+                        android:src="@drawable/placeholder_square"
+                        android:layout_height="75dp">
+
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <RelativeLayout
+                        android:orientation="vertical"
+                        android:id="@+id/half_circle"
+                        android:layout_width="50dp"
+                        android:rotation="180"
+                        android:layout_marginTop="-3dp"
+                        android:layout_marginBottom="-3dp"
+                        android:layout_alignParentRight="true"
+                        android:visibility="visible"
+                        android:background="@drawable/half_circle_selector"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:rotation="180"
+                                android:layout_marginRight="5dp"
+                                android:layout_width="20dp"
+                                android:background="@drawable/genre_list_check"
+                                android:layout_height="20dp">
+                            </ImageView>
+
+                        </LinearLayout>
+
+
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+
+
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+
+
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

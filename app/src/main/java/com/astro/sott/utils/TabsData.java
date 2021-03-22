@@ -12,12 +12,12 @@ public class TabsData {
     private static TabsData tabsData;
     private List<Asset> trailerData;
     private List<Asset> highlightsData;
+    private String sortType;
     private List<RailCommonData> youMayAlsoLikeData;
     private List<AssetCommonBean> openSeriesData;
     private List<AssetCommonBean> closedSeriesData;
 
     private List<Integer> seasonList;
-
 
 
     public static TabsData getInstance() {
@@ -27,6 +27,13 @@ public class TabsData {
         return tabsData;
     }
 
+    public String getSortType() {
+        return sortType;
+    }
+
+    public void setSortType(String sortType) {
+        this.sortType = sortType;
+    }
 
     public List<Integer> getSeasonList() {
         return seasonList;
@@ -53,7 +60,7 @@ public class TabsData {
     }
 
     public void setTrailerData(List<Asset> assets) {
-       this.trailerData=assets;
+        this.trailerData = assets;
     }
 
     public void setYouMayAlsoLikeData(List<RailCommonData> youMayAlsoLikeData) {
@@ -65,7 +72,7 @@ public class TabsData {
     }
 
     public void setHighLightsData(List<Asset> assets) {
-      this.highlightsData=assets;
+        this.highlightsData = assets;
     }
 
     public List<Asset> getHighLightsData() {

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:filterTouchesWhenObscured="true"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@color/grape_purple">
+
+    <LinearLayout
+        android:layout_width="230dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="@color/grape_purple">
+
+
+        <TextView
+            android:id="@+id/title_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/audio"
+            android:textColor="@color/pale_gray"
+            android:textSize="@dimen/dimen20sp"
+            android:fontFamily="@font/heebo_bold"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin70dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleview_audio"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            tools:targetApi="lollipop"
+            android:padding="4dp"
+            android:layout_gravity="center"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:id="@+id/title_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subtitle"
+            android:textColor="@color/pale_gray"
+            android:textSize="@dimen/dimen20sp"
+            android:fontFamily="@font/heebo_bold"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dimen20dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleview_subtitle"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            tools:targetApi="lollipop"
+            android:padding="4dp"
+            android:layout_gravity="center"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</layout>

@@ -12,7 +12,7 @@
 
         <include
             android:id="@+id/include"
-            layout="@layout/toolbar_back_arrow"></include>
+            layout="@layout/fragment_toolbar"></include>
 
         <RelativeLayout
             android:layout_width="match_parent"

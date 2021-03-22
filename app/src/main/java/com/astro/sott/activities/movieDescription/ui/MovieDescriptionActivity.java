@@ -10,6 +10,9 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.SkuDetails;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
@@ -92,6 +95,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private RailCommonData railData;
     private Asset asset;
     private String vodType;
+
     private int layoutType, playlistId = 1;
     private DoubleValue doubleValue;
     private boolean xofferWindowValue = false, playbackControlValue = false;
@@ -182,6 +186,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
 
+
     private void showAlertDialog(String msg) {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance("", msg, getString(R.string.ok));
@@ -201,12 +206,17 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
                 callProgressBar();
                 playerChecks(railData);
+            } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                startActivity(intent);
             }
 
 
         });
 
     }
+
+
 
     private void checkErrors() {
         if (playerChecksCompleted) {
@@ -415,7 +425,6 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                         getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                         getBinding().starIcon.setVisibility(View.GONE);
                         getBinding().playText.setTextColor(getResources().getColor(R.color.black));
-
 
 
                     });
@@ -665,8 +674,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             }
             lastClickTime = SystemClock.elapsedRealtime();
             openShareDialouge();*/
-            Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-            startActivity(intent);
+
         });
         setWatchlist();
         // setRailFragment();
@@ -1136,5 +1144,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         getDataFromBack(commonData, layoutType);
         isActive = UserInfo.getInstance(this).isActive();
     }
+
+
 }
 

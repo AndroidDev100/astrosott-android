@@ -26,6 +26,8 @@ public class RailCommonData implements Parcelable {
     private int position;
     private int liveAsset;
     private boolean isExpended;
+    private boolean isChecked;
+    private String selectedColor="";
 
     private boolean isReminderEnabled;
 
@@ -146,6 +148,15 @@ public class RailCommonData implements Parcelable {
     public boolean getExpended() {
         return isExpended;
     }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
     }
@@ -250,5 +261,13 @@ public class RailCommonData implements Parcelable {
 
     public void setAssetCommonBean(AssetCommonBean assetCommonBean) {
         this.assetCommonBean = assetCommonBean;
+    }
+
+    public void setSelectedColor(String selectedColor) {
+        this.selectedColor = selectedColor;
+    }
+
+    public String getSelectedColor() {
+        return selectedColor;
     }
 }

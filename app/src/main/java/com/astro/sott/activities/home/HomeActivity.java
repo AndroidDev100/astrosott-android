@@ -1,24 +1,32 @@
 package com.astro.sott.activities.home;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.SkuDetails;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.AppUpdateCallBack;
+import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.fragments.home.ui.ViewPagerFragmentAdapter;
 import com.astro.sott.fragments.moreTab.ui.MoreFragment;
 import com.astro.sott.fragments.moreTab.ui.MoreNewFragment;
+import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.video.ui.VideoFragment;
 import com.astro.sott.fragments.viu.ui.ViuFragment;
 import com.astro.sott.fragments.viu.ui.ViuFragmentNew;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
+import com.astro.sott.utils.billing.AstroBillingProcessor;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
@@ -29,7 +37,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +48,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.astro.sott.R;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
@@ -53,13 +64,15 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 
-public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack {
+public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack, BillingProcessor.IBillingHandler, CardCLickedCallBack {
     private final String TAG = this.getClass().getSimpleName();
     private TextView toolbarTitle;
     private HomeFragment homeFragment;
     private VideoFragment videoFragment;
+    private BillingProcessor billingProcessor;
     private LiveTvFragment liveTvFragment;
     private ViuFragmentNew viuAppsFragment;
+    private SubscriptionViewModel subscriptionViewModel;
     private Fragment moreFragment;
     private MoreNewFragment moreNewFragment;
     private String oldLang, newLang;
@@ -201,7 +214,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         oldLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
         setSupportActionBar((Toolbar) getBinding().toolbar);
 
-
+        modelCall();
         ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
         // Before starting an update, register a listener for updates.
 
@@ -210,7 +223,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         ApplicationUpdateManager.getInstance(getApplicationContext()).isUpdateAvailable();
 
         createViewModel();
-
+        intializeBilling();
         setClicks();
 //        getIFAID();
 //        loadNativeAd();
@@ -290,7 +303,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //        nativeAd.loadAd();
 //    }
 
-//    private void inflateAd(NativeAd nativeAd) {
+    //    private void inflateAd(NativeAd nativeAd) {
 //        nativeAd.unregisterView();
 //
 //        // Add the Ad view into the ad container.
@@ -335,6 +348,9 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //                nativeAdIcon,
 //                clickableViews);
 //    }
+    private void modelCall() {
+        subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel.class);
+    }
 
     private void setClicks() {
         toolbarTitle = getBinding().toolbar.findViewById(R.id.toolbar_text);
@@ -452,7 +468,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         setMargins(0);
         getBinding().toolbar.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
-       // getBinding().appbar.setVisibility(View.GONE);
+        // getBinding().appbar.setVisibility(View.GONE);
         fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
         active = moreNewFragment;
 
@@ -549,4 +565,71 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             popupSnackbarForCompleteUpdate();
         }
     };
+
+    private void intializeBilling() {
+
+        String tempBase64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhiyDBLi/JpQLoxikmVXqxK8M3ZhJNfW2tAdjnGnr7vnDiYOiyk+NomNLqmnLfQwkC+TNWn50A5XmA8FEuZmuqOzKNRQHw2P1Spl27mcZsjXcCFwj2Vy+eso3pPLjG4DfqCmQN2jZo97TW0EhsROdkWflUMepy/d6sD7eNfncA1Z0ECEDuSuOANlMQLJk7Ci5PwUHKYnUAIwbq0fU9LP6O8Ejx5BK6o5K7rtTBttCbknTiZGLo6rB+8RcSB4Z0v3Di+QPyvxjIvfSQXlWhRdyxAs/EZ/F4Hdfn6TB7mLZkKZZwI0xzOObJp2BiesclMi1wHQsNSgQ8pnZ8T52aJczpQIDAQAB";
+        billingProcessor = new BillingProcessor(this, tempBase64, this);
+        billingProcessor.initialize();
+        billingProcessor.loadOwnedPurchasesFromGoogle();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (!billingProcessor.handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onProductPurchased(String productId, TransactionDetails details) {
+        if (details.purchaseInfo != null && details.purchaseInfo.purchaseData != null && details.purchaseInfo.purchaseData.purchaseToken != null) {
+            String orderId;
+            Log.w("billingProcessor_play", UserInfo.getInstance(this).getAccessToken() + "------" + details);
+            if (details.purchaseInfo.purchaseData.orderId != null) {
+                orderId = details.purchaseInfo.purchaseData.orderId;
+            } else {
+                orderId = "";
+            }
+            subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), productId, details.purchaseInfo.purchaseData.purchaseToken, orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+                if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
+
+                    if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
+                        Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+
+    }
+
+    @Override
+    public void onBillingError(int errorCode, Throwable error) {
+        Log.w("billingProcessor_play", "error");
+
+    }
+
+    @Override
+    public void onBillingInitialized() {
+        Log.w("billingProcessor_play", "INTIALIZED");
+
+    }
+
+    @Override
+    public void onCardClicked(String productId) {
+        billingProcessor.subscribe(this, productId, "DEVELOPER PAYLOAD HERE");
+
+    }
+
+    public SkuDetails getSubscriptionDetail(String productId) {
+        return billingProcessor.getSubscriptionListingDetails(productId);
+    }
 }

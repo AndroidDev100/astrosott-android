@@ -129,61 +129,61 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
 
             scheduleItemBinding = itemView;
 
-            itemView.getRoot().setOnClickListener(view -> {
-
-                if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
-                    return;
-                }
-                lastClickTime = SystemClock.elapsedRealtime();
-
-                if (liveNowIndex == getLayoutPosition()) {
-
-                } else {
-                    if (liveNowIndex == -1) {
-                        String currentTime = AppCommonMethods.getCurrentTimeStamp();
-                        Long startTime = data.get(getLayoutPosition()).getObject().getStartDate();
-
-                        if (startTime > Long.valueOf(currentTime)) {
-
-                            // new ActivityLauncher(context).forwardeEPGActivity(context, ForwardedEPGActivity.class, data.get(getLayoutPosition()));
-
-                        } else {
-                            if (((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp()) {
-                                callBacks.itemClicked(((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp(), data.get(getLayoutPosition()));
-                                // new ActivityLauncher(context).catchUpActivity(context, CatchupActivity.class, data.get(getLayoutPosition()));
-                            } else {
-                                // callBacks.itemClicked(((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp(),null);
-
-                                callBacks.itemClicked(((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp(), data.get(getLayoutPosition()));
-                            }
-
-                        }
-                    } else {
-                        Long startTime = data.get(getLayoutPosition()).getObject().getStartDate();
-                        Long liveNowStartTime = data.get(liveNowIndex).getObject().getStartDate();
-                        if (startTime > liveNowStartTime) {
-                            //  scheduleItemBinding.playIcon.setVisibility(View.GONE);
-
-                            // new ActivityLauncher(context).forwardeEPGActivity(context, ForwardedEPGActivity.class, data.get(getLayoutPosition()));
-
-                        } else {
-                            if (((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp()) {
-
-                                callBacks.itemClicked(((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp(), data.get(getLayoutPosition()));
-
-                                // new ActivityLauncher(context).catchUpActivity(context, CatchupActivity.class, data.get(getLayoutPosition()));
-                            } else {
-                                //  callBacks.itemClicked(((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp(),null);
-                                callBacks.itemClicked(((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp(), data.get(getLayoutPosition()));
-
-                            }
-
-                        }
-                    }
-
-                }
-
-            });
+//            itemView.getRoot().setOnClickListener(view -> {
+//
+//                if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
+//                    return;
+//                }
+//                lastClickTime = SystemClock.elapsedRealtime();
+//
+//                if (liveNowIndex == getLayoutPosition()) {
+//
+//                } else {
+//                    if (liveNowIndex == -1) {
+//                        String currentTime = AppCommonMethods.getCurrentTimeStamp();
+//                        Long startTime = data.get(getLayoutPosition()).getObject().getStartDate();
+//
+//                        if (startTime > Long.valueOf(currentTime)) {
+//
+//                            // new ActivityLauncher(context).forwardeEPGActivity(context, ForwardedEPGActivity.class, data.get(getLayoutPosition()));
+//
+//                        } else {
+//                            if (((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp()) {
+//                                callBacks.itemClicked(((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp(), data.get(getLayoutPosition()));
+//                                // new ActivityLauncher(context).catchUpActivity(context, CatchupActivity.class, data.get(getLayoutPosition()));
+//                            } else {
+//                                // callBacks.itemClicked(((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp(),null);
+//
+//                                callBacks.itemClicked(((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp(), data.get(getLayoutPosition()));
+//                            }
+//
+//                        }
+//                    } else {
+//                        Long startTime = data.get(getLayoutPosition()).getObject().getStartDate();
+//                        Long liveNowStartTime = data.get(liveNowIndex).getObject().getStartDate();
+//                        if (startTime > liveNowStartTime) {
+//                            //  scheduleItemBinding.playIcon.setVisibility(View.GONE);
+//
+//                            // new ActivityLauncher(context).forwardeEPGActivity(context, ForwardedEPGActivity.class, data.get(getLayoutPosition()));
+//
+//                        } else {
+//                            if (((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp()) {
+//
+//                                callBacks.itemClicked(((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp(), data.get(getLayoutPosition()));
+//
+//                                // new ActivityLauncher(context).catchUpActivity(context, CatchupActivity.class, data.get(getLayoutPosition()));
+//                            } else {
+//                                //  callBacks.itemClicked(((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp(),null);
+//                                callBacks.itemClicked(((ProgramAsset) data.get(getLayoutPosition()).getObject()).getEnableCatchUp(), data.get(getLayoutPosition()));
+//
+//                            }
+//
+//                        }
+//                    }
+//
+//                }
+//
+//            });
 
         }
 

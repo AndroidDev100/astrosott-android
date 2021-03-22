@@ -488,7 +488,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         this.setIntent(intent);
 
         processIntent(intent);
-        Branch.sessionBuilder(this).withCallback(branchReferralInitListener).reInit();
+        //Branch.sessionBuilder(this).withCallback(branchReferralInitListener).reInit();
 
     }
 

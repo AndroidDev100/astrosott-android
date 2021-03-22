@@ -28,6 +28,7 @@ public class ResponseDmsModel {
     private ArrayList<ParentalDescription> parentalDescriptions;
     private ArrayList<ParentalMapping> mappingArrayList;
 
+    ArrayList<FilterLanguages> fliterLanguageList;
     ArrayList<AudioLanguages> audioLanguageList;
     ArrayList<SubtitleLanguages> subtitleLanguageList;
     ArrayList<FilterValues> filterValuesList;
@@ -106,6 +107,15 @@ public class ResponseDmsModel {
     public void setParams(Params params) {
         this.params = params;
     }
+
+    public void setFilterLanguageList(ArrayList<FilterLanguages> fliterLanguageList) {
+        this.fliterLanguageList = fliterLanguageList;
+    }
+
+    public ArrayList<FilterLanguages> getFilterLanguageList() {
+        return fliterLanguageList;
+    }
+
 
     public void setAudioLanguageList(ArrayList<AudioLanguages> audioLanguageList) {
         this.audioLanguageList = audioLanguageList;

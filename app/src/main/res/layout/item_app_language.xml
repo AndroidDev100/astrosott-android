@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:id="@+id/rl1"
-        android:background="@color/edit_text_blue_bg">
+        android:background="@color/egg_plant">
         <TextView
             android:id="@+id/expandedListItem"
             android:layout_width="fill_parent"

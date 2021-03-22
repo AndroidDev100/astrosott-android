@@ -23,6 +23,7 @@ import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.MediaImage;
 import com.kaltura.client.types.MultilingualStringValue;
 import com.kaltura.client.types.StringValue;
 
@@ -64,8 +65,6 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
         try {
             RailCommonData singleItem = railList.get(position);
             Asset asset = singleItem.getObject();
-            PrintLogging.printLog("", asset.getType() + "valuesOfListType");
-
 
             int value = AppCommonMethods.getEpisodeNumber(asset.getMetas());
             String duration = AppCommonMethods.getURLDuration(asset);
@@ -74,8 +73,26 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                 viewHolder.watchlistItemBinding.tvduration.setText(duration);
             }
 
+            if (value == -1) {
+                viewHolder.watchlistItemBinding.tvTitle.setText(asset.getName());
+            } else {
+                viewHolder.watchlistItemBinding.tvTitle.setText("E" + value + ": " + asset.getName());
+            }
+            if (singleItem.getProgress() == 0) {
+                viewHolder.watchlistItemBinding.progressBar.setVisibility(View.GONE);
+            } else {
+                try {
+                    long totalDuration = AppCommonMethods.getDurationFromUrl(asset);
+                    int progress = singleItem.getProgress() * 100 / (int) totalDuration;
+                    viewHolder.watchlistItemBinding.progressBar.setProgress(progress);
+                    viewHolder.watchlistItemBinding.progressBar.setVisibility(View.VISIBLE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            viewHolder.watchlistItemBinding.tvTitle.setText("E" + value + ": " + singleItem.getName());
+
+            }
+
             MultilingualStringValue stringValue = null;
             String description = "";
             if (asset.getMetas() != null)
@@ -99,9 +116,15 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                     //AppCommonMethods.expand(viewHolder.watchlistItemBinding.clRoot,1000,200);
                 }
             }
-            if (singleItem.getImages() != null && singleItem.getImages().size() > 0) {
-                AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
-                ImageHelper.getInstance(viewHolder.watchlistItemBinding.landscapeImage.getContext()).loadImageTo(viewHolder.watchlistItemBinding.landscapeImage, assetCommonImages.getImageUrl(), R.drawable.landscape);
+            if (asset.getImages() != null && asset.getImages().size() > 0) {
+                for (MediaImage mediaImages : asset.getImages()) {
+                    if (mediaImages.getRatio().equalsIgnoreCase("16X9")) {
+                        String image_url = mediaImages.getUrl();
+                        String final_url = image_url + AppLevelConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                        ImageHelper.getInstance(viewHolder.watchlistItemBinding.landscapeImage.getContext()).loadImageTo(viewHolder.watchlistItemBinding.landscapeImage, final_url, R.drawable.landscape);
+                    }
+                }
+
             }
            /* if (singleItem.getExpended()) {
                 viewHolder.watchlistItemBinding.clRoot.setVisibility(View.VISIBLE);

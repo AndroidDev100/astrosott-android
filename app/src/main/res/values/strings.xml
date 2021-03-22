@@ -48,7 +48,7 @@
 
     <string name="no_tracks_available">Sorry, there\'s no audio tracks available</string>
     <string name="no_caption_available">Sorry, there\'s no subtitles available</string>
-    <string name="no_result_found">No Result Found</string>
+    <string name="no_result_found">No Results Found</string>
     <string name="FOR_PURCHASE_SUBSCRIPTION_ONLY">SUBSCRIPTION_PURCHASED</string>
     <string name="FOR_PURCHASED">FOR_PURCHASE_SUBSCRIPTION_ONLY</string>
     <string name="FREE">FREE</string>
@@ -94,13 +94,13 @@
     <string name="duration">Duration: </string>
     <string name="directors">Directors: </string>
 
-    <string name="show_all">Show All</string>
+    <string name="show_all"><u>SEE MORE</u></string>
     <string name="title_creators">Creators</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="delete_confirmation">Are you sure you want to delete the search history?</string>
 
     <string name="popular_search">Popular Searches</string>
-    <string name="recent_searches">Recent Searches</string>
+    <string name="recent_searches">Search History</string>
 
     <string name="removed_from_watchlist">removed from your watchlist</string>
     <string name="playlist_removed">Video removed from your playlist</string>
@@ -123,13 +123,16 @@
     <string name="something_went_wrong">Oops, something went wrong. Please try again later</string>
     <string name="something_went_wrong_try_again">Oops, something went wrong. Please try again later</string>
     <string name="subscribe">Package Details</string>
-
+    <string name="no_active_subs">Currently no Active Subscription</string>
+    <string name="sad_to_see">Sad to See You Go</string>
+    <string name="cancel_description">But goodbyes are not forever. You can \n always re-subscribe again! \n Your current subscription is valid until</string>
     <string name="no_feeds_available">No feeds available.</string>
     <string name="no_catchup_available">Sorry, Catch Up feature is not available for this channel.</string>
     <string name="force_update">Update</string>
     <string name="catchup_message">Catch up programmes will be avaiable soon</string>
     //error messages
     <string name="movie">Movie</string>
+    <string name="series">Series</string>
     <string name="video">Video</string>
     <string name="episode">Episode</string>
 
@@ -224,6 +227,8 @@
     <string name="incorrect_pin">Incorrect PIN. Try again</string>
     <string name="no_content_available">No Content Available</string>
     <string name="login">Login</string>
+    <string name="not_yet">NOT YET!</string>
+    <string name="sorry_have_to_go">Sorry, I have to go...</string>
     <string name="error_sms_failure">Sorry verification PIN cannot be sent right now. Please try again later</string>
     <string name="error_verification_failure">Invalid OTP</string>
     <string name="default_password">123456</string>
@@ -511,7 +516,8 @@
     <string name="new_psw">New Password</string>
     <string name="Profile">Profile</string>
     <string name="subscibe_now">Subscribe now to remove ads</string>
-
+    <string name="already_registered">You have already register</string>
+    <string name="verification_code_Send">Verification code had be sent to </string>
 
     <string name="profile_txt">Profile</string>
     <string name="live_home">Live</string>

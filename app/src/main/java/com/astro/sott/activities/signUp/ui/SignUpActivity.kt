@@ -160,10 +160,10 @@ class SignUpActivity : AppCompatActivity() {
     private fun searchAccountv2(type: String, emailMobile: String, password: String) {
         activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
 
-        astroLoginViewModel!!.searchAccountV2(type, emailMobile).observe(this, Observer { evergentCommonResponse->
+        astroLoginViewModel!!.searchAccountV2(type, emailMobile).observe(this, Observer { evergentCommonResponse ->
             if (evergentCommonResponse.isStatus) {
                 activitySinUpBinding?.progressBar?.visibility = View.GONE
-                // Toast.makeText(this, evergentCommonResponse.searchAccountv2Response.searchAccountV2ResponseMessage!!.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, resources.getString(R.string.already_registered), Toast.LENGTH_SHORT).show()
             } else {
                 if (evergentCommonResponse.errorCode.equals("eV2327", true)) {
                     createOtp(type, emailMobile, password)
@@ -192,7 +192,6 @@ class SignUpActivity : AppCompatActivity() {
             }
         })
     }
-
 
 
 }

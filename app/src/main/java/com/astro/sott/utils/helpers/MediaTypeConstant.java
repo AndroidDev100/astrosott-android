@@ -75,6 +75,11 @@ public class MediaTypeConstant {
         return 0;
     }
 
+    public static int getFilterGenre(Context context) {
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        return Integer.parseInt(responseDmsModel.getParams().getMediaTypes().getFilterGenre());
+    }
+
     public static int getPromo(Context context) {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
         return 0;

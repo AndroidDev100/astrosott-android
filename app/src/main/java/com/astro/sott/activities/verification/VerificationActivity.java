@@ -149,6 +149,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                     } else if (from.equalsIgnoreCase("signUp")) {
                         createUser();
 
+                    } else if (from.equalsIgnoreCase("changePassword")) {
+                        Toast.makeText(this, "Change Password", Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -190,10 +192,10 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         astroLoginViewModel.createUser(loginType, emailMobile, password).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
 
-                UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getAccessToken());
-                UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getRefreshToken());
-                UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
-                KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
+                UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getAccessToken());
+                UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getRefreshToken());
+                UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
+                KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
                 getContact();
                 Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show();

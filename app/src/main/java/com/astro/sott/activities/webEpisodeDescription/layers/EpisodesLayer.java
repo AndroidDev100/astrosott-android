@@ -17,14 +17,12 @@ import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.ListResponse;
-import com.kaltura.client.types.MultilingualStringValueArray;
-import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class EpisodesLayer {
 
@@ -44,7 +42,7 @@ public class EpisodesLayer {
     private List<AssetCommonBean> assetCommonList;
 
     public LiveData<List<AssetCommonBean>> getEpisodesList(Context context, Asset asset,
-                                                           int assetType, int counter, List<Integer> seasonNumberList, int seasonCounter, int layoutType) {
+                                                           int assetType, int counter, List<Integer> seasonNumberList, int seasonCounter, int layoutType,String sortType) {
 
         responseList = new ArrayList<>();
         assetCommonList = new ArrayList<>();
@@ -52,7 +50,7 @@ public class EpisodesLayer {
         assetCommonBean = new AssetCommonBean();
         seriesId = asset.getExternalId();
         KsServices ksServices = new KsServices(context);
-        ksServices.callSeasonEpisodes(counter, seriesId, assetType, seasonNumberList, seasonCounter, (status, commonResponse) -> {
+        ksServices.callSeasonEpisodes(counter, seriesId, assetType, seasonNumberList, seasonCounter,sortType, (status, commonResponse) -> {
 
             if (status) {
                 assetCommonBean.setStatus(true);
@@ -67,8 +65,23 @@ public class EpisodesLayer {
         return connection;
     }
 
+
+    public LiveData<List<Bookmark>> getEpisodeProgress(Context context, String assetList) {
+        MutableLiveData<List<Bookmark>> bookmarkMutableLiveData = new MutableLiveData<>();
+
+        new KsServices(context).getEpisodeProgress(assetList, bookmarkList -> {
+            if (bookmarkList != null) {
+                bookmarkMutableLiveData.postValue(bookmarkList);
+            } else {
+                bookmarkMutableLiveData.postValue(null);
+            }
+        });
+        return bookmarkMutableLiveData;
+
+    }
+
     public LiveData<List<AssetCommonBean>> getEpisodesListWithoutSeason(Context context, Asset asset,
-                                                           int assetType, int counter,  int seasonCounter, int layoutType) {
+                                                                        int assetType, int counter, int seasonCounter, int layoutType, String sortType) {
 
         responseList = new ArrayList<>();
         assetCommonList = new ArrayList<>();
@@ -76,7 +89,7 @@ public class EpisodesLayer {
         assetCommonBean = new AssetCommonBean();
         seriesId = asset.getExternalId();
         KsServices ksServices = new KsServices(context);
-        ksServices.callEpisodes(counter, seriesId, assetType, (status, commonResponse) -> {
+        ksServices.callEpisodes(counter, seriesId, assetType,sortType, (status, commonResponse) -> {
 
             if (status) {
                 assetCommonBean.setStatus(true);
@@ -110,8 +123,8 @@ public class EpisodesLayer {
         assetCommonBean.setID(id);
 
         assetCommonBean.setMoreSeriesID(seriesId);
-        int seriesNumber=0;
-        if (seasonNumberList!=null) {
+        int seriesNumber = 0;
+        if (seasonNumberList != null) {
             assetCommonBean.setMoreID(seasonNumberList.get(i));
             int seriesNumber2 = AssetContent.getSeriesNumber(list.results.getObjects().get(0).getMetas());
 

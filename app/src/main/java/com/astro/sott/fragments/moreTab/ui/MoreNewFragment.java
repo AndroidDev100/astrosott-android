@@ -21,6 +21,7 @@ import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
 import com.astro.sott.activities.profile.ui.ChangeEmailConfirmation;
 import com.astro.sott.activities.profile.ui.EditEmailActivity;
+import com.astro.sott.activities.profile.ui.EditProfileActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
@@ -35,6 +36,8 @@ import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -121,6 +124,11 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void setClicks() {
+
+        getBinding().circularImageViewMore.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            startActivity(intent);
+        });
         getBinding().edit.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditEmailActivity.class);
             startActivity(intent);
@@ -141,9 +149,12 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             @Override
             public void onClick(View v) {
 
-                if (!UserInfo.getInstance(getActivity()).isActive()) {
+                if (getBinding().subscribe.getText().toString().equalsIgnoreCase("subscribe")) {
                     navBar.setVisibility(View.GONE);
                     SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("productList", new ArrayList<String>());
+                    someFragment.setArguments(bundle);
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
@@ -435,7 +446,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 getBinding().tvBilling.setText("Bil Rakan Kongsi");
                 getBinding().tvRenewDate.setText("Diperbaharui pada 22/2/21");
                 getBinding().subscribe.setText("Langgan");
-                getBinding().manageSubscriptionMore.setText("Urus Langganan");
+//                getBinding().manageSubscriptionMore.setText("Urus Langganan");
                 getBinding().tvManagePayments.setText("Urus Pembayaran");
                 getBinding().tvTranscHistory.setText("sejarah transaksi");
                 getBinding().tvLanguageSettings.setText("Pemilihan Bahasa");
@@ -445,7 +456,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 getBinding().tvCoupanRedemption.setText("Penebusan Kupon");
                 getBinding().tvHelp.setText("Tolonglah");
                 getBinding().tvLogout.setText("Log keluar");
-                getBinding().tvVersion.setText("Versi1.045b");
+                getBinding().tvVersion.setText("Versi" + BuildConfig.VERSION_NAME);
             } else {
                 getBinding().loginSignupMore.setText("Sign In/Sign Up");
                 getBinding().tvBilling.setText("Partner Billing");
@@ -459,7 +470,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 getBinding().tvCoupanRedemption.setText("Coupon Redemption");
                 getBinding().tvHelp.setText("Help");
                 getBinding().tvLogout.setText("Logout");
-                getBinding().tvVersion.setText("Version1.045b");
+                getBinding().tvVersion.setText("Version" + BuildConfig.VERSION_NAME);
             }
 
 

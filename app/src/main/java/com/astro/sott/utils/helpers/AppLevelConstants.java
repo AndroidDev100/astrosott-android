@@ -99,6 +99,9 @@ public interface AppLevelConstants {
     String KEY_SHORT_DESCRIPTION = "ShortDescription";
 
     String KEY_EPISODE_NUMBER = "EpisodeNumber";
+    String KEY_TITLE_SORT = "TitleSortName";
+
+
 
     String KEY_EXTERNAL_URL = "External URL";
     String KEY_PROGRAM_ID = "Program Id";
@@ -139,6 +142,7 @@ public interface AppLevelConstants {
 
 
     String KEY_SUBTITLE_LANGUAGE = "SubtitleLanguages";
+    String KEY_BILLING_ID = "BillingId";
 
     String KEY_CAST_ACTOR = "Actors";
     String KEY_PARENTREF_ID = "TrailerParentRefId";
@@ -242,10 +246,10 @@ public interface AppLevelConstants {
     String YOUBORA = "Youbora";
     String PHOENIX_ANALYTICS = "PhoenixAnalyticsPlugin.factory.getName()";
     String AUTO = "Auto";
-    String LOW = "Low";
+    String LOW = "Low Quality";
     String DEFAULT = "Default";
-    String MEDIUM = "Medium";
-    String HIGH = "High";
+    String MEDIUM = "Medium Quality";
+    String HIGH = "High Quality";
     String MOBILE = "Mobile";
     String TAG_FRAGMENT_ALERT = "fragment_alert";
     String PROGRAM_CLICKED = "asdas";
@@ -408,4 +412,10 @@ public interface AppLevelConstants {
     String DIALOG = "Dialog";
     String BASE_ID = "Base ID";
     String REASEN_CODE = "reasonCode";
+
+    String SEARCH_GENRE_CONSTATNT = "FilterGenre='";
+    String SEARCH_ISSPONSORED_CONSTATNT = "IsSponsored";
+    String FILTER_LANGUAGE_CONSTANT = "FilterLanguage='";
+
+
 }

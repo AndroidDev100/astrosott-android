@@ -15,7 +15,6 @@ import com.astro.sott.activities.manageDevice.adapter.ManageDeviceAdapter
 import com.astro.sott.callBacks.DeviceDeleteCallBack
 import com.astro.sott.databinding.ActivityManageDeviceBinding
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
-import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
 import com.astro.sott.usermanagment.modelClasses.getDevice.AccountDeviceDetailsItem
 import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.userInfo.UserInfo
@@ -30,6 +29,13 @@ class ManageDeviceActivity : AppCompatActivity(), DeviceDeleteCallBack {
         setRecyclerProperties()
         modelCall()
         getDevices()
+    }
+
+    private fun setToolbar() {
+        activityManageDeviceBinding?.include?.backButton?.setOnClickListener {
+            onBackPressed()
+        }
+        activityManageDeviceBinding?.include?.title?.text = "MANAGE DEVICES"
     }
 
     private fun setRecyclerProperties() {
@@ -48,7 +54,7 @@ class ManageDeviceActivity : AppCompatActivity(), DeviceDeleteCallBack {
             activityManageDeviceBinding?.progressBar?.visibility = View.GONE
             if (it.isStatus) {
                 if (it.getDevicesResponse.getAccountDevicesResponseMessage != null && it.getDevicesResponse.getAccountDevicesResponseMessage?.accountDeviceDetails != null && it.getDevicesResponse.getAccountDevicesResponseMessage?.accountDeviceDetails?.size!! > 0) {
-                    setUiComponent(it.getDevicesResponse.getAccountDevicesResponseMessage?.accountDeviceDetails!!)
+                    setUiComponent(AppCommonMethods.checkCurrentDevice(it.getDevicesResponse.getAccountDevicesResponseMessage?.accountDeviceDetails!!, this))
                 }
             } else {
                 if (it.errorCode.equals("eV2124", ignoreCase = true) || it.errorCode.equals("111111111", ignoreCase = true)) {
@@ -84,22 +90,13 @@ class ManageDeviceActivity : AppCompatActivity(), DeviceDeleteCallBack {
     }
 
     private fun setUiComponent(accountDeviceDetails: List<AccountDeviceDetailsItem?>) {
+
         var manageDeviceAdapter = ManageDeviceAdapter(accountDeviceDetails, this)
         activityManageDeviceBinding?.recyclerview?.adapter = manageDeviceAdapter
-        activityManageDeviceBinding?.logoutDevices?.visibility = View.VISIBLE
+        activityManageDeviceBinding?.logoutDevices?.visibility = View.GONE
 
     }
 
-
-    private fun setToolbar() {
-        setSupportActionBar(activityManageDeviceBinding?.include?.toolbar)
-        if (supportActionBar != null) {
-            supportActionBar!!.title = "MANAGE DEVICES"
-
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
-        }
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

@@ -648,8 +648,14 @@ public class ActivityLauncher {
 
             });
         } catch (Exception exception) {
-            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
-
+            if (source!=null && !source.isFinishing()){
+                source.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
 
         /* */

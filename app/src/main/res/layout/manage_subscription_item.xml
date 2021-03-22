@@ -8,6 +8,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
+        android:clipChildren="false"
         app:cardCornerRadius="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,6 +61,22 @@
                 app:layout_constraintTop_toBottomOf="@id/currency"></TextView>
 
             <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="-20dp"
+                android:background="@color/green"
+                android:paddingLeft="16dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/dark_toolbar"
+                android:paddingRight="16dp"
+                android:paddingBottom="4dp"
+                android:text="actve"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+            <TextView
                 android:id="@+id/renew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -108,12 +125,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
                 android:fontFamily="@font/heebo_medium"
                 android:lineHeight="24sp"
-                android:layout_marginRight="16dp"
                 android:text="@string/change_plan"
                 android:textColor="@color/green"
                 android:textSize="@dimen/font_medium_large"
+                android:visibility="gone"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/payment_method"></TextView>
 

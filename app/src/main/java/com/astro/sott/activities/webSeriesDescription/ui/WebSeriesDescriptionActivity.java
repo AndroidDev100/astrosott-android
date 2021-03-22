@@ -223,7 +223,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         viewModel.deleteWatchlist(idfromAssetWatchlist).observe(WebSeriesDescriptionActivity.this, aBoolean -> {
             if (aBoolean != null && aBoolean.getStatus()) {
                 isAdded = false;
-                showAlertDialog(getApplicationContext().getResources().getString(R.string.movie_text) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist));
+                showAlertDialog(getApplicationContext().getResources().getString(R.string.series) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist));
                 getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
                 getBinding().webwatchList.setTextColor(getResources().getColor(R.color.grey));
             } else {
@@ -232,7 +232,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 } else {
                     if (aBoolean != null && aBoolean.getErrorCode().equals(AppLevelConstants.ALREADY_UNFOLLOW_ERROR)) {
                         isAdded = false;
-                        showAlertDialog(getApplicationContext().getResources().getString(R.string.movie_text) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist));
+                        showAlertDialog(getApplicationContext().getResources().getString(R.string.series) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist));
                         getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
                         getBinding().webwatchList.setTextColor(getResources().getColor(R.color.grey));
                     } else {
@@ -261,7 +261,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void checkAddedCondition(CommonResponse s) {
         if (s.getStatus()) {
-            showAlertDialog("Series " + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
+            showAlertDialog(getApplicationContext().getResources().getString(R.string.series) + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
             getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
@@ -273,7 +273,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     showDialog(s.getMessage());
                     break;
                 case AppLevelConstants.ALREADY_FOLLOW_ERROR:
-                    showAlertDialog(getApplicationContext().getResources().getString(R.string.movie) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist));
+                    showAlertDialog(getApplicationContext().getResources().getString(R.string.series) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist));
                     break;
                 default:
                     showDialog(s.getMessage());
@@ -1121,6 +1121,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     checkBlockingErrors(response, railCommonData);
                 } else {
                     playerChecksCompleted = true;
+                    this.errorCode = AppLevelConstants.NO_ERROR;
                     checkErrors(railCommonData);
                 }
             } else {
@@ -1146,6 +1147,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 //                        break;
                     default:
                         playerChecksCompleted = true;
+                        this.errorCode = AppLevelConstants.NO_ERROR;
                         checkErrors(railCommonData);
                         break;
                 }
@@ -1158,7 +1160,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
 
         new EntitlementCheck().checkAssetPurchaseStatus(WebSeriesDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
-            this.errorCode = AppLevelConstants.NO_ERROR;
             if (apiStatus) {
                 if (purchasedStatus) {
                     runOnUiThread(() -> {

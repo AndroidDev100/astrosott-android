@@ -24,6 +24,7 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.databinding.FragmentDetailRailBinding;
 import com.astro.sott.fragments.detailRailFragment.adapter.DetailPagerAdapter;
 import com.astro.sott.fragments.trailerFragment.viewModel.TrailerFragmentViewModel;
+import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
@@ -88,7 +89,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                 externalId = asset.getExternalId();
             if (asset.getType() == MediaTypeConstant.getSeries(getActivity())) {
                 getSeasons();
-            } else if (asset.getType() == MediaTypeConstant.getMovie(getActivity())||asset.getType() == MediaTypeConstant.getCollection(getActivity())) {
+            } else if (asset.getType() == MediaTypeConstant.getMovie(getActivity()) || asset.getType() == MediaTypeConstant.getCollection(getActivity())) {
                 getRefId(asset.getType());
             }
         } catch (NullPointerException e) {
@@ -123,7 +124,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     }
 
     private void getOpenSeriesEpisodes() {
-        trailerFragmentViewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, AppConstants.Rail5).observe(this, assetCommonBeans -> {
+        trailerFragmentViewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, AppConstants.Rail5, AppLevelConstants.KEY_EPISODE_NUMBER, this).observe(this, assetCommonBeans -> {
             if (assetCommonBeans.get(0).getStatus()) {
                 trailerFragmentViewModel.setOpenSeriesData(assetCommonBeans);
                 isTrailerCount = 1;
@@ -139,7 +140,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     }
 
     private void getEpisode(List<Integer> seriesNumberList) {
-        trailerFragmentViewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, AppConstants.Rail5).observe(this, assetCommonBeans -> {
+        trailerFragmentViewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, AppConstants.Rail5, AppLevelConstants.KEY_EPISODE_NUMBER, this).observe(this, assetCommonBeans -> {
             if (assetCommonBeans.get(0).getStatus()) {
                 trailerFragmentViewModel.setClosedSeriesData(assetCommonBeans);
                 isTrailerCount = 1;
@@ -186,6 +187,8 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
     private void callYouMayAlsoLike() {
         long assetId = asset.getId();
+        trailerFragmentViewModel.setYouMayAlsoLikeData(null);
+
         trailerFragmentViewModel.getYouMayAlsoLike((int) assetId, 1, asset.getType(), asset.getTags()).observe(this, assetCommonBeans -> {
             try {
                 if (assetCommonBeans.size() > 0) {
@@ -278,7 +281,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                     indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
 
                     //Assign new width
-                   RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                    RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
                     indicatorParams.width = indicatorWidth;
                     getBinding().indicator.setLayoutParams(indicatorParams);
                 }
@@ -289,7 +292,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                     RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
 
                     //Multiply positionOffset with indicatorWidth to get translation
-                    float translationOffset =  (positionOffset+i) * (indicatorWidth);
+                    float translationOffset = (positionOffset + i) * (indicatorWidth);
                     params.leftMargin = (int) translationOffset;
                     getBinding().indicator.setLayoutParams(params);
                 }

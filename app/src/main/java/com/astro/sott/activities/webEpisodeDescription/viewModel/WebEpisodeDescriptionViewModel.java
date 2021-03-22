@@ -1,6 +1,7 @@
 package com.astro.sott.activities.webEpisodeDescription.viewModel;
 
 import android.app.Application;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.astro.sott.repositories.dtv.DTVRepository;
 import com.astro.sott.repositories.splash.SplashRepository;
 import com.astro.sott.repositories.webEpisodeDescription.WebEpisodeDescriptionRepository;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 
@@ -77,7 +79,7 @@ public class WebEpisodeDescriptionViewModel extends AndroidViewModel {
         return AssetContent.getGenredata(map);
     }
 
-    public LiveData<String> getUrlfromModel(Asset asset,String videoResolution) {
+    public LiveData<String> getUrlfromModel(Asset asset, String videoResolution) {
         return AssetContent.getUrl(asset, videoResolution);
     }
 
@@ -94,7 +96,7 @@ public class WebEpisodeDescriptionViewModel extends AndroidViewModel {
     }
 
     public LiveData<CommonResponse> addToWatchlist(String id, String titleName, int playlistId) {
-        return WebEpisodeDescriptionRepository.getInstance().addToWatchlist(id, titleName, getApplication().getApplicationContext(),playlistId);
+        return WebEpisodeDescriptionRepository.getInstance().addToWatchlist(id, titleName, getApplication().getApplicationContext(), playlistId);
     }
 
     public LiveData<CommonResponse> deleteWatchlist(String idfromAssetWatchlist) {
@@ -102,8 +104,9 @@ public class WebEpisodeDescriptionViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType) {
-        return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType);
+        return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType,"");
     }
+
 
     public LiveData<AssetCommonBean> getChannelList(int screen_id) {
         return ChannelLayer.getInstance().getChannelList(getApplication().getApplicationContext(), screen_id);
