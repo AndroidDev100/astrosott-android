@@ -1061,7 +1061,7 @@ public class KsServices {
     }
 
 
-    public void callSeasonEpisodes(int counter, String seriesId, int assetType, List<Integer> results, int seasonCounter,String sortType, SimilarMovieCallBack callBack) {
+    public void callSeasonEpisodes(int counter, String seriesId, int assetType, List<Integer> results, int seasonCounter, String sortType, SimilarMovieCallBack callBack) {
         clientSetupKs();
         similarMovieCallBack = callBack;
         final CommonResponse commonResponse = new CommonResponse();
@@ -1122,7 +1122,7 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        callSeasonEpisodes(counter, seriesId, assetType, results, seasonCounter,sortType, callBack);
+                                        callSeasonEpisodes(counter, seriesId, assetType, results, seasonCounter, sortType, callBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         similarMovieCallBack.response(false, commonResponse);
@@ -1210,7 +1210,7 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        callEpisodes(counter, seriesId, assetType,sortType, callBack);
+                                        callEpisodes(counter, seriesId, assetType, sortType, callBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         similarMovieCallBack.response(false, commonResponse);
@@ -5347,7 +5347,8 @@ public class KsServices {
         String third = String.valueOf(assetType);
         relatedFilter.setKSql(one + third + two);
         relatedFilter.setIdEqual(id);
-        relatedFilter.excludeWatched("true");
+        if (UserInfo.getInstance(activity).isActive())
+            relatedFilter.excludeWatched("true");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(counter);
