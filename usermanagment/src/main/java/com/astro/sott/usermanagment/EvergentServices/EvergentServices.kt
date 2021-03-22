@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Build
 import android.provider.Settings
 import android.util.Base64
-import android.util.Log
 import com.astro.sott.usermanagment.callBacks.*
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
 import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse
@@ -24,14 +23,12 @@ import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResp
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
 import com.astro.sott.usermanagment.networkManager.retrofit.EvergentApiInterface
 import com.astro.sott.usermanagment.networkManager.retrofit.EvergentNetworkClass
-import com.astro.sott.usermanagment.utils.CryptUtil
 import com.astro.sott.usermanagment.utils.EvergentErrorHandling
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 class EvergentServices {
 
