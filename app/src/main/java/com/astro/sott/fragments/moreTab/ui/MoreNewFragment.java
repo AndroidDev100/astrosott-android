@@ -143,7 +143,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             @Override
             public void onClick(View v) {
 
-                if (!UserInfo.getInstance(getActivity()).isActive()) {
+                if (getBinding().subscribe.getText().toString().equalsIgnoreCase("subscribe")) {
                     navBar.setVisibility(View.GONE);
                     SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
                     Bundle bundle = new Bundle();

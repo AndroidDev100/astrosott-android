@@ -5347,10 +5347,11 @@ public class KsServices {
         String third = String.valueOf(assetType);
         relatedFilter.setKSql(one + third + two);
         relatedFilter.setIdEqual(id);
+        relatedFilter.excludeWatched("true");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(counter);
-        filterPager.setPageSize(20);
+        filterPager.setPageSize(18);
 
         AssetService.ListAssetBuilder builder = AssetService.list(relatedFilter, filterPager).setCompletion(result -> {
             if (result.isSuccess()) {
