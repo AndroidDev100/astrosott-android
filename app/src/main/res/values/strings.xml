@@ -518,7 +518,7 @@
     <string name="Profile">Profile</string>
     <string name="subscibe_now">Subscribe now to remove ads</string>
     <string name="already_registered">You have already register</string>
-
+    <string name="verification_code_Send">Verification code had be sent to </string>
 
     <string name="profile_txt">Profile</string>
     <string name="live_home">Live</string>
@@ -600,6 +600,9 @@
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
     <string name="apple">Apple</string>
+    <string name="you_are_offline">You\'re offline</string>
+    <string name="no_internet_description_text">It seems like there is a problem with your internet connection. Please check your connection and try again!</string>
+    <string name="reload_app">Reload App</string>
 
 
 </resources>

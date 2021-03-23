@@ -1,52 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <LinearLayout
-        android:id="@+id/rl_connection"
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grape_purple">
+    <include layout="@layout/toolbar_sooka"
+        android:id="@+id/toolbar_layout"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/blackColor"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="59dp" />
+    <RelativeLayout
+        android:id="@+id/rl_connection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/grape_purple"
+        android:layout_below="@+id/toolbar_layout"
+       >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/no_connection_image"
+            android:id="@+id/connection_image"
+             android:layout_marginTop="139dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/no_connection_astro"
             android:contentDescription="@string/no_connection_image" />
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="39dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="@string/oops_not_connected"
+            android:id="@+id/text_descprition"
+            android:layout_marginTop="@dimen/dimen32dp"
+            android:layout_below="@id/connection_image"
+            android:fontFamily="@font/heebo_medium"
+            android:layout_centerInParent="true"
+            android:text="@string/you_are_offline"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="@dimen/txt24sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:fontFamily="@font/roboto_medium"
+            android:id="@+id/no_internet_description_text"
+            android:layout_marginTop="@dimen/_8dp"
+            android:fontFamily="@font/heebo_regular"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/text_descprition"
+            android:text="@string/no_internet_description_text"
+            android:textColor="@color/white"
+            android:lineSpacingExtra="10sp"
             android:gravity="center"
-            android:text="@string/no_internet_title"
-            android:textColor="#adadad"
-            android:textSize="14sp" />
+            android:letterSpacing="0.09"
+            android:layout_marginStart="@dimen/dimen25dp"
+            android:layout_marginEnd="@dimen/dimen25dp"
+            android:textSize="@dimen/_14sp" />
 
         <TextView
             android:id="@+id/try_again"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="@string/try_again"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp" />
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen48dp"
+            android:background="@drawable/gradient_button"
+            android:layout_marginTop="@dimen/dimen32dp"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/no_internet_description_text"
+            android:fontFamily="@font/heebo_medium"
+            android:text="@string/reload_app"
+            android:textAllCaps="true"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/dimen55dp"
+            android:layout_marginEnd="@dimen/dimen55dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp" />
 
 
-    </LinearLayout>
-
+    </RelativeLayout>
+</RelativeLayout>
 </layout>

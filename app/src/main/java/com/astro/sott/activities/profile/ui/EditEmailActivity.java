@@ -39,7 +39,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
                 Log.w("Purchased Item", purchase);
             }
 */
-            //  billingProcessor.consumePurchase("com.sott.astro.com.my.tvod.1290");
+           // billingProcessor.consumePurchase("com.sott.astro.com.my.tvod.1290");
         });
     }
 

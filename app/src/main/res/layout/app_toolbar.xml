@@ -5,24 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_height"
     android:background="@color/toolbarColor">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="horizontal">
-
         <ImageView
             android:id="@+id/home_icon"
-            android:layout_width="109dp"
-            android:layout_height="27dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/sooka_landscape"
+            android:background="@drawable/sooka_toolbar_icon"
             android:contentDescription="@string/home_icon"
             tools:ignore="ContentDescription" />
-
         <TextView
-
             android:id="@+id/toolbar_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -33,7 +28,6 @@
             android:gravity="center_horizontal"
             android:textColor="@android:color/white"
             android:textSize="@dimen/font_large" />
-
         <ImageView
             android:id="@+id/search_icon"
             android:layout_width="wrap_content"
@@ -47,20 +41,19 @@
             android:padding="4dp"
             android:src="@drawable/ic_search_24px"
             tools:ignore="ContentDescription" />
-
-<!--        <ImageView-->
-<!--            android:id="@+id/notification_icon"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginEnd="@dimen/notification_icon_margin_right"-->
-<!--            android:background="?attr/selectableItemBackgroundBorderless"-->
-<!--            android:clickable="true"-->
-<!--            android:contentDescription="@string/notification_icon"-->
-<!--            android:focusable="true"-->
-<!--            android:padding="4dp"-->
-<!--            android:src="@drawable/notification_icon"-->
-<!--            tools:ignore="ContentDescription" />-->
+        <!--        <ImageView-->
+        <!--            android:id="@+id/notification_icon"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_marginEnd="@dimen/notification_icon_margin_right"-->
+        <!--            android:background="?attr/selectableItemBackgroundBorderless"-->
+        <!--            android:clickable="true"-->
+        <!--            android:contentDescription="@string/notification_icon"-->
+        <!--            android:focusable="true"-->
+        <!--            android:padding="4dp"-->
+        <!--            android:src="@drawable/notification_icon"-->
+        <!--            tools:ignore="ContentDescription" />-->
         <ImageView
             android:id="@+id/apps_launch_icon"
             android:layout_width="wrap_content"
@@ -77,3 +70,21 @@
             android:visibility="gone"/>
     </LinearLayout>
 </androidx.appcompat.widget.Toolbar>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

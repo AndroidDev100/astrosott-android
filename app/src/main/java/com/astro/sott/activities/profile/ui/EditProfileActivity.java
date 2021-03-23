@@ -26,19 +26,16 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     }
 
     private void setClicks() {
-        getBinding().editemail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i= new Intent(getApplicationContext(),EditEmailActivity.class);
-                startActivity(i);
-            }
+        getBinding().backButton.setOnClickListener(v -> {
+            onBackPressed();
         });
-        getBinding().editpassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i= new Intent(getApplicationContext(),EditPasswordActivity.class);
-                startActivity(i);
-            }
+        getBinding().editemail.setOnClickListener(view -> {
+            Intent i = new Intent(getApplicationContext(), EditEmailActivity.class);
+            startActivity(i);
+        });
+        getBinding().editpassword.setOnClickListener(view -> {
+            Intent i = new Intent(getApplicationContext(), EditPasswordActivity.class);
+            startActivity(i);
         });
 
     }
