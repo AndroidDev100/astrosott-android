@@ -26,6 +26,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
     protected ActivityEditEmailBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
         return ActivityEditEmailBinding.inflate(inflater);
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

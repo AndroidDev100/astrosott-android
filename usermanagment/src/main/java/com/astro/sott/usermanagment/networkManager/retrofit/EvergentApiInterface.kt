@@ -9,6 +9,7 @@ import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse
 import com.astro.sott.usermanagment.modelClasses.getDevice.GetDevicesResponse
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response
 import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse
+import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse
 import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceResponse
@@ -67,6 +68,10 @@ interface EvergentApiInterface {
 
     @POST("astro/addSubscription")
     fun addSubscription(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<AddSubscriptionResponse?>?
+
+
+    @POST("astro/getLastSubscription")
+    fun getLastSubscription(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<LastSubscriptionResponse?>?
 
 
 }

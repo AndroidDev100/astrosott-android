@@ -14,6 +14,7 @@ import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse
 import com.astro.sott.usermanagment.modelClasses.getDevice.GetDevicesResponse
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response
 import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse
+import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse
 import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceResponse
@@ -440,6 +441,49 @@ class EvergentServices {
                     } else {
                         if (response.body()?.getActiveSubscriptionsResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.getActiveSubscriptionsResponseMessage?.failureMessage, context)
+                            evergentGetDeviceCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                } else {
+                    evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
+
+    fun getLastSubscripton(context: Context, acessToken: String, evergentGetDeviceCallback: EvergentResponseCallBack<LastSubscriptionResponse>) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        createUserJson.add("GetLastSubscriptionsRequestMessage", json)
+
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.getLastSubscription("Bearer $acessToken", createUserJson)
+        call?.enqueue(object : Callback<LastSubscriptionResponse?> {
+            override fun onFailure(call: Call<LastSubscriptionResponse?>, t: Throwable) {
+                evergentGetDeviceCallback.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<LastSubscriptionResponse?>, response: Response<LastSubscriptionResponse?>) {
+                if (response.body() != null && response.body()?.getLastSubscriptionsResponseMessage != null && response.body()?.getLastSubscriptionsResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.getLastSubscriptionsResponseMessage?.responseCode.equals("1", true)) {
+                        evergentGetDeviceCallback.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.getLastSubscriptionsResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.getLastSubscriptionsResponseMessage?.failureMessage, context)
                             evergentGetDeviceCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
 
                         } else {

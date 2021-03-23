@@ -84,7 +84,7 @@
     <string name="more">MORE</string>
     <string name="view_more"><u>VIEW MORE</u></string>
     <string name="view_less"><u>VIEW LESS</u></string>
-
+<string name="subscribed_success">Subscribed Successfully</string>
     <string name="less">LESS</string>
     <string name="live">Live Now</string>
     <string name="similar_channel">Similar Channel</string>
@@ -119,6 +119,7 @@
     <string name="ok">OK</string>
     <string name="no">No</string>
     <string name="exit">Exit</string>
+
     <string name="retry">Retry</string>
     <string name="something_went_wrong">Oops, something went wrong. Please try again later</string>
     <string name="something_went_wrong_try_again">Oops, something went wrong. Please try again later</string>

@@ -19,6 +19,7 @@ import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse;
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response;
 import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse;
+import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.Entitlement;
@@ -122,7 +123,29 @@ public class MySubscriptionPlanRepository {
         return mutableLiveData;
     }
 
+    public LiveData<EvergentCommonResponse<LastSubscriptionResponse>> getLastSubscription(Context context, String acessToken) {
+        MutableLiveData<EvergentCommonResponse<LastSubscriptionResponse>> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().getLastSubscripton(context, acessToken, new EvergentResponseCallBack<LastSubscriptionResponse>() {
 
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull LastSubscriptionResponse getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setResponse(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
     public LiveData<EvergentCommonResponse<AddSubscriptionResponse>> addSubscription(Context context, String acessToken, String productId, String token) {
         MutableLiveData<EvergentCommonResponse<AddSubscriptionResponse>> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
