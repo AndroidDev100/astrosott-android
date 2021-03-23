@@ -10,6 +10,7 @@ import com.astro.sott.repositories.mysubscriptionplan.MySubscriptionPlanReposito
 import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse;
+import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordResponse;
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
@@ -36,6 +37,10 @@ public class SubscriptionViewModel extends AndroidViewModel {
         return MySubscriptionPlanRepository.getInstance().getActiveSubscription(getApplication(), acessToken);
     }
 
+    public LiveData<EvergentCommonResponse<ChangePasswordResponse>> changePassword(String acessToken, String oldPassword, String newPassword) {
+        return MySubscriptionPlanRepository.getInstance().changePassword(getApplication(), acessToken, oldPassword, newPassword);
+    }
+
     public LiveData<EvergentCommonResponse<LastSubscriptionResponse>> getLastSubscription(String acessToken) {
         return MySubscriptionPlanRepository.getInstance().getLastSubscription(getApplication(), acessToken);
     }
@@ -44,8 +49,8 @@ public class SubscriptionViewModel extends AndroidViewModel {
         return MySubscriptionPlanRepository.getInstance().removeSubscription(getApplication(), acessToken, productId);
     }
 
-    public LiveData<EvergentCommonResponse<AddSubscriptionResponse>> addSubscription(String acessToken, String productId, String token,String orderId) {
-        return MySubscriptionPlanRepository.getInstance().addSubscription(getApplication(), acessToken, productId, token,orderId);
+    public LiveData<EvergentCommonResponse<AddSubscriptionResponse>> addSubscription(String acessToken, String productId, String token, String orderId) {
+        return MySubscriptionPlanRepository.getInstance().addSubscription(getApplication(), acessToken, productId, token, orderId);
     }
 
 }

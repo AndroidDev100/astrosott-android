@@ -17,6 +17,7 @@ import com.astro.sott.usermanagment.callBacks.EvergentPaymentV2Callback;
 import com.astro.sott.usermanagment.callBacks.EvergentResponseCallBack;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse;
+import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordResponse;
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response;
 import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse;
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse;
@@ -115,6 +116,30 @@ public class MySubscriptionPlanRepository {
 
             @Override
             public void onSuccess(@NotNull GetActiveResponse getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setResponse(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
+    public LiveData<EvergentCommonResponse<ChangePasswordResponse>> changePassword(Context context, String acessToken,String oldPassword,String newPassword) {
+        MutableLiveData<EvergentCommonResponse<ChangePasswordResponse>> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().changePassword(context, acessToken,oldPassword,newPassword, new EvergentResponseCallBack<ChangePasswordResponse>() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull ChangePasswordResponse getDevicesResponse) {
                 evergentCommonResponse.setStatus(true);
                 evergentCommonResponse.setResponse(getDevicesResponse);
                 mutableLiveData.postValue(evergentCommonResponse);

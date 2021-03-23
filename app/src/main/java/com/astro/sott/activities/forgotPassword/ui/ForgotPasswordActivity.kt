@@ -15,6 +15,7 @@ import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivityForgotPasswordBinding
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
+import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.CustomTextWatcher
 
 class ForgotPasswordActivity : AppCompatActivity() {
@@ -71,10 +72,10 @@ class ForgotPasswordActivity : AppCompatActivity() {
             if (evergentCommonResponse.isStatus) {
                 Toast.makeText(this, "Verification code had be sent to $email_mobile", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, VerificationActivity::class.java)
-                intent.putExtra("type", type)
-                intent.putExtra("emailMobile", email_mobile)
-                intent.putExtra("password", "password")
-                intent.putExtra("from", "signIn")
+                intent.putExtra(AppLevelConstants.TYPE_KEY, type)
+                intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile)
+                intent.putExtra(AppLevelConstants.PASSWORD_KEY, "password")
+                intent.putExtra(AppLevelConstants.FROM_KEY, "signIn")
                 startActivity(intent)
             } else {
                 Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()

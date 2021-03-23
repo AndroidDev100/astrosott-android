@@ -22,6 +22,7 @@ import com.astro.sott.databinding.ActivityAstrLoginBinding;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -173,7 +174,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
                 UserInfo.getInstance(this).setActive(true);
                 Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
-               // setCleverTap();
+                // setCleverTap();
                 onBackPressed();
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
@@ -237,7 +238,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 // with the exception of one of Identity, Email, or FBID
 
         CleverTapAPI clevertapDefaultInstance =
-                CleverTapAPI.getDefaultInstance(getApplicationContext(),"__horizon43503");
+                CleverTapAPI.getDefaultInstance(getApplicationContext(), "__horizon43503");
         HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
         profileUpdate.put("Name", UserInfo.getInstance(this).getFirstName());    // String
         profileUpdate.put("Identity", UserInfo.getInstance(this).getCpCustomerId());      // String or number
@@ -328,10 +329,10 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             if (evergentCommonResponse.isStatus()) {
                 Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, VerificationActivity.class);
-                intent.putExtra("type", type);
-                intent.putExtra("emailMobile", email_mobile);
-                intent.putExtra("password", "password");
-                intent.putExtra("from", "signIn");
+                intent.putExtra(AppLevelConstants.TYPE_KEY, type);
+                intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);
+                intent.putExtra(AppLevelConstants.PASSWORD_KEY, "password");
+                intent.putExtra(AppLevelConstants.FROM_KEY, "signIn");
                 startActivity(intent);
 
             } else {
