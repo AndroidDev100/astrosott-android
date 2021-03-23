@@ -3,6 +3,7 @@
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:background="@color/grape_purple"
         android:layout_height="match_parent">
 
 
@@ -131,7 +132,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/ll1_more"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:background="@color/toolbar_bg" />
+                android:background="@color/heather" />
 
             <RelativeLayout
                 android:id="@+id/r1_more"
@@ -236,7 +237,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/rl1_more"
                 android:layout_marginTop="@dimen/_1sdp"
-                android:background="@color/toolbar_bg" />
+                android:background="@color/heather" />
 
 
 
