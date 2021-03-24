@@ -270,17 +270,25 @@ public class PlayerRepository {
                 // arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
             } else {
                 if (i == 1) {
-                    arrayList.add(new TrackItem(AppLevelConstants.LOW, videoTrackInfo.getUniqueId(), context.getString(R.string.low_description)));
+                    if (videoTrackInfo.getBitrate()>0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit())) {
+                        arrayList.add(new TrackItem(AppLevelConstants.LOW, videoTrackInfo.getUniqueId(), context.getString(R.string.low_description)));
+                    }
                 } else if (i == 2) {
-                    arrayList.add(new TrackItem(AppLevelConstants.MEDIUM, videoTrackInfo.getUniqueId(), context.getString(R.string.medium_description)));
+                    if (videoTrackInfo.getBitrate()>0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit())) {
+                        arrayList.add(new TrackItem(AppLevelConstants.MEDIUM, videoTrackInfo.getUniqueId(), context.getString(R.string.medium_description)));
+                    }
                 } else if (i == 3) {
                     {
-                        arrayList.add(new TrackItem(AppLevelConstants.HIGH, videoTrackInfo.getUniqueId(), context.getString(R.string.high_description)));
+                        if (videoTrackInfo.getBitrate()>0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())) {
+                            arrayList.add(new TrackItem(AppLevelConstants.HIGH, videoTrackInfo.getUniqueId(), context.getString(R.string.high_description)));
+                        }
                     }
                 }
 
             }
         }
+
+        Log.d("frfrfrfrfrfr",new Gson().toJson(arrayList));
 
         /*TrackItem[] trackItems = new TrackItem[videoTracks.size()];
         int tracksSize=videoTracks.size();
@@ -400,7 +408,7 @@ public class PlayerRepository {
         return mutableLiveData;
     }
 
-    public LiveData<Boolean> changeTrack(String UniqueId) {
+    public LiveData<Boolean> changeTrack(String UniqueId, Context context) {
         PrintLogging.printLog(this.getClass(), "", "uniqueIdss-->>" + UniqueId);
         MutableLiveData<Boolean> booleanMutableLiveData = new MutableLiveData<>();
         if (tracks != null) {
@@ -416,7 +424,7 @@ public class PlayerRepository {
 //
 //            }
             if (UniqueId.equalsIgnoreCase(AppLevelConstants.LOW)) {
-                String selected = getSelectedIndex(1, tracks.getVideoTracks());
+                String selected = getSelectedIndex(1, tracks.getVideoTracks(),context);
                 PrintLogging.printLog(this.getClass(), "", "selctedIndex" + selected);
                 if (!selected.equalsIgnoreCase("")) {
                     player.changeTrack(selected);
@@ -429,7 +437,7 @@ public class PlayerRepository {
                 }
 
             } else if (UniqueId.equalsIgnoreCase(AppLevelConstants.MEDIUM)) {
-                String selected = getSelectedIndex(2, tracks.getVideoTracks());
+                String selected = getSelectedIndex(2, tracks.getVideoTracks(),context);
                 if (!selected.equalsIgnoreCase("")) {
                     player.changeTrack(selected);
                     trackListener(booleanMutableLiveData);
@@ -440,7 +448,7 @@ public class PlayerRepository {
                 }
 
             } else if (UniqueId.equalsIgnoreCase(AppLevelConstants.HIGH)) {
-                String selected = getSelectedIndex(3, tracks.getVideoTracks());
+                String selected = getSelectedIndex(3, tracks.getVideoTracks(),context);
                 if (!selected.equalsIgnoreCase("")) {
                     player.changeTrack(selected);
                     trackListener(booleanMutableLiveData);
@@ -465,7 +473,7 @@ public class PlayerRepository {
         });
     }
 
-    private String getSelectedIndex(int type, List<VideoTrack> videoTracks) {
+    private String getSelectedIndex(int type, List<VideoTrack> videoTracks, Context context) {
         String selectedIndex = "";
 //        if (type == 1) {
 //            for (int i = 0; i < videoTracks.size(); i++) {
@@ -479,7 +487,7 @@ public class PlayerRepository {
         if (type == 1) {
             for (int i = 0; i < videoTracks.size(); i++) {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
-                if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate() < 360000) {
+                if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit())) {
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
@@ -488,7 +496,7 @@ public class PlayerRepository {
             for (int i = 0; i < videoTracks.size(); i++) {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
                 PrintLogging.printLog(this.getClass(), "", "PrintBitMapssss" + videoTrackInfo.getBitrate() + " --" + type);
-                if (videoTrackInfo.getBitrate() > 360000 && videoTrackInfo.getBitrate() < 576000) {
+                if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit())) {
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
@@ -497,7 +505,7 @@ public class PlayerRepository {
             for (int i = 0; i < videoTracks.size(); i++) {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
 
-                if (videoTrackInfo.getBitrate() > 576000) {
+                if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate()<Long.valueOf(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())) {
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
