@@ -16,6 +16,7 @@ import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
+import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.CustomTextWatcher
 import java.lang.Double.parseDouble
 
@@ -182,10 +183,10 @@ class SignUpActivity : AppCompatActivity() {
             if (evergentCommonResponse.isStatus) {
                 Toast.makeText(this, "Verification code had be sent to $emailMobile", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, VerificationActivity::class.java)
-                intent.putExtra("type", type)
-                intent.putExtra("emailMobile", emailMobile)
-                intent.putExtra("password", password)
-                intent.putExtra("from", "signUp")
+                intent.putExtra(AppLevelConstants.TYPE_KEY, type)
+                intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, emailMobile)
+                intent.putExtra(AppLevelConstants.PASSWORD_KEY, password)
+                intent.putExtra(AppLevelConstants.FROM_KEY, "signUp")
                 startActivity(intent)
             } else {
                 Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()

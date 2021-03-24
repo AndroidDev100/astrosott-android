@@ -124,13 +124,8 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void setClicks() {
-
-        getBinding().circularImageViewMore.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-            startActivity(intent);
-        });
         getBinding().edit.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EditEmailActivity.class);
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
             startActivity(intent);
         });
         getBinding().loginSignupMore.setOnClickListener(view -> {

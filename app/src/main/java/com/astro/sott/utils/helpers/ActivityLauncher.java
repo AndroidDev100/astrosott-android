@@ -648,7 +648,7 @@ public class ActivityLauncher {
 
             });
         } catch (Exception exception) {
-            if (source!=null && !source.isFinishing()){
+            if (source != null && !source.isFinishing()) {
                 source.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -715,6 +715,12 @@ public class ActivityLauncher {
 
     public void homeScreen(Activity source, Class<HomeActivity> destination) {
         Intent intent = new Intent(source, destination);
+        TaskStackBuilder.create(source).addNextIntentWithParentStack(intent).startActivities();
+    }
+
+    public void profileScreenRedirection(Activity source, Class<HomeActivity> destination) {
+        Intent intent = new Intent(source, destination);
+        intent.putExtra("fragmentType", "profile");
         TaskStackBuilder.create(source).addNextIntentWithParentStack(intent).startActivities();
     }
 

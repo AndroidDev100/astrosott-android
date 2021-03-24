@@ -7,7 +7,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.astro.sott.repositories.loginRepository.AstrLoginRepository;
+import com.astro.sott.repositories.mysubscriptionplan.MySubscriptionPlanRepository;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
+import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordResponse;
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 
 public class AstroLoginViewModel extends AndroidViewModel {
@@ -23,6 +25,9 @@ public class AstroLoginViewModel extends AndroidViewModel {
         return AstrLoginRepository.getInstance().createOtp(getApplication(), type, emailMobile);
     }
 
+    public LiveData<EvergentCommonResponse<ChangePasswordResponse>> changePassword(String acessToken, String oldPassword, String newPassword) {
+        return MySubscriptionPlanRepository.getInstance().changePassword(getApplication(), acessToken, oldPassword, newPassword);
+    }
 
     public LiveData<EvergentCommonResponse> confirmOtp(String loginType, String emailMobile, String otp) {
         return AstrLoginRepository.getInstance().confirmOtp(getApplication(), loginType, emailMobile, otp);
