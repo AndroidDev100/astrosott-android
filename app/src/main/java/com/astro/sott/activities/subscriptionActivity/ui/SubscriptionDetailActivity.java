@@ -9,9 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.anjlab.android.iab.v3.BillingProcessor;
-import com.anjlab.android.iab.v3.SkuDetails;
-import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.R;
 import com.astro.sott.activities.subscription.adapter.PlanAdapter;
 import com.astro.sott.baseModel.BaseBindingActivity;
@@ -21,6 +18,9 @@ import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
+import com.astro.sott.utils.billing.BillingProcessor;
+import com.astro.sott.utils.billing.SkuDetails;
+import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.kaltura.client.types.Subscription;
 

@@ -8,13 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 
-import com.anjlab.android.iab.v3.BillingProcessor;
-import com.anjlab.android.iab.v3.SkuDetails;
-import com.anjlab.android.iab.v3.TransactionDetails;
-import com.astro.sott.R;
-import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityEditEmailBinding;
+import com.astro.sott.utils.billing.BillingProcessor;
+import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.List;
