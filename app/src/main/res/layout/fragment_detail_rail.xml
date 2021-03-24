@@ -20,11 +20,10 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="@dimen/dimen10dp"
-            android:background="@drawable/tab_bg"
             app:tabBackground="@drawable/tab_bg"
             app:tabIndicator="@color/transparentColor"
             app:tabSelectedTextColor="@color/white"
-          android:paddingEnd="25dp"
+            android:paddingEnd="25dp"
             app:tabTextAppearance="@style/MineCustomTabText"
             app:tabTextColor="@color/grey"
             >
@@ -33,6 +32,7 @@
             android:id="@+id/indicator"
             android:layout_width="0dp"
             android:layout_height="4dp"
+            android:visibility="gone"
             android:layout_below="@id/tabLayout"
             android:background="@drawable/tab_indicator"/>
 

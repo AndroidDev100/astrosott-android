@@ -28,11 +28,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:singleLine="true"
+                    android:fontFamily="@font/heebo_medium"
                     android:text="@string/title_creators"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/dimen20sp" />
 
                 <TextView
                     android:id="@+id/more_text"
@@ -41,12 +40,12 @@
                     android:layout_gravity="center_vertical"
                     android:background="?android:attr/selectableItemBackground"
                     android:clickable="true"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/heebo_regular"
                     android:gravity="center"
                     android:text="@string/show_all"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textColor="@color/aqua_marine"
+                    android:textSize="@dimen/_12sp" />
 
 
             </LinearLayout>

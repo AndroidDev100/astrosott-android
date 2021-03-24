@@ -66,11 +66,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="40dp"
-                    android:fontFamily="@font/roboto_regular"
+                    android:fontFamily="@font/heebo_medium"
                     android:gravity="bottom"
                     android:singleLine="true"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/dimen20sp" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 

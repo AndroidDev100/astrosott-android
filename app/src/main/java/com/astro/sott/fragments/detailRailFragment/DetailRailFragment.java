@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -279,7 +280,10 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                 @Override
                 public void run() {
                     indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
+                    Log.d("TabCount",getBinding().tabLayout.getTabCount()+"");
 
+                    Log.d("tabLayout",getBinding().tabLayout.getWidth()+"");
+                    Log.d("indicator",indicatorWidth+"");
                     //Assign new width
                     RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
                     indicatorParams.width = indicatorWidth;
