@@ -62,8 +62,10 @@ import com.kaltura.playkit.providers.MediaEntryProvider;
 
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import static com.kaltura.client.APIOkRequestsExecutor.TAG;
 
@@ -262,33 +264,54 @@ public class PlayerRepository {
         int lowBitrate = -1;
         int highBitrate = -1;
         ArrayList<TrackItem> arrayList = new ArrayList<>();
+        boolean track1 = true;
+        boolean track2 = true;
+        boolean track3 = true;
 
         for (int i = 0; i < videoTracks.size(); i++) {
             VideoTrack videoTrackInfo = videoTracks.get(i);
             Log.e("tracksVideo", videoTracks.get(i).getBitrate() + "");
+
             if (videoTrackInfo.isAdaptive()) {
                 // arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
             } else {
-                if (i == 1) {
-                    if (videoTrackInfo.getBitrate()>0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit())) {
+//                if (i == 1) {
+//                    if (videoTrackInfo.getBitrate()>0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit())) {
+//                        arrayList.add(new TrackItem(AppLevelConstants.LOW, videoTrackInfo.getUniqueId(), context.getString(R.string.low_description)));
+//                    }
+//                } else if (i == 2) {
+//                    if (videoTrackInfo.getBitrate()>0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit())) {
+//                        arrayList.add(new TrackItem(AppLevelConstants.MEDIUM, videoTrackInfo.getUniqueId(), context.getString(R.string.medium_description)));
+//                    }
+//                } else if (i == 3) {
+//                    {
+//                        if (videoTrackInfo.getBitrate()>0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())) {
+//                            arrayList.add(new TrackItem(AppLevelConstants.HIGH, videoTrackInfo.getUniqueId(), context.getString(R.string.high_description)));
+//                        }
+//                    }
+//                }
+
+                if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit())) {
+                    if (track1) {
                         arrayList.add(new TrackItem(AppLevelConstants.LOW, videoTrackInfo.getUniqueId(), context.getString(R.string.low_description)));
+                        track1 = false;
                     }
-                } else if (i == 2) {
-                    if (videoTrackInfo.getBitrate()>0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit())) {
+                } else if (videoTrackInfo.getBitrate() > Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit()) && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit())) {
+                    if (track2) {
                         arrayList.add(new TrackItem(AppLevelConstants.MEDIUM, videoTrackInfo.getUniqueId(), context.getString(R.string.medium_description)));
+                        track2 = false;
                     }
-                } else if (i == 3) {
-                    {
-                        if (videoTrackInfo.getBitrate()>0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())) {
-                            arrayList.add(new TrackItem(AppLevelConstants.HIGH, videoTrackInfo.getUniqueId(), context.getString(R.string.high_description)));
-                        }
+                } else if (videoTrackInfo.getBitrate() > Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit()) && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())) {
+                    if (track3) {
+                        arrayList.add(new TrackItem(AppLevelConstants.HIGH, videoTrackInfo.getUniqueId(), context.getString(R.string.high_description)));
+                        track3 = false;
                     }
                 }
+
 
             }
         }
 
-        Log.d("frfrfrfrfrfr",new Gson().toJson(arrayList));
 
         /*TrackItem[] trackItems = new TrackItem[videoTracks.size()];
         int tracksSize=videoTracks.size();
@@ -424,7 +447,7 @@ public class PlayerRepository {
 //
 //            }
             if (UniqueId.equalsIgnoreCase(AppLevelConstants.LOW)) {
-                String selected = getSelectedIndex(1, tracks.getVideoTracks(),context);
+                String selected = getSelectedIndex(1, tracks.getVideoTracks(), context);
                 PrintLogging.printLog(this.getClass(), "", "selctedIndex" + selected);
                 if (!selected.equalsIgnoreCase("")) {
                     player.changeTrack(selected);
@@ -437,7 +460,7 @@ public class PlayerRepository {
                 }
 
             } else if (UniqueId.equalsIgnoreCase(AppLevelConstants.MEDIUM)) {
-                String selected = getSelectedIndex(2, tracks.getVideoTracks(),context);
+                String selected = getSelectedIndex(2, tracks.getVideoTracks(), context);
                 if (!selected.equalsIgnoreCase("")) {
                     player.changeTrack(selected);
                     trackListener(booleanMutableLiveData);
@@ -448,7 +471,7 @@ public class PlayerRepository {
                 }
 
             } else if (UniqueId.equalsIgnoreCase(AppLevelConstants.HIGH)) {
-                String selected = getSelectedIndex(3, tracks.getVideoTracks(),context);
+                String selected = getSelectedIndex(3, tracks.getVideoTracks(), context);
                 if (!selected.equalsIgnoreCase("")) {
                     player.changeTrack(selected);
                     trackListener(booleanMutableLiveData);
@@ -496,7 +519,7 @@ public class PlayerRepository {
             for (int i = 0; i < videoTracks.size(); i++) {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
                 PrintLogging.printLog(this.getClass(), "", "PrintBitMapssss" + videoTrackInfo.getBitrate() + " --" + type);
-                if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit())) {
+                if (videoTrackInfo.getBitrate() > Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit()) && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit())) {
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
@@ -505,7 +528,7 @@ public class PlayerRepository {
             for (int i = 0; i < videoTracks.size(); i++) {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
 
-                if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate()<Long.valueOf(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())) {
+                if (videoTrackInfo.getBitrate() > Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit()) && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())) {
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
@@ -783,7 +806,7 @@ public class PlayerRepository {
             subscribePhoenixAnalyticsReportEvent();
 
 //            player.getSettings().setABRSettings(new ABRSettings().setMinVideoBitrate(200000).setInitialBitrateEstimate(150000));
-               player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
+            player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
 
             player.prepare(mediaConfig);
             player.play();
