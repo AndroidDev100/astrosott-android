@@ -3,23 +3,35 @@ package com.astro.sott.activities.subscriptionActivity.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.SkuDetails;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.R;
+import com.astro.sott.activities.subscription.adapter.PlanAdapter;
 import com.astro.sott.baseModel.BaseBindingActivity;
+import com.astro.sott.beanModel.subscriptionmodel.SubscriptionModel;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
+import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.kaltura.client.types.Subscription;
+
+import java.util.Collections;
+import java.util.Comparator;
 
 public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubscriptionDetailBinding> implements BillingProcessor.IBillingHandler, CardCLickedCallBack {
     private BillingProcessor billingProcessor;
+    private SubscriptionViewModel subscriptionViewModel;
+
+    String fileId = "";
 
     @Override
     protected ActivitySubscriptionDetailBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -30,14 +42,31 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         intializeBilling();
+        if (getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY) != null)
+            fileId = getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY);
+
+        getSubsriptionActionList();
         setPackFragment();
+    }
+
+    private void getSubsriptionActionList() {
+
+        subscriptionViewModel.getSubscriptionPackageList(fileId).observe(this, subscriptionList -> {
+
+            if (subscriptionList != null) {
+                if (subscriptionList.size() > 0) {
+
+
+                }
+            }
+        });
     }
 
     private void setPackFragment() {
         FragmentManager fm = getSupportFragmentManager();
         SubscriptionPacksFragment subscriptionPacksFragment = new SubscriptionPacksFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("from", "detail");
+        bundle.putString(AppLevelConstants.FROM_KEY, "detail");
         subscriptionPacksFragment.setArguments(bundle);
         fm.beginTransaction().replace(R.id.frameContent, subscriptionPacksFragment).commitNow();
     }

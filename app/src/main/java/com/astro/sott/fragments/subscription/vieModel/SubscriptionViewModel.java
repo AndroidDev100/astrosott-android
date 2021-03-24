@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.astro.sott.repositories.mysubscriptionplan.MySubscriptionPlanRepository;
+import com.astro.sott.repositories.subscription.SubscriptionRepository;
 import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse;
@@ -14,10 +15,12 @@ import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordRe
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.kaltura.client.types.Subscription;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 public class SubscriptionViewModel extends AndroidViewModel {
@@ -31,6 +34,9 @@ public class SubscriptionViewModel extends AndroidViewModel {
 
     public LiveData<EvergentCommonResponse> getPaymentV2(String acessToken) {
         return MySubscriptionPlanRepository.getInstance().getPaymentV2(getApplication(), acessToken);
+    }
+    public LiveData<List<Subscription>> getSubscriptionPackageList(String assetId) {
+        return  SubscriptionRepository.getInstance().getSubscriptionPackageList(getApplication().getApplicationContext(), assetId);
     }
 
     public LiveData<EvergentCommonResponse<GetActiveResponse>> getActiveSubscription(String acessToken) {

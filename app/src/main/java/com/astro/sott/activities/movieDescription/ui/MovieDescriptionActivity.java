@@ -186,7 +186,6 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
 
-
     private void showAlertDialog(String msg) {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance("", msg, getString(R.string.ok));
@@ -207,15 +206,18 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 callProgressBar();
                 playerChecks(railData);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
-                Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                startActivity(intent);
+                fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+                if (!fileId.equalsIgnoreCase("")) {
+                    Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                    intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                    startActivity(intent);
+                }
             }
 
 
         });
 
     }
-
 
 
     private void checkErrors() {
@@ -410,8 +412,10 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         }
     }
 
+    private String fileId = "";
+
     private void checkEntitleMent(final RailCommonData railCommonData) {
-        String fileId = "";
+
 
         fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
 

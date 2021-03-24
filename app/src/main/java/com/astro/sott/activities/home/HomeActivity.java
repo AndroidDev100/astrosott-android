@@ -135,17 +135,9 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //                    return true;
                 case R.id.navigation_more:
                     if (moreNewFragment == null) {
-                        getBinding().tabs.setVisibility(View.GONE);
-                        getBinding().viewPager.setVisibility(View.GONE);
-                        getBinding().mainLayout.setVisibility(View.VISIBLE);
-                        getBinding().toolbar.setVisibility(View.GONE);
-                        setMargins(0);
-                        moreNewFragment = new MoreNewFragment();
-                        active = moreNewFragment;
-                        fragmentManager = getSupportFragmentManager();
-                        fragmentManager.beginTransaction().add(R.id.content_frame, moreNewFragment, "5").hide(moreNewFragment).commit();
-                        fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
-                        active = moreNewFragment;
+
+                        setProfileFragment();
+
 
                     } else {
                         switchToNewMoreFragment();
@@ -156,6 +148,23 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             return false;
         }
     };
+
+    private void setProfileFragment() {
+
+        getBinding().tabs.setVisibility(View.GONE);
+        getBinding().viewPager.setVisibility(View.GONE);
+        getBinding().mainLayout.setVisibility(View.VISIBLE);
+        getBinding().toolbar.setVisibility(View.GONE);
+        setMargins(0);
+        moreNewFragment = new MoreNewFragment();
+        active = moreNewFragment;
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.content_frame, moreNewFragment, "5").hide(moreNewFragment).commit();
+        fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
+        active = moreNewFragment;
+
+
+    }
 
     private void initFrameFragment() {
         setToolBarScroll(0);
@@ -208,12 +217,15 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         return ActivityHomeBinding.inflate(inflater);
     }
 
+    private String fragmentType = "";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         oldLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
         setSupportActionBar((Toolbar) getBinding().toolbar);
-
+        if (getIntent().getStringExtra("fragmentType") != null)
+            fragmentType = getIntent().getStringExtra("fragmentType");
         modelCall();
         ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
         // Before starting an update, register a listener for updates.
@@ -380,7 +392,14 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     private void createViewModel() {
-        initialFragment(this);
+        if (fragmentType.equalsIgnoreCase("profile")) {
+            setProfileFragment();
+            UIinitialization();
+            navigation.setSelectedItemId(R.id.navigation_more);
+        } else {
+            initialFragment(this);
+
+        }
 
     }
 
@@ -390,7 +409,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private void initialFragment(HomeActivity homeActivity) {
         getBinding().viewPager.setUserInputEnabled(false);
         getBinding().viewPager.setAdapter(new ViewPagerFragmentAdapter(this, titles));
-
         // attaching tab mediator
         new TabLayoutMediator(getBinding().tabs, getBinding().viewPager,
                 (tab, position) -> tab.setText(titles[position])).attach();
@@ -424,6 +442,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             checkSameClick();
             active = homeFragment;
         }*/
+        initFrameFragment();
         setToolBarScroll(1);
         setMargins(150);
         getBinding().mainLayout.setVisibility(View.GONE);

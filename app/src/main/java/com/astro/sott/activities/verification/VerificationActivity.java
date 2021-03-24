@@ -176,6 +176,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         astroLoginViewModel.changePassword(UserInfo.getInstance(this).getAccessToken(), oldPassword, password).observe(this, changePasswordResponse -> {
             if (changePasswordResponse.isStatus() && changePasswordResponse.getResponse().getChangePasswordResponseMessage() != null) {
                 Toast.makeText(this, "Password changed Suceesfully", Toast.LENGTH_SHORT).show();
+                new ActivityLauncher(VerificationActivity.this).homeScreen(VerificationActivity.this, HomeActivity.class);
+
             } else {
                 Toast.makeText(this, changePasswordResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 onBackPressed();

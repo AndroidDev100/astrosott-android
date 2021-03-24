@@ -57,6 +57,7 @@ public interface AppLevelConstants {
     String EMAIL_MOBILE_KEY = "emailMobile";
     String FROM_KEY = "from";
     String TYPE_KEY="type";
+    String FILE_ID_KEY="file_id";
     String OLD_PASSWORD_KEY = "oldPassword";
     String PASSWORD_KEY = "password";
 
