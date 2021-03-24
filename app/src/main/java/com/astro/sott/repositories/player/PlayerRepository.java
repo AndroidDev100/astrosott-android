@@ -267,7 +267,7 @@ public class PlayerRepository {
             VideoTrack videoTrackInfo = videoTracks.get(i);
             Log.e("tracksVideo", videoTracks.get(i).getBitrate() + "");
             if (videoTrackInfo.isAdaptive()) {
-               // arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
+                // arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
             } else {
                 if (i == 1) {
                     arrayList.add(new TrackItem(AppLevelConstants.LOW, videoTrackInfo.getUniqueId(), context.getString(R.string.low_description)));
@@ -330,12 +330,15 @@ public class PlayerRepository {
 
     private TrackItem[] buildAudioTrackItems(List<AudioTrack> audioTracks) {
         TrackItem[] trackItems = {};
-
+        try {
             for (int i = 0; i < audioTracks.size(); i++) {
                 AudioTrack audioTrackInfo = audioTracks.get(i);
                 if (audioTrackInfo.isAdaptive()) {
-                    // arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
-                }else {
+                    if (audioTrackInfo.getLanguage() != null) {
+                        trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId());
+                        //  arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
+                    }
+                } else {
                     trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId());
                 }
 
@@ -351,6 +354,9 @@ public class PlayerRepository {
 //                    trackItems[i] = new TrackItem("Default" + " ", audioTrackInfo.getUniqueId());
 //                }
             }
+        } catch (Exception e) {
+
+        }
 
 
         return trackItems;
@@ -409,7 +415,7 @@ public class PlayerRepository {
 //                }
 //
 //            }
-             if (UniqueId.equalsIgnoreCase(AppLevelConstants.LOW)) {
+            if (UniqueId.equalsIgnoreCase(AppLevelConstants.LOW)) {
                 String selected = getSelectedIndex(1, tracks.getVideoTracks());
                 PrintLogging.printLog(this.getClass(), "", "selctedIndex" + selected);
                 if (!selected.equalsIgnoreCase("")) {
@@ -470,7 +476,7 @@ public class PlayerRepository {
 //                }
 //            }
 //        }
-         if (type == 1) {
+        if (type == 1) {
             for (int i = 0; i < videoTracks.size(); i++) {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
                 if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate() < 360000) {
@@ -769,7 +775,7 @@ public class PlayerRepository {
             subscribePhoenixAnalyticsReportEvent();
 
 //            player.getSettings().setABRSettings(new ABRSettings().setMinVideoBitrate(200000).setInitialBitrateEstimate(150000));
-            //   player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(550000));
+               player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
 
             player.prepare(mediaConfig);
             player.play();

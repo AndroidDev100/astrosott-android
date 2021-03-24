@@ -2716,7 +2716,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void setVideoQuality() {
-        selectedTrack = KsPreferenceKey.getInstance(baseActivity).getQualityName();
+        selectedTrack = "High Quality";
         if (!TextUtils.isEmpty(selectedTrack)) {
             trackName = selectedTrack;
             Log.d("TrackNameIs", trackName);
@@ -3418,10 +3418,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 } else {
                                     String compareName = trackItemList.get(i).getTrackName();
                                     if (trackName.equals(compareName)) {
-                                       // trackItemList.get(i).setSelected(true);
-                                        // break;
+                                        trackItemList.get(i).setSelected(true);
+                                         break;
                                     } else {
-                                       // trackItemList.get(i).setSelected(false);
+                                        trackItemList.get(i).setSelected(false);
                                     }
                                 }
                             }

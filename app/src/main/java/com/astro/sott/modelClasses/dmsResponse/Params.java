@@ -138,6 +138,43 @@ public class Params {
     private AdTagURL AdTagURL;
 
 
+    @SerializedName("lowBitRateMaxLimit")
+    @Expose
+    private String lowBitRateMaxLimit;
+
+    @SerializedName("mediumBitRateMaxLimit")
+    @Expose
+    private String mediumBitRateMaxLimit;
+
+    public String getLowBitRateMaxLimit() {
+        return lowBitRateMaxLimit;
+    }
+
+    public void setLowBitRateMaxLimit(String lowBitRateMaxLimit) {
+        this.lowBitRateMaxLimit = lowBitRateMaxLimit;
+    }
+
+    public String getMediumBitRateMaxLimit() {
+        return mediumBitRateMaxLimit;
+    }
+
+    public void setMediumBitRateMaxLimit(String mediumBitRateMaxLimit) {
+        this.mediumBitRateMaxLimit = mediumBitRateMaxLimit;
+    }
+
+    public String getHighBitRatemaxLimit() {
+        return highBitRatemaxLimit;
+    }
+
+    public void setHighBitRatemaxLimit(String highBitRatemaxLimit) {
+        this.highBitRatemaxLimit = highBitRatemaxLimit;
+    }
+
+    @SerializedName("highBitRatemaxLimit")
+    @Expose
+    private String highBitRatemaxLimit;
+
+
     public com.astro.sott.modelClasses.dmsResponse.AdTagURL getAdTagURL() {
         return AdTagURL;
     }
