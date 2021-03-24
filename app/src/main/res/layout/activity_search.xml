@@ -16,14 +16,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:visibility="invisible"
                 android:layout_height="wrap_content">
 
                 <include
-                    android:id="@+id/toolbar"
                     layout="@layout/search_toolbar" />
 
             </LinearLayout>
-
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -93,14 +92,6 @@
                             android:overScrollMode="never"
                             tools:targetApi="lollipop">
                         </androidx.recyclerview.widget.RecyclerView>
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/auto_recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:nestedScrollingEnabled="false"
-                            android:overScrollMode="never"
-                            android:visibility="gone"
-                            tools:targetApi="lollipop"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -284,6 +275,157 @@
 
 
         </androidx.cardview.widget.CardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="@dimen/search_toolbar_margin_top">
+
+                    <LinearLayout
+                        android:id="@+id/back_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="@dimen/search_toolbar_padding_right"
+                        android:paddingBottom="@dimen/search_toolbar_padding_right"
+                        tools:ignore="ContentDescription">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_7sdp"
+                            android:background="@drawable/ic_arrow_back_24px"
+                            android:contentDescription="@string/back_icon" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/search_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/search_linear_bg"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_toRightOf="@+id/back_button"
+                        android:layout_toLeftOf="@+id/filter">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/search_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="@dimen/search_toolbar_padding_right"
+                                android:background="@null"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:fontFamily="@font/heebo_regular"
+                                android:hint="@string/search_astro"
+                                android:imeOptions="actionDone"
+                                android:inputType="textNoSuggestions"
+                                android:paddingLeft="@dimen/search_toolbar_margin_top"
+                                android:paddingRight="@dimen/search_toolbar_margin_top"
+                                android:singleLine="true"
+                                android:layout_marginTop="1dp"
+                                android:textColor="@color/white"
+                                android:layout_weight="1"
+                                android:textColorHint="@color/search_edit_text_color"
+                                android:textCursorDrawable="@drawable/color_cursor"
+                                android:textSize="@dimen/font_medium_large"
+                                tools:ignore="Autofill" />
+
+                            <LinearLayout
+                                android:id="@+id/clear_edt"
+                                android:visibility="gone"
+                                android:layout_width="wrap_content"
+                                android:paddingRight="@dimen/_7sdp"
+                                android:paddingLeft="@dimen/_7sdp"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:background="@drawable/search_clear_icon"
+                                    android:layout_height="match_parent">
+
+                                </ImageView>
+
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/separator"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:background="#f2f2f7"
+                            android:layout_marginLeft="11dp"
+                            android:layout_marginRight="11dp"
+                            android:visibility="gone"
+                            android:layout_marginTop="12dp"
+                            android:layout_height="0.5dp">
+
+                        </LinearLayout>
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/auto_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_170sdp"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"
+                            android:visibility="gone"
+                            tools:targetApi="lollipop"/>
+
+
+                        <!--                <View-->
+                        <!--                    android:layout_width="match_parent"-->
+                        <!--                    android:layout_height="2dp"-->
+                        <!--                    android:layout_marginStart="@dimen/search_toolbar_underline_margin_left"-->
+                        <!--                    android:background="@color/search_edit_underline_color" />-->
+
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_filter_24px"/>
+
+                </RelativeLayout>
+
+
+                <!-- footer-->
+
+
+            </FrameLayout>
+
+        </LinearLayout>
 
     </RelativeLayout>
 
