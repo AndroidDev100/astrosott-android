@@ -2,6 +2,7 @@ package com.astro.sott.usermanagment.networkManager.retrofit
 
 import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
+import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordResponse
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
@@ -9,6 +10,7 @@ import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse
 import com.astro.sott.usermanagment.modelClasses.getDevice.GetDevicesResponse
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response
 import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse
+import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse
 import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceResponse
@@ -69,5 +71,10 @@ interface EvergentApiInterface {
     fun addSubscription(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<AddSubscriptionResponse?>?
 
     @POST("astro/changePassword")
-    fun changePassword(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<CreateUserResponse?>?
+    fun changePassword(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<ChangePasswordResponse?>?
+
+    @POST("astro/getLastSubscription")
+    fun getLastSubscription(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<LastSubscriptionResponse?>?
+
+
 }

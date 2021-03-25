@@ -25,6 +25,7 @@ import com.astro.sott.databinding.ActivityVerificationBinding;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -33,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> {
     private AstroLoginViewModel astroLoginViewModel;
-    private String loginType, emailMobile, password, from, token = "";
+    private String loginType, emailMobile, password, oldPassword = "", from, token = "";
     private CountDownTimer countDownTimer;
 
     @Override
@@ -51,10 +52,13 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void getIntentData() {
-        loginType = getIntent().getExtras().getString("type");
-        emailMobile = getIntent().getExtras().getString("emailMobile");
-        password = getIntent().getExtras().getString("password");
-        from = getIntent().getExtras().getString("from");
+        loginType = getIntent().getExtras().getString(AppLevelConstants.TYPE_KEY);
+        emailMobile = getIntent().getExtras().getString(AppLevelConstants.EMAIL_MOBILE_KEY);
+        if (getIntent().getExtras().getString(AppLevelConstants.OLD_PASSWORD_KEY) != null)
+            oldPassword = getIntent().getExtras().getString(AppLevelConstants.OLD_PASSWORD_KEY);
+
+        password = getIntent().getExtras().getString(AppLevelConstants.PASSWORD_KEY);
+        from = getIntent().getExtras().getString(AppLevelConstants.FROM_KEY);
 
     }
 
@@ -134,7 +138,6 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         String otp = getBinding().pin.getText().toString();
         if (!otp.equalsIgnoreCase("") && otp.length() == 6) {
             astroLoginViewModel.confirmOtp(loginType, emailMobile, otp).observe(this, evergentCommonResponse -> {
-
                 if (evergentCommonResponse.isStatus()) {
                     // Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
                     if (from.equalsIgnoreCase("signIn")) {
@@ -150,7 +153,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                         createUser();
 
                     } else if (from.equalsIgnoreCase("changePassword")) {
-                        Toast.makeText(this, "Change Password", Toast.LENGTH_SHORT).show();
+                        changePassword();
                     }
 
                 } else {
@@ -167,6 +170,19 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
             getBinding().invalidOtp.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void changePassword() {
+        astroLoginViewModel.changePassword(UserInfo.getInstance(this).getAccessToken(), oldPassword, password).observe(this, changePasswordResponse -> {
+            if (changePasswordResponse.isStatus() && changePasswordResponse.getResponse().getChangePasswordResponseMessage() != null) {
+                Toast.makeText(this, "Password changed Suceesfully", Toast.LENGTH_SHORT).show();
+                new ActivityLauncher(VerificationActivity.this).homeScreen(VerificationActivity.this, HomeActivity.class);
+
+            } else {
+                Toast.makeText(this, changePasswordResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            }
+        });
     }
 
     private void createOtp() {

@@ -692,7 +692,9 @@ public class SearchRepository {
 
     public LiveData<ArrayList<SearchModel>> hitQuickSearchAPI(String searchString, final Context context, final List<MediaTypeModel> list, int counter,String selectedGenre,int from,int beginFrom) {
         initRealm(context);
-        matchingKeyword(searchString);
+        if (searchString!=null && !searchString.equalsIgnoreCase("")){
+            matchingKeyword(searchString);
+        }
         //Log.w("valuesFromList",list.get(counter).getId()+"");
         final MutableLiveData<ArrayList<SearchModel>> connection = new MutableLiveData<>();
         final KsServices ksServices = new KsServices(context);
