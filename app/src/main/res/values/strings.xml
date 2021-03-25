@@ -205,7 +205,7 @@
     <string name="logout_confirmation_message">Are you sure you want to logout?</string>
     <string name="play_back_error">We could not process your request, Please try again later</string>
     <string name="catchup_error">We could not process your request.\nPlease try again.</string>
-    <string name="concurrency_error">Sorry, your device limit is exceeded</string>
+    <string name="concurrency_error">Looks like you have hit your maximum limit of concurrency playback. To playback content on this device, please stop the content playback on your other device.</string>
     <string name="loading">Loading</string>
     <string name="subscription_dialouge_for_logged_in">Get your susbcription now</string>
     <string name="purchase_dialouge_for_logged_in">Sorry, you can\'t view this video. Do you want to subscribe now?</string>
@@ -594,6 +594,7 @@
 
 
     <string name="manage_quality">Quality</string>
+    <string name="manage_quality">High Quality</string>
     <string name="subtitle_audio">Subtitle | Audio</string>
     <string name="episode_">Episode</string>
     <string name="next_episode">Next Episode</string>

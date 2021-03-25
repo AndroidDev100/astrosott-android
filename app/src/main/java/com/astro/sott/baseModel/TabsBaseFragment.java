@@ -221,74 +221,76 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 
     private void callRailAPI(List<VIUChannel> list) {
         channelList = list;
-        if (counter != channelList.size() && counter < channelList.size()) {
-            viewModel.getListLiveData(channelList.get(counter).getId(), dtChannelsList, counter, swipeToRefresh, loadedList).observe(getActivity(), new Observer<List<AssetCommonBean>>() {
-                @Override
-                public void onChanged(@Nullable List<AssetCommonBean> assetCommonBeans) {
+        if (viewModel!=null && getActivity()!=null && !getActivity().isFinishing()) {
+            if (counter != channelList.size() && counter < channelList.size()) {
+                viewModel.getListLiveData(channelList.get(counter).getId(), dtChannelsList, counter, swipeToRefresh, loadedList).observe(getActivity(), new Observer<List<AssetCommonBean>>() {
+                    @Override
+                    public void onChanged(@Nullable List<AssetCommonBean> assetCommonBeans) {
 
-                    mIsLoading = true;
-                    if (assetCommonBeans.size() > 0) {
-                        PrintLogging.printLog("", "sizeAsset" + assetCommonBeans.size() + "");
-                        boolean status = false;
-                        if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus())
-                            status = assetCommonBeans.get(0).getStatus();
-                        PrintLogging.printLog("", "sizeAsset" + assetCommonBeans.get(0).getStatus() + "");
+                        mIsLoading = true;
+                        if (assetCommonBeans.size() > 0) {
+                            PrintLogging.printLog("", "sizeAsset" + assetCommonBeans.size() + "");
+                            boolean status = false;
+                            if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus())
+                                status = assetCommonBeans.get(0).getStatus();
+                            PrintLogging.printLog("", "sizeAsset" + assetCommonBeans.get(0).getStatus() + "");
 
 
-                        if (status == true) {
+                            if (status == true) {
                             /*if (swipeToRefresh == 2) {
                                 adapter = null;
                                 loadedList.clear();
                             }*/
-                            swipeToRefresh = 0;
-                            setUIComponets(assetCommonBeans);
-                            counter++;
-                            counterValueApiFail++;
-                            callRailAPI(channelList);
-                            getBinding().noDataLayout.setVisibility(View.GONE);
-                            getBinding().myRecyclerView.setVisibility(View.VISIBLE);
-                            //getBinding().transparentLayout.setVisibility(View.GONE);
-
-                        } else {
-                            swipeToRefresh = 0;
-                            if (counter != channelList.size()) {
+                                swipeToRefresh = 0;
+                                setUIComponets(assetCommonBeans);
+                                counter++;
+                                counterValueApiFail++;
+                                callRailAPI(channelList);
                                 getBinding().noDataLayout.setVisibility(View.GONE);
                                 getBinding().myRecyclerView.setVisibility(View.VISIBLE);
                                 //getBinding().transparentLayout.setVisibility(View.GONE);
-                                counter++;
-                                callRailAPI(channelList);
+
                             } else {
-                                getBinding().myRecyclerView.setVisibility(View.GONE);
-                                getBinding().noDataLayout.setVisibility(View.VISIBLE);
-                                PrintLogging.printLog("", "in error");
-                                getBinding().transparentLayout.setVisibility(View.GONE);
+                                swipeToRefresh = 0;
+                                if (counter != channelList.size()) {
+                                    getBinding().noDataLayout.setVisibility(View.GONE);
+                                    getBinding().myRecyclerView.setVisibility(View.VISIBLE);
+                                    //getBinding().transparentLayout.setVisibility(View.GONE);
+                                    counter++;
+                                    callRailAPI(channelList);
+                                } else {
+                                    getBinding().myRecyclerView.setVisibility(View.GONE);
+                                    getBinding().noDataLayout.setVisibility(View.VISIBLE);
+                                    PrintLogging.printLog("", "in error");
+                                    getBinding().transparentLayout.setVisibility(View.GONE);
+                                }
                             }
+
+                        } else {
+                            // getBinding().myRecyclerView.setVisibility(View.GONE);
+                            // getBinding().noDataLayout.setVisibility(View.VISIBLE);
+                            // PrintLogging.printLog("","in error");
+
+                            // ToastHandler.show(getActivity().getResources().getString(R.string.no_feeds_available), ApplicationMain.getAppContext());
                         }
 
-                    } else {
-                        // getBinding().myRecyclerView.setVisibility(View.GONE);
-                        // getBinding().noDataLayout.setVisibility(View.VISIBLE);
-                        // PrintLogging.printLog("","in error");
 
-                        // ToastHandler.show(getActivity().getResources().getString(R.string.no_feeds_available), ApplicationMain.getAppContext());
                     }
+                });
 
-
-                }
-            });
-
-        } else {
-            if (adapter != null) {
-                if (adapter.getItemCount() <= 0) {
-                    showNoData();
-                }
             } else {
-                showNoData();
+                if (adapter != null) {
+                    if (adapter.getItemCount() <= 0) {
+                        showNoData();
+                    }
+                } else {
+                    showNoData();
 
+                }
+
+                swipeToRefresh = 1;
+                PrintLogging.printLog("", "sizeOfLoadedList--" + loadedList.size());
             }
-
-            swipeToRefresh = 1;
-            PrintLogging.printLog("", "sizeOfLoadedList--" + loadedList.size());
         }
 
     }

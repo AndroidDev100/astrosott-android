@@ -102,6 +102,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
     private LiveChannelCommunicator mLiveChannelCommunicator;
     private boolean assetKey = false;
+    private Asset programAsset;
 
     @Override
     public ActivityLiveChannelBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -148,7 +149,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
     }
 
-    private Asset programAsset;
+
 
     private void intentValues() {
         if (getIntent().getExtras() != null)
@@ -259,7 +260,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 DialogHelper.showLoginDialog(LiveChannel.this);
             }*/
             callProgressBar();
-            programName = Constants.programName;
+            programName = programAsset.getName();
             playerChecks(railData);
 
 

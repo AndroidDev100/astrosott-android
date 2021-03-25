@@ -56,7 +56,7 @@ public class DTPlayerViewModel extends AndroidViewModel {
     }
 
     public LiveData<Boolean> changeTrack(String uniqueID) {
-        return PlayerRepository.getInstance().changeTrack(uniqueID);
+        return PlayerRepository.getInstance().changeTrack(uniqueID,getApplication().getApplicationContext());
     }
 
     public LiveData<List<TextTrack>> loadCaptionWithPlayer() {
