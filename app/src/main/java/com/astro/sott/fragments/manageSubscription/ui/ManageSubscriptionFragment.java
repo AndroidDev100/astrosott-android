@@ -42,7 +42,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     private SubscriptionViewModel subscriptionViewModel;
     private ArrayList<String> productIdList;
     private String cancelId;
-
+    private List<AccountServiceMessageItem> accountServiceMessage;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -95,16 +95,59 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     private void getActiveSubscription() {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
+                    getBinding().progressBar.setVisibility(View.GONE);
                     getListofActivePacks(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
                     loadData(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
+                } else {
+                    getLastSubscription();
+                }
+            } else {
+
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
+                    EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                        if (evergentCommonResponse.isStatus()) {
+                            getActiveSubscription();
+                        } else {
+                            AppCommonMethods.removeUserPrerences(getActivity());
+                        }
+                    });
+                } else {
+                    getLastSubscription();
+
+                }
+
+            }
+        });
+    }
+
+    private void getLastSubscription() {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        subscriptionViewModel.getLastSubscription(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (evergentCommonResponse.isStatus()) {
+                if (evergentCommonResponse.getResponse().getGetLastSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetLastSubscriptionsResponseMessage().getAccountServiceMessage() != null) {
+                    accountServiceMessage = new ArrayList<>();
+                    accountServiceMessage.add(evergentCommonResponse.getResponse().getGetLastSubscriptionsResponseMessage().getAccountServiceMessage());
+                    loadData(accountServiceMessage);
                 } else {
                     getBinding().nodataLayout.setVisibility(View.VISIBLE);
                 }
             } else {
-                getBinding().nodataLayout.setVisibility(View.VISIBLE);
+
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
+                    EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                        if (evergentCommonResponse.isStatus()) {
+                            getLastSubscription();
+                        } else {
+                            AppCommonMethods.removeUserPrerences(getActivity());
+                        }
+                    });
+                } else {
+                    getBinding().nodataLayout.setVisibility(View.VISIBLE);
+
+                }
 
             }
         });

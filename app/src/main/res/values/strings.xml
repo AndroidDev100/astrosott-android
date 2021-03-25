@@ -84,7 +84,7 @@
     <string name="more">MORE</string>
     <string name="view_more"><u>VIEW MORE</u></string>
     <string name="view_less"><u>VIEW LESS</u></string>
-
+    <string name="subscribed_success">Subscribed Successfully</string>
     <string name="less">LESS</string>
     <string name="live">Live Now</string>
     <string name="similar_channel">Similar Channel</string>
@@ -119,6 +119,7 @@
     <string name="ok">OK</string>
     <string name="no">No</string>
     <string name="exit">Exit</string>
+
     <string name="retry">Retry</string>
     <string name="something_went_wrong">Oops, something went wrong. Please try again later</string>
     <string name="something_went_wrong_try_again">Oops, something went wrong. Please try again later</string>
@@ -204,7 +205,7 @@
     <string name="logout_confirmation_message">Are you sure you want to logout?</string>
     <string name="play_back_error">We could not process your request, Please try again later</string>
     <string name="catchup_error">We could not process your request.\nPlease try again.</string>
-    <string name="concurrency_error">Sorry, your device limit is exceeded</string>
+    <string name="concurrency_error">Looks like you have hit your maximum limit of concurrency playback. To playback content on this device, please stop the content playback on your other device.</string>
     <string name="loading">Loading</string>
     <string name="subscription_dialouge_for_logged_in">Get your susbcription now</string>
     <string name="purchase_dialouge_for_logged_in">Sorry, you can\'t view this video. Do you want to subscribe now?</string>
@@ -588,13 +589,17 @@
     <string name="key_in_pswd">Please key in your password \n to update email.</string>
     <string name="quick_search_text">QUICK SEARCH</string>
     <string name="successful">successful</string>
-    <string name="manage_quality">Quality</string>
+    <string name="pending">PENDING</string>
+    <string name="failed">FAILED</string>
+
+
+    <string name="manage_quality">High Quality</string>
     <string name="subtitle_audio">Subtitle | Audio</string>
     <string name="episode_">Episode</string>
     <string name="next_episode">Next Episode</string>
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="privacy_polices">Privacy Policies</string>
-    <string name="onetime_pass_code_text"><![CDATA[One time passcode had been sent to registered \n <email/mobile number>]]></string>
+    <string name="onetime_pass_code_text"><![CDATA[One time passcode had been sent to registered]]></string>
     <string name="link"><u>Link</u></string>
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
@@ -602,6 +607,8 @@
     <string name="you_are_offline">You\'re offline</string>
     <string name="no_internet_description_text">It seems like there is a problem with your internet connection. Please check your connection and try again!</string>
     <string name="reload_app">Reload App</string>
+
+    <string name="logout_confirmation_message_new">Do you really want to logout?</string>
 
 
 </resources>

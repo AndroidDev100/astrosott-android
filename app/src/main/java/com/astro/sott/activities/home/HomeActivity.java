@@ -6,9 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.anjlab.android.iab.v3.BillingProcessor;
-import com.anjlab.android.iab.v3.SkuDetails;
-import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -23,6 +20,9 @@ import com.astro.sott.fragments.viu.ui.ViuFragment;
 import com.astro.sott.fragments.viu.ui.ViuFragmentNew;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
 import com.astro.sott.utils.billing.AstroBillingProcessor;
+import com.astro.sott.utils.billing.BillingProcessor;
+import com.astro.sott.utils.billing.SkuDetails;
+import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
@@ -141,17 +141,9 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //                    return true;
                 case R.id.navigation_more:
                     if (moreNewFragment == null) {
-                        getBinding().tabs.setVisibility(View.GONE);
-                        getBinding().viewPager.setVisibility(View.GONE);
-                        getBinding().mainLayout.setVisibility(View.VISIBLE);
-                        getBinding().toolbar.setVisibility(View.GONE);
-                        setMargins(0);
-                        moreNewFragment = new MoreNewFragment();
-                        active = moreNewFragment;
-                        fragmentManager = getSupportFragmentManager();
-                        fragmentManager.beginTransaction().add(R.id.content_frame, moreNewFragment, "5").hide(moreNewFragment).commit();
-                        fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
-                        active = moreNewFragment;
+
+                        setProfileFragment();
+
 
                     } else {
                         switchToNewMoreFragment();
@@ -162,6 +154,23 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             return false;
         }
     };
+
+    private void setProfileFragment() {
+
+        getBinding().tabs.setVisibility(View.GONE);
+        getBinding().viewPager.setVisibility(View.GONE);
+        getBinding().mainLayout.setVisibility(View.VISIBLE);
+        getBinding().toolbar.setVisibility(View.GONE);
+        setMargins(0);
+        moreNewFragment = new MoreNewFragment();
+        active = moreNewFragment;
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.content_frame, moreNewFragment, "5").hide(moreNewFragment).commit();
+        fragmentManager.beginTransaction().hide(active).show(moreNewFragment).commit();
+        active = moreNewFragment;
+
+
+    }
 
     private void initFrameFragment() {
         setToolBarScroll(0);
@@ -215,12 +224,15 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         return ActivityHomeBinding.inflate(inflater);
     }
 
+    private String fragmentType = "";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         oldLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
         setSupportActionBar((Toolbar) getBinding().toolbar);
-
+        if (getIntent().getStringExtra("fragmentType") != null)
+            fragmentType = getIntent().getStringExtra("fragmentType");
         modelCall();
         ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
         // Before starting an update, register a listener for updates.
@@ -388,7 +400,14 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     private void createViewModel() {
-        initialFragment(this);
+        if (fragmentType.equalsIgnoreCase("profile")) {
+            setProfileFragment();
+            UIinitialization();
+            navigation.setSelectedItemId(R.id.navigation_more);
+        } else {
+            initialFragment(this);
+
+        }
 
     }
 
@@ -398,7 +417,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private void initialFragment(HomeActivity homeActivity) {
         getBinding().viewPager.setUserInputEnabled(false);
         getBinding().viewPager.setAdapter(new ViewPagerFragmentAdapter(this, titles));
-
         // attaching tab mediator
         new TabLayoutMediator(getBinding().tabs, getBinding().viewPager,
                 (tab, position) -> tab.setText(titles[position])).attach();
@@ -467,6 +485,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             checkSameClick();
             active = homeFragment;
         }*/
+        initFrameFragment();
         setToolBarScroll(1);
         setMargins(150);
         getBinding().mainLayout.setVisibility(View.GONE);
@@ -638,9 +657,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             }
             subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), productId, details.purchaseInfo.purchaseData.purchaseToken, orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
                 if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
-
                     if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
-                        Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();

@@ -75,6 +75,7 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
     private ArrayList<FilterLanguages> filterLanguageListNew;
     List<String> filterLanguageSavedList;
     List<String> filterGenreSavedList;
+    int fromReset=0;
     private void callGenreData() {
         try {
             filterLanguageSavedList=new ArrayList<>();
@@ -129,22 +130,25 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
         getBinding().clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppCommonMethods.resetFilter(SearchKeywordActivity.this);
-                searchKeywordAdapter=null;
-                sortClickHandling(4);
-                contentTypeClickHandling(4);
-                freePiadClickHandling(4);
-                connectionObserver();
+                fromReset=1;
+                resetFilterScreen();
             }
         });
         getBinding().apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkSelections()){
+                if (fromReset==1){
+                    fromReset=0;
+                    resetScreen();
+                    KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterApply("true");
+                    onBackPressed();
+                }else {
+                    if(checkSelections()){
                     KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterApply("true");
                     onBackPressed();
                 }else {
                     ToastHandler.show("Selection Required", getApplicationContext());
+                }
                 }
             }
         });
@@ -218,6 +222,61 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
             }
         });
 
+    }
+
+    List<SearchedKeywords> newResetList;
+    List<FilterLanguages> newFilterResetList;
+    private void resetFilterScreen() {
+        try {
+            newResetList=new ArrayList<>();
+            newFilterResetList=new ArrayList<>();
+            searchKeywordAdapter=null;
+            sortClickHandling(4);
+            contentTypeClickHandling(4);
+            freePiadClickHandling(4);
+            if (newObject!=null && newObject.size()>0){
+                newResetList.addAll(newObject);
+                newObject.clear();
+                for (int i=0;i<newResetList.size();i++){
+                    SearchedKeywords filterLanguages=new SearchedKeywords();
+                    filterLanguages.setKeyWords(newResetList.get(i).getKeyWords());
+                    filterLanguages.setSelected(false);
+                    newObject.add(filterLanguages);
+                }
+
+            }
+
+            if (filterLanguageList!=null && filterLanguageList.size()>0){
+                newFilterResetList.addAll(filterLanguageList);
+                filterLanguageList.clear();
+                for (int i=0;i<newFilterResetList.size();i++){
+                    FilterLanguages filterLanguages=new FilterLanguages();
+                    filterLanguages.setValue(newFilterResetList.get(i).getValue());
+                    filterLanguages.setSelected(false);
+                    filterLanguageList.add(filterLanguages);
+                }
+
+            }
+
+            loadDataFromModel();
+
+        }catch (Exception e){
+
+        }
+
+    }
+
+    private void resetScreen() {
+        try {
+            AppCommonMethods.resetFilter(SearchKeywordActivity.this);
+            searchKeywordAdapter=null;
+            sortClickHandling(4);
+            contentTypeClickHandling(4);
+            freePiadClickHandling(4);
+            connectionObserver();
+        }catch (Exception ignored){
+
+        }
     }
 
     private void checkFilterSoted(Context context) {

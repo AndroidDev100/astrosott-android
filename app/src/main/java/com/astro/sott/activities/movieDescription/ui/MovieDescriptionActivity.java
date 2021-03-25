@@ -9,10 +9,6 @@ import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.anjlab.android.iab.v3.BillingProcessor;
-import com.anjlab.android.iab.v3.SkuDetails;
-import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
@@ -159,6 +155,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
     private void getDataFromBack(RailCommonData commonRailData, int layout) {
+        getBinding().astroPlayButton.setVisibility(View.GONE);
         railData = commonRailData;
         asset = railData.getObject();
         layoutType = layout;
@@ -186,7 +183,6 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
 
-
     private void showAlertDialog(String msg) {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance("", msg, getString(R.string.ok));
@@ -207,15 +203,18 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 callProgressBar();
                 playerChecks(railData);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
-                Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                startActivity(intent);
+                fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+                if (!fileId.equalsIgnoreCase("")) {
+                    Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                    intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                    startActivity(intent);
+                }
             }
 
 
         });
 
     }
-
 
 
     private void checkErrors() {
@@ -410,8 +409,10 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         }
     }
 
+    private String fileId = "";
+
     private void checkEntitleMent(final RailCommonData railCommonData) {
-        String fileId = "";
+
 
         fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
 
@@ -966,6 +967,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 titleName = name;
                 isActive = true;
                 isWatchlistedOrNot();
+               // getDataFromBack(railData, layoutType);
+
             }
         }
     }

@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -187,5 +188,20 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
     protected void onStop() {
         super.onStop();
         ConvivaManager.convivaPlayerAppBackgrounded(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP){
+            if (fragment!=null)
+            fragment.getVolume("UP");
+
+        }else if (keyCode== KeyEvent.KEYCODE_VOLUME_DOWN){
+            if (fragment!=null)
+            fragment.getVolume("DOWN");
+
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }

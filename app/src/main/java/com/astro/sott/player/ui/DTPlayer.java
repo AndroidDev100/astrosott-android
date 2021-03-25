@@ -2716,7 +2716,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void setVideoQuality() {
-        selectedTrack = KsPreferenceKey.getInstance(baseActivity).getQualityName();
+        selectedTrack = "High Quality";
         if (!TextUtils.isEmpty(selectedTrack)) {
             trackName = selectedTrack;
             Log.d("TrackNameIs", trackName);
@@ -3418,10 +3418,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 } else {
                                     String compareName = trackItemList.get(i).getTrackName();
                                     if (trackName.equals(compareName)) {
-                                       // trackItemList.get(i).setSelected(true);
-                                        // break;
+                                        trackItemList.get(i).setSelected(true);
+                                         break;
                                     } else {
-                                       // trackItemList.get(i).setSelected(false);
+                                        trackItemList.get(i).setSelected(false);
                                     }
                                 }
                             }
@@ -3495,7 +3495,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                   boolean fromTouch) {
 
         if (seekbar.getId() == R.id.seekBar1) {
-            Log.d("frfrfrfr","Enter");
             WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
             layout.screenBrightness = progress / 100F;
             getActivity().getWindow().setAttributes(layout);
@@ -4349,6 +4348,15 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         public int getItemCount() {
             return tracks.length;
         }
+    }
+
+    public void getVolume(String volume){
+        if (volume.equalsIgnoreCase("UP")){
+            getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress()+1>getBinding().volumeSeek.seekBar2.getMax())?getBinding().volumeSeek.seekBar2.getMax():getBinding().volumeSeek.seekBar2.getProgress()+1);
+        }else {
+            getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress()-1<0)?0:getBinding().volumeSeek.seekBar2.getProgress()-1);
+        }
+
     }
 
 }

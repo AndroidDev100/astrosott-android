@@ -280,55 +280,55 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
             getBinding().pager.disableScroll(true);
             Log.e("TrailerCount",isTrailerCount+"");
 
-              if ((isTrailerCount > 0)) {
+            if ((isTrailerCount > 0)) {
 
-                  getBinding().tabLayout.setupWithViewPager(getBinding().pager);
+                getBinding().tabLayout.setupWithViewPager(getBinding().pager);
 
-                  getBinding().tabLayout.post(new Runnable() {
-                      @Override
-                      public void run() {
-                          if((getBinding().tabLayout.getTabCount() > 0 ) ){
-                              indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
-                          }
-                          Log.d("TabCount", getBinding().tabLayout.getTabCount() + "");
+                getBinding().tabLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if((getBinding().tabLayout.getTabCount() > 0 ) ){
+                            indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
+                        }
+                        Log.d("TabCount", getBinding().tabLayout.getTabCount() + "");
 
-                          Log.d("tabLayout", getBinding().tabLayout.getWidth() + "");
-                          Log.d("indicator", indicatorWidth + "");
-                          //Assign new width
-                          RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
-                          indicatorParams.width = indicatorWidth;
-                          getBinding().indicator.setLayoutParams(indicatorParams);
-                      }
-                  });
-                  getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                      @Override
-                      public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
-                              RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
-                              //Multiply positionOffset with indicatorWidth to get translation
-                              float translationOffset = (positionOffset + i) * (indicatorWidth);
-                              params.leftMargin = (int) translationOffset;
-                              getBinding().indicator.setLayoutParams(params);
+                        Log.d("tabLayout", getBinding().tabLayout.getWidth() + "");
+                        Log.d("indicator", indicatorWidth + "");
+                        //Assign new width
+                        RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                        indicatorParams.width = indicatorWidth;
+                        getBinding().indicator.setLayoutParams(indicatorParams);
+                    }
+                });
+                getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                        //Multiply positionOffset with indicatorWidth to get translation
+                        float translationOffset = (positionOffset + i) * (indicatorWidth);
+                        params.leftMargin = (int) translationOffset;
+                        getBinding().indicator.setLayoutParams(params);
 
-                      }
+                    }
 
-                      @Override
-                      public void onPageSelected(int i) {
+                    @Override
+                    public void onPageSelected(int i) {
 
-                      getBinding().pager.reMeasureCurrentPage(i);
-                      }
+                        getBinding().pager.reMeasureCurrentPage(i);
+                    }
 
-                      @Override
-                      public void onPageScrollStateChanged(int i) {
+                    @Override
+                    public void onPageScrollStateChanged(int i) {
 
 
-                      }
-                  });
-                  getBinding().indicator.setVisibility(View.VISIBLE);
+                    }
+                });
+                getBinding().indicator.setVisibility(View.VISIBLE);
 
-                  getBinding().tabLayout.setVisibility(View.VISIBLE);
-              }
+                getBinding().tabLayout.setVisibility(View.VISIBLE);
+            }
         } catch (ArithmeticException e) {
-                 Log.d("TAG",e+"");
+            Log.d("TAG",e+"");
         }
     }
 }

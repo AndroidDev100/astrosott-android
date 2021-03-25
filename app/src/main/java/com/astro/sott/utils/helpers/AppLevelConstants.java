@@ -34,7 +34,7 @@ public interface AppLevelConstants {
     String ASSET_COMMON_BEAN = "assetCommonBean";
     String MOVIE_DESCRIPTION_ACTIVITY = "MovieDescriptionActivity";
     String WEB_EPISODE_DESCRIPTION_ACTIVITY = "WebEpisodeDescriptionActivity";
-    String BOX_SET_DETAIL="BoxSetDetailActivity";
+    String BOX_SET_DETAIL = "BoxSetDetailActivity";
     String LIVE_CHANNEL = "LiveChannel";
     String SHORT_FILM_ACTIVITY = "ShortFilmActivity";
     String WEB_SERIES_DESCCRIPTION_ACTIVITY = "WebSeriesDescriptionActivity";
@@ -54,8 +54,13 @@ public interface AppLevelConstants {
     int TAB_DRAMA_EPISODES_DETAILS = 6;
     int TAB_LIVETV_DETAIL = 7;
     int TAB_FORWARDED_EPG_DETAIL = 8;
-
-
+    String EMAIL_MOBILE_KEY = "emailMobile";
+    String FROM_KEY = "from";
+    String TYPE_KEY = "type";
+    String FILE_ID_KEY = "file_id";
+    String OLD_PASSWORD_KEY = "oldPassword";
+    String PASSWORD_KEY = "password";
+    String SUBSCRIPTION_ID_KEY = "subscription_id";
     String SIGN_UP = "SignUp";
     String CONTINUE = "Continue";
     String ALREADY_USER = "alreadyUser";
@@ -102,7 +107,6 @@ public interface AppLevelConstants {
     String KEY_TITLE_SORT = "TitleSortName";
 
 
-
     String KEY_EXTERNAL_URL = "External URL";
     String KEY_PROGRAM_ID = "Program Id";
     String KEY_PROMO_MEDIA_ID = "Promo Media Id";
@@ -131,7 +135,7 @@ public interface AppLevelConstants {
 
     String HLS = "HLS_Main";
     String KEY_GENRE = "Genre";
-    String KEY_KEYWORD= "Keywords";
+    String KEY_KEYWORD = "Keywords";
 
     String KEY_SUB_GENRE = "SubGenre";
 
