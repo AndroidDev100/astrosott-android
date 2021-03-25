@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -99,6 +101,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private List<RailCommonData> mRailCommonDataList;
     private boolean isLiveChannel = true;
     private boolean isDtvAdded = false;
+    private int indicatorWidth;
+
 
     private LiveChannelCommunicator mLiveChannelCommunicator;
     private boolean assetKey = false;
@@ -148,7 +152,6 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
     }
-
 
 
     private void intentValues() {
@@ -683,24 +686,52 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         }
         LiveChannelPagerAdapter liveChannelPagerAdapter = new LiveChannelPagerAdapter(this, getSupportFragmentManager(), railData, adapterCount);
         getBinding().pager.setAdapter(liveChannelPagerAdapter);
-        getBinding().tabLayout.setupWithViewPager(getBinding().pager);
-        getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
+        if ((adapterCount > 0)) {
 
-            }
+            getBinding().tabLayout.setupWithViewPager(getBinding().pager);
 
-            @Override
-            public void onPageSelected(int position) {
-                getBinding().pager.reMeasureCurrentPage(position);
-            }
+            getBinding().tabLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    if ((getBinding().tabLayout.getTabCount() > 0)) {
+                        indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
+                    }
+                    Log.d("TabCount", getBinding().tabLayout.getTabCount() + "");
 
-            @Override
-            public void onPageScrollStateChanged(int i) {
+                    Log.d("tabLayout", getBinding().tabLayout.getWidth() + "");
+                    Log.d("indicator", indicatorWidth + "");
+                    //Assign new width
+                    LinearLayout.LayoutParams indicatorParams = (LinearLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                    indicatorParams.width = indicatorWidth;
+                    getBinding().indicator.setLayoutParams(indicatorParams);
+                }
+            });
+            getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                    //Multiply positionOffset with indicatorWidth to get translation
+                    float translationOffset = (positionOffset + i) * (indicatorWidth);
+                    params.leftMargin = (int) translationOffset;
+                    getBinding().indicator.setLayoutParams(params);
 
-            }
-        });
-        getBinding().tabLayout.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onPageSelected(int i) {
+
+                    getBinding().pager.reMeasureCurrentPage(i);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int i) {
+
+
+                }
+            });
+            getBinding().indicator.setVisibility(View.VISIBLE);
+            getBinding().tabLayout.setVisibility(View.VISIBLE);
+        }
         /*if (getResources().getBoolean(R.bool.isTablet)) {
             getBinding().scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
                 if (v.getChildAt(v.getChildCount() - 1) != null) {

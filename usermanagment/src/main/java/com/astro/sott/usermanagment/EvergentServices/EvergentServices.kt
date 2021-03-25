@@ -265,10 +265,10 @@ class EvergentServices {
             json.addProperty("socialLoginType", "")
         }
 
-        devicejson.addProperty("serialNo", "QER-GHi445678455-980988-8668H83583")
-        devicejson.addProperty("deviceName", "Samsung Note")
+        devicejson.addProperty("serialNo", getDeviceId(context.contentResolver))
+        devicejson.addProperty("deviceName", Build.DEVICE)
         devicejson.addProperty("deviceType", "Android")
-        devicejson.addProperty("modelNo", "5Sk Se6ries")
+        devicejson.addProperty("modelNo", Build.MODEL)
         devicejson.addProperty("os", "Android")
         json.add("deviceMessage", devicejson)
         var termJson = JsonObject()

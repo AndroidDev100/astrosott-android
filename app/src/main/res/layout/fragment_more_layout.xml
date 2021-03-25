@@ -3,7 +3,8 @@
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/grape_purple">
 
 
         <LinearLayout
@@ -131,23 +132,24 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/ll1_more"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:background="@color/toolbar_bg" />
+                android:background="@color/heather" />
 
             <RelativeLayout
                 android:id="@+id/r1_more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_14sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_11sdp"
                 android:layout_marginRight="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_6sdp">
 
-                <ProgressBar
-                    android:id="@+id/progress_bar"
+                <include
+                    android:id="@+id/include_progressbar"
+                    layout="@layout/progress_bar"
                     android:layout_width="wrap_content"
-                    android:visibility="gone"
-                    android:layout_centerInParent="true"
-                    android:layout_height="wrap_content"></ProgressBar>
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+
                 <TextView
                     android:id="@+id/tv_VIP_user"
                     android:layout_width="@dimen/_200sdp"
@@ -225,14 +227,14 @@
                     android:background="@drawable/white_outline_button"
                     android:fontFamily="@font/heebo_regular"
                     android:paddingLeft="8dp"
-                    android:visibility="gone"
                     android:paddingTop="4dp"
                     android:paddingRight="8dp"
                     android:paddingBottom="4dp"
                     android:text="@string/subscribe_more"
                     android:textAllCaps="false"
                     android:textColor="@color/light_blue_text_color"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -242,10 +244,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/rl1_more"
                 android:layout_marginTop="@dimen/_1sdp"
-                android:background="@color/toolbar_bg" />
-
-
-
+                android:background="@color/heather" />
 
 
             <RelativeLayout
@@ -480,6 +479,7 @@
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_terms"
                 android:layout_width="match_parent"
@@ -496,7 +496,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_help_outline_24px"
+                    android:drawableLeft="@drawable/ic_terms_conditions_24_px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
@@ -512,6 +512,7 @@
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_privacy"
                 android:layout_width="match_parent"
@@ -528,7 +529,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_help_outline_24px"
+                    android:drawableLeft="@drawable/ic_privacy_polices_24_px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
@@ -544,6 +545,7 @@
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_logout"
                 android:layout_width="match_parent"
@@ -585,16 +587,17 @@
                 android:textAllCaps="false"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_16sp"></TextView>
+
             <RelativeLayout
                 android:id="@+id/rl_linked_accounts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_12sdp"
-                android:clickable="false"
-                android:visibility="invisible"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_10sdp">
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:clickable="false"
+                android:visibility="invisible">
 
                 <TextView
                     android:id="@+id/tv_linked_accounts"
@@ -619,16 +622,17 @@
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_manage_payment"
                 android:layout_width="match_parent"
-                android:clickable="false"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
                 android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_10sdp">
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:clickable="false"
+                android:visibility="invisible">
 
                 <TextView
                     android:id="@+id/tv_manage_payments"

@@ -7,7 +7,7 @@
         android:enabled="true"
 
         app:showAsAction="ifRoom"
-        android:icon="@drawable/nav_home"
+        android:icon="@drawable/ic_home_24_px"
         android:title="@string/title_home" />
 
 
@@ -15,7 +15,7 @@
         android:id="@+id/navigation_live_tv"
         android:enabled="true"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/nav_live_tv"
+        android:icon="@drawable/ic_live_tv_24_px"
         android:title="@string/live_home" />
 
    <!-- <item
@@ -35,7 +35,7 @@
     <item
         android:id="@+id/navigation_more"
         android:enabled="true"
-        android:icon="@drawable/ic_more"
+        android:icon="@drawable/ic_person_24_px"
         android:title="@string/profile_txt"
         app:showAsAction="ifRoom" />
 

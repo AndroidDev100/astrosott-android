@@ -204,7 +204,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
 
 
     private void getInvoices(String transactionId, int count) {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         if (transactionIdCount < downloadIds.size()) {
             subscriptionViewModel.getInvoice(UserInfo.getInstance(getActivity()).getAccessToken(), transactionId).observe(this, invoiceResponse -> {
                 if (invoiceResponse.isStatus()) {
@@ -213,12 +213,12 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                         transactionIdCount++;
                         getInvoices(downloadIds.get(count), transactionIdCount);
                     } else {
-                        getBinding().progressBar.setVisibility(View.GONE);
+                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
 
                     }
                 } else {
                     Toast.makeText(getActivity(), invoiceResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                    getBinding().progressBar.setVisibility(View.GONE);
+                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
 
                 }
             });
@@ -226,7 +226,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
             if (urls.length > 0) {
                 new DownloadFileFromURL().execute(urls);
             } else {
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
 
             }
         }
@@ -235,9 +235,9 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     private void getPaymentV2() {
         orderList = new ArrayList<>();
         downloadIds = new ArrayList<>();
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.getPaymentV2(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getPaymentV2Response() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder().size() > 0) {
                     getBinding().statusLay.setVisibility(View.VISIBLE);
@@ -439,13 +439,13 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                 getFilePathAndStatus.filStatus = true;
                 getFilePathAndStatus.filePath = getReportPath(filename, extension);
                 getActivity().runOnUiThread(() -> {
-                    getBinding().progressBar.setVisibility(View.GONE);
+                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "Invoice Downloaded", Toast.LENGTH_SHORT).show();
                     getBinding().downloadLay.setVisibility(View.GONE);
                 });
                 return getFilePathAndStatus;
             } catch (IOException e) {
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 e.printStackTrace();
                 getFilePathAndStatus.filStatus = false;
                 getFilePathAndStatus.filePath = getReportPath(filename, extension);

@@ -4,7 +4,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_height"
-    android:background="@color/toolbarColor">
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -70,21 +70,3 @@
             android:visibility="gone"/>
     </LinearLayout>
 </androidx.appcompat.widget.Toolbar>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

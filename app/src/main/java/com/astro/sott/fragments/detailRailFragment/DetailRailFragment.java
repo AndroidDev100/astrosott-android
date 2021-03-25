@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.google.android.material.tabs.TabLayout;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.StringValue;
 import com.kaltura.client.types.Value;
@@ -55,6 +57,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     int counter = 1;
     private String externalId = "";
     private int indicatorWidth;
+    private Boolean indicatorflag = false;
 
     public DetailRailFragment() {
 
@@ -271,53 +274,62 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                 params.width = (int) 650;
                 getBinding().tabLayout.setLayoutParams(params);
             }
+
             DetailPagerAdapter detailPagerAdapter = new DetailPagerAdapter(getChildFragmentManager(), getActivity(), railCommonData, isTrailerCount, trailerFragmentType);
             getBinding().pager.setAdapter(detailPagerAdapter);
             getBinding().pager.disableScroll(true);
-            getBinding().tabLayout.setupWithViewPager(getBinding().pager);
-            getBinding().tabLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
+            Log.e("TrailerCount",isTrailerCount+"");
 
+            if ((isTrailerCount > 0)) {
+
+                getBinding().tabLayout.setupWithViewPager(getBinding().pager);
+
+                getBinding().tabLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if((getBinding().tabLayout.getTabCount() > 0 ) ){
+                            indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
+                        }
+                        Log.d("TabCount", getBinding().tabLayout.getTabCount() + "");
+
+                        Log.d("tabLayout", getBinding().tabLayout.getWidth() + "");
+                        Log.d("indicator", indicatorWidth + "");
                         //Assign new width
                         RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
                         indicatorParams.width = indicatorWidth;
                         getBinding().indicator.setLayoutParams(indicatorParams);
-                    }catch (Exception ignored){
+                    }
+                });
+                getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                        //Multiply positionOffset with indicatorWidth to get translation
+                        float translationOffset = (positionOffset + i) * (indicatorWidth);
+                        params.leftMargin = (int) translationOffset;
+                        getBinding().indicator.setLayoutParams(params);
 
                     }
 
-                }
-            });
-            getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
-                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                    @Override
+                    public void onPageSelected(int i) {
 
-                    //Multiply positionOffset with indicatorWidth to get translation
-                    float translationOffset = (positionOffset + i) * (indicatorWidth);
-                    params.leftMargin = (int) translationOffset;
-                    getBinding().indicator.setLayoutParams(params);
-                }
+                        getBinding().pager.reMeasureCurrentPage(i);
+                    }
 
-                @Override
-                public void onPageSelected(int i) {
+                    @Override
+                    public void onPageScrollStateChanged(int i) {
 
-                    getBinding().pager.reMeasureCurrentPage(i);
-                }
 
-                @Override
-                public void onPageScrollStateChanged(int i) {
+                    }
+                });
+                getBinding().indicator.setVisibility(View.VISIBLE);
+                getBinding().blackLine.setVisibility(View.VISIBLE);
 
-                }
-            });
-            getBinding().indicator.setVisibility(View.VISIBLE);
-            getBinding().tabLayout.setVisibility(View.VISIBLE);
-            getBinding().blackLine.setVisibility(View.VISIBLE);
-        } catch (IllegalStateException e) {
-
+                getBinding().tabLayout.setVisibility(View.VISIBLE);
+            }
+        } catch (ArithmeticException e) {
+            Log.d("TAG",e+"");
         }
     }
 }

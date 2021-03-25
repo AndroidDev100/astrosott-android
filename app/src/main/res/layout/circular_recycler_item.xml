@@ -29,11 +29,11 @@
                     android:layout_alignParentLeft="true"
                     android:layout_gravity="center_vertical"
                     android:ellipsize="end"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/heebo_medium"
                     android:maxLength="60"
                     android:maxLines="1"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/dimen20sp" />
 
                 <TextView
                     android:id="@+id/more_text"
@@ -43,11 +43,11 @@
                     android:layout_gravity="center_vertical|right"
                     android:background="?android:attr/selectableItemBackground"
                     android:clickable="true"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/heebo_regular"
                     android:text="@string/show_all"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textColor="@color/aqua_marine"
+                    android:textSize="@dimen/_12sp" />
 
                 <!--<LinearLayout-->
                 <!--android:id="@+id/treb"-->

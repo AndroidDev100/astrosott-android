@@ -24,8 +24,9 @@
                 android:layout_marginLeft="@dimen/_9sdp"
                 android:layout_marginRight="@dimen/_9sdp"
                 android:layout_marginBottom="@dimen/_2sdp"
+                android:visibility="gone"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                >
 
                 <TextView
                     android:id="@+id/headerTitle"
@@ -33,11 +34,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/heebo_bold"
                     android:singleLine="true"
                     android:text="@string/title_creators"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_16sp" />
 
                 <TextView
                     android:id="@+id/more_text"
@@ -46,13 +47,13 @@
                     android:layout_gravity="center_vertical"
                     android:background="?android:attr/selectableItemBackground"
                     android:clickable="true"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/heebo_regular"
                     android:gravity="center"
                     android:text="@string/show_all"
                     android:visibility="gone"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_8sdp" />
+                    android:textColor="@color/aqua_marine"
+                    android:textSize="@dimen/_12sp" />
 
 
             </LinearLayout>

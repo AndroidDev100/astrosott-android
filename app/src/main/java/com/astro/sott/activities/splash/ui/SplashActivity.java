@@ -814,7 +814,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     public void onCreate(Bundle savedInstanceState) {
         processIntent(getIntent());
         super.onCreate(savedInstanceState);
-
 //        View decorView = getWindow().getDecorView();
 //        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 //                |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
