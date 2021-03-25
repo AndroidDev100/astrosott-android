@@ -33,11 +33,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,6 +67,8 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 
+import java.util.Objects;
+
 public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack, BillingProcessor.IBillingHandler, CardCLickedCallBack {
     private final String TAG = this.getClass().getSimpleName();
     private TextView toolbarTitle;
@@ -81,6 +86,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private NativeAd nativeAd;
     private NativeAdLayout nativeAdLayout;
     private LinearLayout adView;
+    private int indicatorWidth;
     private AppUpdateInfo appUpdateInfo;
     private long mLastClickTime = 0;
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -172,6 +178,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
+        getBinding().indicator.setVisibility(View.GONE);
         liveTvFragment = new LiveTvFragment();
         setMargins(150);
         active = liveTvFragment;
@@ -366,7 +373,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void setClicks() {
         toolbarTitle = getBinding().toolbar.findViewById(R.id.toolbar_text);
-
+        getBinding().toolbar.setPadding(0,0,0,0);
+//        getBinding().toolbar.setContentInsetsAbsolute(0,0);
         ImageView searchIcon = getBinding().toolbar.findViewById(R.id.search_icon);
         // ImageView notification_Icon = getBinding().toolbar.findViewById(R.id.notification_icon);
         ImageView appsLaunchIcon = getBinding().toolbar.findViewById(R.id.apps_launch_icon);
@@ -413,7 +421,42 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         new TabLayoutMediator(getBinding().tabs, getBinding().viewPager,
                 (tab, position) -> tab.setText(titles[position])).attach();
 
+//        getBinding().tabs.setupWithViewPager(getBinding().pager);
+        getBinding().tabs.post(new Runnable() {
+            @Override
+            public void run() {
+                if(getBinding().tabs.getTabCount() > 0) {
+                    indicatorWidth = getBinding().tabs.getWidth() / getBinding().tabs.getTabCount();
+                }
+                //Assign new width
+               AppBarLayout.LayoutParams indicatorParams = (AppBarLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                indicatorParams.width = indicatorWidth;
+                getBinding().indicator.setLayoutParams(indicatorParams);
+            }
+        });
 
+        getBinding().viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+
+                //Multiply positionOffset with indicatorWidth to get translation
+                float translationOffset = (positionOffset + position) * (indicatorWidth);
+                params.leftMargin = (int) translationOffset;
+                getBinding().indicator.setLayoutParams(params);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+            }
+        });
         UIinitialization();
         navigation.setSelectedItemId(R.id.navigation_home);
 
@@ -448,6 +491,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().mainLayout.setVisibility(View.GONE);
         getBinding().tabs.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
+        getBinding().indicator.setVisibility(View.VISIBLE);
         getBinding().viewPager.setVisibility(View.VISIBLE);
 
 
@@ -462,6 +506,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         setToolBarScroll(0);
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
+        getBinding().indicator.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
         setMargins(150);

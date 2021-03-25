@@ -74,7 +74,7 @@
                     android:id="@+id/program_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/blue_bg"
+                    android:background="@color/grape_purple"
                     android:nestedScrollingEnabled="false"
                     tools:targetApi="lollipop" />
 
@@ -109,10 +109,10 @@
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="@dimen/dimen10dp"
                     android:layout_marginRight="@dimen/dimen10dp"
-                    android:fontFamily="@font/roboto_regular"
+                    android:fontFamily="@font/heebo_regular"
                     android:text="@string/no_epg_available"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/_14sp"
                     android:visibility="gone" />
             </RelativeLayout>
 

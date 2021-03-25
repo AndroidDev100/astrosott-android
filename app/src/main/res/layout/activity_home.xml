@@ -6,19 +6,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:background="@color/blue_bg">
+      android:background="@color/grape_purple"
+       >
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             android:id="@+id/appbar"
+            android:background="@drawable/tab_bg"
             >
             <include
                 android:id="@+id/toolbar"
                 layout="@layout/app_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/white"
                 android:minHeight="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -27,12 +28,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
-                android:background="@drawable/tab_background"
-                app:tabSelectedTextColor="@color/white"
+                app:tabIndicator="@color/transparentColor"
+                app:tabBackground="@color/transparentColor"
+                android:background="@color/transparentColor"
                 app:tabTextAppearance="@style/MineCustomTabTextAppearence"
                 app:tabTextColor="@color/grey">
             </com.google.android.material.tabs.TabLayout>
+            <View
+                android:id="@+id/indicator"
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:visibility="gone"
+                android:layout_below="@id/tabs"
+                android:background="@drawable/tab_indicator"/>
+
         </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
@@ -46,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="?attr/actionBarSize"
-            android:background="@color/blue_bg"
+            android:background="@color/grape_purple"
             android:filterTouchesWhenObscured="true"
             android:orientation="vertical"
             android:visibility="visible">
@@ -88,17 +99,3 @@
             app:menu="@menu/navigation" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

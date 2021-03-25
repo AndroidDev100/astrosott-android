@@ -47,9 +47,9 @@
                     android:gravity="left"
                     android:maxLines="1"
                     android:visibility="gone"
-                    android:fontFamily="@font/roboto_regular"
+                    android:fontFamily="@font/heebo_regular"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/_14sp"
                     android:paddingTop="@dimen/_2sdp"
                     android:paddingLeft="@dimen/_3sdp"
                     />
@@ -62,11 +62,11 @@
                     android:gravity="left"
                     android:maxLines="1"
                     android:visibility="gone"
-                    android:fontFamily="@font/roboto_regular"
+                    android:fontFamily="@font/heebo_regular"
                     android:textColor="@color/white"
                     android:paddingLeft="@dimen/_3sdp"
                     android:paddingBottom="@dimen/_2sdp"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_14sp" />
 
 
             </LinearLayout>

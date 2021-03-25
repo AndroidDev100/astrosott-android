@@ -29,9 +29,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:fontFamily="@font/roboto_light"
+                    android:fontFamily="@font/heebo_medium"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/font_large" />
+                    android:textSize="@dimen/dimen20sp" />
 
                 <TextView
                     android:id="@+id/more_text"
@@ -41,11 +41,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    android:fontFamily="@font/roboto_bold"
+                    android:fontFamily="@font/heebo_regular"
                     android:text="@string/title_more"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_medium" />
+                    android:textColor="@color/aqua_marine"
+                    android:textSize="@dimen/_12sp" />
 
             </LinearLayout>
 

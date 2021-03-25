@@ -15,7 +15,11 @@
         <item name="android:maxLines">1</item>
         <item name="android:layoutDirection">ltr</item>
     </style>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+        <item name="android:scaleType">fitXY</item>
+        <item name="colorPrimary">@color/grape_purple</item>
+
+    </style>
     <!-- Base application theme. -->
     <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -177,6 +181,7 @@
     <style name="Custom.Widget.CardView" parent="CardView">
         <item name="cardBackgroundColor">@color/transparentColor</item>
     </style>
+
     <!--<style name="HintTextAppearance" parent="@android:style/TextAppearance">-->
     <!--<item name="android:textSize">12sp</item>-->
     <!--<item name="android:textColor">@color/colorAccent</item>-->

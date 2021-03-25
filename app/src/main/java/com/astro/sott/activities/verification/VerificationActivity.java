@@ -160,7 +160,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
                 } else {
                     Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                    getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
+//                    getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
+                    getBinding().errorLine.setVisibility(View.VISIBLE);
                     getBinding().progressBar.setVisibility(View.GONE);
                     getBinding().invalidOtp.setVisibility(View.VISIBLE);
 
@@ -198,7 +199,9 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
+//                getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
+                getBinding().errorLine.setVisibility(View.VISIBLE);
+
                 getBinding().progressBar.setVisibility(View.GONE);
 
 
@@ -220,9 +223,12 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
+//                getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
+                getBinding().errorLine.setVisibility(View.VISIBLE);
+
                 getBinding().progressBar.setVisibility(View.GONE);
             }
+
         });
     }
 

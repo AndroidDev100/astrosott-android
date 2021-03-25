@@ -3,6 +3,7 @@
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:background="@color/grape_purple"
         android:layout_height="match_parent">
 
 
@@ -131,13 +132,13 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/ll1_more"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:background="@color/toolbar_bg" />
+                android:background="@color/heather" />
 
             <RelativeLayout
                 android:id="@+id/r1_more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_14sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_11sdp"
                 android:layout_marginRight="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_6sdp">
@@ -242,7 +243,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/rl1_more"
                 android:layout_marginTop="@dimen/_1sdp"
-                android:background="@color/toolbar_bg" />
+                android:background="@color/heather" />
 
 
 
@@ -496,7 +497,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_help_outline_24px"
+                    android:drawableLeft="@drawable/ic_terms_conditions_24_px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
@@ -528,7 +529,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_help_outline_24px"
+                    android:drawableLeft="@drawable/ic_privacy_polices_24_px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"

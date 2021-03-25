@@ -55,11 +55,11 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="3dp"
-                android:fontFamily="@font/roboto_regular"
+                android:fontFamily="@font/heebo_medium"
                 android:gravity="center"
                 android:text="@string/title_exclusives"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_7sdp" />
+                android:textSize="@dimen/_10sp" />
         </FrameLayout>
     </RelativeLayout>
 
