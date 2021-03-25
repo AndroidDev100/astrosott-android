@@ -3495,7 +3495,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                   boolean fromTouch) {
 
         if (seekbar.getId() == R.id.seekBar1) {
-            Log.d("frfrfrfr","Enter");
             WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
             layout.screenBrightness = progress / 100F;
             getActivity().getWindow().setAttributes(layout);
