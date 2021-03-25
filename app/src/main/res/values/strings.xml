@@ -604,5 +604,7 @@
     <string name="no_internet_description_text">It seems like there is a problem with your internet connection. Please check your connection and try again!</string>
     <string name="reload_app">Reload App</string>
 
+    <string name="logout_confirmation_message_new">Do you really want to logout?</string>
+
 
 </resources>

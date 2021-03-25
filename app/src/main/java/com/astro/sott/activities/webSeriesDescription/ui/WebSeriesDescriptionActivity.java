@@ -261,7 +261,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void checkAddedCondition(CommonResponse s) {
         if (s.getStatus()) {
-            showAlertDialog(getApplicationContext().getResources().getString(R.string.series) + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
+            showAlertDialog(getApplicationContext().getResources().getString(R.string.series) +" "+ getApplicationContext().getResources().getString(R.string.added_to_watchlist));
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
             getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);

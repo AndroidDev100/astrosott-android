@@ -70,6 +70,9 @@ class SignUpActivity : AppCompatActivity() {
 
     fun setClicks() {
 
+        activitySinUpBinding?.alreadyHaveAccount?.setOnClickListener(View.OnClickListener {
+            onBackPressed()
+        })
         activitySinUpBinding?.backIcon?.setOnClickListener(View.OnClickListener {
             onBackPressed()
         })
@@ -133,7 +136,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun checkPassword(type: String, emailMobile: String, password: String) {
-        val passwordPattern = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$")
+        val passwordPattern = Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=\\S+$).{8,16}$")
         var password = activitySinUpBinding?.passwordEdt?.text.toString();
         if (!password.equals("", true)) {
             if (passwordPattern.containsMatchIn(password)) {
