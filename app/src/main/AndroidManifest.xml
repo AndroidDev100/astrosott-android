@@ -235,13 +235,14 @@
         <activity
             android:name=".activities.search.ui.ActivitySearch"
             android:screenOrientation="locked"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
         <activity
             android:name=".activities.search.ui.ResultActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.webSeriesDescription.ui.WebSeriesDescriptionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.catchUpRails.ui.CatchupActivity"
