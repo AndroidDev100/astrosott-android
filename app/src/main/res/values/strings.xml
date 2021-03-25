@@ -593,7 +593,6 @@
     <string name="failed">FAILED</string>
 
 
-    <string name="manage_quality">Quality</string>
     <string name="manage_quality">High Quality</string>
     <string name="subtitle_audio">Subtitle | Audio</string>
     <string name="episode_">Episode</string>
