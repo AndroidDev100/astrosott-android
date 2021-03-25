@@ -603,4 +603,6 @@
     <string name="subtitle_audio">Subtitle | Audio</string>
     <string name="episode_">Episode</string>
     <string name="next_episode">Next Episode</string>
+
+    <string name="logout_confirmation_message_new">Do you really want to logout?</string>
 </resources>

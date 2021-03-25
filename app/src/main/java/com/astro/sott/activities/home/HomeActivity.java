@@ -6,9 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.anjlab.android.iab.v3.BillingProcessor;
-import com.anjlab.android.iab.v3.SkuDetails;
-import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -23,6 +20,9 @@ import com.astro.sott.fragments.viu.ui.ViuFragment;
 import com.astro.sott.fragments.viu.ui.ViuFragmentNew;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
 import com.astro.sott.utils.billing.AstroBillingProcessor;
+import com.astro.sott.utils.billing.BillingProcessor;
+import com.astro.sott.utils.billing.SkuDetails;
+import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;

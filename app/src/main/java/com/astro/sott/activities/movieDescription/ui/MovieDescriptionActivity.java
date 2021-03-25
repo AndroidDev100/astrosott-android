@@ -9,10 +9,6 @@ import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.anjlab.android.iab.v3.BillingProcessor;
-import com.anjlab.android.iab.v3.SkuDetails;
-import com.anjlab.android.iab.v3.TransactionDetails;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
@@ -159,6 +155,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
     private void getDataFromBack(RailCommonData commonRailData, int layout) {
+        getBinding().astroPlayButton.setVisibility(View.GONE);
         railData = commonRailData;
         asset = railData.getObject();
         layoutType = layout;
@@ -970,6 +967,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 titleName = name;
                 isActive = true;
                 isWatchlistedOrNot();
+                getDataFromBack(railData, layoutType);
+
             }
         }
     }

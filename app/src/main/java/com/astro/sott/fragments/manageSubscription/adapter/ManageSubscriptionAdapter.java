@@ -66,15 +66,20 @@ public class ManageSubscriptionAdapter extends RecyclerView.Adapter<ManageSubscr
         StringBuilder period = new StringBuilder();
         if (accountServiceMessageItems.get(position).getStartDate() != null)
             period.append("Period: " + AppCommonMethods.getDateFromTimeStamp(accountServiceMessageItems.get(position).getStartDate()));
-        if (accountServiceMessageItems.get(position).getValidityTill() != null)
-            period.append(" - " + AppCommonMethods.getDateFromTimeStamp(accountServiceMessageItems.get(position).getValidityTill()));
 
         holder.manageSubscriptionItemBinding.period.setText(period);
 
         if (accountServiceMessageItems.get(position).isRenewal()) {
-            holder.manageSubscriptionItemBinding.renew.setVisibility(View.VISIBLE);
+            if (accountServiceMessageItems.get(position).getValidityTill() != null) {
+                holder.manageSubscriptionItemBinding.renew.setVisibility(View.VISIBLE);
+                holder.manageSubscriptionItemBinding.renew.setText("Renews: " + AppCommonMethods.getDateFromTimeStamp(accountServiceMessageItems.get(position).getValidityTill()));
+            } else {
+                holder.manageSubscriptionItemBinding.renew.setVisibility(View.GONE);
+
+            }
         } else {
             holder.manageSubscriptionItemBinding.renew.setVisibility(View.GONE);
+
 
         }
         holder.manageSubscriptionItemBinding.change.setOnClickListener(v -> {

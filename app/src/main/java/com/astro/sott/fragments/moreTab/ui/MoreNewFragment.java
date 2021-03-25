@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -25,6 +26,7 @@ import com.astro.sott.activities.profile.ui.EditProfileActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
+import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.fragments.manageSubscription.ui.ManageSubscriptionFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
@@ -38,13 +40,14 @@ import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MoreNewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBinding> {
+public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBinding> implements AlertDialogFragment.AlertDialogListener{
     private SubscriptionViewModel subscriptionViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -201,13 +204,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setUiForLogout();
-                AppCommonMethods.removeUserPrerences(getActivity());
-                getBinding().rlLogout.setVisibility(View.GONE);
-                getBinding().loginSignupMore.setVisibility(View.VISIBLE);
-                getBinding().loginUi.setVisibility(View.GONE);
-                getBinding().edit.setVisibility(View.GONE);
-
+                showAlertDialog(getResources().getString(R.string.logout), getResources().getString(R.string.logout_confirmation_message_new));
             }
         });
         getBinding().rlContentPreference.setOnClickListener(v -> {
@@ -355,6 +352,14 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 //        });
     }
 
+    private void showAlertDialog(String title, String msg) {
+        FragmentManager fm = getFragmentManager();
+        AlertDialogFragment alertDialog = AlertDialogFragment.newInstance(title, msg, getResources().getString(R.string.ok), getResources().getString(R.string.cancel));
+        alertDialog.setAlertDialogCallBack(this);
+        alertDialog.show(Objects.requireNonNull(fm), "fragment_alert");
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -393,7 +398,9 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void getActiveSubscription() {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
                     for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
@@ -408,7 +415,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                                 getBinding().tvSubscribeNow.setVisibility(View.GONE);
                             } else {
                                 getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
-                                getBinding().tvSubscribeNow.setText("Renew on 25/01/2019");
+                                getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getDateFromTimeStamp(accountServiceMessageItem.getValidityTill()));
                             }
                             getBinding().subscribe.setVisibility(View.VISIBLE);
                             getBinding().subscribe.setText(getResources().getString(R.string.manage_subscription));
@@ -473,4 +480,14 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
 
+    @Override
+    public void onFinishDialog() {
+        setUiForLogout();
+        AppCommonMethods.removeUserPrerences(getActivity());
+        getBinding().rlLogout.setVisibility(View.GONE);
+        getBinding().loginSignupMore.setVisibility(View.VISIBLE);
+        getBinding().loginUi.setVisibility(View.GONE);
+        getBinding().edit.setVisibility(View.GONE);
+
+    }
 }

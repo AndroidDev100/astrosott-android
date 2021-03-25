@@ -595,7 +595,7 @@
     <string name="next_episode">Next Episode</string>
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="privacy_polices">Privacy Policies</string>
-    <string name="onetime_pass_code_text"><![CDATA[One time passcode had been sent to registered \n <email/mobile number>]]></string>
+    <string name="onetime_pass_code_text"><![CDATA[One time passcode had been sent to registered]]></string>
     <string name="link"><u>Link</u></string>
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
@@ -603,6 +603,8 @@
     <string name="you_are_offline">You\'re offline</string>
     <string name="no_internet_description_text">It seems like there is a problem with your internet connection. Please check your connection and try again!</string>
     <string name="reload_app">Reload App</string>
+
+    <string name="logout_confirmation_message_new">Do you really want to logout?</string>
 
 
 </resources>

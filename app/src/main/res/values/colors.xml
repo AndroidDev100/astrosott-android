@@ -21,6 +21,7 @@
     <color name="support_05">#E4AF18</color>
     <color name="transparentColor">#00000000</color>
     <color name="blackColor">#000000</color>
+    <color name="purply_blue">#5618eb</color>
     <color name="cancel_text">#bcbcbc</color>
     <color name="fragment_background_color">#1a1a1a</color>
     <color name="more_item_title">#adadad</color>

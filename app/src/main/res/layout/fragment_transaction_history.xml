@@ -93,10 +93,8 @@
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/status"
             android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone"></ProgressBar>
+            android:visibility="visible"></ProgressBar>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -105,5 +103,39 @@
             android:layout_below="@id/status"
             android:layout_marginTop="@dimen/dimen32dp"
             android:layout_marginBottom="@dimen/dimen20dp" />
+
+        <LinearLayout
+            android:id="@+id/download_lay"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/purply_blue"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/selected_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/heebo_medium"
+                android:lineHeight="16sp"
+                android:textColor="@color/title_color"
+                android:textSize="@dimen/font_medium"></TextView>
+
+            <TextView
+                android:id="@+id/download_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="16dp"
+                android:fontFamily="@font/heebo_medium"
+                android:lineHeight="16sp"
+                android:padding="5dp"
+                android:text="DOWNLOAD ALL"
+                android:textColor="@color/title_color"
+                android:textSize="@dimen/font_medium"></TextView>
+        </LinearLayout>
     </RelativeLayout>
 </layout>

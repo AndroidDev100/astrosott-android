@@ -20,8 +20,10 @@ import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveRes
 import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordResponse;
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response;
 import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse;
+import com.astro.sott.usermanagment.modelClasses.invoice.InvoiceResponse;
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse;
+import com.google.gson.JsonArray;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.Entitlement;
 import com.kaltura.client.types.ListResponse;
@@ -55,6 +57,30 @@ public class MySubscriptionPlanRepository {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
         EvergentServices.Companion.getInstance().getProduct(context, new EvergentGetProductsCallBack() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull GetProductResponse getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setGetProductResponse(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
+    public LiveData<EvergentCommonResponse> getProductsForLogin(Context context, JsonArray subscriptionId, String accessToken) {
+        MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().getProductforLogin(subscriptionId, context, accessToken, new EvergentGetProductsCallBack() {
 
 
             @Override
@@ -124,10 +150,10 @@ public class MySubscriptionPlanRepository {
         return mutableLiveData;
     }
 
-    public LiveData<EvergentCommonResponse<ChangePasswordResponse>> changePassword(Context context, String acessToken,String oldPassword,String newPassword) {
+    public LiveData<EvergentCommonResponse<ChangePasswordResponse>> changePassword(Context context, String acessToken, String oldPassword, String newPassword) {
         MutableLiveData<EvergentCommonResponse<ChangePasswordResponse>> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().changePassword(context, acessToken,oldPassword,newPassword, new EvergentResponseCallBack<ChangePasswordResponse>() {
+        EvergentServices.Companion.getInstance().changePassword(context, acessToken, oldPassword, newPassword, new EvergentResponseCallBack<ChangePasswordResponse>() {
 
 
             @Override
@@ -171,10 +197,11 @@ public class MySubscriptionPlanRepository {
         });
         return mutableLiveData;
     }
-    public LiveData<EvergentCommonResponse<AddSubscriptionResponse>> addSubscription(Context context, String acessToken, String productId, String token,String orderId) {
+
+    public LiveData<EvergentCommonResponse<AddSubscriptionResponse>> addSubscription(Context context, String acessToken, String productId, String token, String orderId) {
         MutableLiveData<EvergentCommonResponse<AddSubscriptionResponse>> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().addSubscription(context, productId, token, acessToken,orderId, new EvergentResponseCallBack<AddSubscriptionResponse>() {
+        EvergentServices.Companion.getInstance().addSubscription(context, productId, token, acessToken, orderId, new EvergentResponseCallBack<AddSubscriptionResponse>() {
 
 
             @Override
@@ -211,6 +238,30 @@ public class MySubscriptionPlanRepository {
 
             @Override
             public void onSuccess(@NotNull RemoveSubscriptionResponse getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setResponse(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
+    public LiveData<EvergentCommonResponse<InvoiceResponse>> getInvoice(Context context, String acessToken, String TransactionId) {
+        MutableLiveData<EvergentCommonResponse<InvoiceResponse>> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().getInvoice(context, TransactionId, acessToken, new EvergentResponseCallBack<InvoiceResponse>() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull InvoiceResponse getDevicesResponse) {
                 evergentCommonResponse.setStatus(true);
                 evergentCommonResponse.setResponse(getDevicesResponse);
                 mutableLiveData.postValue(evergentCommonResponse);
