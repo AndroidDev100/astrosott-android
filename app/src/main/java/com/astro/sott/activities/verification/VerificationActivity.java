@@ -59,7 +59,9 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
         password = getIntent().getExtras().getString(AppLevelConstants.PASSWORD_KEY);
         from = getIntent().getExtras().getString(AppLevelConstants.FROM_KEY);
-
+        if (emailMobile!=null && !emailMobile.equalsIgnoreCase("")){
+            getBinding().descriptionTxt.setText(getResources().getString(R.string.onetime_pass_code_text)+"\n"+emailMobile);
+        }
     }
 
     private void modelCall() {
