@@ -18,7 +18,11 @@ import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.transactionhistory.ui.TransactionHistory;
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.OrderItem;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.SingleItemHolder> {
     private Fragment fragment;
@@ -49,25 +53,57 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                 holder.binding.orderName.setText(orderItems.get(position).getOrderProductInfo().get(0).getDisplayName());
             }
 
-            if (orderItems.get(position).getCurrencyCode() != null) {
-                holder.binding.currency.setText(orderItems.get(position).getCurrencyCode() + " 20.00");
-            }
-            if (orderItems.get(position).getPaymentsInfo() != null && orderItems.get(position).getPaymentsInfo().get(0) != null && orderItems.get(position).getPaymentsInfo().get(0).getCreditCardNumber() != null) {
-                holder.binding.creditNo.setText(orderItems.get(position).getPaymentsInfo().get(0).getCreditCardNumber());
-            }
-        }
-        if (checkBoxVisible) {
-            holder.binding.checkbox.setVisibility(View.VISIBLE);
-        } else {
-            holder.binding.checkbox.setVisibility(View.GONE);
-        }
-        holder.binding.checkbox.setOnClickListener(v -> {
-            if (!holder.binding.checkbox.isChecked()) {
-                planSelectedCallback.onPlanUnselected(orderItems.get(position).getPaymentsInfo().get(0).getPaymentID());
+            if (orderItems.get(position).getCurrencyCode() != null && orderItems.get(position).getTotalPriceCharged() != null) {
+                holder.binding.currency.setText(orderItems.get(position).getCurrencyCode() + " " + orderItems.get(position).getTotalPriceCharged());
             } else {
-                planSelectedCallback.onPlanSelected(orderItems.get(position).getPaymentsInfo().get(0).getPaymentID());
+                holder.binding.currency.setText("");
             }
-        });
+            if (orderItems.get(position).getPaymentsInfo() != null && orderItems.get(position).getPaymentsInfo().get(0) != null && orderItems.get(position).getPaymentsInfo().get(0).getPaymentType() != null) {
+                holder.binding.creditNo.setText(orderItems.get(position).getPaymentsInfo().get(0).getPaymentType());
+            } else {
+                holder.binding.creditNo.setText("");
+            }
+            if (orderItems.get(position).getOrderProductInfo() != null && orderItems.get(position).getOrderProductInfo().get(0) != null && orderItems.get(position).getOrderProductInfo().get(0).getStartDate() != null) {
+                holder.binding.date.setText(getDate(orderItems.get(position).getOrderProductInfo().get(0).getStartDate()));
+
+            } else {
+                holder.binding.date.setText("");
+            }
+            if (checkBoxVisible) {
+                holder.binding.checkbox.setVisibility(View.VISIBLE);
+            } else {
+                holder.binding.checkbox.setVisibility(View.GONE);
+            }
+            holder.binding.checkbox.setOnClickListener(v -> {
+                if (!holder.binding.checkbox.isChecked()) {
+                    planSelectedCallback.onPlanUnselected(orderItems.get(position).getPaymentsInfo().get(0).getPaymentID());
+                } else {
+                    planSelectedCallback.onPlanSelected(orderItems.get(position).getPaymentsInfo().get(0).getPaymentID());
+                }
+            });
+            if (orderItems.get(position).getPaymentsInfo().get(0).getPostingStatus().equalsIgnoreCase("declined")) {
+                if (orderItems.get(position).getPaymentsInfo().get(0).getGatewayResponse() != null)
+                    holder.binding.failedText.setText(orderItems.get(position).getPaymentsInfo().get(0).getGatewayResponse());
+                holder.binding.failedText.setVisibility(View.VISIBLE);
+            } else {
+                holder.binding.failedText.setVisibility(View.GONE);
+
+            }
+        }
+    }
+
+    public String getDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd/MM/YYYY");
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
     }
 
     @Override

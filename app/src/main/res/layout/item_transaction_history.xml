@@ -21,6 +21,7 @@
             app:layout_constraintTop_toBottomOf="@id/error_passsword"
             app:layout_goneMarginTop="35dp"></CheckBox>
         <TextView
+            android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/_14sp"
@@ -94,10 +95,20 @@
             android:textColor="@color/white"
             android:layout_alignParentRight="true"
             android:fontFamily="@font/heebo_regular"
-            android:text="4242"
             android:drawablePadding="@dimen/dimen12dp"
-            android:drawableLeft="@drawable/ic_devices_24px"
             android:textSize="@dimen/_14sp"/>
     </RelativeLayout>
+    <TextView
+        android:id="@+id/failed_text"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/rl2"
+        android:fontFamily="@font/heebo_regular"
+        android:textSize="@dimen/font_small"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/dimen16dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/dimen16dp"
+        android:textColor="@color/cancel_red_color"
+        android:layout_height="wrap_content"></TextView>
 </RelativeLayout>
 </layout>
