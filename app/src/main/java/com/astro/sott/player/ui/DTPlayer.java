@@ -4351,4 +4351,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
+    public void getVolume(String volume){
+        if (volume.equalsIgnoreCase("UP")){
+            getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress()+1>getBinding().volumeSeek.seekBar2.getMax())?getBinding().volumeSeek.seekBar2.getMax():getBinding().volumeSeek.seekBar2.getProgress()+1);
+        }else {
+            getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress()-1<0)?0:getBinding().volumeSeek.seekBar2.getProgress()-1);
+        }
+
+    }
+
 }
