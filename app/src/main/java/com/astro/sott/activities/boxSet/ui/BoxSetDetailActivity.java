@@ -971,8 +971,8 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
             showAlertDialog(getApplicationContext().getResources().getString(R.string.movie_text) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
-            getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite), null, null);
-            getBinding().watchList.setTextColor(getResources().getColor(R.color.lightBlueColor));
+            getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
+            getBinding().watchList.setTextColor(getResources().getColor(R.color.aqua_marine));
 
         } else {
             switch (s.getErrorCode()) {
@@ -1011,8 +1011,8 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                 if (commonResponse != null) {
                     idfromAssetWatchlist = commonResponse.getAssetID();
                     isAdded = true;
-                    getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite), null, null);
-                    getBinding().watchList.setTextColor(getResources().getColor(R.color.lightBlueColor));
+                    getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
+                    getBinding().watchList.setTextColor(getResources().getColor(R.color.aqua_marine));
                 } else {
                     isAdded = false;
                     getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);

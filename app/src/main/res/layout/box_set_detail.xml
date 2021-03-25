@@ -81,7 +81,7 @@
                                     android:layout_centerInParent="true"
                                     android:layout_marginEnd="@dimen/web_series_iv_player_icon_margin_right"
                                     android:layout_marginBottom="@dimen/web_series_iv_player_icon_margin_bottom"
-                                    android:background="@drawable/play_icon"
+                                    android:background="@drawable/ic_green_play_buton"
                                     android:clickable="false"
                                     android:contentDescription="@string/play_icon"
                                     android:visibility="gone"
@@ -153,7 +153,7 @@
                                     android:layout_marginTop="@dimen/share_margin_top"
                                     android:layout_weight="1"
                                     android:clickable="true"
-                                    android:drawableTop="@drawable/share"
+                                    android:drawableTop="@drawable/ic_share_24_px"
                                     android:drawablePadding="7dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_regular"
@@ -285,8 +285,7 @@
                                                     android:layout_height="wrap_content"
                                                     android:fontFamily="@font/heebo_bold"
                                                     android:text="@string/duration"
-
-                                                    android:textColor="@color/yellow_orange"
+                                                    android:textColor="@color/white"
                                                     android:textSize="@dimen/font_medium" />
 
                                                 <TextView
@@ -294,7 +293,7 @@
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
                                                     android:fontFamily="@font/heebo_regular"
-                                                    android:textColor="@color/grey"
+                                                    android:textColor="@color/white"
                                                     android:textSize="@dimen/font_medium" />
                                             </LinearLayout>
 
@@ -310,7 +309,7 @@
                                                     android:fontFamily="@font/heebo_bold"
                                                     android:text="@string/sub_title"
 
-                                                    android:textColor="@color/yellow_orange"
+                                                    android:textColor="@color/white"
                                                     android:textSize="@dimen/font_medium" />
 
                                                 <TextView
@@ -318,7 +317,7 @@
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
                                                     android:fontFamily="@font/heebo_regular"
-                                                    android:textColor="@color/grey"
+                                                    android:textColor="@color/white"
                                                     android:textSize="@dimen/font_medium" />
                                             </LinearLayout>
 
@@ -334,7 +333,7 @@
                                                     android:fontFamily="@font/heebo_bold"
                                                     android:text="@string/actors"
 
-                                                    android:textColor="@color/yellow_orange"
+                                                    android:textColor="@color/white"
                                                     android:textSize="@dimen/font_medium" />
 
                                                 <TextView
@@ -342,7 +341,7 @@
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
                                                     android:fontFamily="@font/heebo_regular"
-                                                    android:textColor="@color/grey"
+                                                    android:textColor="@color/white"
                                                     android:textSize="@dimen/font_medium" />
                                             </LinearLayout>
 
@@ -358,7 +357,7 @@
                                                     android:layout_height="wrap_content"
                                                     android:fontFamily="@font/heebo_bold"
                                                     android:text="@string/directors"
-                                                    android:textColor="@color/yellow_orange"
+                                                    android:textColor="@color/white"
                                                     android:textSize="@dimen/font_medium" />
 
                                                 <TextView
@@ -366,7 +365,7 @@
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
                                                     android:fontFamily="@font/heebo_regular"
-                                                    android:textColor="@color/grey"
+                                                    android:textColor="@color/white"
                                                     android:textSize="@dimen/font_medium" />
                                             </LinearLayout>
                                         </LinearLayout>
@@ -429,7 +428,7 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_arrow_back_black_24dp"
+                        android:background="@drawable/ic_arrow_back_shadow_18_px"
                         android:contentDescription="@string/back_icon"
 
                         tools:ignore="ContentDescription" />

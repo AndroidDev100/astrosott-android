@@ -57,6 +57,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     int counter = 1;
     private String externalId = "";
     private int indicatorWidth;
+    private Boolean indicatorflag = false;
 
     public DetailRailFragment() {
 
@@ -273,17 +274,20 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                 params.width = (int) 650;
                 getBinding().tabLayout.setLayoutParams(params);
             }
+
             DetailPagerAdapter detailPagerAdapter = new DetailPagerAdapter(getChildFragmentManager(), getActivity(), railCommonData, isTrailerCount, trailerFragmentType);
             getBinding().pager.setAdapter(detailPagerAdapter);
             getBinding().pager.disableScroll(true);
             Log.e("TrailerCount",isTrailerCount+"");
 
-              if (isTrailerCount > 0) {
+              if ((isTrailerCount > 0)) {
+
                   getBinding().tabLayout.setupWithViewPager(getBinding().pager);
+
                   getBinding().tabLayout.post(new Runnable() {
                       @Override
                       public void run() {
-                          if(getBinding().tabLayout.getTabCount() > 0) {
+                          if((getBinding().tabLayout.getTabCount() > 0 ) ){
                               indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
                           }
                           Log.d("TabCount", getBinding().tabLayout.getTabCount() + "");
@@ -299,18 +303,18 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                   getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                       @Override
                       public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
-                          RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                              RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                              //Multiply positionOffset with indicatorWidth to get translation
+                              float translationOffset = (positionOffset + i) * (indicatorWidth);
+                              params.leftMargin = (int) translationOffset;
+                              getBinding().indicator.setLayoutParams(params);
 
-                          //Multiply positionOffset with indicatorWidth to get translation
-                          float translationOffset = (positionOffset + i) * (indicatorWidth);
-                          params.leftMargin = (int) translationOffset;
-                          getBinding().indicator.setLayoutParams(params);
                       }
 
                       @Override
                       public void onPageSelected(int i) {
 
-//                      getBinding().pager.reMeasureCurrentPage(i);
+                      getBinding().pager.reMeasureCurrentPage(i);
                       }
 
                       @Override
