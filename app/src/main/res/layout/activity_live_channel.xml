@@ -57,7 +57,7 @@
                                 android:elevation="@dimen/dp2"
                                 android:padding="10dp"
                                 android:layout_margin="14dp"
-                                android:src="@drawable/ic_arrow_back_24px"
+                                android:src="@drawable/ic_arrow_back_shadow_18_px"
                                 tools:ignore="ContentDescription"
                                 tools:targetApi="lollipop" />
 
@@ -98,7 +98,7 @@
                                 android:layout_marginEnd="@dimen/web_series_iv_player_icon_margin_right"
                                 android:elevation="4dp"
                                 android:layout_marginBottom="@dimen/web_series_iv_player_icon_margin_bottom"
-                                android:background="@drawable/play_icon"
+                                android:background="@drawable/ic_green_play_buton"
                                 android:contentDescription="@string/play_icon"
                                 android:visibility="visible"
                                 tools:ignore="ContentDescription" />
@@ -130,7 +130,6 @@
                     android:layout_height="50dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="15dp"
-
                     android:layout_marginRight="16dp"
                     android:background="@drawable/vip_gradient_button">
 
@@ -140,8 +139,11 @@
                         android:layout_marginTop="@dimen/share_margin_top"
                         android:layout_weight="1"
                         android:clickable="true"
-                        android:drawablePadding="7dp"
+                        android:drawablePadding="2dp"
                         android:focusable="true"
+                        android:layout_marginStart="@dimen/dimen110dp"
+                        android:layout_marginEnd="@dimen/dimen100dp"
+                        android:drawableLeft="@drawable/ic_star_24_px"
                         android:fontFamily="@font/heebo_medium"
                         android:gravity="center"
                         android:text="@string/become_vip"
@@ -197,7 +199,7 @@
                         android:fontFamily="@font/heebo_regular"
                         android:layout_marginTop="1dp"
                         android:lineHeight="24sp"
-                        android:textColor="@color/live_metas_color"
+                        android:textColor="@color/yellow_orange"
                         android:textSize="@dimen/font_medium"></TextView>
 
                     <com.astro.sott.utils.helpers.ExpandableTextView

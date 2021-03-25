@@ -91,7 +91,7 @@
 
                                     android:layout_marginEnd="@dimen/web_series_iv_player_icon_margin_right"
                                     android:layout_marginBottom="@dimen/web_series_iv_player_icon_margin_bottom"
-                                    android:background="@drawable/play_icon"
+                                    android:background="@drawable/ic_green_play_buton"
                                     android:contentDescription="@string/play_icon"
                                     android:visibility="gone" />
 
@@ -192,6 +192,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:id="@+id/star_icon"
+                                    android:visibility="gone"
                                     android:layout_alignParentLeft="true"
                                     android:layout_centerInParent="true"
                                     android:layout_marginStart="@dimen/_77sdp"
@@ -463,7 +464,7 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_arrow_back_24px"
+                        android:background="@drawable/ic_arrow_back_shadow_18_px"
                         android:contentDescription="@string/back_icon"
 
                         tools:ignore="ContentDescription" />

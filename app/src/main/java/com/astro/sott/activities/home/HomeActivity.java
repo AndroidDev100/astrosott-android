@@ -407,8 +407,9 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().tabs.post(new Runnable() {
             @Override
             public void run() {
-                indicatorWidth = getBinding().tabs.getWidth() / getBinding().tabs.getTabCount();
-
+                if(getBinding().tabs.getTabCount() > 0) {
+                    indicatorWidth = getBinding().tabs.getWidth() / getBinding().tabs.getTabCount();
+                }
                 //Assign new width
                AppBarLayout.LayoutParams indicatorParams = (AppBarLayout.LayoutParams) getBinding().indicator.getLayoutParams();
                 indicatorParams.width = indicatorWidth;

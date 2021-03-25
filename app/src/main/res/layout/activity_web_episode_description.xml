@@ -80,7 +80,7 @@
                                     android:layout_centerInParent="true"
                                     android:layout_marginEnd="@dimen/web_series_iv_player_icon_margin_right"
                                     android:layout_marginBottom="@dimen/web_series_iv_player_icon_margin_bottom"
-                                    android:background="@drawable/play_icon"
+                                    android:background="@drawable/ic_green_play_buton"
                                     android:visibility="visible"
                                     android:contentDescription="@string/play_icon" />
                             </RelativeLayout>
@@ -124,12 +124,12 @@
                                 android:id="@+id/movie_title"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto_medium"
+                                android:fontFamily="@font/heebo_medium"
                                 android:lineHeight="@dimen/movie_title_line_height"
                                 android:singleLine="true"
                                 android:text="@{movieAssestModel.name}"
                                 android:textColor="@color/white"
-                                android:textSize="@dimen/font_large"
+                                android:textSize="@dimen/txt24sp"
                                 tools:targetApi="p" />
 
 
@@ -140,7 +140,8 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginEnd="@dimen/movie_metadata_tag_margin_margin_right"
-                                android:fontFamily="@font/roboto_regular"
+
+                                android:fontFamily="@font/heebo_regular"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/font_small" />
 
@@ -187,7 +188,7 @@
                                             <TextView
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto_bold"
+                                                android:fontFamily="@font/heebo_bold"
                                                 android:text="@string/actors"
                                                 android:textColor="@color/white"
                                                 android:textSize="@dimen/font_medium" />
@@ -196,7 +197,7 @@
                                                 android:id="@+id/cast_text"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto_regular"
+                                                android:fontFamily="@font/heebo_regular"
                                                 android:text="@{castValue}"
                                                 android:textColor="@color/white"
                                                 android:textSize="@dimen/font_medium" />
@@ -211,7 +212,7 @@
                                             <TextView
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto_bold"
+                                                android:fontFamily="@font/heebo_bold"
                                                 android:text="@string/directors"
                                                 android:textColor="@color/white"
                                                 android:textSize="@dimen/font_medium" />
@@ -220,7 +221,7 @@
                                                 android:id="@+id/crew_text"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto_regular"
+                                                android:fontFamily="@font/heebo_regular"
                                                 android:text="@{crewValue}"
                                                 android:textColor="@color/white"
                                                 android:textSize="@dimen/font_medium" />
@@ -242,7 +243,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:ellipsize="end"
-                                        android:fontFamily="@font/roboto_bold"
+                                        android:fontFamily="@font/heebo_bold"
                                         android:maxLines="2"
                                         android:padding="5dp"
                                         android:textAllCaps="true"
@@ -263,11 +264,11 @@
                                     android:id="@+id/shareWith"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_regular"
+                                    android:fontFamily="@font/heebo_regular"
                                     android:text="@string/share"
                                     android:textColor="@color/white"
                                     android:drawableTop="@drawable/ic_share_24_px"
-                                    android:textSize="@dimen/font_medium"
+                                    android:textSize="@dimen/_12sp"
                                     android:drawablePadding="@dimen/watchlist_margin_top"
                                     android:focusable="true"
                                     android:clickable="true"/>
@@ -278,10 +279,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:drawablePadding="@dimen/watchlist_margin_top"
-                                    android:fontFamily="@font/roboto_regular"
+                                    android:fontFamily="@font/heebo_regular"
                                     android:text="@string/playlist"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/font_medium"
+                                    android:textSize="@dimen/_12sp"
                                     android:drawableTop="@drawable/play_list"
                                     android:layout_marginStart="40dp"
                                     />
@@ -326,7 +327,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:ignore="ContentDescription"
-                        android:background="@drawable/ic_arrow_back_24px"
+                        android:background="@drawable/ic_arrow_back_shadow_18_px"
 
                         android:contentDescription="@string/back_icon" />
                 </RelativeLayout>
