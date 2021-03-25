@@ -278,12 +278,17 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
             getBinding().tabLayout.post(new Runnable() {
                 @Override
                 public void run() {
-                    indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
+                    try {
+                        indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
 
-                    //Assign new width
-                    RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
-                    indicatorParams.width = indicatorWidth;
-                    getBinding().indicator.setLayoutParams(indicatorParams);
+                        //Assign new width
+                        RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                        indicatorParams.width = indicatorWidth;
+                        getBinding().indicator.setLayoutParams(indicatorParams);
+                    }catch (Exception ignored){
+
+                    }
+
                 }
             });
             getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
