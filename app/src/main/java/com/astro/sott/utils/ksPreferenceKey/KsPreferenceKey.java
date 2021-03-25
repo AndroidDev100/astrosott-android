@@ -29,6 +29,10 @@ public class KsPreferenceKey {
     public static final String FILTER_APPLY = "FILTER_APPLY";
     public static final String SEARCH_KSQL = "SEARCH_KSQL";
 
+    public static final String LOW_BITRATE_MAX_LIMIT = "lowBitRateMaxLimit";
+    public static final String MEDIUM_BITRATE_MAX_LIMIT = "mediumBitRateMaxLimit";
+    public static final String HIGH_BITRATE_MAX_LIMIT = "highBitRatemaxLimit";
+
 
 
     private static KsPreferenceKey mInstance;
@@ -244,6 +248,28 @@ public class KsPreferenceKey {
     }
     public String getATBpaymentGatewayId() {
         return session.getString(ATBPAYMENTGATEWAYID, "");
+    }
+
+
+    public void setLowBitrateMaxLimit(String lowBitrateMaxLimit) {
+        session.setString(LOW_BITRATE_MAX_LIMIT, lowBitrateMaxLimit);
+    }
+    public String getLowBitrateMaxLimit() {
+        return session.getString(LOW_BITRATE_MAX_LIMIT, "");
+    }
+
+    public void setMediumBitrateMaxLimit(String mediumBitrateMaxLimit) {
+        session.setString(MEDIUM_BITRATE_MAX_LIMIT, mediumBitrateMaxLimit);
+    }
+    public String getMediumBitrateMaxLimit() {
+        return session.getString(MEDIUM_BITRATE_MAX_LIMIT, "");
+    }
+
+    public void setHighBitrateMaxLimit(String highBitrateMaxLimit) {
+        session.setString(HIGH_BITRATE_MAX_LIMIT, highBitrateMaxLimit);
+    }
+    public String getHighBitrateMaxLimit() {
+        return session.getString(HIGH_BITRATE_MAX_LIMIT, "");
     }
 
     public void setATBpaymentGatewayId(String ATBpaymentGatewayId) {

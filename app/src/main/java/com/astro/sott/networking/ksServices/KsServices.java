@@ -3554,6 +3554,9 @@ public class KsServices {
                 String json = gson.toJson(responseDmsModel);
                 sharedPrefHelper.setString(AppLevelConstants.DMS_RESPONSE, json);
                 sharedPrefHelper.setString("DMS_Date", "" + System.currentTimeMillis());
+                KsPreferenceKey.getInstance(activity).setLowBitrateMaxLimit(responseDmsModel.getParams().getLowBitRateMaxLimit());
+                KsPreferenceKey.getInstance(activity).setMediumBitrateMaxLimit(responseDmsModel.getParams().getMediumBitRateMaxLimit());
+                KsPreferenceKey.getInstance(activity).setHighBitrateMaxLimit(responseDmsModel.getParams().getHighBitRatemaxLimit());
 
                    /* KsPreferenceKey.getInstance(activity).setDefaultEntitlement(responseDmsModel.getParams().getDefaultEntitlement());
                     KsPreferenceKey.getInstance(activity).setATBpaymentGatewayId(responseDmsModel.getParams().getATBpaymentGatewayId());

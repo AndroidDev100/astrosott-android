@@ -244,30 +244,31 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
     private void callRailAPI(List<VIUChannel> list) {
         // tabsVisibility(false);
         channelList = list;
-        if (counter < channelList.size()) {
-            viewModel.getListLiveData(channelList.get(counter).getId(), dtChannelsList, counter, swipeToRefresh, loadedList).observe((LifecycleOwner) context, assetCommonBeans -> {
-                if (assetCommonBeans != null && assetCommonBeans.size() > 0) {
-                    boolean status = assetCommonBeans.get(0).getStatus();
-                    if (status) {
-                        setUIComponets(assetCommonBeans);
-                        getBinding().recyclerView.setVisibility(View.VISIBLE);
-
-                    } else {
-                        if (counter != channelList.size()) {
+        if (viewModel!=null && getActivity()!=null && !getActivity().isFinishing()) {
+            if (counter < channelList.size()) {
+                viewModel.getListLiveData(channelList.get(counter).getId(), dtChannelsList, counter, swipeToRefresh, loadedList).observe((LifecycleOwner) context, assetCommonBeans -> {
+                    if (assetCommonBeans != null && assetCommonBeans.size() > 0) {
+                        boolean status = assetCommonBeans.get(0).getStatus();
+                        if (status) {
+                            setUIComponets(assetCommonBeans);
                             getBinding().recyclerView.setVisibility(View.VISIBLE);
-                            counter++;
-                            callRailAPI(channelList);
+
                         } else {
-                            getBinding().recyclerView.setVisibility(View.GONE);
+                            if (counter != channelList.size()) {
+                                getBinding().recyclerView.setVisibility(View.VISIBLE);
+                                counter++;
+                                callRailAPI(channelList);
+                            } else {
+                                getBinding().recyclerView.setVisibility(View.GONE);
+                            }
                         }
                     }
-                }
-            });
-        } else {
-            swipeToRefresh = 1;
-            PrintLogging.printLog("", "sizeOfLoadedList--" + loadedList.size());
+                });
+            } else {
+                swipeToRefresh = 1;
+                PrintLogging.printLog("", "sizeOfLoadedList--" + loadedList.size());
+            }
         }
-
     }
 
     private void setUIComponets(List<AssetCommonBean> assetCommonBeans) {
