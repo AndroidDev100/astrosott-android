@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,14 +9,25 @@
         android:background="@color/dark_toolbar"
         android:layout_height="@dimen/_37dp"
         android:id="@+id/ll1">
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/neon_green"
+            android:visibility="gone"
+            android:layout_marginLeft="19dp"
+            android:layout_gravity="center"
+            app:layout_constraintLeft_toLeftOf="@id/password"
+            app:layout_constraintTop_toBottomOf="@id/error_passsword"
+            app:layout_goneMarginTop="35dp"></CheckBox>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/_14sp"
             android:layout_gravity="center"
+            android:layout_marginLeft="11dp"
             android:fontFamily="@font/heebo_regular"
             android:textColor="@color/grey"
-           android:paddingLeft="@dimen/dimen16dp"
             android:text="Wed, 1/4/2019"/>
 
     </LinearLayout>

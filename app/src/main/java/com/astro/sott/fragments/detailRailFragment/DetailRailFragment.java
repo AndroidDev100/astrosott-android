@@ -278,8 +278,11 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
             getBinding().tabLayout.post(new Runnable() {
                 @Override
                 public void run() {
-                    indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
+                    try {
+                        indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
+                    } catch (Exception e) {
 
+                    }
                     //Assign new width
                     RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
                     indicatorParams.width = indicatorWidth;

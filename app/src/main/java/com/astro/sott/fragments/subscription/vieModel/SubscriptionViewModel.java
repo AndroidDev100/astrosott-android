@@ -12,9 +12,11 @@ import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionR
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse;
 import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordResponse;
+import com.astro.sott.usermanagment.modelClasses.invoice.InvoiceResponse;
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.google.gson.JsonArray;
 import com.kaltura.client.types.Subscription;
 
 import java.text.SimpleDateFormat;
@@ -32,11 +34,16 @@ public class SubscriptionViewModel extends AndroidViewModel {
         return MySubscriptionPlanRepository.getInstance().getProducts(getApplication());
     }
 
+    public LiveData<EvergentCommonResponse> getProductForLogin(String accessToken, JsonArray subscriptionId) {
+        return MySubscriptionPlanRepository.getInstance().getProductsForLogin(getApplication(), subscriptionId,accessToken);
+    }
+
     public LiveData<EvergentCommonResponse> getPaymentV2(String acessToken) {
         return MySubscriptionPlanRepository.getInstance().getPaymentV2(getApplication(), acessToken);
     }
+
     public LiveData<List<Subscription>> getSubscriptionPackageList(String assetId) {
-        return  SubscriptionRepository.getInstance().getSubscriptionPackageList(getApplication().getApplicationContext(), assetId);
+        return SubscriptionRepository.getInstance().getSubscriptionPackageList(getApplication().getApplicationContext(), assetId);
     }
 
     public LiveData<EvergentCommonResponse<GetActiveResponse>> getActiveSubscription(String acessToken) {
@@ -53,6 +60,10 @@ public class SubscriptionViewModel extends AndroidViewModel {
 
     public LiveData<EvergentCommonResponse<RemoveSubscriptionResponse>> removeSubscription(String acessToken, String productId) {
         return MySubscriptionPlanRepository.getInstance().removeSubscription(getApplication(), acessToken, productId);
+    }
+
+    public LiveData<EvergentCommonResponse<InvoiceResponse>> getInvoice(String acessToken, String transactionId) {
+        return MySubscriptionPlanRepository.getInstance().getInvoice(getApplication(), acessToken, transactionId);
     }
 
     public LiveData<EvergentCommonResponse<AddSubscriptionResponse>> addSubscription(String acessToken, String productId, String token, String orderId) {

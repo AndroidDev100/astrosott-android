@@ -10,6 +10,7 @@ import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse
 import com.astro.sott.usermanagment.modelClasses.getDevice.GetDevicesResponse
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response
 import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse
+import com.astro.sott.usermanagment.modelClasses.invoice.InvoiceResponse
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse
@@ -55,8 +56,15 @@ interface EvergentApiInterface {
     @POST("astro/getProducts")
     fun getProducts(@Body jsonObject: JsonObject?): Call<GetProductResponse?>?
 
+    @POST("astro/getProducts")
+    fun getProducts(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<GetProductResponse?>?
+
     @POST("astro/removeSubscription")
     fun getRemoveSubscription(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<RemoveSubscriptionResponse?>?
+
+
+    @POST("astro/getInvoicePDF")
+    fun getInvoice(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<InvoiceResponse?>?
 
     @POST("astro/getPaymentsV2")
     fun getPaymentV2(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<PaymentV2Response?>?

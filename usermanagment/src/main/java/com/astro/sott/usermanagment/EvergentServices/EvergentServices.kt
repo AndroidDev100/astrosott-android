@@ -16,6 +16,7 @@ import com.astro.sott.usermanagment.modelClasses.getContact.GetContactResponse
 import com.astro.sott.usermanagment.modelClasses.getDevice.GetDevicesResponse
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response
 import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse
+import com.astro.sott.usermanagment.modelClasses.invoice.InvoiceResponse
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse
@@ -754,6 +755,55 @@ class EvergentServices {
 
     }
 
+    fun getProductforLogin(subscriptionId: JsonArray, context: Context, accessToken: String, evergentRefreshToken: EvergentGetProductsCallBack) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        var appChannelJson = JsonObject()
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        json.addProperty("dmaID", "001");
+        json.addProperty("returnAppChannels", "T");
+        appChannelJson.addProperty("appChannel", "Google Wallet")
+        json.add("appChannels", appChannelJson)
+        json.add("ovpSKUs", subscriptionId)
+        createUserJson.add("GetProductsRequestMessage", json)
+
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.getProducts("Bearer $accessToken", createUserJson)
+        call?.enqueue(object : Callback<GetProductResponse?> {
+            override fun onFailure(call: Call<GetProductResponse?>, t: Throwable) {
+                evergentRefreshToken.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<GetProductResponse?>, response: Response<GetProductResponse?>) {
+                if (response.body() != null && response.body()?.getProductsResponseMessage != null && response.body()?.getProductsResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.getProductsResponseMessage?.responseCode.equals("1", true)) {
+                        evergentRefreshToken.onSuccess(response.body()!!)
+                    } else {
+                        if (response.body()?.getProductsResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.getProductsResponseMessage?.failureMessage, context)
+                            evergentRefreshToken.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentRefreshToken.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                } else {
+                    evergentRefreshToken.onFailure("Something Went Wrong", "")
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
     fun getPaymentV2(context: Context, acessToken: String, evergentRefreshToken: EvergentPaymentV2Callback) {
 
         var createUserJson = JsonObject()
@@ -821,6 +871,49 @@ class EvergentServices {
                     } else {
                         if (response.body()?.removeSubscriptionResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.removeSubscriptionResponseMessage?.failureMessage, context)
+                            evergentRefreshToken.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentRefreshToken.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                } else {
+                    evergentRefreshToken.onFailure("Something Went Wrong", "")
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
+
+    fun getInvoice(context: Context, transactionId: String, acessToken: String, evergentRefreshToken: EvergentResponseCallBack<InvoiceResponse>) {
+
+        var createUserJson = JsonObject()
+        var json = JsonObject()
+        json.addProperty("paymentID", transactionId)
+        createUserJson.add("GetInvoicePDFRequestMessage", json)
+
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.getInvoice("Bearer $acessToken", createUserJson)
+        call?.enqueue(object : Callback<InvoiceResponse?> {
+            override fun onFailure(call: Call<InvoiceResponse?>, t: Throwable) {
+                evergentRefreshToken.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<InvoiceResponse?>, response: Response<InvoiceResponse?>) {
+                if (response.body() != null && response.body()?.getInvoicePDFResponseMessage != null && response.body()?.getInvoicePDFResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.getInvoicePDFResponseMessage?.responseCode.equals("1", true)) {
+                        evergentRefreshToken.onSuccess(response.body()!!)
+                    } else {
+                        if (response.body()?.getInvoicePDFResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.getInvoicePDFResponseMessage?.failureMessage, context)
                             evergentRefreshToken.onFailure(errorModel.errorMessage, errorModel.errorCode)
 
                         } else {

@@ -393,7 +393,9 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void getActiveSubscription() {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
                     for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
@@ -408,7 +410,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                                 getBinding().tvSubscribeNow.setVisibility(View.GONE);
                             } else {
                                 getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
-                                getBinding().tvSubscribeNow.setText("Renew on 25/01/2019");
+                                getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getDateFromTimeStamp(accountServiceMessageItem.getValidityTill()));
                             }
                             getBinding().subscribe.setVisibility(View.VISIBLE);
                             getBinding().subscribe.setText(getResources().getString(R.string.manage_subscription));

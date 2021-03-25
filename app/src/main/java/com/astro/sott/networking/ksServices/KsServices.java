@@ -6023,49 +6023,55 @@ public class KsServices {
 
     public void callSubscriptionPackageListApi(String id, SubscriptionResponseCallBack callBack) {
         clientSetupKs();
-        subscriptionResponseCallBack = callBack;
 
-        SubscriptionFilter subscriptionFilter = new SubscriptionFilter();
-        subscriptionFilter.setSubscriptionIdIn(id);
+        try {
 
-        SubscriptionService.ListSubscriptionBuilder builder = SubscriptionService.list(subscriptionFilter).setCompletion(new OnCompletion<Response<ListResponse<Subscription>>>() {
-            @Override
-            public void onComplete(Response<ListResponse<Subscription>> result) {
+            subscriptionResponseCallBack = callBack;
 
-                if (result.isSuccess()) {
-                    if (result.results != null) {
-                        subscriptionResponseCallBack.response(true, "", "", result.results.getObjects());
+            SubscriptionFilter subscriptionFilter = new SubscriptionFilter();
+            subscriptionFilter.setMediaFileIdEqual(Integer.parseInt(id));
+
+            SubscriptionService.ListSubscriptionBuilder builder = SubscriptionService.list(subscriptionFilter).setCompletion(new OnCompletion<Response<ListResponse<Subscription>>>() {
+                @Override
+                public void onComplete(Response<ListResponse<Subscription>> result) {
+
+                    if (result.isSuccess()) {
+                        if (result.results != null) {
+                            subscriptionResponseCallBack.response(true, "", "", result.results.getObjects());
+                        } else {
+                            subscriptionResponseCallBack.response(false, "", "", result.results.getObjects());
+                        }
                     } else {
-                        subscriptionResponseCallBack.response(false, "", "", result.results.getObjects());
-                    }
-                } else {
-                    if (result.error != null) {
-                        String errorCode = result.error.getCode();
-                        Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
-                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
-                                @Override
-                                public void response(CommonResponse response) {
-                                    if (response.getStatus()) {
-                                        callSubscriptionPackageListApi(id, callBack);
-                                    } else {
-                                        subscriptionResponseCallBack.response(false, "", "", null);
+                        if (result.error != null) {
+                            String errorCode = result.error.getCode();
+                            Log.e("errorCodessName", errorCode);
+                            if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                                new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                    @Override
+                                    public void response(CommonResponse response) {
+                                        if (response.getStatus()) {
+                                            callSubscriptionPackageListApi(id, callBack);
+                                        } else {
+                                            subscriptionResponseCallBack.response(false, "", "", null);
+                                        }
                                     }
-                                }
-                            });
+                                });
 
+                            } else {
+                                subscriptionResponseCallBack.response(false, "", "", null);
+                            }
                         } else {
                             subscriptionResponseCallBack.response(false, "", "", null);
                         }
-                    } else {
-                        subscriptionResponseCallBack.response(false, "", "", null);
                     }
+
                 }
+            });
 
-            }
-        });
+            getRequestQueue().queue(builder.build(client));
 
-        getRequestQueue().queue(builder.build(client));
+        } catch (Exception e) {
+        }
     }
 
 
