@@ -104,7 +104,19 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
                     getLastSubscription();
                 }
             } else {
-                getLastSubscription();
+
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
+                    EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                        if (evergentCommonResponse.isStatus()) {
+                            getActiveSubscription();
+                        } else {
+                            AppCommonMethods.removeUserPrerences(getActivity());
+                        }
+                    });
+                } else {
+                    getLastSubscription();
+
+                }
 
             }
         });
@@ -123,7 +135,19 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
                     getBinding().nodataLayout.setVisibility(View.VISIBLE);
                 }
             } else {
-                getBinding().nodataLayout.setVisibility(View.VISIBLE);
+
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
+                    EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                        if (evergentCommonResponse.isStatus()) {
+                            getLastSubscription();
+                        } else {
+                            AppCommonMethods.removeUserPrerences(getActivity());
+                        }
+                    });
+                } else {
+                    getBinding().nodataLayout.setVisibility(View.VISIBLE);
+
+                }
 
             }
         });

@@ -24,8 +24,10 @@ import com.astro.sott.databinding.FragmentSubscriptionPacksBinding;
 import com.astro.sott.fragments.subscription.adapter.SubscriptionAdapter;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.modelClasses.InApp.PackDetail;
+import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
 import com.astro.sott.utils.billing.SkuDetails;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.gson.JsonArray;
@@ -140,7 +142,17 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
                             checkIfDetailAvailableOnPlaystore(evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage());
                         }
                     } else {
+                        if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
+                            EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                                if (evergentCommonResponse.isStatus()) {
+                                    getProducts();
+                                } else {
+                                    AppCommonMethods.removeUserPrerences(getActivity());
+                                }
+                            });
+                        } else {
 
+                        }
                     }
                 });
             }

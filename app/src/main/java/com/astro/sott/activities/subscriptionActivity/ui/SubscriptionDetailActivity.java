@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.subscription.adapter.PlanAdapter;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.subscriptionmodel.SubscriptionModel;

@@ -967,7 +967,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 titleName = name;
                 isActive = true;
                 isWatchlistedOrNot();
-                getDataFromBack(railData, layoutType);
+               // getDataFromBack(railData, layoutType);
 
             }
         }

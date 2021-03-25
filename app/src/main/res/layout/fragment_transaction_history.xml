@@ -53,56 +53,100 @@
                 android:src="@drawable/ic_file_download_24px" />
         </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="44dp"
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/toolbar"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/dimen32dp"
-            android:layout_marginEnd="@dimen/dimen16dp"
-            android:background="@drawable/gradient_outline_button"
-            android:gravity="center|end"
-            android:orientation="horizontal"
-            android:padding="@dimen/dimen12dp"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/season_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dimen16dp"
-                android:fontFamily="@font/heebo_medium"
-                android:text="@string/successful"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_16sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center"
-                android:layout_marginStart="@dimen/dimen16dp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/ic_arrow_down_24px" />
-        </LinearLayout>
-
+            android:layout_marginTop="@dimen/_80sdp"
+            android:layout_marginBottom="@dimen/dimen20dp" />
         <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="visible"></ProgressBar>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/status_lay"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/status"
+            android:layout_below="@id/toolbar"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/dimen32dp"
-            android:layout_marginBottom="@dimen/dimen20dp" />
+            android:layout_marginRight="18dp"
+            android:background="@drawable/gradient_outline_button"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginEnd="@dimen/dimen16dp"
+                android:gravity="center|end"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/selected_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dimen16dp"
+                    android:fontFamily="@font/heebo_medium"
+                    android:padding="12dp"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16sp" />
+
+                <ImageView
+                    android:id="@+id/arrow"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="end|center"
+                    android:layout_marginStart="@dimen/dimen16dp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/ic_baseline_keyboard_arrow_down_24" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:background="@color/grey"
+                android:visibility="gone"></View>
+
+            <TextView
+                android:id="@+id/secondText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen16dp"
+                android:fontFamily="@font/heebo_medium"
+                android:padding="@dimen/dimen12dp"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/third_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen16dp"
+                android:fontFamily="@font/heebo_medium"
+                android:padding="@dimen/dimen12dp"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sp"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/download_lay"

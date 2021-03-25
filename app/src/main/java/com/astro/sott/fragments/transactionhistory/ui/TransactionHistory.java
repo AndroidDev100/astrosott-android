@@ -22,12 +22,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.callBacks.commonCallBacks.PlanSelectedCallback;
 import com.astro.sott.databinding.FragmentTransactionHistoryBinding;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.transactionhistory.adapter.TransactionAdapter;
+import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.OrderItem;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 
@@ -45,9 +48,12 @@ import java.util.List;
 public class TransactionHistory extends BaseBindingFragment<FragmentTransactionHistoryBinding> implements PlanSelectedCallback {
     private SubscriptionViewModel subscriptionViewModel;
     private List<OrderItem> orderList;
+    private List<OrderItem> failedOrderList, pendingList, approvedList;
+
     private boolean checkboxVisible = false;
     private static final int PERMISSION_REQUEST_CODE = 1;
     private ArrayList<String> downloadIds;
+
     private String[] urls;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -102,6 +108,21 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     }
 
     private void setClicks() {
+        getBinding().arrow.setOnClickListener(v -> {
+            if (getBinding().separator.getVisibility() == View.GONE) {
+                setArrow(true);
+                checkForSelected();
+            } else {
+                setArrow(false);
+            }
+        });
+        getBinding().secondText.setOnClickListener(v -> {
+            setData(getBinding().secondText.getText().toString());
+        });
+        getBinding().thirdText.setOnClickListener(v -> {
+            setData(getBinding().thirdText.getText().toString());
+
+        });
         getBinding().downloadButton.setOnClickListener(v -> {
             if (orderList.size() > 0) {
                 if (checkboxVisible) {
@@ -109,7 +130,15 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                 } else {
                     checkboxVisible = true;
                 }
-                loadDataFromModel(orderList, checkboxVisible);
+
+                if (getBinding().selectedText.getText().toString().equalsIgnoreCase(getResources().getString(R.string.successful))) {
+                    loadDataFromModel(approvedList, checkboxVisible);
+                } else if (getBinding().selectedText.getText().toString().equalsIgnoreCase(getResources().getString(R.string.pending))) {
+                    loadDataFromModel(pendingList, checkboxVisible);
+                } else if (getBinding().selectedText.getText().toString().equalsIgnoreCase(getResources().getString(R.string.failed))) {
+                    loadDataFromModel(failedOrderList, checkboxVisible);
+                }
+
             }
         });
 
@@ -126,27 +155,80 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         });
     }
 
-    private int transactionIdCount = 1;
+    private void checkForSelected() {
+        String selectedText = getBinding().selectedText.getText().toString();
+        if (selectedText.equalsIgnoreCase(getResources().getString(R.string.successful))) {
+            getBinding().secondText.setText(getResources().getString(R.string.pending));
+            getBinding().thirdText.setText(getResources().getString(R.string.failed));
+
+        } else if (selectedText.equalsIgnoreCase(getResources().getString(R.string.pending))) {
+            getBinding().secondText.setText(getResources().getString(R.string.successful));
+            getBinding().thirdText.setText(getResources().getString(R.string.failed));
+        } else if (selectedText.equalsIgnoreCase(getResources().getString(R.string.failed))) {
+            getBinding().secondText.setText(getResources().getString(R.string.successful));
+            getBinding().thirdText.setText(getResources().getString(R.string.pending));
+        }
+
+    }
+
+    private void setData(String dataType) {
+        if (dataType.equalsIgnoreCase(getResources().getString(R.string.successful))) {
+            loadDataFromModel(approvedList, false);
+            getBinding().selectedText.setText(getResources().getString(R.string.successful));
+        } else if (dataType.equalsIgnoreCase(getResources().getString(R.string.pending))) {
+            loadDataFromModel(pendingList, false);
+            getBinding().selectedText.setText(getResources().getString(R.string.pending));
+        } else if (dataType.equalsIgnoreCase(getResources().getString(R.string.failed))) {
+            loadDataFromModel(failedOrderList, false);
+            getBinding().selectedText.setText(getResources().getString(R.string.failed));
+        }
+        setArrow(false);
+
+    }
+
+    private void setArrow(boolean b) {
+        if (b) {
+            getBinding().arrow.setBackground(getResources().getDrawable(R.drawable.ic_baseline_keyboard_arrow_up_24));
+            getBinding().separator.setVisibility(View.VISIBLE);
+            getBinding().secondText.setVisibility(View.VISIBLE);
+            getBinding().thirdText.setVisibility(View.VISIBLE);
+        } else {
+            getBinding().arrow.setBackground(getResources().getDrawable(R.drawable.ic_baseline_keyboard_arrow_down_24));
+            getBinding().separator.setVisibility(View.GONE);
+            getBinding().secondText.setVisibility(View.GONE);
+            getBinding().thirdText.setVisibility(View.GONE);
+        }
+    }
+
+    private int transactionIdCount = 0;
 
 
     private void getInvoices(String transactionId, int count) {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         if (transactionIdCount < downloadIds.size()) {
             subscriptionViewModel.getInvoice(UserInfo.getInstance(getActivity()).getAccessToken(), transactionId).observe(this, invoiceResponse -> {
                 if (invoiceResponse.isStatus()) {
                     if (invoiceResponse.getResponse().getGetInvoicePDFResponseMessage() != null && invoiceResponse.getResponse().getGetInvoicePDFResponseMessage().getResponseData() != null) {
                         urls[count] = invoiceResponse.getResponse().getGetInvoicePDFResponseMessage().getResponseData();
-                        getInvoices(downloadIds.get(transactionIdCount), transactionIdCount);
                         transactionIdCount++;
+                        getInvoices(downloadIds.get(count), transactionIdCount);
                     } else {
+                        getBinding().progressBar.setVisibility(View.GONE);
 
                     }
                 } else {
+                    Toast.makeText(getActivity(), invoiceResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    getBinding().progressBar.setVisibility(View.GONE);
 
                 }
             });
         } else {
-            if (urls.length > 0)
+            if (urls.length > 0) {
                 new DownloadFileFromURL().execute(urls);
+            } else {
+                getBinding().progressBar.setVisibility(View.GONE);
+
+            }
         }
     }
 
@@ -158,17 +240,50 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getPaymentV2Response() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder().size() > 0) {
-                    getBinding().status.setVisibility(View.VISIBLE);
+                    getBinding().statusLay.setVisibility(View.VISIBLE);
                     orderList.addAll(evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder());
-                    loadDataFromModel(orderList, false);
+                    checkTypesOfOrder(orderList);
                 } else {
-                    getBinding().status.setVisibility(View.GONE);
+                    getBinding().statusLay.setVisibility(View.GONE);
                 }
             } else {
-                getBinding().status.setVisibility(View.GONE);
+
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
+                    EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                        if (evergentCommonResponse.isStatus()) {
+                            getPaymentV2();
+                        } else {
+                            AppCommonMethods.removeUserPrerences(getActivity());
+                        }
+                    });
+                } else {
+                    getBinding().statusLay.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
+    }
+
+    private void checkTypesOfOrder(List<OrderItem> orderList) {
+        failedOrderList = new ArrayList<>();
+        pendingList = new ArrayList<>();
+        approvedList = new ArrayList<>();
+
+        for (OrderItem orderItem : orderList) {
+            if (orderItem.getPaymentsInfo() != null && orderItem.getPaymentsInfo().size() > 0 && orderItem.getPaymentsInfo().get(0) != null && orderItem.getPaymentsInfo().get(0).getPostingStatus() != null) {
+                if (orderItem.getPaymentsInfo().get(0).getPostingStatus().equalsIgnoreCase("declined")) {
+                    failedOrderList.add(orderItem);
+                } else if (orderItem.getPaymentsInfo().get(0).getPostingStatus().equalsIgnoreCase("Posted")) {
+                    approvedList.add(orderItem);
+                } else if (orderItem.getPaymentsInfo().get(0).getPostingStatus().equalsIgnoreCase("pending")) {
+                    pendingList.add(orderItem);
+                }
+            }
+        }
+
+        loadDataFromModel(approvedList, false);
+
     }
 
     private void modelCall() {
@@ -176,8 +291,12 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     }
 
     private void loadDataFromModel(List<OrderItem> order, boolean checkboxVisibility) {
-        TransactionAdapter adapter = new TransactionAdapter(TransactionHistory.this, order, checkboxVisibility);
-        getBinding().recyclerView.setAdapter(adapter);
+        if (order.size() > 0) {
+            TransactionAdapter adapter = new TransactionAdapter(TransactionHistory.this, order, checkboxVisibility);
+            getBinding().recyclerView.setAdapter(adapter);
+        } else {
+            getBinding().recyclerView.setAdapter(null);
+        }
 
     }
 
@@ -187,6 +306,9 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         getBinding().recyclerView.hasFixedSize();
         getBinding().recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
 
+        getBinding().selectedText.setText(getResources().getString(R.string.successful));
+        getBinding().secondText.setText(getResources().getString(R.string.pending));
+        getBinding().thirdText.setText(getResources().getString(R.string.failed));
         getBinding().backButton.setOnClickListener(v -> {
 
         });
@@ -274,7 +396,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         @Override
         protected String doInBackground(String... f_url) {
             for (int i = 0; i < f_url.length; i++) {
-                getFileFromBase64AndSaveInSDCard(f_url[i], "astro_transaction", "pdf");
+                getFileFromBase64AndSaveInSDCard(f_url[i], "astro_transaction" + i, "pdf");
 
             }
 
@@ -316,8 +438,8 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                 os.close();
                 getFilePathAndStatus.filStatus = true;
                 getFilePathAndStatus.filePath = getReportPath(filename, extension);
-                getBinding().progressBar.setVisibility(View.GONE);
                 getActivity().runOnUiThread(() -> {
+                    getBinding().progressBar.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "Invoice Downloaded", Toast.LENGTH_SHORT).show();
                     getBinding().downloadLay.setVisibility(View.GONE);
                 });

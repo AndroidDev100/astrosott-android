@@ -84,7 +84,7 @@
     <string name="more">MORE</string>
     <string name="view_more"><u>VIEW MORE</u></string>
     <string name="view_less"><u>VIEW LESS</u></string>
-<string name="subscribed_success">Subscribed Successfully</string>
+    <string name="subscribed_success">Subscribed Successfully</string>
     <string name="less">LESS</string>
     <string name="live">Live Now</string>
     <string name="similar_channel">Similar Channel</string>
@@ -589,6 +589,10 @@
     <string name="key_in_pswd">Please key in your password \n to update email.</string>
     <string name="quick_search_text">QUICK SEARCH</string>
     <string name="successful">successful</string>
+    <string name="pending">PENDING</string>
+    <string name="failed">FAILED</string>
+
+
     <string name="manage_quality">Quality</string>
     <string name="subtitle_audio">Subtitle | Audio</string>
     <string name="episode_">Episode</string>

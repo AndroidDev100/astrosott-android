@@ -126,7 +126,7 @@ public class TrailerFragmentViewModel extends AndroidViewModel {
     private LiveData<List<AssetCommonBean>> checkHasEpisodeNumberForSeason(Context applicationContext, Asset map, int assetType, int counter, int seasonCounter, int layoutType, String sortType, LifecycleOwner owner, List<Integer> seriesNumberList) {
         MutableLiveData<List<AssetCommonBean>> mutableLiveData = new MutableLiveData<>();
         EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType, sortType).observe(owner, assetCommonBeans -> {
-            if (assetCommonBeans.get(0).getStatus()) {
+            if (assetCommonBeans.get(0)!=null&&assetCommonBeans.get(0).getStatus()) {
                 if (assetCommonBeans.get(0).getRailAssetList() != null && assetCommonBeans.get(0).getRailAssetList().get(0) != null && assetCommonBeans.get(0).getRailAssetList().get(0).getObject() != null && assetCommonBeans.get(0).getRailAssetList().get(0).getObject().getMetas() != null) {
                     int episodeValue = AppCommonMethods.getEpisodeNumber(assetCommonBeans.get(0).getRailAssetList().get(0).getObject().getMetas());
                     if (episodeValue == -1) {
@@ -151,7 +151,7 @@ public class TrailerFragmentViewModel extends AndroidViewModel {
     private LiveData<List<AssetCommonBean>> checkHasEpisodeNumber(Context applicationContext, Asset map, int assetType, int counter, int seasonCounter, int layoutType, String sortType, LifecycleOwner owner) {
         MutableLiveData<List<AssetCommonBean>> mutableLiveData = new MutableLiveData<>();
         EpisodesLayer.getInstance().getEpisodesListWithoutSeason(applicationContext, map, assetType, counter, seasonCounter, layoutType, sortType).observe(owner, assetCommonBeans -> {
-            if (assetCommonBeans.get(0).getStatus()) {
+            if (assetCommonBeans.get(0)!=null&&assetCommonBeans.get(0).getStatus()) {
                 if (assetCommonBeans.get(0).getRailAssetList() != null && assetCommonBeans.get(0).getRailAssetList().get(0) != null && assetCommonBeans.get(0).getRailAssetList().get(0).getObject() != null && assetCommonBeans.get(0).getRailAssetList().get(0).getObject().getMetas() != null) {
                     int episodeValue = AppCommonMethods.getEpisodeNumber(assetCommonBeans.get(0).getRailAssetList().get(0).getObject().getMetas());
                     if (episodeValue == -1) {

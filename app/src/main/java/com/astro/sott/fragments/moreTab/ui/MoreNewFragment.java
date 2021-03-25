@@ -31,6 +31,7 @@ import com.astro.sott.fragments.manageSubscription.ui.ManageSubscriptionFragment
 import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.transactionhistory.ui.TransactionHistory;
+import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -47,7 +48,7 @@ import java.util.Objects;
  * Use the {@link MoreNewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBinding> implements AlertDialogFragment.AlertDialogListener{
+public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBinding> implements AlertDialogFragment.AlertDialogListener {
     private SubscriptionViewModel subscriptionViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -426,7 +427,20 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     setUiForLogout();
                 }
             } else {
-                setUiForLogout();
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
+                    EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                        if (evergentCommonResponse.isStatus()) {
+                            getActiveSubscription();
+                        } else {
+                            AppCommonMethods.removeUserPrerences(getActivity());
+                        }
+                    });
+                } else {
+
+                    setUiForLogout();
+
+                }
+
 
             }
         });
