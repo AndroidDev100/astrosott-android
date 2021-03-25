@@ -315,6 +315,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
             });
             getBinding().indicator.setVisibility(View.VISIBLE);
             getBinding().tabLayout.setVisibility(View.VISIBLE);
+            getBinding().blackLine.setVisibility(View.VISIBLE);
         } catch (IllegalStateException e) {
 
         }
