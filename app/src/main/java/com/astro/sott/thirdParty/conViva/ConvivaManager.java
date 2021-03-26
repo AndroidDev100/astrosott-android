@@ -56,7 +56,7 @@ public class ConvivaManager {
 
     public static void initConvivaAnalytics(Context context) {
         mcontext = context;
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.FLAVOR.equalsIgnoreCase("QA")) {
             Map<String, Object> settings = new HashMap<String, Object>();
             String gatewayUrl = "https://astro-sott-test.testonly.conviva.com";
             settings.put(ConvivaSdkConstants.GATEWAY_URL, gatewayUrl);
