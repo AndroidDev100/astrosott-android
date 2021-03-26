@@ -22,10 +22,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clRoot"
         android:layout_width="wrap_content"
-        android:layout_height="230dp"
-        android:orientation="vertical"
-
-        >
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
 
         <FrameLayout
@@ -33,9 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/search_item_padding"
-            android:layout_marginRight="@dimen/search_item_padding"
-            android:layout_marginTop="@dimen/search_item_padding"
+            android:layout_marginStart="@dimen/popular_searches_margin_left"
+            android:paddingTop="@dimen/search_item_padding"
             app:layout_constraintStart_toStartOf="parent">
 
 
@@ -58,88 +55,88 @@
 
             </LinearLayout>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="@dimen/tab_search_width"
-                android:layout_height="@dimen/tab_search_height"
-                android:background="@color/fragment_background_color"
-                app:cardCornerRadius="@dimen/trailor_btn_left">
+
+            <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/root"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:filterTouchesWhenObscured="true"
+                card_view:cardBackgroundColor="#303255"
+                card_view:cardCornerRadius="@dimen/_5sdp"
+                card_view:cardElevation="1dp"
+                card_view:cardMaxElevation="1dp"
+                card_view:cardPreventCornerOverlap="false"
+                card_view:cardUseCompatPadding="true">
 
                 <ImageView
                     android:id="@+id/itemImage"
                     setImageUrlSearch="@{singleItem.images.size() > 0 ? singleItem.images.get(0) : null}"
-                    android:layout_width="@dimen/tab_search_width"
-                    android:layout_height="@dimen/tab_search_height"
+                    android:layout_width="@dimen/landscape_item_width"
+                    android:layout_height="@dimen/landscape_item_height"
                     android:contentDescription="@string/banner_image"
                     android:scaleType="fitXY"
-                    tools:ignore="ContentDescription"
-                    android:layout_gravity="center"
-                    android:background="@color/fragment_background_color"
-                    />
-                <ImageView
-                    android:id="@+id/hungama"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/playpurple"
-                    android:layout_gravity="bottom|left"
-                    android:visibility="gone"></ImageView>
+                    tools:ignore="ContentDescription" />
+
 
             </androidx.cardview.widget.CardView>
-            <!--<ImageView-->
-            <!--android:id="@+id/channel_image"-->
-            <!--setImageUrlSearch="@{singleItem.images.size() > 0 ? singleItem.images.get(0) : null}"-->
-            <!--android:layout_width="@dimen/tab_search_width"-->
-            <!--android:layout_height="@dimen/tab_search_height"-->
-            <!--android:contentDescription="@string/channel_logo"-->
-            <!--android:scaleType="fitXY"-->
-            <!--android:visibility="gone"-->
-            <!--tools:ignore="ContentDescription" />-->
+            <ImageView
+                android:id="@+id/hungama"
+                android:layout_width="46dp"
+                android:layout_height="26dp"
+                android:src="@drawable/playpurple"
+                android:layout_gravity="bottom|left"
+                android:paddingTop="18dp"
+                android:paddingRight="18dp"
+                android:visibility="gone"></ImageView>
+
 
         </FrameLayout>
 
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/landscape_item_width"
+            android:visibility="visible"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/search_item_padding"
+            android:layout_marginStart="@dimen/popular_searches_title_margin_left"
+            android:layout_marginEnd="@dimen/popular_searches_margin_left"
             android:orientation="vertical"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/searchItemImage">
 
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/heebo_regular"
                 android:maxLines="1"
-                android:ems="10"
+                android:layout_marginTop="4dp"
+                android:singleLine="true"
                 android:text="@{ResultAllXmlUtils.setTitle(singleItem)}"
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_medium_large"
-                />
+                android:textSize="@dimen/font_medium" />
 
             <TextView
                 android:id="@+id/tvEpisode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/search_item_card_view_corner"
                 android:ellipsize="end"
+                android:visibility="gone"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="1"
-                android:ems="10"
-                android:text="@{ResultAllXmlUtils.setDetails(context,singleItem)}"
                 android:textColor="@color/search_sub_title"
                 android:textSize="@dimen/font_medium_large" />
 
         </LinearLayout>
 
 
-
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/search_item_seperator_width"
-            android:visibility="gone"
             android:background="@color/search_toolbar_background"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent" />
 
 

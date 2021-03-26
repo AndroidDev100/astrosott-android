@@ -175,6 +175,9 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:gravity">center</item>
+        <item name="android:background">@color/grape_purple</item>
+        <item name="android:statusBarColor">@color/grape_purple</item>
+
 
     </style>
 
