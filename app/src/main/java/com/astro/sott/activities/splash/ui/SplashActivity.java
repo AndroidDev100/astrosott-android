@@ -812,7 +812,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        processIntent(getIntent());
         super.onCreate(savedInstanceState);
 
 //        View decorView = getWindow().getDecorView();
@@ -873,6 +872,14 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             installTls();
         }
+
+        try {
+            Window window = this.getWindow();
+            window.setStatusBarColor(ContextCompat.getColor(this,R.color.grape_purple));
+        }catch (Exception ignored){
+
+        }
+        processIntent(getIntent());
     }
 
     private void installTls() {
