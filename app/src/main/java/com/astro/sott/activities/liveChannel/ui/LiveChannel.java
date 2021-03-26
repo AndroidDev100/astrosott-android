@@ -681,7 +681,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private void viewPagerIntializtion() {
         if (adapterCount == 1) {
             ViewGroup.LayoutParams params = getBinding().tabLayout.getLayoutParams();
-            params.width = (int) 650;
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             getBinding().tabLayout.setLayoutParams(params);
         }
         LiveChannelPagerAdapter liveChannelPagerAdapter = new LiveChannelPagerAdapter(this, getSupportFragmentManager(), railData, adapterCount);
