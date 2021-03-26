@@ -161,6 +161,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.GONE);
+        getBinding().appbar.setVisibility(View.GONE);
         setMargins(0);
         moreNewFragment = new MoreNewFragment();
         active = moreNewFragment;
@@ -174,6 +175,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void initFrameFragment() {
         setToolBarScroll(0);
+        getBinding().appbar.setVisibility(View.VISIBLE);
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
@@ -373,7 +375,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void setClicks() {
         toolbarTitle = getBinding().toolbar.findViewById(R.id.toolbar_text);
-        getBinding().toolbar.setPadding(0,0,0,0);
+        getBinding().toolbar.setPadding(0, 0, 0, 0);
 //        getBinding().toolbar.setContentInsetsAbsolute(0,0);
         ImageView searchIcon = getBinding().toolbar.findViewById(R.id.search_icon);
         // ImageView notification_Icon = getBinding().toolbar.findViewById(R.id.notification_icon);
@@ -425,11 +427,11 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().tabs.post(new Runnable() {
             @Override
             public void run() {
-                if(getBinding().tabs.getTabCount() > 0) {
+                if (getBinding().tabs.getTabCount() > 0) {
                     indicatorWidth = getBinding().tabs.getWidth() / getBinding().tabs.getTabCount();
                 }
                 //Assign new width
-               AppBarLayout.LayoutParams indicatorParams = (AppBarLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                AppBarLayout.LayoutParams indicatorParams = (AppBarLayout.LayoutParams) getBinding().indicator.getLayoutParams();
                 indicatorParams.width = indicatorWidth;
                 getBinding().indicator.setLayoutParams(indicatorParams);
             }
@@ -487,6 +489,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         }*/
         setToolBarScroll(1);
         setMargins(150);
+        getBinding().appbar.setVisibility(View.VISIBLE);
         getBinding().mainLayout.setVisibility(View.GONE);
         getBinding().tabs.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
@@ -503,6 +506,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void switchToLiveTvFragment() {
         setToolBarScroll(0);
+        getBinding().appbar.setVisibility(View.VISIBLE);
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().indicator.setVisibility(View.GONE);
@@ -526,6 +530,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //        active = moreFragment;
 //    }
     private void switchToNewMoreFragment() {
+        getBinding().appbar.setVisibility(View.GONE);
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
         setMargins(0);
