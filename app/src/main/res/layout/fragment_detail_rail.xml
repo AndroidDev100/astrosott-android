@@ -23,7 +23,7 @@
             android:background="@drawable/tab_bg"
             android:paddingEnd="25dp"
             android:visibility="gone"
-            app:tabBackground="@drawable/tab_bg"
+            app:tabBackground="@color/transparentColor"
             app:tabIndicator="@color/transparentColor"
             app:tabSelectedTextColor="@color/white"
             app:tabTextAppearance="@style/MineCustomTabText"

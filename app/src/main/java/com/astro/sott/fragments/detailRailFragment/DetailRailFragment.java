@@ -271,7 +271,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
         try {
             if (isTrailerCount == 1) {
                 ViewGroup.LayoutParams params = getBinding().tabLayout.getLayoutParams();
-                params.width = (int) 650;
+                params.width = ViewGroup.LayoutParams.MATCH_PARENT;
                 getBinding().tabLayout.setLayoutParams(params);
             }
 
