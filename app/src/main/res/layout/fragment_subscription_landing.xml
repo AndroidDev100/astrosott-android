@@ -1,137 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grape_purple"
-    android:id="@+id/relative_layout"
-    tools:context=".fragments.subscription.ui.SubscriptionLandingFragment">
-
-
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:background="@color/dark_toolbar">
+        android:layout_height="match_parent"
+        android:background="@color/grape_purple"
+     >
 
-        <ImageView
-            android:layout_width="110dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
-            android:background="@drawable/sooka_landscape"></ImageView>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/lay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <LinearLayout
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="59dp"
+                    android:background="@color/dark_toolbar">
+
+                    <ImageView
+                        android:layout_width="110dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="16dp"
+                        android:background="@drawable/sooka_landscape"></ImageView>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/toolbar"
+                    android:layout_marginStart="@dimen/dimen16dp"
+                    android:layout_marginTop="@dimen/margin58dp">
+
+                    <TextView
+                        android:id="@+id/unlock_your_membership"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/heebo_medium"
+                        android:text="@string/unlock_your_membership"
+                        android:textColor="@color/title_color"
+                        android:textSize="@dimen/txt24sp" />
+
+                    <TextView
+                        android:id="@+id/para"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/unlock_your_membership"
+                        android:layout_marginTop="@dimen/dimen8dp"
+                        android:layout_marginEnd="@dimen/dimen16dp"
+                        android:fontFamily="@font/heebo_regular"
+                        android:text="@string/unlock_your_membership_para"
+                        android:textColor="@color/title_color"
+                        android:textSize="@dimen/_16sp" />
+
+                    <TextView
+                        android:id="@+id/get_access"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/para"
+                        android:layout_marginTop="@dimen/dimen24dp"
+                        android:layout_marginEnd="@dimen/dimen16dp"
+                        android:drawableLeft="@drawable/ic_lock_open_24_px"
+                        android:drawablePadding="@dimen/dimen16dp"
+                        android:fontFamily="@font/heebo_regular"
+                        android:gravity="center_vertical"
+                        android:text="@string/get_access_to_vip"
+                        android:textColor="@color/title_color"
+                        android:textSize="@dimen/_16sp" />
+
+                    <TextView
+                        android:id="@+id/registered_devices"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/get_access"
+                        android:layout_marginTop="@dimen/dimen24dp"
+                        android:layout_marginEnd="@dimen/dimen16dp"
+                        android:drawableLeft="@drawable/ic_phonelink_24_px"
+                        android:drawablePadding="@dimen/dimen16dp"
+                        android:fontFamily="@font/heebo_regular"
+                        android:gravity="center"
+                        android:text="@string/registered_devices"
+                        android:textColor="@color/title_color"
+                        android:textSize="@dimen/_16sp" />
+
+                    <TextView
+                        android:id="@+id/concurrency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/registered_devices"
+                        android:layout_marginTop="@dimen/dimen24dp"
+                        android:layout_marginEnd="@dimen/dimen16dp"
+                        android:drawableLeft="@drawable/ic_play_concurrency_2472"
+                        android:drawablePadding="@dimen/dimen16dp"
+                        android:fontFamily="@font/heebo_regular"
+                        android:gravity="center"
+                        android:text="@string/concurrency"
+                        android:textColor="@color/title_color"
+                        android:textSize="@dimen/_16sp" />
+
+                    <TextView
+                        android:id="@+id/noAds"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/concurrency"
+                        android:layout_marginTop="@dimen/dimen24dp"
+                        android:layout_marginEnd="@dimen/dimen16dp"
+                        android:drawableLeft="@drawable/ic_no_ads"
+                        android:drawablePadding="@dimen/dimen16dp"
+                        android:fontFamily="@font/heebo_regular"
+                        android:gravity="center"
+                        android:text="@string/noAds"
+                        android:textColor="@color/title_color"
+                        android:textSize="@dimen/_16sp" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/continue_btn"
+                    android:layout_width="@dimen/button_width_328dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_below="@id/rl1"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="@dimen/dimen16dp"
+                    android:layout_marginTop="@dimen/margin_top_32dp"
+                    android:layout_marginEnd="@dimen/dimen16dp"
+                    android:background="@drawable/gradient_button"
+                    android:fontFamily="@font/heebo_medium"
+                    android:gravity="center"
+                    android:text="@string/continue_text"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16sp" />
+
+            </RelativeLayout>
+        </ScrollView>
     </LinearLayout>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/toolbar"
-    android:id="@+id/rl1"
-    android:layout_marginStart="@dimen/dimen16dp"
-    android:layout_marginTop="@dimen/margin58dp">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/txt24sp"
-        android:textColor="@color/title_color"
-        android:id="@+id/unlock_your_membership"
-        android:text="@string/unlock_your_membership"
-        android:fontFamily="@font/heebo_medium"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/_16sp"
-        android:textColor="@color/title_color"
-        android:id="@+id/para"
-        android:layout_marginEnd="@dimen/dimen16dp"
-        android:layout_marginTop="@dimen/dimen8dp"
-        android:layout_below="@id/unlock_your_membership"
-        android:text="@string/unlock_your_membership_para"
-        android:fontFamily="@font/heebo_regular"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/_16sp"
-        android:textColor="@color/title_color"
-        android:id="@+id/get_access"
-        android:layout_marginEnd="@dimen/dimen16dp"
-        android:layout_marginTop="@dimen/dimen24dp"
-        android:layout_below="@id/para"
-        android:gravity="center_vertical"
-        android:drawablePadding="@dimen/dimen16dp"
-        android:drawableLeft="@drawable/ic_lock_open_24_px"
-        android:text="@string/get_access_to_vip"
-        android:fontFamily="@font/heebo_regular"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/_16sp"
-        android:id="@+id/registered_devices"
-        android:textColor="@color/title_color"
-        android:gravity="center"
-        android:layout_marginEnd="@dimen/dimen16dp"
-        android:layout_marginTop="@dimen/dimen24dp"
-        android:layout_below="@id/get_access"
-        android:drawablePadding="@dimen/dimen16dp"
-        android:drawableLeft="@drawable/ic_phonelink_24_px"
-        android:text="@string/registered_devices"
-        android:fontFamily="@font/heebo_regular"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/_16sp"
-        android:id="@+id/concurrency"
-        android:textColor="@color/title_color"
-        android:gravity="center"
-        android:layout_marginEnd="@dimen/dimen16dp"
-        android:layout_marginTop="@dimen/dimen24dp"
-        android:layout_below="@id/registered_devices"
-        android:drawablePadding="@dimen/dimen16dp"
-        android:drawableLeft="@drawable/ic_play_concurrency_2472"
-        android:text="@string/concurrency"
-        android:fontFamily="@font/heebo_regular"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/_16sp"
-        android:id="@+id/noAds"
-        android:textColor="@color/title_color"
-        android:gravity="center"
-        android:layout_marginEnd="@dimen/dimen16dp"
-        android:layout_marginTop="@dimen/dimen24dp"
-        android:layout_below="@id/concurrency"
-        android:drawablePadding="@dimen/dimen16dp"
-        android:drawableLeft="@drawable/ic_no_ads"
-        android:text="@string/noAds"
-        android:fontFamily="@font/heebo_regular"/>
-
-</RelativeLayout>
-    <TextView
-        android:id="@+id/continue_btn"
-        android:layout_width="@dimen/button_width_328dp"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginTop="@dimen/margin_top_32dp"
-        android:layout_marginEnd="@dimen/dimen16dp"
-        android:layout_marginStart="@dimen/dimen16dp"
-        android:layout_marginBottom="@dimen/_200sdp"
-        android:background="@drawable/gradient_button"
-        android:fontFamily="@font/heebo_medium"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/rl1"
-        android:text="@string/continue_text"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_16sp"/>
-
-</RelativeLayout>
-</ScrollView>
 </layout>
