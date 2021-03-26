@@ -118,8 +118,8 @@ public interface AppConstants {
     public static String SORT_VALUE = "";
     public static final String WATCHLIST_PARTNER_TYPE = "1";
     public static final String FOLLOW_USER_PARTNER_TYPE = "2";
-    public static String API_KEY_MOB = "bxwlpovuvcefasfegfonsxtzgzzyggrelwoyqebo";
-    public static String API_KEY_TAB = "pdmlwglmihraeslyzcbluzxgthrlvjlpllgqumsc";
+    public static String API_KEY_MOB = "nsichluwgpawklvnvkcubvvvourwlawzsfgkrjgh";
+    public static String API_KEY_TAB = "ukpkuypibqmlfcegcgdqzfrlnjdouhwhrphtoikc";
     public static final int TYPE_LANGUAGE =1;
     public static final int TYPE_GENRE =2;
     public static final String KEY_MY_WATCHLIST = "My Watchlist";

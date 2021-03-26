@@ -10,6 +10,7 @@
         tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
 
         <ImageView
+            android:id="@+id/verifyBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_16sdp"

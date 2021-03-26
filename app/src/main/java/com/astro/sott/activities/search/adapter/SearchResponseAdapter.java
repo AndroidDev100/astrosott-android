@@ -90,7 +90,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private void setHeaderData(TextView textView, TextView headerSearchCount,int type, TextView all) {
         if (activity.getResources().getBoolean(R.bool.isTablet)) {
-            textView.setTextColor(activity.getResources().getColor(R.color.primary_blue));
+           // textView.setTextColor(activity.getResources().getColor(R.color.primary_blue));
         }
         for (int i = 0; i < dataList.size(); i++) {
             if (dataList.get(i).getType() == type) {

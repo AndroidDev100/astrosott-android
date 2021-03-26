@@ -162,6 +162,8 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     private void getRefId(final int type) {
         if (!TextUtils.isEmpty(externalId)) {
             getTrailer(externalId, type);
+        }else {
+            callYouMayAlsoLike();
         }
     }
 

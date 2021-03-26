@@ -111,6 +111,13 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             confirmOtp();
         });
 
+        getBinding().verifyBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         setTextWatcher();
 
     }

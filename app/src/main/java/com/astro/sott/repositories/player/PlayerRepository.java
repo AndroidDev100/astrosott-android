@@ -635,14 +635,6 @@ public class PlayerRepository {
         return booleanMutableLiveData;
     }
 
-    /*private void subscribeToYouboraReportEvent() {
-        player.addListener(this, YouboraEvent.reportSent, event -> {
-            String reportedEventName = event.reportedEventName;
-            Log.i(TAG, "Youbora report sent. Reported event name: " + reportedEventName);
-
-
-        });
-    }*/
 
     public void releasePlayer() {
         if (player != null) {
@@ -767,8 +759,6 @@ public class PlayerRepository {
             addKavaPluginConfig(context, playerPluginConfig, asset);
 
 
-            //PKPluginConfigs youboraconfig = YouboraManager.createYouboraPlugin(context, asset, deviceid);
-            //playerPluginConfig.setPluginConfig(YouboraPlugin.factory.getName(), youboraconfig.getPluginConfig(YouboraPlugin.factory.getName()));
             playerPluginConfig.setPluginConfig(PhoenixAnalyticsPlugin.factory.getName(), phoenixPluginConfig.toJson());
 
             if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
@@ -802,7 +792,6 @@ public class PlayerRepository {
                     setRetainBackBufferFromKeyframe(true);
             player.getSettings().setPlayerBuffers(loadControlBuffers);
 
-            //subscribeToYouboraReportEvent();
             subscribePhoenixAnalyticsReportEvent();
 
 //            player.getSettings().setABRSettings(new ABRSettings().setMinVideoBitrate(200000).setInitialBitrateEstimate(150000));
@@ -921,8 +910,6 @@ public class PlayerRepository {
 
         configurePlugins(pluginConfig, context);
 
-        //  PlayKitManager.registerPlugins(context, YouboraPlugin.factory);
-        // PKPluginConfigs pluginConfigs = YouboraManager.createYouboraPlugin(asset, deviceid);
 
         player = PlayKitManager.loadPlayer(activity, pluginConfig);
         KalturaPlaybackRequestAdapter.install(player, "myApp"); // in case app developer wants to give customized referrer instead the default referrer in the playmanifest
@@ -931,8 +918,6 @@ public class PlayerRepository {
         player.getSettings().setSecureSurface(false);
         player.getSettings().setAdAutoPlayOnResume(true);
 
-        // subscribeToYouboraReportEvent();
-        //subscribePhoenixAnalyticsReportEvent();
 
         log.d("Player: " + player.getClass());
 
@@ -973,7 +958,6 @@ public class PlayerRepository {
     private void registerPlugins(Context context, Asset asset) {
         PlayKitManager.registerPlugins(context, KavaAnalyticsPlugin.factory);
         PlayKitManager.registerPlugins(context, PhoenixAnalyticsPlugin.factory);
-        //PlayKitManager.registerPlugins(context, YouboraPlugin.factory);
         if (asset.getType() == MediaTypeConstant.getLinear(context) || asset.getType() == MediaTypeConstant.getProgram(context)) {
 
         } else {
