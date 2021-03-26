@@ -27,12 +27,12 @@
             android:textSize="@dimen/font_medium"
             android:visibility="gone"></TextView>
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
+        <include
+            android:id="@+id/include_progressbar"
+            layout="@layout/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone"></ProgressBar>
+            android:layout_centerInParent="true" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/plan_recycler"

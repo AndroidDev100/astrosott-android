@@ -19,15 +19,23 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:visibility="gone"
             android:layout_marginTop="@dimen/dimen10dp"
             android:background="@drawable/tab_bg"
             android:paddingEnd="25dp"
-            app:tabBackground="@drawable/tab_bg"
+            android:visibility="gone"
+            app:tabBackground="@color/transparentColor"
             app:tabIndicator="@color/transparentColor"
             app:tabSelectedTextColor="@color/white"
             app:tabTextAppearance="@style/MineCustomTabText"
             app:tabTextColor="@color/grey"></com.google.android.material.tabs.TabLayout>
+
+        <View
+            android:id="@+id/black_line"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_below="@id/tabLayout"
+            android:background="@color/egg_plant"
+            android:visibility="gone" />
 
         <View
             android:id="@+id/indicator"

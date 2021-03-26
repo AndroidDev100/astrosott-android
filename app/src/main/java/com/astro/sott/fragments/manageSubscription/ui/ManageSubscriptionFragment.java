@@ -93,11 +93,11 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     }
 
     private void getActiveSubscription() {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
-                    getBinding().progressBar.setVisibility(View.GONE);
+                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                     getListofActivePacks(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
                     loadData(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
                 } else {
@@ -123,9 +123,9 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     }
 
     private void getLastSubscription() {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.getLastSubscription(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetLastSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetLastSubscriptionsResponseMessage().getAccountServiceMessage() != null) {
                     accountServiceMessage = new ArrayList<>();

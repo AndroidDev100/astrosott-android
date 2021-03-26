@@ -58,13 +58,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:fontFamily="@font/roboto_regular"
+                android:fontFamily="@font/heebo_regular"
                 android:gravity="center"
                 android:paddingBottom="@dimen/_5sdp"
                 android:singleLine="true"
                 android:text="........."
                 android:textColor="@color/white"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_14sp" />
 
             <TextView
                 android:id="@+id/line_two"
@@ -75,8 +75,8 @@
                 android:gravity="center"
                 android:paddingBottom="@dimen/_5sdp"
                 android:text="........."
-                android:textColor="@color/white"
-                android:textSize="@dimen/_10sdp" />
+                android:textColor="@color/yellow_orange"
+                android:textSize="@dimen/_12sp" />
 
 
         </LinearLayout>

@@ -154,7 +154,6 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     }
 
 
-
     private void intentValues() {
         if (getIntent().getExtras() != null)
             railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
@@ -682,7 +681,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private void viewPagerIntializtion() {
         if (adapterCount == 1) {
             ViewGroup.LayoutParams params = getBinding().tabLayout.getLayoutParams();
-            params.width = (int) 650;
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             getBinding().tabLayout.setLayoutParams(params);
         }
         LiveChannelPagerAdapter liveChannelPagerAdapter = new LiveChannelPagerAdapter(this, getSupportFragmentManager(), railData, adapterCount);
@@ -694,7 +693,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             getBinding().tabLayout.post(new Runnable() {
                 @Override
                 public void run() {
-                    if((getBinding().tabLayout.getTabCount() > 0 ) ){
+                    if ((getBinding().tabLayout.getTabCount() > 0)) {
                         indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
                     }
                     Log.d("TabCount", getBinding().tabLayout.getTabCount() + "");
@@ -710,7 +709,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
-                   LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getBinding().indicator.getLayoutParams();
                     //Multiply positionOffset with indicatorWidth to get translation
                     float translationOffset = (positionOffset + i) * (indicatorWidth);
                     params.leftMargin = (int) translationOffset;
@@ -731,7 +730,6 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 }
             });
             getBinding().indicator.setVisibility(View.VISIBLE);
-
             getBinding().tabLayout.setVisibility(View.VISIBLE);
         }
         /*if (getResources().getBoolean(R.bool.isTablet)) {

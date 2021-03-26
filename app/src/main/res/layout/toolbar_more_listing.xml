@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="12dp"
-        android:background="@color/search_toolbar_background"
+        android:background="@color/dark_toolbar"
         android:padding="@dimen/search_toolbar_padding_right">
 
 
@@ -19,7 +19,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/search_item_margin_end"
-            android:background="@drawable/ic_arrow_back_black_24dp"
+            android:background="@drawable/ic_arrow_back_24px"
             android:contentDescription="@string/back_icon"
             tools:ignore="ContentDescription" />
 
@@ -29,16 +29,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/search_toolbar_header_margin"
+            android:layout_marginStart="@dimen/dimen125dp"
             android:layout_marginEnd="@dimen/search_toolbar_padding_right"
             android:layout_toEndOf="@+id/home_icon_back"
             android:ellipsize="end"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center_vertical"
+            android:fontFamily="@font/heebo_medium"
             android:maxLines="1"
+            android:textAllCaps="true"
+            android:layout_centerHorizontal="true"
             android:singleLine="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_large" />
+            android:textSize="13sp" />
 
         <ImageView
             android:id="@+id/ivClose"
@@ -47,9 +48,21 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/search_item_margin_end"
+            android:visibility="gone"
             android:background="@drawable/ic_clear_black_24dp"
             android:contentDescription="@string/close_icon"
+            tools:ignore="ContentDescription"
+            app:tint="@color/white" />
+        <ImageView
+            android:id="@+id/ivfilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:visibility="gone"
+            android:layout_marginEnd="@dimen/search_item_margin_end"
+            android:background="@drawable/ic_filter_24px"
+            android:contentDescription="@string/close_icon"
             tools:ignore="ContentDescription"
             app:tint="@color/white" />
 

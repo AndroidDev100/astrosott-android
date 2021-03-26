@@ -68,19 +68,20 @@ public class ManageSubscriptionAdapter extends RecyclerView.Adapter<ManageSubscr
             period.append("Period: " + AppCommonMethods.getDateFromTimeStamp(accountServiceMessageItems.get(position).getStartDate()));
 
         holder.manageSubscriptionItemBinding.period.setText(period);
-
+        if (accountServiceMessageItems.get(position).getPaymentMethod() != null) {
+            holder.manageSubscriptionItemBinding.paymentMethod.setText("Payment Method: " + accountServiceMessageItems.get(position).getPaymentMethod());
+        } else {
+            holder.manageSubscriptionItemBinding.paymentMethod.setText("");
+        }
         if (accountServiceMessageItems.get(position).isRenewal()) {
             if (accountServiceMessageItems.get(position).getValidityTill() != null) {
                 holder.manageSubscriptionItemBinding.renew.setVisibility(View.VISIBLE);
                 holder.manageSubscriptionItemBinding.renew.setText("Renews: " + AppCommonMethods.getDateFromTimeStamp(accountServiceMessageItems.get(position).getValidityTill()));
             } else {
                 holder.manageSubscriptionItemBinding.renew.setVisibility(View.GONE);
-
             }
         } else {
             holder.manageSubscriptionItemBinding.renew.setVisibility(View.GONE);
-
-
         }
         holder.manageSubscriptionItemBinding.change.setOnClickListener(v -> {
             changePlanCallBack.onClick();

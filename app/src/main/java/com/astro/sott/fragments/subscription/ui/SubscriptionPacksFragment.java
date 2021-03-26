@@ -116,10 +116,10 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     }
 
     private void getProducts() {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         if (!UserInfo.getInstance(getActivity()).isActive()) {
             subscriptionViewModel.getProduct().observe(this, evergentCommonResponse -> {
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 if (evergentCommonResponse.isStatus()) {
                     if (evergentCommonResponse.getGetProductResponse() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage().size() > 0) {
                         checkIfDetailAvailableOnPlaystore(evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage());
@@ -136,7 +136,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
                     jsonArray.add(id);
                 }
                 subscriptionViewModel.getProductForLogin(UserInfo.getInstance(getActivity()).getAccessToken(), jsonArray).observe(this, evergentCommonResponse -> {
-                    getBinding().progressBar.setVisibility(View.GONE);
+                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                     if (evergentCommonResponse.isStatus()) {
                         if (evergentCommonResponse.getGetProductResponse() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage().size() > 0) {
                             checkIfDetailAvailableOnPlaystore(evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage());

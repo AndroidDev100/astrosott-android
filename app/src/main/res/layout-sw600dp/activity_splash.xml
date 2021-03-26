@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:filterTouchesWhenObscured="true"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient_bg_splash"
+        android:background="@color/grape_purple"
         android:orientation="vertical">
 
 
@@ -16,7 +16,7 @@
             android:layout_width="@dimen/splash_icon_height"
             android:layout_height="@dimen/splash_icon_height"
             tools:ignore="ContentDescription"
-            android:background="@drawable/astro_white"
+            android:background="@drawable/sooka"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

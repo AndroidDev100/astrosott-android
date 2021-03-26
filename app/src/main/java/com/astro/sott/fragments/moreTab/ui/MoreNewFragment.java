@@ -118,6 +118,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void UIinitialization() {
+        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().tvVersion.setText("Version " + BuildConfig.VERSION_NAME);
         setClicks();
@@ -399,9 +400,9 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void getActiveSubscription() {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
                     for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {

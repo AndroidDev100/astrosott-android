@@ -247,7 +247,7 @@
         <activity
             android:name=".activities.catchUpRails.ui.CatchupActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="locked" />b
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

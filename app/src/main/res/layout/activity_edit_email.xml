@@ -66,6 +66,7 @@
                         android:backgroundTint="@color/white"
                         android:maxLines="1"
                         android:textSize="@dimen/_16sp"
+
                         android:fontFamily="@font/heebo_regular"
                         android:id="@+id/email"
                         android:foregroundTint="@color/white"

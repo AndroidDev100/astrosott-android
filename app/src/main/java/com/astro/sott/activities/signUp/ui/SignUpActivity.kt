@@ -70,7 +70,7 @@ class SignUpActivity : AppCompatActivity() {
 
     fun setClicks() {
 
-        activitySinUpBinding?.alreadyHaveAccount?.setOnClickListener(View.OnClickListener {
+        activitySinUpBinding?.loginBtn?.setOnClickListener(View.OnClickListener {
             onBackPressed()
         })
         activitySinUpBinding?.backIcon?.setOnClickListener(View.OnClickListener {

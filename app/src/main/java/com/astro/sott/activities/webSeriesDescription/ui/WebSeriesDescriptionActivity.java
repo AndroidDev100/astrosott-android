@@ -637,7 +637,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         Bundle bundle = new Bundle();
         bundle.putParcelable(AppLevelConstants.RAIL_DATA_OBJECT, railData);
         detailRailFragment.setArguments(bundle);
-        fm.beginTransaction().add(R.id.rail_fragment, detailRailFragment).commit();
+        fm.beginTransaction().replace(R.id.rail_fragment, detailRailFragment).commit();
     }
 
     private void removeFromFollow(String msg) {
