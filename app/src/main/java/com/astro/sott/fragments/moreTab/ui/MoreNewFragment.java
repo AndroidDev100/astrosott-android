@@ -461,9 +461,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 getBinding().loginSignupMore.setText("Log masuk / Daftar");
                 getBinding().tvVIPUser.setText("Pengguna tetamu");
                 getBinding().tvBilling.setText("Bil Rakan Kongsi");
-                getBinding().tvRenewDate.setText("Diperbaharui pada 22/2/21");
                 getBinding().subscribe.setText("Langgan");
-//                getBinding().manageSubscriptionMore.setText("Urus Langganan");
                 getBinding().tvManagePayments.setText("Urus Pembayaran");
                 getBinding().tvTranscHistory.setText("sejarah transaksi");
                 getBinding().tvLanguageSettings.setText("Pemilihan Bahasa");
@@ -477,7 +475,6 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             } else {
                 getBinding().loginSignupMore.setText("Sign In/Sign Up");
                 getBinding().tvBilling.setText("Partner Billing");
-                getBinding().tvRenewDate.setText("Renew on 22/2/21");
                 getBinding().tvManagePayments.setText("Manage Payments");
                 getBinding().tvTranscHistory.setText("Transaction History");
                 getBinding().tvLanguageSettings.setText("Language Selection");

@@ -75,10 +75,6 @@ public class ApplicationMain extends MultiDexApplication {
     public void onCreate() {
         ActivityLifecycleCallback.register(this);
         super.onCreate();
-       /* CleverTapInstanceConfig clevertapAdditionalInstanceConfig =  CleverTapInstanceConfig.createInstance(this, "TEST-775-W65-ZZ6Z", "TEST-560-5aa");
-        clevertapAdditionalInstanceConfig.setDebugLevel(CleverTapAPI.LogLevel.DEBUG); // default is CleverTapAPI.LogLevel.INFO
-        clevertapAdditionalInstanceConfig.setAnalyticsOnly(true); // disables the user engagement features of the instance, default is false
-        clevertapAdditionalInstanceConfig.useGoogleAdId(true);*/
         mInstance = this;
 //        ApplicationMain.context = getApplicationContext();
         MultiDex.install(this);
