@@ -185,20 +185,33 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        ConvivaManager.convivaPlayerAppForegrounded(this);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ConvivaManager.convivaPlayerAppBackgrounded(this);
+
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-        ConvivaManager.convivaPlayerAppBackgrounded(this);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP){
-            if (fragment!=null)
-            fragment.getVolume("UP");
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            if (fragment != null)
+                fragment.getVolume("UP");
 
-        }else if (keyCode== KeyEvent.KEYCODE_VOLUME_DOWN){
-            if (fragment!=null)
-            fragment.getVolume("DOWN");
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            if (fragment != null)
+                fragment.getVolume("DOWN");
 
         }
 
