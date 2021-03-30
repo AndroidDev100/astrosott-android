@@ -1405,6 +1405,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         getBinding().scrollView.scrollTo(0, 0);
         railData = commonData;
         getDatafromBack();
+        assetToPlay = null;
+        getBinding().ivPlayIcon.setVisibility(View.GONE);
         isActive = UserInfo.getInstance(this).isActive();
     }
 }

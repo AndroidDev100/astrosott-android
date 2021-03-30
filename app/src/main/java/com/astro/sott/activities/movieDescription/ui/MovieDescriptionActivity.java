@@ -9,6 +9,7 @@ import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
@@ -203,12 +204,17 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 callProgressBar();
                 playerChecks(railData);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
-                fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
-                if (!fileId.equalsIgnoreCase("")) {
-                    Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                    intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
-                    startActivity(intent);
+                if (UserInfo.getInstance(this).isActive()) {
+                    fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+                    if (!fileId.equalsIgnoreCase("")) {
+                        Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                        intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        startActivity(intent);
+                    }
+                } else {
+                    new ActivityLauncher(MovieDescriptionActivity.this).astrLoginActivity(MovieDescriptionActivity.this, AstrLoginActivity.class);
                 }
+
             }
 
 
@@ -967,7 +973,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 titleName = name;
                 isActive = true;
                 isWatchlistedOrNot();
-               // getDataFromBack(railData, layoutType);
+                // getDataFromBack(railData, layoutType);
 
             }
         }
