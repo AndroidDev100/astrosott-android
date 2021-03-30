@@ -777,7 +777,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
     private void showScrollViewProgressBar(boolean showProgressBar) {
         runOnUiThread(() -> {
-            getBinding().scrollViewProgrssBar.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
+//            getBinding().scrollViewProgrssBar.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
         });
     }
 

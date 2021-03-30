@@ -24,6 +24,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clRoot"
+        android:background="@color/grape_purple"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -87,6 +88,7 @@
             android:layout_marginEnd="@dimen/search_item_margin_top"
             android:orientation="vertical"
             android:paddingTop="@dimen/search_toolbar_padding_right"
+            android:background="@color/grape_purple"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintRight_toLeftOf="parent"
@@ -100,10 +102,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
-                android:fontFamily="@font/roboto_regular"
+                android:fontFamily="@font/heebo_regular"
                 android:maxLines="1"
                 android:textColor="@color/white"
-                android:textSize="@dimen/search_show_all_text_size" />
+                android:textSize="@dimen/_14sp" />
 
             <TextView
                 android:id="@+id/tvEpisode"
@@ -112,7 +114,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="@dimen/search_item_card_view_corner"
                 android:ellipsize="end"
-                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/white"
+                android:fontFamily="@font/heebo_regular"
                 android:maxLines="1"
                 android:textSize="@dimen/search_show_all_text_size" />
 
@@ -124,11 +127,11 @@
                 android:layout_marginTop="@dimen/rail_top_margin"
                 android:layout_marginBottom="@dimen/search_item_card_view_corner"
                 android:ellipsize="end"
-                android:fontFamily="@font/roboto_regular"
+                android:fontFamily="@font/heebo_regular"
                 android:maxLines="1"
                 android:text="@{title.description}"
-                android:textColor="@color/search_sub_title"
-                android:textSize="@dimen/search_item_margin_top" />
+                android:textColor="@color/yellow_orange"
+                android:textSize="14sp" />
 
 
         </LinearLayout>

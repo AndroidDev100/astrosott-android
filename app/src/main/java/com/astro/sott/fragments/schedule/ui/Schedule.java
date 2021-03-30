@@ -3,6 +3,7 @@ package com.astro.sott.fragments.schedule.ui;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -10,6 +11,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -332,9 +334,15 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     private void initializeRecyclerView() {
         manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         // getBinding().programRecyclerview.setNestedScrollingEnabled(false);
+        Drawable mDivider = ContextCompat.getDrawable(baseActivity, R.drawable.divider_grey);
+
         getBinding().programRecyclerview.setLayoutManager(manager);
         DividerItemDecoration itemDecor = new DividerItemDecoration(baseActivity, LinearLayoutManager.VERTICAL);
+        itemDecor.setDrawable(mDivider);
+
         getBinding().programRecyclerview.addItemDecoration(itemDecor);
+
+
     }
 
     private void modelCall() {

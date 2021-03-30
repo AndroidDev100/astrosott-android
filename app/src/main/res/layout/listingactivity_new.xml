@@ -3,7 +3,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/grape_purple">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,7 +76,7 @@
                     android:id="@+id/no_connection_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@color/grape_purple"
                     android:visibility="gone">
 
                     <include

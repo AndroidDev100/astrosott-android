@@ -3,31 +3,32 @@
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/grape_purple">
 
 
         <LinearLayout
             android:id="@+id/ll_more"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/blue_bg"
+            android:background="@color/grape_purple"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/toolbar_bg">
+                android:background="@color/dark_toolbar">
 
                 <ImageView
                     android:id="@+id/back_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_23sdp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
-                    android:padding="@dimen/_6dp"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:src="@drawable/ic_arrow_back_24px" />
+                    android:layout_marginStart="@dimen/_16sdp"
+                    android:src="@drawable/ic_arrow_back_24px"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/title"
@@ -49,10 +50,9 @@
             <RelativeLayout
                 android:id="@+id/ll1_more"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_15sdp"
+                android:layout_height="@dimen/_110sdp"
                 android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:orientation="horizontal">
 
@@ -122,9 +122,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="right"
-                    android:visibility="gone"
                     android:src="@drawable/ic_edit_24px"
-                     />
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -133,28 +132,34 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/ll1_more"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:background="@color/toolbar_bg" />
+                android:background="@color/heather" />
 
             <RelativeLayout
                 android:id="@+id/r1_more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_14sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_11sdp"
                 android:layout_marginRight="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_6sdp">
 
+                <include
+                    android:id="@+id/include_progressbar"
+                    layout="@layout/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+
                 <TextView
                     android:id="@+id/tv_VIP_user"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_200sdp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/heebo_medium"
                     android:padding="@dimen/_2sdp"
-                    android:text="@string/guest_user"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="16sp"></TextView>
 
                 <TextView
                     android:id="@+id/tv_subscribe_now"
@@ -165,10 +170,23 @@
                     android:fontFamily="@font/heebo_regular"
                     android:maxLines="2"
                     android:padding="@dimen/_1sdp"
-                    android:text="@string/subscibe_now"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sp"></TextView>
+                    android:textSize="14sp"></TextView>
+
+                <TextView
+                    android:id="@+id/productCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_subscribe_now"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/heebo_regular"
+                    android:maxLines="2"
+                    android:padding="@dimen/_1sdp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:visibility="gone"></TextView>
 
                 <TextView
                     android:id="@+id/tv_renew_date"
@@ -181,7 +199,7 @@
                     android:text="@string/renew_date"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sp"
+                    android:textSize="14sp"
                     android:visibility="gone"></TextView>
 
                 <TextView
@@ -195,12 +213,11 @@
                     android:text="@string/partner_billing"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sp"
+                    android:textSize="14sp"
                     android:visibility="gone"></TextView>
 
                 <Button
                     android:id="@+id/subscribe"
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -209,29 +226,16 @@
                     android:layout_marginTop="@dimen/_26sdp"
                     android:background="@drawable/white_outline_button"
                     android:fontFamily="@font/heebo_regular"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="4dp"
                     android:text="@string/subscribe_more"
                     android:textAllCaps="false"
-                    android:paddingRight="@dimen/_3dp"
-                    android:paddingLeft="@dimen/_3dp"
                     android:textColor="@color/light_blue_text_color"
-                    android:textSize="@dimen/_14sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone" />
 
-                <Button
-                    android:id="@+id/manage_subscription_more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_18sdp"
-                    android:background="@drawable/white_outline_button"
-                    android:fontFamily="@font/heebo_regular"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/manage_subscription_more"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14sp"
-                     />
             </RelativeLayout>
 
             <View
@@ -240,71 +244,8 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/rl1_more"
                 android:layout_marginTop="@dimen/_1sdp"
-                android:background="@color/toolbar_bg" />
-            <RelativeLayout
-                android:id="@+id/rl_linked_accounts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_10sdp">
+                android:background="@color/heather" />
 
-                <TextView
-                    android:id="@+id/tv_linked_accounts"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_add_black_24dp"
-                    android:drawablePadding="@dimen/_14sdp"
-                    android:fontFamily="@font/heebo_regular"
-                    android:padding="@dimen/_1sdp"
-                    android:text="@string/linked_accounts"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"></TextView>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/rl_manage_payment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_10sdp">
-
-                <TextView
-                    android:id="@+id/tv_manage_payments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_credit_card_24px"
-                    android:drawablePadding="@dimen/_14sdp"
-                    android:fontFamily="@font/heebo_regular"
-                    android:padding="@dimen/_1sdp"
-                    android:text="@string/manage_payments"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"></TextView>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
-            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_transaction_history"
@@ -362,7 +303,7 @@
                     android:text="@string/lang_selection"
                     android:textAllCaps="false"
                     android:textColor="@color/light_blue_text_color"
-                    android:textSize="16sp"></TextView>
+                    android:textSize="@dimen/_16sp"></TextView>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -379,7 +320,8 @@
                 android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_10sdp">
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_downloads"
@@ -395,7 +337,7 @@
                     android:text="@string/downloads"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="16sp"></TextView>
+                    android:textSize="@dimen/_16sp"></TextView>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -428,7 +370,7 @@
                     android:text="@string/mannage_device"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="16sp"></TextView>
+                    android:textSize="@dimen/_16sp"></TextView>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -461,7 +403,7 @@
                     android:text="@string/content_pref"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="16sp"></TextView>
+                    android:textSize="@dimen/_16sp"></TextView>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -478,7 +420,8 @@
                 android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_10sdp">
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_coupan_redemption"
@@ -494,7 +437,7 @@
                     android:text="@string/coupon_redem"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="16sp"></TextView>
+                    android:textSize="@dimen/_16sp"></TextView>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -527,7 +470,73 @@
                     android:text="@string/help"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="16sp"></TextView>
+                    android:textSize="@dimen/_16sp"></TextView>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_terms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/tv_terms_conditions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_terms_conditions_24_px"
+                    android:drawablePadding="@dimen/_14sdp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:padding="@dimen/_1sdp"
+                    android:text="@string/terms_conditions"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16sp"></TextView>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_privacy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/tv_privacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_privacy_polices_24_px"
+                    android:drawablePadding="@dimen/_14sdp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:padding="@dimen/_1sdp"
+                    android:text="@string/privacy_polices"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16sp"></TextView>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -545,8 +554,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_logout"
@@ -562,7 +570,7 @@
                     android:text="@string/logout"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="16sp"></TextView>
+                    android:textSize="@dimen/_16sp"></TextView>
 
             </RelativeLayout>
 
@@ -573,13 +581,82 @@
                 android:layout_gravity="left"
                 android:layout_marginLeft="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_30sdp"
-                android:layout_marginBottom="@dimen/_40sdp"
+                android:layout_marginBottom="@dimen/_42sdp"
                 android:fontFamily="@font/heebo_regular"
                 android:padding="@dimen/_1sdp"
-                android:text="@string/version_more"
                 android:textAllCaps="false"
                 android:textColor="@color/grey"
-                android:textSize="16sp"></TextView>
+                android:textSize="@dimen/_16sp"></TextView>
+
+            <RelativeLayout
+                android:id="@+id/rl_linked_accounts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:clickable="false"
+                android:visibility="invisible">
+
+                <TextView
+                    android:id="@+id/tv_linked_accounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_add_black_24dp"
+                    android:drawablePadding="@dimen/_14sdp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:padding="@dimen/_1sdp"
+                    android:text="@string/linked_accounts"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"></TextView>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_manage_payment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:clickable="false"
+                android:visibility="invisible">
+
+                <TextView
+                    android:id="@+id/tv_manage_payments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_credit_card_24px"
+                    android:drawablePadding="@dimen/_14sdp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:padding="@dimen/_1sdp"
+                    android:text="@string/manage_payments"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16sp"></TextView>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </layout>
