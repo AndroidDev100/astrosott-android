@@ -1006,16 +1006,16 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 }
                 isAdded = false;
 
-                getBinding().textwatchlist.setText(getResources().getString(R.string.follow));
-                getBinding().textwatchlist.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.outline_subscriptions_24px), null, null);
-                getBinding().textwatchlist.setTextColor(getResources().getColor(R.color.white));
+//                getBinding().textwatchlist.setText(getResources().getString(R.string.follow));
+//                getBinding().textwatchlist.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.outline_subscriptions_24px), null, null);
+//                getBinding().textwatchlist.setTextColor(getResources().getColor(R.color.white));
 
             } else {
                 idfromAssetWatchlist = s;
                 isAdded = true;
-                getBinding().textwatchlist.setText(getResources().getString(R.string.following));
-                getBinding().textwatchlist.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.baseline_subscriptions_24px), null, null);
-                getBinding().textwatchlist.setTextColor(getResources().getColor(R.color.primary_blue));
+//                getBinding().textwatchlist.setText(getResources().getString(R.string.following));
+//                getBinding().textwatchlist.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.baseline_subscriptions_24px), null, null);
+//                getBinding().textwatchlist.setTextColor(getResources().getColor(R.color.primary_blue));
             }
         });
     }
@@ -1030,9 +1030,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     idfromAssetWatchlist = s.getAssetID();
                     isAdded = true;
 
-                    getBinding().textwatchlist.setText(getResources().getString(R.string.following));
-                    getBinding().textwatchlist.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.baseline_subscriptions_24px), null, null);
-                    getBinding().textwatchlist.setTextColor(getResources().getColor(R.color.primary_blue));
+//                    getBinding().textwatchlist.setText(getResources().getString(R.string.following));
+//                    getBinding().textwatchlist.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.baseline_subscriptions_24px), null, null);
+//                    getBinding().textwatchlist.setTextColor(getResources().getColor(R.color.primary_blue));
 
                 } else {
                     if (s.getErrorCode().equals("")) {
@@ -1044,18 +1044,18 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                 idfromAssetWatchlist = String.valueOf(assetId);
                                 isAdded = true;
 
-                                getBinding().textwatchlist.setText(getResources().getString(R.string.following));
-                                getBinding().textwatchlist.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.baseline_subscriptions_24px), null, null);
-                                getBinding().textwatchlist.setTextColor(getResources().getColor(R.color.primary_blue));
+//                                getBinding().textwatchlist.setText(getResources().getString(R.string.following));
+//                                getBinding().textwatchlist.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.baseline_subscriptions_24px), null, null);
+//                                getBinding().textwatchlist.setTextColor(getResources().getColor(R.color.primary_blue));
 
 
                                 break;
                             case AppLevelConstants.ALREADY_UNFOLLOW_ERROR:
 
                                 isAdded = false;
-                                getBinding().textwatchlist.setText(getResources().getString(R.string.follow));
-                                getBinding().textwatchlist.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.outline_subscriptions_24px), null, null);
-                                getBinding().textwatchlist.setTextColor(getResources().getColor(R.color.white));
+//                                getBinding().textwatchlist.setText(getResources().getString(R.string.follow));
+//                                getBinding().textwatchlist.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.outline_subscriptions_24px), null, null);
+//                                getBinding().textwatchlist.setTextColor(getResources().getColor(R.color.white));
 
                                 break;
                             default:

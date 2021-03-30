@@ -44,7 +44,7 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:groupIndicator="@null"
-        android:divider="@color/toolbar_bg"
+        android:divider="@color/grey"
         android:dividerHeight="0.5dp"
         android:layout_marginTop="@dimen/_60dp"/>
 
