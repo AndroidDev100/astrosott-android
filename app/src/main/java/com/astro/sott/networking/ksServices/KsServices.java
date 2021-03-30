@@ -170,6 +170,7 @@ import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetGroupBy;
 import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.AssetHistoryFilter;
+import com.kaltura.client.types.AssetHistorySuppressFilter;
 import com.kaltura.client.types.AssetMetaOrTagGroupBy;
 import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.BookmarkFilter;
@@ -215,6 +216,7 @@ import com.kaltura.client.types.UserAssetRuleFilter;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.response.OnCompletion;
 import com.kaltura.client.utils.response.base.Response;
+import com.kaltura.playkit.providers.api.ovp.services.ResponseProfile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -3879,6 +3881,15 @@ public class KsServices {
         pagerFilter.setPageIndex(1);
         pagerFilter.setPageSize(100);
 
+        DetachedResponseProfile responseProfile = new DetachedResponseProfile();
+        DetachedResponseProfile relatedProfiles = new DetachedResponseProfile();
+
+        AssetHistorySuppressFilter assetHistorySuppressFilter=new AssetHistorySuppressFilter();
+        relatedProfiles.setFilter(assetHistorySuppressFilter);
+        relatedProfiles.setName("suppress");
+        List<DetachedResponseProfile> list = new ArrayList<>();
+        list.add(relatedProfiles);
+        responseProfile.setRelatedProfiles(list);
 
         AssetHistoryService.ListAssetHistoryBuilder builder = new AssetHistoryService.ListAssetHistoryBuilder(assetHistoryFilter, pagerFilter).setCompletion(new OnCompletion<Response<ListResponse<AssetHistory>>>() {
             @Override
@@ -3922,7 +3933,7 @@ public class KsServices {
                 }
             }
         });
-
+        builder.setResponseProfile(responseProfile);
         getRequestQueue().queue(builder.build(client));
     }
 

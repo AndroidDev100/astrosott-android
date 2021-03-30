@@ -77,7 +77,7 @@
                 android:layout_width="@dimen/_60sdp"
                 android:layout_height="wrap_content"
                 android:background="@color/search_toolbar_background"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -91,7 +91,7 @@
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/white"
                         android:textSize="12sp"
@@ -106,7 +106,7 @@
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/white"
                         android:paddingLeft="@dimen/_3sdp"

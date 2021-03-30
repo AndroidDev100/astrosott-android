@@ -508,11 +508,11 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         removeAssetApi(assetID, singleSectionItems, continueWatchingAdapter, continueWatchingRemove, listSize, position, continueWatchingIndex);
                     }
                 }
-            }, position, dataList.get(position).getTitle(), isContinueRail, dataList.get(position).getCategory());
+            }, position, dataList.get(position).getTitle(), isContinueRail, dataList.get(position).getRailDetail().getCategory());
 
 
         } else {
-            commonPosterAdapter = new CommonPosterAdapter(activity, singleSectionItems, AppConstants.Rail3, dataList.get(position).getTitle(), dataList.get(position).getCategory());
+            commonPosterAdapter = new CommonPosterAdapter(activity, singleSectionItems, AppConstants.Rail3, dataList.get(position).getTitle(), dataList.get(position).getRailDetail().getCategory());
         }
 
         holder.itemBinding.recyclerViewList4.setAdapter(commonPosterAdapter);
