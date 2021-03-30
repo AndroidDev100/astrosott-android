@@ -111,7 +111,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private int errorCode = -1;
     private boolean episodeTested = false;
     private int assetRuleErrorCode = -1;
-    private RailCommonData railData;
+    private RailCommonData railData, assetToPlay;
     private boolean isParentalLocked = false;
     private String defaultParentalRating = "";
     private String userSelectedParentalRating = "";
@@ -151,16 +151,15 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
         getBinding().ivPlayIcon.setOnClickListener(view -> {
 
-          /*  if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+            if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
 
-            if (commonData != null) {
+            if (assetToPlay != null) {
                 callProgressBar();
-                playerChecks(commonData);
+                playerChecks(assetToPlay);
             }
-*/
 
         });
 
@@ -192,8 +191,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         setMetas();
 
         setBannerImage(assetId);
-        if (playbackControlValue)
-            checkEntitleMent(railData);
+
     }
 
     private void setClicks() {
@@ -261,7 +259,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void checkAddedCondition(CommonResponse s) {
         if (s.getStatus()) {
-            showAlertDialog(getApplicationContext().getResources().getString(R.string.series) +" "+ getApplicationContext().getResources().getString(R.string.added_to_watchlist));
+            showAlertDialog(getApplicationContext().getResources().getString(R.string.series) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist));
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
             getBinding().webwatchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
@@ -324,22 +322,21 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
                 getLanguage();
 
-                getXofferWindow();
-                getPlayBackControl();
+
             }
         });
     }
 
-    private void getPlayBackControl() {
-        if (yearMap != null)
-            playbackControlValue = viewModel.getPlayBackControl(yearMap);
+    private void getPlayBackControl(Map<String, Value> metas) {
+        if (metas != null)
+            playbackControlValue = viewModel.getPlayBackControl(metas);
     }
 
-    private void getXofferWindow() {
+    private void getXofferWindow(Map<String, Value> metas) {
         StringValue stringValue = null;
         String xofferValue = "";
-        if (yearMap != null) {
-            stringValue = (StringValue) yearMap.get(AppLevelConstants.XOFFERWINDOW);
+        if (metas != null) {
+            stringValue = (StringValue) metas.get(AppLevelConstants.XOFFERWINDOW);
         }
         if (stringValue != null) {
             xofferValue = stringValue.getValue();
@@ -1170,7 +1167,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         getBinding().playText.setTextColor(getResources().getColor(R.color.black));
 
 
-
                     });
                     this.vodType = EntitlementCheck.FREE;
 
@@ -1390,6 +1386,17 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     @Override
     public void onFirstEpisodeData(List<AssetCommonBean> railCommonData) {
+        if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
+            assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
+            Map<String, Value> metas = assetToPlay.getObject().getMetas();
+            if (metas != null) {
+                getXofferWindow(metas);
+                getPlayBackControl(metas);
+            }
+
+            if (playbackControlValue)
+                checkEntitleMent(assetToPlay);
+        }
 
     }
 
@@ -1398,6 +1405,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         getBinding().scrollView.scrollTo(0, 0);
         railData = commonData;
         getDatafromBack();
+        assetToPlay = null;
+        getBinding().ivPlayIcon.setVisibility(View.GONE);
         isActive = UserInfo.getInstance(this).isActive();
     }
 }

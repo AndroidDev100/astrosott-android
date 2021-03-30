@@ -19,6 +19,12 @@ data class WidgetsItem(
         @field:SerializedName("displayOrder")
         val displayOrder: Int? = null,
 
+        @field:SerializedName("height")
+        val height: Any? = null,
+
+        @field:SerializedName("width")
+        val width: Any? = null,
+
         @field:SerializedName("id")
         val id: Int? = null,
 

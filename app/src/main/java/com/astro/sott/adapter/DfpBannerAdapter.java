@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,11 +146,15 @@ public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.View
 
     public AdSize fetchBannerSize(int bannerType) {
         //default adSize is Banner
-        AdSize adSize = AdSize.BANNER;
+        AdSize adSize;
 
         if (item.getRailDetail().getLayout().equalsIgnoreCase(Layouts.MRC.name())) {
             adSize = AdSize.MEDIUM_RECTANGLE;
-        } else if (item.getRailDetail().getLayout().equalsIgnoreCase(Layouts.BAN.name())) {
+        }else if (item.getRailDetail().getLayout().equalsIgnoreCase(Layouts.CUS.name())){
+            Log.w("heightWidth",item.getRailDetail().getAdWidth()+"   "+item.getRailDetail().getAdHeight());
+            adSize=new AdSize(item.getRailDetail().getAdWidth(),item.getRailDetail().getAdHeight());
+        }
+        else if (item.getRailDetail().getLayout().equalsIgnoreCase(Layouts.BAN.name())) {
             if (AppCommonMethods.isTablet) {
                 float smallestWidth = getTabSize();
                 if (smallestWidth > 600) {
@@ -158,8 +163,12 @@ public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.View
                 } else {
                     adSize = AdSize.FULL_BANNER;
                 }
+            }else {
+                adSize=AdSize.BANNER;
             }
 
+        }else {
+            adSize=AdSize.BANNER;
         }
 
 

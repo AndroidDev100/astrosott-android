@@ -21,7 +21,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.astro.sott.activities.loginActivity.LoginActivity;
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.adapter.experiencemng.CommonCircleAdapter;
 import com.astro.sott.adapter.experiencemng.CommonHeroRailAdapter;
 import com.astro.sott.callBacks.commonCallBacks.ContinueWatchingRemove;
@@ -508,11 +508,11 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         removeAssetApi(assetID, singleSectionItems, continueWatchingAdapter, continueWatchingRemove, listSize, position, continueWatchingIndex);
                     }
                 }
-            }, position, dataList.get(position).getTitle(), isContinueRail, dataList.get(position).getCategory());
+            }, position, dataList.get(position).getTitle(), isContinueRail, dataList.get(position).getRailDetail().getCategory());
 
 
         } else {
-            commonPosterAdapter = new CommonPosterAdapter(activity, singleSectionItems, AppConstants.Rail3, dataList.get(position).getTitle(), dataList.get(position).getCategory());
+            commonPosterAdapter = new CommonPosterAdapter(activity, singleSectionItems, AppConstants.Rail3, dataList.get(position).getTitle(), dataList.get(position).getRailDetail().getCategory());
         }
 
         holder.itemBinding.recyclerViewList4.setAdapter(commonPosterAdapter);
@@ -824,8 +824,8 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         } else {
                             new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 1);
                         }*/
+                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class);
 
-                        new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 0, "");
                     } else {
                         int layoutType = AppCommonMethods.getRailTypeAccToMedia(activity, getLayoutPosition(), dataList, i);
 
@@ -961,7 +961,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         } else {
                             new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 1);
                         }*/
-                        new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 0, "");
+                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class);
 
                     } else {
                         int layoutType = AppCommonMethods.getRailTypeAccToMedia(activity, getLayoutPosition(), dataList, i);

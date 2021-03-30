@@ -302,6 +302,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 getBinding().seasonText.setText(closedSeriesData.get(0).getTitle());
 
                 seriesNumberList = TabsData.getInstance().getSeasonList();
+                _mClickListener.onFirstEpisodeData(TabsData.getInstance().getClosedSeriesData());
                 setClosedUIComponets(TabsData.getInstance().getClosedSeriesData());
             } else {
                 getOpenSeriesData();
@@ -382,6 +383,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 getBinding().seasonText.setText("EPISODE 1 - " + total);
             }
             getBinding().season.setEnabled(false);
+            _mClickListener.onFirstEpisodeData(TabsData.getInstance().getOpenSeriesData());
             setUIComponets(TabsData.getInstance().getOpenSeriesData());
         }
 
@@ -458,7 +460,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     private void callSeasonEpisodes(List<Integer> seriesNumberList) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         getBinding().loadMoreTxt.setText(getActivity().getResources().getString(R.string.loading));
-        viewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, layoutType,TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
+        viewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
             getBinding().loadMoreTxt.setText("Load More");
             getBinding().progressBar.setVisibility(View.GONE);
 
@@ -478,7 +480,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     private void callEpisodes() {
         getBinding().progressBar.setVisibility(View.VISIBLE);
-        viewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, layoutType,TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
+        viewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (listOfAsset != null)
                 listOfAsset.setLength(0);

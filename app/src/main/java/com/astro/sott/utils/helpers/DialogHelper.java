@@ -7,8 +7,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.core.content.ContextCompat;
+
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -16,7 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.astro.sott.activities.loginActivity.LoginActivity;
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
 import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
@@ -80,7 +82,7 @@ public class DialogHelper {
 
         boolean status = KsPreferenceKey.getInstance(context).getUserActive();
         if (status) {
-            if (isLiveChannel){
+            if (isLiveChannel) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
                 builder.setTitle(context.getResources().getString(R.string.dialog)).setMessage(context.getResources().getString(R.string.non_dialog_user_message))
                         .setCancelable(true)
@@ -94,7 +96,7 @@ public class DialogHelper {
                 bn.setTextColor(ContextCompat.getColor(context, R.color.white));
                 Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
                 bp.setTextColor(ContextCompat.getColor(context, R.color.primary_blue));
-            }else {
+            } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
                 builder.setTitle(context.getResources().getString(R.string.dialog)).setMessage(context.getResources().getString(R.string.non_dialog_user_message))
                         .setCancelable(true)
@@ -124,11 +126,11 @@ public class DialogHelper {
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.subscribe), (dialog, id) -> {
                         //dialog.cancel();
-                        if (isLiveChannel){
+                        if (isLiveChannel) {
                             dialog.cancel();
                             new ActivityLauncher(context).singleChannelSubscriptionActivity(context, SingleLiveChannelSubscriptionActivity.class);
 
-                        }else {
+                        } else {
                             dialog.cancel();
                             new ActivityLauncher(context).subscriptionActivity(context, SubscriptionActivity.class, 0);
                         }
@@ -160,13 +162,15 @@ public class DialogHelper {
     }
 
     public static void showLoginDialog(Activity context) {
-        if(context != null &&!context.isFinishing()) {
+        if (context != null && !context.isFinishing()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
             builder.setTitle(context.getResources().getString(R.string.dialog)).setMessage(context.getResources().getString(R.string.purchase_dialouge))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.login), (dialog, id) -> {
                         //dialog.cancel();
-                        new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
+                        new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class);
+
+                        //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
                     })
                     .setNegativeButton(context.getResources().getString(R.string.cancel), (dialog, id) -> dialog.cancel());
 
@@ -233,8 +237,7 @@ public class DialogHelper {
             textView.setText(context.getResources().getString(R.string.validate_pin));
             defaultPin.setVisibility(View.VISIBLE);
             defaultPin.setText(context.getResources().getString(R.string.default_parental_text));
-        }
-        else {
+        } else {
             textView.setText(context.getResources().getString(R.string.set_pin));
             defaultPin.setVisibility(View.VISIBLE);
             defaultPin.setText(context.getResources().getString(R.string.set_pin_text));
