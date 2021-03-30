@@ -305,7 +305,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     return false;
 
                 }
-            } else if (email_mobile.matches(EMAIL_REGEX)) {
+            } else if (true) {
                 type = "email";
                 return true;
             } else {

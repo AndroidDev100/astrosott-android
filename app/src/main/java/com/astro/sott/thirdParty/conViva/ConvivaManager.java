@@ -89,6 +89,7 @@ public class ConvivaManager {
         contentInfo.put(ConvivaSdkConstants.ASSET_NAME, railData.getObject().getName());
         contentInfo.put(ConvivaSdkConstants.IS_LIVE, isLivePlayer + "");
         contentInfo.put(ConvivaSdkConstants.FRAMEWORK_NAME, "Kaltura");
+        contentInfo.put(ConvivaSdkConstants.DURATION, AppCommonMethods.getDurationFromUrl(railData.getObject()));
         contentInfo.put(ConvivaSdkConstants.FRAMEWORK_VERSION, "Kaltura 4.8.3");
         if (UserInfo.getInstance(context).isActive()) {
             contentInfo.put(ConvivaSdkConstants.VIEWER_ID, UserInfo.getInstance(context).getCpCustomerId());
