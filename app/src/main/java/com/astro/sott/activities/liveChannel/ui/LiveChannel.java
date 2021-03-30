@@ -56,6 +56,7 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.StringBuilderHolder;
 import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.bumptech.glide.Glide;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
@@ -371,7 +372,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 //                    startPlayer();
 //            }
             else if (errorCode == AppLevelConstants.NO_ERROR) {
-                if (KsPreferenceKey.getInstance(this).getUserActive()) {
+                if (UserInfo.getInstance(this).isActive()) {
                     parentalCheck(railData);
                 } else {
                     startPlayer();
@@ -385,7 +386,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
 
     private void parentalCheck(RailCommonData railData) {
-        if (KsPreferenceKey.getInstance(this).getUserActive()) {
+        if (UserInfo.getInstance(this).isActive()) {
             if (KsPreferenceKey.getInstance(this).getParentalActive()) {
                 ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(getApplicationContext());
                 defaultParentalRating = responseDmsModel.getParams().getDefaultParentalLevel();
