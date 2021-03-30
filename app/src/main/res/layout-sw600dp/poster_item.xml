@@ -13,11 +13,20 @@
         android:layout_width="@dimen/_90sdp"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardBackgroundColor="@color/blackColor"
         card_view:cardElevation="1dp"
         card_view:cardMaxElevation="1dp"
         card_view:cardPreventCornerOverlap="false"
         card_view:cardUseCompatPadding="true">
-
+        <include
+            android:id="@+id/metas"
+            layout="@layout/metas_layout"
+            android:layout_width="wrap_content"
+            android:visibility="visible"
+            android:layout_gravity="top|right"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"></include>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,6 +56,7 @@
                     android:id="@+id/exclusive_layout"
                     layout="@layout/exclusive_item" />
             </RelativeLayout>
+
             <SeekBar
                 android:id="@+id/progressBar"
                 android:layout_width="match_parent"
@@ -62,6 +72,53 @@
                 android:thumbTint="@android:color/transparent"
                 tools:targetApi="lollipop"
                 android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/titleLayout"
+                android:layout_width="@dimen/potrait_item_width"
+                android:layout_height="wrap_content"
+                android:background="@color/search_toolbar_background"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="left"
+                        android:maxLines="1"
+                        android:visibility="gone"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingLeft="@dimen/_3sdp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="left"
+                        android:maxLines="1"
+                        android:visibility="gone"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/white"
+                        android:paddingLeft="@dimen/_3sdp"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:textSize="@dimen/_9sdp" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
             <include
                 android:visibility="gone"
                 android:id="@+id/media_type_layout"

@@ -25,6 +25,8 @@ public class VIUChannel implements Parcelable {
     private int contentSize;
     private int morePageSize;
     private int displayOrder;
+    private int adHeight;
+    private int adWidth;
     private boolean isProgram;
     private boolean status;
     private boolean showHeader;
@@ -85,6 +87,8 @@ public class VIUChannel implements Parcelable {
             this.contentSize = category.getContentSize() == null ? 0 : category.getContentSize();
             this.morePageSize = category.getMorePageSize() == null ? 0 : category.getMorePageSize();
             this.displayOrder = category.getDisplayOrder() == null ? 0 : category.getDisplayOrder();
+            this.adHeight = category.getHeight() == null ? 0 : (int)((double)category.getHeight());
+            this.adWidth = category.getWidth() == null ? 0 : (int)((double)category.getWidth());
 
 
             this.isProgram = category.isProgram() == null ? false : category.isProgram();
@@ -130,7 +134,7 @@ public class VIUChannel implements Parcelable {
             this.isLoggedInUser = category.isLoggedInUser() == null ? "" : category.isLoggedInUser();
 
         } catch (Exception e) {
-
+            PrintLogging.printLog("", "crash-->" + "ViuChannel");
         }
     }
 
@@ -451,6 +455,22 @@ public class VIUChannel implements Parcelable {
 
     public void setDisplayOrder(int displayOrder) {
         this.displayOrder = displayOrder;
+    }
+
+    public int getAdHeight() {
+        return adHeight;
+    }
+
+    public void setAdHeight(int adHeight) {
+        this.adHeight = adHeight;
+    }
+
+    public int getAdWidth() {
+        return adWidth;
+    }
+
+    public void setAdWidth(int adWidth) {
+        this.adWidth = adWidth;
     }
 
     public String getContentImageType() {

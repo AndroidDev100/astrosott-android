@@ -1292,7 +1292,11 @@ public class AppCommonMethods {
             if (baseCategory != null) {
                 if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())) {
                     titleLayout.setVisibility(View.VISIBLE);
-                } else {
+                }else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())){
+                    titleLayout.setVisibility(View.VISIBLE);
+                    tvTitle.setVisibility(View.VISIBLE);
+                }
+                else {
                     //titleLayout.setVisibility(View.VISIBLE);
                     if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE.name())) {
                         titleLayout.setVisibility(View.VISIBLE);
@@ -1324,7 +1328,12 @@ public class AppCommonMethods {
             if (baseCategory != null) {
                 if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())) {
                     titleLayout.setVisibility(View.VISIBLE);
-                } else {
+                }
+                else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())){
+                    titleLayout.setVisibility(View.VISIBLE);
+                    tvTitle.setVisibility(View.VISIBLE);
+                }
+                else {
                     //titleLayout.setVisibility(View.VISIBLE);
                     if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE.name())) {
                         titleLayout.setVisibility(View.VISIBLE);

@@ -18,6 +18,8 @@ class BaseCategory() : Parcelable {
   var adType: String? = ""
   var adID: String? = ""
   var displayOrder: Int? = 0
+  var height: Any? = 0
+  var width: Any? = 0
   var contentImageType: String? = ""
   var showHeader: Boolean? = false
   var autoRotate: Boolean? = false
