@@ -240,6 +240,13 @@
                         />
                 </LinearLayout>
                 <View
+                    android:id="@+id/black_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@color/egg_plant"
+                    android:layout_below="@id/tabLayout"
+                    android:visibility="gone" />
+                <View
                     android:id="@+id/indicator"
                     android:layout_width="0dp"
                     android:layout_height="4dp"

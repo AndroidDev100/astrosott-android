@@ -5,6 +5,7 @@
         android:layout_width="match_parent"
         android:filterTouchesWhenObscured="true"
         android:layout_height="wrap_content"
+        android:background="@color/grape_purple"
         android:orientation="vertical">
 
         <LinearLayout
@@ -18,33 +19,27 @@
             </include>
 
         </LinearLayout>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
             android:overScrollMode="never"
-            android:layout_gravity="left"
             android:visibility="gone"
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginLeft="@dimen/_8sdp"/>
-
+            android:layout_marginTop="@dimen/_8sdp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal">
+            android:layout_height="match_parent">
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"
-                />
+                android:overScrollMode="never"/>
             <LinearLayout
                 android:id="@+id/no_data_layout"
                 android:layout_width="match_parent"
@@ -72,7 +67,6 @@
                 android:id="@+id/no_connection_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="?attr/backgroundColor"
                 android:visibility="gone">
 
                 <include
@@ -82,6 +76,15 @@
                 </include>
 
             </LinearLayout>
+
+            <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/progressBarBlue"
+                android:visibility="gone"
+                android:layout_centerInParent="true"/>
 
 
         </RelativeLayout>

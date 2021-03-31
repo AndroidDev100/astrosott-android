@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             android:id="@+id/appbar"
-            android:background="@drawable/tab_bg"
+            android:background="@drawable/ic_app_bar_bg"
             >
             <include
                 android:id="@+id/toolbar"
