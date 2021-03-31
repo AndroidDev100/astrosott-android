@@ -1389,21 +1389,41 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     public void onFirstEpisodeData(List<AssetCommonBean> railCommonData) {
         if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
             if (TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
-                viewModel.getEpisodeToPlay(assetId).observe(this, s -> {
+                viewModel.getEpisodeToPlay(assetId).observe(this, assetHistory -> {
+                    if (assetHistory != null && assetHistory.getAssetId() != null) {
+                        viewModel.getSpecificAsset(assetHistory.getAssetId() + "").observe(this, railAsset -> {
+                            if (railAsset != null) {
+                                assetToPlay = railAsset;
+                                checkForPlayButtonCondition();
+                            } else {
+                                assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
+                                checkForPlayButtonCondition();
+                            }
+                        });
+                    } else {
+                        assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
+                        checkForPlayButtonCondition();
 
+                    }
                 });
             } else {
                 assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
-                Map<String, Value> metas = assetToPlay.getObject().getMetas();
-                if (metas != null) {
-                    getXofferWindow(metas);
-                    getPlayBackControl(metas);
-                }
+                checkForPlayButtonCondition();
 
-                if (playbackControlValue)
-                    checkEntitleMent(assetToPlay);
             }
         }
+
+    }
+
+    private void checkForPlayButtonCondition() {
+        Map<String, Value> metas = assetToPlay.getObject().getMetas();
+        if (metas != null) {
+            getXofferWindow(metas);
+            getPlayBackControl(metas);
+        }
+
+        if (playbackControlValue)
+            checkEntitleMent(assetToPlay);
 
     }
 

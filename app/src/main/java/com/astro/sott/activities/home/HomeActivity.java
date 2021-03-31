@@ -16,8 +16,6 @@ import com.astro.sott.fragments.moreTab.ui.MoreFragment;
 import com.astro.sott.fragments.moreTab.ui.MoreNewFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.video.ui.VideoFragment;
-import com.astro.sott.fragments.viu.ui.ViuFragment;
-import com.astro.sott.fragments.viu.ui.ViuFragmentNew;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
 import com.astro.sott.utils.billing.AstroBillingProcessor;
 import com.astro.sott.utils.billing.BillingProcessor;
@@ -76,7 +74,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private VideoFragment videoFragment;
     private BillingProcessor billingProcessor;
     private LiveTvFragment liveTvFragment;
-    private ViuFragmentNew viuAppsFragment;
     private SubscriptionViewModel subscriptionViewModel;
     private Fragment moreFragment;
     private MoreNewFragment moreNewFragment;
@@ -499,10 +496,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     }
 
-    private void switchToViuFragment() {
-        fragmentManager.beginTransaction().hide(active).show(viuAppsFragment).commitAllowingStateLoss();
-        active = viuAppsFragment;
-    }
+
 
     private void switchToLiveTvFragment() {
         setToolBarScroll(0);

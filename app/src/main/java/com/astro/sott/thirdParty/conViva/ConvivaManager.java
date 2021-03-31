@@ -85,14 +85,24 @@ public class ConvivaManager {
 
     public static void setreportPlaybackRequested(Context context, RailCommonData railData, String duraton, Boolean isLivePlayer) {
         Map<String, Object> contentInfo = new HashMap<String, Object>();
-        contentInfo.put(ConvivaSdkConstants.STREAM_URL, "");
+
+        if (!AppCommonMethods.getPlayerUrl(railData.getObject()).equalsIgnoreCase("")) {
+            contentInfo.put(ConvivaSdkConstants.STREAM_URL, AppCommonMethods.getPlayerUrl(railData.getObject()));
+        } else {
+            contentInfo.put(ConvivaSdkConstants.STREAM_URL, "NA");
+
+        }
         contentInfo.put(ConvivaSdkConstants.ASSET_NAME, railData.getObject().getName());
         contentInfo.put(ConvivaSdkConstants.IS_LIVE, isLivePlayer + "");
         contentInfo.put(ConvivaSdkConstants.FRAMEWORK_NAME, "Kaltura");
         contentInfo.put(ConvivaSdkConstants.DURATION, AppCommonMethods.getDurationFromUrl(railData.getObject()));
         contentInfo.put(ConvivaSdkConstants.FRAMEWORK_VERSION, "Kaltura 4.8.3");
         if (UserInfo.getInstance(context).isActive()) {
-            contentInfo.put(ConvivaSdkConstants.VIEWER_ID, UserInfo.getInstance(context).getCpCustomerId());
+            if (UserInfo.getInstance(context).getCpCustomerId() != null) {
+                contentInfo.put(ConvivaSdkConstants.VIEWER_ID, UserInfo.getInstance(context).getCpCustomerId());
+            } else {
+                contentInfo.put(ConvivaSdkConstants.VIEWER_ID, AppCommonMethods.getDeviceId(context.getContentResolver()));
+            }
         } else {
             contentInfo.put(ConvivaSdkConstants.VIEWER_ID, AppCommonMethods.getDeviceId(context.getContentResolver()));
         }
@@ -104,7 +114,6 @@ public class ConvivaManager {
         if (isLivePlayer) {
             contentInfo.put(CONTENT_TYPE, LINEAR);
             contentInfo.put(CHANNEL, railData.getObject().getName());
-
 
         } else {
             if (!AssetContent.getKeyworddata(railData.getObject().getTags()).equalsIgnoreCase("")) {
@@ -119,22 +128,28 @@ public class ConvivaManager {
 
         if (AssetContent.getProvider(railData.getObject().getTags()).equalsIgnoreCase("")) {
             contentInfo.put(ASSET_PROVIDER_NAME, AssetContent.getProvider(railData.getObject().getTags()));
+        } else {
+            contentInfo.put(ASSET_PROVIDER_NAME, "NA");
+
         }
         if (railData.getObject().getType() == MediaTypeConstant.getEpisode(context)) {
             contentInfo.put(EPISODE_NUMBER, railData.getObject().getName());
+        } else {
+            contentInfo.put(EPISODE_NUMBER, "NA");
+
         }
         contentInfo.put(UTM_URL, "NA");
         contentInfo.put(BRAND, "4.8.3");
         contentInfo.put(CATEGORY_TYPE, AppCommonMethods.getAssetType(railData.getObject().getType(), context));
         contentInfo.put(APP_NAME, "SOTT Android");
         contentInfo.put(APP_VERSION, BuildConfig.VERSION_NAME);
-        if (AssetContent.getGenredata(railData.getObject().getTags()).equals("")) {
+        if (AssetContent.getGenredataString(railData.getObject().getTags()).equals("")) {
             contentInfo.put(GENRE, "NA");
             contentInfo.put(GENRE_LIST, "NA");
         } else {
-            contentInfo.put(GENRE, AssetContent.getGenredata(railData.getObject().getTags()));
+            contentInfo.put(GENRE, AssetContent.getGenredataString(railData.getObject().getTags()));
 
-            contentInfo.put(GENRE_LIST, AssetContent.getGenredata(railData.getObject().getTags()));
+            contentInfo.put(GENRE_LIST, AssetContent.getGenredataString(railData.getObject().getTags()));
 
         }
 
@@ -155,6 +170,10 @@ public class ConvivaManager {
 
     public static void convivaPlayerBufferReportRequest() {
         ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.BUFFERING);
+    }
+
+    public static void convivaPlayerSetBitRate(long bitrate) {
+        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.BITRATE, Integer.parseInt(bitrate + ""));
     }
 
     public static void convivaPlayerStoppedReportRequest() {

@@ -183,7 +183,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
 //conviva
 
-    implementation 'com.conviva.sdk:conviva-core-sdk:4.0+'
+    implementation 'com.conviva.sdk:conviva-core-sdk:4.0.12.155'
     // Required Dependency by Audience Network SDK
     implementation 'com.gmail.samehadar:iosdialog:1.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'

@@ -26,6 +26,7 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.FollowTvSeries;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MultilingualStringValueArray;
@@ -267,14 +268,15 @@ public class WebSeriesDescriptionRepository {
         return stringMutableLiveData;
     }
 
-    public LiveData<String> getEpisodeToPlay(final Context context, final long assetID) {
-        final MutableLiveData<String> stringMutableLiveData = new MutableLiveData<>();
+    public LiveData<AssetHistory> getEpisodeToPlay(final Context context, final long assetID) {
+        final MutableLiveData<AssetHistory> stringMutableLiveData = new MutableLiveData<>();
         KsServices ksServices = new KsServices(context);
-        ksServices.getEpisodeToPlay(assetID, status -> {
+        ksServices.getEpisodeToPlay(assetID, (status, assetHistory) -> {
             if (status) {
-
+                stringMutableLiveData.postValue(assetHistory);
+            } else {
+                stringMutableLiveData.postValue(null);
             }
-
         });
         return stringMutableLiveData;
     }

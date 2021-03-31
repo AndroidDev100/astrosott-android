@@ -545,6 +545,20 @@ public class AppCommonMethods {
         return totalSecs;
     }
 
+    public static String getPlayerUrl(Asset asset) {
+        String url = "";
+        if (asset.getMediaFiles() != null && asset.getMediaFiles().size() > 0) {
+            for (int i = 0; i < asset.getMediaFiles().size(); i++) {
+                if (asset.getMediaFiles().get(i).getType().equals("Dash_widevine")) {
+                    url = asset.getMediaFiles().get(i).getUrl();
+                    break;
+                }
+            }
+            return url;
+        }
+        return url;
+    }
+
 
     public static void openShareDialog(final Activity activity, final Asset asset, Context context) {
         /*WeakReference<Activity> mActivity = new WeakReference<>(activity);
@@ -1292,11 +1306,10 @@ public class AppCommonMethods {
             if (baseCategory != null) {
                 if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())) {
                     titleLayout.setVisibility(View.VISIBLE);
-                }else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())){
+                } else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())) {
                     titleLayout.setVisibility(View.VISIBLE);
                     tvTitle.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     //titleLayout.setVisibility(View.VISIBLE);
                     if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE.name())) {
                         titleLayout.setVisibility(View.VISIBLE);
@@ -1328,12 +1341,10 @@ public class AppCommonMethods {
             if (baseCategory != null) {
                 if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())) {
                     titleLayout.setVisibility(View.VISIBLE);
-                }
-                else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())){
+                } else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())) {
                     titleLayout.setVisibility(View.VISIBLE);
                     tvTitle.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     //titleLayout.setVisibility(View.VISIBLE);
                     if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE.name())) {
                         titleLayout.setVisibility(View.VISIBLE);

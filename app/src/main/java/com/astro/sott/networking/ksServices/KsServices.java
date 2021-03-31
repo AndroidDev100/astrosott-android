@@ -61,6 +61,7 @@ import com.astro.sott.callBacks.kalturaCallBacks.KsAppTokenCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.KsHouseHoldDevice;
 import com.astro.sott.callBacks.kalturaCallBacks.KsHouseHoldDeviceAddCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.LogoutCallBack;
+import com.astro.sott.callBacks.kalturaCallBacks.NextEpisodeCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.NotificationCallback;
 import com.astro.sott.callBacks.kalturaCallBacks.NotificationStatusCallback;
 import com.astro.sott.callBacks.kalturaCallBacks.OttUserDetailsCallBack;
@@ -6874,14 +6875,14 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
     }
 
-    public void getEpisodeToPlay(Long assetID, DeleteFromFollowlistCallBack callBack) {
+    public void getEpisodeToPlay(Long assetID, NextEpisodeCallBack callBack) {
         clientSetupKs();
 
         AssetHistoryService.GetNextEpisodeAssetHistoryBuilder builder = AssetHistoryService.getNextEpisode(assetID).setCompletion(result -> {
-            if (result.isSuccess()) {
-
+            if (result.isSuccess() && result.results != null) {
+                callBack.getNextEpisode(true, result.results);
             } else {
-
+                callBack.getNextEpisode(false, null);
             }
         });
         getRequestQueue().queue(builder.build(client));
