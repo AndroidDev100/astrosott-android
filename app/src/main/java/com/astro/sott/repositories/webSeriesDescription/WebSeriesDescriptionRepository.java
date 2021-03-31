@@ -2,6 +2,7 @@ package com.astro.sott.repositories.webSeriesDescription;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -77,7 +78,7 @@ public class WebSeriesDescriptionRepository {
                     if (status1) {
                         Log.e("STATUS", String.valueOf(status1));
                         Gson gson = new Gson();
-                        Log.e("SEASONS",gson.toJson(seasonNumberList));
+                        Log.e("SEASONS", gson.toJson(seasonNumberList));
                         seasonNumberList = AssetContent.getSeasonNumber(result);
                         callSeasonEpisodes(context, seasonNumberList, ksServices, connection, layoutType, assetType);
                     } else {
@@ -99,7 +100,7 @@ public class WebSeriesDescriptionRepository {
                                     final MutableLiveData<List<AssetCommonBean>> connection,
                                     final int layoutType, final int assetType) {
         ksServices.callSesionEpisode(1, seriesId, seriesMediaType, seasonNumberList, (status, listResponseResponse, channelList) -> {
-          Log.e("STATUS", String.valueOf(status));
+            Log.e("STATUS", String.valueOf(status));
             responseList = listResponseResponse;
             callBelowData(context, connection, layoutType, assetType);
         });
@@ -165,7 +166,7 @@ public class WebSeriesDescriptionRepository {
         List<RailCommonData> railList = new ArrayList<>();
         for (int j = 0; j < list.get(position).results.getObjects().size(); j++) {
             RailCommonData railCommonData = new RailCommonData();
-           // railCommonData.setCatchUpBuffer(list.get(position).results.getObjects().get(j).getEnableCatchUp());
+            // railCommonData.setCatchUpBuffer(list.get(position).results.getObjects().get(j).getEnableCatchUp());
             railCommonData.setType(list.get(position).results.getObjects().get(j).getType());
             railCommonData.setName(list.get(position).results.getObjects().get(j).getName());
             railCommonData.setId(list.get(position).results.getObjects().get(j).getId());
@@ -206,7 +207,7 @@ public class WebSeriesDescriptionRepository {
         AppCommonMethods.checkDMS(context, status -> {
             if (status) {
                 if (assetType == MediaTypeConstant.getDrama(context)) {
-                    ksServices.callHomeChannels(context,0, AppLevelConstants.TAB_DRAMA_DETAILS, (status12, listResponseResponse, channelList) -> {
+                    ksServices.callHomeChannels(context, 0, AppLevelConstants.TAB_DRAMA_DETAILS, (status12, listResponseResponse, channelList) -> {
                         if (status12) {
                             callDynamicData(context, listResponseResponse, channelList, layoutType);
                             mutableLiveData.postValue(assetCommonList);
@@ -266,22 +267,34 @@ public class WebSeriesDescriptionRepository {
         return stringMutableLiveData;
     }
 
+    public LiveData<String> getEpisodeToPlay(final Context context, final long assetID) {
+        final MutableLiveData<String> stringMutableLiveData = new MutableLiveData<>();
+        KsServices ksServices = new KsServices(context);
+        ksServices.getEpisodeToPlay(assetID, status -> {
+            if (status) {
+
+            }
+
+        });
+        return stringMutableLiveData;
+    }
+
     private void checkAssetAdded(
-                                 Response<ListResponse<FollowTvSeries>> result,
-                                 MutableLiveData<String> stringMutableLiveData, long asset_id) {
+            Response<ListResponse<FollowTvSeries>> result,
+            MutableLiveData<String> stringMutableLiveData, long asset_id) {
 
         String matched_string = "";
-            if (result.results.getTotalCount() > 0) {
-                for (int i = 0; i < result.results.getObjects().size(); i++) {
-                    long assetID = result.results.getObjects().get(i).getAssetId();
-                    if (String.valueOf(assetID).equals(String.valueOf(asset_id))) {
-                        matched_string = String.valueOf(assetID);
-                    }
+        if (result.results.getTotalCount() > 0) {
+            for (int i = 0; i < result.results.getObjects().size(); i++) {
+                long assetID = result.results.getObjects().get(i).getAssetId();
+                if (String.valueOf(assetID).equals(String.valueOf(asset_id))) {
+                    matched_string = String.valueOf(assetID);
                 }
-                stringMutableLiveData.postValue(matched_string);
-            } else {
-                stringMutableLiveData.postValue("");
             }
+            stringMutableLiveData.postValue(matched_string);
+        } else {
+            stringMutableLiveData.postValue("");
+        }
     }
 
     public LiveData<CommonResponse> addToFollowlist(long assetId, Context context) {
@@ -307,7 +320,7 @@ public class WebSeriesDescriptionRepository {
                     } else if (id.equals("")) {
                         commonResponse.setStatus(false);
                         commonResponse.setErrorCode(errorCode);
-                        commonResponse.setMessage(new ErrorCallBack().ErrorMessage(errorCode,message));
+                        commonResponse.setMessage(new ErrorCallBack().ErrorMessage(errorCode, message));
                         stringMutableLiveData.postValue(commonResponse);
                     } else {
                         commonResponse.setStatus(true);
@@ -353,7 +366,7 @@ public class WebSeriesDescriptionRepository {
 
                 } else {
                     commonResponse.setStatus(false);
-                    commonResponse.setErrorCode(new ErrorCallBack().ErrorMessage(errorCode,message));
+                    commonResponse.setErrorCode(new ErrorCallBack().ErrorMessage(errorCode, message));
                     commonResponse.setMessage(message);
                     booleanMutableLiveData.postValue(commonResponse);
                 }

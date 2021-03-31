@@ -3884,7 +3884,7 @@ public class KsServices {
         DetachedResponseProfile responseProfile = new DetachedResponseProfile();
         DetachedResponseProfile relatedProfiles = new DetachedResponseProfile();
 
-        AssetHistorySuppressFilter assetHistorySuppressFilter=new AssetHistorySuppressFilter();
+        AssetHistorySuppressFilter assetHistorySuppressFilter = new AssetHistorySuppressFilter();
         relatedProfiles.setFilter(assetHistorySuppressFilter);
         relatedProfiles.setName("suppress");
         List<DetachedResponseProfile> list = new ArrayList<>();
@@ -6871,6 +6871,19 @@ public class KsServices {
             // PrintLogging.printLog("","deleteResponse"+result.isSuccess());
         });
 
+        getRequestQueue().queue(builder.build(client));
+    }
+
+    public void getEpisodeToPlay(Long assetID, DeleteFromFollowlistCallBack callBack) {
+        clientSetupKs();
+
+        AssetHistoryService.GetNextEpisodeAssetHistoryBuilder builder = AssetHistoryService.getNextEpisode(assetID).setCompletion(result -> {
+            if (result.isSuccess()) {
+
+            } else {
+
+            }
+        });
         getRequestQueue().queue(builder.build(client));
     }
 

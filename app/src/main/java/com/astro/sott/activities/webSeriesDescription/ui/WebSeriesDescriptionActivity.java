@@ -42,6 +42,7 @@ import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.RefreshKS;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
+import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ToastHandler;
@@ -1387,15 +1388,21 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     @Override
     public void onFirstEpisodeData(List<AssetCommonBean> railCommonData) {
         if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
-            assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
-            Map<String, Value> metas = assetToPlay.getObject().getMetas();
-            if (metas != null) {
-                getXofferWindow(metas);
-                getPlayBackControl(metas);
-            }
+            if (TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
+                viewModel.getEpisodeToPlay(assetId).observe(this, s -> {
 
-            if (playbackControlValue)
-                checkEntitleMent(assetToPlay);
+                });
+            } else {
+                assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
+                Map<String, Value> metas = assetToPlay.getObject().getMetas();
+                if (metas != null) {
+                    getXofferWindow(metas);
+                    getPlayBackControl(metas);
+                }
+
+                if (playbackControlValue)
+                    checkEntitleMent(assetToPlay);
+            }
         }
 
     }

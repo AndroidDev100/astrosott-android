@@ -131,6 +131,10 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
         return WebSeriesDescriptionRepository.getInstance().seriesFollowList(getApplication().getApplicationContext(), assetID);
     }
 
+    public LiveData<String> getEpisodeToPlay(long assetID) {
+        return WebSeriesDescriptionRepository.getInstance().getEpisodeToPlay(getApplication().getApplicationContext(), assetID);
+    }
+
     public LiveData<CommonResponse> addToFollowlist(long assetId) {
         return WebSeriesDescriptionRepository.getInstance().addToFollowlist(assetId, getApplication());
     }
