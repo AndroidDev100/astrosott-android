@@ -73,15 +73,9 @@ public class SliderAdapter extends PagerAdapter {
         if (items.get(position).getType() == 1) {
             view = layoutInflater.inflate(R.layout.row_slider_live, container, false);
             ImageView sliderImage = view.findViewById(R.id.sliderImage);
-            ImageView hungama = view.findViewById(R.id.hungama);
             TextView title_text = view.findViewById(R.id.slider_text);
 
-            boolean isProviderAvailable = AssetContent.getHungamaTag(items.get(position).getObjects().getTags());
-            if (isProviderAvailable){
-                hungama.setVisibility(View.VISIBLE);
-            }else {
-               hungama.setVisibility(View.GONE);
-            }
+
 
 
 

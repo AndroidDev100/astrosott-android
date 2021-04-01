@@ -38,14 +38,7 @@
             android:thumb="@color/gray"
             android:thumbTint="@android:color/transparent"
             tools:targetApi="lollipop" />
-        <ImageView
-            android:id="@+id/hungama"
-            android:layout_width="36dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/playpurple"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom|left"
-            android:visibility="gone"></ImageView>
+
         <include
             android:id="@+id/exclusive_layout"
             layout="@layout/exclusive_item" />

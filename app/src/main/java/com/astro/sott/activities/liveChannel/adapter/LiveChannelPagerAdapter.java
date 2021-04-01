@@ -36,7 +36,7 @@ public class LiveChannelPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (adapterSize == 2) {
-            if (position == 0) {
+            if (position == 1) {
                 RecommendationRailFragment recommendationRailFragment = new RecommendationRailFragment();
                 Bundle args = new Bundle();
                 args.putInt("BUNDLE_TAB_ID", 0);
@@ -75,9 +75,9 @@ public class LiveChannelPagerAdapter extends FragmentStatePagerAdapter {
         // Generate title based on item position
         if (adapterSize == 2) {
             switch (position) {
-                case 0:
-                    return mContext.getString(R.string.related);
                 case 1:
+                    return mContext.getString(R.string.related);
+                case 0:
                     return mContext.getString(R.string.schedule);
                 default:
                     return null;

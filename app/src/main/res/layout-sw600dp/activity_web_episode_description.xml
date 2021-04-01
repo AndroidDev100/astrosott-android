@@ -130,15 +130,7 @@
                                     android:background="@drawable/play_icon"
                                     android:contentDescription="@string/play_icon"
                                     android:visibility="visible" />
-                                <ImageView
-                                    android:id="@+id/hungama"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/movie_items_margin_left"
-                                    android:src="@drawable/playpurple"
-                                    android:layout_gravity="left"
-                                    android:layout_below="@id/iv_play_icon"
-                                    android:visibility="gone"></ImageView>
+
                             </RelativeLayout>
 
                             <FrameLayout

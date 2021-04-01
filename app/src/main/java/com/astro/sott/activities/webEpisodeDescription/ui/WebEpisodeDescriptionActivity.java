@@ -205,7 +205,6 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<ActivityW
             seriesMediaType = MediaTypeConstant.getDrama(WebEpisodeDescriptionActivity.this);
         }
 
-        setHungamaTag(asset);
 
 
         setExpandable();
@@ -242,15 +241,6 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<ActivityW
         manager = getSupportFragmentManager();
 
         setPlayerFragment();
-    }
-
-    private void setHungamaTag(Asset asset) {
-        boolean isProviderAvailable = AssetContent.getHungamaTag(asset.getTags());
-        if (isProviderAvailable) {
-            getBinding().hungama.setVisibility(View.VISIBLE);
-        } else {
-            getBinding().hungama.setVisibility(View.GONE);
-        }
     }
 
     private void callSpecificAsset(long assetId) {
