@@ -137,6 +137,7 @@ import com.kaltura.playkit.Player;
 import com.kaltura.playkit.PlayerEvent;
 import com.kaltura.playkit.ads.AdController;
 import com.kaltura.playkit.player.PKAspectRatioResizeMode;
+import com.kaltura.playkit.player.VideoTrack;
 import com.kaltura.playkit.plugins.ads.AdEvent;
 import com.kaltura.playkit.plugins.ads.AdInfo;
 import com.kaltura.playkit.providers.MediaEntryProvider;
@@ -2245,6 +2246,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
         player.addListener(this, PlayerEvent.stopped, event -> {
             ConvivaManager.convivaPlayerStoppedReportRequest();
+
+        });
+
+        player.addListener(this, PlayerEvent.videoTrackChanged, event -> {
+            VideoTrack videoTrack=event.newTrack;
+
 
         });
         player.addListener(this, PlayerEvent.playing, event -> {

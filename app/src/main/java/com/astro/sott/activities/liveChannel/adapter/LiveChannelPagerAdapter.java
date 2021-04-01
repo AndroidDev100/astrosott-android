@@ -47,7 +47,7 @@ public class LiveChannelPagerAdapter extends FragmentStatePagerAdapter {
                 return recommendationRailFragment;
             } else {
                 Schedule schedule = new Schedule();
-                schedule.setUserVisibleHint(false);
+                schedule.setUserVisibleHint(true);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
                 schedule.setArguments(bundle);
