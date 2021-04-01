@@ -73,6 +73,7 @@ public class VIUChannel implements Parcelable {
     private Object isLoggedInUser;
     private Asset asset;
     private BaseCategory category;
+    private String kalturaOTTImageType;
 
     public VIUChannel() {
     }
@@ -132,6 +133,7 @@ public class VIUChannel implements Parcelable {
             this.filter = category.getFilter() == null ? new ArrayList<>() : category.getFilter();
             this.isAnonymousUser = category.isAnonymousUser() == null ? "" : category.isAnonymousUser();
             this.isLoggedInUser = category.isLoggedInUser() == null ? "" : category.isLoggedInUser();
+            this.kalturaOTTImageType = category.getKalturaOTTImageType() == null ? "" : (String) category.getKalturaOTTImageType();
 
         } catch (Exception e) {
             PrintLogging.printLog("", "crash-->" + "ViuChannel");
@@ -634,6 +636,13 @@ public class VIUChannel implements Parcelable {
         this.isLoggedInUser = isLoggedInUser;
     }
 
+    public String getKalturaOTTImageType() {
+        return kalturaOTTImageType;
+    }
+
+    public void setKalturaOTTImageType(String kalturaOTTImageType) {
+        this.kalturaOTTImageType = kalturaOTTImageType;
+    }
 
     @Override
     public int describeContents() {
@@ -654,6 +663,7 @@ public class VIUChannel implements Parcelable {
         dest.writeLong(this.id);
         dest.writeInt(this.widgetType);
         dest.writeString(this.description);
+        dest.writeString(this.kalturaOTTImageType);
         dest.writeString(this.name);
         dest.writeString(this.screen);
         dest.writeString(this.type);
@@ -700,6 +710,7 @@ public class VIUChannel implements Parcelable {
         this.id = in.readLong();
         this.widgetType = in.readInt();
         this.description = in.readString();
+        this.kalturaOTTImageType=in.readString();
         this.name = in.readString();
         this.screen = in.readString();
         this.type = in.readString();

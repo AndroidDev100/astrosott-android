@@ -193,9 +193,17 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         try {
             AppCommonMethods.setBillingUi(itemBinding.metas.billingImage, singleItem.getObject().getTags());
-            AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory);
+            AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
             itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
-            itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+                itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                itemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+            }else {
+                itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            }
+
+            // itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
         }catch (Exception ignored){
 
         }
@@ -238,9 +246,16 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         try {
             AppCommonMethods.setBillingUi(itemBinding.metas.billingImage, singleItem.getObject().getTags());
 
-            AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory);
+            AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
             itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
-            itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+                itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                itemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+            }else {
+                itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            }
+            //itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
         }catch (Exception ignored){
 
         }
@@ -283,9 +298,16 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         try {
             AppCommonMethods.setBillingUi(itemBinding.metas.billingImage, singleItem.getObject().getTags());
 
-            AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory);
+            AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
             itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
-            itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+                itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                itemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+            }else {
+                itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            }
+           // itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
         }catch (Exception ignored){
 
         }

@@ -575,7 +575,7 @@ public class CategoryRails {
                     List<RailCommonData> railList = new ArrayList<RailCommonData>();
                     if (tileType == AppConstants.TYPE6) {
                         PrintLogging.printLog("", "indexessss" + AppCommonMethods.getContinueWatchingIDsPreferences(context).get(0));
-                        sortContinueWatchingRail(context,list, 1, assetCommonBean, position, tileType, railList);
+                        sortContinueWatchingRail(context,list, 1, assetCommonBean, position, tileType, railList,channelList);
 
                     } else {
                         for (int j = 0; j < list.get(position).results.getObjects().size(); j++) {
@@ -603,7 +603,7 @@ public class CategoryRails {
                             } else {
                                 for (int k = 0; k < list.get(position).results.getObjects().get(j).getImages().size(); k++) {
                                     AssetCommonImages assetCommonImages = new AssetCommonImages();
-                                    AppCommonMethods.getImageList(context,tileType, position, j, k, list, assetCommonImages, imagesList);
+                                    AppCommonMethods.getCategoryImageList(context,tileType, position, j, k, list, assetCommonImages, imagesList,channelList);
                                 }
                             }
 
@@ -663,7 +663,7 @@ public class CategoryRails {
     }
 
     public void sortContinueWatchingRail(Context context,List<Response<ListResponse<Asset>>> list, int type,
-                                         AssetCommonBean assetCommonBean, int position, String tileType, List<RailCommonData> railList) {
+                                         AssetCommonBean assetCommonBean, int position, String tileType, List<RailCommonData> railList,VIUChannel channelList) {
 
         List<Long> longList = AppCommonMethods.getContinueWatchingIDsPreferences(context);
         if (longList != null) {
@@ -694,7 +694,7 @@ public class CategoryRails {
                             } else {
                                 for (int k = 0; k < list.get(position).results.getObjects().get(j).getImages().size(); k++) {
                                     AssetCommonImages assetCommonImages = new AssetCommonImages();
-                                    AppCommonMethods.getImageList(context,tileType, position, j, k, list, assetCommonImages, imagesList);
+                                    AppCommonMethods.getCategoryImageList(context,tileType, position, j, k, list, assetCommonImages, imagesList,channelList);
                                 }
                             }
 
@@ -748,11 +748,20 @@ public class CategoryRails {
             int railType = list.get(position).results.getObjects().get(j).getType();
             for (int i = 0; i < imageSize; i++) {
                 if (railType == MediaTypeConstant.getLinear(context)) {
-                    if (list.get(position).results.getObjects().get(j).getImages().get(i).getRatio().equals("16x9")) {
-                        String image_url = AppConstants.WEBP_URL+list.get(position).results.getObjects().get(j).getImages().get(i).getUrl();
-                        String final_url = image_url + AppConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.carousel_image_width) + AppConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.carousel_image_height) + AppConstants.QUALITY;
-                        slide.setImageFromUrl(final_url);
+                    if (channelList!=null && channelList.getKalturaOTTImageType()!=null && !channelList.getKalturaOTTImageType().equalsIgnoreCase("")){
+                        if (list.get(position).results.getObjects().get(j).getImages().get(i).getRatio().equals(channelList.getKalturaOTTImageType())) {
+                            String image_url = AppConstants.WEBP_URL+list.get(position).results.getObjects().get(j).getImages().get(i).getUrl();
+                            String final_url = image_url + AppConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.carousel_image_width) + AppConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.carousel_image_height) + AppConstants.QUALITY;
+                            slide.setImageFromUrl(final_url);
+                        }
+                    }else {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(i).getRatio().equals("16x9")) {
+                            String image_url = AppConstants.WEBP_URL+list.get(position).results.getObjects().get(j).getImages().get(i).getUrl();
+                            String final_url = image_url + AppConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.carousel_image_width) + AppConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.carousel_image_height) + AppConstants.QUALITY;
+                            slide.setImageFromUrl(final_url);
+                        }
                     }
+
                 } else {
                     slide.setImageFromUrl(setImageUrl(context,list.get(position).results.getObjects().get(j), channelList.getWidgetType()));
 
