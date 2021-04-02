@@ -16,6 +16,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.SeekBar;
 
+import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.AssetContent;
@@ -140,7 +141,18 @@ public class PlayerRepository {
             playerMutableLiveData.postValue(Constants.duration);
             // player.seekTo(progress * 1000);
             //    player.play();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.w("playerEvent","loadedmetadata");
+                    checkSubtitleAndAudioFromSettings();
+                }
+            },500);
 
+        });
+
+        player.addListener(this, PlayerEvent.Type.PLAY, event -> {
+            Log.w("playerEvent","play");
         });
 
         player.addListener(this, PlayerEvent.Type.ENDED, event -> {
@@ -153,6 +165,7 @@ public class PlayerRepository {
             populateSpinnersWithTrackInfo(tracksAvailable.tracksInfo, context);
             Gson gson = new Gson();
             Log.e("Tracks Available", gson.toJson(tracksAvailable.tracksInfo));
+            Log.w("playerEvent","trackAvailable");
         });
 
 /*
@@ -182,6 +195,58 @@ public class PlayerRepository {
             log.d("resizeMode updated" + event.resizeMode);
         });
         return playerMutableLiveData;
+    }
+
+    private void checkSubtitleAndAudioFromSettings() {
+        try {
+            if (player!=null){
+                if (new KsPreferenceKey(context).getAudioLanguageIndex()>-1 && !new KsPreferenceKey(context).getAudioLangKey().equalsIgnoreCase("")){
+                    if (tracks!=null && tracks.getAudioTracks().size()>0){
+                        for (int i = 0; i < tracks.getAudioTracks().size(); i++) {
+
+                            AudioTrack audioTrackInfo = audioTracks.get(i);
+                            if (audioTrackInfo.isAdaptive()) {
+
+                            }else {
+                                String lang=audioTrackInfo.getLanguage();
+                                Log.w("audioAndSubtitleSelect", lang+"  "+new KsPreferenceKey(context).getAudioLangKey());
+                                if (lang.equalsIgnoreCase(new KsPreferenceKey(context).getAudioLangKey())){
+                                   String uniqueId= audioTrackInfo.getUniqueId();
+                                    Log.w("audioAndSubtitleSelect", uniqueId);
+                                   changeAudioTrack(uniqueId);
+                                   break;
+                                }
+                               // changeAudioTrack();
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (player!=null){
+                if (new KsPreferenceKey(context).getSubtitleLanguageIndex()>-1 && !new KsPreferenceKey(context).getSubTitleLangKey().equalsIgnoreCase("")){
+                    if (tracks!=null && tracks.getTextTracks().size()>0){
+                        //TrackItem[] trackItems = new TrackItem[tracks.getTextTracks().size()];
+                        for (int i = 0; i < tracks.getTextTracks().size(); i++) {
+                                TextTrack textTrackInfo = tracks.getTextTracks().get(i);
+                                String lang = textTrackInfo.getLanguage();
+                                Log.w("audioAndSubtitleSelect", lang+"  2"+new KsPreferenceKey(context).getSubTitleLangKey());
+                                if (lang.equalsIgnoreCase(new KsPreferenceKey(context).getSubTitleLangKey())){
+                                    String uniqueId = textTrackInfo.getUniqueId();
+                                    Log.w("audioAndSubtitleSelect", uniqueId);
+                                    changeTextTrack(uniqueId);
+                                    break;
+                                }
+                        }
+                    }
+                }
+            }
+
+
+            //  changeTextTrack();
+        }catch (Exception ignored){
+
+        }
     }
 
     private String calculatePlayerTime(long milliseconds) {
@@ -372,12 +437,12 @@ public class PlayerRepository {
                     if (audioTrackInfo.isAdaptive()) {
                         Log.w("audioAndSubtitle", "t3");
                         if (audioTrackInfo.getLanguage() != null) {
-                            trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId());
+                            trackItems[i] = new TrackItem(audioTrackInfo.getLabel() + " ", audioTrackInfo.getUniqueId(),audioTrackInfo.getLanguage());
                             //  arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
                         }
                     } else {
                         Log.w("audioAndSubtitle", "t4");
-                        trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId());
+                        trackItems[i] = new TrackItem(audioTrackInfo.getLabel() + " ", audioTrackInfo.getUniqueId(),audioTrackInfo.getLanguage());
                     }
 
 //                String label = audioTrackInfo.getLabel() != null ? audioTrackInfo.getLabel() : audioTrackInfo.getLanguage();
@@ -417,11 +482,11 @@ public class PlayerRepository {
             if (i == 0) {
                 TextTrack textTrackInfo = textTracks.get(i);
                 String name = "none";
-                trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId());
+                trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(),textTrackInfo.getLanguage());
             } else {
                 TextTrack textTrackInfo = textTracks.get(i);
                 String name = textTrackInfo.getLabel();
-                trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId());
+                trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(),textTrackInfo.getLanguage());
             }
         }
         return trackItems;
@@ -730,6 +795,7 @@ public class PlayerRepository {
         }
     }
 
+    Context context;
     public LiveData<Player> startPlayerBookmarking(final Context context,
                                                    PKMediaEntry mediaEntry,
                                                    final String deviceid,
@@ -742,6 +808,7 @@ public class PlayerRepository {
             player.destroy();
         }
 
+        this.context=context;
         if (isPurchased == 1) {
             formatBuilder = new StringBuilder();
             formatter = new Formatter(formatBuilder, Locale.getDefault());

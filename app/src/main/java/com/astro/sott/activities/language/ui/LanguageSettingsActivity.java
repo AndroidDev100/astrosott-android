@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -18,6 +19,7 @@ import com.astro.sott.activities.search.ui.SearchKeywordActivity;
 import com.astro.sott.activities.subtitle.ui.SubtitleLanguageActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.commonCallBacks.ItemClickListener;
+import com.astro.sott.callBacks.commonCallBacks.SettingExpendableItemClick;
 import com.astro.sott.databinding.ActivityLanguageSettingsBinding;
 import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLanguageSettingsBinding> implements ItemClickListener {
+public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLanguageSettingsBinding> implements SettingExpendableItemClick {
     private String oldLang, newLang;
     private List<String> headerList;
     private List<String> audioList, subTitleList, appLanguageList;
@@ -51,6 +53,8 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
 
     }
 
+    List<AudioLanguages> audioLanguageList;
+    List<SubtitleLanguages> subtitleLanguageList;
     private void initData() {
         headerList = new ArrayList<>();
         audioList = new ArrayList<>();
@@ -63,8 +67,8 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
         headerList.add(getResources().getString(R.string.Audio_language));
         headerList.add(getResources().getString(R.string.Subtitle_language));
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(this);
-        List<AudioLanguages> audioLanguageList = responseDmsModel.getAudioLanguageList();
-        List<SubtitleLanguages> subtitleLanguageList = responseDmsModel.getSubtitleLanguageList();
+        audioLanguageList= responseDmsModel.getAudioLanguageList();
+        subtitleLanguageList = responseDmsModel.getSubtitleLanguageList();
 
         for (AudioLanguages audioLanguages : audioLanguageList) {
             if (audioLanguages.getKey() != null && !audioLanguages.getKey().equalsIgnoreCase(""))
@@ -121,8 +125,23 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
     }
 
     @Override
-    public void onClick(int caption) {
+    public void onClick(int caption,int clickedFrom) {
         updateLang();
         initData();
+        if (clickedFrom==1){
+
+        }else if (clickedFrom==2){
+            if (audioLanguageList!=null && audioLanguageList.size()>0){
+                new KsPreferenceKey(LanguageSettingsActivity.this).setAudioLangKey(audioLanguageList.get(caption).getValue());
+            }else {
+                new KsPreferenceKey(LanguageSettingsActivity.this).setAudioLangKey("");
+            }
+        }else if (clickedFrom==3){
+            if (subtitleLanguageList!=null && subtitleLanguageList.size()>0){
+                new KsPreferenceKey(LanguageSettingsActivity.this).setSubTitleLangKey(subtitleLanguageList.get(caption).getValue());
+            }else {
+                new KsPreferenceKey(LanguageSettingsActivity.this).setSubTitleLangKey("");
+            }
+        }
     }
 }
