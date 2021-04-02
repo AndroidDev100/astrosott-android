@@ -811,11 +811,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
     private void getDuration() {
         duraton = AppCommonMethods.getURLDuration(asset);
-
         if (!TextUtils.isEmpty(duraton)) {
-
-            StringBuilderHolder.getInstance().append(duraton.trim());
-            StringBuilderHolder.getInstance().append(" | ");
+            getBinding().durationLay.setVisibility(View.VISIBLE);
+            getBinding().durationText.setText(" " + duraton);
+        } else {
+            getBinding().durationLay.setVisibility(View.GONE);
 
         }
 

@@ -128,6 +128,7 @@
                                 android:layout_marginTop="@dimen/_15sdp"
                                 android:orientation="horizontal"
                                 android:weightSum="2">
+
                                 <TextView
                                     android:id="@+id/webwatchList"
                                     android:layout_width="wrap_content"
@@ -186,33 +187,34 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/dimen50dp"
                                 android:layout_marginTop="@dimen/_20sdp"
-                                android:visibility="gone"
-                                android:background="@drawable/gradient_button">
+                                android:background="@drawable/gradient_button"
+                                android:visibility="gone">
+
                                 <ImageView
+                                    android:id="@+id/star_icon"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/star_icon"
-                                    android:visibility="gone"
                                     android:layout_alignParentLeft="true"
                                     android:layout_centerInParent="true"
                                     android:layout_marginStart="@dimen/_77sdp"
                                     android:layout_marginEnd="@dimen/_8dp"
-                                    android:src="@drawable/ic_star_24_px"/>
+                                    android:src="@drawable/ic_star_24_px"
+                                    android:visibility="gone" />
+
                                 <TextView
                                     android:id="@+id/play_text"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_gravity="center"
                                     android:layout_marginTop="@dimen/share_margin_top"
                                     android:layout_weight="1"
                                     android:drawablePadding="7dp"
                                     android:focusable="true"
-                                    android:layout_centerInParent="true"
                                     android:fontFamily="@font/heebo_medium"
-                                    android:layout_gravity="center"
                                     android:text="@string/play_now"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/font_medium_large" />
-
 
 
                             </RelativeLayout>
@@ -256,19 +258,29 @@
                                         android:textColor="@color/yellow_orange"
                                         android:textSize="@dimen/font_medium" />
 
-
-                                    <com.astro.sott.utils.helpers.ExpandableTextView
-                                        android:id="@+id/description_text"
+                                    <RelativeLayout
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="12dp"
-                                        android:layout_marginEnd="@dimen/expandable_text_margin_right"
-                                        android:ellipsize="end"
-                                        android:fontFamily="@font/heebo_regular"
-                                        android:lineHeight="24sp"
-                                        android:maxLines="3"
-                                        android:textColor="@color/white"
-                                        android:textSize="@dimen/font_medium_large" />
+                                        android:layout_height="wrap_content">
+
+                                        <com.astro.sott.utils.helpers.ExpandableTextView
+                                            android:id="@+id/description_text"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="12dp"
+                                            android:layout_marginEnd="@dimen/expandable_text_margin_right"
+                                            android:ellipsize="end"
+                                            android:fontFamily="@font/heebo_regular"
+                                            android:lineHeight="24sp"
+                                            android:maxLines="3"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/font_medium_large" />
+
+                                        <FrameLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="70dp"
+                                            android:layout_alignParentBottom="true"
+                                            android:background="@drawable/above_dark_shadow"></FrameLayout>
+                                    </RelativeLayout>
 
                                     <com.astro.sott.utils.helpers.ExpandableCardLayout
                                         android:id="@+id/expandable_layout"
