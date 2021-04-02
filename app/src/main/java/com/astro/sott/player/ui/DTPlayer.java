@@ -3077,6 +3077,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (getBinding().videoDialog.getVisibility() == View.VISIBLE){
                     getBinding().videoDialog.setVisibility(View.GONE);
                 }
+                Log.w("audioAndSubtitle", "in");
                 chooseAudio();
             }
         });
@@ -3300,12 +3301,17 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private void chooseAudio() {
 
         if (getBinding().audioQuality.recycleviewAudio != null) {
+            Log.w("audioAndSubtitle", "in2");
             getBinding().audioQuality.recycleviewAudio.setLayoutManager(new LinearLayoutManager(baseActivity));
             getBinding().audioQuality.recycleviewAudio.setNestedScrollingEnabled(false);
             viewModel.loadAudioWithPlayer().observe(this, audioTracks -> {
+                Log.w("audioAndSubtitle", "in3");
                 if (audioTracks != null && audioTracks.size() > 0) {
+                    Log.w("audioAndSubtitle", "in4");
                     viewModel.getAudioTrackItems().observe(baseActivity, trackItems -> {
+                        Log.w("audioAndSubtitle", "in5");
                         if (trackItems.length > 0) {
+                            Log.w("audioAndSubtitle", "in6");
                             audioList = trackItems;
 //                            for (int i = 0; i < trackItems.length; i++) {
 //                                if (audioTrackName == "") {
@@ -3325,9 +3331,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                                }
 //
 //                            }
+                            Log.w("audioAndSubtitle", trackItems+"   "+audioTracks.get(0).getLabel());
                             AudioAdapter audioAdapter = new AudioAdapter(trackItems);
                             getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
                         }else {
+                            Log.w("audioAndSubtitle", "in7");
                             getBinding().audioQuality.recycleviewAudio.setVisibility(View.GONE);
                             getBinding().audioQuality.titleAudio.setVisibility(View.GONE);
                         }

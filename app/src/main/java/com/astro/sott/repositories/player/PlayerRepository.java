@@ -257,6 +257,7 @@ public class PlayerRepository {
 
         trackItemsList = buildVideoTrackItems(tracksInfo.getVideoTracks(), context);
         audioTrackItems = buildAudioTrackItems(tracksInfo.getAudioTracks());
+        Log.w("audioTrackItems","aa  "+audioTrackItems.length);
         textTrackItems = buildTextTrackItems(tracksInfo.getTextTracks());
     }
 
@@ -360,18 +361,24 @@ public class PlayerRepository {
     }
 
     private TrackItem[] buildAudioTrackItems(List<AudioTrack> audioTracks) {
-        TrackItem[] trackItems = {};
-        try {
-            for (int i = 0; i < audioTracks.size(); i++) {
-                AudioTrack audioTrackInfo = audioTracks.get(i);
-                if (audioTrackInfo.isAdaptive()) {
-                    if (audioTrackInfo.getLanguage() != null) {
+        TrackItem[] trackItems ={};
+        if (audioTracks.size()>0){
+            trackItems=  new TrackItem[audioTracks.size()];
+            try {
+                Log.w("audioAndSubtitle", "t1 --"+audioTracks.size());
+                for (int i = 0; i < audioTracks.size(); i++) {
+                    Log.w("audioAndSubtitle", "t2");
+                    AudioTrack audioTrackInfo = audioTracks.get(i);
+                    if (audioTrackInfo.isAdaptive()) {
+                        Log.w("audioAndSubtitle", "t3");
+                        if (audioTrackInfo.getLanguage() != null) {
+                            trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId());
+                            //  arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
+                        }
+                    } else {
+                        Log.w("audioAndSubtitle", "t4");
                         trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId());
-                        //  arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
                     }
-                } else {
-                    trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId());
-                }
 
 //                String label = audioTrackInfo.getLabel() != null ? audioTrackInfo.getLabel() : audioTrackInfo.getLanguage();
 //                // String bitrate = (audioTrackInfo.getBitrate() > 0) ? "" + audioTrackInfo.getBitrate() : "";
@@ -384,8 +391,10 @@ public class PlayerRepository {
 //                } else {
 //                    trackItems[i] = new TrackItem("Default" + " ", audioTrackInfo.getUniqueId());
 //                }
+                }
+            } catch (Exception e) {
+                Log.w("audioTrackItems","crashHappen"+e.getMessage());
             }
-        } catch (Exception e) {
 
         }
 
@@ -589,12 +598,14 @@ public class PlayerRepository {
     }
 
     public LiveData<List<AudioTrack>> setAudioTracks() {
+        Log.w("audioTracks==>>",audioTracks+"  ");
         MutableLiveData<List<AudioTrack>> listMutableLiveData = new MutableLiveData<>();
         listMutableLiveData.postValue(audioTracks);
         return listMutableLiveData;
     }
 
     public LiveData<TrackItem[]> getAudioTrackItems() {
+        Log.w("audioTracks==>>",audioTrackItems.length+"  ");
         MutableLiveData<TrackItem[]> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.postValue(audioTrackItems);
         return mutableLiveData;
