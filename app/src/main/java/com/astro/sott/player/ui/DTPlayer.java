@@ -2944,6 +2944,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             if (timeHandler != null)
                                 timeHandler.removeCallbacks(myRunnable);
                         }
+                        if (getBinding().videoDialog.getVisibility()==View.VISIBLE){
+                            getBinding().videoDialog.setVisibility(View.GONE);
+                        }
+                        if (getBinding().audioDialog.getVisibility()==View.VISIBLE){
+                            getBinding().audioDialog.setVisibility(View.GONE);
+                        }
                         ShowAndHideView();
                     }
 
