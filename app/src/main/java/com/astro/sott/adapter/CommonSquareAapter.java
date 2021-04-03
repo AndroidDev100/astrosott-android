@@ -115,12 +115,7 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         RailCommonData singleItem = itemsList.get(i);
         try {
 
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                squareItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-                squareItemBinding.hungama.setVisibility(View.GONE);
-            }
+
 
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
@@ -159,14 +154,6 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private void setSmallValues(SquareItemSmallBinding squareItemBinding, int i) {
         RailCommonData singleItem = itemsList.get(i);
         try {
-
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                squareItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-                squareItemBinding.hungama.setVisibility(View.GONE);
-            }
-
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
 
@@ -204,14 +191,6 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private void setNormalValues(SquareItemBinding squareItemBinding, int i) {
         RailCommonData singleItem = itemsList.get(i);
         try {
-
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                squareItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-               squareItemBinding.hungama.setVisibility(View.GONE);
-            }
-
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
 

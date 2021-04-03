@@ -1,3 +1,5 @@
 <resources>
     <!--<string name="app_name">Watcho qa</string>-->
+    <string name="facebook_app_id">712171319736837</string>
+    <string name="fb_login_protocol_scheme">fb712171319736837</string>
 </resources>

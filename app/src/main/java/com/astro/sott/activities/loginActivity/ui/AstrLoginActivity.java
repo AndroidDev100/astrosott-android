@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -13,8 +14,10 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
+import com.astro.sott.activities.splash.ui.SplashActivity;
 import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
@@ -27,15 +30,38 @@ import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.clevertap.android.sdk.CleverTapAPI;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
+import static com.google.android.gms.auth.api.credentials.CredentialPickerConfig.Prompt.SIGN_IN;
 
-public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBinding> {
+
+public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBinding> implements View.OnClickListener {
     private AstroLoginViewModel astroLoginViewModel;
+    private static final String EMAIL = "email, public_profile";
     private String email_mobile, type;
+    private GoogleSignInClient mGoogleSignInClient;
+    private CallbackManager callbackManager;
     private boolean passwordVisibility = false;
     private final String MOBILE_REGEX = "^[0-9]*$";
     private final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -55,11 +81,113 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
         modelCall();
         setClicks();
+        setGoogleSignIn();
+        updateWithToken(AccessToken.getCurrentAccessToken());
+
+        setFb();
+    }
+
+    private void updateWithToken(AccessToken currentAccessToken) {
+
+        if (currentAccessToken != null) {
+            LoginManager.getInstance().logOut();
+        } else {
+        }
+    }
+
+    private void setFb() {
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL));
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        // App code
+
+                        Log.w("fb_login", loginResult + "");
+                        GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
+                            if (object != null) {
+                                if (object.has("email")) {
+                                    try {
+                                        String name = object.getString("name");
+                                        String email = object.getString("email");
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    LoginManager.getInstance().logOut();
+                                }
+                            }
+                        });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields",
+                                "id,name,email");
+                        graphRequest.setParameters(parameters);
+                        graphRequest.executeAsync();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });
+    }
+
+    private void setGoogleSignIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        getBinding().signInButton.setSize(SignInButton.SIZE_STANDARD);
+        getBinding().signInButton.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
     }
 
     private void modelCall() {
         astroLoginViewModel = ViewModelProviders.of(this).get(AstroLoginViewModel.class);
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == 4001) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        } else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            Log.w("tag_google_signin", account + "--" + account.getEmail() + "---" + account.getId() + "--" + account.getIdToken());
+
+            // Signed in successfully, show authenticated UI.
+            //  updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            // updateUI(null);
+        }
     }
 
     private void setClicks() {
@@ -80,9 +208,14 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             new ActivityLauncher(this).forgotPasswordActivity(this, ForgotPasswordActivity.class);
         });
         getBinding().google.setOnClickListener(view -> {
+            //  getBinding().signInButton.performClick();
+            mGoogleSignInClient.signOut();
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, 4001);
         });
 
         getBinding().fb.setOnClickListener(view -> {
+            getBinding().loginButton.performClick();
             //  confirmOtp();
         });
         getBinding().apple.setOnClickListener(view -> {
@@ -92,6 +225,10 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             new ActivityLauncher(this).signupActivity(this, SignUpActivity.class);
         });
         setTextWatcher();
+    }
+
+    private void signIn() {
+
     }
 
     private void setTextWatcher() {
@@ -175,7 +312,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setActive(true);
                 Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
                 // setCleverTap();
-                onBackPressed();
+                new ActivityLauncher(AstrLoginActivity.this).homeScreen(AstrLoginActivity.this, HomeActivity.class);
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
                     EvergentRefreshToken.refreshToken(AstrLoginActivity.this, UserInfo.getInstance(AstrLoginActivity.this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
@@ -339,5 +476,15 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sign_in_button:
+                signIn();
+                break;
+            // ...
+        }
     }
 }

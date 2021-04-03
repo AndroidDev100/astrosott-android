@@ -65,12 +65,6 @@ public class LandscapeDetailListingAdapter extends RecyclerView.Adapter<Landscap
         holder.landscapeItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
         try {
 
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                holder.landscapeItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-                holder.landscapeItemBinding.hungama.setVisibility(View.GONE);
-            }
 
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);

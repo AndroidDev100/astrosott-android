@@ -189,12 +189,16 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     }
 
     private void setProgramMetas() {
-        getBinding().programTitle.setText(programAsset.getName());
-        getBinding().descriptionText.setText(programAsset.getDescription());
-        stringBuilder = new StringBuilder();
-        stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + " | ");
-        getImage();
-        getGenre();
+        try {
+            getBinding().programTitle.setText(programAsset.getName());
+            getBinding().descriptionText.setText(programAsset.getDescription());
+            stringBuilder = new StringBuilder();
+            stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + " | ");
+            getImage();
+            getGenre();
+        } catch (Exception e) {
+
+        }
 
     }
 

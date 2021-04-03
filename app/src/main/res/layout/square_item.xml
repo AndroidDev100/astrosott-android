@@ -82,15 +82,7 @@
             android:thumbTint="@android:color/transparent"
             android:visibility="gone"
             tools:targetApi="lollipop" />
-        <ImageView
-            android:id="@+id/hungama"
-            android:layout_width="36dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|left"
-            android:src="@drawable/playpurple"
-            android:layout_margin="2dp"
-            android:layout_marginBottom="10dp"
-            android:visibility="gone"></ImageView>
+
         <include
             android:id="@+id/metas"
             layout="@layout/metas_layout"

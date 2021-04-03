@@ -61,6 +61,7 @@ import com.astro.sott.callBacks.kalturaCallBacks.KsAppTokenCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.KsHouseHoldDevice;
 import com.astro.sott.callBacks.kalturaCallBacks.KsHouseHoldDeviceAddCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.LogoutCallBack;
+import com.astro.sott.callBacks.kalturaCallBacks.NextEpisodeCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.NotificationCallback;
 import com.astro.sott.callBacks.kalturaCallBacks.NotificationStatusCallback;
 import com.astro.sott.callBacks.kalturaCallBacks.OttUserDetailsCallBack;
@@ -3884,7 +3885,7 @@ public class KsServices {
         DetachedResponseProfile responseProfile = new DetachedResponseProfile();
         DetachedResponseProfile relatedProfiles = new DetachedResponseProfile();
 
-        AssetHistorySuppressFilter assetHistorySuppressFilter=new AssetHistorySuppressFilter();
+        AssetHistorySuppressFilter assetHistorySuppressFilter = new AssetHistorySuppressFilter();
         relatedProfiles.setFilter(assetHistorySuppressFilter);
         relatedProfiles.setName("suppress");
         List<DetachedResponseProfile> list = new ArrayList<>();
@@ -6871,6 +6872,19 @@ public class KsServices {
             // PrintLogging.printLog("","deleteResponse"+result.isSuccess());
         });
 
+        getRequestQueue().queue(builder.build(client));
+    }
+
+    public void getEpisodeToPlay(Long assetID, NextEpisodeCallBack callBack) {
+        clientSetupKs();
+
+        AssetHistoryService.GetNextEpisodeAssetHistoryBuilder builder = AssetHistoryService.getNextEpisode(assetID).setCompletion(result -> {
+            if (result.isSuccess() && result.results != null) {
+                callBack.getNextEpisode(true, result.results);
+            } else {
+                callBack.getNextEpisode(false, null);
+            }
+        });
         getRequestQueue().queue(builder.build(client));
     }
 

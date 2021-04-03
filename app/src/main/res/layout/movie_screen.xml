@@ -95,15 +95,6 @@
                                 android:layout_height="match_parent"
                                 android:background="@drawable/above_dark_shadow">
 
-                                <ImageView
-                                    android:id="@+id/hungama"
-                                    android:layout_width="60dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_gravity="bottom|left"
-                                    android:layout_marginStart="@dimen/movie_items_margin_left"
-                                    android:src="@drawable/playpurple"
-                                    android:visibility="gone"></ImageView>
 
 
                             </FrameLayout>

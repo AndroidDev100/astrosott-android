@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,9 +16,14 @@ import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginView
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivitySinUpBinding
-import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.CustomTextWatcher
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import java.lang.Double.parseDouble
 
 class SignUpActivity : AppCompatActivity() {
@@ -25,6 +31,8 @@ class SignUpActivity : AppCompatActivity() {
     private var astroLoginViewModel: AstroLoginViewModel? = null
     private var activitySinUpBinding: ActivitySinUpBinding? = null
     private var passwordVisibility = false
+    private var mGoogleSignInClient: GoogleSignInClient? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -32,6 +40,14 @@ class SignUpActivity : AppCompatActivity() {
         modelCall()
         setClicks()
         setWatcher()
+        setGoogleSignIn()
+    }
+
+    private fun setGoogleSignIn() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
     private fun setWatcher() {
@@ -64,12 +80,47 @@ class SignUpActivity : AppCompatActivity() {
         }))
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == 4001) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
+        }
+    }
+
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+            Log.w("tag_google_signin", account.toString() + "--" + account.email + "---" + account.id + "--" + account.idToken)
+            searchAccountv2("Google", account.email +"", account.id + "")
+
+            // Signed in successfully, show authenticated UI.
+            //  updateUI(account);
+        } catch (e: ApiException) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            // updateUI(null);
+        }
+    }
+
     private fun modelCall() {
         astroLoginViewModel = ViewModelProviders.of(this).get(AstroLoginViewModel::class.java)
     }
 
     fun setClicks() {
 
+        activitySinUpBinding?.google?.setOnClickListener {
+
+            //  getBinding().signInButton.performClick();
+            mGoogleSignInClient!!.signOut()
+
+            val signInIntent = mGoogleSignInClient!!.signInIntent
+            startActivityForResult(signInIntent, 4001)
+        }
         activitySinUpBinding?.loginBtn?.setOnClickListener(View.OnClickListener {
             onBackPressed()
         })

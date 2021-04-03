@@ -118,12 +118,6 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
         try {
             Log.w("liveassettype", singleItem.getProgress() + "");
 
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                potraitItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-                potraitItemBinding.hungama.setVisibility(View.GONE);
-            }
 
             if (singleItem.getImages().size() > 0) {
 
@@ -166,12 +160,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
         try {
             Log.w("liveassettype", singleItem.getProgress() + "");
 
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                potraitItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-                potraitItemBinding.hungama.setVisibility(View.GONE);
-            }
+
 
             if (singleItem.getImages().size() > 0) {
 
@@ -213,13 +202,6 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         try {
             Log.w("liveassettype", singleItem.getProgress() + "");
-
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                potraitItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-                potraitItemBinding.hungama.setVisibility(View.GONE);
-            }
 
             if (singleItem.getImages().size() > 0) {
 

@@ -546,6 +546,33 @@ public class AssetContent {
         return connection;
     }
 
+
+    public static String getGenredataString(Map<String, MultilingualStringValueArray> map) {
+        final MutableLiveData<String> connection = new MutableLiveData<>();
+        String genre;
+        List<MultilingualStringValue> genre_values = new ArrayList<>();
+        MultilingualStringValueArray genre_list = map.get(AppLevelConstants.KEY_GENRE);
+        if (genre_list != null)
+
+            genre_values.addAll(genre_list.getObjects());
+//            for (MultilingualStringValue value : genre_list.getObjects()) {
+//                genre_values.add(value);
+//            }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= genre_values.size() - 1; i++) {
+            stringBuilder.append(genre_values.get(i).getValue()).append(", ");
+        }
+
+        if (stringBuilder.length() > 0) {
+            genre = stringBuilder.toString();
+            genre = genre.substring(0, genre.length() - 2);
+
+        } else {
+            genre = "";
+        }
+        return genre;
+    }
+
     public static String getKeyworddata(Map<String, MultilingualStringValueArray> map) {
         String keyword;
         List<MultilingualStringValue> genre_values = new ArrayList<>();

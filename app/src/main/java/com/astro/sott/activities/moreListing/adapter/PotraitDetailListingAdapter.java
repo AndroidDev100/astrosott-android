@@ -58,13 +58,6 @@ public class PotraitDetailListingAdapter extends RecyclerView.Adapter<PotraitDet
     public void onBindViewHolder(@NonNull SingleItemRowHolder holder, int i) {
 
         RailCommonData singleItem = itemsList.get(i);
-        boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-        if (isProviderAvailable){
-            holder.potraitItemBinding.hungama.setVisibility(View.VISIBLE);
-        }else {
-            holder.potraitItemBinding.hungama.setVisibility(View.GONE);
-        }
-
 
         try {
             if (singleItem.getImages().size() > 0) {
