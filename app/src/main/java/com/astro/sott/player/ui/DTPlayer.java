@@ -2723,6 +2723,23 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             Log.d("TrackNameIs", selectedTrack);
 
             final LiveData<Boolean> booleanLiveData = viewModel.changeInitialTrack(trackName,getBinding().quality);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (getBinding().quality.getText().toString().equalsIgnoreCase("High Quality")){
+                        trackName="High Quality";
+                    }else if (getBinding().quality.getText().toString().equalsIgnoreCase("Medium Quality")){
+                        trackName="Medium Quality";
+                    }else if (getBinding().quality.getText().toString().equalsIgnoreCase("Low Quality")){
+                        trackName="Low Quality";
+                    }
+
+                    Log.d("TrackNameIs", trackName);
+                }
+
+            },700);
+            //booleanLiveData.removeObservers(getActivity());
+
            // getBinding().quality.setText(trackItemList.get(position).getTrackName());
         }
     }
