@@ -99,8 +99,8 @@ android {
         }
         prod {
             dimension 'default'
-            versionCode 1001
-            versionName "0.2"
+            versionCode 1002
+            versionName "0.3"
             applicationId "com.astro.sott"
             buildConfigField "String", "KALTURA_BASE_URL", "\"https://rest-as.ott.kaltura.com/api_v3/service/\""
             buildConfigField "int", "KAVA_PARTNER_ID", "2455471"
@@ -183,7 +183,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
 //conviva
 
-    implementation 'com.conviva.sdk:conviva-core-sdk:4.0+'
+    implementation 'com.conviva.sdk:conviva-core-sdk:4.0.12.155'
     // Required Dependency by Audience Network SDK
     implementation 'com.gmail.samehadar:iosdialog:1.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
@@ -259,7 +259,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:18.3.0' // GAID matching
     implementation 'com.google.firebase:firebase-appindexing:19.0.0'// App indexing
     implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
-    implementation 'com.facebook.android:facebook-login:5.1.0'
+    implementation 'com.facebook.android:facebook-login:[8.1)'
     implementation 'com.facebook.android:audience-network-sdk:5.6.1'
 
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'

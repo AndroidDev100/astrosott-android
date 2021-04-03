@@ -122,6 +122,11 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
+    public void astrLoginActivityStackTop(Activity source, Class<AstrLoginActivity> destination) {
+        Intent intent = new Intent(source, destination);
+        TaskStackBuilder.create(source).addNextIntentWithParentStack(intent).startActivities();
+    }
+
 
     public void signupActivity(Activity source, Class<SignUpActivity> destination) {
         Intent intent = new Intent(source, destination);
@@ -130,6 +135,7 @@ public class ActivityLauncher {
 
     public void forgotPasswordActivity(Activity source, Class<ForgotPasswordActivity> destination) {
         Intent intent = new Intent(source, destination);
+        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
         activity.startActivity(intent);
     }
 

@@ -14,7 +14,6 @@ import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginView
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivityForgotPasswordBinding
-import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.CustomTextWatcher
 
@@ -76,6 +75,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile)
                 intent.putExtra(AppLevelConstants.PASSWORD_KEY, "password")
                 intent.putExtra(AppLevelConstants.FROM_KEY, "signIn")
+                intent.flags = intent.flags or Intent.FLAG_ACTIVITY_NO_HISTORY
                 startActivity(intent)
             } else {
                 Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()

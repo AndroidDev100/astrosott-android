@@ -71,15 +71,7 @@
                                 tools:ignore="ContentDescription" />
 
 
-                            <ImageView
-                                android:id="@+id/hungama"
-                                android:layout_width="60dp"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentBottom="true"
-                                android:layout_gravity="bottom|left"
-                                android:layout_margin="2dp"
-                                android:src="@drawable/playpurple"
-                                android:visibility="gone"></ImageView>
+
 
                             <FrameLayout
                                 android:layout_width="match_parent"

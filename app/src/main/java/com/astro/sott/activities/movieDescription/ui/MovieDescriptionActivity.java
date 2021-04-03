@@ -452,7 +452,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                     } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                         if (xofferWindowValue) {
                             runOnUiThread(() -> {
-                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_button));
+                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
@@ -635,6 +635,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
     private void setMetas() {
+      //  getDuration();
         getMovieYear();
 
     }
@@ -812,10 +813,9 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         duraton = AppCommonMethods.getURLDuration(asset);
 
         if (!TextUtils.isEmpty(duraton)) {
-            getBinding().durationLay.setVisibility(View.VISIBLE);
-            getBinding().durationText.setText(" " + duraton);
-        } else {
-            getBinding().durationLay.setVisibility(View.GONE);
+
+            StringBuilderHolder.getInstance().append(duraton.trim());
+            StringBuilderHolder.getInstance().append(" | ");
 
         }
 

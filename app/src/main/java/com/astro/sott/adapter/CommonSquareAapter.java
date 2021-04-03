@@ -24,6 +24,7 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
+import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.ToastHandler;
@@ -115,12 +116,7 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         RailCommonData singleItem = itemsList.get(i);
         try {
 
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                squareItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-                squareItemBinding.hungama.setVisibility(View.GONE);
-            }
+
 
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
@@ -142,9 +138,17 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             try {
                 setRecycler(squareItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags());
-                AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory);
+                AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
                 squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
-                squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+                    squareItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                    squareItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+                }else {
+                    squareItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                    squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                }
+
+                //squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
             }catch (Exception ignored){
 
             }
@@ -159,14 +163,6 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private void setSmallValues(SquareItemSmallBinding squareItemBinding, int i) {
         RailCommonData singleItem = itemsList.get(i);
         try {
-
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                squareItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-                squareItemBinding.hungama.setVisibility(View.GONE);
-            }
-
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
 
@@ -187,9 +183,17 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             try {
                 setRecycler(squareItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags());
-                AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory);
+                AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
                 squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
-                squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+                    squareItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                    squareItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+                }else {
+                    squareItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                    squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                }
+
+                //  squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
             }catch (Exception ignored){
 
             }
@@ -204,14 +208,6 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private void setNormalValues(SquareItemBinding squareItemBinding, int i) {
         RailCommonData singleItem = itemsList.get(i);
         try {
-
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                squareItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-               squareItemBinding.hungama.setVisibility(View.GONE);
-            }
-
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
 
@@ -232,9 +228,17 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             try {
                 setRecycler(squareItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags());
-                AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory);
+                AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
                 squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
-                squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+                    squareItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                    squareItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+                }else {
+                    squareItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                    squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                }
+
+                //  squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
             }catch (Exception ignored){
 
             }

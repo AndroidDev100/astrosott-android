@@ -68,12 +68,7 @@ public class CommonContWatchListingAdapter extends RecyclerView.Adapter<CommonCo
         } catch (Exception e) {
 
         }
-        boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-        if (isProviderAvailable){
-            holder.landscapeItemBinding.hungama.setVisibility(View.VISIBLE);
-        }else {
-            holder.landscapeItemBinding.hungama.setVisibility(View.GONE);
-        }
+
     }
 
     private void getPremimumMark(int position, ContinuewatchinglistingItemBinding landscapeItemBinding) {

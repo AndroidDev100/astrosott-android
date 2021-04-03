@@ -22,6 +22,7 @@ import com.astro.sott.repositories.dtv.DTVRepository;
 import com.astro.sott.repositories.splash.SplashRepository;
 import com.astro.sott.repositories.webSeriesDescription.WebSeriesDescriptionRepository;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
@@ -129,6 +130,10 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
 
     public LiveData<String> listAllSeriesList(long assetID) {
         return WebSeriesDescriptionRepository.getInstance().seriesFollowList(getApplication().getApplicationContext(), assetID);
+    }
+
+    public LiveData<AssetHistory> getEpisodeToPlay(long assetID) {
+        return WebSeriesDescriptionRepository.getInstance().getEpisodeToPlay(getApplication().getApplicationContext(), assetID);
     }
 
     public LiveData<CommonResponse> addToFollowlist(long assetId) {

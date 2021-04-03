@@ -15,7 +15,9 @@ import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
+import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.AssetContent;
@@ -140,7 +142,18 @@ public class PlayerRepository {
             playerMutableLiveData.postValue(Constants.duration);
             // player.seekTo(progress * 1000);
             //    player.play();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.w("playerEvent","loadedmetadata");
+                    checkSubtitleAndAudioFromSettings();
+                }
+            },500);
 
+        });
+
+        player.addListener(this, PlayerEvent.Type.PLAY, event -> {
+            Log.w("playerEvent","play");
         });
 
         player.addListener(this, PlayerEvent.Type.ENDED, event -> {
@@ -153,6 +166,7 @@ public class PlayerRepository {
             populateSpinnersWithTrackInfo(tracksAvailable.tracksInfo, context);
             Gson gson = new Gson();
             Log.e("Tracks Available", gson.toJson(tracksAvailable.tracksInfo));
+            Log.w("playerEvent","trackAvailable");
         });
 
 /*
@@ -182,6 +196,58 @@ public class PlayerRepository {
             log.d("resizeMode updated" + event.resizeMode);
         });
         return playerMutableLiveData;
+    }
+
+    private void checkSubtitleAndAudioFromSettings() {
+        try {
+            if (player!=null){
+                if (new KsPreferenceKey(context).getAudioLanguageIndex()>-1 && !new KsPreferenceKey(context).getAudioLangKey().equalsIgnoreCase("")){
+                    if (tracks!=null && tracks.getAudioTracks().size()>0){
+                        for (int i = 0; i < tracks.getAudioTracks().size(); i++) {
+
+                            AudioTrack audioTrackInfo = audioTracks.get(i);
+                            if (audioTrackInfo.isAdaptive()) {
+
+                            }else {
+                                String lang=audioTrackInfo.getLanguage();
+                                Log.w("audioAndSubtitleSelect", lang+"  "+new KsPreferenceKey(context).getAudioLangKey());
+                                if (lang.equalsIgnoreCase(new KsPreferenceKey(context).getAudioLangKey())){
+                                   String uniqueId= audioTrackInfo.getUniqueId();
+                                    Log.w("audioAndSubtitleSelect", uniqueId);
+                                   changeAudioTrack(uniqueId);
+                                   break;
+                                }
+                               // changeAudioTrack();
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (player!=null){
+                if (new KsPreferenceKey(context).getSubtitleLanguageIndex()>-1 && !new KsPreferenceKey(context).getSubTitleLangKey().equalsIgnoreCase("")){
+                    if (tracks!=null && tracks.getTextTracks().size()>0){
+                        //TrackItem[] trackItems = new TrackItem[tracks.getTextTracks().size()];
+                        for (int i = 0; i < tracks.getTextTracks().size(); i++) {
+                                TextTrack textTrackInfo = tracks.getTextTracks().get(i);
+                                String lang = textTrackInfo.getLanguage();
+                                Log.w("audioAndSubtitleSelect", lang+"  2"+new KsPreferenceKey(context).getSubTitleLangKey());
+                                if (lang.equalsIgnoreCase(new KsPreferenceKey(context).getSubTitleLangKey())){
+                                    String uniqueId = textTrackInfo.getUniqueId();
+                                    Log.w("audioAndSubtitleSelect", uniqueId);
+                                    changeTextTrack(uniqueId);
+                                    break;
+                                }
+                        }
+                    }
+                }
+            }
+
+
+            //  changeTextTrack();
+        }catch (Exception ignored){
+
+        }
     }
 
     private String calculatePlayerTime(long milliseconds) {
@@ -257,6 +323,7 @@ public class PlayerRepository {
 
         trackItemsList = buildVideoTrackItems(tracksInfo.getVideoTracks(), context);
         audioTrackItems = buildAudioTrackItems(tracksInfo.getAudioTracks());
+        Log.w("audioTrackItems","aa  "+audioTrackItems.length);
         textTrackItems = buildTextTrackItems(tracksInfo.getTextTracks());
     }
 
@@ -360,18 +427,24 @@ public class PlayerRepository {
     }
 
     private TrackItem[] buildAudioTrackItems(List<AudioTrack> audioTracks) {
-        TrackItem[] trackItems = {};
-        try {
-            for (int i = 0; i < audioTracks.size(); i++) {
-                AudioTrack audioTrackInfo = audioTracks.get(i);
-                if (audioTrackInfo.isAdaptive()) {
-                    if (audioTrackInfo.getLanguage() != null) {
-                        trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId());
-                        //  arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
+        TrackItem[] trackItems ={};
+        if (audioTracks.size()>0){
+            trackItems=  new TrackItem[audioTracks.size()];
+            try {
+                Log.w("audioAndSubtitle", "t1 --"+audioTracks.size());
+                for (int i = 0; i < audioTracks.size(); i++) {
+                    Log.w("audioAndSubtitle", "t2");
+                    AudioTrack audioTrackInfo = audioTracks.get(i);
+                    if (audioTrackInfo.isAdaptive()) {
+                        Log.w("audioAndSubtitle", "t3");
+                        if (audioTrackInfo.getLabel() != null) {
+                            trackItems[i] = new TrackItem(audioTrackInfo.getLabel() + " ", audioTrackInfo.getUniqueId(),audioTrackInfo.getLanguage());
+                            //  arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
+                        }
+                    } else {
+                        Log.w("audioAndSubtitle", "t4");
+                        trackItems[i] = new TrackItem(audioTrackInfo.getLabel() + " ", audioTrackInfo.getUniqueId(),audioTrackInfo.getLanguage());
                     }
-                } else {
-                    trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId());
-                }
 
 //                String label = audioTrackInfo.getLabel() != null ? audioTrackInfo.getLabel() : audioTrackInfo.getLanguage();
 //                // String bitrate = (audioTrackInfo.getBitrate() > 0) ? "" + audioTrackInfo.getBitrate() : "";
@@ -384,12 +457,12 @@ public class PlayerRepository {
 //                } else {
 //                    trackItems[i] = new TrackItem("Default" + " ", audioTrackInfo.getUniqueId());
 //                }
+                }
+            } catch (Exception e) {
+                Log.w("audioTrackItems","crashHappen"+e.getMessage());
             }
-        } catch (Exception e) {
 
         }
-
-
         return trackItems;
     }
 
@@ -408,11 +481,11 @@ public class PlayerRepository {
             if (i == 0) {
                 TextTrack textTrackInfo = textTracks.get(i);
                 String name = "none";
-                trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId());
+                trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(),textTrackInfo.getLanguage());
             } else {
                 TextTrack textTrackInfo = textTracks.get(i);
                 String name = textTrackInfo.getLabel();
-                trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId());
+                trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(),textTrackInfo.getLanguage());
             }
         }
         return trackItems;
@@ -488,6 +561,103 @@ public class PlayerRepository {
         return booleanMutableLiveData;
     }
 
+    public LiveData<Boolean> changeInitialTrack(String UniqueId, Context context, TextView textView) {
+        try {
+            PrintLogging.printLog(this.getClass(), "", "uniqueIdss-->>" + UniqueId);
+            MutableLiveData<Boolean> booleanMutableLiveData = new MutableLiveData<>();
+            if (tracks != null) {
+//            if (UniqueId.equalsIgnoreCase(AppLevelConstants.AUTO)) {
+//                String selected = getSelectedIndex(1, tracks.getVideoTracks());
+//                if (!selected.equalsIgnoreCase("")) {
+//                    player.changeTrack(selected);
+//                    trackListener(booleanMutableLiveData);
+//                    // getPlayerState(booleanMutableLiveData);
+//                } else {
+//                    booleanMutableLiveData.postValue(true);
+//                }
+//
+//            }
+            /*if (UniqueId.equalsIgnoreCase(AppLevelConstants.LOW)) {
+                String selected = getSelectedIndex(1, tracks.getVideoTracks(), context);
+                PrintLogging.printLog(this.getClass(), "", "selctedIndex" + selected);
+                if (!selected.equalsIgnoreCase("")) {
+                    player.changeTrack(selected);
+                    trackListener(booleanMutableLiveData);
+                    //  getPlayerState(booleanMutableLiveData);
+                    booleanMutableLiveData.postValue(true);
+
+                } else {
+                    booleanMutableLiveData.postValue(true);
+                }
+
+            } else if (UniqueId.equalsIgnoreCase(AppLevelConstants.MEDIUM)) {
+                String selected = getSelectedIndex(2, tracks.getVideoTracks(), context);
+                if (!selected.equalsIgnoreCase("")) {
+                    player.changeTrack(selected);
+                    trackListener(booleanMutableLiveData);
+                    // getPlayerState(booleanMutableLiveData);
+                    booleanMutableLiveData.postValue(true);
+                } else {
+                    booleanMutableLiveData.postValue(true);
+                }
+
+            } else if (UniqueId.equalsIgnoreCase(AppLevelConstants.HIGH)) {
+                String selected = getSelectedIndex(3, tracks.getVideoTracks(), context);
+                if (!selected.equalsIgnoreCase("")) {
+                    player.changeTrack(selected);
+                    trackListener(booleanMutableLiveData);
+                    //  getPlayerState(booleanMutableLiveData);
+                    // booleanMutableLiveData.postValue(true);
+                } else {
+                    booleanMutableLiveData.postValue(true);
+                }
+            }
+*/
+                if (UniqueId.equalsIgnoreCase(AppLevelConstants.HIGH)) {
+                    String selected = getSelectedIndex(3, tracks.getVideoTracks(), context);
+                    if (!selected.equalsIgnoreCase("")) {
+                        player.changeTrack(selected);
+                        trackListener(booleanMutableLiveData);
+                        textView.setText("High Quality");
+                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_video_quality, 0, 0, 0);
+                        //  getPlayerState(booleanMutableLiveData);
+                        // booleanMutableLiveData.postValue(true);
+                    } else {
+                        //booleanMutableLiveData.postValue(true);
+                        String selectedMedium = getSelectedIndex(2, tracks.getVideoTracks(), context);
+                        if (!selectedMedium.equalsIgnoreCase("")) {
+                            player.changeTrack(selectedMedium);
+                            trackListener(booleanMutableLiveData);
+                            // getPlayerState(booleanMutableLiveData);
+                            booleanMutableLiveData.postValue(true);
+                            textView.setText("Medium Quality");
+                            textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_medium_quality, 0, 0, 0);
+                        } else {
+                            //booleanMutableLiveData.postValue(true);
+                            String selectedLow = getSelectedIndex(1, tracks.getVideoTracks(), context);
+                            PrintLogging.printLog(this.getClass(), "", "selctedIndex" + selected);
+                            if (!selectedLow.equalsIgnoreCase("")) {
+                                player.changeTrack(selectedLow);
+                                trackListener(booleanMutableLiveData);
+                                //  getPlayerState(booleanMutableLiveData);
+                                booleanMutableLiveData.postValue(true);
+                                textView.setText("Low Quality");
+                                textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_low_quality, 0, 0, 0);
+                            } else {
+                                booleanMutableLiveData.postValue(true);
+                            }
+                        }
+                    }
+                }
+
+            }
+        }catch (Exception ignored){
+
+        }
+        return booleanMutableLiveData;
+    }
+
+
     private void trackListener(MutableLiveData<Boolean> booleanLiveData) {
         player.addListener(this, PlayerEvent.videoTrackChanged, event -> {
             booleanLiveData.postValue(true);
@@ -511,6 +681,7 @@ public class PlayerRepository {
             for (int i = 0; i < videoTracks.size(); i++) {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
                 if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit())) {
+                    ConvivaManager.convivaPlayerSetBitRate(videoTrackInfo.getBitrate());
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
@@ -520,6 +691,7 @@ public class PlayerRepository {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
                 PrintLogging.printLog(this.getClass(), "", "PrintBitMapssss" + videoTrackInfo.getBitrate() + " --" + type);
                 if (videoTrackInfo.getBitrate() > Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit()) && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit())) {
+                    ConvivaManager.convivaPlayerSetBitRate(videoTrackInfo.getBitrate());
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
@@ -529,6 +701,7 @@ public class PlayerRepository {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
 
                 if (videoTrackInfo.getBitrate() > Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit()) && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())) {
+                    ConvivaManager.convivaPlayerSetBitRate(videoTrackInfo.getBitrate());
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
@@ -589,12 +762,14 @@ public class PlayerRepository {
     }
 
     public LiveData<List<AudioTrack>> setAudioTracks() {
+        Log.w("audioTracks==>>",audioTracks+"  ");
         MutableLiveData<List<AudioTrack>> listMutableLiveData = new MutableLiveData<>();
         listMutableLiveData.postValue(audioTracks);
         return listMutableLiveData;
     }
 
     public LiveData<TrackItem[]> getAudioTrackItems() {
+        Log.w("audioTracks==>>",audioTrackItems.length+"  ");
         MutableLiveData<TrackItem[]> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.postValue(audioTrackItems);
         return mutableLiveData;
@@ -719,6 +894,7 @@ public class PlayerRepository {
         }
     }
 
+    Context context;
     public LiveData<Player> startPlayerBookmarking(final Context context,
                                                    PKMediaEntry mediaEntry,
                                                    final String deviceid,
@@ -731,6 +907,7 @@ public class PlayerRepository {
             player.destroy();
         }
 
+        this.context=context;
         if (isPurchased == 1) {
             formatBuilder = new StringBuilder();
             formatter = new Formatter(formatBuilder, Locale.getDefault());

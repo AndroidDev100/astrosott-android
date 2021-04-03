@@ -27,7 +27,6 @@ import java.util.List;
 
 public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBinding> implements BillingProcessor.IBillingHandler, View.OnClickListener {
     private BillingProcessor billingProcessor;
-    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected ActivityEditEmailBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -40,25 +39,18 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
         super.onCreate(savedInstanceState);
         intializeBilling();
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        getBinding().signInButton.setSize(SignInButton.SIZE_STANDARD);
-        getBinding().signInButton.setOnClickListener(this);
         getBinding().button.setOnClickListener(v -> {
 
 
-           //   billingProcessor.purchase(this, "com.sott.astro.com.my.tvod.1290", "DEVELOPER PAYLOAD HERE");
+              billingProcessor.purchase(this, "com.sott.astro.com.my.tvod.1290", "DEVELOPER PAYLOAD HERE");
          /* List<String> purchases = billingProcessor.listOwnedProducts();
 
             for (String purchase: purchases){
                 Log.w("Purchased Item", purchase);
             }
 */
-            //billingProcessor.consumePurchase("com.sott.astro.com.my.tvod.1290");
+           // billingProcessor.consumePurchase("com.sott.astro.com.my.tvod.1290");
         });
     }
 
@@ -66,22 +58,18 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
-                signIn();
+              //  signIn();
                 break;
             // ...
         }
     }
 
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, 4001);
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
     }
 
     private void intializeBilling() {

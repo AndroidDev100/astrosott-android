@@ -18,6 +18,7 @@ class BaseCategory() : Parcelable {
   var adType: String? = ""
   var adID: String? = ""
   var displayOrder: Int? = 0
+  var kalturaOTTImageType: String? = ""
   var height: Any? = 0
   var width: Any? = 0
   var contentImageType: String? = ""
@@ -68,6 +69,7 @@ class BaseCategory() : Parcelable {
     adID = parcel.readString()
     displayOrder = parcel.readValue(Int::class.java.classLoader) as? Int
     contentImageType = parcel.readString()
+    kalturaOTTImageType = parcel.readString()
     showHeader = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     autoRotate = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     contentSize = parcel.readValue(Int::class.java.classLoader) as? Int
@@ -107,6 +109,7 @@ class BaseCategory() : Parcelable {
     parcel.writeString(adID)
     parcel.writeValue(displayOrder)
     parcel.writeString(contentImageType)
+    parcel.writeString(kalturaOTTImageType)
     parcel.writeValue(showHeader)
     parcel.writeValue(autoRotate)
     parcel.writeValue(contentSize)

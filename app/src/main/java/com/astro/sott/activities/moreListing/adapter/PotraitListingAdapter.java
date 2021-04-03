@@ -62,12 +62,7 @@ public class PotraitListingAdapter extends RecyclerView.Adapter<PotraitListingAd
 
         try {
 
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                holder.potraitItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-                holder.potraitItemBinding.hungama.setVisibility(View.GONE);
-            }
+
 
             if (singleItem.getImages().size() > 0) {
 

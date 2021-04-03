@@ -105,7 +105,7 @@ class EvergentServices {
         var json = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty("country", "MY")
-        if (type.equals("email", true)) {
+        if (type.equals("email", true)||type.equals("Google", true)) {
             json.addProperty(EMAIL, emailMobile)
 
         } else {
@@ -260,9 +260,9 @@ class EvergentServices {
             json.addProperty("alternateUserName", emailMobile)
             json.addProperty("customerPassword", password)
 
-        } else if (type.equals("social", true)) {
-            json.addProperty("socialLoginID", "")
-            json.addProperty("socialLoginType", "")
+        } else if (type.equals("Facebook", true) || type.equals("Google", true)) {
+            json.addProperty("socialLoginID", emailMobile)
+            json.addProperty("socialLoginType", type)
         }
 
         devicejson.addProperty("serialNo", getDeviceId(context.contentResolver))
@@ -327,12 +327,16 @@ class EvergentServices {
 
         if (type.equals("email", true)) {
             json.addProperty("contactUserName", emailMobile)
+            json.addProperty("contactPassword", password)
+
         } else if (type.equals("mobile", true)) {
             json.addProperty("alternateUserName", emailMobile)
+            json.addProperty("contactPassword", password)
+
 
         } else if (type.equals("social", true)) {
+
         }
-        json.addProperty("contactPassword", password)
         devicejson.addProperty("serialNo", getDeviceId(context.contentResolver))
         devicejson.addProperty("deviceName", Build.DEVICE)
         devicejson.addProperty("deviceType", "Android")

@@ -368,19 +368,10 @@ public class ForwardedEPGActivity extends BaseBindingActivity<ForwardedEpgActivi
         getRails();
         setPlayerFragment();
         getUrlToPlay(asset);
-        setHungamaTag(asset);
 
 
     }
 
-    private void setHungamaTag(Asset asset) {
-        boolean isProviderAvailable = AssetContent.getHungamaTag(asset.getTags());
-        if (isProviderAvailable){
-            getBinding().playerImageLayout.hungama.setVisibility(View.VISIBLE);
-        }else {
-            getBinding().playerImageLayout.hungama.setVisibility(View.GONE);
-        }
-    }
 
     private void setPlayerFragment() {
         manager = getSupportFragmentManager();

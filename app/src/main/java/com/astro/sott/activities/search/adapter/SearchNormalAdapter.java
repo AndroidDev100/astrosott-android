@@ -48,12 +48,7 @@ public class SearchNormalAdapter extends RecyclerView.Adapter<SearchNormalAdapte
     public void onBindViewHolder(@NonNull SingleItemRowHolder viewHolder, final int position) {
         boolean imageAvailable = false;
 
-        boolean isProviderAvailable = AssetContent.getHungamaTag(itemsList.get(position).getTags());
-        if (isProviderAvailable){
-           viewHolder.searchItemBinding.hungama.setVisibility(View.VISIBLE);
-        }else {
-            viewHolder.searchItemBinding.hungama.setVisibility(View.GONE);
-        }
+
 
         if (itemsList.get(position).getType() == MediaTypeConstant.getWebEpisode(activity)) {
             Drawable background = viewHolder.searchItemBinding.creatorLay.getBackground();

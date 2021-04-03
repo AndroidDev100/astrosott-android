@@ -57,13 +57,6 @@ public class SquareListingAdapter extends RecyclerView.Adapter<SquareListingAdap
         RailCommonData singleItem = itemsList.get(i);
         try {
 
-            boolean isProviderAvailable = AssetContent.getHungamaTag(singleItem.getObject().getTags());
-            if (isProviderAvailable){
-                holder.squareItemBinding.hungama.setVisibility(View.VISIBLE);
-            }else {
-                holder.squareItemBinding.hungama.setVisibility(View.GONE);
-            }
-
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 ImageHelper.getInstance(holder.squareItemBinding.itemImage.getContext()).loadImageTo(holder.squareItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.square1);

@@ -59,8 +59,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
         password = getIntent().getExtras().getString(AppLevelConstants.PASSWORD_KEY);
         from = getIntent().getExtras().getString(AppLevelConstants.FROM_KEY);
-        if (emailMobile!=null && !emailMobile.equalsIgnoreCase("")){
-            getBinding().descriptionTxt.setText(getResources().getString(R.string.onetime_pass_code_text)+"\n"+emailMobile);
+        if (emailMobile != null && !emailMobile.equalsIgnoreCase("")) {
+            getBinding().descriptionTxt.setText(getResources().getString(R.string.onetime_pass_code_text) + "\n" + emailMobile);
         }
     }
 
@@ -155,6 +155,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                         token = evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getToken();
                         if (!token.equalsIgnoreCase("")) {
                             Intent intent = new Intent(this, ChangePasswordActivity.class);
+                            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                             intent.putExtra("token", token);
                             startActivity(intent);
                         }
@@ -219,7 +220,6 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     private void createUser() {
         astroLoginViewModel.createUser(loginType, emailMobile, password).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
-
                 UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getAccessToken());
                 UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getRefreshToken());
                 UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());

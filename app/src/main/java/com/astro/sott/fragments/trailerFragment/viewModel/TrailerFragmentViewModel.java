@@ -115,6 +115,7 @@ public class TrailerFragmentViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType, String sortType, LifecycleOwner owner) {
+        TabsData.getInstance().setSortType(sortType);
         return checkHasEpisodeNumberForSeason(getApplication().getApplicationContext(), map, assetType, counter, seasonCounter, layoutType, sortType, owner, seriesNumberList);
     }
 

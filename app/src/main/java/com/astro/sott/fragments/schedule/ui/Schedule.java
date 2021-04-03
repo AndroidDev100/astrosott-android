@@ -181,14 +181,16 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         initializeRecyclerView();
+        createEpgDateChips();
+
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isVisible()) {
-            createEpgDateChips();
         }
     }
 
