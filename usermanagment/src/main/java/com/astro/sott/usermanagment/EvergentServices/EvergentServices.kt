@@ -105,7 +105,7 @@ class EvergentServices {
         var json = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty("country", "MY")
-        if (type.equals("email", true)||type.equals("Google", true)) {
+        if (type.equals("email", true) || type.equals("Google", true)||type.equals("Facebook", true)) {
             json.addProperty(EMAIL, emailMobile)
 
         } else {
@@ -261,7 +261,9 @@ class EvergentServices {
             json.addProperty("customerPassword", password)
 
         } else if (type.equals("Facebook", true) || type.equals("Google", true)) {
-            json.addProperty("socialLoginID", emailMobile)
+            json.addProperty("email", emailMobile)
+            json.addProperty("customerUsername", emailMobile)
+            json.addProperty("socialLoginID", password)
             json.addProperty("socialLoginType", type)
         }
 
