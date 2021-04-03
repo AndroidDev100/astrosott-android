@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
@@ -436,7 +437,7 @@ public class PlayerRepository {
                     AudioTrack audioTrackInfo = audioTracks.get(i);
                     if (audioTrackInfo.isAdaptive()) {
                         Log.w("audioAndSubtitle", "t3");
-                        if (audioTrackInfo.getLanguage() != null) {
+                        if (audioTrackInfo.getLabel() != null) {
                             trackItems[i] = new TrackItem(audioTrackInfo.getLabel() + " ", audioTrackInfo.getUniqueId(),audioTrackInfo.getLanguage());
                             //  arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
                         }
@@ -462,8 +463,6 @@ public class PlayerRepository {
             }
 
         }
-
-
         return trackItems;
     }
 
@@ -561,6 +560,103 @@ public class PlayerRepository {
 
         return booleanMutableLiveData;
     }
+
+    public LiveData<Boolean> changeInitialTrack(String UniqueId, Context context, TextView textView) {
+        try {
+            PrintLogging.printLog(this.getClass(), "", "uniqueIdss-->>" + UniqueId);
+            MutableLiveData<Boolean> booleanMutableLiveData = new MutableLiveData<>();
+            if (tracks != null) {
+//            if (UniqueId.equalsIgnoreCase(AppLevelConstants.AUTO)) {
+//                String selected = getSelectedIndex(1, tracks.getVideoTracks());
+//                if (!selected.equalsIgnoreCase("")) {
+//                    player.changeTrack(selected);
+//                    trackListener(booleanMutableLiveData);
+//                    // getPlayerState(booleanMutableLiveData);
+//                } else {
+//                    booleanMutableLiveData.postValue(true);
+//                }
+//
+//            }
+            /*if (UniqueId.equalsIgnoreCase(AppLevelConstants.LOW)) {
+                String selected = getSelectedIndex(1, tracks.getVideoTracks(), context);
+                PrintLogging.printLog(this.getClass(), "", "selctedIndex" + selected);
+                if (!selected.equalsIgnoreCase("")) {
+                    player.changeTrack(selected);
+                    trackListener(booleanMutableLiveData);
+                    //  getPlayerState(booleanMutableLiveData);
+                    booleanMutableLiveData.postValue(true);
+
+                } else {
+                    booleanMutableLiveData.postValue(true);
+                }
+
+            } else if (UniqueId.equalsIgnoreCase(AppLevelConstants.MEDIUM)) {
+                String selected = getSelectedIndex(2, tracks.getVideoTracks(), context);
+                if (!selected.equalsIgnoreCase("")) {
+                    player.changeTrack(selected);
+                    trackListener(booleanMutableLiveData);
+                    // getPlayerState(booleanMutableLiveData);
+                    booleanMutableLiveData.postValue(true);
+                } else {
+                    booleanMutableLiveData.postValue(true);
+                }
+
+            } else if (UniqueId.equalsIgnoreCase(AppLevelConstants.HIGH)) {
+                String selected = getSelectedIndex(3, tracks.getVideoTracks(), context);
+                if (!selected.equalsIgnoreCase("")) {
+                    player.changeTrack(selected);
+                    trackListener(booleanMutableLiveData);
+                    //  getPlayerState(booleanMutableLiveData);
+                    // booleanMutableLiveData.postValue(true);
+                } else {
+                    booleanMutableLiveData.postValue(true);
+                }
+            }
+*/
+                if (UniqueId.equalsIgnoreCase(AppLevelConstants.HIGH)) {
+                    String selected = getSelectedIndex(3, tracks.getVideoTracks(), context);
+                    if (!selected.equalsIgnoreCase("")) {
+                        player.changeTrack(selected);
+                        trackListener(booleanMutableLiveData);
+                        textView.setText("High Quality");
+                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_video_quality, 0, 0, 0);
+                        //  getPlayerState(booleanMutableLiveData);
+                        // booleanMutableLiveData.postValue(true);
+                    } else {
+                        //booleanMutableLiveData.postValue(true);
+                        String selectedMedium = getSelectedIndex(2, tracks.getVideoTracks(), context);
+                        if (!selectedMedium.equalsIgnoreCase("")) {
+                            player.changeTrack(selectedMedium);
+                            trackListener(booleanMutableLiveData);
+                            // getPlayerState(booleanMutableLiveData);
+                            booleanMutableLiveData.postValue(true);
+                            textView.setText("Medium Quality");
+                            textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_medium_quality, 0, 0, 0);
+                        } else {
+                            //booleanMutableLiveData.postValue(true);
+                            String selectedLow = getSelectedIndex(1, tracks.getVideoTracks(), context);
+                            PrintLogging.printLog(this.getClass(), "", "selctedIndex" + selected);
+                            if (!selectedLow.equalsIgnoreCase("")) {
+                                player.changeTrack(selectedLow);
+                                trackListener(booleanMutableLiveData);
+                                //  getPlayerState(booleanMutableLiveData);
+                                booleanMutableLiveData.postValue(true);
+                                textView.setText("Low Quality");
+                                textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_low_quality, 0, 0, 0);
+                            } else {
+                                booleanMutableLiveData.postValue(true);
+                            }
+                        }
+                    }
+                }
+
+            }
+        }catch (Exception ignored){
+
+        }
+        return booleanMutableLiveData;
+    }
+
 
     private void trackListener(MutableLiveData<Boolean> booleanLiveData) {
         player.addListener(this, PlayerEvent.videoTrackChanged, event -> {

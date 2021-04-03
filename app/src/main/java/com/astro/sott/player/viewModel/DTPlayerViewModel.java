@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.beanModel.login.CommonResponse;
@@ -57,6 +58,10 @@ public class DTPlayerViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> changeTrack(String uniqueID) {
         return PlayerRepository.getInstance().changeTrack(uniqueID,getApplication().getApplicationContext());
+    }
+
+    public LiveData<Boolean> changeInitialTrack(String uniqueID, TextView view) {
+        return PlayerRepository.getInstance().changeInitialTrack(uniqueID,getApplication().getApplicationContext(),view);
     }
 
     public LiveData<List<TextTrack>> loadCaptionWithPlayer() {

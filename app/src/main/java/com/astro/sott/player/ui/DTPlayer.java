@@ -2722,7 +2722,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             Log.d("TrackNameIs", trackName);
             Log.d("TrackNameIs", selectedTrack);
 
-            final LiveData<Boolean> booleanLiveData = viewModel.changeTrack(trackName);
+            final LiveData<Boolean> booleanLiveData = viewModel.changeInitialTrack(trackName,getBinding().quality);
+           // getBinding().quality.setText(trackItemList.get(position).getTrackName());
         }
     }
 
@@ -3332,8 +3333,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //
 //                            }
                             Log.w("audioAndSubtitle", trackItems+"   "+audioTracks.get(0).getLabel());
-                            AudioAdapter audioAdapter = new AudioAdapter(trackItems);
-                            getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
+                            if (audioTracks.get(0).getLabel()!=null){
+                                AudioAdapter audioAdapter = new AudioAdapter(trackItems);
+                                getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
+                            }else {
+                                getBinding().audioQuality.recycleviewAudio.setVisibility(View.GONE);
+                                getBinding().audioQuality.titleAudio.setVisibility(View.GONE);
+                            }
+
                         }else {
                             Log.w("audioAndSubtitle", "in7");
                             getBinding().audioQuality.recycleviewAudio.setVisibility(View.GONE);
@@ -4277,22 +4284,27 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 notifyDataSetChanged();
             });
-            Log.w("subtitleS",tracks[position].getTrackName()+""+new KsPreferenceKey(baseActivity).getSubTitleLangKey());
-            if (captionItemClick==0) {
-                // Log.w("colorChange 2",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
-                if (new KsPreferenceKey(baseActivity).getSubtitleLanguageIndex() > -1 && !new KsPreferenceKey(baseActivity).getSubTitleLangKey().equalsIgnoreCase("")) {
-                    if (tracks[position].getTrackDescription().trim().equalsIgnoreCase(new KsPreferenceKey(baseActivity).getSubTitleLangKey().trim())){
+            try {
+
+                Log.w("subtitleS", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey());
+                if (captionItemClick == 0) {
+                    // Log.w("colorChange 2",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
+                    if (new KsPreferenceKey(baseActivity).getSubtitleLanguageIndex() > -1 && !new KsPreferenceKey(baseActivity).getSubTitleLangKey().equalsIgnoreCase("")) {
+                        if (tracks[position].getTrackDescription().trim().equalsIgnoreCase(new KsPreferenceKey(baseActivity).getSubTitleLangKey().trim())) {
+                            holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
+                        } else {
+                            holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
+                        }
+                    }
+                } else {
+                    if (captionList[position].getTrackName().equalsIgnoreCase(captionName)) {
                         holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
-                    }else {
+                    } else {
                         holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
                     }
                 }
-            }else {
-                if (captionList[position].getTrackName().equalsIgnoreCase(captionName)){
-                    holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
-                }else {
-                    holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
-                }
+            }catch (Exception ignored){
+
             }
 
         }
@@ -4327,55 +4339,59 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 if (tracks[position].isSelected()) {
                     index = position;
-                   // holder.tick.setBackgroundResource(R.drawable.tick);
+                    // holder.tick.setBackgroundResource(R.drawable.tick);
                 } else {
-                  //  holder.tick.setBackgroundResource(0);
+                    //  holder.tick.setBackgroundResource(0);
                     //viewHolder.notificationItemBinding.titleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 }
                 int finalIndex = index;
                 holder.audio.setOnClickListener(view -> {
-                    audioItemClick=1;
+                    audioItemClick = 1;
                     tracks[finalIndex].setSelected(false);
                     tracks[position].setSelected(true);
                     audioTrackName = tracks[position].getTrackName();
                     //   holder.tick.setVisibility(View.VISIBLE);
                     viewModel.changeAudioTrack(tracks[position].getUniqueId());
-                  //  dialogQuality.cancel();
+                    //  dialogQuality.cancel();
                     hideSoftKeyButton();
                     notifyDataSetChanged();
 
 
                 });
-                Log.w("colorChange",tracks[position].getTrackDescription()+""+new KsPreferenceKey(baseActivity).getAudioLangKey());
-                if (audioItemClick==0){
-                   // Log.w("colorChange 2",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
-                    if (new KsPreferenceKey(baseActivity).getAudioLanguageIndex()>-1 && !new KsPreferenceKey(baseActivity).getAudioLangKey().equalsIgnoreCase("")){
-                      //  Log.w("colorChange 3",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
-                        if (tracks[position].getTrackDescription().trim().equalsIgnoreCase(new KsPreferenceKey(baseActivity).getAudioLangKey().trim())){
-                            Log.w("colorChange 5",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
-                            holder.audioTracks.setTextColor(getResources().getColor(R.color.green));
-                        }else {
-                            Log.w("colorChange 6",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
-                            holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
-                        }
-                    }else {
-                        Log.w("colorChange 4",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
-                        if (tracks[position].getTrackName().equalsIgnoreCase(audioTrackName)){
-                            holder.audioTracks.setTextColor(getResources().getColor(R.color.green));
-                        }else {
-                            holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
-                        }
-                    }
 
-                }else {
-                    if (tracks[position].getTrackName().equalsIgnoreCase(audioTrackName)){
-                        holder.audioTracks.setTextColor(getResources().getColor(R.color.green));
-                    }else {
-                        holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
+                try {
+                    Log.w("colorChange", tracks[position].getTrackDescription() + "" + new KsPreferenceKey(baseActivity).getAudioLangKey());
+                    if (audioItemClick == 0) {
+                        // Log.w("colorChange 2",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
+                        if (new KsPreferenceKey(baseActivity).getAudioLanguageIndex() > -1 && !new KsPreferenceKey(baseActivity).getAudioLangKey().equalsIgnoreCase("")) {
+                            //  Log.w("colorChange 3",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
+                            if (tracks[position].getTrackDescription().trim().equalsIgnoreCase(new KsPreferenceKey(baseActivity).getAudioLangKey().trim())) {
+                                Log.w("colorChange 5", tracks[position].getTrackName() + "  " + new KsPreferenceKey(baseActivity).getAudioLangKey());
+                                holder.audioTracks.setTextColor(getResources().getColor(R.color.green));
+                            } else {
+                                Log.w("colorChange 6", tracks[position].getTrackName() + "  " + new KsPreferenceKey(baseActivity).getAudioLangKey());
+                                holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
+                            }
+                        } else {
+                            Log.w("colorChange 4", tracks[position].getTrackName() + "  " + new KsPreferenceKey(baseActivity).getAudioLangKey());
+                            if (tracks[position].getTrackName().equalsIgnoreCase(audioTrackName)) {
+                                holder.audioTracks.setTextColor(getResources().getColor(R.color.green));
+                            } else {
+                                holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
+                            }
+                        }
+
+                    } else {
+                        if (tracks[position].getTrackName().equalsIgnoreCase(audioTrackName)) {
+                            holder.audioTracks.setTextColor(getResources().getColor(R.color.green));
+                        } else {
+                            holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
+                        }
                     }
+                }catch (Exception ignored){
+
                 }
-
-            }
+                }
 
 
         }
