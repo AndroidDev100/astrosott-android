@@ -299,6 +299,7 @@
                                             <LinearLayout
                                                 android:id="@+id/duration_lay"
                                                 android:layout_width="match_parent"
+                                                android:visibility="gone"
                                                 android:layout_height="wrap_content"
                                                 android:layout_marginTop="@dimen/movie_detail_ll_margin_top">
 
