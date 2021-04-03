@@ -2784,6 +2784,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
          //   getBinding().lockIcon.setVisibility(View.GONE);
             return;
         }
+
+        if (getBinding().videoDialog.getVisibility()==View.VISIBLE){
+            return;
+        }
+
+        if (getBinding().audioDialog.getVisibility()==View.VISIBLE){
+            return;
+        }
+
+
         try {
             animationFadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
             animationFadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
@@ -2958,7 +2968,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().rl1.setOnClickListener(new DoubleClick(new DoubleClickListener() {
             @Override
             public void onSingleClick(View view) {
-                if (drag) {
+
                     if (isPlayerStart) {
                         if (lockEnable) {
 //                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
@@ -2975,11 +2985,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 if (timeHandler != null)
                                     timeHandler.removeCallbacks(myRunnable);
                             }
+                            if (getBinding().videoDialog.getVisibility()==View.VISIBLE){
+                                getBinding().videoDialog.setVisibility(View.GONE);
+                            }
+                              if (getBinding().audioDialog.getVisibility()==View.VISIBLE){
+                                getBinding().audioDialog.setVisibility(View.GONE);
+                            }
                             ShowAndHideView();
                         }
 
                     }
-                }
 
             }
 
@@ -2994,6 +3009,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 try {
                     gestureDetector.onTouchEvent(motionEvent);
+
 
                 } catch (Exception e) {
 
@@ -3426,7 +3442,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private void chooseVideoquality() {
 
         final RecyclerView recycleview;
-        callHandler();
+        //callHandler();
        // dialogQuality = new Dialog(getBaseActivity(), R.style.AppAlertTheme);
       //  dialogQuality.setContentView(R.layout.layout_dialog_settings);
       //  dialogQuality.setTitle(getString(R.string.title_video_quality));
