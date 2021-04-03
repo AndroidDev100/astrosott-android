@@ -28,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
+                app:tabGravity="fill"
                 app:tabIndicator="@color/transparentColor"
                 app:tabBackground="@color/transparentColor"
                 android:background="@color/transparentColor"

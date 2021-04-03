@@ -2,15 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grape_purple">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grape_purple"
      >
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <RelativeLayout
                 android:id="@+id/lay"
@@ -71,7 +72,6 @@
                         android:drawableLeft="@drawable/ic_lock_open_24_px"
                         android:drawablePadding="@dimen/dimen16dp"
                         android:fontFamily="@font/heebo_regular"
-                        android:gravity="center_vertical"
                         android:text="@string/get_access_to_vip"
                         android:textColor="@color/title_color"
                         android:textSize="@dimen/_16sp" />
@@ -101,7 +101,6 @@
                         android:drawableLeft="@drawable/ic_play_concurrency_2472"
                         android:drawablePadding="@dimen/dimen16dp"
                         android:fontFamily="@font/heebo_regular"
-                        android:gravity="center"
                         android:text="@string/concurrency"
                         android:textColor="@color/title_color"
                         android:textSize="@dimen/_16sp" />
@@ -132,6 +131,7 @@
                     android:layout_marginStart="@dimen/dimen16dp"
                     android:layout_marginTop="@dimen/margin_top_32dp"
                     android:layout_marginEnd="@dimen/dimen16dp"
+                    android:layout_marginBottom="@dimen/dimen50dp"
                     android:background="@drawable/gradient_button"
                     android:fontFamily="@font/heebo_medium"
                     android:gravity="center"
@@ -141,6 +141,6 @@
                     android:textSize="@dimen/_16sp" />
 
             </RelativeLayout>
-        </ScrollView>
     </LinearLayout>
+    </ScrollView>
 </layout>
