@@ -33,6 +33,13 @@ public class KsPreferenceKey {
     public static final String MEDIUM_BITRATE_MAX_LIMIT = "mediumBitRateMaxLimit";
     public static final String HIGH_BITRATE_MAX_LIMIT = "highBitRatemaxLimit";
 
+    public static final String AUDIO_LANG_INDEX = "AUDIO_LANG_INDEX";
+    public static final String SUBTITLE_LANG_INDEX = "SUBTITLE_LANG_INDEX";
+
+
+    public static final String AUDIO_LANG_KEY = "AUDIO_LANG_KEY";
+    public static final String SUBTITLE_LANG_KEY = "SUBTITLE_LANG_KEY";
+
 
 
     private static KsPreferenceKey mInstance;
@@ -116,6 +123,22 @@ public class KsPreferenceKey {
 
     public void setAppLangName(String appLangName) {
         session.setString("app_lang", appLangName);
+    }
+
+    public String getAudioLangKey() {
+        return session.getString(AUDIO_LANG_KEY, "en");
+    }
+
+    public void setAudioLangKey(String appLangName) {
+        session.setString(AUDIO_LANG_KEY, appLangName);
+    }
+
+    public String getSubTitleLangKey() {
+        return session.getString(SUBTITLE_LANG_KEY, "en");
+    }
+
+    public void setSubTitleLangKey(String appLangName) {
+        session.setString(SUBTITLE_LANG_KEY, appLangName);
     }
 
     public String getCatchUpId() {
@@ -476,5 +499,21 @@ public class KsPreferenceKey {
         return session.getString(SEARCH_KSQL, "");
     }
 
+    public void setAudioLanguageIndex(int index) {
+        session.setInt(AUDIO_LANG_INDEX, index);
+    }
+
+    public int getAudioLanguageIndex() {
+        return session.getInt(AUDIO_LANG_INDEX, -1);
+    }
+
+
+    public void setSubtitleLanguageIndex(int index) {
+        session.setInt(SUBTITLE_LANG_INDEX, index);
+    }
+
+    public int getSubtitleLanguageIndex() {
+        return session.getInt(SUBTITLE_LANG_INDEX, -1);
+    }
 
 }

@@ -35,5 +35,8 @@ data class WidgetsItem(
         val containerId: String? = null,
 
         @field:SerializedName("status")
-        val status: String? = null
+        val status: String? = null,
+
+        @field:SerializedName("kalturaOTTImageType")
+        val kalturaOTTImageType: String? = null
 )

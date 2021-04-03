@@ -18,6 +18,7 @@ import com.astro.sott.databinding.PotraitItemSmallBinding;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
+import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
@@ -140,9 +141,17 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
             try {
                 setRecycler(potraitItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags());
-                AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory);
+                AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
                 potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
-                potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+                    potraitItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                    potraitItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+                }else {
+                    potraitItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                    potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                }
+
+                //  potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
             }catch (Exception ignored){
 
             }
@@ -183,9 +192,17 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
             try {
                 setRecycler(potraitItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags());
-                AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory);
+                AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
                 potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
-                potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                //potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+                    potraitItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                    potraitItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+                }else {
+                    potraitItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                    potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                }
+
             }catch (Exception ignored){
 
             }
@@ -218,9 +235,17 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
             try {
                 setRecycler(potraitItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags());
-                AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory);
+                AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
                 potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
-                potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+               // potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+                    potraitItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                    potraitItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+                }else {
+                    potraitItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                    potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                }
+
             }catch (Exception ignored){
 
             }

@@ -22,8 +22,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.search.constants.SearchFilterEnum;
 import com.astro.sott.baseModel.PrefrenceBean;
+import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -671,7 +673,9 @@ public class AppCommonMethods {
     }
 
     public static void getImageList(Context context, String tileType, int position, int j, int k, List<Response<ListResponse<Asset>>> list, AssetCommonImages assetCommonImages, List<AssetCommonImages> imagesList) {
-        Log.w("imageType-->>", tileType);
+        if(context instanceof HomeActivity) {
+            Log.w("imageType-->>", tileType);
+        }
         switch (tileType) {
             case AppLevelConstants.TYPE2:
 
@@ -839,6 +843,204 @@ public class AppCommonMethods {
         }
 
     }
+
+    public static void getCategoryImageList(Context context, String tileType, int position, int j, int k, List<Response<ListResponse<Asset>>> list, AssetCommonImages assetCommonImages, List<AssetCommonImages> imagesList, VIUChannel channelList) {
+        Log.w("imageType-->>", tileType + " ----  "+channelList.getKalturaOTTImageType());
+        switch (tileType) {
+            case AppLevelConstants.TYPE2:
+
+                if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
+                    if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9")) {
+                        String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                        String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.circle_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.circle_image_height) + AppLevelConstants.QUALITY;
+                        PrintLogging.printLog("AppCommonMethods", "", "imageCondition" + image_url + AppLevelConstants.WIDTH + context.getResources().getDimension(R.dimen.circle_image_width) + AppLevelConstants.HEIGHT + context.getResources().getDimension(R.dimen.circle_image_height) + AppLevelConstants.QUALITY);
+                        assetCommonImages.setImageUrl(final_url);
+                        imagesList.add(assetCommonImages);
+                    }
+                }
+                break;
+            case AppLevelConstants.TYPE3:
+                if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
+                    if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
+                        String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                        String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.portrait_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.portrait_image_height) + AppLevelConstants.QUALITY;
+                        assetCommonImages.setImageUrl(final_url);
+                        imagesList.add(assetCommonImages);
+                    }
+
+                }
+                break;
+            case AppLevelConstants.TYPE4:
+                if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
+                    if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("1:1")) {
+                        String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                        String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.square_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.square_image_height) + AppLevelConstants.QUALITY;
+                        assetCommonImages.setImageUrl(final_url);
+                        imagesList.add(assetCommonImages);
+                    }
+
+                }
+                break;
+            case AppLevelConstants.TYPE5:
+
+                if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
+                    if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context)) {
+                        if (channelList!=null && channelList.getKalturaOTTImageType()!=null && !channelList.getKalturaOTTImageType().equalsIgnoreCase("")){
+                            if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals(channelList.getKalturaOTTImageType())) {
+                                String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                                String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                                assetCommonImages.setImageUrl(final_url);
+                                imagesList.add(assetCommonImages);
+                            }
+                        }else {
+                            if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9")) {
+                                String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                                String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                                assetCommonImages.setImageUrl(final_url);
+                                imagesList.add(assetCommonImages);
+                            }
+                        }
+
+                    } else {
+                        if (channelList!=null && channelList.getKalturaOTTImageType()!=null && !channelList.getKalturaOTTImageType().equalsIgnoreCase("")){
+                            if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals(channelList.getKalturaOTTImageType())) {
+                                String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                                String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                                assetCommonImages.setImageUrl(final_url);
+                                imagesList.add(assetCommonImages);
+                            }
+
+                        }else {
+                            if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9")) {
+                                String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                                String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                                assetCommonImages.setImageUrl(final_url);
+                                imagesList.add(assetCommonImages);
+                            }
+
+                        }
+                    }
+                }
+
+
+                break;
+
+            case AppLevelConstants.TYPELDS:
+
+                if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
+                    if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context)) {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    } else {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9")) {
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        } else if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("2x3")) {
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.square_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.square_image_height) + AppLevelConstants.QUALITY;
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    }
+                }
+
+
+                break;
+
+            case AppLevelConstants.TYPEPOSTER:
+                Log.w("ImageRatio-->>", list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
+                    if (channelList!=null && channelList.getKalturaOTTImageType()!=null && !channelList.getKalturaOTTImageType().equalsIgnoreCase("")){
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals(channelList.getKalturaOTTImageType())) {
+                            Log.w("ImageRatio-->>in", list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.poster_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.poster_image_height) + AppLevelConstants.QUALITY;
+                            Log.w("FinalUrl-->>in", final_url);
+                            Log.w("ImageUrl-->>in", image_url);
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    }else {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("2x3")) {
+                            Log.w("ImageRatio-->>in", list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.poster_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.poster_image_height) + AppLevelConstants.QUALITY;
+                            Log.w("FinalUrl-->>in", final_url);
+                            Log.w("ImageUrl-->>in", image_url);
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    }
+                }
+
+
+                break;
+
+            case AppLevelConstants.TYPEPR2:
+                Log.w("ImageRatio-->>", list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
+                    if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context)) {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9") || list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("9:16")) {
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    } else {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("2x3")) {
+                            Log.w("ImageRatio-->>in", list.get(position).results.getObjects().get(j).getImages().get(k).getRatio());
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.poster_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.poster_image_height) + AppLevelConstants.QUALITY;
+                            Log.w("FinalUrl-->>in", final_url);
+                            Log.w("ImageUrl-->>in", image_url);
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    }
+                }
+
+
+                break;
+            case AppLevelConstants.TYPE6:
+                if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
+                    if (channelList!=null && channelList.getKalturaOTTImageType()!=null && !channelList.getKalturaOTTImageType().equalsIgnoreCase("")){
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals(channelList.getKalturaOTTImageType())) {
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.portrait_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.portrait_image_height) + AppLevelConstants.QUALITY;
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    }else {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9")) {
+                            String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                            assetCommonImages.setImageUrl(final_url);
+                            imagesList.add(assetCommonImages);
+                        }
+                    }
+                }
+                break;
+            case AppLevelConstants.TYPE7:
+                if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
+                    if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("1:1")) {
+                        String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                        String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                        assetCommonImages.setImageUrl(final_url);
+                        imagesList.add(assetCommonImages);
+                    }
+
+                }
+                break;
+        }
+
+    }
+
 
 
     public static List<AssetHistory> getContinueWatchingPreferences(Context applicationContext) {
@@ -1301,12 +1503,15 @@ public class AppCommonMethods {
 
     }
 
-    public static void handleTitleDesc(RelativeLayout titleLayout, TextView tvTitle, TextView tvDescription, BaseCategory baseCategory) {
+    public static void handleTitleDesc(RelativeLayout titleLayout, TextView tvTitle, TextView tvDescription, BaseCategory baseCategory,RailCommonData commonData,Context context) {
         try {
             if (baseCategory != null) {
                 if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())) {
                     titleLayout.setVisibility(View.VISIBLE);
-                } else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())) {
+                }else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())){
+                    if (commonData.getObject().getType()==MediaTypeConstant.getProgram(context)){
+                        tvDescription.setVisibility(View.VISIBLE);
+                    }
                     titleLayout.setVisibility(View.VISIBLE);
                     tvTitle.setVisibility(View.VISIBLE);
                 } else {
@@ -1336,12 +1541,16 @@ public class AppCommonMethods {
         }
     }
 
-    public static void handleTitleDesc(LinearLayout titleLayout, TextView tvTitle, TextView tvDescription, BaseCategory baseCategory) {
+    public static void handleTitleDesc(LinearLayout titleLayout, TextView tvTitle, TextView tvDescription, BaseCategory baseCategory,RailCommonData commonData,Context context) {
         try {
             if (baseCategory != null) {
                 if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())) {
                     titleLayout.setVisibility(View.VISIBLE);
-                } else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())) {
+                }
+                else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())){
+                    if (commonData.getObject().getType()==MediaTypeConstant.getProgram(context)){
+                        tvDescription.setVisibility(View.VISIBLE);
+                    }
                     titleLayout.setVisibility(View.VISIBLE);
                     tvTitle.setVisibility(View.VISIBLE);
                 } else {
@@ -2129,5 +2338,20 @@ public class AppCommonMethods {
         deviceDetailsItems.add(0, deviceDetailsItems.get(index));
         deviceDetailsItems.remove(index + 1);
         return deviceDetailsItems;
+    }
+
+    public static String getProgramTimeDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa");
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+
     }
 }
