@@ -616,7 +616,7 @@
                 android:layout_alignParentBottom="true"
                 android:padding="@dimen/_7sdp"
                 android:background="@drawable/skip_intro_button"
-                android:layout_marginEnd="@dimen/_42sdp"
+                android:layout_marginRight="@dimen/_42sdp"
                 android:textColor="@color/white"
                 android:visibility="gone">
 

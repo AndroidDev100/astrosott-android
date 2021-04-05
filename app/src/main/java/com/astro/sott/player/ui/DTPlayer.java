@@ -2323,6 +2323,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     getBinding().skipIntro.setText(labelIntro);
                     getBinding().skipIntro.setVisibility(View.VISIBLE);
                     skipValue = 1;
+                    getBinding().skipRecap.setVisibility(View.GONE);
+                    getBinding().skipCredits.setVisibility(View.GONE);
                 }else {
                     getBinding().skipIntro.setText(labelIntro);
                     getBinding().skipIntro.setVisibility(View.GONE);
@@ -2333,6 +2335,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     getBinding().skipRecap.setText(labelRecap);
                     getBinding().skipRecap.setVisibility(View.VISIBLE);
                     skipValue = 2;
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                    getBinding().skipCredits.setVisibility(View.GONE);
                 }else {
                     getBinding().skipRecap.setText("");
                     getBinding().skipRecap.setVisibility(View.GONE);
@@ -2343,6 +2347,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     getBinding().skipCredits.setText(labelCredit);
                     getBinding().skipCredits.setVisibility(View.VISIBLE);
                     skipValue = 3;
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                    getBinding().skipRecap.setVisibility(View.GONE);
                 }else {
                     getBinding().skipCredits.setText("");
                     getBinding().skipCredits.setVisibility(View.GONE);
