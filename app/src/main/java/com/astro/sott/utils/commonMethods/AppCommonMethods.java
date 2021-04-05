@@ -205,6 +205,7 @@ public class AppCommonMethods {
 
             Date date = new Date(_time * 1000L);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd=hh:mm a", Locale.US);
+            simpleDateFormat.setTimeZone(TimeZone.getDefault());
             String dateTimeValue = simpleDateFormat.format(date);
             String _value[] = dateTimeValue.split("=");
             programTime = _value[1];
@@ -276,9 +277,11 @@ public class AppCommonMethods {
 
         if (type == 1) {
             SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+            df.setTimeZone(TimeZone.getDefault());
             formattedDate = df.format(today);
         } else {
             SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+            df.setTimeZone(TimeZone.getDefault());
             formattedDate = df.format(tomorrow);
         }
 
@@ -293,6 +296,8 @@ public class AppCommonMethods {
             calendar.setTimeInMillis(timestamp);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+            sdf.setTimeZone(TimeZone.getDefault());
+
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
         } catch (Exception e) {
@@ -1411,6 +1416,7 @@ public class AppCommonMethods {
         Calendar calendar = Calendar.getInstance();
         Date today = calendar.getTime();
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        inputFormat.setTimeZone(TimeZone.getDefault());
         String currentTime = inputFormat.format(today);
         try {
             currentDate = inputFormat.parse(currentTime);
@@ -1440,6 +1446,7 @@ public class AppCommonMethods {
         Calendar calendar = Calendar.getInstance();
         Date today = calendar.getTime();
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        inputFormat.setTimeZone(TimeZone.getDefault());
         String currentTime = inputFormat.format(today);
         try {
             currentDate = inputFormat.parse(currentTime);
