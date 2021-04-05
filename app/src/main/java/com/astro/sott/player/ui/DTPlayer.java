@@ -117,6 +117,7 @@ import com.astro.sott.utils.helpers.UDID;
 import com.conviva.sdk.ConvivaSdkConstants;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.LiveAsset;
@@ -500,7 +501,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         playerProgress = prog;
         programName1 = programName;
         this.asset = asset;
-        isSeries = (asset.getType() == MediaTypeConstant.getWebEpisode(getActivity()));
+
+
+        isSeries = (asset.getType() == MediaTypeConstant.getEpisode(getActivity()));
         getNextEpisode(asset);
 
         if (isSeries) {
@@ -668,13 +671,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         if (episodesList.size() > 0) {
             for (int i = 0; i < episodesList.size(); i++) {
                 int listEpisode = AssetContent.getSpecificEpisode(episodesList.get(i).getMetas());
+                int listSeason = AssetContent.getSpecificSeason(episodesList.get(i).getMetas());
                 //  if (listSeason == seasonNumber) {
                 //   if(episodesList.get(i).getId()==asset.getId()){
 
                 Log.d("EpisodeNumberisEqual", listEpisode + "");
                 Log.d("SeasonNumber", episodeNumber + "");
 
-                if (listEpisode == episodeNumber) {
+                if (listEpisode == episodeNumber && listSeason == seasonNumber) {
                     found = true;
                     if ((i + 1) < episodesList.size())
                         nextEpisodeCounter = i + 1;
