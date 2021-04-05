@@ -500,6 +500,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         programName1 = programName;
         this.asset = asset;
         isSeries = (asset.getType() == MediaTypeConstant.getWebEpisode(getActivity()));
+        skipIntro();
         getNextEpisode(asset);
 
         if (isSeries) {
@@ -2175,6 +2176,46 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     }
 
+    private long introStartTime;
+    private int skipValue = 0;
+    private long introEndTime;
+    private long creditEndTime;
+    private String labelIntro;
+    private String labelCredit;
+    private String labelRecap;
+    private long creditStartTime;
+    private long recapStartTime;
+    private long recapEndTime;
+
+
+    private void skipIntro() {
+        labelIntro = "SKIP INTRO";
+        labelCredit = "SKIP CREDIT";
+        labelRecap="SKIP RECAP";
+        introStartTime = AssetContent.getIntroStart(playerAsset.getMetas());
+        introEndTime = AssetContent.getIntroEnd(playerAsset.getMetas());
+        creditStartTime = AssetContent.getCreditStart(playerAsset.getMetas());
+        creditEndTime = AssetContent.getCreditEnd(playerAsset.getMetas());
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recapStartTime = AssetContent.getRecapStart(playerAsset.getMetas());
+                recapEndTime = AssetContent.getRecapEnd(playerAsset.getMetas());
+
+                Log.w("introValues",introStartTime+"  "+introEndTime+"  "+creditStartTime+"  "+creditEndTime+" "+recapStartTime+" "+recapEndTime);
+
+            }
+        },5000);
+
+
+    }
+
+    private long playerTimeInSeconds(long timeMs) {
+        long totalSeconds = (timeMs) / 1000;
+        return totalSeconds;
+    }
+
     private void adsCallBackHandling(final Player player) {
 
         player.addListener(this, AdEvent.started, event -> {
@@ -2273,6 +2314,74 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
         });
+
+        player.addListener(this, PlayerEvent.playheadUpdated, event -> {
+
+            if (introStartTime != 0 && introEndTime != 0 || creditStartTime != 0 && creditEndTime != 0) {
+                Log.w("introValues",runningPlayer.getCurrentPosition()+"----"+introStartTime+"----"+playerTimeInSeconds(runningPlayer.getCurrentPosition()));
+                if (introStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introEndTime) {
+                    getBinding().skipIntro.setText(labelIntro);
+                    getBinding().skipIntro.setVisibility(View.VISIBLE);
+                    skipValue = 1;
+                }else {
+                    getBinding().skipIntro.setText(labelIntro);
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                    skipValue = -1;
+                }
+
+                if (recapStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > recapStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < recapEndTime) {
+                    getBinding().skipRecap.setText(labelRecap);
+                    getBinding().skipRecap.setVisibility(View.VISIBLE);
+                    skipValue = 2;
+                }else {
+                    getBinding().skipRecap.setText("");
+                    getBinding().skipRecap.setVisibility(View.GONE);
+                    skipValue = -1;
+                }
+
+                if (creditStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditEndTime) {
+                    getBinding().skipCredits.setText(labelCredit);
+                    getBinding().skipCredits.setVisibility(View.VISIBLE);
+                    skipValue = 3;
+                }else {
+                    getBinding().skipCredits.setText("");
+                    getBinding().skipCredits.setVisibility(View.GONE);
+                    skipValue = -1;
+                }
+
+               /* if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introStartTime) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+
+                } else if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introEndTime) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                } else if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditEndTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introEndTime) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+
+                }
+                else if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introEndTime) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                } else if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditEndTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introEndTime) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+
+                }
+                if (introEndTime == playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                }
+                if (creditStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || creditStartTime < playerTimeInSeconds(runningPlayer.getCurrentPosition()) && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditEndTime) {
+                    getBinding().skipIntro.setText(labelCredit);
+                    getBinding().skipIntro.setVisibility(View.VISIBLE);
+                    skipValue = 2;
+                }
+                if (creditEndTime == playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                }*/
+            } else {
+                getBinding().skipIntro.setVisibility(View.GONE);
+                getBinding().skipRecap.setVisibility(View.GONE);
+                getBinding().skipCredits.setVisibility(View.GONE);
+            }
+        });
+
 
         player.addListener(this, AdEvent.loaded, event -> {
             Map<String, Object> contentInfo = new HashMap<String, Object>();
@@ -3130,6 +3239,26 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 cancelTimer();
                 getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
                 getUrl(playerURL, asset, playerProgress, isLivePlayer, "");
+            }
+        });
+
+
+        getBinding().skipIntro.setOnClickListener(v -> {
+            getBinding().skipIntro.setVisibility(View.GONE);
+            if (introEndTime > playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
+                runningPlayer.seekTo((introEndTime * 1000) + 500);
+            }
+        });
+
+        getBinding().skipCredits.setOnClickListener(v -> {
+            //Please add logic of next episode Here
+        });
+
+
+        getBinding().skipRecap.setOnClickListener(v -> {
+            getBinding().skipRecap.setVisibility(View.GONE);
+            if (recapEndTime > playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
+                runningPlayer.seekTo((recapEndTime * 1000) + 500);
             }
         });
 

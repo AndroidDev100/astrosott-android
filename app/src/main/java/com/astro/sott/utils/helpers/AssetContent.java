@@ -25,6 +25,7 @@ import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.LongValue;
 import com.kaltura.client.types.MultilingualStringValue;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.StringValue;
@@ -1390,4 +1391,119 @@ public class AssetContent {
 
 
     }
+
+
+    public static long getIntroStart(Map<String, Value> metas) {
+        long introStart = 0;
+        DoubleValue sponsoredValue;
+        if (metas != null) {
+            sponsoredValue = (DoubleValue) metas.get(AppConstants.INTRO_START);
+            if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
+                introStart = sponsoredValue.getValue().longValue();
+                return introStart;
+            } else {
+                return introStart;
+            }
+
+        } else {
+            return introStart;
+        }
+
+    }
+
+
+
+    public static long getCreditStart(Map<String, Value> metas) {
+        long introStart = 0;
+        DoubleValue sponsoredValue;
+        if (metas != null) {
+            sponsoredValue = (DoubleValue) metas.get(AppConstants.CREDIT_START);
+            if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
+                introStart = sponsoredValue.getValue().longValue();
+                return introStart;
+            } else {
+                return introStart;
+            }
+
+        } else {
+            return introStart;
+        }
+
+    }
+
+    public static long getRecapStart(Map<String, Value> metas) {
+        long recap = 0;
+        DoubleValue sponsoredValue;
+        if (metas != null) {
+            sponsoredValue = (DoubleValue) metas.get(AppConstants.RECAP_START);
+            if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
+                recap = sponsoredValue.getValue().longValue();
+                return recap;
+            } else {
+                return recap;
+            }
+
+        } else {
+            return recap;
+        }
+
+    }
+
+
+    public static long getCreditEnd(Map<String, Value> metas) {
+        long introStart = 0;
+        DoubleValue sponsoredValue;
+        if (metas != null) {
+            sponsoredValue = (DoubleValue) metas.get(AppConstants.CREDIT_END);
+            if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
+                introStart = sponsoredValue.getValue().longValue();
+                return introStart;
+            } else {
+                return introStart;
+            }
+
+        } else {
+            return introStart;
+        }
+
+
+    }
+
+    public static long getRecapEnd(Map<String, Value> metas) {
+        long introStart = 0;
+        DoubleValue sponsoredValue;
+        if (metas != null) {
+            sponsoredValue = (DoubleValue) metas.get(AppConstants.RECAP_END);
+            if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
+                introStart = sponsoredValue.getValue().longValue();
+                return introStart;
+            } else {
+                return introStart;
+            }
+
+        } else {
+            return introStart;
+        }
+
+    }
+
+
+    public static long getIntroEnd(Map<String, Value> metas) {
+        long introStart = 0;
+        DoubleValue sponsoredValue;
+        if (metas != null) {
+            sponsoredValue = (DoubleValue) metas.get(AppConstants.INTRO_END);
+            if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
+                introStart = sponsoredValue.getValue().longValue();
+                return introStart;
+            } else {
+                return introStart;
+            }
+
+        } else {
+            return introStart;
+        }
+
+    }
+
 }
