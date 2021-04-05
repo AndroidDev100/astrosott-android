@@ -40,7 +40,7 @@
 
             <SeekBar
                 android:id="@+id/seekBar1"
-                android:layout_width="140dp"
+                android:layout_width="110dp"
                 android:layout_height="@dimen/dimen32dp"
                 android:layout_gravity="center"
                 android:maxHeight="6dp"

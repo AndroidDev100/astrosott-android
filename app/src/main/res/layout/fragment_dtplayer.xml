@@ -617,7 +617,8 @@
                 android:padding="@dimen/_7sdp"
                 android:background="@drawable/skip_intro_button"
                 android:layout_marginRight="@dimen/_42sdp"
-                android:textColor="@color/white"
+                android:textColor="@color/pale_gray"
+                android:fontFamily="@font/heebo_regular"
                 android:visibility="gone">
 
 
@@ -642,7 +643,8 @@
                 android:padding="@dimen/_7sdp"
                 android:background="@drawable/skip_intro_button"
                 android:layout_marginEnd="@dimen/_42sdp"
-                android:textColor="@color/white"
+                android:textColor="@color/pale_gray"
+                android:fontFamily="@font/heebo_regular"
                 android:visibility="gone">
 
 
@@ -667,7 +669,8 @@
                 android:padding="@dimen/_7sdp"
                 android:background="@drawable/skip_intro_button"
                 android:layout_marginEnd="@dimen/_42sdp"
-                android:textColor="@color/white"
+                android:textColor="@color/pale_gray"
+                android:fontFamily="@font/heebo_regular"
                 android:visibility="gone">
 
 
