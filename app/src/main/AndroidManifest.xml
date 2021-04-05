@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--suppress AndroidDomInspection -->
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.astro.sott">
@@ -33,11 +33,11 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
+        <activity android:name=".activities.detailConfirmation.DetailConfirmationActivity"></activity>
         <activity
             android:name=".activities.subscriptionActivity.ui.SubscriptionDetailActivity"
-            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar"></activity>
-        <activity android:name=".activities.forgotPassword.ui.DetailsConfirmationActivity" />
-        <activity android:name=".activities.forgotPassword.ui.IsThisYouActivity"></activity>
+            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />
+        <activity android:name=".activities.forgotPassword.ui.IsThisYouActivity" />
         <activity android:name=".activities.search.ui.SearchKeywordActivity" />
         <activity android:name=".activities.manageDevice.ui.ManageDeviceActivity" />
         <activity android:name=".activities.forgotPassword.ui.ForgotPasswordActivity" />
@@ -57,7 +57,6 @@
         <activity
             android:name=".activities.boxSet.ui.BoxSetDetailActivity"
             android:screenOrientation="locked" />
-
         <activity
             android:name=".activities.verification.VerificationActivity"
             android:screenOrientation="locked" />
@@ -271,9 +270,11 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="a7aeb763e54688f03f8c53dd891bed7107e7d7d2" />
-        <!--<meta-data
+        <!--
+<meta-data
             android:name="io.branch.sdk.BranchKey"
-            android:value="@string/branch_key" />-->
+            android:value="@string/branch_key" />
+        -->
         <!--
 <meta-data
             android:name="io.branch.sdk.BranchKey.test"
@@ -293,7 +294,6 @@
             android:resource="@drawable/noti_icon" /> <!-- <meta-data -->
         <!-- android:name="com.google.firebase.messaging.default_notification_color" -->
         <!-- android:resource="@color/colorPrimary" /> -->
-
         <receiver
             android:name="io.branch.referral.InstallListener"
             android:exported="true"
@@ -380,26 +380,26 @@
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
-
     </application>
 
 </manifest>

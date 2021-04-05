@@ -12,12 +12,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.astro.sott.R
+import com.astro.sott.activities.detailConfirmation.DetailConfirmationActivity
+import com.astro.sott.activities.home.HomeActivity
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivitySinUpBinding
+import com.astro.sott.networking.refreshToken.EvergentRefreshToken
+import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
+import com.astro.sott.utils.commonMethods.AppCommonMethods
+import com.astro.sott.utils.helpers.ActivityLauncher
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.CustomTextWatcher
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey
+import com.astro.sott.utils.userInfo.UserInfo
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
@@ -37,6 +45,7 @@ class SignUpActivity : AppCompatActivity() {
     private var activitySinUpBinding: ActivitySinUpBinding? = null
     private var callbackManager: CallbackManager? = null
     private var passwordVisibility = false
+    private var name: String = ""
     private var mGoogleSignInClient: GoogleSignInClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,7 +123,12 @@ class SignUpActivity : AppCompatActivity() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            searchAccountv2("Google", "sunnykadan.1994+6@gmail.com", account.id + "")
+            if (account.id != null && !account.id.equals("", ignoreCase = true) && account.email != null && !account.email.equals("", ignoreCase = true)) {
+                name = account.displayName!!
+                login("Google", account.email!!, account.id!!)
+            } else {
+                Toast.makeText(this, resources.getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show()
+            }
 
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
@@ -216,15 +230,22 @@ class SignUpActivity : AppCompatActivity() {
                             if (`object` != null) {
                                 if (`object`.has("email")) {
                                     try {
-                                        val name = `object`.getString("name")
+                                        val fbName = `object`.getString("name")
                                         val email = `object`.getString("email")
                                         val id = `object`.getString("id")
-                                        searchAccountv2("Facebook", email, id + "")
+                                        if (email != null && !email.equals("", ignoreCase = true) && id != null && !id.equals("", ignoreCase = true)) {
+                                            name = fbName
+                                            login("Facebook", email, id + "")
+                                        } else {
+                                            Toast.makeText(this@SignUpActivity, resources.getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show()
+                                        }
 
                                     } catch (e: JSONException) {
                                         e.printStackTrace()
                                     }
                                 } else {
+                                    Toast.makeText(this@SignUpActivity, resources.getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show()
+
                                     LoginManager.getInstance().logOut()
                                 }
                             }
@@ -270,6 +291,66 @@ class SignUpActivity : AppCompatActivity() {
             activitySinUpBinding?.errorPasssword?.text = getString(R.string.password_error)
 
         }
+    }
+
+    private fun login(type: String, emailMobile: String, password: String) {
+        activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+        astroLoginViewModel!!.loginUser(type, emailMobile, password).observe(this@SignUpActivity, Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
+            if (evergentCommonResponse.isStatus) {
+                UserInfo.getInstance(this).accessToken = evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.accessToken
+                UserInfo.getInstance(this).refreshToken = evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.refreshToken
+                UserInfo.getInstance(this).externalSessionToken = evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.externalSessionToken
+                KsPreferenceKey.getInstance(this).startSessionKs = evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.externalSessionToken
+                getContact()
+                astroLoginViewModel!!.addToken(UserInfo.getInstance(this).externalSessionToken)
+            } else {
+                activitySinUpBinding?.progressBar?.visibility = View.GONE
+                if (type.equals("Facebook", ignoreCase = true) || type.equals("Google", ignoreCase = true)) {
+                    if (evergentCommonResponse.errorCode.equals("eV2327", ignoreCase = true)) {
+                        val intent = Intent(this, DetailConfirmationActivity::class.java)
+                        intent.putExtra(AppLevelConstants.TYPE_KEY, type)
+                        intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, emailMobile)
+                        intent.putExtra(AppLevelConstants.PASSWORD_KEY, password)
+                        intent.putExtra("name", name)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
+
+    private fun getContact() {
+        astroLoginViewModel!!.getContact(UserInfo.getInstance(this@SignUpActivity).accessToken).observe(this@SignUpActivity, Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
+            activitySinUpBinding?.progressBar?.visibility = View.GONE
+            if (evergentCommonResponse.isStatus && evergentCommonResponse.getContactResponse.getContactResponseMessage != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!!.size > 0) {
+                UserInfo.getInstance(this).firstName = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.firstName
+                UserInfo.getInstance(this).lastName = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.lastName
+                UserInfo.getInstance(this).email = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.email
+                UserInfo.getInstance(this).cpCustomerId = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.cpCustomerID
+                UserInfo.getInstance(this).isActive = true
+                Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT).show()
+                // setCleverTap();
+                ActivityLauncher(this@SignUpActivity).homeScreen(this, HomeActivity::class.java)
+            } else {
+                if (evergentCommonResponse.errorCode.equals("eV2124", ignoreCase = true) || evergentCommonResponse.errorCode.equals("111111111", ignoreCase = true)) {
+                    EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).refreshToken).observe(this, Observer { evergentCommonResponse1: EvergentCommonResponse<*>? ->
+                        if (evergentCommonResponse.isStatus) {
+                            getContact()
+                        } else {
+                            AppCommonMethods.removeUserPrerences(this)
+                            onBackPressed()
+                        }
+                    })
+                } else {
+                    Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
     }
 
     private fun searchAccountv2(type: String, emailMobile: String, password: String) {

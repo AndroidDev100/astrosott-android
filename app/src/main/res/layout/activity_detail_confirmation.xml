@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grape_purple"
+        tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
+
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen16dp"
+            android:background="@drawable/ic_arrow_back_24px"
+            android:padding="@dimen/_6dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/back_icon">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/progressBarBlue"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></ProgressBar>
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:background="@drawable/sooka"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+            <TextView
+                android:id="@+id/forgot_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/heebo_medium"
+                android:text="@string/detail_confrm"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/logo"></TextView>
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/heebo_regular"
+                android:text="@string/please_confirm_detail"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/forgot_title"></TextView>
+
+            <LinearLayout
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_56dp"
+                android:layout_marginLeft="@dimen/dimen18dp"
+                android:layout_marginTop="@dimen/_23dp"
+                android:layout_marginRight="@dimen/dimen18dp"
+                android:background="@drawable/search_linear_bg"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description">
+
+                <EditText
+                    android:id="@+id/name_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dimen18dp"
+                    android:layout_marginRight="@dimen/dimen18dp"
+                    android:layout_weight="1.9"
+                    android:background="@null"
+                    android:fontFamily="@font/heebo_regular"
+                    android:hint="@string/user_name"
+                    android:importantForAutofill="no"
+                    android:inputType="text|textNoSuggestions"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/grey"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:textSize="@dimen/_16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_56dp"
+                android:layout_marginLeft="@dimen/dimen18dp"
+                android:layout_marginTop="@dimen/_23dp"
+                android:layout_marginRight="@dimen/dimen18dp"
+                android:background="@drawable/search_linear_bg"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name">
+
+                <EditText
+                    android:id="@+id/email_mobile_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dimen18dp"
+                    android:layout_marginRight="@dimen/dimen18dp"
+                    android:layout_weight="1.9"
+                    android:background="@null"
+                    android:enabled="false"
+                    android:fontFamily="@font/heebo_regular"
+                    android:hint="@string/email_id_mobileNo"
+                    android:importantForAutofill="no"
+                    android:inputType="text|textNoSuggestions"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/grey"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:textSize="@dimen/_16sp" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="23dp"
+                android:layout_marginLeft="16dp"
+                android:buttonTint="@color/neon_green"
+                android:gravity="center"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/email"
+                app:layout_goneMarginTop="35dp"></CheckBox>
+
+            <TextView
+                android:id="@+id/error_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please accept terms and conditions"
+                android:textColor="@color/red_live"
+                android:visibility="gone"
+                android:layout_marginLeft="@dimen/dimen26dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/checkbox"></TextView>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/heebo_regular"
+                android:text="@string/terms_and_conditions"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sp"
+                app:layout_constraintLeft_toRightOf="@id/checkbox"
+                app:layout_constraintTop_toBottomOf="@id/email"
+                app:layout_goneMarginTop="39dp"></TextView>
+
+            <TextView
+                android:id="@+id/submit"
+                android:layout_width="@dimen/dimen250dp"
+                android:layout_height="@dimen/dimen48dp"
+                android:layout_marginTop="@dimen/dimen30dp"
+                android:background="@drawable/gradient_button"
+                android:fontFamily="@font/heebo_medium"
+                android:gravity="center"
+                android:text="@string/confirm"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/checkbox"
+                app:layout_goneMarginTop="@dimen/dimen30dp"></TextView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

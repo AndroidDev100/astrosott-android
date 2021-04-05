@@ -93,7 +93,7 @@
     <string name="sub_title">Subtitle Language: </string>
     <string name="duration">Content Duration: </string>
     <string name="directors">Director/Producer: </string>
-
+    <string name="email_unavailable">Email  not Available</string>
     <string name="show_all"><u>SEE MORE</u></string>
     <string name="title_creators">Creators</string>
     <string name="no_internet_connection">No internet connection</string>
@@ -533,6 +533,7 @@
     <string name="resend_otp"><u>Resend OTP?</u></string>
     <string name="welcome_back">Welcome Back</string>
     <string name="email_id_mobileNo">Email Id / Mobile Number</string>
+    <string name="user_name">User Name</string>
     <string name="forgt_psw"><u>Forgot Password?</u></string>
     <string name="sign_in_google">Sign In With Google</string>
     <string name="sign_in_fb">Continue With Facebook</string>
@@ -542,7 +543,8 @@
     <string name="invalid_otp">Invalid OTP Entered</string>
     <string name="sign_up_text"><u>Sign Up</u></string>
     <string name="sign_in_with">or Sign In With</string>
-
+<string name="detail_confrm">Details Confirmation</string>
+    <string name="please_confirm_detail">Please confirm your details below</string>
     <string name="forget_psw">Forgot Password</string>
     <string name="new_psw_para">Please key in your new password</string>
     <string name="confirm_psw">Confirm Password</string>
