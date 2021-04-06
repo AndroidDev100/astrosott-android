@@ -27,6 +27,7 @@ public class QuickSearchGenreAdapter extends RecyclerView.Adapter<QuickSearchGen
         this.ctx=activity;
         this.dataList=data;
         this.callBack=call;
+        Log.w("selectedColor--3","in");
     }
 
     @NonNull
@@ -40,7 +41,7 @@ public class QuickSearchGenreAdapter extends RecyclerView.Adapter<QuickSearchGen
 
     @Override
     public void onBindViewHolder(@NonNull QuickSearchGenreAdapter.SingleItemHolder holder, int position) {
-
+        Log.w("selectedColor--1","in");
         RailCommonData railCommonData=dataList.get(position);
 
 //1571db

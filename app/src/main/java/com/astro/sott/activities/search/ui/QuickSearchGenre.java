@@ -113,6 +113,7 @@ public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGen
            //Log.w("genreResponse",commonResponse.toString());
             if (commonResponse!=null && commonResponse.size()>0 && commonResponse.get(0).getStatus()){
                 dataLoadedOnFragment.isDataLoaded(true);
+                Log.w("selectedColor--2","in"+"  "+commonResponse.size());
                 QuickSearchGenreAdapter adapter = new QuickSearchGenreAdapter(QuickSearchGenre.this,commonResponse, new GenreSelectionCallBack() {
                     @Override
                     public void onClick(int position, List<RailCommonData> arrayList) {
@@ -134,6 +135,7 @@ public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGen
                     }
                 });
                 getBinding().recyclerView.setAdapter(adapter);
+                getBinding().recyclerView.setLayoutManager(gridLayoutManager);
 
                 try {
                     List<SearchedKeywords> list=new ArrayList<>();
@@ -159,7 +161,7 @@ public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGen
 
        // getBinding().quickSearchBtn.setVisibility(View.VISIBLE);
     }
-
+    GridLayoutManager gridLayoutManager;
     private void UIinitialization() {
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
@@ -174,9 +176,9 @@ public class QuickSearchGenre extends BaseBindingFragment<FragmentQuickSearchGen
                 spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, AppLevelConstants.PORTRAIT_SPACING, r.getDisplayMetrics());
             }
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), spanCount);
+        gridLayoutManager = new GridLayoutManager(getActivity(), spanCount);
         getBinding().recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
-        getBinding().recyclerView.setLayoutManager(gridLayoutManager);
+
 
     }
     private void setClicks() {
