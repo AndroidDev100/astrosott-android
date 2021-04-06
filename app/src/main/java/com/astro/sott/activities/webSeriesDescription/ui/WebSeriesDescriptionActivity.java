@@ -67,6 +67,7 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.StringBuilderHolder;
 import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.userInfo.UserInfo;
+import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
@@ -77,6 +78,7 @@ import com.kaltura.client.types.UserAssetRule;
 import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +125,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private RailCommonData commonData;
     private boolean assetKey = false;
     private boolean isDtvAdded = false;
+    private List<RailCommonData> railList;
 
     @Override
     public ActivityWebSeriesDescriptionBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -624,9 +627,14 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         });
     }
 
-    public void moveToPlay(int position, RailCommonData railCommonData, int type) {
+    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<RailCommonData> railList) {
+        this.railList = railList;
         callProgressBar();
         playerChecks(railCommonData);
+    }
+
+    public void episodeCallback(List<RailCommonData> railList) {
+        this.railList = railList;
     }
 
     private void setRailBaseFragment() {
@@ -791,6 +799,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         callProgressBar();
         Intent intent = new Intent(WebSeriesDescriptionActivity.this, PlayerActivity.class);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
+        intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList);
         startActivity(intent);
     }
 

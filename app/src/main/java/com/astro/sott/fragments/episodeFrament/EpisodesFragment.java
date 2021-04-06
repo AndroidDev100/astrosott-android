@@ -32,6 +32,7 @@ import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.ContinueWatchingRemove;
+import com.astro.sott.callBacks.commonCallBacks.EpisodeCallBAck;
 import com.astro.sott.callBacks.commonCallBacks.EpisodeClickListener;
 import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
 import com.astro.sott.databinding.EpisodeFooterFragmentBinding;
@@ -57,7 +58,7 @@ import java.util.TimerTask;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentBinding> implements ContinueWatchingRemove, RemoveAdsCallBack, EpisodeClickListener {
+public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentBinding> implements ContinueWatchingRemove, RemoveAdsCallBack, EpisodeClickListener,EpisodeCallBAck {
     FirstEpisodeCallback _mClickListener;
     BottomSheetDialog dialog;
     TextView pause_download, resume_download, cancel_download, go_to_mydownload_lay;
@@ -156,6 +157,11 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
             connectionValidation(false);
         }
+    }
+
+    @Override
+    public void episodeList(List<RailCommonData> railList) {
+        ((WebSeriesDescriptionActivity) context).episodeCallback(railList);
     }
 
     class SeasonListAdapter extends RecyclerView.Adapter<SeasonListAdapter.ViewHolder> {
@@ -582,7 +588,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     private void setCLosedSeriesAdapter(List<RailCommonData> finalEpisodeList) {
         checkExpiry(list);
-        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
+        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this,this);
         getBinding().recyclerView.setAdapter(adapter);
 
         int count = adapter.getItemCount();
@@ -595,7 +601,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     }
 
     private void setOpenSeriesAdapter(List<RailCommonData> finalEpisodeList) {
-        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
+        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this,this);
         getBinding().recyclerView.setAdapter(adapter);
 
         if (seriesType.equalsIgnoreCase("open")) {
@@ -952,10 +958,12 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     }
 
     @Override
-    public void moveToPlay(int position, RailCommonData railCommonData, int type) {
-        ((WebSeriesDescriptionActivity) context).moveToPlay(position, railCommonData, type);
+    public void moveToPlay(int position, RailCommonData railCommonData, int type,List<RailCommonData> railList) {
+        ((WebSeriesDescriptionActivity) context).moveToPlay(position, railCommonData, type,railList);
 
     }
+
+
 
 
     public interface FirstEpisodeCallback {

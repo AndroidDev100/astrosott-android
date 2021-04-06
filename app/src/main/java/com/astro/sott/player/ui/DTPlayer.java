@@ -48,10 +48,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatRadioButton;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
@@ -62,7 +60,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
-import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.adapter.CatchupTvAdapter;
 import com.astro.sott.callBacks.DoubleClick;
 import com.astro.sott.callBacks.WindowFocusCallback;
@@ -85,7 +82,6 @@ import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.Network;
 import com.astro.sott.utils.helpers.NetworkChangeReceiver;
-import com.astro.sott.utils.helpers.SwipeGestureListener;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.Alarm.MyReceiver;
@@ -96,7 +92,6 @@ import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.DoubleClickListener;
-import com.astro.sott.callBacks.DragListner;
 import com.astro.sott.callBacks.PhoneListenerCallBack;
 import com.astro.sott.databinding.FragmentDtplayerBinding;
 import com.astro.sott.fragments.dialog.AlertDialogNetworkFragment;
@@ -106,7 +101,6 @@ import com.astro.sott.player.adapter.TrackItem;
 import com.astro.sott.player.houseHoldCheckManager.HouseHoldCheck;
 import com.astro.sott.repositories.player.PlayerRepository;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
-import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.DialogHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
@@ -133,7 +127,6 @@ import com.kaltura.netkit.utils.SessionProvider;
 import com.kaltura.playkit.PKMediaEntry;
 import com.kaltura.playkit.PKMediaFormat;
 import com.kaltura.playkit.PKMediaSource;
-import com.kaltura.playkit.PlayKitManager;
 import com.kaltura.playkit.Player;
 import com.kaltura.playkit.PlayerEvent;
 import com.kaltura.playkit.ads.AdController;
@@ -151,6 +144,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Formatter;
@@ -328,6 +322,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private boolean isDialogShowing = false, isAudioTracks = false, isCaption = false;
     private AudioManager mAudioManager;
     private Boolean isLivePlayer = false;
+    private List<RailCommonData> railList;
     private final BroadcastReceiver headsetRecicer = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -424,7 +419,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         isInternet = true;
         if (runningPlayer != null) {
             if (isLivePlayer) {
-                getUrl(playerURL, playerAsset, playerProgress, true, programName1);
+                getUrl(playerURL, playerAsset, playerProgress, true, programName1, railList);
             } else {
                 runningPlayer.play();
                 PrintLogging.printLog("replayOnConnect", "replayOnConnect");
@@ -492,7 +487,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
-    public void getUrl(String urlToplay, final Asset asset, int prog, Boolean isLivePlayer, String programName) {
+    public void getUrl(String urlToplay, final Asset asset, int prog, Boolean isLivePlayer, String programName, List<RailCommonData> railCommonDataList) {
         hasNextEpisode = false;
         hasEpisodesList = false;
         isPlayerStart = false;
@@ -501,13 +496,19 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         playerProgress = prog;
         programName1 = programName;
         this.asset = asset;
+        if (railCommonDataList!=null)
+        this.railList = railCommonDataList;
 
 
         isSeries = (asset.getType() == MediaTypeConstant.getEpisode(getActivity()));
         getNextEpisode(asset);
 
         if (isSeries) {
-            getBinding().name.setText("S" + seasonNumber + ":E" + episodeNumber + " \"" + asset.getName() + "\"");
+            if (seasonNumber!=0 && episodeNumber!=0) {
+                getBinding().name.setText("S" + seasonNumber + ":E" + episodeNumber + " \"" + asset.getName() + "\"");
+            }else {
+                getBinding().name.setText("\"" + asset.getName() + "\"");
+            }
         } else if (isLivePlayer) {
             getBinding().name.setText("\"" + programName + "\"");
 
@@ -627,12 +628,24 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         if (viewModel == null) {
             viewModel = ViewModelProviders.of(this).get(DTPlayerViewModel.class);
         }
-        viewModel.getNumberOfEpisodes(asset, getActivity()).observe(this, commonResponse -> {
-            if (commonResponse.getStatus()) {
-                episodesList = commonResponse.getAssetList().results.getObjects();
-                sortListWithEPSD(episodesList);
+//        viewModel.getNumberOfEpisodes(asset, getActivity()).observe(this, commonResponse -> {
+//            if (commonResponse.getStatus()) {
+//                episodesList = commonResponse.getAssetList().results.getObjects();
+//                sortListWithEPSD(episodesList);
+//            }
+//        });
+        if (railList!=null && railList.size()>0) {
+            List<Asset> assets = new ArrayList<>();
+            RailCommonData railCommonData = new RailCommonData();
+            for (int i = 0; i < railList.size(); i++) {
+                railCommonData.setObject(railList.get(i).getObject());
+                assets.add(railCommonData.getObject());
             }
-        });
+
+            episodesList = assets;
+            sortListWithEPSD(episodesList);
+        }
+
     }
 
     private void sortListWithEPSD(List<Asset> episodesList) {
@@ -678,7 +691,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 Log.d("EpisodeNumberisEqual", listEpisode + "");
                 Log.d("SeasonNumber", episodeNumber + "");
 
-                if (listEpisode == episodeNumber && listSeason == seasonNumber) {
+                if (listEpisode == episodeNumber) {
                     found = true;
                     if ((i + 1) < episodesList.size())
                         nextEpisodeCounter = i + 1;
@@ -729,12 +742,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     } else {
                         if (isProgramClicked) {
                             if (checkIsliveAsset) {
-                                getUrl(AssetContent.getURL(asset), asset, playerProgress, true, catchupLiveProgName);
+                                getUrl(AssetContent.getURL(asset), asset, playerProgress, true, catchupLiveProgName, railList);
                             } else {
-                                getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, asset.getName());
+                                getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, asset.getName(), railList);
                             }
                         } else {
-                            getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "");
+                            getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
                         }
                     }
                 } else {
@@ -776,12 +789,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             } else {
                 if (isProgramClicked) {
                     if (checkIsliveAsset) {
-                        getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, true, catchupLiveProgName);
+                        getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, true, catchupLiveProgName, railList);
                     } else {
-                        getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, DTPlayer.asset.getName());
+                        getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, DTPlayer.asset.getName(), railList);
                     }
                 } else {
-                    getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, isLivePlayer, "");
+                    getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, isLivePlayer, "", railList);
                 }
             }
         }
@@ -842,12 +855,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                                 if (isProgramClicked) {
                                     if (checkIsliveAsset) {
-                                        getUrl(AssetContent.getURL(asset), asset, playerProgress, true, catchupLiveProgName);
+                                        getUrl(AssetContent.getURL(asset), asset, playerProgress, true, catchupLiveProgName, railList);
                                     } else {
-                                        getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, asset.getName());
+                                        getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, asset.getName(), railList);
                                     }
                                 } else {
-                                    getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "");
+                                    getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
                                 }
                             }
                         });
@@ -3107,7 +3120,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             public void onClick(View v) {
                 cancelTimer();
                 getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
-                getUrl(playerURL, asset, playerProgress, isLivePlayer, "");
+                getUrl(playerURL, asset, playerProgress, isLivePlayer, "", railList);
             }
         });
 
@@ -3633,7 +3646,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             } else {
                 Log.d("PlayerPauseCalled", "else");
-                getUrl(playerURL, playerAsset, playerProgress, isLivePlayer, "");
+                getUrl(playerURL, playerAsset, playerProgress, isLivePlayer, "", railList);
                 if (adRunning) {
                     getBinding().rl1.setVisibility(View.GONE);
                     getBinding().listViewSettings.setVisibility(View.GONE);

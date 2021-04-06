@@ -124,6 +124,7 @@ public interface AppLevelConstants {
 
     String XOFFERWINDOW = "XOfferWindow";
     String RAIL_DATA_OBJECT = "railData";
+    String RAIL_LIST = "railList";
     String PROGRAM_ASSET = "program_asset";
 
 

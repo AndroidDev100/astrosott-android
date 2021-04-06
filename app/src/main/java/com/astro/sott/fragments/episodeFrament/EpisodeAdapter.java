@@ -8,13 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.R;
-import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
+import com.astro.sott.callBacks.commonCallBacks.EpisodeCallBAck;
 import com.astro.sott.callBacks.commonCallBacks.EpisodeClickListener;
 import com.astro.sott.databinding.EpisodeItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
@@ -25,7 +24,6 @@ import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaImage;
 import com.kaltura.client.types.MultilingualStringValue;
-import com.kaltura.client.types.StringValue;
 
 
 import java.util.List;
@@ -35,17 +33,20 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
     private final Activity mContext;
     private int episodeNumber = 0;
     EpisodeClickListener itemClickListener;
+    EpisodeCallBAck episodeClickListner;
     KsPreferenceKey ksPreferenceKeys;
     private long lastClickTime = 0;
     boolean isLoggedIn = false;
 
-    public EpisodeAdapter(Activity activity, List<RailCommonData> itemsList, int episodeNumber, EpisodeClickListener episodeClickListener) {
+    public EpisodeAdapter(Activity activity, List<RailCommonData> itemsList, int episodeNumber, EpisodeClickListener episodeClickListener, EpisodeCallBAck episodeCallBAck) {
         this.railList = itemsList;
         this.mContext = activity;
         this.itemClickListener = episodeClickListener;
         ksPreferenceKeys = new KsPreferenceKey(mContext);
         isLoggedIn = ksPreferenceKeys.getUserActive();
         this.episodeNumber = episodeNumber;
+        this.episodeClickListner = episodeCallBAck;
+        episodeClickListner.episodeList(railList);
     }
 
     @NonNull
@@ -158,7 +159,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
             viewHolder.watchlistItemBinding.playLay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    itemClickListener.moveToPlay(position, railList.get(position), 0);
+                    itemClickListener.moveToPlay(position, railList.get(position), 0,railList);
                 }
             });
 
