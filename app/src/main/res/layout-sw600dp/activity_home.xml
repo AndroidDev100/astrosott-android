@@ -76,7 +76,8 @@
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent">
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginBottom="@dimen/dimen42dp">
                 <FrameLayout
                     android:id="@+id/content_frame"
                     android:layout_width="match_parent"
@@ -94,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@drawable/bottom_nav_bg"
+            android:background="@drawable/bottom_nav"
             app:itemIconTint="@color/bottom_navigation_selected"
             app:itemTextColor="@color/bottom_navigation_selected"
             app:labelVisibilityMode="unlabeled"
