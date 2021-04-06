@@ -310,5 +310,21 @@ public interface AppConstants {
     public static final int TYPE_LANGUAGE =1;
     public static final int TYPE_GENRE =2;
 
+    public static final String INTRO_START = "SkipIntroStart";
+    public static final String INTRO_END = "SkipIntroEnd";
+    public static final String CREDIT_START = "SkipCreditsStart";
+    public static final String CREDIT_END = "SkipCreditsEnd";
+    public static final String RECAP_START = "SkipRecapStart";
+    public static final String RECAP_END = "SkipRecapEnd";
+
+    public static final String LABEL_INTRO = "labelIntro";
+    public static final String LABEL_CREDIT = "labelendcredit";
+
+
+
+
+
+
+
 
 }

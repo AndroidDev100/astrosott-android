@@ -621,16 +621,16 @@ public class PlayerRepository {
                         textView.setText("High Quality");
                         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_video_quality, 0, 0, 0);
                         //  getPlayerState(booleanMutableLiveData);
-                        // booleanMutableLiveData.postValue(true);
+                         booleanMutableLiveData.postValue(true);
                     } else {
                         //booleanMutableLiveData.postValue(true);
                         String selectedMedium = getSelectedIndex(2, tracks.getVideoTracks(), context);
                         if (!selectedMedium.equalsIgnoreCase("")) {
                             player.changeTrack(selectedMedium);
-                            trackListener(booleanMutableLiveData);
                             // getPlayerState(booleanMutableLiveData);
-                            booleanMutableLiveData.postValue(true);
                             textView.setText("Medium Quality");
+                            booleanMutableLiveData.postValue(true);
+                            trackListener(booleanMutableLiveData);
                             textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_medium_quality, 0, 0, 0);
                         } else {
                             //booleanMutableLiveData.postValue(true);
@@ -640,8 +640,8 @@ public class PlayerRepository {
                                 player.changeTrack(selectedLow);
                                 trackListener(booleanMutableLiveData);
                                 //  getPlayerState(booleanMutableLiveData);
-                                booleanMutableLiveData.postValue(true);
                                 textView.setText("Low Quality");
+                                booleanMutableLiveData.postValue(true);
                                 textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_low_quality, 0, 0, 0);
                             } else {
                                 booleanMutableLiveData.postValue(true);

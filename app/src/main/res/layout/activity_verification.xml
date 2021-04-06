@@ -100,7 +100,7 @@
                 android:cursorVisible="true"
                android:gravity="center_horizontal"
                 android:focusable="true"
-                android:layout_marginTop="@dimen/dimen32dp"
+                android:paddingTop="@dimen/dimen32dp"
                 android:focusableInTouchMode="true"
                 android:inputType="number"
                 android:itemBackground="@color/pin_view_bg"
