@@ -123,7 +123,7 @@
     <color name="pale_gray">#f2f2f7</color>
     <color name="thumb_color">#ff0033</color>
     <color name="seekbar_color">#262642</color>
-
+    <color name="back_b">#99151024</color>
     <color name="filter_text_selected_color">#151024</color>
     <color name="filter_text_selected_bg">#00e895</color>
     <color name="pin_error_line_color">#f42d5b</color>

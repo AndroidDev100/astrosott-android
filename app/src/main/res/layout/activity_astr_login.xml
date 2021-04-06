@@ -13,6 +13,7 @@
             android:background="@color/grape_purple"
             tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
 
+
             <ImageView
                 android:id="@+id/back_icon"
                 android:layout_width="wrap_content"

@@ -25,7 +25,7 @@
     <string name="invalid_state">Service Address: Invalid State</string>
     <string name="social_login_id_exists">Social Login Id with its type already exists</string>
     <string name="missing_param">Missing Required Parameter</string>
-    <string name="no_account_found">No account found with the given details</string>
+    <string name="no_account_found">No Accounts Found</string>
     <string name="verify_account_and_login">Please verify your account and login again</string>
     <string name="wrong_username_or_password">Wrong Username or Password</string>
     <string name="invalid_refresh_token">Invalid RefreshToken</string>
@@ -49,6 +49,14 @@
     <string name="passward_given">Your given password Shouldn\'t be \"Password\</string>
     <string name="invalid_current_password">Invalid current password</string>
     <string name="device_dont_exist">Device does not exist</string>
+    <string name="device_detail_Required">Device Detail Required</string>
+    <string name="password_policy">Password must meet password policy</string>
+    <string name="login_blocked">Your login has been blocked</string>
+    <string name="password_expired">your password has been expired.</string>
+    <string name="invalid_confirm_password">Invalid Confirm Password</string>
+    <string name="invalid_new_password">IInvalid New Password</string>
+
+    <string name="device_exceeded">Exceeded maximum device allowed to be registered</string>
     <string name="password_character">Password should contain alphabets along with Numerics or special character @#$%^+=!</string>
     <string name="password_shorter">Your password is shorter than 8 characters</string>
     <string name="password_same">New password and Confirm password should be same</string>
