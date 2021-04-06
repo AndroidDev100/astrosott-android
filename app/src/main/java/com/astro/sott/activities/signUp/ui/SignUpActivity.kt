@@ -18,18 +18,24 @@ import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.CustomTextWatcher
+import com.facebook.*
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import org.json.JSONException
+import org.json.JSONObject
 import java.lang.Double.parseDouble
 
 class SignUpActivity : AppCompatActivity() {
 
     private var astroLoginViewModel: AstroLoginViewModel? = null
     private var activitySinUpBinding: ActivitySinUpBinding? = null
+    private var callbackManager: CallbackManager? = null
     private var passwordVisibility = false
     private var mGoogleSignInClient: GoogleSignInClient? = null
 
@@ -40,7 +46,16 @@ class SignUpActivity : AppCompatActivity() {
         modelCall()
         setClicks()
         setWatcher()
+        updateWithToken(AccessToken.getCurrentAccessToken())
         setGoogleSignIn()
+        setFb()
+    }
+
+    private fun updateWithToken(currentAccessToken: AccessToken?) {
+        if (currentAccessToken != null) {
+            LoginManager.getInstance().logOut()
+        } else {
+        }
     }
 
     private fun setGoogleSignIn() {
@@ -87,16 +102,19 @@ class SignUpActivity : AppCompatActivity() {
         if (requestCode == 4001) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
+            activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
+        } else {
+            activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+            callbackManager!!.onActivityResult(requestCode, resultCode, data)
         }
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            Log.w("tag_google_signin", account.toString() + "--" + account.email + "---" + account.id + "--" + account.idToken)
-            searchAccountv2("Google", account.email +"", account.id + "")
+            searchAccountv2("Google", "sunnykadan.1994+6@gmail.com", account.id + "")
 
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
@@ -114,13 +132,14 @@ class SignUpActivity : AppCompatActivity() {
     fun setClicks() {
 
         activitySinUpBinding?.google?.setOnClickListener {
-
-            //  getBinding().signInButton.performClick();
             mGoogleSignInClient!!.signOut()
-
             val signInIntent = mGoogleSignInClient!!.signInIntent
             startActivityForResult(signInIntent, 4001)
         }
+        activitySinUpBinding?.fb?.setOnClickListener(View.OnClickListener {
+
+            activitySinUpBinding?.loginButton?.performClick()
+        })
         activitySinUpBinding?.loginBtn?.setOnClickListener(View.OnClickListener {
             onBackPressed()
         })
@@ -184,6 +203,47 @@ class SignUpActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    private fun setFb() {
+        callbackManager = CallbackManager.Factory.create()
+        LoginManager.getInstance().registerCallback(callbackManager,
+                object : FacebookCallback<LoginResult> {
+                    override fun onSuccess(loginResult: LoginResult) {
+                        // App code
+                        Log.w("fb_login", loginResult.toString() + "")
+                        val graphRequest = GraphRequest.newMeRequest(loginResult.accessToken) { `object`: JSONObject?, response: GraphResponse? ->
+                            if (`object` != null) {
+                                if (`object`.has("email")) {
+                                    try {
+                                        val name = `object`.getString("name")
+                                        val email = `object`.getString("email")
+                                        val id = `object`.getString("id")
+                                        searchAccountv2("Facebook", email, id + "")
+
+                                    } catch (e: JSONException) {
+                                        e.printStackTrace()
+                                    }
+                                } else {
+                                    LoginManager.getInstance().logOut()
+                                }
+                            }
+                        }
+                        val parameters = Bundle()
+                        parameters.putString("fields",
+                                "id,name,email")
+                        graphRequest.parameters = parameters
+                        graphRequest.executeAsync()
+                    }
+
+                    override fun onCancel() {
+                        // App code
+                    }
+
+                    override fun onError(exception: FacebookException) {
+                        // App code
+                    }
+                })
     }
 
     private fun checkPassword(type: String, emailMobile: String, password: String) {

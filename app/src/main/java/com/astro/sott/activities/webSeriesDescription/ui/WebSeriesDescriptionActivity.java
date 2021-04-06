@@ -183,7 +183,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         titleName = asset.getName();
         getMovieCrews();
         setSubtitleLanguage();
-        getDuration();
+      //  getDuration();
         if (isActive)
             isWatchlistedOrNot();
         setClicks();

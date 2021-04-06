@@ -90,9 +90,9 @@
     <string name="similar_channel">Similar Channel</string>
     <string name="title_exclusives">Exclusive</string>
     <string name="actors">Actors: </string>
-    <string name="sub_title">Subtitle Languages: </string>
-    <string name="duration">Duration: </string>
-    <string name="directors">Directors: </string>
+    <string name="sub_title">Subtitle Language: </string>
+    <string name="duration">Content Duration: </string>
+    <string name="directors">Director/Producer: </string>
 
     <string name="show_all"><u>SEE MORE</u></string>
     <string name="title_creators">Creators</string>
