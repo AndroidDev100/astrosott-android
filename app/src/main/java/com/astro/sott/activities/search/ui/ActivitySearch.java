@@ -102,11 +102,15 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 getBinding().autoRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
                 getBinding().llRecentSearchLayout.setVisibility(View.GONE);
                 if (!searchHappen){
-                    if (charSequence.length() > 2) {
+                    if (charSequence.toString().trim().length()==0){
+                       // getBinding().searchText.setText("");
+                        return;
+                    }
+                    if (charSequence.toString().trim().length() > 2) {
                         if (responseCompleted == 1) {
                             autoCompleteCounter = 0;
                             autoList.clear();
-                            hitAutoCompleteApi(charSequence);
+                            hitAutoCompleteApi(charSequence.toString().trim());
                         }
                     } else {
                         autoCompleteCounter = 0;
@@ -114,7 +118,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                     }
                 }
 
-                if (charSequence.length()>0){
+                if (charSequence.toString().trim().length()>0){
                     getBinding().clearEdt.setVisibility(View.VISIBLE);
                 }else {
                     getBinding().clearEdt.setVisibility(View.GONE);
@@ -125,6 +129,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             @Override
             public void afterTextChanged(Editable editable) {
 //                viewModel.insertRecentSearchKeywords(editable.toString());
+               // getBinding().searchText.setText("");
             }
         });
 
@@ -188,12 +193,15 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 getBinding().autoRecyclerView.setAdapter(autoAdapter);
             }
             if (autoList.size()>0){
-                if (getBinding().searchText.getText().toString() != null && getBinding().searchText.getText().toString().length()>2) {
-                    getBinding().autoRecyclerView.setVisibility(View.VISIBLE);
-                    getBinding().separator.setVisibility(View.VISIBLE);
-                }else {
+                if (!searchHappen){
+                    if (getBinding().searchText.getText().toString() != null && getBinding().searchText.getText().toString().length()>2) {
+                        getBinding().autoRecyclerView.setVisibility(View.VISIBLE);
+                        getBinding().separator.setVisibility(View.VISIBLE);
+                    }else {
 
+                    }
                 }
+
             }
 
            /* if (autoList.size()>0){
@@ -551,6 +559,11 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     @Override
     public void onItemClicked(Asset itemValue, int position) {
+        if (getBinding().autoRecyclerView.getVisibility()==View.VISIBLE){
+            getBinding().autoRecyclerView.setVisibility(View.GONE);
+            getBinding().separator.setVisibility(View.GONE);
+        }
+
         if (itemValue != null && itemValue.getType() == MediaTypeConstant.getMovie(ActivitySearch.this)) {
             getRailCommonData(itemValue);
             new ActivityLauncher(this).detailActivity(this, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);
