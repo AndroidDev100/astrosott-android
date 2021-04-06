@@ -57,7 +57,7 @@
                                 android:elevation="@dimen/dp2"
                                 android:padding="10dp"
                                 android:layout_margin="14dp"
-                                android:src="@drawable/ic_arrow_back_shadow_18_px"
+                                android:src="@drawable/ic_back"
                                 tools:ignore="ContentDescription"
                                 tools:targetApi="lollipop" />
 

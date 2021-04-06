@@ -17,7 +17,7 @@
             android:padding="8dp"
             android:id="@+id/back_icon"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:background="@drawable/ic_arrow_back_24px"
+            android:background="@drawable/ic_back"
             app:layout_constraintTop_toTopOf="parent"></ImageView>
 
         <androidx.constraintlayout.widget.ConstraintLayout

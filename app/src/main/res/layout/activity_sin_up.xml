@@ -22,7 +22,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:padding="7dp"
-                android:background="@drawable/ic_arrow_back_24px"
+                android:background="@drawable/ic_back"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"></ImageView>
 
