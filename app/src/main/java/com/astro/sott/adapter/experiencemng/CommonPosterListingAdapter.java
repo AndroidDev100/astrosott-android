@@ -13,6 +13,7 @@ import com.astro.sott.modelClasses.dmsResponse.MediaTypes;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ImageHelper;
+import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -79,10 +80,22 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
 
         }
 
-
-            AppCommonMethods.handleTitleDesc(holder.potraitItemBinding.mediaTypeLayout.metaLayout,holder.potraitItemBinding.mediaTypeLayout.lineOne,holder.potraitItemBinding.mediaTypeLayout.lineTwo,baseCategory);
+        try {
+            AppCommonMethods.handleTitleDesc(holder.potraitItemBinding.mediaTypeLayout.metaLayout,holder.potraitItemBinding.mediaTypeLayout.lineOne,holder.potraitItemBinding.mediaTypeLayout.lineTwo,baseCategory,itemsList.get(i),mContext);
             holder.potraitItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
-            holder.potraitItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
+            if (itemsList.get(i).getType()== MediaTypeConstant.getProgram(mContext)){
+                holder.potraitItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                holder.potraitItemBinding.mediaTypeLayout.lineTwo.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+            }else {
+                holder.potraitItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                holder.potraitItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
+            }
+        }catch (Exception e){
+
+        }
+
+
+           // holder.potraitItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
 
 
         //holder.potraitItemBinding.setTile(singleItem);

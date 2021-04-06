@@ -117,33 +117,39 @@
                     android:textColor="@color/grey"
                     android:textSize="@dimen/font_small" />
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="16dp"
                     android:background="@drawable/vip_gradient_button">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star_24_px"
+                        android:layout_centerInParent="true"
+                        android:id="@+id/star_icon"
+                        android:layout_marginEnd="@dimen/dimen14dp"
+                        android:layout_toStartOf="@id/vip_button_live"
+                       />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/share_margin_top"
                         android:layout_weight="1"
                         android:clickable="true"
-                        android:drawablePadding="2dp"
                         android:focusable="true"
-                        android:layout_marginStart="@dimen/dimen110dp"
-                        android:layout_marginEnd="@dimen/dimen100dp"
-                        android:drawableLeft="@drawable/ic_star_24_px"
+                        android:id="@+id/vip_button_live"
                         android:fontFamily="@font/heebo_medium"
-                        android:gravity="center"
+                        android:layout_centerInParent="true"
+                        android:layout_centerHorizontal="true"
                         android:text="@string/become_vip"
                         android:textColor="@color/white"
                         android:textSize="@dimen/font_medium_large" />
 
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -231,6 +237,13 @@
 
                         />
                 </LinearLayout>
+                <View
+                    android:id="@+id/black_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@color/egg_plant"
+                    android:layout_below="@id/tabLayout"
+                    android:visibility="gone" />
                 <View
                     android:id="@+id/indicator"
                     android:layout_width="0dp"

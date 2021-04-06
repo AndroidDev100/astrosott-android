@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingFragment;
@@ -325,6 +326,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
                     }
                 });
+                changeTabsFont();
                 getBinding().indicator.setVisibility(View.VISIBLE);
                 getBinding().blackLine.setVisibility(View.VISIBLE);
 
@@ -332,6 +334,22 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
             }
         } catch (ArithmeticException e) {
             Log.d("TAG",e+"");
+        }
+    }
+
+    private void changeTabsFont() {
+        //  Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/"+ Constants.FontStyle);
+        ViewGroup vg = (ViewGroup) getBinding().tabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setSingleLine();
+                }
+            }
         }
     }
 }

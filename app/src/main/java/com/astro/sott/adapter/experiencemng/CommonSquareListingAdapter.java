@@ -14,6 +14,7 @@ import com.astro.sott.modelClasses.dmsResponse.MediaTypes;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ImageHelper;
+import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.databinding.SquarelistingNewBinding;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
@@ -80,9 +81,16 @@ public class CommonSquareListingAdapter extends RecyclerView.Adapter<CommonSquar
 
 
             try {
-                AppCommonMethods.handleTitleDesc(holder.squareItemBinding.mediaTypeLayout.metaLayout,holder.squareItemBinding.mediaTypeLayout.lineOne,holder.squareItemBinding.mediaTypeLayout.lineTwo,baseCategory);
+                AppCommonMethods.handleTitleDesc(holder.squareItemBinding.mediaTypeLayout.metaLayout,holder.squareItemBinding.mediaTypeLayout.lineOne,holder.squareItemBinding.mediaTypeLayout.lineTwo,baseCategory,itemsList.get(i),mContext);
                 holder.squareItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
-                holder.squareItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
+                if (itemsList.get(i).getType()== MediaTypeConstant.getProgram(mContext)){
+                    holder.squareItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                    holder.squareItemBinding.mediaTypeLayout.lineTwo.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+                }else {
+                    holder.squareItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                    holder.squareItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
+                }
+               // holder.squareItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
             }catch (Exception ignored){
 
             }

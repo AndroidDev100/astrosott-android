@@ -191,12 +191,12 @@
                                 android:visibility="gone">
 
                                 <ImageView
-                                    android:id="@+id/star_icon"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:id="@+id/star_icon"
                                     android:layout_alignParentLeft="true"
                                     android:layout_centerInParent="true"
-                                    android:layout_marginStart="@dimen/_77sdp"
+                                    android:layout_toLeftOf="@+id/play_text"
                                     android:layout_marginEnd="@dimen/_8dp"
                                     android:src="@drawable/ic_star_24_px"
                                     android:visibility="gone" />

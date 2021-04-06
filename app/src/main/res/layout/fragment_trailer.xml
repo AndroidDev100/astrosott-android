@@ -16,6 +16,7 @@
             android:layout_marginTop="15dp"
             android:fontFamily="@font/heebo_regular"
             android:text="Trailers"
+            android:singleLine="true"
             android:textColor="@color/white"
             android:textSize="@dimen/font_xlarge"
             android:visibility="gone"></TextView>

@@ -15,6 +15,7 @@ import com.astro.sott.modelClasses.dmsResponse.MediaTypes;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ImageHelper;
+import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.bumptech.glide.Glide;
 import com.astro.sott.databinding.LandscapeListingNewBinding;
@@ -90,9 +91,16 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
 
             }*/
             try {
-                AppCommonMethods.handleTitleDesc(holder.landscapeItemBinding.mediaTypeLayout.metaLayout,holder.landscapeItemBinding.mediaTypeLayout.lineOne,holder.landscapeItemBinding.mediaTypeLayout.lineTwo,baseCategory);
+                AppCommonMethods.handleTitleDesc(holder.landscapeItemBinding.mediaTypeLayout.metaLayout,holder.landscapeItemBinding.mediaTypeLayout.lineOne,holder.landscapeItemBinding.mediaTypeLayout.lineTwo,baseCategory,itemsList.get(i),mContext);
                 holder.landscapeItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
-                holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
+                if (itemsList.get(i).getType()== MediaTypeConstant.getProgram(mContext)){
+                    holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                    holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+                }else {
+                    holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                    holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
+                }
+                //holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
             }catch (Exception ignored){
 
             }

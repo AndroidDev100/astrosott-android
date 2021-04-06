@@ -52,6 +52,7 @@ class ModelGenerator{
             cat.adPlatformType=i?.item?.platform
             cat.adID=i?.item?.adUnitInfo?.adId
             cat.displayOrder=i?.displayOrder
+            cat.kalturaOTTImageType=i?.kalturaOTTImageType
             cat.height=i?.height
             cat.width=i?.width
             cat.contentImageType=i?.item?.imageType

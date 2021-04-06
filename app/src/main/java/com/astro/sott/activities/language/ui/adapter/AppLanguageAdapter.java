@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.astro.sott.R;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.callBacks.commonCallBacks.ItemClickListener;
+import com.astro.sott.callBacks.commonCallBacks.SettingExpendableItemClick;
 import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
@@ -27,7 +28,7 @@ public class AppLanguageAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<String> expandableListTitle;
     private String appLanguage = "";
-    private ItemClickListener itemClickListener;
+    private SettingExpendableItemClick itemClickListener;
 
     private HashMap<String, List<String>> expandableListDetail;
 
@@ -35,7 +36,7 @@ public class AppLanguageAdapter extends BaseExpandableListAdapter {
         this.context = context;
         this.expandableListTitle = headerList;
         this.expandableListDetail = listHashMap;
-        itemClickListener = (ItemClickListener) context;
+        itemClickListener = (SettingExpendableItemClick) context;
     }
 
     @Override
@@ -80,17 +81,36 @@ public class AppLanguageAdapter extends BaseExpandableListAdapter {
                     imageView.setVisibility(View.VISIBLE);
                 }
             }
-        } else {
-            imageView.setVisibility(View.GONE);
+        } else if (listPosition==1){
+            if (expandedListPosition ==  new KsPreferenceKey(context).getAudioLanguageIndex()) {
+                imageView.setVisibility(View.VISIBLE);
+            }else {
+                imageView.setVisibility(View.GONE);
+            }
 
+        }else if (listPosition==2){
+            if (expandedListPosition ==  new KsPreferenceKey(context).getSubtitleLanguageIndex()) {
+                imageView.setVisibility(View.VISIBLE);
+            }else {
+                imageView.setVisibility(View.GONE);
+            }
+        }else {
+            imageView.setVisibility(View.GONE);
         }
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listPosition == 0) {
                     setAppLanguage(appLanguage);
-                    itemClickListener.onClick(0);
+                    itemClickListener.onClick(0,1);
 
+                }else if (listPosition==1){
+                    setAudoLanguage(expandedListPosition);
+                    itemClickListener.onClick(expandedListPosition,2);
+                }
+                else if (listPosition==2){
+                    setSubtitleLanguage(expandedListPosition);
+                    itemClickListener.onClick(expandedListPosition,3);
                 }
                 notifyDataSetChanged();
 
@@ -104,6 +124,14 @@ public class AppLanguageAdapter extends BaseExpandableListAdapter {
 //
 //        }
         return convertView;
+    }
+
+    private void setSubtitleLanguage(int expandedListPosition) {
+        new KsPreferenceKey(context).setSubtitleLanguageIndex(expandedListPosition);
+    }
+
+    private void setAudoLanguage(int expandedListPosition) {
+        new KsPreferenceKey(context).setAudioLanguageIndex(expandedListPosition);
     }
 
     private void setAppLanguage(String appLanguage) {

@@ -60,10 +60,9 @@
                     android:textSize="@dimen/font_medium_large"></TextView>
 
                 <LinearLayout
-                    android:layout_width="150dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="3dp"
+                    android:layout_marginLeft="24dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/schedule_white_outline_button"
                     android:gravity="center"
@@ -73,14 +72,16 @@
 
                     <TextView
                         android:id="@+id/start_end_time"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="@font/heebo_regular"
                         android:gravity="center"
-                        android:lineHeight="24sp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:text="jbnmjnm nmbvhxdfgvhbn"
                         android:textColor="@color/title_color"
-                        android:textSize="@dimen/font_small"></TextView>
+                        android:textSize="11sp"></TextView>
                 </LinearLayout>
 
                 <LinearLayout

@@ -501,6 +501,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         programName1 = programName;
         this.asset = asset;
         isSeries = (asset.getType() == MediaTypeConstant.getWebEpisode(getActivity()));
+        skipIntro();
         getNextEpisode(asset);
 
         if (isSeries) {
@@ -2176,6 +2177,46 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     }
 
+    private long introStartTime;
+    private int skipValue = 0;
+    private long introEndTime;
+    private long creditEndTime;
+    private String labelIntro;
+    private String labelCredit;
+    private String labelRecap;
+    private long creditStartTime;
+    private long recapStartTime;
+    private long recapEndTime;
+
+
+    private void skipIntro() {
+        labelIntro = "SKIP INTRO";
+        labelCredit = "SKIP CREDIT";
+        labelRecap="SKIP RECAP";
+        introStartTime = AssetContent.getIntroStart(playerAsset.getMetas());
+        introEndTime = AssetContent.getIntroEnd(playerAsset.getMetas());
+        creditStartTime = AssetContent.getCreditStart(playerAsset.getMetas());
+        creditEndTime = AssetContent.getCreditEnd(playerAsset.getMetas());
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recapStartTime = AssetContent.getRecapStart(playerAsset.getMetas());
+                recapEndTime = AssetContent.getRecapEnd(playerAsset.getMetas());
+
+                Log.w("introValues",introStartTime+"  "+introEndTime+"  "+creditStartTime+"  "+creditEndTime+" "+recapStartTime+" "+recapEndTime);
+
+            }
+        },5000);
+
+
+    }
+
+    private long playerTimeInSeconds(long timeMs) {
+        long totalSeconds = (timeMs) / 1000;
+        return totalSeconds;
+    }
+
     private void adsCallBackHandling(final Player player) {
 
         player.addListener(this, AdEvent.started, event -> {
@@ -2280,6 +2321,80 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
         });
+
+        player.addListener(this, PlayerEvent.playheadUpdated, event -> {
+
+            if (introStartTime != 0 && introEndTime != 0 || creditStartTime != 0 && creditEndTime != 0) {
+                Log.w("introValues",runningPlayer.getCurrentPosition()+"----"+introStartTime+"----"+playerTimeInSeconds(runningPlayer.getCurrentPosition()));
+                if (introStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introEndTime) {
+                    getBinding().skipIntro.setText(labelIntro);
+                    getBinding().skipIntro.setVisibility(View.VISIBLE);
+                    skipValue = 1;
+                    getBinding().skipRecap.setVisibility(View.GONE);
+                    getBinding().skipCredits.setVisibility(View.GONE);
+                }else {
+                    getBinding().skipIntro.setText(labelIntro);
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                    skipValue = -1;
+                }
+
+                if (recapStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > recapStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < recapEndTime) {
+                    getBinding().skipRecap.setText(labelRecap);
+                    getBinding().skipRecap.setVisibility(View.VISIBLE);
+                    skipValue = 2;
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                    getBinding().skipCredits.setVisibility(View.GONE);
+                }else {
+                    getBinding().skipRecap.setText("");
+                    getBinding().skipRecap.setVisibility(View.GONE);
+                    skipValue = -1;
+                }
+
+                if (creditStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditEndTime) {
+                    getBinding().skipCredits.setText(labelCredit);
+                    getBinding().skipCredits.setVisibility(View.VISIBLE);
+                    skipValue = 3;
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                    getBinding().skipRecap.setVisibility(View.GONE);
+                }else {
+                    getBinding().skipCredits.setText("");
+                    getBinding().skipCredits.setVisibility(View.GONE);
+                    skipValue = -1;
+                }
+
+               /* if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introStartTime) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+
+                } else if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introEndTime) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                } else if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditEndTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introEndTime) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+
+                }
+                else if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introEndTime) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                } else if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditEndTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introEndTime) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+
+                }
+                if (introEndTime == playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                }
+                if (creditStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || creditStartTime < playerTimeInSeconds(runningPlayer.getCurrentPosition()) && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditEndTime) {
+                    getBinding().skipIntro.setText(labelCredit);
+                    getBinding().skipIntro.setVisibility(View.VISIBLE);
+                    skipValue = 2;
+                }
+                if (creditEndTime == playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                }*/
+            } else {
+                getBinding().skipIntro.setVisibility(View.GONE);
+                getBinding().skipRecap.setVisibility(View.GONE);
+                getBinding().skipCredits.setVisibility(View.GONE);
+            }
+        });
+
 
         player.addListener(this, AdEvent.loaded, event -> {
             Map<String, Object> contentInfo = new HashMap<String, Object>();
@@ -2737,7 +2852,25 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             Log.d("TrackNameIs", trackName);
             Log.d("TrackNameIs", selectedTrack);
 
-            final LiveData<Boolean> booleanLiveData = viewModel.changeTrack(trackName);
+            final LiveData<Boolean> booleanLiveData = viewModel.changeInitialTrack(trackName,getBinding().quality);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (getBinding().quality.getText().toString().equalsIgnoreCase("High Quality")){
+                        trackName="High Quality";
+                    }else if (getBinding().quality.getText().toString().equalsIgnoreCase("Medium Quality")){
+                        trackName="Medium Quality";
+                    }else if (getBinding().quality.getText().toString().equalsIgnoreCase("Low Quality")){
+                        trackName="Low Quality";
+                    }
+
+                    Log.d("TrackNameIs", trackName);
+                }
+
+            },700);
+            //booleanLiveData.removeObservers(getActivity());
+
+           // getBinding().quality.setText(trackItemList.get(position).getTrackName());
         }
     }
 
@@ -2780,6 +2913,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             //   getBinding().lockIcon.setVisibility(View.GONE);
             return;
         }
+
+        if (getBinding().videoDialog.getVisibility()==View.VISIBLE){
+            return;
+        }
+
+        if (getBinding().audioDialog.getVisibility()==View.VISIBLE){
+            return;
+        }
+
+
         try {
             animationFadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
             animationFadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
@@ -2930,6 +3073,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             if (timeHandler != null)
                                 timeHandler.removeCallbacks(myRunnable);
                         }
+                        if (getBinding().videoDialog.getVisibility()==View.VISIBLE){
+                            getBinding().videoDialog.setVisibility(View.GONE);
+                        }
+                        if (getBinding().audioDialog.getVisibility()==View.VISIBLE){
+                            getBinding().audioDialog.setVisibility(View.GONE);
+                        }
                         ShowAndHideView();
                     }
 
@@ -2954,7 +3103,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().rl1.setOnClickListener(new DoubleClick(new DoubleClickListener() {
             @Override
             public void onSingleClick(View view) {
-                if (drag) {
+
                     if (isPlayerStart) {
                         if (lockEnable) {
 //                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
@@ -2971,11 +3120,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 if (timeHandler != null)
                                     timeHandler.removeCallbacks(myRunnable);
                             }
+                            if (getBinding().videoDialog.getVisibility()==View.VISIBLE){
+                                getBinding().videoDialog.setVisibility(View.GONE);
+                            }
+                              if (getBinding().audioDialog.getVisibility()==View.VISIBLE){
+                                getBinding().audioDialog.setVisibility(View.GONE);
+                            }
                             ShowAndHideView();
                         }
 
                     }
-                }
 
             }
 
@@ -2990,6 +3144,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 try {
                     gestureDetector.onTouchEvent(motionEvent);
+
 
                 } catch (Exception e) {
 
@@ -3090,6 +3245,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
                     getBinding().videoDialog.setVisibility(View.GONE);
                 }
+                Log.w("audioAndSubtitle", "in");
                 chooseAudio();
             }
         });
@@ -3102,6 +3258,26 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 cancelTimer();
                 getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
                 getUrl(playerURL, asset, playerProgress, isLivePlayer, "");
+            }
+        });
+
+
+        getBinding().skipIntro.setOnClickListener(v -> {
+            getBinding().skipIntro.setVisibility(View.GONE);
+            if (introEndTime > playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
+                runningPlayer.seekTo((introEndTime * 1000) + 500);
+            }
+        });
+
+        getBinding().skipCredits.setOnClickListener(v -> {
+            //Please add logic of next episode Here
+        });
+
+
+        getBinding().skipRecap.setOnClickListener(v -> {
+            getBinding().skipRecap.setVisibility(View.GONE);
+            if (recapEndTime > playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
+                runningPlayer.seekTo((recapEndTime * 1000) + 500);
             }
         });
 
@@ -3313,12 +3489,17 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private void chooseAudio() {
 
         if (getBinding().audioQuality.recycleviewAudio != null) {
+            Log.w("audioAndSubtitle", "in2");
             getBinding().audioQuality.recycleviewAudio.setLayoutManager(new LinearLayoutManager(baseActivity));
             getBinding().audioQuality.recycleviewAudio.setNestedScrollingEnabled(false);
             viewModel.loadAudioWithPlayer().observe(this, audioTracks -> {
+                Log.w("audioAndSubtitle", "in3");
                 if (audioTracks != null && audioTracks.size() > 0) {
+                    Log.w("audioAndSubtitle", "in4");
                     viewModel.getAudioTrackItems().observe(baseActivity, trackItems -> {
+                        Log.w("audioAndSubtitle", "in5");
                         if (trackItems.length > 0) {
+                            Log.w("audioAndSubtitle", "in6");
                             audioList = trackItems;
 //                            for (int i = 0; i < trackItems.length; i++) {
 //                                if (audioTrackName == "") {
@@ -3338,9 +3519,17 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                                }
 //
 //                            }
-                            AudioAdapter audioAdapter = new AudioAdapter(trackItems);
-                            getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
-                        } else {
+                            Log.w("audioAndSubtitle", trackItems+"   "+audioTracks.get(0).getLabel());
+                            if (audioTracks.get(0).getLabel()!=null){
+                                AudioAdapter audioAdapter = new AudioAdapter(trackItems);
+                                getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
+                            }else {
+                                getBinding().audioQuality.recycleviewAudio.setVisibility(View.GONE);
+                                getBinding().audioQuality.titleAudio.setVisibility(View.GONE);
+                            }
+
+                        }else {
+                            Log.w("audioAndSubtitle", "in7");
                             getBinding().audioQuality.recycleviewAudio.setVisibility(View.GONE);
                             getBinding().audioQuality.titleAudio.setVisibility(View.GONE);
                         }
@@ -3407,11 +3596,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private void chooseVideoquality() {
 
         final RecyclerView recycleview;
-        callHandler();
-        // dialogQuality = new Dialog(getBaseActivity(), R.style.AppAlertTheme);
-        //  dialogQuality.setContentView(R.layout.layout_dialog_settings);
-        //  dialogQuality.setTitle(getString(R.string.title_video_quality));
-        // recycleview = dialogQuality.findViewById(R.id.recycleview);
+        //callHandler();
+       // dialogQuality = new Dialog(getBaseActivity(), R.style.AppAlertTheme);
+      //  dialogQuality.setContentView(R.layout.layout_dialog_settings);
+      //  dialogQuality.setTitle(getString(R.string.title_video_quality));
+       // recycleview = dialogQuality.findViewById(R.id.recycleview);
 
 //        Button closeButton = dialogQuality.findViewById(R.id.close);
 //        closeButton.setOnClickListener(v -> dialogQuality.cancel());
@@ -4230,7 +4419,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             return trackItemList.size();
         }
     }
-
+    int captionItemClick=0;
     class CaptionAdapter extends RecyclerView.Adapter<ViewHolder3> {
         final TrackItem[] tracks;
         int finalInde;
@@ -4265,6 +4454,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             finalInde = index;
             holder.tracksCaption.setOnClickListener(view -> {
+                captionItemClick=1;
                 captionList[finalInde].setSelected(false);
                 captionList[position].setSelected(true);
                 captionName = captionList[position].getTrackName();
@@ -4275,12 +4465,28 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 notifyDataSetChanged();
             });
-            if (captionList[position].getTrackName().equalsIgnoreCase(captionName)) {
-                holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
-            } else {
-                holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
-            }
+            try {
 
+                Log.w("subtitleS", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey());
+                if (captionItemClick == 0) {
+                    // Log.w("colorChange 2",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
+                    if (new KsPreferenceKey(baseActivity).getSubtitleLanguageIndex() > -1 && !new KsPreferenceKey(baseActivity).getSubTitleLangKey().equalsIgnoreCase("")) {
+                        if (tracks[position].getTrackDescription().trim().equalsIgnoreCase(new KsPreferenceKey(baseActivity).getSubTitleLangKey().trim())) {
+                            holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
+                        } else {
+                            holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
+                        }
+                    }
+                } else {
+                    if (captionList[position].getTrackName().equalsIgnoreCase(captionName)) {
+                        holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
+                    } else {
+                        holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
+                    }
+                }
+            }catch (Exception ignored){
+
+            }
 
         }
 
@@ -4290,9 +4496,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
+    int audioItemClick=0;
     class AudioAdapter extends RecyclerView.Adapter<ViewHolder2> {
         final TrackItem[] tracks;
-
         private AudioAdapter(TrackItem[] audioTracks) {
             this.tracks = audioTracks;
 
@@ -4321,6 +4527,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 }
                 int finalIndex = index;
                 holder.audio.setOnClickListener(view -> {
+                    audioItemClick = 1;
                     tracks[finalIndex].setSelected(false);
                     tracks[position].setSelected(true);
                     audioTrackName = tracks[position].getTrackName();
@@ -4332,12 +4539,40 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
                 });
-                if (tracks[position].getTrackName().equalsIgnoreCase(audioTrackName)) {
-                    holder.audioTracks.setTextColor(getResources().getColor(R.color.green));
-                } else {
-                    holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
+
+                try {
+                    Log.w("colorChange", tracks[position].getTrackDescription() + "" + new KsPreferenceKey(baseActivity).getAudioLangKey());
+                    if (audioItemClick == 0) {
+                        // Log.w("colorChange 2",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
+                        if (new KsPreferenceKey(baseActivity).getAudioLanguageIndex() > -1 && !new KsPreferenceKey(baseActivity).getAudioLangKey().equalsIgnoreCase("")) {
+                            //  Log.w("colorChange 3",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
+                            if (tracks[position].getTrackDescription().trim().equalsIgnoreCase(new KsPreferenceKey(baseActivity).getAudioLangKey().trim())) {
+                                Log.w("colorChange 5", tracks[position].getTrackName() + "  " + new KsPreferenceKey(baseActivity).getAudioLangKey());
+                                holder.audioTracks.setTextColor(getResources().getColor(R.color.green));
+                            } else {
+                                Log.w("colorChange 6", tracks[position].getTrackName() + "  " + new KsPreferenceKey(baseActivity).getAudioLangKey());
+                                holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
+                            }
+                        } else {
+                            Log.w("colorChange 4", tracks[position].getTrackName() + "  " + new KsPreferenceKey(baseActivity).getAudioLangKey());
+                            if (tracks[position].getTrackName().equalsIgnoreCase(audioTrackName)) {
+                                holder.audioTracks.setTextColor(getResources().getColor(R.color.green));
+                            } else {
+                                holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
+                            }
+                        }
+
+                    } else {
+                        if (tracks[position].getTrackName().equalsIgnoreCase(audioTrackName)) {
+                            holder.audioTracks.setTextColor(getResources().getColor(R.color.green));
+                        } else {
+                            holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
+                        }
+                    }
+                }catch (Exception ignored){
+
                 }
-            }
+                }
 
 
         }

@@ -100,8 +100,8 @@
                         android:layout_marginEnd="@dimen/dimen16dp"
                         android:drawableLeft="@drawable/ic_play_concurrency_2472"
                         android:drawablePadding="@dimen/dimen16dp"
+
                         android:fontFamily="@font/heebo_regular"
-                        android:gravity="center"
                         android:text="@string/concurrency"
                         android:textColor="@color/title_color"
                         android:textSize="@dimen/_16sp" />
