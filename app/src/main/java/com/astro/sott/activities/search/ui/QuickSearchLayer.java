@@ -187,10 +187,16 @@ public class QuickSearchLayer {
                 }
 
                 Log.w("colorSize",colorMap.size()+"   "+railList.size());
-                colorMap.forEach((idx, color) -> {
+               /* colorMap.forEach((idx, color) -> {
                     System.out.println(idx + "\t====>\t" + color );
                     railList.get(idx).setSelectedColor(color);
-                });
+                });*/
+
+                for (Map.Entry<Integer, String> entry : colorMap.entrySet()) {
+                    Integer key = entry.getKey();
+                    String value = entry.getValue();
+                    railList.get(key).setSelectedColor(value);
+                }
             }
         }catch (Exception e){
             Log.e("Error",e.getMessage());
