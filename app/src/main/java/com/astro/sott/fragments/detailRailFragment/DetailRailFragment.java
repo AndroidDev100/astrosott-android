@@ -163,7 +163,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     private void getRefId(final int type) {
         if (!TextUtils.isEmpty(externalId)) {
             getTrailer(externalId, type);
-        }else {
+        } else {
             callYouMayAlsoLike();
         }
     }
@@ -248,7 +248,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
         }
         trailerFragmentViewModel.setTrailerData(trailerData);
         trailerFragmentViewModel.setHighLightsData(highlightsData);
-        if (asset.getType() == MediaTypeConstant.getMovie(getActivity())) {
+        if (asset.getType() == MediaTypeConstant.getMovie(getActivity()) || asset.getType() == MediaTypeConstant.getCollection(getActivity())) {
             if (trailerData.size() > 0) {
                 trailerFragmentType = 1;
             }
@@ -281,7 +281,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
             DetailPagerAdapter detailPagerAdapter = new DetailPagerAdapter(getChildFragmentManager(), getActivity(), railCommonData, isTrailerCount, trailerFragmentType);
             getBinding().pager.setAdapter(detailPagerAdapter);
             getBinding().pager.disableScroll(true);
-            Log.e("TrailerCount",isTrailerCount+"");
+            Log.e("TrailerCount", isTrailerCount + "");
 
             if ((isTrailerCount > 0)) {
 
@@ -290,7 +290,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                 getBinding().tabLayout.post(new Runnable() {
                     @Override
                     public void run() {
-                        if((getBinding().tabLayout.getTabCount() > 0 ) ){
+                        if ((getBinding().tabLayout.getTabCount() > 0)) {
                             indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
                         }
                         Log.d("TabCount", getBinding().tabLayout.getTabCount() + "");
@@ -333,7 +333,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                 getBinding().tabLayout.setVisibility(View.VISIBLE);
             }
         } catch (ArithmeticException e) {
-            Log.d("TAG",e+"");
+            Log.d("TAG", e + "");
         }
     }
 

@@ -538,12 +538,8 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     }
 
     private void getMediaType(Asset asset, RailCommonData railCommonData) {
-        if (asset.getType() == MediaTypeConstant.getTrailer(BoxSetDetailActivity.this)) {
-            trailor_url = AssetContent.getTrailorUrl(asset);
-            getRefId(1, asset);
-        } else {
+
             setMovieMetaData(asset, 0);
-        }
     }
 
 

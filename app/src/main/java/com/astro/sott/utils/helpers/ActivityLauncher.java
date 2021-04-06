@@ -435,8 +435,10 @@ public class ActivityLauncher {
     }
 
     private void mediaTypeCheck(RailCommonData itemsList, int layoutType) {
-        if (itemsList.getObject().getType() == MediaTypeConstant.getSeries(activity) || itemsList.getObject().getType() == MediaTypeConstant.getCollection(activity)) {
+        if (itemsList.getObject().getType() == MediaTypeConstant.getSeries(activity)) {
             new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, itemsList, layoutType);
+        } else if (itemsList.getObject().getType() == MediaTypeConstant.getCollection(activity)) {
+            new ActivityLauncher(activity).boxSetDetailActivity(activity, itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getMovie(activity)) {
             new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getShortFilm(activity)) {
