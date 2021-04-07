@@ -480,6 +480,7 @@
     <string name="version_more">Version1.045b</string>
     <string name="siginup_more">Sign In / Sign Up</string>
     <string name="guest_user">Guest user</string>
+    <string name="free_sooka">Free Sooka</string>
     <string name="manage_subscription">Manage Subscriptions</string>
     <string name="partner_billing">Partner Billing</string>
     <string name="subscribe_more">Subscribe</string>
@@ -543,7 +544,7 @@
     <string name="invalid_otp">Invalid OTP Entered</string>
     <string name="sign_up_text"><u>Sign Up</u></string>
     <string name="sign_in_with">or Sign In With</string>
-<string name="detail_confrm">Details Confirmation</string>
+    <string name="detail_confrm">Details Confirmation</string>
     <string name="please_confirm_detail">Please confirm your details below</string>
     <string name="forget_psw">Forgot Password</string>
     <string name="new_psw_para">Please key in your new password</string>
