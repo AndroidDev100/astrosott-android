@@ -9,8 +9,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.astro.sott.baseModel.RecommendationRailFragment;
+import com.astro.sott.fragments.ShowFragment.ui.ShowFragment;
 import com.astro.sott.fragments.episodeFrament.EpisodesFragment;
 import com.astro.sott.fragments.trailerFragment.TrailerFragment;
+import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.R;
@@ -88,6 +90,47 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
                 }
             }
 
+        } else if (railData.getObject().getType() == MediaTypeConstant.getCollection(mContext)) {
+            if (adapterSize == 3) {
+                if (position == 0) {
+                    return setShowFragment();
+                } else if (position == 1) {
+                    return setTrailerFragment();
+                } else {
+                    return setRecommendationFragment();
+                }
+            } else if (adapterSize == 2) {
+                if (TabsData.getInstance().getMovieShows() == null && TabsData.getInstance().getSeriesShows() == null) {
+                    if (position == 0) {
+                        return setTrailerFragment();
+                    } else {
+                        return setRecommendationFragment();
+                    }
+                } else if (TabsData.getInstance().getYouMayAlsoLikeData() == null) {
+                    if (position == 0) {
+                        return setShowFragment();
+                    } else {
+                        return setTrailerFragment();
+                    }
+                } else {
+                    if (position == 0) {
+                        return setShowFragment();
+                    } else {
+                        return setRecommendationFragment();
+                    }
+                }
+            } else {
+                if (TabsData.getInstance().getMovieShows() == null && TabsData.getInstance().getSeriesShows() == null) {
+                    if (TabsData.getInstance().getYouMayAlsoLikeData() == null) {
+                        return setTrailerFragment();
+                    } else {
+                        return setRecommendationFragment();
+
+                    }
+                } else {
+                    return setShowFragment();
+                }
+            }
         } else {
             if (fragmentType != 0) {
                 if (position == 0) {
@@ -132,6 +175,14 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
         return trailerFragment;
     }
 
+    public Fragment setShowFragment() {
+        ShowFragment showFragment = new ShowFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(AppLevelConstants.RAIL_DATA_OBJECT, railData);
+        showFragment.setArguments(bundle);
+        return showFragment;
+    }
+
     @Override
     public int getCount() {
         return adapterSize;
@@ -169,7 +220,6 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
             } else if (fragmentType == 6) {
                 if (position == 0) {
                     return mContext.getString(R.string.episode_title);
-
                 } else if (position == 1) {
                     return mContext.getString(R.string.trailer_more);
                 } else {
@@ -178,6 +228,76 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
                 }
             } else {
                 return mContext.getString(R.string.related);
+            }
+
+        } else if (railData.getObject().getType() == MediaTypeConstant.getCollection(mContext)) {
+            if (adapterSize == 3) {
+                if (position == 0) {
+                    return mContext.getString(R.string.shows);
+                } else if (position == 1) {
+                    if (fragmentType == 1) {
+                        return mContext.getString(R.string.trailer_title);
+                    } else if (fragmentType == 2) {
+                        return mContext.getString(R.string.trailer_more);
+
+                    } else {
+                        return mContext.getString(R.string.highlights);
+                    }
+                } else {
+                    return mContext.getString(R.string.related);
+                }
+            } else if (adapterSize == 2) {
+                if (TabsData.getInstance().getMovieShows() == null && TabsData.getInstance().getSeriesShows() == null) {
+                    if (position == 0) {
+                        if (fragmentType == 1) {
+                            return mContext.getString(R.string.trailer_title);
+                        } else if (fragmentType == 2) {
+                            return mContext.getString(R.string.trailer_more);
+
+                        } else {
+                            return mContext.getString(R.string.highlights);
+                        }
+                    } else {
+                        return mContext.getString(R.string.related);
+                    }
+                } else if (TabsData.getInstance().getYouMayAlsoLikeData() == null) {
+                    if (position == 0) {
+                        return mContext.getString(R.string.shows);
+                    } else {
+                        if (fragmentType == 1) {
+                            return mContext.getString(R.string.trailer_title);
+                        } else if (fragmentType == 2) {
+                            return mContext.getString(R.string.trailer_more);
+
+                        } else {
+                            return mContext.getString(R.string.highlights);
+                        }
+                    }
+                } else {
+                    if (position == 0) {
+                        return mContext.getString(R.string.shows);
+                    } else {
+                        return mContext.getString(R.string.related);
+                    }
+                }
+            } else {
+                if (TabsData.getInstance().getMovieShows() == null && TabsData.getInstance().getSeriesShows() == null) {
+                    if (TabsData.getInstance().getYouMayAlsoLikeData() == null) {
+                        if (fragmentType == 1) {
+                            return mContext.getString(R.string.trailer_title);
+                        } else if (fragmentType == 2) {
+                            return mContext.getString(R.string.trailer_more);
+
+                        } else {
+                            return mContext.getString(R.string.highlights);
+                        }
+                    } else {
+                        return mContext.getString(R.string.related);
+
+                    }
+                } else {
+                    return mContext.getString(R.string.shows);
+                }
             }
 
         } else {

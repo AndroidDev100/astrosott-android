@@ -33,6 +33,7 @@ import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.databinding.BoxSetDetailBinding;
 import com.astro.sott.databinding.MovieScreenBinding;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
+import com.astro.sott.fragments.detailRailFragment.ui.BoxSetDetailFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
@@ -404,7 +405,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                     } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                         if (xofferWindowValue) {
                             runOnUiThread(() -> {
-                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_button));
+                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                             });
@@ -539,7 +540,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
 
     private void getMediaType(Asset asset, RailCommonData railCommonData) {
 
-            setMovieMetaData(asset, 0);
+        setMovieMetaData(asset, 0);
     }
 
 
@@ -606,11 +607,11 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
 
     private void setRailBaseFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        DetailRailFragment detailRailFragment = new DetailRailFragment();
+        BoxSetDetailFragment boxSetDetailFragment = new BoxSetDetailFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(AppLevelConstants.RAIL_DATA_OBJECT, railData);
-        detailRailFragment.setArguments(bundle);
-        fm.beginTransaction().replace(R.id.rail_fragment, detailRailFragment).commitNow();
+        boxSetDetailFragment.setArguments(bundle);
+        fm.beginTransaction().replace(R.id.rail_fragment, boxSetDetailFragment).commitNow();
     }
 
     private void modelCall() {

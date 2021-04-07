@@ -1946,6 +1946,63 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
     }
 
+    public void getBoxSetShows(String ref_id, int assetType, TrailerAssetCallBack callBack) {
+        clientSetupKs();
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        String one = "(and asset_type='";
+        String two = "' ParentRefId ~ '";
+        String three = "')";
+        String kSQL = one + assetType + two + ref_id + three;
+        searchAssetFilter.setKSql(kSQL);
+        DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
+        dynamicOrderBy.setName(AppLevelConstants.KEY_TITLE_SORT);
+        dynamicOrderBy.orderBy("META_ASC");
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(20);
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Asset>> result) {
+                if (result.isSuccess()) {
+                    if (result.results != null && result.results.getObjects() != null) {
+                        if (result.results.getTotalCount() > 0) {
+                            callBack.getTrailorAsset(true, result.results.getObjects());
+                        } else {
+                            callBack.getTrailorAsset(false, null);
+                        }
+                    } else {
+                        callBack.getTrailorAsset(false, null);
+                    }
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getTrailorAsset(ref_id, assetType, callBack);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        callBack.getTrailorAsset(false, null);
+                                    }
+                                }
+                            });
+                        else {
+                            callBack.getTrailorAsset(false, null);
+                        }
+                    } else {
+                        callBack.getTrailorAsset(false, null);
+                    }
+
+
+                }
+            }
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
     public void getTrailorAsset(String ref_id, int assetType, TrailerAssetCallBack callBack) {
         clientSetupKs();
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
@@ -3444,79 +3501,79 @@ public class KsServices {
                 try {
 
 
-                ResponseDmsModel responseDmsModel = response.body();
-                if (responseDmsModel != null && response.body() != null) {
-                    if (response.body().getParams().getGateways() != null) {
-                        StringBuilder stringBuilder = new StringBuilder(response.body().getParams().getGateways().getJsonGW());
-                        stringBuilder.append(activity.getString(R.string.suffix_api_v3));
-                        Log.e("Phonex Base Url", stringBuilder.toString());
-                        KsPreferenceKey.getInstance(activity).setKalturaPhoenixUrl(stringBuilder.toString());
+                    ResponseDmsModel responseDmsModel = response.body();
+                    if (responseDmsModel != null && response.body() != null) {
+                        if (response.body().getParams().getGateways() != null) {
+                            StringBuilder stringBuilder = new StringBuilder(response.body().getParams().getGateways().getJsonGW());
+                            stringBuilder.append(activity.getString(R.string.suffix_api_v3));
+                            Log.e("Phonex Base Url", stringBuilder.toString());
+                            KsPreferenceKey.getInstance(activity).setKalturaPhoenixUrl(stringBuilder.toString());
+                        }
                     }
-                }
-                SharedPrefHelper sharedPrefHelper = SharedPrefHelper.getInstance(activity);
-                Gson gson = new Gson();
+                    SharedPrefHelper sharedPrefHelper = SharedPrefHelper.getInstance(activity);
+                    Gson gson = new Gson();
 
 
-                if (responseDmsModel == null) {
-                    return;
-                }
+                    if (responseDmsModel == null) {
+                        return;
+                    }
 
-                ArrayList<FilterLanguages> fliterLanguageList = new ArrayList<>();
-                for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getFilterLanguages().entrySet()) {
-                    FilterLanguages levels = new FilterLanguages();
-                    levels.setKey(entry.getKey());
-                    levels.setValue(entry.getValue().getAsString());
-                    levels.setSelected(false);
-                    fliterLanguageList.add(levels);
-                }
+                    ArrayList<FilterLanguages> fliterLanguageList = new ArrayList<>();
+                    for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getFilterLanguages().entrySet()) {
+                        FilterLanguages levels = new FilterLanguages();
+                        levels.setKey(entry.getKey());
+                        levels.setValue(entry.getValue().getAsString());
+                        levels.setSelected(false);
+                        fliterLanguageList.add(levels);
+                    }
 
-                responseDmsModel.setFilterLanguageList(fliterLanguageList);
+                    responseDmsModel.setFilterLanguageList(fliterLanguageList);
 
-                ArrayList<AudioLanguages> audioLanguageList = new ArrayList<>();
-                for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getAudioLanguages().entrySet()) {
-                    AudioLanguages levels = new AudioLanguages();
-                    levels.setKey(entry.getKey());
-                    levels.setValue(entry.getValue().getAsString());
-                    audioLanguageList.add(levels);
-                }
+                    ArrayList<AudioLanguages> audioLanguageList = new ArrayList<>();
+                    for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getAudioLanguages().entrySet()) {
+                        AudioLanguages levels = new AudioLanguages();
+                        levels.setKey(entry.getKey());
+                        levels.setValue(entry.getValue().getAsString());
+                        audioLanguageList.add(levels);
+                    }
 
-                responseDmsModel.setAudioLanguageList(audioLanguageList);
-                Log.w("SubtitleLanguage", responseDmsModel.getAudioLanguageList().get(0).getKey());
+                    responseDmsModel.setAudioLanguageList(audioLanguageList);
+                    Log.w("SubtitleLanguage", responseDmsModel.getAudioLanguageList().get(0).getKey());
 
-                ArrayList<SubtitleLanguages> subtitleLanguageList = new ArrayList<>();
-                for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
-                    SubtitleLanguages levels = new SubtitleLanguages();
-                    levels.setKey(entry.getKey());
-                    levels.setValue(entry.getValue().getAsString());
-                    subtitleLanguageList.add(levels);
-                }
+                    ArrayList<SubtitleLanguages> subtitleLanguageList = new ArrayList<>();
+                    for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
+                        SubtitleLanguages levels = new SubtitleLanguages();
+                        levels.setKey(entry.getKey());
+                        levels.setValue(entry.getValue().getAsString());
+                        subtitleLanguageList.add(levels);
+                    }
 
-                responseDmsModel.setSubtitleLanguageList(subtitleLanguageList);
-                Log.w("SubtitleLanguage", responseDmsModel.getSubtitleLanguageList().get(0).getKey());
+                    responseDmsModel.setSubtitleLanguageList(subtitleLanguageList);
+                    Log.w("SubtitleLanguage", responseDmsModel.getSubtitleLanguageList().get(0).getKey());
 
 
-                ArrayList<FilterValues> filterValuesList = new ArrayList<>();
-                for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
-                    FilterValues levels = new FilterValues();
-                    levels.setKey(entry.getKey());
-                    levels.setValue(entry.getValue().getAsString());
-                    filterValuesList.add(levels);
-                }
+                    ArrayList<FilterValues> filterValuesList = new ArrayList<>();
+                    for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
+                        FilterValues levels = new FilterValues();
+                        levels.setKey(entry.getKey());
+                        levels.setValue(entry.getValue().getAsString());
+                        filterValuesList.add(levels);
+                    }
 
-                responseDmsModel.setFilterValuesList(filterValuesList);
-                Log.w("searchValues->>", new Gson().toJson(filterValuesList));
+                    responseDmsModel.setFilterValuesList(filterValuesList);
+                    Log.w("searchValues->>", new Gson().toJson(filterValuesList));
 
-                ArrayList<ParentalRatingLevels> parentalRatingLevels = new ArrayList<>();
+                    ArrayList<ParentalRatingLevels> parentalRatingLevels = new ArrayList<>();
 
-                for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getParentalRatingLevels().entrySet()) {
-                    ParentalRatingLevels levels = new ParentalRatingLevels();
-                    levels.setKey(entry.getKey());
-                    levels.setValue(entry.getValue().getAsInt());
-                    parentalRatingLevels.add(levels);
+                    for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getParentalRatingLevels().entrySet()) {
+                        ParentalRatingLevels levels = new ParentalRatingLevels();
+                        levels.setKey(entry.getKey());
+                        levels.setValue(entry.getValue().getAsInt());
+                        parentalRatingLevels.add(levels);
 
-                }
-                responseDmsModel.setParentalRatingLevels(parentalRatingLevels);
-                Log.d("ParentalLevel", new Gson().toJson(parentalRatingLevels));
+                    }
+                    responseDmsModel.setParentalRatingLevels(parentalRatingLevels);
+                    Log.d("ParentalLevel", new Gson().toJson(parentalRatingLevels));
 
 
                /* ArrayList<ParentalLevels> parentalLevels = new ArrayList<>();
@@ -3556,21 +3613,21 @@ public class KsServices {
                     responseDmsModel.setParentalDescriptions(descriptions);
                     responseDmsModel.setMappingArrayList(parentalMappingArray);*/
 
-                //responseDmsModel.setParentalLevels(parentalLevels);
-                String json = gson.toJson(responseDmsModel);
-                sharedPrefHelper.setString(AppLevelConstants.DMS_RESPONSE, json);
-                sharedPrefHelper.setString("DMS_Date", "" + System.currentTimeMillis());
-                KsPreferenceKey.getInstance(activity).setLowBitrateMaxLimit(responseDmsModel.getParams().getLowBitRateMaxLimit());
-                KsPreferenceKey.getInstance(activity).setMediumBitrateMaxLimit(responseDmsModel.getParams().getMediumBitRateMaxLimit());
-                KsPreferenceKey.getInstance(activity).setHighBitrateMaxLimit(responseDmsModel.getParams().getHighBitRatemaxLimit());
+                    //responseDmsModel.setParentalLevels(parentalLevels);
+                    String json = gson.toJson(responseDmsModel);
+                    sharedPrefHelper.setString(AppLevelConstants.DMS_RESPONSE, json);
+                    sharedPrefHelper.setString("DMS_Date", "" + System.currentTimeMillis());
+                    KsPreferenceKey.getInstance(activity).setLowBitrateMaxLimit(responseDmsModel.getParams().getLowBitRateMaxLimit());
+                    KsPreferenceKey.getInstance(activity).setMediumBitrateMaxLimit(responseDmsModel.getParams().getMediumBitRateMaxLimit());
+                    KsPreferenceKey.getInstance(activity).setHighBitrateMaxLimit(responseDmsModel.getParams().getHighBitRatemaxLimit());
 
                    /* KsPreferenceKey.getInstance(activity).setDefaultEntitlement(responseDmsModel.getParams().getDefaultEntitlement());
                     KsPreferenceKey.getInstance(activity).setATBpaymentGatewayId(responseDmsModel.getParams().getATBpaymentGatewayId());
                     KsPreferenceKey.getInstance(activity).setSubscriptionOffer(responseDmsModel.getParams().getSubscriptionOffer());
                     KsPreferenceKey.getInstance(activity).setRoot(responseDmsModel.getParams().getCategories().getRoot());*/
-                Log.d("ParentalLevel", FileFormatHelper.getDash_widevine(activity));
-                callBack.configuration(true);
-                }catch (Exception e){
+                    Log.d("ParentalLevel", FileFormatHelper.getDash_widevine(activity));
+                    callBack.configuration(true);
+                } catch (Exception e) {
 
                 }
 

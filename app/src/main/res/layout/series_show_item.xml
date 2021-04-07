@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="@dimen/_98sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:background="@color/transparentColor"
+        android:orientation="vertical">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="@dimen/_98sdp"
+            android:layout_height="@dimen/_148sdp"
+            app:cardCornerRadius="9dp">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/landscape"
+                android:scaleType="fitXY"></ImageView>
+
+            <include
+                android:id="@+id/metas"
+                layout="@layout/metas_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="top|right"
+                android:visibility="visible"></include>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/lanscape_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/card_view"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/heebo_regular"
+            android:maxLines="1"
+            android:textColor="@color/white"></TextView>
+
+
+    </RelativeLayout>
+</layout>

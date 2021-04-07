@@ -116,6 +116,12 @@ public class ConvivaManager {
             contentInfo.put(CHANNEL, railData.getObject().getName());
 
         } else {
+            if (AssetContent.getProvider(railData.getObject().getTags()).equalsIgnoreCase("")) {
+                contentInfo.put(BRAND, AssetContent.getProvider(railData.getObject().getTags()));
+            } else {
+                contentInfo.put(BRAND, "NA");
+            }
+            contentInfo.put(BRAND, AssetContent.getProvider(railData.getObject().getTags()));
             if (!AssetContent.getKeyworddata(railData.getObject().getTags()).equalsIgnoreCase("")) {
                 contentInfo.put(CHANNEL, AssetContent.getKeyworddata(railData.getObject().getTags()));
             } else {
@@ -139,7 +145,7 @@ public class ConvivaManager {
 
         }
         contentInfo.put(UTM_URL, "NA");
-        contentInfo.put(BRAND, "4.8.3");
+        //
         contentInfo.put(CATEGORY_TYPE, AppCommonMethods.getAssetType(railData.getObject().getType(), context));
         contentInfo.put(APP_NAME, "SOTT Android");
         contentInfo.put(APP_VERSION, BuildConfig.VERSION_NAME);
@@ -154,7 +160,6 @@ public class ConvivaManager {
         }
 
 
-        contentInfo.put("c3.cm.id", railData.getObject().getId());
         contentInfo.put(ConvivaSdkConstants.PLAYER_NAME, "SOTT Android");
         //  videoAnalytics.reportPlaybackRequested(contentInfo);
         ConvivaManager.getConvivaVideoAnalytics(context).reportPlaybackRequested(contentInfo);

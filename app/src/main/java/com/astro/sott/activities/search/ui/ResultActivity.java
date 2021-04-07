@@ -1,11 +1,14 @@
 package com.astro.sott.activities.search.ui;
 
 import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,7 @@ import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionAct
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.callBacks.commonCallBacks.CheckLiveProgram;
+import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.R;
@@ -44,7 +48,7 @@ import java.util.List;
 
 public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
     private boolean mIsLoading = true;
-    private  boolean isScrolling = false;
+    private boolean isScrolling = false;
     private int mScrollY;
     private SearchModel allResult;
     private ResultViewModel viewModel;
@@ -60,7 +64,7 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
 
 
     private void modelCall() {
-        Log.e("Result ","Activity");
+        Log.e("Result ", "Activity");
         viewModel = ViewModelProviders.of(this).get(ResultViewModel.class);
         UIinitialization();
 
@@ -87,7 +91,7 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
         StringBuilderHolder.getInstance().clear();
         StringBuilderHolder.getInstance().append(getResources().getString(R.string.all) + " ");
         StringBuilderHolder.getInstance().append(allResult.getHeaderTitle() + "s");
-        StringBuilderHolder.getInstance().append(" "+getResources().getString(R.string.results));
+        StringBuilderHolder.getInstance().append(" " + getResources().getString(R.string.results));
         StringBuilderHolder.getInstance().append(" (" + allResult.getTotalCount() + ")");
         getBinding().toolbar.tvSearchResultHeader.setText(StringBuilderHolder.getInstance().getText());
 
@@ -101,9 +105,9 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
 //        getBinding().resultRecycler.setLayoutManager(mLayoutManager);
 
         boolean isTablet = this.getResources().getBoolean(R.bool.isTablet);
-        if(isTablet){
-            getBinding().resultRecycler.setLayoutManager(new GridLayoutManager(this,5));
-        }else {
+        if (isTablet) {
+            getBinding().resultRecycler.setLayoutManager(new GridLayoutManager(this, 5));
+        } else {
 
             getBinding().resultRecycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         }
@@ -163,6 +167,11 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
                             new ActivityLauncher(ResultActivity.this).detailActivity(ResultActivity.this, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
 //                        new ActivityLauncher(ResultActivity.this).detailActivity(ResultActivity.this, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);
 
+                    } else if (itemValue.getType() == MediaTypeConstant.getCollection(ResultActivity.this)) {
+                        getRailCommonData(itemValue);
+                        if (railCommonData.getImages().size() == itemValue.getImages().size())
+                            new ActivityLauncher(ResultActivity.this).boxSetDetailActivity(ResultActivity.this, railCommonData, AppConstants.Rail5);
+
                     } else if (itemValue.getType() == MediaTypeConstant.getSeries(ResultActivity.this)) {
                         getRailCommonData(itemValue);
                         //new ToastHandler(activity).show("Short Film");
@@ -207,7 +216,7 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
                                                 new ActivityLauncher(ResultActivity.this).catchUpActivity(ResultActivity.this, CatchupActivity.class, railCommonData);
                                             } else {
                                                 getProgramRailCommonData(itemValue, AppLevelConstants.PROGRAM_CLICKED);
-                                              //  new ActivityLauncher(ResultActivity.this).forwardeEPGActivity(ResultActivity.this, ForwardedEPGActivity.class, railCommonData);
+                                                //  new ActivityLauncher(ResultActivity.this).forwardeEPGActivity(ResultActivity.this, ForwardedEPGActivity.class, railCommonData);
                                             }
                                         }
                                     } else {
@@ -255,7 +264,7 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
                                 counter++;
                                 isScrolling = true;
                                 mScrollY += dy;
-                               connectionObserver();
+                                connectionObserver();
 
                             }
                         }
@@ -268,6 +277,7 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
 
 
     }
+
     private void noConnectionLayout() {
         getBinding().noConnectionLayout.setVisibility(View.VISIBLE);
 

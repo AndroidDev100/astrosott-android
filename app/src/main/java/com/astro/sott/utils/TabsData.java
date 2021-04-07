@@ -10,7 +10,7 @@ import java.util.List;
 public class TabsData {
 
     private static TabsData tabsData;
-    private List<Asset> trailerData;
+    private List<Asset> trailerData,movieShows,seriesShows;
     private List<Asset> highlightsData;
     private String sortType;
     private List<RailCommonData> youMayAlsoLikeData;
@@ -27,6 +27,14 @@ public class TabsData {
         return tabsData;
     }
 
+    public void setSeriesShows(List<Asset> seriesShows) {
+        this.seriesShows = seriesShows;
+    }
+
+    public List<Asset> getSeriesShows() {
+        return seriesShows;
+    }
+
     public String getSortType() {
         return sortType;
     }
@@ -37,6 +45,14 @@ public class TabsData {
 
     public List<Integer> getSeasonList() {
         return seasonList;
+    }
+
+    public List<Asset> getMovieShows() {
+        return movieShows;
+    }
+
+    public void setMovieShows(List<Asset> movieShows) {
+        this.movieShows = movieShows;
     }
 
     public void setSeasonList(List<Integer> seasonList) {

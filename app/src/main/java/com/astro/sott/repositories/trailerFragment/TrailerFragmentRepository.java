@@ -38,6 +38,20 @@ public class TrailerFragmentRepository {
         return trailerAsset;
     }
 
+    public LiveData<List<Asset>> getShowFromBoxSet(Context context, String refId, int assetType) {
+        MutableLiveData<List<Asset>> trailerAsset = new MutableLiveData<>();
+        new KsServices(context).getBoxSetShows(refId, assetType, new TrailerAssetCallBack() {
+            @Override
+            public void getTrailorAsset(boolean status, List<Asset> assetList) {
+                if (status) {
+                    trailerAsset.postValue(assetList);
+                } else {
+                    trailerAsset.postValue(null);
+                }
+            }
+        });
+        return trailerAsset;
+    }
 
 
     public LiveData<List<Asset>> getHighlightAsset(Context context, String refId, int assetType) {

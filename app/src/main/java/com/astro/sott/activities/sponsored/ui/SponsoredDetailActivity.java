@@ -32,6 +32,7 @@ import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.databinding.BoxSetDetailBinding;
 import com.astro.sott.databinding.SponsoredDetailBinding;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
+import com.astro.sott.fragments.detailRailFragment.ui.BoxSetDetailFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
@@ -598,17 +599,17 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
             openShareDialouge();
         });
         // setRailFragment();
-        // setRailBaseFragment();
+        setRailBaseFragment();
     }
 
 
     private void setRailBaseFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        DetailRailFragment detailRailFragment = new DetailRailFragment();
+        BoxSetDetailFragment boxSetDetailFragment = new BoxSetDetailFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(AppLevelConstants.RAIL_DATA_OBJECT, railData);
-        detailRailFragment.setArguments(bundle);
-        fm.beginTransaction().replace(R.id.rail_fragment, detailRailFragment).commitNow();
+        boxSetDetailFragment.setArguments(bundle);
+        fm.beginTransaction().replace(R.id.rail_fragment, boxSetDetailFragment).commitNow();
     }
 
     private void modelCall() {
