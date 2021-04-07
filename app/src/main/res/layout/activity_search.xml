@@ -315,7 +315,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
-                            android:background="@drawable/ic_arrow_back_24px"
+                            android:background="@drawable/ic_back"
                             android:contentDescription="@string/back_icon" />
                     </LinearLayout>
 

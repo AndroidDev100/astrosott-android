@@ -394,7 +394,12 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     public void setUiForLogout() {
-        getBinding().tvVIPUser.setText(getResources().getString(R.string.guest_user));
+        if (UserInfo.getInstance(getActivity()).isActive()) {
+            getBinding().tvVIPUser.setText(getResources().getString(R.string.free_sooka));
+        } else {
+            getBinding().tvVIPUser.setText(getResources().getString(R.string.guest_user));
+
+        }
         getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
         getBinding().tvSubscribeNow.setText(getResources().getString(R.string.subscibe_now));
         getBinding().subscribe.setText(getResources().getString(R.string.subscribe_more));

@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/back_icon"
         android:layout_marginStart="@dimen/_14sdp"
-        android:src="@drawable/ic_arrow_back_24px"
+        android:src="@drawable/ic_back"
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/_17sdp"
         />
