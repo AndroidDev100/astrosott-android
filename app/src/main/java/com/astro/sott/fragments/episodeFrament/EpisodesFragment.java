@@ -2,10 +2,9 @@ package com.astro.sott.fragments.episodeFrament;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
@@ -38,12 +36,13 @@ import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
 import com.astro.sott.databinding.EpisodeFooterFragmentBinding;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.constants.AppConstants;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.kaltura.android.exoplayer2.util.Log;
+import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.MultilingualStringValueArray;
@@ -54,9 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentBinding> implements ContinueWatchingRemove, RemoveAdsCallBack, EpisodeClickListener,EpisodeCallBAck {
     FirstEpisodeCallback _mClickListener;
@@ -308,7 +304,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 getBinding().seasonText.setText(closedSeriesData.get(0).getTitle());
 
                 seriesNumberList = TabsData.getInstance().getSeasonList();
-                _mClickListener.onFirstEpisodeData(TabsData.getInstance().getClosedSeriesData());
+                _mClickListener.onFirstEpisodeData(TabsData.getInstance().getClosedSeriesData(), AppLevelConstants.CLOSE);
                 setClosedUIComponets(TabsData.getInstance().getClosedSeriesData());
             } else {
                 getOpenSeriesData();
@@ -389,7 +385,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 getBinding().seasonText.setText("EPISODE 1 - " + total);
             }
             getBinding().season.setEnabled(false);
-            _mClickListener.onFirstEpisodeData(TabsData.getInstance().getOpenSeriesData());
+            _mClickListener.onFirstEpisodeData(TabsData.getInstance().getOpenSeriesData(),AppLevelConstants.OPEN);
             setUIComponets(TabsData.getInstance().getOpenSeriesData());
         }
 
@@ -967,7 +963,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
 
     public interface FirstEpisodeCallback {
-        public void onFirstEpisodeData(List<AssetCommonBean> railCommonData);
+        public void onFirstEpisodeData(List<AssetCommonBean> railCommonData, String open);
     }
 
 

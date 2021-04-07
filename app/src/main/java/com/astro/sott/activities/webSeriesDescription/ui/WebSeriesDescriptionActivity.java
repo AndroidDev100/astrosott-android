@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,11 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
-import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
-import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.webSeriesDescription.viewModel.WebSeriesDescriptionViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.VIUChannel;
@@ -58,7 +54,6 @@ import com.astro.sott.databinding.ActivityWebSeriesDescriptionBinding;
 import com.astro.sott.player.houseHoldCheckManager.HouseHoldCheck;
 import com.astro.sott.player.ui.PlayerActivity;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
-import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.DialogHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
@@ -1395,7 +1390,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     @Override
-    public void onFirstEpisodeData(List<AssetCommonBean> railCommonData) {
+    public void onFirstEpisodeData(List<AssetCommonBean> railCommonData, String checkSeries) {
         if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
             if (TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
                 viewModel.getEpisodeToPlay(assetId).observe(this, assetHistory -> {
@@ -1404,6 +1399,16 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                             if (railAsset != null) {
                                 assetToPlay = railAsset;
                                 checkForPlayButtonCondition();
+                                if (checkSeries.equalsIgnoreCase(AppLevelConstants.OPEN)){
+                                   int seasonNumber = AssetContent.getSpecificSeason(railAsset.getObject().getMetas());
+                                   if (seasonNumber!=0)
+                                       GetSeasonEpisode(seasonNumber,assetToPlay);
+                                }else {
+                                    int seasonNumber = AssetContent.getSpecificSeason(railAsset.getObject().getMetas());
+                                    if (seasonNumber!=0)
+                                        GetSeasonEpisode(seasonNumber,assetToPlay);
+                                }
+
                             } else {
                                 assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
                                 checkForPlayButtonCondition();
@@ -1422,6 +1427,17 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             }
         }
 
+    }
+
+    private void GetSeasonEpisode(int seasonNumber, RailCommonData assetToPlay) {
+        viewModel.callSeasonEpisodesBingeWatch(railData.getObject(), railData.getObject().getType(), 1, TabsData.getInstance().getSeasonList(), seasonNumber, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
+
+            if (assetCommonBeans.get(0).getStatus()) {
+
+            } else {
+            }
+
+        });
     }
 
     private void checkForPlayButtonCondition() {

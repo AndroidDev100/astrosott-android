@@ -152,6 +152,10 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
         return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType,sortType);
     }
 
+    public LiveData<List<AssetCommonBean>> callSeasonEpisodesBingeWatch(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType, String sortType) {
+        return EpisodesLayer.getInstance().getEpisodesListBingeWatch(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType,sortType);
+    }
+
     public LiveData<AssetCommonBean> getChannelList(int screen_id) {
         return ChannelLayer.getInstance().getChannelList(getApplication().getApplicationContext(), screen_id);
     }

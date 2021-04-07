@@ -421,6 +421,8 @@ public interface AppLevelConstants {
     String SEARCH_GENRE_CONSTATNT = "FilterGenre='";
     String SEARCH_ISSPONSORED_CONSTATNT = "IsSponsored";
     String FILTER_LANGUAGE_CONSTANT = "FilterLanguage='";
+    String OPEN = "open";
+    String CLOSE = "close";
 
 
 }

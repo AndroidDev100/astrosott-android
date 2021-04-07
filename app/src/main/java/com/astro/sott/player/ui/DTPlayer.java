@@ -648,18 +648,18 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void sortListWithEPSD(List<Asset> episodesList) {
 
-        Collections.sort(episodesList, new Comparator<Asset>() {
-            @Override
-            public int compare(Asset p1, Asset p2) {
-                int seasonNumber = AssetContent.getSpecificSeason(p1.getMetas());
-                int seasonNumber2 = AssetContent.getSpecificSeason(p2.getMetas());
-
-                int episodeNumber = AssetContent.getSpecificEpisode(p1.getMetas());
-                int episodeNumber2 = AssetContent.getSpecificEpisode(p2.getMetas());
-
-                return new CompareToBuilder().append(seasonNumber, seasonNumber2).append(episodeNumber, episodeNumber2).toComparison();
-            }
-        });
+//        Collections.sort(episodesList, new Comparator<Asset>() {
+//            @Override
+//            public int compare(Asset p1, Asset p2) {
+//                int seasonNumber = AssetContent.getSpecificSeason(p1.getMetas());
+//                int seasonNumber2 = AssetContent.getSpecificSeason(p2.getMetas());
+//
+//                int episodeNumber = AssetContent.getSpecificEpisode(p1.getMetas());
+//                int episodeNumber2 = AssetContent.getSpecificEpisode(p2.getMetas());
+//
+//                return new CompareToBuilder().append(seasonNumber, seasonNumber2).append(episodeNumber, episodeNumber2).toComparison();
+//            }
+//        });
         try {
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
@@ -681,14 +681,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         hasEpisodesList = true;
         if (episodesList.size() > 0) {
             for (int i = 0; i < episodesList.size(); i++) {
-                int listEpisode = AssetContent.getSpecificEpisode(episodesList.get(i).getMetas());
+//                int listEpisode = AssetContent.getSpecificEpisode(episodesList.get(i).getMetas());
+                long listEpisode = episodesList.get(i).getId();
                 //  if (listSeason == seasonNumber) {
                 //   if(episodesList.get(i).getId()==asset.getId()){
 
-                Log.d("EpisodeNumberisEqual", listEpisode + "");
-                Log.d("SeasonNumber", episodeNumber + "");
 
-                if (listEpisode == episodeNumber) {
+
+                if (asset.getId() == listEpisode) {
                     found = true;
                     if ((i + 1) < episodesList.size())
                         nextEpisodeCounter = i + 1;
