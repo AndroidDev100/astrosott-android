@@ -3441,6 +3441,9 @@ public class KsServices {
                 PrintLogging.printLog(this.getClass(), "Dms Log response", "" + response.toString());
                 // Log.e("Mytag", "" + response.body().getParams().getMediaTypes().getMovie());
                 PrintLogging.printLog(this.getClass(), "", "DMS" + "--" + response.isSuccessful());
+                try {
+
+
                 ResponseDmsModel responseDmsModel = response.body();
                 if (responseDmsModel != null && response.body() != null) {
                     if (response.body().getParams().getGateways() != null) {
@@ -3567,7 +3570,9 @@ public class KsServices {
                     KsPreferenceKey.getInstance(activity).setRoot(responseDmsModel.getParams().getCategories().getRoot());*/
                 Log.d("ParentalLevel", FileFormatHelper.getDash_widevine(activity));
                 callBack.configuration(true);
+                }catch (Exception e){
 
+                }
 
             }
 
