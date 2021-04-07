@@ -45,13 +45,11 @@ public class EpisodesLayer {
 
     public LiveData<List<AssetCommonBean>> getEpisodesList(Context context, Asset asset,
                                                            int assetType, int counter, List<Integer> seasonNumberList, int seasonCounter, int layoutType,String sortType) {
-        Log.d("frfrfrfrfrf",new Gson().toJson("Calling"));
         responseList = new ArrayList<>();
         assetCommonList = new ArrayList<>();
         final MutableLiveData<List<AssetCommonBean>> connection = new MutableLiveData<>();
         assetCommonBean = new AssetCommonBean();
         seriesId = asset.getExternalId();
-        Log.d("frfrfrfrfrf",new Gson().toJson(seriesId));
         KsServices ksServices = new KsServices(context);
         ksServices.callSeasonEpisodes(counter, seriesId, assetType, seasonNumberList, seasonCounter,sortType, (status, commonResponse) -> {
 
@@ -70,13 +68,11 @@ public class EpisodesLayer {
 
     public LiveData<List<AssetCommonBean>> getEpisodesListBingeWatch(Context context, Asset asset,
                                                            int assetType, int counter, List<Integer> seasonNumberList, int seasonCounter, int layoutType,String sortType) {
-        Log.d("frfrfrfrfrf",new Gson().toJson("Calling"));
         responseList = new ArrayList<>();
         assetCommonList = new ArrayList<>();
         final MutableLiveData<List<AssetCommonBean>> connection = new MutableLiveData<>();
         assetCommonBean = new AssetCommonBean();
         seriesId = asset.getExternalId();
-        Log.d("frfrfrfrfrf",new Gson().toJson(seriesId));
         KsServices ksServices = new KsServices(context);
         ksServices.callSeasonEpisodesForBingeWatch(counter, seriesId, assetType, seasonNumberList, seasonCounter,sortType, (status, commonResponse) -> {
 

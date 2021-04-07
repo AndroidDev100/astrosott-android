@@ -75,7 +75,7 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
                 ImageHelper.getInstance(viewHolder.scheduleItemBinding.image.getContext()).loadImageToPotrait(viewHolder.scheduleItemBinding.image, final_url, R.drawable.square1);
             }
         }
-        viewHolder.scheduleItemBinding.startEndTime.setText(AppCommonMethods.setTime(commonData.getObject(), 1) + " - " + AppCommonMethods.setTime(commonData.getObject(), 1));
+        viewHolder.scheduleItemBinding.startEndTime.setText(AppCommonMethods.setTime(commonData.getObject(), 1) + " - " + AppCommonMethods.setTime(commonData.getObject(), 0));
         viewHolder.scheduleItemBinding.descriptionText.setText(commonData.getObject().getDescription());
         //viewHolder.scheduleItemBinding.descriptionText.collapse();
         String stTime = AppCommonMethods.getProgramTime(commonData.getObject(), 1);

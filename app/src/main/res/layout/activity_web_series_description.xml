@@ -477,7 +477,7 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_arrow_back_shadow_18_px"
+                        android:background="@drawable/ic_back"
                         android:contentDescription="@string/back_icon"
 
                         tools:ignore="ContentDescription" />

@@ -142,6 +142,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         layoutType = AppLevelConstants.Rail3;
         if (getIntent().getExtras() != null) {
             railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
+
             if (railData != null) {
 
                 getDatafromBack();
@@ -181,7 +182,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         titleName = asset.getName();
         getMovieCrews();
         setSubtitleLanguage();
-      //  getDuration();
+        //  getDuration();
         if (isActive)
             isWatchlistedOrNot();
         setClicks();
@@ -1392,22 +1393,22 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     @Override
     public void onFirstEpisodeData(List<AssetCommonBean> railCommonData, String checkSeries) {
         if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
-            if (TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
+            if (UserInfo.getInstance(this).isActive() && TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
                 viewModel.getEpisodeToPlay(assetId).observe(this, assetHistory -> {
                     if (assetHistory != null && assetHistory.getAssetId() != null) {
                         viewModel.getSpecificAsset(assetHistory.getAssetId() + "").observe(this, railAsset -> {
                             if (railAsset != null) {
-                                assetToPlay = railAsset;
-                                checkForPlayButtonCondition();
+
                                 if (checkSeries.equalsIgnoreCase(AppLevelConstants.OPEN)){
-                                   int seasonNumber = AssetContent.getSpecificSeason(railAsset.getObject().getMetas());
-                                   if (seasonNumber!=0)
-                                       GetSeasonEpisode(seasonNumber,assetToPlay);
+                                   int episodeNumber = AssetContent.getSpecificEpisode(railAsset.getObject().getMetas());
+                                   if (episodeNumber!=0)
+                                       GetEpisodeListWithoutSeason();
                                 }else {
                                     int seasonNumber = AssetContent.getSpecificSeason(railAsset.getObject().getMetas());
-                                    if (seasonNumber!=0)
                                         GetSeasonEpisode(seasonNumber,assetToPlay);
                                 }
+                                assetToPlay = railAsset;
+                                checkForPlayButtonCondition();
 
                             } else {
                                 assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
@@ -1429,12 +1430,38 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     }
 
+    private void GetEpisodeListWithoutSeason() {
+        viewModel.callEpisodes(railData.getObject(), railData.getObject().getType(), 1, 0, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
+
+            if (assetCommonBeans.get(0).getStatus()) {
+                if (railList!=null && railList.size()>0) {
+                    railList.clear();
+                }
+                railList.addAll(assetCommonBeans.get(0).getRailAssetList());
+            } else {
+                if (railList!=null && railList.size()>0) {
+                    railList.clear();
+                }
+                railList = null;
+            }
+
+        });
+    }
+
     private void GetSeasonEpisode(int seasonNumber, RailCommonData assetToPlay) {
         viewModel.callSeasonEpisodesBingeWatch(railData.getObject(), railData.getObject().getType(), 1, TabsData.getInstance().getSeasonList(), seasonNumber, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
 
-            if (assetCommonBeans.get(0).getStatus()) {
-
+            if (assetCommonBeans.get(0).getStatus() && assetCommonBeans.size()>0) {
+                //loadedList.addAll(assetCommonBeans.get(0).getRailAssetList());
+                if (railList!=null && railList.size()>0) {
+                    railList.clear();
+                }
+                railList.addAll(assetCommonBeans.get(0).getRailAssetList());
             } else {
+                if (railList!=null && railList.size()>0) {
+                    railList.clear();
+                }
+                railList = null;
             }
 
         });

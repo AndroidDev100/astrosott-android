@@ -105,7 +105,7 @@ class EvergentServices {
         var json = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty("country", "MY")
-        if (type.equals("email", true) || type.equals("Google", true)||type.equals("Facebook", true)) {
+        if (type.equals("email", true) || type.equals("Google", true) || type.equals("Facebook", true)) {
             json.addProperty(EMAIL, emailMobile)
 
         } else {
@@ -241,7 +241,7 @@ class EvergentServices {
 
     }
 
-    fun createUser(context: Context, type: String, emailMobile: String, password: String, evergentCreateUserCallback: EvergentCreateUserCallback) {
+    fun createUser(context: Context, type: String, emailMobile: String, password: String, name: String, evergentCreateUserCallback: EvergentCreateUserCallback) {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
@@ -263,6 +263,7 @@ class EvergentServices {
         } else if (type.equals("Facebook", true) || type.equals("Google", true)) {
             json.addProperty("email", emailMobile)
             json.addProperty("customerUsername", emailMobile)
+            json.addProperty("firstName", name)
             json.addProperty("socialLoginID", password)
             json.addProperty("socialLoginType", type)
         }
@@ -336,8 +337,9 @@ class EvergentServices {
             json.addProperty("contactPassword", password)
 
 
-        } else if (type.equals("social", true)) {
-
+        } else if (type.equals("Facebook", true) || type.equals("Google", true)) {
+            json.addProperty("socialLoginID", password)
+            json.addProperty("socialLoginType", type)
         }
         devicejson.addProperty("serialNo", getDeviceId(context.contentResolver))
         devicejson.addProperty("deviceName", Build.DEVICE)

@@ -75,7 +75,7 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
                 audioList.add(audioLanguages.getKey());
         }
         appLanguageList.add("English");
-        appLanguageList.add("Malay");
+      //  appLanguageList.add("Malay");
 
         for (SubtitleLanguages subtitleLanguages : subtitleLanguageList) {
             if (subtitleLanguages.getKey() != null && !subtitleLanguages.getKey().equalsIgnoreCase(""))

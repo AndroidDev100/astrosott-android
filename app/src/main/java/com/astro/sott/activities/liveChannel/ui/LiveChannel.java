@@ -706,7 +706,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     Log.d("tabLayout", getBinding().tabLayout.getWidth() + "");
                     Log.d("indicator", indicatorWidth + "");
                     //Assign new width
-                    LinearLayout.LayoutParams indicatorParams = (LinearLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                   RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
                     indicatorParams.width = indicatorWidth;
                     getBinding().indicator.setLayoutParams(indicatorParams);
                 }
@@ -714,7 +714,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
-                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
                     //Multiply positionOffset with indicatorWidth to get translation
                     float translationOffset = (positionOffset + i) * (indicatorWidth);
                     params.leftMargin = (int) translationOffset;
@@ -734,7 +734,10 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
                 }
             });
+
             getBinding().indicator.setVisibility(View.VISIBLE);
+            getBinding().blackLine.setVisibility(View.VISIBLE);
+
             getBinding().tabLayout.setVisibility(View.VISIBLE);
         }
         /*if (getResources().getBoolean(R.bool.isTablet)) {
