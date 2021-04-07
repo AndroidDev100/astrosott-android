@@ -13,11 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.detailConfirmation.DetailConfirmationActivity;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
-import com.astro.sott.activities.splash.ui.SplashActivity;
 import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
@@ -37,7 +37,6 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -49,11 +48,8 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-
-import static com.google.android.gms.auth.api.credentials.CredentialPickerConfig.Prompt.SIGN_IN;
 
 
 public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBinding> implements View.OnClickListener {
@@ -63,6 +59,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private GoogleSignInClient mGoogleSignInClient;
     private CallbackManager callbackManager;
     private boolean passwordVisibility = false;
+    private String name = "";
     private final String MOBILE_REGEX = "^[0-9]*$";
     private final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -97,7 +94,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
     private void setFb() {
         callbackManager = CallbackManager.Factory.create();
-      //  LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL));
+        //  LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL));
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -109,13 +106,23 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                             if (object != null) {
                                 if (object.has("email")) {
                                     try {
-                                        String name = object.getString("name");
+                                        String fbname = object.getString("name");
                                         String email = object.getString("email");
+                                        String id = object.getString("id");
+                                        email_mobile = email;
+                                        type = "Facebook";
+                                        if (email_mobile != null && !email_mobile.equalsIgnoreCase("") && id != null && !id.equalsIgnoreCase("")) {
+                                            name = fbname;
+                                            login(id + "");
+                                        } else {
+                                            Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                                        }
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                 } else {
+                                    Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
                                     LoginManager.getInstance().logOut();
                                 }
                             }
@@ -181,14 +188,19 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.w("tag_google_signin", account + "--" + account.getEmail() + "---" + account.getId() + "--" + account.getIdToken());
+            type = "Google";
+            if (account.getId() != null && !account.getId().equalsIgnoreCase("") && account.getEmail() != null && !account.getEmail().equalsIgnoreCase("")) {
+                name = account.getDisplayName();
+                email_mobile = account.getEmail();
+                login(account.getId());
+            } else {
+                Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
 
+            }
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            // updateUI(null);
+            Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -296,11 +308,27 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
+                if (type.equalsIgnoreCase("Facebook") || type.equalsIgnoreCase("Google")) {
+                    if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2327")) {
+                        Intent intent = new Intent(this, DetailConfirmationActivity.class);
+                        intent.putExtra(AppLevelConstants.TYPE_KEY, type);
+                        intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);
+                        intent.putExtra(AppLevelConstants.PASSWORD_KEY, password);
+                        intent.putExtra("name", name);
+                        startActivity(intent);
 
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
     }
+
 
     private void getContact() {
         astroLoginViewModel.getContact(UserInfo.getInstance(this).getAccessToken()).observe(this, evergentCommonResponse -> {
@@ -328,7 +356,6 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     });
                 } else {
                     Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-
                 }
 
             }

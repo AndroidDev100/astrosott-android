@@ -2070,7 +2070,9 @@ string chip_text
 string clear_text_end_icon_content_description
 string country_invalid
 string country_mandatory
+string device_detail_Required
 string device_dont_exist
+string device_exceeded
 string donot_meet_international_standard
 string duplicate_account_rejected
 string email_exceed
@@ -2085,12 +2087,14 @@ string genric_failure
 string hide_bottom_view_on_scroll_behavior
 string icon_content_description
 string invalid_account
+string invalid_confirm_password
 string invalid_contactid
 string invalid_country
 string invalid_current_password
 string invalid_expire_otp
 string invalid_gender
 string invalid_mobile
+string invalid_new_password
 string invalid_refresh_token
 string invalid_salutation
 string invalid_session
@@ -2099,6 +2103,7 @@ string invalid_state
 string invalid_zipcode
 string item_view_role_description
 string last_name_exceed
+string login_blocked
 string logout
 string material_slider_range_end
 string material_slider_range_start
@@ -2147,7 +2152,9 @@ string otp_cannot_empty
 string passward_given
 string password_character
 string password_exceed
+string password_expired
 string password_length_atleast
+string password_policy
 string password_same
 string password_shorter
 string password_toggle_content_description

@@ -13,6 +13,7 @@
             android:background="@color/grape_purple"
             tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
 
+
             <ImageView
                 android:id="@+id/back_icon"
                 android:layout_width="wrap_content"
@@ -20,7 +21,7 @@
                 android:layout_marginLeft="@dimen/dimen16dp"
                 android:layout_marginTop="@dimen/dimen16dp"
                 android:paddingEnd="7dp"
-                android:background="@drawable/ic_arrow_back_24px"
+                android:background="@drawable/ic_back"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"></ImageView>
 

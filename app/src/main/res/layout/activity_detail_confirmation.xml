@@ -7,32 +7,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grape_purple"
-       >
+        tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
 
         <ImageView
+            android:id="@+id/back_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:padding="8dp"
-            android:id="@+id/back_icon"
-            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen16dp"
             android:background="@drawable/ic_back"
+            android:padding="@dimen/_6dp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"></ImageView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/back_icon">
 
             <ProgressBar
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:elevation="5dp"
+                android:theme="@style/progressBarBlue"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -49,158 +49,150 @@
                 app:layout_constraintTop_toTopOf="parent"></ImageView>
 
             <TextView
-                android:id="@+id/isthatYou_title"
+                android:id="@+id/forgot_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2dp"
                 android:fontFamily="@font/heebo_medium"
-                android:text="@string/is_this_you"
+                android:text="@string/detail_confrm"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_18sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/logo"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/logo"></TextView>
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/heebo_regular"
-                android:text="@string/is_that_you_para"
+                android:text="@string/please_confirm_detail"
                 android:textColor="@color/white"
-                android:maxLines="2"
-                android:textAlignment="center"
-                android:layout_marginLeft="@dimen/margin46dp"
-                android:layout_marginRight="@dimen/margin46dp"
+                android:textSize="14sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/isthatYou_title"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/forgot_title"></TextView>
 
             <LinearLayout
-                android:id="@+id/email"
+                android:id="@+id/name"
                 android:layout_width="match_parent"
+                android:layout_height="@dimen/_56dp"
                 android:layout_marginLeft="@dimen/dimen18dp"
                 android:layout_marginTop="@dimen/_23dp"
                 android:layout_marginRight="@dimen/dimen18dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description"
                 android:background="@drawable/search_linear_bg"
                 android:orientation="vertical"
-                android:layout_height="@dimen/_54dp">
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.9"
-                    android:background="@null"
-                    android:id="@+id/email_id"
-                    android:layout_marginLeft="@dimen/margin_18dp"
-                    android:layout_marginRight="@dimen/margin_18dp"
-                    android:fontFamily="@font/heebo_regular"
-                    android:textColorHint="@color/grey"
-                    android:cursorVisible="true"
-                    android:textCursorDrawable="@drawable/cursor_color"
-                    android:hint="@string/email"
-                    android:importantForAutofill="no"
-                    android:inputType="text|textNoSuggestions"
-                    android:maxLines="1"
-                    android:textSize="@dimen/_16sp"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_marginLeft="@dimen/margin_18dp"
-                android:layout_marginTop="@dimen/marginTop15dp"
-                android:layout_marginRight="@dimen/margin_18dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/email"
-                android:background="@drawable/search_linear_bg"
-                android:orientation="horizontal"
-                android:layout_height="@dimen/_54dp">
+                app:layout_constraintTop_toBottomOf="@+id/description">
+
                 <EditText
+                    android:id="@+id/name_edt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/dimen18dp"
                     android:layout_marginRight="@dimen/dimen18dp"
                     android:layout_weight="1.9"
                     android:background="@null"
-                    android:cursorVisible="true"
-                    android:id="@+id/password_edt"
                     android:fontFamily="@font/heebo_regular"
-                    android:textColorHint="@color/grey"
-                    android:textSize="@dimen/_16sp"
-                    android:hint="@string/password"
+                    android:hint="@string/user_name"
                     android:importantForAutofill="no"
                     android:inputType="text|textNoSuggestions"
                     android:maxLines="1"
-                    android:textCursorDrawable="@drawable/cursor_color"
                     android:singleLine="true"
                     android:textColor="@color/white"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/new_password" />
-                <ImageView
-                    android:id="@+id/eye_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="4dp"
-                    android:layout_marginRight="@dimen/margin_18dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:background="@drawable/ic_outline_visibility_off_light"></ImageView>
-
+                    android:textColorHint="@color/grey"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:textSize="@dimen/_16sp" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/error_passsword"
+            <LinearLayout
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_56dp"
+                android:layout_marginLeft="@dimen/dimen18dp"
+                android:layout_marginTop="@dimen/_23dp"
+                android:layout_marginRight="@dimen/dimen18dp"
+                android:background="@drawable/search_linear_bg"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name">
+
+                <EditText
+                    android:id="@+id/email_mobile_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dimen18dp"
+                    android:layout_marginRight="@dimen/dimen18dp"
+                    android:layout_weight="1.9"
+                    android:background="@null"
+                    android:enabled="false"
+                    android:fontFamily="@font/heebo_regular"
+                    android:hint="@string/email_id_mobileNo"
+                    android:importantForAutofill="no"
+                    android:inputType="text|textNoSuggestions"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/grey"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:textSize="@dimen/_16sp" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen16dp"
-                android:text="Confirm password does't match with password"
+                android:layout_marginTop="23dp"
+                android:layout_marginLeft="16dp"
+                android:buttonTint="@color/neon_green"
+                android:gravity="center"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/email"
+                app:layout_goneMarginTop="35dp"></CheckBox>
+
+            <TextView
+                android:id="@+id/error_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please accept terms and conditions"
                 android:textColor="@color/red_live"
                 android:visibility="gone"
+                android:layout_marginLeft="@dimen/dimen26dp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/password"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/checkbox"></TextView>
+
+
             <TextView
-                android:id="@+id/forgot_text"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginTop="10dp"
-                app:layout_goneMarginTop="10dp"
-                android:layout_marginRight="@dimen/margin_18dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/heebo_regular"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="@string/forgt_psw"
-                android:textColor="@color/aqua_marine"
-                android:textSize="@dimen/_16sp"
-                android:visibility="visible"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/password"></TextView>
-
+                android:text="@string/terms_and_conditions"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sp"
+                app:layout_constraintLeft_toRightOf="@id/checkbox"
+                app:layout_constraintTop_toBottomOf="@id/email"
+                app:layout_goneMarginTop="39dp"></TextView>
 
             <TextView
-                android:id="@+id/proceed"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginTop="@dimen/margin_top_30dp"
+                android:id="@+id/submit"
+                android:layout_width="@dimen/dimen250dp"
+                android:layout_height="@dimen/dimen48dp"
+                android:layout_marginTop="@dimen/dimen30dp"
                 android:background="@drawable/gradient_button"
                 android:fontFamily="@font/heebo_medium"
                 android:gravity="center"
-                android:textAllCaps="true"
-                android:text="@string/proceed"
+                android:text="@string/confirm"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/forgot_text"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/checkbox"
+                app:layout_goneMarginTop="@dimen/dimen30dp"></TextView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

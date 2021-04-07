@@ -183,7 +183,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         titleName = asset.getName();
         getMovieCrews();
         setSubtitleLanguage();
-      //  getDuration();
+        //  getDuration();
         if (isActive)
             isWatchlistedOrNot();
         setClicks();
@@ -1388,7 +1388,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     @Override
     public void onFirstEpisodeData(List<AssetCommonBean> railCommonData) {
         if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
-            if (TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
+            if (UserInfo.getInstance(this).isActive() && TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
                 viewModel.getEpisodeToPlay(assetId).observe(this, assetHistory -> {
                     if (assetHistory != null && assetHistory.getAssetId() != null) {
                         viewModel.getSpecificAsset(assetHistory.getAssetId() + "").observe(this, railAsset -> {

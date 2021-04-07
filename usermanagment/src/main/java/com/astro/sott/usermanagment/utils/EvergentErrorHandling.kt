@@ -70,6 +70,23 @@ class EvergentErrorHandling {
             "eV2516" -> message = context.resources.getString(R.string.passward_given)
             "eV2517" -> message = context.resources.getString(R.string.password_character)
             "eV1733" -> message = context.resources.getString(R.string.device_dont_exist)
+            "eV2268" -> message = context.resources.getString(R.string.device_detail_Required)
+            "eV4482" -> message = context.resources.getString(R.string.password_policy)
+            "eV4492" -> message = context.resources.getString(R.string.login_blocked)
+            "eV4502" -> message = context.resources.getString(R.string.password_expired)
+            "eV2143" -> message = context.resources.getString(R.string.device_exceeded)
+            "ev1226" -> message = context.resources.getString(R.string.invalid_confirm_password)
+            "ev1225" -> message = context.resources.getString(R.string.invalid_new_password)
+
+
+
+
+
+
+
+
+
+
             else -> message = errorBody?.get(0)?.errorMessage.toString()
         }
 

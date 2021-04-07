@@ -1,11 +1,9 @@
 package com.astro.sott.activities.verification;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -17,8 +15,6 @@ import com.astro.sott.R;
 import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
-import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
-import com.astro.sott.activities.splash.ui.SplashActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityVerificationBinding;
@@ -29,8 +25,6 @@ import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
-
-import java.util.concurrent.TimeUnit;
 
 public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> {
     private AstroLoginViewModel astroLoginViewModel;
@@ -218,7 +212,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void createUser() {
-        astroLoginViewModel.createUser(loginType, emailMobile, password).observe(this, evergentCommonResponse -> {
+        astroLoginViewModel.createUser(loginType, emailMobile, password, "").observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getAccessToken());
                 UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getRefreshToken());

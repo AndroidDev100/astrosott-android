@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.detailConfirmation.DetailConfirmationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityIsThisYouBinding;
 
@@ -35,7 +36,7 @@ public class IsThisYouActivity extends BaseBindingActivity<ActivityIsThisYouBind
         getBinding().proceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(getApplicationContext(),DetailsConfirmationActivity.class);
+                Intent i =new Intent(getApplicationContext(), DetailConfirmationActivity.class);
                 startActivity(i);
             }
         });
