@@ -2192,7 +2192,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private void skipIntro() {
         labelIntro = "SKIP INTRO";
         labelCredit = "SKIP CREDIT";
-        labelRecap="SKIP RECAP";
+        labelRecap = "SKIP RECAP";
         introStartTime = AssetContent.getIntroStart(playerAsset.getMetas());
         introEndTime = AssetContent.getIntroEnd(playerAsset.getMetas());
         creditStartTime = AssetContent.getCreditStart(playerAsset.getMetas());
@@ -2204,10 +2204,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 recapStartTime = AssetContent.getRecapStart(playerAsset.getMetas());
                 recapEndTime = AssetContent.getRecapEnd(playerAsset.getMetas());
 
-                Log.w("introValues",introStartTime+"  "+introEndTime+"  "+creditStartTime+"  "+creditEndTime+" "+recapStartTime+" "+recapEndTime);
+                Log.w("introValues", introStartTime + "  " + introEndTime + "  " + creditStartTime + "  " + creditEndTime + " " + recapStartTime + " " + recapEndTime);
 
             }
-        },5000);
+        }, 5000);
 
 
     }
@@ -2290,8 +2290,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         });
 
+        player.addListener(this, PlayerEvent.playbackInfoUpdated, event -> {
+            long bitRate = event.playbackInfo.getVideoBitrate() / 1000;
+            ConvivaManager.convivaPlayerSetBitRate(bitRate);
+
+        });
+
         player.addListener(this, PlayerEvent.videoTrackChanged, event -> {
-            VideoTrack videoTrack=event.newTrack;
+            VideoTrack videoTrack = event.newTrack;
 
 
         });
@@ -2325,14 +2331,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         player.addListener(this, PlayerEvent.playheadUpdated, event -> {
 
             if (introStartTime != 0 && introEndTime != 0 || creditStartTime != 0 && creditEndTime != 0) {
-                Log.w("introValues",runningPlayer.getCurrentPosition()+"----"+introStartTime+"----"+playerTimeInSeconds(runningPlayer.getCurrentPosition()));
+                Log.w("introValues", runningPlayer.getCurrentPosition() + "----" + introStartTime + "----" + playerTimeInSeconds(runningPlayer.getCurrentPosition()));
                 if (introStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introEndTime) {
                     getBinding().skipIntro.setText(labelIntro);
                     getBinding().skipIntro.setVisibility(View.VISIBLE);
                     skipValue = 1;
                     getBinding().skipRecap.setVisibility(View.GONE);
                     getBinding().skipCredits.setVisibility(View.GONE);
-                }else {
+                } else {
                     getBinding().skipIntro.setText(labelIntro);
                     getBinding().skipIntro.setVisibility(View.GONE);
                     skipValue = -1;
@@ -2344,7 +2350,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     skipValue = 2;
                     getBinding().skipIntro.setVisibility(View.GONE);
                     getBinding().skipCredits.setVisibility(View.GONE);
-                }else {
+                } else {
                     getBinding().skipRecap.setText("");
                     getBinding().skipRecap.setVisibility(View.GONE);
                     skipValue = -1;
@@ -2356,7 +2362,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     skipValue = 3;
                     getBinding().skipIntro.setVisibility(View.GONE);
                     getBinding().skipRecap.setVisibility(View.GONE);
-                }else {
+                } else {
                     getBinding().skipCredits.setText("");
                     getBinding().skipCredits.setVisibility(View.GONE);
                     skipValue = -1;
@@ -2852,25 +2858,25 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             Log.d("TrackNameIs", trackName);
             Log.d("TrackNameIs", selectedTrack);
 
-            final LiveData<Boolean> booleanLiveData = viewModel.changeInitialTrack(trackName,getBinding().quality);
+            final LiveData<Boolean> booleanLiveData = viewModel.changeInitialTrack(trackName, getBinding().quality);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (getBinding().quality.getText().toString().equalsIgnoreCase("High Quality")){
-                        trackName="High Quality";
-                    }else if (getBinding().quality.getText().toString().equalsIgnoreCase("Medium Quality")){
-                        trackName="Medium Quality";
-                    }else if (getBinding().quality.getText().toString().equalsIgnoreCase("Low Quality")){
-                        trackName="Low Quality";
+                    if (getBinding().quality.getText().toString().equalsIgnoreCase("High Quality")) {
+                        trackName = "High Quality";
+                    } else if (getBinding().quality.getText().toString().equalsIgnoreCase("Medium Quality")) {
+                        trackName = "Medium Quality";
+                    } else if (getBinding().quality.getText().toString().equalsIgnoreCase("Low Quality")) {
+                        trackName = "Low Quality";
                     }
 
                     Log.d("TrackNameIs", trackName);
                 }
 
-            },700);
+            }, 700);
             //booleanLiveData.removeObservers(getActivity());
 
-           // getBinding().quality.setText(trackItemList.get(position).getTrackName());
+            // getBinding().quality.setText(trackItemList.get(position).getTrackName());
         }
     }
 
@@ -2914,11 +2920,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             return;
         }
 
-        if (getBinding().videoDialog.getVisibility()==View.VISIBLE){
+        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
             return;
         }
 
-        if (getBinding().audioDialog.getVisibility()==View.VISIBLE){
+        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
             return;
         }
 
@@ -3073,10 +3079,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             if (timeHandler != null)
                                 timeHandler.removeCallbacks(myRunnable);
                         }
-                        if (getBinding().videoDialog.getVisibility()==View.VISIBLE){
+                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
                             getBinding().videoDialog.setVisibility(View.GONE);
                         }
-                        if (getBinding().audioDialog.getVisibility()==View.VISIBLE){
+                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
                             getBinding().audioDialog.setVisibility(View.GONE);
                         }
                         ShowAndHideView();
@@ -3104,8 +3110,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             @Override
             public void onSingleClick(View view) {
 
-                    if (isPlayerStart) {
-                        if (lockEnable) {
+                if (isPlayerStart) {
+                    if (lockEnable) {
 //                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
 //                                getBinding().lockIcon.setVisibility(View.GONE);
 //                            } else {
@@ -3114,22 +3120,22 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                                    getBinding().lockIcon.setVisibility(View.GONE);
 //                            }
 
-                        } else {
-                            if (timer) {
+                    } else {
+                        if (timer) {
 
-                                if (timeHandler != null)
-                                    timeHandler.removeCallbacks(myRunnable);
-                            }
-                            if (getBinding().videoDialog.getVisibility()==View.VISIBLE){
-                                getBinding().videoDialog.setVisibility(View.GONE);
-                            }
-                              if (getBinding().audioDialog.getVisibility()==View.VISIBLE){
-                                getBinding().audioDialog.setVisibility(View.GONE);
-                            }
-                            ShowAndHideView();
+                            if (timeHandler != null)
+                                timeHandler.removeCallbacks(myRunnable);
                         }
-
+                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
+                            getBinding().videoDialog.setVisibility(View.GONE);
+                        }
+                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
+                            getBinding().audioDialog.setVisibility(View.GONE);
+                        }
+                        ShowAndHideView();
                     }
+
+                }
 
             }
 
@@ -3519,16 +3525,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                                }
 //
 //                            }
-                            Log.w("audioAndSubtitle", trackItems+"   "+audioTracks.get(0).getLabel());
-                            if (audioTracks.get(0).getLabel()!=null){
+                            Log.w("audioAndSubtitle", trackItems + "   " + audioTracks.get(0).getLabel());
+                            if (audioTracks.get(0).getLabel() != null) {
                                 AudioAdapter audioAdapter = new AudioAdapter(trackItems);
                                 getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
-                            }else {
+                            } else {
                                 getBinding().audioQuality.recycleviewAudio.setVisibility(View.GONE);
                                 getBinding().audioQuality.titleAudio.setVisibility(View.GONE);
                             }
 
-                        }else {
+                        } else {
                             Log.w("audioAndSubtitle", "in7");
                             getBinding().audioQuality.recycleviewAudio.setVisibility(View.GONE);
                             getBinding().audioQuality.titleAudio.setVisibility(View.GONE);
@@ -3597,10 +3603,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         final RecyclerView recycleview;
         //callHandler();
-       // dialogQuality = new Dialog(getBaseActivity(), R.style.AppAlertTheme);
-      //  dialogQuality.setContentView(R.layout.layout_dialog_settings);
-      //  dialogQuality.setTitle(getString(R.string.title_video_quality));
-       // recycleview = dialogQuality.findViewById(R.id.recycleview);
+        // dialogQuality = new Dialog(getBaseActivity(), R.style.AppAlertTheme);
+        //  dialogQuality.setContentView(R.layout.layout_dialog_settings);
+        //  dialogQuality.setTitle(getString(R.string.title_video_quality));
+        // recycleview = dialogQuality.findViewById(R.id.recycleview);
 
 //        Button closeButton = dialogQuality.findViewById(R.id.close);
 //        closeButton.setOnClickListener(v -> dialogQuality.cancel());
@@ -4419,7 +4425,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             return trackItemList.size();
         }
     }
-    int captionItemClick=0;
+
+    int captionItemClick = 0;
+
     class CaptionAdapter extends RecyclerView.Adapter<ViewHolder3> {
         final TrackItem[] tracks;
         int finalInde;
@@ -4454,7 +4462,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             finalInde = index;
             holder.tracksCaption.setOnClickListener(view -> {
-                captionItemClick=1;
+                captionItemClick = 1;
                 captionList[finalInde].setSelected(false);
                 captionList[position].setSelected(true);
                 captionName = captionList[position].getTrackName();
@@ -4484,7 +4492,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
                     }
                 }
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
@@ -4496,9 +4504,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
-    int audioItemClick=0;
+    int audioItemClick = 0;
+
     class AudioAdapter extends RecyclerView.Adapter<ViewHolder2> {
         final TrackItem[] tracks;
+
         private AudioAdapter(TrackItem[] audioTracks) {
             this.tracks = audioTracks;
 
@@ -4569,10 +4579,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
                         }
                     }
-                }catch (Exception ignored){
+                } catch (Exception ignored) {
 
                 }
-                }
+            }
 
 
         }
