@@ -124,6 +124,7 @@ public interface AppLevelConstants {
 
     String XOFFERWINDOW = "XOfferWindow";
     String RAIL_DATA_OBJECT = "railData";
+    String RAIL_LIST = "railList";
     String PROGRAM_ASSET = "program_asset";
 
 
@@ -430,6 +431,8 @@ public interface AppLevelConstants {
     String SEARCH_GENRE_CONSTATNT = "FilterGenre='";
     String SEARCH_ISSPONSORED_CONSTATNT = "IsSponsored";
     String FILTER_LANGUAGE_CONSTANT = "FilterLanguage='";
+    String OPEN = "open";
+    String CLOSE = "close";
 
 
 }

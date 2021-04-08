@@ -1150,6 +1150,92 @@ public class KsServices {
 
     }
 
+    public void callSeasonEpisodesForBingeWatch(int counter, String seriesId, int assetType, List<Integer> results, int seasonCounter, String sortType, SimilarMovieCallBack callBack) {
+        clientSetupKs();
+        similarMovieCallBack = callBack;
+        final CommonResponse commonResponse = new CommonResponse();
+        try {
+            long idd = seasonCounter;
+            // Log.w("idsssoftiles", "idsprints" + idd + "-->>");
+            int iid = (int) idd;
+            String one = "(and SeriesID='";
+            String two = "' SeasonNumber='";
+            String three = "')";
+            String kSQL = one + seriesId + two + iid + three;
+            // Log.w("idsssoftiles", "idsprints" + idd + "-->>" + kSQL);
+            SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+            searchAssetFilter.setKSql(kSQL);
+            Log.d("frfrfrfrfrf",kSQL);
+            Log.e("ASSET TYPE", String.valueOf(assetType));
+            if (assetType == MediaTypeConstant.getSeries(activity)) {
+                searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
+            } else if (assetType == MediaTypeConstant.getWebEpisode(activity)) {
+                searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
+            }
+
+            // searchAssetFilter.typeIn("603");
+            DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
+            dynamicOrderBy.setName(sortType);
+            dynamicOrderBy.orderBy("META_ASC");
+            searchAssetFilter.setDynamicOrderBy(dynamicOrderBy);
+
+            FilterPager filterPager = new FilterPager();
+            filterPager.setPageIndex(counter);
+            filterPager.setPageSize(20);
+
+
+            AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null) {
+                            if (result.results.getObjects().size() > 0) {
+                                commonResponse.setStatus(true);
+                                commonResponse.setAssetList(result);
+                                similarMovieCallBack.response(true, commonResponse);
+                            } else {
+                                similarMovieCallBack.response(false, commonResponse);
+                            }
+                        } else {
+                            similarMovieCallBack.response(false, commonResponse);
+                        }
+                    } else {
+                        similarMovieCallBack.response(false, commonResponse);
+                    }
+                } else {
+
+
+                    if (result.error != null) {
+
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        callSeasonEpisodes(counter, seriesId, assetType, results, seasonCounter, sortType, callBack);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        similarMovieCallBack.response(false, commonResponse);
+                                    }
+                                }
+                            });
+                        else {
+                            similarMovieCallBack.response(false, commonResponse);
+                        }
+                    } else {
+                        similarMovieCallBack.response(false, commonResponse);
+                    }
+
+
+                }
+            });
+            getRequestQueue().queue(builder.build(client));
+        } catch (Exception e) {
+            PrintLogging.printLog(this.getClass(), "Exception", "" + e);
+
+        }
+
+    }
 
     public void callEpisodes(int counter, String seriesId, int assetType, String sortType, SimilarMovieCallBack callBack) {
         clientSetupKs();

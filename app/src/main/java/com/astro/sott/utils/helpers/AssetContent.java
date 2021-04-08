@@ -678,7 +678,7 @@ public class AssetContent {
         String key;
         while (itr.hasNext()) {
             key = (String) itr.next();
-            if (key.equalsIgnoreCase("Episode number")) {
+            if (key.equalsIgnoreCase("EpisodeNumber")) {
                 DoubleValue doubleValue = (DoubleValue) map.get(key);
                 episodeValue = doubleValue.getValue().intValue();
                 PrintLogging.printLog("", "", "EpisodenumberofParticularAsset" + key + " - " + doubleValue.getValue());

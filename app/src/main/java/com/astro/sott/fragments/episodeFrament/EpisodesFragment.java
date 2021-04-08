@@ -2,10 +2,9 @@ package com.astro.sott.fragments.episodeFrament;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
@@ -32,17 +30,19 @@ import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.ContinueWatchingRemove;
+import com.astro.sott.callBacks.commonCallBacks.EpisodeCallBAck;
 import com.astro.sott.callBacks.commonCallBacks.EpisodeClickListener;
 import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
 import com.astro.sott.databinding.EpisodeFooterFragmentBinding;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.constants.AppConstants;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.kaltura.android.exoplayer2.util.Log;
+import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.MultilingualStringValueArray;
@@ -54,10 +54,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
-
-public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentBinding> implements ContinueWatchingRemove, RemoveAdsCallBack, EpisodeClickListener {
+public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentBinding> implements ContinueWatchingRemove, RemoveAdsCallBack, EpisodeClickListener,EpisodeCallBAck {
     FirstEpisodeCallback _mClickListener;
     BottomSheetDialog dialog;
     TextView pause_download, resume_download, cancel_download, go_to_mydownload_lay;
@@ -156,6 +153,11 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
             connectionValidation(false);
         }
+    }
+
+    @Override
+    public void episodeList(List<RailCommonData> railList) {
+        ((WebSeriesDescriptionActivity) context).episodeCallback(railList);
     }
 
     class SeasonListAdapter extends RecyclerView.Adapter<SeasonListAdapter.ViewHolder> {
@@ -302,7 +304,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 getBinding().seasonText.setText(closedSeriesData.get(0).getTitle());
 
                 seriesNumberList = TabsData.getInstance().getSeasonList();
-                _mClickListener.onFirstEpisodeData(TabsData.getInstance().getClosedSeriesData());
+                _mClickListener.onFirstEpisodeData(TabsData.getInstance().getClosedSeriesData(), AppLevelConstants.CLOSE);
                 setClosedUIComponets(TabsData.getInstance().getClosedSeriesData());
             } else {
                 getOpenSeriesData();
@@ -383,7 +385,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 getBinding().seasonText.setText("EPISODE 1 - " + total);
             }
             getBinding().season.setEnabled(false);
-            _mClickListener.onFirstEpisodeData(TabsData.getInstance().getOpenSeriesData());
+            _mClickListener.onFirstEpisodeData(TabsData.getInstance().getOpenSeriesData(),AppLevelConstants.OPEN);
             setUIComponets(TabsData.getInstance().getOpenSeriesData());
         }
 
@@ -582,7 +584,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     private void setCLosedSeriesAdapter(List<RailCommonData> finalEpisodeList) {
         checkExpiry(list);
-        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
+        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this,this);
         getBinding().recyclerView.setAdapter(adapter);
 
         int count = adapter.getItemCount();
@@ -595,7 +597,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     }
 
     private void setOpenSeriesAdapter(List<RailCommonData> finalEpisodeList) {
-        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this);
+        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this,this);
         getBinding().recyclerView.setAdapter(adapter);
 
         if (seriesType.equalsIgnoreCase("open")) {
@@ -952,14 +954,16 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     }
 
     @Override
-    public void moveToPlay(int position, RailCommonData railCommonData, int type) {
-        ((WebSeriesDescriptionActivity) context).moveToPlay(position, railCommonData, type);
+    public void moveToPlay(int position, RailCommonData railCommonData, int type,List<RailCommonData> railList) {
+        ((WebSeriesDescriptionActivity) context).moveToPlay(position, railCommonData, type,railList);
 
     }
 
 
+
+
     public interface FirstEpisodeCallback {
-        public void onFirstEpisodeData(List<AssetCommonBean> railCommonData);
+        public void onFirstEpisodeData(List<AssetCommonBean> railCommonData, String open);
     }
 
 

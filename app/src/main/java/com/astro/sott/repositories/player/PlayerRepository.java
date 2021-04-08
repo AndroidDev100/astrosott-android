@@ -1256,8 +1256,8 @@ public class PlayerRepository {
         final CommonResponse commonResponse = new CommonResponse();
         KsServices ksServices = new KsServices(appContext);
         int mediaType = asset.getType();
-        if (mediaType == MediaTypeConstant.getWebEpisode(appContext)) {
-            mediaType = MediaTypeConstant.getWebEpisode(appContext);
+        if (mediaType == MediaTypeConstant.getEpisode(appContext)) {
+            mediaType = MediaTypeConstant.getEpisode(appContext);
         }
         String seriesId = AssetContent.getSeriesId(asset.getMetas());
         if (seriesId.equalsIgnoreCase("")) {
