@@ -43,7 +43,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
         getBinding().button.setOnClickListener(v -> {
 
 
-              billingProcessor.purchase(this, "com.sott.astro.com.my.tvod.1290", "DEVELOPER PAYLOAD HERE");
+           //   billingProcessor.purchase(this, "com.sott.astro.com.my.tvod.1290", "DEVELOPER PAYLOAD HERE");
          /* List<String> purchases = billingProcessor.listOwnedProducts();
 
             for (String purchase: purchases){
