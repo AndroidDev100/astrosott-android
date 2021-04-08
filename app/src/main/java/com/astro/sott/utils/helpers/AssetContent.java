@@ -627,6 +627,34 @@ public class AssetContent {
     }
 
 
+    public static String getSubGenredataString(Map<String, MultilingualStringValueArray> map) {
+        final MutableLiveData<String> connection = new MutableLiveData<>();
+        String genre;
+        List<MultilingualStringValue> genre_values = new ArrayList<>();
+        MultilingualStringValueArray genre_list = map.get(AppLevelConstants.KEY_SUB_GENRE);
+        if (genre_list != null)
+
+            genre_values.addAll(genre_list.getObjects());
+//            for (MultilingualStringValue value : genre_list.getObjects()) {
+//                genre_values.add(value);
+//            }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= genre_values.size() - 1; i++) {
+            stringBuilder.append(genre_values.get(i).getValue()).append(", ");
+        }
+
+        if (stringBuilder.length() > 0) {
+            genre = stringBuilder.toString();
+            genre = genre.substring(0, genre.length() - 2);
+
+        } else {
+            genre = "";
+        }
+
+        return genre;
+    }
+
+
     public static LiveData<String> getRefIdData(Map<String, MultilingualStringValueArray> map) {
         final MutableLiveData<String> connection = new MutableLiveData<>();
         String ref_id;
@@ -1425,7 +1453,7 @@ public class AssetContent {
         DoubleValue sponsoredValue;
         if (metas != null) {
             sponsoredValue = (DoubleValue) metas.get(AppLevelConstants.INTRO_START);
-            if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
+            if (sponsoredValue != null && sponsoredValue.getValue() != null) {
                 introStart = sponsoredValue.getValue().longValue();
                 return introStart;
             } else {
@@ -1439,13 +1467,12 @@ public class AssetContent {
     }
 
 
-
     public static long getCreditStart(Map<String, Value> metas) {
         long introStart = 0;
         DoubleValue sponsoredValue;
         if (metas != null) {
             sponsoredValue = (DoubleValue) metas.get(AppLevelConstants.CREDIT_START);
-            if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
+            if (sponsoredValue != null && sponsoredValue.getValue() != null) {
                 introStart = sponsoredValue.getValue().longValue();
                 return introStart;
             } else {
@@ -1463,7 +1490,7 @@ public class AssetContent {
         DoubleValue sponsoredValue;
         if (metas != null) {
             sponsoredValue = (DoubleValue) metas.get(AppLevelConstants.RECAP_START);
-            if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
+            if (sponsoredValue != null && sponsoredValue.getValue() != null) {
                 recap = sponsoredValue.getValue().longValue();
                 return recap;
             } else {
@@ -1482,7 +1509,7 @@ public class AssetContent {
         DoubleValue sponsoredValue;
         if (metas != null) {
             sponsoredValue = (DoubleValue) metas.get(AppLevelConstants.CREDIT_END);
-            if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
+            if (sponsoredValue != null && sponsoredValue.getValue() != null) {
                 introStart = sponsoredValue.getValue().longValue();
                 return introStart;
             } else {
@@ -1501,7 +1528,7 @@ public class AssetContent {
         DoubleValue sponsoredValue;
         if (metas != null) {
             sponsoredValue = (DoubleValue) metas.get(AppLevelConstants.RECAP_END);
-            if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
+            if (sponsoredValue != null && sponsoredValue.getValue() != null) {
                 introStart = sponsoredValue.getValue().longValue();
                 return introStart;
             } else {
@@ -1520,7 +1547,7 @@ public class AssetContent {
         DoubleValue sponsoredValue;
         if (metas != null) {
             sponsoredValue = (DoubleValue) metas.get(AppLevelConstants.INTRO_END);
-            if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
+            if (sponsoredValue != null && sponsoredValue.getValue() != null) {
                 introStart = sponsoredValue.getValue().longValue();
                 return introStart;
             } else {

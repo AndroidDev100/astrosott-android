@@ -90,7 +90,6 @@ public class ConvivaManager {
             contentInfo.put(ConvivaSdkConstants.STREAM_URL, AppCommonMethods.getPlayerUrl(railData.getObject()));
         } else {
             contentInfo.put(ConvivaSdkConstants.STREAM_URL, "NA");
-
         }
         contentInfo.put(ConvivaSdkConstants.ASSET_NAME, railData.getObject().getName());
         contentInfo.put(ConvivaSdkConstants.IS_LIVE, isLivePlayer + "");
@@ -116,6 +115,11 @@ public class ConvivaManager {
             contentInfo.put(CHANNEL, railData.getObject().getName());
 
         } else {
+            if (AssetContent.getProvider(railData.getObject().getTags()).equalsIgnoreCase("")) {
+                contentInfo.put(BRAND, AssetContent.getProvider(railData.getObject().getTags()));
+            } else {
+                contentInfo.put(BRAND, "NA");
+            }
             if (!AssetContent.getKeyworddata(railData.getObject().getTags()).equalsIgnoreCase("")) {
                 contentInfo.put(CHANNEL, AssetContent.getKeyworddata(railData.getObject().getTags()));
             } else {
@@ -139,24 +143,21 @@ public class ConvivaManager {
 
         }
         contentInfo.put(UTM_URL, "NA");
-        contentInfo.put(BRAND, "4.8.3");
         contentInfo.put(CATEGORY_TYPE, AppCommonMethods.getAssetType(railData.getObject().getType(), context));
         contentInfo.put(APP_NAME, "SOTT Android");
         contentInfo.put(APP_VERSION, BuildConfig.VERSION_NAME);
         if (AssetContent.getGenredataString(railData.getObject().getTags()).equals("")) {
             contentInfo.put(GENRE, "NA");
-            contentInfo.put(GENRE_LIST, "NA");
         } else {
             contentInfo.put(GENRE, AssetContent.getGenredataString(railData.getObject().getTags()));
-
-            contentInfo.put(GENRE_LIST, AssetContent.getGenredataString(railData.getObject().getTags()));
-
         }
 
-
-        contentInfo.put("c3.cm.id", railData.getObject().getId());
+        if (AssetContent.getSubGenredataString(railData.getObject().getTags()).equals("")) {
+            contentInfo.put(GENRE_LIST, "NA");
+        } else {
+            contentInfo.put(GENRE_LIST, AssetContent.getSubGenredataString(railData.getObject().getTags()));
+        }
         contentInfo.put(ConvivaSdkConstants.PLAYER_NAME, "SOTT Android");
-        //  videoAnalytics.reportPlaybackRequested(contentInfo);
         ConvivaManager.getConvivaVideoAnalytics(context).reportPlaybackRequested(contentInfo);
     }
 
