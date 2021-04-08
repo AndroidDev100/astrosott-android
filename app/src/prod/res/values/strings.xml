@@ -1,4 +1,6 @@
 <!--suppress XmlHighlighting -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="branch_key" tools:ignore="MissingTranslation">key_live_imHk1Yk227icBqFUkAMG5pknFBlQ508V</string>
+    <!--<string name="branch_key" tools:ignore="MissingTranslation">key_live_imHk1Yk227icBqFUkAMG5pknFBlQ508V</string>-->
+    <string name="facebook_app_id" translatable="false">712171319736837</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb712171319736837</string>
 </resources>

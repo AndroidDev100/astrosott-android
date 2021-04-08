@@ -1424,7 +1424,7 @@ public class AssetContent {
         long introStart = 0;
         DoubleValue sponsoredValue;
         if (metas != null) {
-            sponsoredValue = (DoubleValue) metas.get(AppConstants.INTRO_START);
+            sponsoredValue = (DoubleValue) metas.get(AppLevelConstants.INTRO_START);
             if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
                 introStart = sponsoredValue.getValue().longValue();
                 return introStart;
@@ -1444,7 +1444,7 @@ public class AssetContent {
         long introStart = 0;
         DoubleValue sponsoredValue;
         if (metas != null) {
-            sponsoredValue = (DoubleValue) metas.get(AppConstants.CREDIT_START);
+            sponsoredValue = (DoubleValue) metas.get(AppLevelConstants.CREDIT_START);
             if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
                 introStart = sponsoredValue.getValue().longValue();
                 return introStart;
@@ -1462,7 +1462,7 @@ public class AssetContent {
         long recap = 0;
         DoubleValue sponsoredValue;
         if (metas != null) {
-            sponsoredValue = (DoubleValue) metas.get(AppConstants.RECAP_START);
+            sponsoredValue = (DoubleValue) metas.get(AppLevelConstants.RECAP_START);
             if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
                 recap = sponsoredValue.getValue().longValue();
                 return recap;
@@ -1481,7 +1481,7 @@ public class AssetContent {
         long introStart = 0;
         DoubleValue sponsoredValue;
         if (metas != null) {
-            sponsoredValue = (DoubleValue) metas.get(AppConstants.CREDIT_END);
+            sponsoredValue = (DoubleValue) metas.get(AppLevelConstants.CREDIT_END);
             if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
                 introStart = sponsoredValue.getValue().longValue();
                 return introStart;
@@ -1500,7 +1500,7 @@ public class AssetContent {
         long introStart = 0;
         DoubleValue sponsoredValue;
         if (metas != null) {
-            sponsoredValue = (DoubleValue) metas.get(AppConstants.RECAP_END);
+            sponsoredValue = (DoubleValue) metas.get(AppLevelConstants.RECAP_END);
             if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
                 introStart = sponsoredValue.getValue().longValue();
                 return introStart;
@@ -1519,7 +1519,7 @@ public class AssetContent {
         long introStart = 0;
         DoubleValue sponsoredValue;
         if (metas != null) {
-            sponsoredValue = (DoubleValue) metas.get(AppConstants.INTRO_END);
+            sponsoredValue = (DoubleValue) metas.get(AppLevelConstants.INTRO_END);
             if (sponsoredValue != null && sponsoredValue.getValue()!=null) {
                 introStart = sponsoredValue.getValue().longValue();
                 return introStart;

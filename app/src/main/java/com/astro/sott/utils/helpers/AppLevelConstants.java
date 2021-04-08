@@ -321,6 +321,16 @@ public interface AppLevelConstants {
     String Lifestyle_Genre = "Lifestyle";
     String Comedy_Genre = "Comedy";
 
+
+    String INTRO_START = "SkipIntroStart";
+    String INTRO_END = "SkipIntroEnd";
+    String CREDIT_START = "SkipCreditsStart";
+    String CREDIT_END = "SkipCreditsEnd";
+    String RECAP_START = "SkipRecapStart";
+    String RECAP_END = "SkipRecapEnd";
+
+    String LABEL_INTRO = "labelIntro";
+    String LABEL_CREDIT = "labelendcredit";
     long Vlog = 332451;
     long Science = 332452;
     long Sports = 332422;
