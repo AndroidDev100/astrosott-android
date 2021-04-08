@@ -804,9 +804,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         Intent intent = new Intent(WebSeriesDescriptionActivity.this, PlayerActivity.class);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
 
-        if (fromNextEpisode){
+        if (fromNextEpisode) {
             intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
-        }else {
+        } else {
             intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList);
         }
         startActivity(intent);
@@ -1172,9 +1172,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
-        String fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
-
-
+        String fileId = "";
+        if (railCommonData.getObject() != null)
+            fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
         new EntitlementCheck().checkAssetPurchaseStatus(WebSeriesDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
             if (apiStatus) {
                 if (purchasedStatus) {
@@ -1412,13 +1412,13 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         viewModel.getSpecificAsset(assetHistory.getAssetId() + "").observe(this, railAsset -> {
                             if (railAsset != null) {
                                 fromNextEpisode = true;
-                                if (checkSeries.equalsIgnoreCase(AppLevelConstants.OPEN)){
-                                   int episodeNumber = AssetContent.getSpecificEpisode(railAsset.getObject().getMetas());
-                                   if (episodeNumber!=0)
-                                       GetEpisodeListWithoutSeason();
-                                }else {
+                                if (checkSeries.equalsIgnoreCase(AppLevelConstants.OPEN)) {
+                                    int episodeNumber = AssetContent.getSpecificEpisode(railAsset.getObject().getMetas());
+                                    if (episodeNumber != 0)
+                                        GetEpisodeListWithoutSeason();
+                                } else {
                                     int seasonNumber = AssetContent.getSpecificSeason(railAsset.getObject().getMetas());
-                                        GetSeasonEpisode(seasonNumber,assetToPlay);
+                                    GetSeasonEpisode(seasonNumber, assetToPlay);
                                 }
                                 assetToPlay = railAsset;
                                 checkForPlayButtonCondition();
@@ -1447,12 +1447,12 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         viewModel.callEpisodes(railData.getObject(), railData.getObject().getType(), 1, 0, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
 
             if (assetCommonBeans.get(0).getStatus()) {
-                if (railList1!=null && railList1.size()>0) {
+                if (railList1 != null && railList1.size() > 0) {
                     railList1.clear();
                 }
                 railList1.addAll(assetCommonBeans.get(0).getRailAssetList());
             } else {
-                if (railList1!=null && railList1.size()>0) {
+                if (railList1 != null && railList1.size() > 0) {
                     railList1.clear();
                 }
                 railList1 = null;
@@ -1464,14 +1464,14 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private void GetSeasonEpisode(int seasonNumber, RailCommonData assetToPlay) {
         viewModel.callSeasonEpisodesBingeWatch(railData.getObject(), railData.getObject().getType(), 1, TabsData.getInstance().getSeasonList(), seasonNumber, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
 
-            if (assetCommonBeans.get(0).getStatus() && assetCommonBeans.size()>0) {
+            if (assetCommonBeans.get(0).getStatus() && assetCommonBeans.size() > 0) {
                 //loadedList.addAll(assetCommonBeans.get(0).getRailAssetList());
-                if (railList1!=null && railList1.size()>0) {
+                if (railList1 != null && railList1.size() > 0) {
                     railList1.clear();
                 }
                 railList1.addAll(assetCommonBeans.get(0).getRailAssetList());
             } else {
-                if (railList1!=null && railList1.size()>0) {
+                if (railList1 != null && railList1.size() > 0) {
                     railList1.clear();
                 }
                 railList1 = null;
@@ -1481,12 +1481,13 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void checkForPlayButtonCondition() {
-        Map<String, Value> metas = assetToPlay.getObject().getMetas();
-        if (metas != null) {
-            getXofferWindow(metas);
-            getPlayBackControl(metas);
+        if (assetToPlay.getObject() != null && assetToPlay.getObject().getMetas() != null) {
+            Map<String, Value> metas = assetToPlay.getObject().getMetas();
+            if (metas != null) {
+                getXofferWindow(metas);
+                getPlayBackControl(metas);
+            }
         }
-
         if (playbackControlValue)
             checkEntitleMent(assetToPlay);
 
