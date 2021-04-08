@@ -176,8 +176,6 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == 4001) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         } else {
@@ -471,7 +469,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     return false;
 
                 }
-            } else if (true) {
+            } else if (email_mobile.matches(EMAIL_REGEX)) {
                 type = "email";
                 return true;
             } else {
