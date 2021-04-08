@@ -256,18 +256,30 @@
                                         android:textSize="@dimen/font_medium" />
 
 
-                                    <com.astro.sott.utils.helpers.ExpandableTextView
-                                        android:id="@+id/description_text"
+                                    <RelativeLayout
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="12dp"
-                                        android:layout_marginEnd="@dimen/expandable_text_margin_right"
-                                        android:ellipsize="end"
-                                        android:fontFamily="@font/heebo_regular"
-                                        android:lineHeight="24sp"
-                                        android:maxLines="3"
-                                        android:textColor="@color/white"
-                                        android:textSize="@dimen/font_medium_large" />
+                                        android:layout_height="wrap_content">
+
+                                        <com.astro.sott.utils.helpers.ExpandableTextView
+                                            android:id="@+id/description_text"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="12dp"
+                                            android:layout_marginEnd="@dimen/expandable_text_margin_right"
+                                            android:ellipsize="end"
+                                            android:fontFamily="@font/heebo_regular"
+                                            android:lineHeight="24sp"
+                                            android:maxLines="3"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/font_medium_large" />
+
+                                        <FrameLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="70dp"
+                                            android:layout_alignParentBottom="true"
+                                            android:background="@drawable/above_dark_shadow"></FrameLayout>
+                                    </RelativeLayout>
+
 
                                     <com.astro.sott.utils.helpers.ExpandableCardLayout
                                         android:id="@+id/expandable_layout"

@@ -72,6 +72,7 @@
 
 
 
+
                             <FrameLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -225,8 +226,6 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="10dp"
                         android:visibility="gone"
-                        app:tabMode="fixed"
-                        app:tabGravity="fill"
                         android:background="@drawable/tab_bg"
                         app:tabBackground="@color/transparentColor"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -238,20 +237,20 @@
 
                         />
 
-                <View
-                    android:id="@+id/black_line"
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:background="@color/egg_plant"
-                    android:layout_below="@id/tabLayout"
-                    android:visibility="gone" />
-                <View
-                    android:id="@+id/indicator"
-                    android:layout_width="0dp"
-                    android:layout_height="4dp"
-                    android:visibility="gone"
-                    android:layout_below="@id/tabLayout"
-                    android:background="@drawable/tab_indicator"/>
+                    <View
+                        android:id="@+id/black_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@color/egg_plant"
+                        android:layout_below="@id/tabLayout"
+                        android:visibility="gone" />
+                    <View
+                        android:id="@+id/indicator"
+                        android:layout_width="0dp"
+                        android:layout_height="4dp"
+                        android:visibility="gone"
+                        android:layout_below="@id/tabLayout"
+                        android:background="@drawable/tab_indicator"/>
                 </RelativeLayout>
                 <!-- View pager to swipe views -->
                 <com.astro.sott.utils.helpers.LiveTvViewPager

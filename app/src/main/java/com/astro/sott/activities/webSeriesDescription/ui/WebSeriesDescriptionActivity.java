@@ -1179,6 +1179,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                 getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.VISIBLE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
 
                             });
                         }
@@ -1190,6 +1192,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                             getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                             getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.GONE);
+                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
 
                         }
                         this.vodType = EntitlementCheck.TVOD;
