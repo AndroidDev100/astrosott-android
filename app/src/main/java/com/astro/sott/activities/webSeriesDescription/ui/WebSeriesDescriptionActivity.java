@@ -120,7 +120,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private RailCommonData commonData;
     private boolean assetKey = false;
     private boolean isDtvAdded = false;
+    private boolean fromNextEpisode = false;
     private List<RailCommonData> railList;
+    private List<RailCommonData> railList1 = new ArrayList<>();
 
     @Override
     public ActivityWebSeriesDescriptionBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -624,12 +626,18 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     public void moveToPlay(int position, RailCommonData railCommonData, int type, List<RailCommonData> railList) {
+//        if (this.railList!=null){
+//            this.railList.clear();
+//        }
+        fromNextEpisode = false;
         this.railList = railList;
+
         callProgressBar();
         playerChecks(railCommonData);
     }
 
     public void episodeCallback(List<RailCommonData> railList) {
+        fromNextEpisode = false;
         this.railList = railList;
     }
 
@@ -795,7 +803,12 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         callProgressBar();
         Intent intent = new Intent(WebSeriesDescriptionActivity.this, PlayerActivity.class);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
-        intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList);
+
+        if (fromNextEpisode){
+            intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
+        }else {
+            intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList);
+        }
         startActivity(intent);
     }
 
@@ -1398,7 +1411,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     if (assetHistory != null && assetHistory.getAssetId() != null) {
                         viewModel.getSpecificAsset(assetHistory.getAssetId() + "").observe(this, railAsset -> {
                             if (railAsset != null) {
-
+                                fromNextEpisode = true;
                                 if (checkSeries.equalsIgnoreCase(AppLevelConstants.OPEN)){
                                    int episodeNumber = AssetContent.getSpecificEpisode(railAsset.getObject().getMetas());
                                    if (episodeNumber!=0)
@@ -1434,15 +1447,15 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         viewModel.callEpisodes(railData.getObject(), railData.getObject().getType(), 1, 0, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
 
             if (assetCommonBeans.get(0).getStatus()) {
-                if (railList!=null && railList.size()>0) {
-                    railList.clear();
+                if (railList1!=null && railList1.size()>0) {
+                    railList1.clear();
                 }
-                railList.addAll(assetCommonBeans.get(0).getRailAssetList());
+                railList1.addAll(assetCommonBeans.get(0).getRailAssetList());
             } else {
-                if (railList!=null && railList.size()>0) {
-                    railList.clear();
+                if (railList1!=null && railList1.size()>0) {
+                    railList1.clear();
                 }
-                railList = null;
+                railList1 = null;
             }
 
         });
@@ -1453,15 +1466,15 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
             if (assetCommonBeans.get(0).getStatus() && assetCommonBeans.size()>0) {
                 //loadedList.addAll(assetCommonBeans.get(0).getRailAssetList());
-                if (railList!=null && railList.size()>0) {
-                    railList.clear();
+                if (railList1!=null && railList1.size()>0) {
+                    railList1.clear();
                 }
-                railList.addAll(assetCommonBeans.get(0).getRailAssetList());
+                railList1.addAll(assetCommonBeans.get(0).getRailAssetList());
             } else {
-                if (railList!=null && railList.size()>0) {
-                    railList.clear();
+                if (railList1!=null && railList1.size()>0) {
+                    railList1.clear();
                 }
-                railList = null;
+                railList1 = null;
             }
 
         });
