@@ -111,6 +111,7 @@ import com.astro.sott.utils.helpers.UDID;
 import com.conviva.sdk.ConvivaSdkConstants;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.LiveAsset;
@@ -3284,6 +3285,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         getBinding().skipCredits.setOnClickListener(v -> {
             //Please add logic of next episode Here
+            getBinding().skipCredits.setVisibility(View.GONE);
+            if (creditEndTime > playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
+                runningPlayer.seekTo((creditEndTime * 1000) + 500);
+            }
         });
 
 
@@ -3513,7 +3518,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         Log.w("audioAndSubtitle", "in5");
                         if (trackItems.length > 0) {
                             Log.w("audioAndSubtitle", "in6");
-                            audioList = trackItems;
+
 //                            for (int i = 0; i < trackItems.length; i++) {
 //                                if (audioTrackName == "") {
 //                                    if (trackItems[0] != null) {
@@ -3534,9 +3539,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                            }
                             Log.w("audioAndSubtitle", trackItems+"   "+audioTracks.get(0).getLabel());
                             if (audioTracks.get(0).getLabel()!=null){
+                                audioList = trackItems;
                                 AudioAdapter audioAdapter = new AudioAdapter(trackItems);
                                 getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
                             }else {
+                                audioList = null;
                                 getBinding().audioQuality.recycleviewAudio.setVisibility(View.GONE);
                                 getBinding().audioQuality.titleAudio.setVisibility(View.GONE);
                             }
