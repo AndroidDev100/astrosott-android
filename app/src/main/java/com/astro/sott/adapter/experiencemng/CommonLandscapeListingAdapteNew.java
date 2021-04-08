@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.astro.sott.adapter.RibbonAdapter;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.modelClasses.dmsResponse.MediaTypes;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
@@ -24,6 +27,7 @@ import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
+import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -91,6 +95,9 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
 
             }*/
             try {
+                holder.landscapeItemBinding.metas.billingImage.setVisibility(View.GONE);
+                setRecycler(holder.landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(holder.landscapeItemBinding.billingImage, singleItem.getObject().getTags());
                 AppCommonMethods.handleTitleDesc(holder.landscapeItemBinding.mediaTypeLayout.metaLayout,holder.landscapeItemBinding.mediaTypeLayout.lineOne,holder.landscapeItemBinding.mediaTypeLayout.lineTwo,baseCategory,itemsList.get(i),mContext);
                 holder.landscapeItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
                 if (itemsList.get(i).getType()== MediaTypeConstant.getProgram(mContext)){
@@ -140,6 +147,14 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
         }
 
     }
+
+    private void setRecycler(RecyclerView recyclerView, Map<String, MultilingualStringValueArray> tags) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        RibbonAdapter ribbonAdapter = new RibbonAdapter(AssetContent.getRibbon(tags));
+        recyclerView.setAdapter(ribbonAdapter);
+
+    }
+
 
     private String landscapeUrl;
     private String potraitUrl;

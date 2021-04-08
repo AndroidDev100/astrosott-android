@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 
-public class WatchoFirebaseInstanceIdService extends FirebaseMessagingService {
+public class SookaFirebaseInstanceIdService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(@NonNull String token) {

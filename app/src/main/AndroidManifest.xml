@@ -318,7 +318,7 @@
             </intent-filter>
         </service>
         -->
-        <service android:name=".thirdParty.fcm.DialogFirebaseMessagingService">
+        <service android:name=".thirdParty.fcm.SookaFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -328,7 +328,7 @@
             android:name="FCM_SENDER_ID"
             android:value="id:929669716426" />
 
-        <service android:name=".thirdParty.fcm.WatchoFirebaseInstanceIdService">
+        <service android:name=".thirdParty.fcm.SookaFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
