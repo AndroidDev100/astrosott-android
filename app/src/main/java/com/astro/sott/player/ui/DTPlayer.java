@@ -495,8 +495,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         playerProgress = prog;
         programName1 = programName;
         this.asset = asset;
-        if (railCommonDataList!=null)
-        this.railList = railCommonDataList;
+        if (railCommonDataList != null)
+            this.railList = railCommonDataList;
 
 
         isSeries = (asset.getType() == MediaTypeConstant.getEpisode(getActivity()));
@@ -504,9 +504,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getNextEpisode(asset);
 
         if (isSeries) {
-            if (seasonNumber!=0 && episodeNumber!=0) {
+            if (seasonNumber != 0 && episodeNumber != 0) {
                 getBinding().name.setText("S" + seasonNumber + ":E" + episodeNumber + " \"" + asset.getName() + "\"");
-            }else {
+            } else {
                 getBinding().name.setText("\"" + asset.getName() + "\"");
             }
         } else if (isLivePlayer) {
@@ -634,7 +634,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                sortListWithEPSD(episodesList);
 //            }
 //        });
-        if (railList!=null && railList.size()>0) {
+        if (railList != null && railList.size() > 0) {
             List<Asset> assets = new ArrayList<>();
             RailCommonData railCommonData = new RailCommonData();
             for (int i = 0; i < railList.size(); i++) {
@@ -686,7 +686,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 long listEpisode = episodesList.get(i).getId();
                 //  if (listSeason == seasonNumber) {
                 //   if(episodesList.get(i).getId()==asset.getId()){
-
 
 
                 if (asset.getId() == listEpisode) {
@@ -2343,44 +2342,44 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
 
         player.addListener(this, PlayerEvent.playheadUpdated, event -> {
+            if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) > 0) {
+                if (introStartTime != 0 && introEndTime != 0 || creditStartTime != 0 && creditEndTime != 0) {
+                    Log.w("introValues", runningPlayer.getCurrentPosition() + "----" + introStartTime + "----" + playerTimeInSeconds(runningPlayer.getCurrentPosition()));
+                    if (introStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introEndTime) {
+                        getBinding().skipIntro.setText(labelIntro);
+                        getBinding().skipIntro.setVisibility(View.VISIBLE);
+                        skipValue = 1;
+                        getBinding().skipRecap.setVisibility(View.GONE);
+                        getBinding().skipCredits.setVisibility(View.GONE);
+                    } else {
+                        getBinding().skipIntro.setText(labelIntro);
+                        getBinding().skipIntro.setVisibility(View.GONE);
+                        skipValue = -1;
+                    }
 
-            if (introStartTime != 0 && introEndTime != 0 || creditStartTime != 0 && creditEndTime != 0) {
-                Log.w("introValues", runningPlayer.getCurrentPosition() + "----" + introStartTime + "----" + playerTimeInSeconds(runningPlayer.getCurrentPosition()));
-                if (introStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introEndTime) {
-                    getBinding().skipIntro.setText(labelIntro);
-                    getBinding().skipIntro.setVisibility(View.VISIBLE);
-                    skipValue = 1;
-                    getBinding().skipRecap.setVisibility(View.GONE);
-                    getBinding().skipCredits.setVisibility(View.GONE);
-                } else {
-                    getBinding().skipIntro.setText(labelIntro);
-                    getBinding().skipIntro.setVisibility(View.GONE);
-                    skipValue = -1;
-                }
+                    if (recapStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > recapStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < recapEndTime) {
+                        getBinding().skipRecap.setText(labelRecap);
+                        getBinding().skipRecap.setVisibility(View.VISIBLE);
+                        skipValue = 2;
+                        getBinding().skipIntro.setVisibility(View.GONE);
+                        getBinding().skipCredits.setVisibility(View.GONE);
+                    } else {
+                        getBinding().skipRecap.setText("");
+                        getBinding().skipRecap.setVisibility(View.GONE);
+                        skipValue = -1;
+                    }
 
-                if (recapStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > recapStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < recapEndTime) {
-                    getBinding().skipRecap.setText(labelRecap);
-                    getBinding().skipRecap.setVisibility(View.VISIBLE);
-                    skipValue = 2;
-                    getBinding().skipIntro.setVisibility(View.GONE);
-                    getBinding().skipCredits.setVisibility(View.GONE);
-                } else {
-                    getBinding().skipRecap.setText("");
-                    getBinding().skipRecap.setVisibility(View.GONE);
-                    skipValue = -1;
-                }
-
-                if (creditStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditEndTime) {
-                    getBinding().skipCredits.setText(labelCredit);
-                    getBinding().skipCredits.setVisibility(View.VISIBLE);
-                    skipValue = 3;
-                    getBinding().skipIntro.setVisibility(View.GONE);
-                    getBinding().skipRecap.setVisibility(View.GONE);
-                } else {
-                    getBinding().skipCredits.setText("");
-                    getBinding().skipCredits.setVisibility(View.GONE);
-                    skipValue = -1;
-                }
+                    if (creditStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditEndTime) {
+                        getBinding().skipCredits.setText(labelCredit);
+                        getBinding().skipCredits.setVisibility(View.VISIBLE);
+                        skipValue = 3;
+                        getBinding().skipIntro.setVisibility(View.GONE);
+                        getBinding().skipRecap.setVisibility(View.GONE);
+                    } else {
+                        getBinding().skipCredits.setText("");
+                        getBinding().skipCredits.setVisibility(View.GONE);
+                        skipValue = -1;
+                    }
 
                /* if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introStartTime) {
                     getBinding().skipIntro.setVisibility(View.GONE);
@@ -2408,10 +2407,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (creditEndTime == playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
                     getBinding().skipIntro.setVisibility(View.GONE);
                 }*/
-            } else {
-                getBinding().skipIntro.setVisibility(View.GONE);
-                getBinding().skipRecap.setVisibility(View.GONE);
-                getBinding().skipCredits.setVisibility(View.GONE);
+                } else {
+                    getBinding().skipIntro.setVisibility(View.GONE);
+                    getBinding().skipRecap.setVisibility(View.GONE);
+                    getBinding().skipCredits.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -3543,12 +3543,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                                }
 //
 //                            }
-                            Log.w("audioAndSubtitle", trackItems+"   "+audioTracks.get(0).getLabel());
-                            if (audioTracks.get(0).getLabel()!=null){
+                            Log.w("audioAndSubtitle", trackItems + "   " + audioTracks.get(0).getLabel());
+                            if (audioTracks.get(0).getLabel() != null) {
                                 audioList = trackItems;
                                 AudioAdapter audioAdapter = new AudioAdapter(trackItems);
                                 getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
-                            }else {
+                            } else {
                                 audioList = null;
                                 getBinding().audioQuality.recycleviewAudio.setVisibility(View.GONE);
                                 getBinding().audioQuality.titleAudio.setVisibility(View.GONE);
