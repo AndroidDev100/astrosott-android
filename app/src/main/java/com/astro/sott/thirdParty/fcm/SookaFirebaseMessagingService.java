@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
-public class DialogFirebaseMessagingService extends FirebaseMessagingService {
+public class SookaFirebaseMessagingService extends FirebaseMessagingService {
     private Long value;
     private String programScreenValue = null;
     private String title="";

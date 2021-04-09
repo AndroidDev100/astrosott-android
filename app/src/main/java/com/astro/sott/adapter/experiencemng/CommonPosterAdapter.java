@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.adapter.CommonPotraitAdapter;
+import com.astro.sott.adapter.RibbonAdapter;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.ContinueWatchingRemove;
@@ -22,6 +24,7 @@ import com.astro.sott.modelClasses.dmsResponse.MediaTypes;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
@@ -34,6 +37,7 @@ import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardSize;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
+import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 
 import java.util.Iterator;
@@ -192,7 +196,9 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         try {
-            AppCommonMethods.setBillingUi(itemBinding.metas.billingImage, singleItem.getObject().getTags());
+            itemBinding.metas.billingImage.setVisibility(View.GONE);
+            setRecycler(itemBinding.metas.recyclerView, singleItem.getObject().getTags());
+            AppCommonMethods.setBillingUi(itemBinding.billingImage, singleItem.getObject().getTags());
             AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
             itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
             if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
@@ -244,7 +250,9 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         try {
-            AppCommonMethods.setBillingUi(itemBinding.metas.billingImage, singleItem.getObject().getTags());
+            itemBinding.metas.billingImage.setVisibility(View.GONE);
+            setRecycler(itemBinding.metas.recyclerView, singleItem.getObject().getTags());
+            AppCommonMethods.setBillingUi(itemBinding.billingImage, singleItem.getObject().getTags());
 
             AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
             itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
@@ -296,7 +304,9 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         try {
-            AppCommonMethods.setBillingUi(itemBinding.metas.billingImage, singleItem.getObject().getTags());
+            itemBinding.metas.billingImage.setVisibility(View.GONE);
+            setRecycler(itemBinding.metas.recyclerView, singleItem.getObject().getTags());
+            AppCommonMethods.setBillingUi(itemBinding.billingImage, singleItem.getObject().getTags());
 
             AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
             itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
@@ -404,6 +414,13 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 potraitItemBinding.mediaTypeLayout.lineOne.setText("E" + doubleValue.getValue().intValue() + " | " + itemsList.get(position).getName());
             }
         }
+
+    }
+
+    private void setRecycler(RecyclerView recyclerView, Map<String, MultilingualStringValueArray> tags) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        RibbonAdapter ribbonAdapter = new RibbonAdapter(AssetContent.getRibbon(tags));
+        recyclerView.setAdapter(ribbonAdapter);
 
     }
 

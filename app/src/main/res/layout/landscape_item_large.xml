@@ -2,18 +2,32 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <include
+            android:id="@+id/metas"
+            layout="@layout/metas_layout"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            ></include>
+
+
         <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="@dimen/landscape_item_width_large"
+            card_view:cardBackgroundColor="@color/grape_purple"
             android:layout_height="wrap_content"
             card_view:cardCornerRadius="9dp"
             card_view:cardElevation="1dp"
             card_view:cardMaxElevation="1dp"
+            android:layout_marginTop="@dimen/_8sdp"
             card_view:cardPreventCornerOverlap="false"
             card_view:cardUseCompatPadding="true">
 
@@ -75,14 +89,6 @@
                         android:visibility="gone" />
                 </RelativeLayout>
 
-                <include
-                    android:id="@+id/metas"
-                    layout="@layout/metas_layout"
-                    android:layout_width="match_parent"
-                    android:visibility="visible"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"></include>
 
 
             </RelativeLayout>
@@ -92,7 +98,7 @@
                 android:layout_width="@dimen/landscape_item_width_large"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/landscape_item_height_large"
-                android:background="@color/search_toolbar_background"
+                card_view:cardBackgroundColor="@color/grape_purple"
                 android:visibility="visible">
 
                 <LinearLayout
@@ -133,6 +139,18 @@
                 </LinearLayout>
 
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/billing_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_star_ribbon"
+                android:elevation="2dp"
+                android:layout_gravity="right|top"
+                android:visibility="gone">
+
+            </ImageView>
+
             <!--<SeekBar
                 android:id="@+id/progressBar"
                 android:layout_width="match_parent"
@@ -149,9 +167,10 @@
 
             <include
                 android:id="@+id/exclusive_layout"
+                android:visibility="gone"
                 layout="@layout/exclusive_item" />
         </androidx.cardview.widget.CardView>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </layout>
