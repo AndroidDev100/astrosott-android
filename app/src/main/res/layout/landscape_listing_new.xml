@@ -9,15 +9,34 @@
 
     </data>
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+    <include
+        android:id="@+id/metas"
+        layout="@layout/metas_layout"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        ></include>
+
     <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:filterTouchesWhenObscured="true"
         card_view:cardBackgroundColor="@color/grape_purple"
-        card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardCornerRadius="9dp"
         card_view:cardElevation="1dp"
         card_view:cardMaxElevation="1dp"
+        android:layout_marginTop="@dimen/_8sdp"
         card_view:cardPreventCornerOverlap="false"
         card_view:cardUseCompatPadding="true">
 
@@ -121,6 +140,19 @@
                 layout="@layout/mediatype_item"></include>
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/billing_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_star_ribbon"
+            android:elevation="2dp"
+            android:layout_gravity="right|top"
+            android:visibility="gone">
+
+        </ImageView>
+
     </androidx.cardview.widget.CardView>
 
+    </RelativeLayout>
 </layout>

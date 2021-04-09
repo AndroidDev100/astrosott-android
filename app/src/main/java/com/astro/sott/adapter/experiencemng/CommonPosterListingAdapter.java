@@ -6,12 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.astro.sott.adapter.RibbonAdapter;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.modelClasses.dmsResponse.MediaTypes;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
@@ -23,6 +26,7 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
+import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 
 import java.util.Iterator;
@@ -81,6 +85,9 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
         }
 
         try {
+            holder.potraitItemBinding.metas.billingImage.setVisibility(View.GONE);
+            setRecycler(holder.potraitItemBinding.metas.recyclerView, singleItem.getObject().getTags());
+            AppCommonMethods.setBillingUi(holder.potraitItemBinding.billingImage, singleItem.getObject().getTags());
             AppCommonMethods.handleTitleDesc(holder.potraitItemBinding.mediaTypeLayout.metaLayout,holder.potraitItemBinding.mediaTypeLayout.lineOne,holder.potraitItemBinding.mediaTypeLayout.lineTwo,baseCategory,itemsList.get(i),mContext);
             holder.potraitItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
             if (itemsList.get(i).getType()== MediaTypeConstant.getProgram(mContext)){
@@ -101,6 +108,14 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
         //holder.potraitItemBinding.setTile(singleItem);
        // mediaTypeCondition(i, holder.potraitItemBinding);
     }
+
+    private void setRecycler(RecyclerView recyclerView, Map<String, MultilingualStringValueArray> tags) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        RibbonAdapter ribbonAdapter = new RibbonAdapter(AssetContent.getRibbon(tags));
+        recyclerView.setAdapter(ribbonAdapter);
+
+    }
+
 
     private void mediaTypeCondition(int position, PosterlistingItemBinding potraitItemBinding) {
         if (Integer.parseInt(mediaTypes.getMovie()) == itemsList.get(0).getType()
