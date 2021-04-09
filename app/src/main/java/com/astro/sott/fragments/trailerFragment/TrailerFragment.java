@@ -219,10 +219,9 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     @Override
     public void getTrailerAsset(Asset trailerAsset) {
 
-        getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
-
-        });
-        new ActivityLauncher(getActivity()).trailerDirection(trailerAsset, AppConstants.Rail5);
+        callProgressBar();
+        playerChecks(trailerAsset);
+        //  new ActivityLauncher(getActivity()).trailerDirection(trailerAsset, AppConstants.Rail5);
 
     }
 

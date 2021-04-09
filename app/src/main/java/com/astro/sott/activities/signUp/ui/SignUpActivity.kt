@@ -174,7 +174,7 @@ class SignUpActivity : AppCompatActivity() {
                         activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
                         activitySinUpBinding?.errorEmail?.text = getString(R.string.mobile_error)
                     }
-                } else if (true) {
+                } else if (emailPattern.containsMatchIn(email_mobile)) {
                     checkPassword("email", email_mobile, password)
                 } else {
 

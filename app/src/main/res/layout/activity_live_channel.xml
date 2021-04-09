@@ -107,6 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/share_margin_top"
+                    android:visibility="gone"
                     android:clickable="true"
                     android:drawableTop="@drawable/ic_share_24_px"
                     android:drawablePadding="7dp"
@@ -213,7 +214,7 @@
                         android:textSize="@dimen/font_medium_large" />
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -236,7 +237,7 @@
                         app:tabTextColor="@color/grey"
 
                         />
-                </LinearLayout>
+
                 <View
                     android:id="@+id/black_line"
                     android:layout_width="match_parent"
@@ -251,6 +252,7 @@
                     android:visibility="gone"
                     android:layout_below="@id/tabLayout"
                     android:background="@drawable/tab_indicator"/>
+                </RelativeLayout>
                 <!-- View pager to swipe views -->
                 <com.astro.sott.utils.helpers.LiveTvViewPager
                     android:id="@+id/pager"

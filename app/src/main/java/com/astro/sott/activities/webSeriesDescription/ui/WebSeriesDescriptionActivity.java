@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,11 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
-import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
-import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.webSeriesDescription.viewModel.WebSeriesDescriptionViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.VIUChannel;
@@ -58,7 +54,6 @@ import com.astro.sott.databinding.ActivityWebSeriesDescriptionBinding;
 import com.astro.sott.player.houseHoldCheckManager.HouseHoldCheck;
 import com.astro.sott.player.ui.PlayerActivity;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
-import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.DialogHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
@@ -67,6 +62,7 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.StringBuilderHolder;
 import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.userInfo.UserInfo;
+import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
@@ -77,6 +73,7 @@ import com.kaltura.client.types.UserAssetRule;
 import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +120,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private RailCommonData commonData;
     private boolean assetKey = false;
     private boolean isDtvAdded = false;
+    private boolean fromNextEpisode = false;
+    private List<RailCommonData> railList;
+    private List<RailCommonData> railList1 = new ArrayList<>();
 
     @Override
     public ActivityWebSeriesDescriptionBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -144,6 +144,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         layoutType = AppLevelConstants.Rail3;
         if (getIntent().getExtras() != null) {
             railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
+
             if (railData != null) {
 
                 getDatafromBack();
@@ -624,9 +625,20 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         });
     }
 
-    public void moveToPlay(int position, RailCommonData railCommonData, int type) {
+    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<RailCommonData> railList) {
+//        if (this.railList!=null){
+//            this.railList.clear();
+//        }
+        fromNextEpisode = false;
+        this.railList = railList;
+
         callProgressBar();
         playerChecks(railCommonData);
+    }
+
+    public void episodeCallback(List<RailCommonData> railList) {
+        fromNextEpisode = false;
+        this.railList = railList;
     }
 
     private void setRailBaseFragment() {
@@ -791,6 +803,12 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         callProgressBar();
         Intent intent = new Intent(WebSeriesDescriptionActivity.this, PlayerActivity.class);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
+
+        if (fromNextEpisode) {
+            intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
+        } else {
+            intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList);
+        }
         startActivity(intent);
     }
 
@@ -1154,9 +1172,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
-        String fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
-
-
+        String fileId = "";
+        if (railCommonData.getObject() != null)
+            fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
         new EntitlementCheck().checkAssetPurchaseStatus(WebSeriesDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
             if (apiStatus) {
                 if (purchasedStatus) {
@@ -1386,15 +1404,25 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     @Override
-    public void onFirstEpisodeData(List<AssetCommonBean> railCommonData) {
+    public void onFirstEpisodeData(List<AssetCommonBean> railCommonData, String checkSeries) {
         if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
             if (TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
                 viewModel.getEpisodeToPlay(assetId).observe(this, assetHistory -> {
                     if (assetHistory != null && assetHistory.getAssetId() != null) {
                         viewModel.getSpecificAsset(assetHistory.getAssetId() + "").observe(this, railAsset -> {
                             if (railAsset != null) {
+                                fromNextEpisode = true;
+                                if (checkSeries.equalsIgnoreCase(AppLevelConstants.OPEN)) {
+                                    int episodeNumber = AssetContent.getSpecificEpisode(railAsset.getObject().getMetas());
+                                    if (episodeNumber != 0)
+                                        GetEpisodeListWithoutSeason();
+                                } else {
+                                    int seasonNumber = AssetContent.getSpecificSeason(railAsset.getObject().getMetas());
+                                    GetSeasonEpisode(seasonNumber, assetToPlay);
+                                }
                                 assetToPlay = railAsset;
                                 checkForPlayButtonCondition();
+
                             } else {
                                 assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
                                 checkForPlayButtonCondition();
@@ -1415,13 +1443,51 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     }
 
-    private void checkForPlayButtonCondition() {
-        Map<String, Value> metas = assetToPlay.getObject().getMetas();
-        if (metas != null) {
-            getXofferWindow(metas);
-            getPlayBackControl(metas);
-        }
+    private void GetEpisodeListWithoutSeason() {
+        viewModel.callEpisodes(railData.getObject(), railData.getObject().getType(), 1, 0, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
 
+            if (assetCommonBeans.get(0).getStatus()) {
+                if (railList1 != null && railList1.size() > 0) {
+                    railList1.clear();
+                }
+                railList1.addAll(assetCommonBeans.get(0).getRailAssetList());
+            } else {
+                if (railList1 != null && railList1.size() > 0) {
+                    railList1.clear();
+                }
+                railList1 = null;
+            }
+
+        });
+    }
+
+    private void GetSeasonEpisode(int seasonNumber, RailCommonData assetToPlay) {
+        viewModel.callSeasonEpisodesBingeWatch(railData.getObject(), railData.getObject().getType(), 1, TabsData.getInstance().getSeasonList(), seasonNumber, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
+
+            if (assetCommonBeans.get(0).getStatus() && assetCommonBeans.size() > 0) {
+                //loadedList.addAll(assetCommonBeans.get(0).getRailAssetList());
+                if (railList1 != null && railList1.size() > 0) {
+                    railList1.clear();
+                }
+                railList1.addAll(assetCommonBeans.get(0).getRailAssetList());
+            } else {
+                if (railList1 != null && railList1.size() > 0) {
+                    railList1.clear();
+                }
+                railList1 = null;
+            }
+
+        });
+    }
+
+    private void checkForPlayButtonCondition() {
+        if (assetToPlay.getObject() != null && assetToPlay.getObject().getMetas() != null) {
+            Map<String, Value> metas = assetToPlay.getObject().getMetas();
+            if (metas != null) {
+                getXofferWindow(metas);
+                getPlayBackControl(metas);
+            }
+        }
         if (playbackControlValue)
             checkEntitleMent(assetToPlay);
 

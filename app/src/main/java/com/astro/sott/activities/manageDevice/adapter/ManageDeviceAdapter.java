@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class ManageDeviceAdapter extends RecyclerView.Adapter<ManageDeviceAdapter.SingleItemHolder> {
 
@@ -78,8 +79,10 @@ public class ManageDeviceAdapter extends RecyclerView.Adapter<ManageDeviceAdapte
         String date_time[] = lastTime.split(" ");
         if (date_time[0] != null)
             date = date_time[0];
-        SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format1 = new SimpleDateFormat("MM/dd/yyyy");
+        format1.setTimeZone(TimeZone.getDefault());
         SimpleDateFormat format2 = new SimpleDateFormat("dd MMM yyyy");
+        format2.setTimeZone(TimeZone.getDefault());
         try {
             formatDate = format1.parse(date);
         } catch (ParseException e) {

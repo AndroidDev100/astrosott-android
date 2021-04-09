@@ -50,15 +50,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-
             <LinearLayout
                 android:id="@+id/playNextEpisode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/next_episode_right_margin"
                 android:layout_marginBottom="@dimen/next_episode_bottom_margin"
-                android:background="@drawable/play_next_round"
+                android:background="@drawable/skip_intro_button"
                 android:orientation="horizontal"
                 android:padding="@dimen/next_episode_padding"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -77,11 +75,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/roboto_regular"
                     android:gravity="center_vertical"
                     android:text="Next episode in"
                     android:textAllCaps="true"
-                    android:textColor="#fff"
+                    android:textColor="@color/pale_gray"
+                    android:fontFamily="@font/heebo_regular"
                     android:textSize="@dimen/auto_play_next_episode_text_size" />
 
             </LinearLayout>

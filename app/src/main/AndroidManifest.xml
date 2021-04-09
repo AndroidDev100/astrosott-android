@@ -233,8 +233,8 @@
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.search.ui.ActivitySearch"
-            android:screenOrientation="locked"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked"
             android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
         <activity
             android:name=".activities.search.ui.ResultActivity"

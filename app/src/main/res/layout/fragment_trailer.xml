@@ -15,8 +15,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/heebo_regular"
-            android:text="Trailers"
             android:singleLine="true"
+            android:text="Trailers"
             android:textColor="@color/white"
             android:textSize="@dimen/font_xlarge"
             android:visibility="gone"></TextView>
@@ -54,13 +54,20 @@
             android:visibility="gone"
             tools:targetApi="lollipop" />
 
-        <include
-            android:id="@+id/include_progressbar"
-            layout="@layout/play_progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_50sdp"
+           >
+
+            <include
+                android:id="@+id/include_progressbar"
+                layout="@layout/play_progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true" />
+        </FrameLayout>
 
     </LinearLayout>
 </layout>

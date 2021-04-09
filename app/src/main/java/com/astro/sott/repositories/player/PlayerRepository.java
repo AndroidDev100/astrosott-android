@@ -681,7 +681,7 @@ public class PlayerRepository {
             for (int i = 0; i < videoTracks.size(); i++) {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
                 if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit())) {
-                    ConvivaManager.convivaPlayerSetBitRate(videoTrackInfo.getBitrate());
+                  //  ConvivaManager.convivaPlayerSetBitRate(videoTrackInfo.getBitrate());
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
@@ -691,7 +691,7 @@ public class PlayerRepository {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
                 PrintLogging.printLog(this.getClass(), "", "PrintBitMapssss" + videoTrackInfo.getBitrate() + " --" + type);
                 if (videoTrackInfo.getBitrate() > Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit()) && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit())) {
-                    ConvivaManager.convivaPlayerSetBitRate(videoTrackInfo.getBitrate());
+                  //  ConvivaManager.convivaPlayerSetBitRate(videoTrackInfo.getBitrate());
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
@@ -701,7 +701,6 @@ public class PlayerRepository {
                 VideoTrack videoTrackInfo = videoTracks.get(i);
 
                 if (videoTrackInfo.getBitrate() > Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit()) && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())) {
-                    ConvivaManager.convivaPlayerSetBitRate(videoTrackInfo.getBitrate());
                     selectedIndex = videoTrackInfo.getUniqueId();
                 }
             }
@@ -1257,8 +1256,8 @@ public class PlayerRepository {
         final CommonResponse commonResponse = new CommonResponse();
         KsServices ksServices = new KsServices(appContext);
         int mediaType = asset.getType();
-        if (mediaType == MediaTypeConstant.getWebEpisode(appContext)) {
-            mediaType = MediaTypeConstant.getWebEpisode(appContext);
+        if (mediaType == MediaTypeConstant.getEpisode(appContext)) {
+            mediaType = MediaTypeConstant.getEpisode(appContext);
         }
         String seriesId = AssetContent.getSeriesId(asset.getMetas());
         if (seriesId.equalsIgnoreCase("")) {

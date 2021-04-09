@@ -2356,7 +2356,7 @@ public class AppCommonMethods {
             SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa");
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
-        } catch (Exception e) {
+        } catch (IndexOutOfBoundsException e) {
         }
         return "";
 

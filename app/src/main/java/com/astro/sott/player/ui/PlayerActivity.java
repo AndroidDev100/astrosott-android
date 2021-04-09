@@ -8,7 +8,6 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -30,10 +29,13 @@ import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.kaltura.client.types.Asset;
 
+import java.util.List;
+
 public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
 
     private DTPlayer fragment;
     private RailCommonData railData;
+    private List<RailCommonData> railCommonDataList;
     private String assetURL, programName = "";
     private WindowFocusCallback windowFocusListner;
     private Boolean isLivePlayer = false;
@@ -89,6 +91,9 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
             programName = getIntent().getStringExtra(AppLevelConstants.PROGRAM_NAME);
             if (getIntent().getExtras() != null) {
                 railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
+                if ((List<RailCommonData>) getIntent().getExtras().getSerializable(AppLevelConstants.RAIL_LIST)!=null) {
+                    railCommonDataList = (List<RailCommonData>) getIntent().getExtras().getSerializable(AppLevelConstants.RAIL_LIST);
+                }
                 if (railData != null) {
                     Asset asset = railData.getObject();
                     getDuration(asset);
@@ -135,10 +140,10 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
                 assetURL = "";
             }
             if (isLivePlayer) {
-                fragment.getUrl(Constants.assetUrl, asset, railData.getProgress(), isLivePlayer, programName);
+                fragment.getUrl(Constants.assetUrl, asset, railData.getProgress(), isLivePlayer, programName, railCommonDataList);
 
             } else {
-                fragment.getUrl(Constants.assetUrl, asset, railData.getProgress(), isLivePlayer, "");
+                fragment.getUrl(Constants.assetUrl, asset, railData.getProgress(), isLivePlayer, "",railCommonDataList);
 
             }
         });

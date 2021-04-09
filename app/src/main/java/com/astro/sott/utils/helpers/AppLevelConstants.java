@@ -124,6 +124,7 @@ public interface AppLevelConstants {
 
     String XOFFERWINDOW = "XOfferWindow";
     String RAIL_DATA_OBJECT = "railData";
+    String RAIL_LIST = "railList";
     String PROGRAM_ASSET = "program_asset";
 
 
@@ -321,6 +322,16 @@ public interface AppLevelConstants {
     String Lifestyle_Genre = "Lifestyle";
     String Comedy_Genre = "Comedy";
 
+
+    String INTRO_START = "SkipIntroStart";
+    String INTRO_END = "SkipIntroEnd";
+    String CREDIT_START = "SkipCreditsStart";
+    String CREDIT_END = "SkipCreditsEnd";
+    String RECAP_START = "SkipRecapStart";
+    String RECAP_END = "SkipRecapEnd";
+
+    String LABEL_INTRO = "labelIntro";
+    String LABEL_CREDIT = "labelendcredit";
     long Vlog = 332451;
     long Science = 332452;
     long Sports = 332422;
@@ -420,6 +431,8 @@ public interface AppLevelConstants {
     String SEARCH_GENRE_CONSTATNT = "FilterGenre='";
     String SEARCH_ISSPONSORED_CONSTATNT = "IsSponsored";
     String FILTER_LANGUAGE_CONSTANT = "FilterLanguage='";
+    String OPEN = "open";
+    String CLOSE = "close";
 
 
 }

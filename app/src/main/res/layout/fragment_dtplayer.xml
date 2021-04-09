@@ -616,7 +616,7 @@
                 android:layout_alignParentBottom="true"
                 android:padding="@dimen/_7sdp"
                 android:background="@drawable/skip_intro_button"
-                android:layout_marginRight="@dimen/_42sdp"
+                android:layout_marginRight="@dimen/_60sdp"
                 android:textColor="@color/pale_gray"
                 android:fontFamily="@font/heebo_regular"
                 android:visibility="gone">
@@ -641,8 +641,8 @@
                 android:text="SKIP INTRO"
                 android:layout_alignParentBottom="true"
                 android:padding="@dimen/_7sdp"
+                android:layout_marginRight="@dimen/_60sdp"
                 android:background="@drawable/skip_intro_button"
-                android:layout_marginEnd="@dimen/_42sdp"
                 android:textColor="@color/pale_gray"
                 android:fontFamily="@font/heebo_regular"
                 android:visibility="gone">
@@ -668,7 +668,7 @@
                 android:layout_alignParentBottom="true"
                 android:padding="@dimen/_7sdp"
                 android:background="@drawable/skip_intro_button"
-                android:layout_marginEnd="@dimen/_42sdp"
+                android:layout_marginRight="@dimen/_60sdp"
                 android:textColor="@color/pale_gray"
                 android:fontFamily="@font/heebo_regular"
                 android:visibility="gone">
