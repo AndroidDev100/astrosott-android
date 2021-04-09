@@ -41,8 +41,8 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:fontFamily="@font/heebo_regular"
-            android:maxLines="1"
-            android:textColor="@color/white"></TextView>
+            android:maxLines="2"
+            android:textColor="@color/title_color"></TextView>
 
 
     </RelativeLayout>

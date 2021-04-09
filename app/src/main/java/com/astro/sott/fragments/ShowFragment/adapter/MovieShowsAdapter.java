@@ -57,6 +57,7 @@ public class MovieShowsAdapter extends RecyclerView.Adapter<MovieShowsAdapter.Si
                 }
             }
         }
+        holder.landscapeItemBinding.lanscapeTitle.setText(similarItemList.get(position).getName());
 
     }
 
