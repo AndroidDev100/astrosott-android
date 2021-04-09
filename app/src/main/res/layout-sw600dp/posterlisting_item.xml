@@ -13,45 +13,76 @@
             type="com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages" />
     </data>
 
-    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="@dimen/_95sdp"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="@dimen/_2sdp"
-        card_view:cardElevation="1dp"
-        card_view:cardMaxElevation="1dp"
-        card_view:cardPreventCornerOverlap="false"
-        card_view:cardUseCompatPadding="true">
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <include
+            android:id="@+id/metas"
+            layout="@layout/metas_layout"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="top|right"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            ></include>
 
-            <RelativeLayout
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            card_view:cardBackgroundColor="@color/grape_purple"
+            card_view:cardCornerRadius="9dp"
+            card_view:cardElevation="1dp"
+            card_view:cardMaxElevation="1dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            card_view:cardPreventCornerOverlap="false"
+            card_view:cardUseCompatPadding="true">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_165sdp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/itemImage"
-                    android:layout_width="@dimen/_95sdp"
-                    android:layout_height="@dimen/_165sdp"
-                    android:background="@drawable/portrait"
-                    android:contentDescription="@string/image_description"
-                    android:scaleType="fitXY"
-                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_165sdp">
+
+                    <ImageView
+                        android:id="@+id/itemImage"
+                        android:layout_width="@dimen/_95sdp"
+                        android:layout_height="@dimen/_165sdp"
+                        android:background="@drawable/portrait"
+                        android:contentDescription="@string/image_description"
+                        android:scaleType="fitXY"
+                        />
+
+                    <include
+                        android:visibility="gone"
+                        android:id="@+id/exclusive_layout"
+                        layout="@layout/exclusive_item" />
+
+                </RelativeLayout>
 
                 <include
-                    android:visibility="gone"
-                    android:id="@+id/exclusive_layout"
-                    layout="@layout/exclusive_item" />
+                    android:id="@+id/media_type_layout"
+                    layout="@layout/mediatype_item"></include>
+            </LinearLayout>
 
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/billing_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_star_ribbon"
+                android:elevation="2dp"
+                android:layout_gravity="right|top"
+                android:visibility="gone">
 
-            <include
-                android:visibility="gone"
-                android:id="@+id/media_type_layout"
-                layout="@layout/mediatype_item"></include>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+            </ImageView>
 
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 </layout>
