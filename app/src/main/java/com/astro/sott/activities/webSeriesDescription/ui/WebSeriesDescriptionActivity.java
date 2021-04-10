@@ -184,7 +184,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         titleName = asset.getName();
         getMovieCrews();
         setSubtitleLanguage();
-      //  getDuration();
+        //  getDuration();
         if (isActive)
             isWatchlistedOrNot();
         setClicks();
@@ -959,7 +959,10 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             getBinding().descriptionText.setEllipsis("...");
             if (getBinding().descriptionText.isExpanded()) {
                 getBinding().descriptionText.setEllipsize(null);
+                getBinding().shadow.setVisibility(View.GONE);
+
             } else {
+                getBinding().shadow.setVisibility(View.VISIBLE);
                 getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
             }
 

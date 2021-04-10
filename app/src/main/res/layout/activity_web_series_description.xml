@@ -152,7 +152,6 @@
                                     android:layout_marginTop="@dimen/share_margin_top"
                                     android:layout_weight="1"
                                     android:clickable="true"
-                                    android:visibility="gone"
                                     android:drawableTop="@drawable/ic_share_24_px"
                                     android:drawablePadding="5dp"
                                     android:focusable="true"
@@ -160,7 +159,8 @@
                                     android:gravity="center"
                                     android:text="@string/share"
                                     android:textColor="@color/grey"
-                                    android:textSize="@dimen/font_small" />
+                                    android:textSize="@dimen/font_small"
+                                    android:visibility="gone" />
 
                                 <TextView
                                     android:id="@+id/playlist"
@@ -192,13 +192,13 @@
                                 android:visibility="gone">
 
                                 <ImageView
+                                    android:id="@+id/star_icon"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/star_icon"
                                     android:layout_alignParentLeft="true"
                                     android:layout_centerInParent="true"
-                                    android:layout_toLeftOf="@+id/play_text"
                                     android:layout_marginEnd="@dimen/_8dp"
+                                    android:layout_toLeftOf="@+id/play_text"
                                     android:src="@drawable/ic_star_24_px"
                                     android:visibility="gone" />
 
@@ -277,6 +277,7 @@
                                             android:textSize="@dimen/font_medium_large" />
 
                                         <FrameLayout
+                                            android:id="@+id/shadow"
                                             android:layout_width="match_parent"
                                             android:layout_height="70dp"
                                             android:layout_alignParentBottom="true"
@@ -300,9 +301,9 @@
                                             <LinearLayout
                                                 android:id="@+id/duration_lay"
                                                 android:layout_width="match_parent"
-                                                android:visibility="gone"
                                                 android:layout_height="wrap_content"
-                                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top">
+                                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top"
+                                                android:visibility="gone">
 
                                                 <TextView
                                                     android:layout_width="wrap_content"

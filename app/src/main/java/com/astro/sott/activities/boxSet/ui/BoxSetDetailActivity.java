@@ -853,7 +853,9 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
 
             if (getBinding().descriptionText.isExpanded()) {
                 getBinding().descriptionText.setEllipsize(null);
+                getBinding().shadow.setVisibility(View.GONE);
             } else {
+                getBinding().shadow.setVisibility(View.VISIBLE);
                 getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
             }
 

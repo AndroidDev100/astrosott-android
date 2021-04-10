@@ -158,7 +158,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     }
 
     private void getDataFromBack(RailCommonData commonRailData, int layout) {
-        getBinding().playButton.setVisibility(View.GONE);
+        getBinding().watchButton.setVisibility(View.GONE);
         railData = commonRailData;
         asset = railData.getObject();
         layoutType = layout;
@@ -187,7 +187,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
         manager = getSupportFragmentManager();
         //getBinding().playButton.setClickable(true);
-        getBinding().playButton.setOnClickListener(view -> {
+        getBinding().watchButton.setOnClickListener(view -> {
             if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
                 return;
             }
@@ -379,9 +379,9 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             if (apiStatus) {
                 if (purchasedStatus) {
                     runOnUiThread(() -> {
-                        getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                        getBinding().watchButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                         getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                        getBinding().playButton.setVisibility(View.VISIBLE);
+                        getBinding().watchButton.setVisibility(View.VISIBLE);
                         getBinding().starIcon.setVisibility(View.GONE);
                         getBinding().playText.setTextColor(getResources().getColor(R.color.black));
 
@@ -393,9 +393,9 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
                         if (xofferWindowValue) {
                             runOnUiThread(() -> {
-                                getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                getBinding().watchButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                getBinding().playButton.setVisibility(View.VISIBLE);
+                                getBinding().watchButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.VISIBLE);
                             });
                         }
@@ -404,9 +404,9 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                         if (xofferWindowValue) {
                             runOnUiThread(() -> {
-                                getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                getBinding().watchButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                                getBinding().playButton.setVisibility(View.VISIBLE);
+                                getBinding().watchButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
 
                             });
