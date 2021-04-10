@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.astro.sott.activities.home.HomeActivity;
@@ -52,6 +54,11 @@ import com.astro.sott.R;
 import com.astro.sott.utils.constants.AppConstants;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardType;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kaltura.client.types.Asset;
@@ -65,6 +72,7 @@ import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
@@ -567,6 +575,7 @@ public class AppCommonMethods {
     }
 
 
+    static Uri dynamicLinkUri;
     public static void openShareDialog(final Activity activity, final Asset asset, Context context) {
         /*WeakReference<Activity> mActivity = new WeakReference<>(activity);
         BranchUniversalObject buo = new BranchUniversalObject()
@@ -595,6 +604,91 @@ public class AppCommonMethods {
                 Log.i("BRANCH SDK", "got my Branch link to share: " + sharingURL);
             }
         });*/
+
+        try {
+            String uri=createURI(asset,activity);
+/*
+            DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                    .setLink(Uri.parse(uri))
+                    .setDomainUriPrefix("https://stagingsott.page.link")
+                    // Open links with this app on Android
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.astro.stagingsott")
+                            .setMinimumVersion(1)
+                            .build())
+                    // Open links with com.example.ios on iOS
+                    .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+                    .buildDynamicLink();
+*/
+
+
+
+          //  Uri dynamicLinkUri = dynamicLink.getUri();
+
+
+            Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                    .setLink(Uri.parse(uri))
+                    .setDomainUriPrefix("https://stagingsott.page.link")
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.astro.stagingsott")
+                            .setMinimumVersion(1)
+                            .build())
+                    .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true).build())
+                    .buildShortDynamicLink()
+                    .addOnCompleteListener(activity, new OnCompleteListener<ShortDynamicLink>() {
+                        @Override
+                        public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                            if (task.isSuccessful()) {
+
+                                dynamicLinkUri = task.getResult().getShortLink();
+                                Uri flowchartLink = task.getResult().getPreviewLink();
+                                Log.w("dynamicUrl",dynamicLinkUri.toString());
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (dynamicLinkUri!=null){
+                                            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                                            sharingIntent.setType("text/plain");
+
+                                            sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + dynamicLinkUri.toString());
+
+                                            activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
+
+                                        }
+
+                                    }
+                                });
+
+                            } else {
+                                Log.w("dynamicUrl",dynamicLinkUri.toString());
+                            }
+                        }
+                    });
+
+
+
+        }catch (Exception ignored){
+
+        }
+    }
+
+    private static String createURI(Asset asset,Activity activity) {
+        String uri="";
+        try {
+            String assetId=asset.getId()+"";
+            String assetType=asset.getType()+"";
+            uri = Uri.parse("https://www.example.com/")
+                    .buildUpon()
+                    .appendQueryParameter("id", assetId)
+                    .appendQueryParameter("mediaType", assetType)
+                    .appendQueryParameter("image", AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType()))
+                    .appendQueryParameter("name", asset.getName())
+                    .build().toString();
+
+        }catch (Exception ignored){
+            uri="";
+        }
+
+        return uri;
     }
 
 
@@ -603,12 +697,12 @@ public class AppCommonMethods {
         for (int i = 0; i < mediaImage.size(); i++) {
 
             if (type == MediaTypeConstant.getMovie(context)) {
-                if (mediaImage.get(i).getRatio().equals("9:16")) {
+                if (mediaImage.get(i).getRatio().equals("9x16")) {
                     imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.portrait_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.portrait_image_height) + AppLevelConstants.QUALITY;
                 }
 
             } else {
-                if (mediaImage.get(i).getRatio().equals("16:9")) {
+                if (mediaImage.get(i).getRatio().equals("16x9")) {
                     imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.square_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.square_image_height) + AppLevelConstants.QUALITY;
                 } else if (mediaImage.get(i).getRatio().equals("1:1")) {
                     imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.square_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.square_image_height) + AppLevelConstants.QUALITY;

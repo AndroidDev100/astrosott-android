@@ -152,7 +152,7 @@
                                     android:layout_marginTop="@dimen/share_margin_top"
                                     android:layout_weight="1"
                                     android:clickable="true"
-                                    android:visibility="gone"
+                                    android:visibility="visible"
                                     android:drawableTop="@drawable/ic_share_24_px"
                                     android:drawablePadding="5dp"
                                     android:focusable="true"

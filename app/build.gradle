@@ -271,6 +271,9 @@ dependencies {
 
     //google signIn
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation platform('com.google.firebase:firebase-bom:26.8.0')
+    implementation 'com.google.firebase:firebase-dynamic-links'
+    implementation 'com.google.firebase:firebase-analytics'
 
 }
 apply plugin: 'com.google.gms.google-services'
