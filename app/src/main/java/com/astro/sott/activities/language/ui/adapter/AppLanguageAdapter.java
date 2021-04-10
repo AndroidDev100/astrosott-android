@@ -101,8 +101,8 @@ public class AppLanguageAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 if (listPosition == 0) {
-                    setAppLanguage(appLanguage);
-                    itemClickListener.onClick(0,1);
+                   /* setAppLanguage(appLanguage);
+                    itemClickListener.onClick(0,1);*/
 
                 }else if (listPosition==1){
                     setAudoLanguage(expandedListPosition);
