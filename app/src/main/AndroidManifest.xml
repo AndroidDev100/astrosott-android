@@ -33,7 +33,8 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.detailConfirmation.DetailConfirmationActivity"></activity>
+        <activity android:name=".activities.liveEvent.LiveEventActivity"></activity>
+        <activity android:name=".activities.detailConfirmation.DetailConfirmationActivity" />
         <activity
             android:name=".activities.subscriptionActivity.ui.SubscriptionDetailActivity"
             android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />

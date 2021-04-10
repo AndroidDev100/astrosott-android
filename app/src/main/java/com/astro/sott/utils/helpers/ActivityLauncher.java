@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.astro.sott.activities.boxSet.ui.BoxSetDetailActivity;
 import com.astro.sott.activities.catchUpRails.ui.CatchupActivity;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
+import com.astro.sott.activities.liveEvent.LiveEventActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.moreListing.ui.GridListingActivity;
 import com.astro.sott.activities.myplaylist.ui.MyPlaylist;
@@ -639,22 +640,28 @@ public class ActivityLauncher {
                                     Class<LiveChannel> destination, RailCommonData commonData) {
         try {
 
+            if (!AssetContent.isLiveEvent(commonData.getObject().getMetas())) {
+                MediaAsset mediaAsset = (MediaAsset) commonData.getObject();
+                String channelId = mediaAsset.getExternalIds();
+                LinearProgramDataLayer.getProgramFromLinear(activity, channelId).observe((LifecycleOwner) activity, programAsset -> {
+                    if (programAsset != null) {
+                        Intent intent = new Intent(source, destination);
+                        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
+                        intent.putExtra(AppLevelConstants.PROGRAM_ASSET, programAsset);
+                        intent.putExtra("asset_ids", commonData.getObject().getId());
+                        activity.startActivity(intent);
+                    } else {
+                        Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
 
-            MediaAsset mediaAsset = (MediaAsset) commonData.getObject();
-            String channelId = mediaAsset.getExternalIds();
-            LinearProgramDataLayer.getProgramFromLinear(activity, channelId).observe((LifecycleOwner) activity, programAsset -> {
-                if (programAsset != null) {
-                    Intent intent = new Intent(source, destination);
-                    intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
-                    intent.putExtra(AppLevelConstants.PROGRAM_ASSET, programAsset);
-                    intent.putExtra("asset_ids", commonData.getObject().getId());
-                    activity.startActivity(intent);
-                } else {
-                    Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                    }
 
-                }
-
-            });
+                });
+            } else {
+                Intent intent = new Intent(source, LiveEventActivity.class);
+                intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
+                intent.putExtra("asset_ids", commonData.getObject().getId());
+                activity.startActivity(intent);
+            }
         } catch (Exception exception) {
             if (source != null && !source.isFinishing()) {
                 source.runOnUiThread(new Runnable() {
@@ -669,7 +676,9 @@ public class ActivityLauncher {
         /* */
     }
 
-    public void detailActivity(Activity source, Class<MovieDescriptionActivity> destination, RailCommonData railData, int layoutType) {
+    public void detailActivity(Activity
+                                       source, Class<MovieDescriptionActivity> destination, RailCommonData railData,
+                               int layoutType) {
         Intent intent = new Intent(source, destination);
         intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
@@ -696,7 +705,9 @@ public class ActivityLauncher {
         TaskStackBuilder.create(source).addNextIntentWithParentStack(intent).startActivities();
     }
 
-    public void webEpisodeActivity(Activity source, Class<WebEpisodeDescriptionActivity> destination, RailCommonData railData, int layoutType) {
+    public void webEpisodeActivity(Activity
+                                           source, Class<WebEpisodeDescriptionActivity> destination, RailCommonData railData,
+                                   int layoutType) {
         Intent intent = new Intent(source, destination);
         intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
@@ -704,7 +715,8 @@ public class ActivityLauncher {
     }
 
 
-    public void resultActivityBundle(Activity source, Class<ResultActivity> destination, SearchModel searchmodel, String searchText) {
+    public void resultActivityBundle(Activity
+                                             source, Class<ResultActivity> destination, SearchModel searchmodel, String searchText) {
         Bundle args = new Bundle();
         searchmodel.setSearchString(searchText);
         args.putParcelable("Search_Show_All", searchmodel);
@@ -714,7 +726,8 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
-    public void deviceManagementActivity(Activity activity, Class<DeviceManagementActivity> deviceManagementActivityClass) {
+    public void deviceManagementActivity(Activity
+                                                 activity, Class<DeviceManagementActivity> deviceManagementActivityClass) {
         Intent intent = new Intent(activity, deviceManagementActivityClass);
         intent.putExtra("from", "login");
         activity.startActivity(intent);
@@ -732,38 +745,45 @@ public class ActivityLauncher {
         TaskStackBuilder.create(source).addNextIntentWithParentStack(intent).startActivities();
     }
 
-    public void selectAccount(Activity source, Class<SelectDtvAccountActivity> destination, String strPhoneNumber) {
+    public void selectAccount(Activity
+                                      source, Class<SelectDtvAccountActivity> destination, String strPhoneNumber) {
         Intent intent = new Intent(source, destination);
         intent.putExtra("PhoneNumber", strPhoneNumber);
         activity.startActivity(intent);
     }
 
 
-    public void loginActivity(Activity source, Class<LoginActivity> destination, int pos, String s) {
+    public void loginActivity(Activity source, Class<LoginActivity> destination,
+                              int pos, String s) {
         Intent intent = new Intent(source, destination);
         intent.putExtra("position", pos);
         intent.putExtra("screenName", s);
         activity.startActivity(intent);
     }
 
-    public void subscriptionActivity(Activity source, Class<SubscriptionActivity> destination, int pos) {
+    public void subscriptionActivity(Activity
+                                             source, Class<SubscriptionActivity> destination, int pos) {
         Intent intent = new Intent(source, destination);
         activity.startActivity(intent);
     }
 
-    public void accountSetting(FragmentActivity activity, Class<AccountSettingsActivity> accountSettingsActivityClass) {
+    public void accountSetting(FragmentActivity
+                                       activity, Class<AccountSettingsActivity> accountSettingsActivityClass) {
 
         Intent intent = new Intent(activity, accountSettingsActivityClass);
         activity.startActivity(intent);
     }
 
-    public void changePaymentMethod(Activity activity, Class<ChangePaymentMethodActivity> paymentMethodActivityClass) {
+    public void changePaymentMethod(Activity
+                                            activity, Class<ChangePaymentMethodActivity> paymentMethodActivityClass) {
 
         Intent intent = new Intent(activity, paymentMethodActivityClass);
         activity.startActivity(intent);
     }
 
-    public void updatePaymentMethod(Activity activity, Class<UpdatePaymentMethod> updatePaymentMethodClass, String externalIdToCompare, int paymentMethodId) {
+    public void updatePaymentMethod(Activity
+                                            activity, Class<UpdatePaymentMethod> updatePaymentMethodClass, String externalIdToCompare,
+                                    int paymentMethodId) {
 
         Intent intent = new Intent(activity, updatePaymentMethodClass);
         intent.putExtra("ExternalId", externalIdToCompare);
@@ -778,7 +798,8 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
-    public void playlistActivity(FragmentActivity source, Class<MyPlaylist> destination, String partnerId, String personalListName) {
+    public void playlistActivity(FragmentActivity
+                                         source, Class<MyPlaylist> destination, String partnerId, String personalListName) {
         Intent intent = new Intent(source, destination);
         intent.putExtra("partnerIdType", partnerId);
         intent.putExtra("personalListName", personalListName);
@@ -786,12 +807,15 @@ public class ActivityLauncher {
 
     }
 
-    public void multipleplaylistActivity(FragmentActivity source, Class<MultiplePlaylistActivity> destination) {
+    public void multipleplaylistActivity(FragmentActivity
+                                                 source, Class<MultiplePlaylistActivity> destination) {
         Intent intent = new Intent(source, destination);
         activity.startActivity(intent);
     }
 
-    public void detailListing(Activity source, Class<DetailListingActivity> destination, String type, AssetCommonBean assetCommonBean) {
+    public void detailListing(Activity
+                                      source, Class<DetailListingActivity> destination, String type, AssetCommonBean
+                                      assetCommonBean) {
         Intent intent = new Intent(source, destination);
         intent.putExtra(AppLevelConstants.LAYOUT_TYPE, type);
         intent.putExtra(AppLevelConstants.ASSET_COMMON_BEAN, assetCommonBean);

@@ -133,10 +133,10 @@
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_regular"
                                     android:gravity="center"
-                                    android:text="@string/my_list"
+                                    android:text="@string/remind_me"
                                     android:textColor="@color/grey"
                                     android:textSize="@dimen/font_small"
-                                    app:drawableTopCompat="@drawable/favorite_unselected" />
+                                    app:drawableTopCompat="@drawable/ic_notifications_48_px" />
 
                                 <TextView
                                     android:id="@+id/share"

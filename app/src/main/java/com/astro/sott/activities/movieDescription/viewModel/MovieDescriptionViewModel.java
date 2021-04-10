@@ -21,8 +21,12 @@ import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class MovieDescriptionViewModel extends MovieBaseViewModel {
 
@@ -37,6 +41,20 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
 
     public LiveData<String> getCastLiveData(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getCastData(map);
+    }
+
+    public String getStartDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa");
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
     }
 
     public LiveData<List<AssetCommonBean>> getListLiveData(long channelID, List<VIUChannel> list, int counter, int swipeToRefresh) {

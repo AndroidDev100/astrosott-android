@@ -193,7 +193,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             getBinding().programTitle.setText(programAsset.getName());
             getBinding().descriptionText.setText(programAsset.getDescription());
             stringBuilder = new StringBuilder();
-            stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + " | ");
+            stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + " - " + AppCommonMethods.getEndTime(programAsset.getEndDate()) + " | ");
             getImage();
             getGenre();
         } catch (Exception e) {
@@ -706,7 +706,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     Log.d("tabLayout", getBinding().tabLayout.getWidth() + "");
                     Log.d("indicator", indicatorWidth + "");
                     //Assign new width
-                   RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                    RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
                     indicatorParams.width = indicatorWidth;
                     getBinding().indicator.setLayoutParams(indicatorParams);
                 }

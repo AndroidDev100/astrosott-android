@@ -1447,6 +1447,23 @@ public class AssetContent {
 
     }
 
+    public static boolean isLiveEvent(Map<String, Value> metas) {
+        BooleanValue liveEventValue;
+        if (metas != null) {
+            liveEventValue = (BooleanValue) metas.get(AppLevelConstants.IS_LIVE_EVENT);
+            if (liveEventValue != null) {
+                return liveEventValue.getValue();
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
+
+    }
+
 
     public static long getIntroStart(Map<String, Value> metas) {
         long introStart = 0;

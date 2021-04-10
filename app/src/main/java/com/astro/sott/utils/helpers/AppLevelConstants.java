@@ -117,6 +117,8 @@ public interface AppLevelConstants {
     String KEY_REF_ID = "Ref Id";
     String YEAR = "Year";
     String IS_SPONSORED = "IsSponsored";
+    String IS_LIVE_EVENT = "LiveEventChannel";
+
     String PLAYBACK_START_DATE = "PlaybackStartDate";
     String PLAYBACK_END_DATE = "PlaybackEndDate";
 

@@ -173,7 +173,19 @@ public class AppCommonMethods {
 
         }
     }
-
+    public static String getEndTime(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa");
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
     public static int getEpisodeNumber(Map<String, Value> metas) {
         int episodeNumber = -1;
         try {
