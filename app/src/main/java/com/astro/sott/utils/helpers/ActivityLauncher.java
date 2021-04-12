@@ -644,16 +644,13 @@ public class ActivityLauncher {
                 MediaAsset mediaAsset = (MediaAsset) commonData.getObject();
                 String channelId = mediaAsset.getExternalIds();
                 LinearProgramDataLayer.getProgramFromLinear(activity, channelId).observe((LifecycleOwner) activity, programAsset -> {
+                    Intent intent = new Intent(source, destination);
+                    intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
+                    intent.putExtra("asset_ids", commonData.getObject().getId());
                     if (programAsset != null) {
-                        Intent intent = new Intent(source, destination);
-                        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
                         intent.putExtra(AppLevelConstants.PROGRAM_ASSET, programAsset);
-                        intent.putExtra("asset_ids", commonData.getObject().getId());
-                        activity.startActivity(intent);
-                    } else {
-                        Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
-
                     }
+                    activity.startActivity(intent);
 
                 });
             } else {

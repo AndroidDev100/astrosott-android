@@ -83,7 +83,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private RailCommonData railData;
     private int layoutType;
     private FragmentManager manager;
-    private String externalIDs, programName;
+    private String externalIDs, programName = "";
     private LiveChannelViewModel activityViewModel;
     private long lastClickTime;
     private String image_url = "";
@@ -268,7 +268,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 DialogHelper.showLoginDialog(LiveChannel.this);
             }*/
             callProgressBar();
-            programName = programAsset.getName();
+            if (programAsset != null)
+                programName = programAsset.getName();
             playerChecks(railData);
 
 
