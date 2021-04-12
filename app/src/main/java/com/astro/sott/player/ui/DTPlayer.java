@@ -1122,25 +1122,27 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             } else {
                 getBinding().seekBar.setVisibility(View.GONE);
+                getBinding().subtitleAudio.setVisibility(View.VISIBLE);
+                getBinding().quality.setVisibility(View.GONE);
 
             }
 
         }
 
-        if (isLivePlayer && isEnable && dvrEnabled) {
-            getBinding().arrowBack.setVisibility(View.VISIBLE);
-            getBinding().arrowForward.setVisibility(View.VISIBLE);
-            getBinding().playCatchup.setVisibility(View.VISIBLE);
-
-        } else if (isLivePlayer && isEnable) {
-            getBinding().arrowBack.setVisibility(View.VISIBLE);
-            getBinding().arrowForward.setVisibility(View.VISIBLE);
-            getBinding().playCatchup.setVisibility(View.INVISIBLE);
-        } else if (isLivePlayer && dvrEnabled) {
-            getBinding().arrowBack.setVisibility(View.VISIBLE);
-            getBinding().arrowForward.setVisibility(View.VISIBLE);
-            getBinding().playCatchup.setVisibility(View.VISIBLE);
-        }
+//        if (isLivePlayer && isEnable && dvrEnabled) {
+//            getBinding().arrowBack.setVisibility(View.VISIBLE);
+//            getBinding().arrowForward.setVisibility(View.VISIBLE);
+//            getBinding().playCatchup.setVisibility(View.VISIBLE);
+//
+//        } else if (isLivePlayer && isEnable) {
+//            getBinding().arrowBack.setVisibility(View.VISIBLE);
+//            getBinding().arrowForward.setVisibility(View.VISIBLE);
+//            getBinding().playCatchup.setVisibility(View.INVISIBLE);
+//        } else if (isLivePlayer && dvrEnabled) {
+//            getBinding().arrowBack.setVisibility(View.VISIBLE);
+//            getBinding().arrowForward.setVisibility(View.VISIBLE);
+//            getBinding().playCatchup.setVisibility(View.VISIBLE);
+//        }
         getBinding().loading.setVisibility(View.GONE);
         isPurchased = 1;
         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
@@ -3544,7 +3546,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //
 //                            }
                             Log.w("audioAndSubtitle", trackItems+"   "+audioTracks.get(0).getLabel());
-                            if (audioTracks.get(0).getLabel()!=null){
+                            if (audioTracks.get(0).getLanguage()!=null){
                                 audioList = trackItems;
                                 AudioAdapter audioAdapter = new AudioAdapter(trackItems);
                                 getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
@@ -4023,7 +4025,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             getBinding().forward.setVisibility(View.GONE);
             getBinding().backward.setVisibility(View.GONE);
             getBinding().slash.setVisibility(View.VISIBLE);
-            getBinding().subtitleAudio.setVisibility(View.GONE);
+            getBinding().subtitleAudio.setVisibility(View.VISIBLE);
             getBinding().quality.setVisibility(View.GONE);
             //  getBinding().ivQuality.setVisibility(View.VISIBLE);
 
