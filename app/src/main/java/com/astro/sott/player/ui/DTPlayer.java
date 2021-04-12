@@ -2475,7 +2475,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
         player.addListener(this, PlayerEvent.ended, event -> {
             isPlayerEnded = true;
+            Log.d(TAG, "PlayerEnded");
+            try {
+                getBinding().skipIntro.setVisibility(View.GONE);
+                getBinding().skipRecap.setVisibility(View.GONE);
+                getBinding().skipCredits.setVisibility(View.GONE);
+            }catch (Exception ignored){
 
+            }
 
         });
 

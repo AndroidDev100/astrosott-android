@@ -169,39 +169,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <data
-                    android:host="open"
-                    android:scheme="viu" />
-
                 <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="example.com"
+                    android:pathPrefix="/stagingsott"
+                    android:scheme="https"/>
             </intent-filter>
-
-            <!-- Branch App Links (optional) -->
 
             <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="go.viu.lk"
-                    android:scheme="https" />
-                <!-- <data -->
-                <!-- android:host="www.watcho.com" -->
-                <!-- android:scheme="https" /> -->
-
-                <data
-                    android:host="nx3e.test-app.link"
-                    android:scheme="https" />
-                <!-- <data -->
-                <!-- android:host="lets.watcho.com" -->
-                <!-- android:scheme="https" /> -->
-
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="stagingsott.page.link" android:scheme="http"/>
+                <data android:host="example.com/link" android:scheme="https"/>
             </intent-filter>
+
         </activity>
         <activity
             android:name=".activities.moreListing.ui.ListingActivity"
@@ -231,6 +215,7 @@
         <activity
             android:name=".activities.home.HomeActivity"
             android:launchMode="singleTask"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.search.ui.ActivitySearch"

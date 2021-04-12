@@ -70,6 +70,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.firebase.crashlytics.internal.common.CommonUtils;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -573,15 +574,43 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
 //            }
 //        },6000);
-        if (branchObject != null) {
-            if (branchObject.has("assetId")) {
-                redirectionCondition(branchObject);
-            } else {
-                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+
+        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(pendingDynamicLinkData -> {
+            Log.w("deepLink","in"+pendingDynamicLinkData);
+            if (pendingDynamicLinkData != null) {
+                Log.w("deepLink","in2"+pendingDynamicLinkData.getLink());
+                Uri deepLink = pendingDynamicLinkData.getLink();
+                if (deepLink!=null){
+                    Log.w("deepLink",deepLink.getQueryParameter("id"));
+                    Log.w("deepLink",deepLink.getQueryParameter("mediaType"));
+                    Log.w("deepLink",deepLink.getQueryParameter("name"));
+                    callSpecficAssetApi(String.valueOf(deepLink.getQueryParameter("id")));
+                }else {
+                    if (branchObject != null) {
+                        if (branchObject.has("assetId")) {
+                            redirectionCondition(branchObject);
+                        } else {
+                            new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                        }
+                    } else {
+                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                    }
+                    Log.d("deepLink", "getDynamicLink: no link found");
+                }
+            }else {
+                if (branchObject != null) {
+                    if (branchObject.has("assetId")) {
+                        redirectionCondition(branchObject);
+                    } else {
+                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                    }
+                } else {
+                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                }
             }
-        } else {
-            new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-        }
+        });
+
+
 
 
 //            branchReferralInitListener = new Branch.BranchReferralInitListener() {
@@ -710,7 +739,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
             //  finish();
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
             new ActivityLauncher(SplashActivity.this).detailActivity(SplashActivity.this, MovieDescriptionActivity.class, asset, AppLevelConstants.Rail5);
-        } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getDrama(SplashActivity.this)) {
+        } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getSeries(SplashActivity.this)) {
             // finish();
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
             new ActivityLauncher(SplashActivity.this).webSeriesActivity(SplashActivity.this, WebSeriesDescriptionActivity.class, asset, AppLevelConstants.Rail5);
@@ -818,6 +847,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //                |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 //        decorView.setSystemUiVisibility(uiOptions);
         Bundle bundle = getIntent().getExtras();
+
+
+
 
         if (bundle != null) {
 

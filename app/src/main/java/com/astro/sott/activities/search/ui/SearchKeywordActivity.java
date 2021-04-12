@@ -77,6 +77,7 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
     List<String> filterGenreSavedList;
     int fromReset=0;
     private void callGenreData() {
+
         try {
             filterLanguageSavedList=new ArrayList<>();
             filterLanguageList=new ArrayList<>();
@@ -85,22 +86,23 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
             String json = KsPreferenceKey.getInstance(SearchKeywordActivity.this).getUserProfileData();
             Type type = new TypeToken<List<SearchedKeywords>>() {}.getType();
             newObjectNew = gson.fromJson(json, type);
-            Log.w("savedGenre",newObjectNew.get(0).getKeyWords());
+            //  Log.w("savedGenre",newObjectNew.get(0).getKeyWords());
 
-            filterGenreSavedList=AppCommonMethods.createFilterGenreList(KsPreferenceKey.getInstance(this).getFilterGenreSelection());
+            if (newObjectNew!=null){
+                filterGenreSavedList=AppCommonMethods.createFilterGenreList(KsPreferenceKey.getInstance(this).getFilterGenreSelection());
 
-            for (int i=0;i<newObjectNew.size();i++){
-                SearchedKeywords filterLanguages=new SearchedKeywords();
-                filterLanguages.setKeyWords(newObjectNew.get(i).getKeyWords());
-                if(AppCommonMethods.checkLangeageAdded(newObjectNew.get(i).getKeyWords(),filterGenreSavedList)){
-                    filterLanguages.setSelected(true);
-                }else {
-                    filterLanguages.setSelected(false);
+                for (int i=0;i<newObjectNew.size();i++){
+                    SearchedKeywords filterLanguages=new SearchedKeywords();
+                    filterLanguages.setKeyWords(newObjectNew.get(i).getKeyWords());
+                    if(AppCommonMethods.checkLangeageAdded(newObjectNew.get(i).getKeyWords(),filterGenreSavedList)){
+                        filterLanguages.setSelected(true);
+                    }else {
+                        filterLanguages.setSelected(false);
+                    }
+
+                    newObject.add(filterLanguages);
                 }
-
-                newObject.add(filterLanguages);
             }
-
 
             responseDmsModel = AppCommonMethods.callpreference(this);
             filterLanguageListNew = responseDmsModel.getFilterLanguageList();
@@ -118,7 +120,6 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
 
                 filterLanguageList.add(filterLanguages);
             }
-
         }catch (Exception ignored){
 
         }
