@@ -319,42 +319,42 @@
                         android:layout_toRightOf="@+id/current_time"/>
 
 
-                    <TextView
-                        android:id="@+id/subtitle_audio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/_6dp"
-                        android:layout_alignParentEnd="true"
-                        android:drawableLeft="@drawable/ic_subtitle"
-                        android:fontFamily="@font/heebo_regular"
-                        android:padding="@dimen/_1sdp"
-                        android:lineHeight="32sp"
-                        android:gravity="center"
-                        android:text="@string/subtitle_audio"
-                        android:textAllCaps="false"
-                        android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/_16sp"
-                        android:layout_marginTop="@dimen/_4dp"
-                        android:layout_marginEnd="@dimen/_16sp"></TextView>
+<!--                    <TextView-->
+<!--                        android:id="@+id/subtitle_audio"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:drawablePadding="@dimen/_6dp"-->
+<!--                        android:layout_alignParentEnd="true"-->
+<!--                        android:drawableLeft="@drawable/ic_subtitle"-->
+<!--                        android:fontFamily="@font/heebo_regular"-->
+<!--                        android:padding="@dimen/_1sdp"-->
+<!--                        android:lineHeight="32sp"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="@string/subtitle_audio"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textColor="@color/pale_gray"-->
+<!--                        android:textSize="@dimen/_16sp"-->
+<!--                        android:layout_marginTop="@dimen/_4dp"-->
+<!--                        android:layout_marginEnd="@dimen/_16sp"></TextView>-->
 
 
-                    <TextView
-                        android:id="@+id/quality"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_video_quality"
-                        android:drawablePadding="@dimen/_6dp"
-                        android:fontFamily="@font/heebo_regular"
-                        android:layout_toLeftOf="@+id/subtitle_audio"
-                        android:padding="@dimen/_1sdp"
-                        android:gravity="center"
-                        android:text="@string/manage_quality"
-                        android:textAllCaps="false"
-                        android:layout_marginEnd="@dimen/_16sp"
-                        android:lineHeight="32sp"
-                        android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/_16sp"
-                        android:layout_marginStart="@dimen/_16sp"></TextView>
+<!--                    <TextView-->
+<!--                        android:id="@+id/quality"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:drawableLeft="@drawable/ic_video_quality"-->
+<!--                        android:drawablePadding="@dimen/_6dp"-->
+<!--                        android:fontFamily="@font/heebo_regular"-->
+<!--                        android:layout_toLeftOf="@+id/subtitle_audio"-->
+<!--                        android:padding="@dimen/_1sdp"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="@string/manage_quality"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:layout_marginEnd="@dimen/_16sp"-->
+<!--                        android:lineHeight="32sp"-->
+<!--                        android:textColor="@color/pale_gray"-->
+<!--                        android:textSize="@dimen/_16sp"-->
+<!--                        android:layout_marginStart="@dimen/_16sp"></TextView>-->
 
                     <RelativeLayout
                         android:id="@+id/fullscreen"
@@ -380,6 +380,46 @@
                             tools:ignore="ContentDescription" />
                     </RelativeLayout>
                 </RelativeLayout>
+                <TextView
+                    android:id="@+id/subtitle_audio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/_6dp"
+                    android:layout_alignParentEnd="true"
+                    android:drawableLeft="@drawable/ic_subtitle"
+                    android:fontFamily="@font/heebo_regular"
+                    android:padding="@dimen/_1sdp"
+                    android:lineHeight="32sp"
+                    android:gravity="center"
+                    android:text="@string/subtitle_audio"
+                    android:textAllCaps="false"
+                    android:textColor="@color/pale_gray"
+                    android:textSize="@dimen/_16sp"
+                    android:layout_marginBottom="33dp"
+                    android:layout_marginTop="@dimen/_4dp"
+                    android:layout_marginEnd="@dimen/uploaded_image_height"
+                    android:layout_alignParentBottom="true"></TextView>
+
+
+                <TextView
+                    android:id="@+id/quality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_video_quality"
+                    android:drawablePadding="@dimen/_6dp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:layout_toLeftOf="@+id/subtitle_audio"
+                    android:padding="@dimen/_1sdp"
+                    android:gravity="center"
+                    android:text="@string/manage_quality"
+                    android:textAllCaps="false"
+                    android:layout_marginEnd="@dimen/_16sp"
+                    android:lineHeight="32sp"
+                    android:textColor="@color/pale_gray"
+                    android:textSize="@dimen/_16sp"
+                    android:layout_marginBottom="33dp"
+                    android:layout_marginStart="@dimen/_16sp"
+                    android:layout_alignParentBottom="true"></TextView>
 
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:layout_width="match_parent"
