@@ -27,7 +27,6 @@
         <item name="colorPrimaryDark">@color/fragment_background_color</item>
         <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="android:windowEnableSplitTouch">false</item>
-        <item name="android:windowIsTranslucent">true</item>
         <item name="android:splitMotionEvents">false</item>
         <item name="otp">@color/line_colors</item>
     </style>
@@ -45,22 +44,18 @@
     </style>
 
     <style name="Theme.AppCompat.Transparent.NoActionBar" parent="MyMaterialTheme.Base">
-        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowFullscreen">true</item>
 
     </style>
 
     <style name="Theme.AppCompat.Transparent.NoActionBarDtv" parent="MyMaterialTheme.Base">
-        <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowFullscreen">true</item>
 
@@ -208,9 +203,7 @@
     </style>
 
     <style name="MyTransparent" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>

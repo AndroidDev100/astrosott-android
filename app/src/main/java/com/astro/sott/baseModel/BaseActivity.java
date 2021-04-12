@@ -9,7 +9,9 @@ import android.provider.Settings;
 
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -26,11 +28,11 @@ public class BaseActivity extends AppCompatActivity {
         tabletSize = getResources().getBoolean(R.bool.isTablet);
         if (tabletSize) {
             // do something
-           checkAutoRotation();
-               //  setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            checkAutoRotation();
+            //  setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
-             //   setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                //   setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
