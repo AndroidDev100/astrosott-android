@@ -556,11 +556,11 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         getBinding().noConnectionLayout.setVisibility(View.GONE);
         getBinding().share.setOnClickListener(view -> {
 
-            /*if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
+            if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
-            openShareDialouge();*/
+            openShareDialouge();
 
         });
         // setRailFragment();

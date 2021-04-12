@@ -92,13 +92,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:orientation="horizontal"
-                    android:weightSum="1">
-
+                    android:gravity="center">
                     <TextView
                         android:id="@+id/reminder"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/share_margin_top"
                         android:layout_weight="1"
                         android:clickable="true"
                         android:drawablePadding="5dp"
@@ -112,9 +110,8 @@
 
                     <TextView
                         android:id="@+id/share"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/share_margin_top"
                         android:layout_weight="1"
                         android:drawableTop="@drawable/ic_share_24_px"
                         android:drawablePadding="5dp"
@@ -123,7 +120,7 @@
                         android:text="@string/share"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/font_small"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
 
                 </LinearLayout>

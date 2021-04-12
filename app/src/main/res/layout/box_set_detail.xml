@@ -117,18 +117,20 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_15sdp"
-                                android:orientation="horizontal"
-                                android:weightSum="1">
+                                android:gravity="center"
+                                android:orientation="horizontal">
 
                                 <TextView
                                     android:id="@+id/watchList"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/share_margin_top"
+                                    android:layout_width="0dp"
                                     android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+
+
                                     android:clickable="true"
                                     android:drawablePadding="7dp"
                                     android:focusable="true"
+
                                     android:fontFamily="@font/heebo_regular"
                                     android:gravity="center"
                                     android:text="@string/my_list"
@@ -138,10 +140,12 @@
 
                                 <TextView
                                     android:id="@+id/shareWith"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/share_margin_top"
+                                    android:layout_width="0dp"
                                     android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_12sdp"
+
+
                                     android:clickable="true"
                                     android:drawableTop="@drawable/ic_share_24_px"
                                     android:drawablePadding="7dp"
@@ -151,14 +155,15 @@
                                     android:text="@string/share"
                                     android:textColor="@color/heather"
                                     android:textSize="@dimen/font_small"
-                                    android:visibility="gone" />
+                                    android:visibility="visible" />
 
                                 <TextView
                                     android:id="@+id/playlist"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/share_margin_top"
+                                    android:layout_width="0dp"
                                     android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+
+
                                     android:clickable="true"
                                     android:drawableTop="@drawable/download_icon"
                                     android:drawablePadding="7dp"

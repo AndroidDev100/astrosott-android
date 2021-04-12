@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/share_margin_top"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:clickable="true"
                     android:drawableTop="@drawable/ic_share_24_px"
                     android:drawablePadding="7dp"
