@@ -104,6 +104,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 if (!searchHappen){
                     if (charSequence.toString().trim().length()==0){
                        // getBinding().searchText.setText("");
+                        getBinding().clearEdt.setVisibility(View.GONE);
                         return;
                     }
                     if (charSequence.toString().trim().length() > 2) {
