@@ -443,7 +443,7 @@ public class PlayerRepository {
                         }
                     } else {
                         Log.w("audioAndSubtitle", "t4");
-                        trackItems[i] = new TrackItem(audioTrackInfo.getLabel() + " ", audioTrackInfo.getUniqueId(),audioTrackInfo.getLanguage());
+                        trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId(),audioTrackInfo.getLanguage());
                     }
 
 //                String label = audioTrackInfo.getLabel() != null ? audioTrackInfo.getLabel() : audioTrackInfo.getLanguage();
@@ -971,7 +971,9 @@ public class PlayerRepository {
             subscribePhoenixAnalyticsReportEvent();
 
 //            player.getSettings().setABRSettings(new ABRSettings().setMinVideoBitrate(200000).setInitialBitrateEstimate(150000));
-            player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
+            if(asset.getType() != MediaTypeConstant.getLinear(context)) {
+                player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
+            }
 
             player.prepare(mediaConfig);
             player.play();
