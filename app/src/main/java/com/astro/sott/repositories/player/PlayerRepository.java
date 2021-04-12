@@ -484,7 +484,7 @@ public class PlayerRepository {
                 trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(),textTrackInfo.getLanguage());
             } else {
                 TextTrack textTrackInfo = textTracks.get(i);
-                String name = textTrackInfo.getLabel();
+                String name = textTrackInfo.getLanguage();
                 trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(),textTrackInfo.getLanguage());
             }
         }
