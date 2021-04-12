@@ -386,7 +386,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                     runOnUiThread(() -> {
                         getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                         getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                        getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                        getBinding().astroPlayButton.setVisibility(View.GONE);
 
                     });
                     this.vodType = EntitlementCheck.FREE;
@@ -397,7 +397,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                             runOnUiThread(() -> {
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().astroPlayButton.setVisibility(View.GONE);
                             });
                         }
                         this.vodType = EntitlementCheck.SVOD;
@@ -407,7 +407,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                             runOnUiThread(() -> {
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().astroPlayButton.setVisibility(View.GONE);
                             });
                         }
 
