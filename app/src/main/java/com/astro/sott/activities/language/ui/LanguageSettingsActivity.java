@@ -48,7 +48,6 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
         super.onCreate(savedInstanceState);
         oldLang = new KsPreferenceKey(LanguageSettingsActivity.this).getAppLangName();
         setClicks();
-
         initData();
 
     }
