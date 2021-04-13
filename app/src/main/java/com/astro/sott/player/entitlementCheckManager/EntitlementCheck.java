@@ -56,4 +56,17 @@ public class EntitlementCheck {
             }
         });
     }
+
+
+    public void checkAssetListPurchaseStatus(Context context, String fileId, ProductPriceCallBack callBack) {
+        KsServices ksServices = new KsServices(context);
+
+        ksServices.getAssetListPurchaseStatus(fileId, (status, response, purchaseKey, errorCode, message) -> {
+            if (status) {
+                callBack.getProductprice(true, response, "", "", "");
+            } else {
+                callBack.getProductprice(false, null, "", "", "");
+            }
+        });
+    }
 }

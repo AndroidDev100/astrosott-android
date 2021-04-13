@@ -32,13 +32,16 @@ import com.kaltura.client.types.StringValue;
 import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 public class AssetContent {
     static List<PromoPojo> mainValue;
@@ -1425,6 +1428,48 @@ public class AssetContent {
 
         } else {
             return true;
+        }
+
+
+    }
+
+    public static boolean checkComingSoon(Map<String, Value> metas) {
+        StringValue startValue;
+        String startDate;
+        startValue = (StringValue) metas.get(AppLevelConstants.PLAYBACK_START_DATE);
+
+        if (startValue != null) {
+            startDate = startValue.getValue();
+            if (startDate != null && !startDate.equalsIgnoreCase("")) {
+                Date currentDate = new Date();
+                Date startDateTime = new Date();
+
+
+                Calendar calendar = Calendar.getInstance();
+                Date today = calendar.getTime();
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                inputFormat.setTimeZone(TimeZone.getDefault());
+                String currentTime = inputFormat.format(today);
+                try {
+                    currentDate = inputFormat.parse(currentTime);
+                    startDateTime = inputFormat.parse(startDate);
+
+                    if (startDateTime.after(currentDate)) {
+                        return true;
+                    } else {
+                        return false;
+
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
         }
 
 

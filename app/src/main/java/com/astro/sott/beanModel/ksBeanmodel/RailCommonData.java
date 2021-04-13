@@ -22,6 +22,7 @@ public class RailCommonData implements Parcelable {
     private String creatorName;
     private Long creatorId;
     private int totalCount;
+    private boolean isEntitled;
     private int progress;
     private int position;
     private int liveAsset;
@@ -62,6 +63,14 @@ public class RailCommonData implements Parcelable {
 
     public Long getId() {
         return id;
+    }
+
+    public void setEntitled(boolean entitled) {
+        isEntitled = entitled;
+    }
+
+    public boolean isEntitled() {
+        return isEntitled;
     }
 
     public void setImages(List<AssetCommonImages> images) {

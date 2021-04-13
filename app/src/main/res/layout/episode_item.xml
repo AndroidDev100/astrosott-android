@@ -40,9 +40,29 @@
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:visibility="gone"
                     android:layout_alignParentBottom="true"
-                    android:progressDrawable="@drawable/gradient_progess"></ProgressBar>
+                    android:progressDrawable="@drawable/gradient_progess"
+                    android:visibility="gone"></ProgressBar>
+
+
+
+                <FrameLayout
+                    android:id="@+id/episode_transparent"
+                    android:layout_width="155dp"
+                    android:layout_height="88dp"
+                    android:background="@color/episode_transparent"
+                    android:visibility="gone">
+
+                </FrameLayout>
+                <ImageView
+                    android:id="@+id/lock_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:background="@drawable/ic_lock">
+
+                </ImageView>
 
             </RelativeLayout>
 
