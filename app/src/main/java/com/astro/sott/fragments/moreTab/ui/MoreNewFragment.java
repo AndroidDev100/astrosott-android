@@ -504,8 +504,8 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
     @Override
     public void onFinishDialog() {
-        setUiForLogout();
         AppCommonMethods.removeUserPrerences(getActivity());
+        setUiForLogout();
         getBinding().rlLogout.setVisibility(View.GONE);
         getBinding().loginSignupMore.setVisibility(View.VISIBLE);
         getBinding().loginUi.setVisibility(View.GONE);
