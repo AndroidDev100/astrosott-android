@@ -287,6 +287,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().rlHelp.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), WebViewActivity.class);
             intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         });
 //
