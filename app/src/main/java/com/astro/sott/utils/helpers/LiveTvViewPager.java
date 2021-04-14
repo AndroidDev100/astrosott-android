@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class LiveTvViewPager extends ViewPager {
-
+    private View mCurrentView;
     private Boolean disable = false;
     private int[] heightArr = new int[3];  // allocating memory to array
     private int mCurrentPagePosition = 0;
@@ -52,6 +52,17 @@ public class LiveTvViewPager extends ViewPager {
 
         try {
 
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+            if (mCurrentView != null) {
+                mCurrentView.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+
+                int height = Math.max(0, mCurrentView.getMeasuredHeight());
+                heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+
+                super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            }
+/*
             int mode = MeasureSpec.getMode(heightMeasureSpec);
             if (mode == MeasureSpec.UNSPECIFIED || mode == MeasureSpec.AT_MOST) {
                 // super has to be called in the beginning so the child views can be initialized.
@@ -68,7 +79,7 @@ public class LiveTvViewPager extends ViewPager {
                 }
                 heightMeasureSpec = MeasureSpec.makeMeasureSpec(heightArr[mCurrentPagePosition], MeasureSpec.EXACTLY);
             }
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);*/
         }catch (Exception e){
             Log.d("ExceptionIs",e.getMessage());
         }
@@ -78,7 +89,10 @@ public class LiveTvViewPager extends ViewPager {
         mCurrentPagePosition = position;
         requestLayout();
     }
-
+    public void measureCurrentView(View currentView) {
+        mCurrentView = currentView;
+        requestLayout();
+    }
     /**
      * Determines the height of this view
      *

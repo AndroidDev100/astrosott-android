@@ -88,8 +88,8 @@
     <color name="catchup_date_time_bg">#28000000</color>
     <color name="primaryColorDarkBlack">#141414</color>
     <color name="sapphire">#224ba3</color>
-
-
+    <color name="episode_transparent">#E8262C40</color>
+    <!--  #E6262C40-->
     <!-- Astro colors-->
     <color name="toolbarColor">#1C1827</color>
     <color name="tabBarColor">#382C57</color>
@@ -129,7 +129,6 @@
     <color name="filter_text_selected_bg">#00e895</color>
     <color name="pin_error_line_color">#f42d5b</color>
     <color name="ribben_text_color">#151024</color>
-
 
 
 </resources>

@@ -18,6 +18,7 @@ import com.astro.sott.callBacks.commonCallBacks.EpisodeClickListener;
 import com.astro.sott.databinding.EpisodeItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
@@ -68,16 +69,33 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
             Asset asset = singleItem.getObject();
 
             int value = AppCommonMethods.getEpisodeNumber(asset.getMetas());
-            String duration = AppCommonMethods.getURLDuration(asset);
-            if (!TextUtils.isEmpty(duration)) {
-                viewHolder.watchlistItemBinding.tvduration.setVisibility(View.VISIBLE);
-                viewHolder.watchlistItemBinding.tvduration.setText(duration);
-            }
 
-            if (value == -1) {
-                viewHolder.watchlistItemBinding.tvTitle.setText(asset.getName());
+
+            if (AssetContent.checkComingSoon(asset.getMetas())) {
+                viewHolder.watchlistItemBinding.tvTitle.setText("Coming Soon");
             } else {
-                viewHolder.watchlistItemBinding.tvTitle.setText("E" + value + ": " + asset.getName());
+
+                String duration = AppCommonMethods.getURLDuration(asset);
+                if (!TextUtils.isEmpty(duration)) {
+                    viewHolder.watchlistItemBinding.tvduration.setVisibility(View.VISIBLE);
+                    viewHolder.watchlistItemBinding.tvduration.setText(duration);
+                } else {
+                    viewHolder.watchlistItemBinding.tvduration.setText("");
+                }
+                if (value == -1) {
+                    viewHolder.watchlistItemBinding.tvTitle.setText(asset.getName());
+                } else {
+                    viewHolder.watchlistItemBinding.tvTitle.setText("E" + value + ": " + asset.getName());
+                }
+
+                MultilingualStringValue stringValue = null;
+                String description = "";
+                if (asset.getMetas() != null)
+                    stringValue = (MultilingualStringValue) asset.getMetas().get(AppLevelConstants.KEY_SHORT_DESCRIPTION);
+                if (stringValue != null)
+                    description = stringValue.getValue();
+
+                viewHolder.watchlistItemBinding.tvDescription.setText(description);
             }
             if (singleItem.getProgress() == 0) {
                 viewHolder.watchlistItemBinding.progressBar.setVisibility(View.GONE);
@@ -93,15 +111,15 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
 
 
             }
+            if (singleItem.isEntitled()) {
+                viewHolder.watchlistItemBinding.lockIcon.setVisibility(View.VISIBLE);
+                viewHolder.watchlistItemBinding.episodeTransparent.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.watchlistItemBinding.lockIcon.setVisibility(View.GONE);
+                viewHolder.watchlistItemBinding.episodeTransparent.setVisibility(View.GONE);
 
-            MultilingualStringValue stringValue = null;
-            String description = "";
-            if (asset.getMetas() != null)
-                stringValue = (MultilingualStringValue) asset.getMetas().get(AppLevelConstants.KEY_SHORT_DESCRIPTION);
-            if (stringValue != null)
-                description = stringValue.getValue();
+            }
 
-            viewHolder.watchlistItemBinding.tvDescription.setText(description);
             if (value == episodeNumber) {
                 RailCommonData singleItems = railList.get(position);
                 if (singleItems.getExpended()) {
@@ -156,10 +174,11 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
 
                 }
             });
-            viewHolder.watchlistItemBinding.playLay.setOnClickListener(new View.OnClickListener() {
+            viewHolder.watchlistItemBinding.episodeTransparent.setOnClickListener(v -> {});
+            viewHolder.watchlistItemBinding.landscapeImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    itemClickListener.moveToPlay(position, railList.get(position), 0,railList);
+                    itemClickListener.moveToPlay(position, railList.get(position), 0, railList);
                 }
             });
 

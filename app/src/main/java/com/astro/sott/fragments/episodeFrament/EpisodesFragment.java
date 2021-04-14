@@ -34,7 +34,9 @@ import com.astro.sott.callBacks.commonCallBacks.EpisodeCallBAck;
 import com.astro.sott.callBacks.commonCallBacks.EpisodeClickListener;
 import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
 import com.astro.sott.databinding.EpisodeFooterFragmentBinding;
+import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.utils.TabsData;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
@@ -45,7 +47,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.Bookmark;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MultilingualStringValueArray;
+import com.kaltura.client.types.PpvPrice;
+import com.kaltura.client.types.ProductPrice;
 
 
 import java.util.ArrayList;
@@ -54,7 +59,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentBinding> implements ContinueWatchingRemove, RemoveAdsCallBack, EpisodeClickListener,EpisodeCallBAck {
+public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentBinding> implements ContinueWatchingRemove, RemoveAdsCallBack, EpisodeClickListener, EpisodeCallBAck {
     FirstEpisodeCallback _mClickListener;
     BottomSheetDialog dialog;
     TextView pause_download, resume_download, cancel_download, go_to_mydownload_lay;
@@ -385,7 +390,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 getBinding().seasonText.setText("EPISODE 1 - " + total);
             }
             getBinding().season.setEnabled(false);
-            _mClickListener.onFirstEpisodeData(TabsData.getInstance().getOpenSeriesData(),AppLevelConstants.OPEN);
+            _mClickListener.onFirstEpisodeData(TabsData.getInstance().getOpenSeriesData(), AppLevelConstants.OPEN);
             setUIComponets(TabsData.getInstance().getOpenSeriesData());
         }
 
@@ -508,10 +513,11 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             for (int i = 0; i < loadedList.size(); i++) {
                 list.add(i, loadedList.get(i));
             }
+            getListofFileId(loadedList);
             if (UserInfo.getInstance(getActivity()).isActive()) {
                 getAssetListForProgress(loadedList);
             } else {
-                setOpenSeriesAdapter(loadedList);
+                checkEntitlement(loadedList);
             }
 /* if (count >= assetCommonBeans.get(0).getTotalCount()) {
             getBinding().loadMoreButton.setVisibility(View.GONE);
@@ -554,11 +560,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             if (bookmarkList != null) {
                 matchBookMarkList(bookmarkList);
             } else {
-                if (seriesType.equalsIgnoreCase("open")) {
-                    setOpenSeriesAdapter(loadedList);
-                } else {
-                    setCLosedSeriesAdapter(loadedList);
-                }
+                checkEntitlement(loadedList);
             }
         });
     }
@@ -575,35 +577,103 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             }
             finalEpisodeList.add(finalEpisode);
         }
+        checkEntitlement(finalEpisodeList);
+
+    }
+
+    private List<ProductPrice> productPriceList;
+    private List<RailCommonData> entitledList;
+
+    private void checkEntitlement(List<RailCommonData> finalEpisodeList) {
+        productPriceList = new ArrayList<>();
+        entitledList = new ArrayList<>();
+        new EntitlementCheck().checkAssetListPurchaseStatus(getActivity(), fileIdString + "", (status, response, purchaseKey, errorCode, message) -> {
+            if (response != null) {
+                productPriceList.addAll(response.results.getObjects());
+                if (productPriceList != null && productPriceList.size() > 0) {
+                    for (RailCommonData episode : finalEpisodeList) {
+                        if (episode.getObject() != null && episode.getObject().getMediaFiles() != null && !AppCommonMethods.getFileIdOfAssest(episode.getObject()).equalsIgnoreCase("")) {
+                            for (ProductPrice productPrice : productPriceList) {
+                                PpvPrice ppvPrice = (PpvPrice) productPrice;
+                                if (AppCommonMethods.getFileIdOfAssest(episode.getObject()).equalsIgnoreCase(ppvPrice.getFileId() + "")) {
+                                    RailCommonData episodeList = new RailCommonData();
+                                    episodeList.setObject(episode.getObject());
+                                    episodeList.setProgress(episode.getProgress());
+                                    if (productPrice.getPurchaseStatus().toString().equalsIgnoreCase("for_purchase_subscription_only") || productPrice.getPurchaseStatus().equals("for_purchase")) {
+                                        episodeList.setEntitled(true);
+                                    } else {
+                                        episodeList.setEntitled(false);
+                                    }
+                                    entitledList.add(episodeList);
+                                    break;
+                                }
+                            }
+                        } else {
+                            entitledList.add(episode);
+                        }
+                    }
+
+                } else {
+                    entitledList.addAll(finalEpisodeList);
+                }
+                setData(entitledList);
+
+            }
+
+
+        });
+
+
+    }
+
+    private void setData(List<RailCommonData> railData) {
         if (seriesType.equalsIgnoreCase("open")) {
-            setOpenSeriesAdapter(finalEpisodeList);
+            setOpenSeriesAdapter(railData);
         } else {
-            setCLosedSeriesAdapter(finalEpisodeList);
+            setCLosedSeriesAdapter(railData);
+        }
+    }
+
+    StringBuilder fileIdString;
+
+    private void getListofFileId(List<RailCommonData> loadedList) {
+        if (fileIdString != null)
+            fileIdString.setLength(0);
+        fileIdString = new StringBuilder();
+        for (RailCommonData railList : loadedList) {
+            if (railList != null && railList.getObject() != null && railList.getObject().getMediaFiles() != null && !AppCommonMethods.getFileIdOfAssest(railList.getObject()).equalsIgnoreCase("")) {
+                fileIdString.append(AppCommonMethods.getFileIdOfAssest(railList.getObject()) + ",");
+            }
         }
     }
 
     private void setCLosedSeriesAdapter(List<RailCommonData> finalEpisodeList) {
         checkExpiry(list);
-        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this,this);
-        getBinding().recyclerView.setAdapter(adapter);
+        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this, this);
+        getActivity().runOnUiThread(() -> {
+            getBinding().recyclerView.setAdapter(adapter);
 
-        int count = adapter.getItemCount();
-        if (count >= totalCount) {
-            getBinding().loadMoreButton.setVisibility(View.GONE);
-        } else {
-            getBinding().loadMoreButton.setVisibility(View.VISIBLE);
-        }
+            int count = adapter.getItemCount();
+            if (count >= totalCount) {
+                getBinding().loadMoreButton.setVisibility(View.GONE);
+            } else {
+                getBinding().loadMoreButton.setVisibility(View.VISIBLE);
+            }
+        });
+
 
     }
 
     private void setOpenSeriesAdapter(List<RailCommonData> finalEpisodeList) {
-        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this,this);
-        getBinding().recyclerView.setAdapter(adapter);
+        adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this, this);
+        getActivity().runOnUiThread(() -> {
+            getBinding().recyclerView.setAdapter(adapter);
+            if (seriesType.equalsIgnoreCase("open")) {
+                if (totalPages > 1)
+                    getBinding().season.setEnabled(true);
+            }
+        });
 
-        if (seriesType.equalsIgnoreCase("open")) {
-            if (totalPages > 1)
-                getBinding().season.setEnabled(true);
-        }
 
     }
 
@@ -614,11 +684,12 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             for (int i = 0; i < loadedList.size(); i++) {
                 list.add(i, loadedList.get(i));
             }
+            getListofFileId(loadedList);
             totalCount = assetCommonBeans.get(0).getTotalCount();
             if (UserInfo.getInstance(getActivity()).isActive()) {
                 getAssetListForProgress(loadedList);
             } else {
-                setCLosedSeriesAdapter(loadedList);
+                checkEntitlement(loadedList);
             }
 
           /*  checkExpiry(list);
@@ -954,12 +1025,10 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     }
 
     @Override
-    public void moveToPlay(int position, RailCommonData railCommonData, int type,List<RailCommonData> railList) {
-        ((WebSeriesDescriptionActivity) context).moveToPlay(position, railCommonData, type,railList);
+    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<RailCommonData> railList) {
+        ((WebSeriesDescriptionActivity) context).moveToPlay(position, railCommonData, type, railList);
 
     }
-
-
 
 
     public interface FirstEpisodeCallback {

@@ -317,7 +317,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                     @Override
                     public void onPageSelected(int i) {
 
-                        getBinding().pager.reMeasureCurrentPage(i);
+                     //   getBinding().pager.reMeasureCurrentPage(i);
                     }
 
                     @Override
@@ -332,10 +332,14 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
                 getBinding().tabLayout.setVisibility(View.VISIBLE);
             }
+
+
+
         } catch (ArithmeticException e) {
             Log.d("TAG", e + "");
         }
     }
+
 
     private void changeTabsFont() {
         //  Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/"+ Constants.FontStyle);

@@ -2,7 +2,9 @@ package com.astro.sott.fragments.detailRailFragment.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -18,6 +20,7 @@ import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.fragments.moreLikeThisFragment.MoreLikeThisFragment;
+import com.astro.sott.utils.helpers.LiveTvViewPager;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 
 /*
@@ -39,6 +42,7 @@ import com.astro.sott.utils.helpers.MediaTypeConstant;
  * */
 public class DetailPagerAdapter extends FragmentStatePagerAdapter {
     private final Context mContext;
+    private int mCurrentPosition = -1;
     private RailCommonData railData;
     private int adapterSize;
     private int fragmentType;
@@ -49,6 +53,21 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
         this.railData = railCommonData;
         adapterSize = size;
         this.fragmentType = fragmentType;
+    }
+
+    @Override
+    public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        super.setPrimaryItem(container, position, object);
+
+        if (position != mCurrentPosition && container instanceof LiveTvViewPager) {
+            Fragment fragment = (Fragment) object;
+            LiveTvViewPager pager = (LiveTvViewPager) container;
+
+            if (fragment != null && fragment.getView() != null) {
+                mCurrentPosition = position;
+                pager.measureCurrentView(fragment.getView());
+            }
+        }
     }
 
     @Override
