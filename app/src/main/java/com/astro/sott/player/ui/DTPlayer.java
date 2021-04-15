@@ -42,6 +42,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -229,6 +230,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private AudioManager audioManager;
     private Map<String, MultilingualStringValueArray> map;
     private List<RailCommonData> railList;
+    private boolean isSkipCreditVisible = false;
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -661,6 +663,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                return new CompareToBuilder().append(seasonNumber, seasonNumber2).append(episodeNumber, episodeNumber2).toComparison();
 //            }
 //        });
+
+
         try {
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
@@ -1105,6 +1109,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             //Write code here to check content is Program or not
 
             if (!isLivePlayer) {
+
+                if (isSeries && episodesList.size()>0){
+                    getBinding().nextEpisode.setVisibility(View.VISIBLE);
+                }else{
+                    getBinding().nextEpisode.setVisibility(View.GONE);
+                }
                 getBinding().seekBar.setVisibility(View.VISIBLE);
 
                 if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue()) {
@@ -2195,11 +2205,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private long introStartTime;
     private int skipValue = 0;
     private long introEndTime;
-    private long creditEndTime;
+    private long creditEndTime = 0;
     private String labelIntro;
     private String labelCredit;
     private String labelRecap;
-    private long creditStartTime;
+    private long creditStartTime = 0;
     private long recapStartTime;
     private long recapEndTime;
 
@@ -2372,15 +2382,22 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     }
 
                     if (creditStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditEndTime) {
-                        getBinding().skipCredits.setText(labelCredit);
-                        getBinding().skipCredits.setVisibility(View.VISIBLE);
-                        skipValue = 3;
-                        getBinding().skipIntro.setVisibility(View.GONE);
-                        getBinding().skipRecap.setVisibility(View.GONE);
+                        if (!isSkipCreditVisible) {
+                            getBinding().skipCredits.setText(labelCredit);
+                            getBinding().skipCredits.setVisibility(View.VISIBLE);
+                            isSkipCreditVisible = true;
+                        }
+                            skipValue = 3;
+                            getBinding().skipIntro.setVisibility(View.GONE);
+                            getBinding().skipRecap.setVisibility(View.GONE);
+
                     } else {
-                        getBinding().skipCredits.setText("");
-                        getBinding().skipCredits.setVisibility(View.GONE);
+//                        getBinding().skipCredits.setText("");
+//                        getBinding().skipCredits.setVisibility(View.GONE);
                         skipValue = -1;
+                        if (!isLivePlayer) {
+                            checkPercentagePlayedOfVideo();
+                        }
                     }
 
                /* if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introStartTime) {
@@ -2704,6 +2721,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 runningPlayer.getView().setVisibility(View.VISIBLE);
                 long durtion = runningPlayer.getDuration();
                 long currentPos = runningPlayer.getCurrentPosition();
+
                 if (isPlayerStart) {
 
                     if (currentPos > 10000) {
@@ -2775,21 +2793,21 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     public void setBingView(Player player) {
+        getBinding().nextEpisode.setVisibility(View.GONE);
         isBingeView = true;
+        isSkipCreditVisible = false;
         getBinding().pBar.setVisibility(View.GONE);
         //  getBinding().lockIcon.setVisibility(View.GONE);
         getBinding().rlUp.setVisibility(View.INVISIBLE);
         getBinding().rlDown.setVisibility(View.INVISIBLE);
-        getBinding().linearAutoPlayLayout.setVisibility(View.VISIBLE);
-        getAssetImage(asset);
-        Animation aniFade = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
-        getBinding().autoplaylayout.assetImage.startAnimation(aniFade);
-        getBinding().autoplaylayout.close.bringToFront();
-        getBinding().autoplaylayout.close.setOnClickListener(v -> exitPlayeriew(player));
-        getBinding().autoplaylayout.playNextEpisode.setOnClickListener(v ->
-                playNextEpisode()
-        );
-        getBinding().autoplaylayout.close.bringToFront();
+//        getBinding().linearAutoPlayLayout.setVisibility(View.VISIBLE);
+//        getAssetImage(asset);
+//        Animation aniFade = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+//        getBinding().autoplaylayout.assetImage.startAnimation(aniFade);
+//        getBinding().autoplaylayout.close.bringToFront();
+//        getBinding().autoplaylayout.close.setOnClickListener(v -> exitPlayeriew(player));
+
+       // getBinding().autoplaylayout.close.bringToFront();
         if (!hasEpisodesList)
             getNextEpisode(asset);
 
@@ -3279,16 +3297,25 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             }
         });
 
-        getBinding().fullscreen.setOnClickListener(view -> getBinding().ivCancel.performClick());
-
-        getBinding().autoplaylayout.replayvideo.setOnClickListener(new View.OnClickListener() {
+        getBinding().nextEpisode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelTimer();
-                getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
-                getUrl(playerURL, asset, playerProgress, isLivePlayer, "", railList);
+                getBinding().nextEpisode.setVisibility(View.GONE);
+                isSkipCreditVisible = false;
+                playNextEpisode();
             }
         });
+
+        getBinding().fullscreen.setOnClickListener(view -> getBinding().ivCancel.performClick());
+
+//        getBinding().autoplaylayout.replayvideo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                cancelTimer();
+//                getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
+//                getUrl(playerURL, asset, playerProgress, isLivePlayer, "", railList);
+//            }
+//        });
 
 
         getBinding().skipIntro.setOnClickListener(v -> {
@@ -3301,9 +3328,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().skipCredits.setOnClickListener(v -> {
             //Please add logic of next episode Here
             getBinding().skipCredits.setVisibility(View.GONE);
-            if (creditEndTime > playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
-                runningPlayer.seekTo((creditEndTime * 1000) + 500);
-            }
+            runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 10000);
+//            if (creditEndTime > playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
+//                runningPlayer.seekTo((creditEndTime * 1000) + 500);
+//            }
         });
 
 
@@ -3331,16 +3359,17 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     void startTimer() {
-        cTimer = new CountDownTimer(10000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                getBinding().autoplaylayout.upnext.setText("Next episode in " + (millisUntilFinished / 1000));
-            }
-
-            public void onFinish() {
-                playNextEpisode();
-            }
-        };
-        cTimer.start();
+//        cTimer = new CountDownTimer(10000, 1000) {
+//            public void onTick(long millisUntilFinished) {
+//                getBinding().autoplaylayout.upnext.setText("Next episode in " + (millisUntilFinished / 1000));
+//            }
+//
+//            public void onFinish() {
+//                playNextEpisode();
+//            }
+//        };
+//        cTimer.start();
+        playNextEpisode();
     }
 
     private void playNextEpisode() {
@@ -3731,6 +3760,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     public void onProgressChanged(SeekBar seekbar, int progress,
                                   boolean fromTouch) {
 
+
+
         if (seekbar.getId() == R.id.seekBar1) {
             WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
             layout.screenBrightness = progress / 100F;
@@ -3739,6 +3770,21 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
         } else {
             viewModel.sendSeekBarProgress(seekbar.getProgress()).observe(this, s -> getBinding().currentTime.setText(s));
+        }
+
+    }
+
+    private void checkPercentagePlayedOfVideo() {
+        double currentPosition = runningPlayer.getCurrentPosition();
+        double totalDuration  = runningPlayer.getDuration();
+        double percentagePlayed = ((currentPosition/totalDuration)*100L);
+        if (percentagePlayed>=98) {
+
+            if (!isSkipCreditVisible) {
+                isSkipCreditVisible = true;
+                getBinding().skipCredits.setText(labelCredit);
+                getBinding().skipCredits.setVisibility(View.VISIBLE);
+            }
         }
 
     }
