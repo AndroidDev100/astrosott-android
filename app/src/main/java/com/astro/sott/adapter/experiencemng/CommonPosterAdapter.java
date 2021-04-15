@@ -182,7 +182,7 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 //holder.potraitItemBinding.setImage(assetCommonImages);
 
-                ImageHelper.getInstance(itemBinding.itemImage.getContext()).loadImageTo(itemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.portrait);
+                ImageHelper.getInstance(itemBinding.itemImage.getContext()).loadImageTo(itemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.ic_potrait_placeholder);
             } else {
                 /*if (new KsPreferenceKeys(mContext).getCurrentTheme().equalsIgnoreCase(AppConstants.LIGHT_THEME)) {
                     ImageHelper.getInstance(holder.itemBinding.itemImage.getContext()).loadImageTo(holder.itemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.shimmer_portrait, holder.itemBinding.itemImage));
@@ -236,7 +236,7 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 //holder.potraitItemBinding.setImage(assetCommonImages);
 
-                ImageHelper.getInstance(itemBinding.itemImage.getContext()).loadImageTo(itemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.portrait);
+                ImageHelper.getInstance(itemBinding.itemImage.getContext()).loadImageTo(itemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.ic_potrait_placeholder);
             } else {
                 /*if (new KsPreferenceKeys(mContext).getCurrentTheme().equalsIgnoreCase(AppConstants.LIGHT_THEME)) {
                     ImageHelper.getInstance(holder.itemBinding.itemImage.getContext()).loadImageTo(holder.itemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.shimmer_portrait, holder.itemBinding.itemImage));
@@ -290,7 +290,7 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 //holder.potraitItemBinding.setImage(assetCommonImages);
 
-                ImageHelper.getInstance(itemBinding.itemImage.getContext()).loadImageTo(itemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.portrait);
+                ImageHelper.getInstance(itemBinding.itemImage.getContext()).loadImageTo(itemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.ic_potrait_placeholder);
             } else {
                 /*if (new KsPreferenceKeys(mContext).getCurrentTheme().equalsIgnoreCase(AppConstants.LIGHT_THEME)) {
                     ImageHelper.getInstance(holder.itemBinding.itemImage.getContext()).loadImageTo(holder.itemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.shimmer_portrait, holder.itemBinding.itemImage));
