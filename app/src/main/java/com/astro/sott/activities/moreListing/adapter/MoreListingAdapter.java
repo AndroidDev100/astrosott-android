@@ -145,7 +145,7 @@ public class MoreListingAdapter extends RecyclerView.Adapter<MoreListingAdapter.
     public void setCircularImage(ImageView imageView, String imageURl) {
         Glide.with(mContext)
                 .load(imageURl)
-                .apply(new RequestOptions().placeholder(R.drawable.landscape).error(R.drawable.landscape))
+                .apply(new RequestOptions().placeholder(R.drawable.ic_landscape_placeholder).error(R.drawable.ic_landscape_placeholder))
                 .into(imageView);
 
     }

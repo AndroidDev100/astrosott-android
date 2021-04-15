@@ -32,7 +32,7 @@
                     android:id="@+id/landscape_image"
                     android:layout_width="155dp"
                     android:layout_height="88dp"
-                    android:background="@drawable/landscape"
+                    android:background="@drawable/ic_landscape_placeholder"
                     android:scaleType="fitXY" />
 
                 <ProgressBar

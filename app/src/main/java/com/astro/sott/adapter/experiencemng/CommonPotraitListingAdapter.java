@@ -77,7 +77,7 @@ public class CommonPotraitListingAdapter extends RecyclerView.Adapter<  CommonPo
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 //holder.potraitItemBinding.setImage(assetCommonImages);
-                ImageHelper.getInstance(holder.potraitItemBinding.itemImage.getContext()).loadImageTo(holder.potraitItemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.portrait);
+                ImageHelper.getInstance(holder.potraitItemBinding.itemImage.getContext()).loadImageTo(holder.potraitItemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.ic_potrait_placeholder);
             }
 
             try {

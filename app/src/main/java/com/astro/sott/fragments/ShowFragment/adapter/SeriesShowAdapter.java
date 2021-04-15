@@ -53,7 +53,7 @@ public class SeriesShowAdapter extends RecyclerView.Adapter<SeriesShowAdapter.Si
                 if (mediaFile.getRatio().equalsIgnoreCase("16x9")) {
                     String image_url = mediaFile.getUrl();
                     String final_url = image_url + AppLevelConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
-                    ImageHelper.getInstance(holder.landscapeItemBinding.image.getContext()).loadImageTo(holder.landscapeItemBinding.image, final_url, R.drawable.landscape);
+                    ImageHelper.getInstance(holder.landscapeItemBinding.image.getContext()).loadImageTo(holder.landscapeItemBinding.image, final_url, R.drawable.ic_landscape_placeholder);
                 }
             }
         }

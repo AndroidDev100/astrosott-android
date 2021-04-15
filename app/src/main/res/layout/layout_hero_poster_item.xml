@@ -41,7 +41,7 @@
                 android:layout_alignParentRight="true"></include>
             <ImageView
                 android:id="@+id/heroImage"
-                android:background="@drawable/portrait"
+                android:background="@drawable/ic_potrait_placeholder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="0dp"

@@ -172,7 +172,7 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             });
 
         } else if (holder instanceof RCGHeroHolder) {
-            ImageHelper.getInstance(((RCGHeroHolder) holder).itemBinding.heroImage.getContext()).loadImageTo(((RCGHeroHolder) holder).itemBinding.heroImage, bannerImageUrl(),R.drawable.landscape);
+            ImageHelper.getInstance(((RCGHeroHolder) holder).itemBinding.heroImage.getContext()).loadImageTo(((RCGHeroHolder) holder).itemBinding.heroImage, bannerImageUrl(),R.drawable.ic_landscape_placeholder);
 
             ((RCGHeroHolder) holder).itemBinding.setIsDark(isDark);
             ((RCGHeroHolder) holder).itemBinding.setPlaylistItem(bannerImageUrl());
@@ -224,7 +224,7 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             });
         } else if (holder instanceof LandscapeHeroHolder) {
             ((LandscapeHeroHolder) holder).itemBinding.setIsDark(isDark);
-            ImageHelper.getInstance(((LandscapeHeroHolder) holder).itemBinding.heroImage.getContext()).loadImageTo(((LandscapeHeroHolder) holder).itemBinding.heroImage, bannerImageUrl(),R.drawable.landscape);
+            ImageHelper.getInstance(((LandscapeHeroHolder) holder).itemBinding.heroImage.getContext()).loadImageTo(((LandscapeHeroHolder) holder).itemBinding.heroImage, bannerImageUrl(),R.drawable.ic_landscape_placeholder);
 
 
             ((LandscapeHeroHolder) holder).itemBinding.heroImage.setOnClickListener(new View.OnClickListener() {
@@ -235,7 +235,7 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             });
         } else if (holder instanceof LandscapeBannerHolder) {
             ((LandscapeBannerHolder) holder).itemBinding.setIsDark(isDark);
-            ImageHelper.getInstance(((LandscapeBannerHolder) holder).itemBinding.heroImage.getContext()).loadImageTo(((LandscapeBannerHolder) holder).itemBinding.heroImage, bannerImageUrl(),R.drawable.landscape);
+            ImageHelper.getInstance(((LandscapeBannerHolder) holder).itemBinding.heroImage.getContext()).loadImageTo(((LandscapeBannerHolder) holder).itemBinding.heroImage, bannerImageUrl(),R.drawable.ic_landscape_placeholder);
             ((LandscapeBannerHolder) holder).itemBinding.heroImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

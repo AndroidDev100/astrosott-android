@@ -67,9 +67,9 @@ public class CommonLandscapeListingAdapter extends RecyclerView.Adapter<CommonLa
 
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
-                ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageToLandscapeListingAdapter(holder.landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.landscape);
+                ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageToLandscapeListingAdapter(holder.landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.ic_landscape_placeholder);
             } else {
-                ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageToPlaceholder(holder.landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.landscape, holder.landscapeItemBinding.itemImage), R.drawable.landscape);
+                ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageToPlaceholder(holder.landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.ic_landscape_placeholder, holder.landscapeItemBinding.itemImage), R.drawable.ic_landscape_placeholder);
 
             }
             if (singleItem.getType() == MediaTypeConstant.getProgram(mContext))

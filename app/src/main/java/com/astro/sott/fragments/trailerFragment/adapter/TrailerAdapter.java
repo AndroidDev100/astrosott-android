@@ -57,7 +57,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerI
                 if (asset.getImages().get(imageCounter).getRatio().equalsIgnoreCase("16x9")) {
                     String image_url = asset.getImages().get(imageCounter).getUrl();
                     String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.trailer_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.trailer_image_height) + AppLevelConstants.QUALITY;
-                    ImageHelper.getInstance(holder.trailerItemBinding.trailerImage.getContext()).loadImageTo(holder.trailerItemBinding.trailerImage, final_url, R.drawable.landscape);
+                    ImageHelper.getInstance(holder.trailerItemBinding.trailerImage.getContext()).loadImageTo(holder.trailerItemBinding.trailerImage, final_url, R.drawable.ic_landscape_placeholder);
                     break;
                 }
             }

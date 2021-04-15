@@ -40,7 +40,7 @@ public class ResultAllXmlUtils {
                     .load(final_url)
                     .into(view);*/
 
-            ImageHelper.getInstance(view.getContext()).loadQuickSearchImage(view, final_url, R.drawable.landscape);
+            ImageHelper.getInstance(view.getContext()).loadQuickSearchImage(view, final_url, R.drawable.ic_landscape_placeholder);
         }
 
 

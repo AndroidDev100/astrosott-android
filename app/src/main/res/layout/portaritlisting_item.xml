@@ -36,7 +36,7 @@
                     android:id="@+id/itemImage"
                     android:layout_width="@dimen/_95sdp"
                     android:layout_height="@dimen/_165sdp"
-                    android:background="@drawable/portrait"
+                    android:background="@drawable/ic_potrait_placeholder"
                     android:contentDescription="@string/image_description"
                     android:scaleType="fitXY"
                     />

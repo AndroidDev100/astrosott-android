@@ -75,7 +75,7 @@
                     android:id="@+id/itemImage"
                     android:layout_width="@dimen/listing_item_image_width"
                     android:layout_height="@dimen/listing_item_image_height"
-                    android:background="@drawable/landscape"
+                    android:background="@drawable/ic_landscape_placeholder"
                     android:contentDescription="@string/image_description"
                     android:scaleType="fitXY" />
             </FrameLayout>

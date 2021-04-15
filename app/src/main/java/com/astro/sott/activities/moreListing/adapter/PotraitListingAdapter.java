@@ -69,10 +69,10 @@ public class PotraitListingAdapter extends RecyclerView.Adapter<PotraitListingAd
 //                singleItem.getType();
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
 
-                ImageHelper.getInstance(holder.potraitItemBinding.itemImage.getContext()).loadImageToPortraitListing(holder.potraitItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.portrait);
+                ImageHelper.getInstance(holder.potraitItemBinding.itemImage.getContext()).loadImageToPortraitListing(holder.potraitItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.ic_potrait_placeholder);
 
             } else {
-                ImageHelper.getInstance(holder.potraitItemBinding.itemImage.getContext()).loadImageToPlaceholder(holder.potraitItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.portrait, holder.potraitItemBinding.itemImage), R.drawable.portrait);
+                ImageHelper.getInstance(holder.potraitItemBinding.itemImage.getContext()).loadImageToPlaceholder(holder.potraitItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.ic_potrait_placeholder, holder.potraitItemBinding.itemImage), R.drawable.ic_potrait_placeholder);
 
             }
             getPremimumMark(i, holder.potraitItemBinding);

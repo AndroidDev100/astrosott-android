@@ -99,7 +99,7 @@ public class CatchupTvAdapter extends RecyclerView.Adapter<CatchupTvAdapter.Sing
                 }
 
                 if (imageUrl.contains("https")) {
-                    ImageHelper.getInstance(viewHolder.catchUpItemBinding.itemImage.getContext()).loadImageTo(viewHolder.catchUpItemBinding.itemImage, imageUrl, R.drawable.landscape);
+                    ImageHelper.getInstance(viewHolder.catchUpItemBinding.itemImage.getContext()).loadImageTo(viewHolder.catchUpItemBinding.itemImage, imageUrl, R.drawable.ic_landscape_placeholder);
                 }
             }
 

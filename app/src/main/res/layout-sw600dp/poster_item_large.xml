@@ -52,7 +52,7 @@
                         android:id="@+id/itemImage"
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="@dimen/_180sdp"
-                        android:background="@drawable/portrait"
+                        android:background="@drawable/ic_potrait_placeholder"
                         android:contentDescription="TODO"
                         android:scaleType="fitXY" />
                     <ImageView
