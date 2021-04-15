@@ -37,6 +37,9 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getBinding().backButton.setOnClickListener(v -> {
+            onBackPressed();
+        });
         intializeBilling();
 
 
@@ -70,6 +73,11 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
         super.onStart();
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private void intializeBilling() {
