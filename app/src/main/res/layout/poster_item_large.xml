@@ -109,7 +109,7 @@
                             android:textColor="@color/white"
                             android:textSize="12sp"
                             android:paddingTop="@dimen/_2sdp"
-                            android:paddingLeft="@dimen/_3sdp"
+
                             />
 
                         <TextView
@@ -122,7 +122,7 @@
                             android:visibility="gone"
                             android:fontFamily="@font/roboto_regular"
                             android:textColor="@color/white"
-                            android:paddingLeft="@dimen/_3sdp"
+
                             android:paddingBottom="@dimen/_2sdp"
                             android:textSize="@dimen/_9sdp" />
 

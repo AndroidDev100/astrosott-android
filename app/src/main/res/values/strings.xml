@@ -104,11 +104,11 @@
     <string name="popular_search">Popular Searches</string>
     <string name="recent_searches">Search History</string>
 
-    <string name="removed_from_watchlist">removed from your watchlist</string>
+    <string name="removed_from_watchlist">removed from My List</string>
     <string name="playlist_removed">Video removed from your playlist</string>
     <string name="checkout">Checkout</string>
     <string name="on_Dialog">on SOTT!</string>
-    <string name="added_to_watchlist">added to your watchlist</string>
+    <string name="added_to_watchlist">added to My List</string>
 
     <string name="become_vip">BECOME A VIP</string>
     <string name="rent_movie">RENT MOVIE FOR RM XX.XX</string>

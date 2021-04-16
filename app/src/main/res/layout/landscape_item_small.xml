@@ -116,7 +116,6 @@
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:paddingLeft="@dimen/_3sdp"
                         android:paddingTop="@dimen/_2sdp"
                         android:textColor="@color/white"
                         android:textSize="11sp"
@@ -130,7 +129,7 @@
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:paddingLeft="@dimen/_3sdp"
+
                         android:paddingBottom="@dimen/_2sdp"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_8sdp"
