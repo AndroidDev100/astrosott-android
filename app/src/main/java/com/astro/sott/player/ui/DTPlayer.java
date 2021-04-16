@@ -78,6 +78,7 @@ import com.astro.sott.player.swipe.Swipe;
 import com.astro.sott.player.swipe.SwipeListener;
 import com.astro.sott.player.viewModel.DTPlayerViewModel;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
+import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
@@ -231,6 +232,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private Map<String, MultilingualStringValueArray> map;
     private List<RailCommonData> railList;
     private boolean isSkipCreditVisible = false;
+    private boolean isUserGeneratedCredit = false;
+    private Handler handler1 = new Handler();
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1110,9 +1113,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             if (!isLivePlayer) {
 
-                if (isSeries && episodesList.size()>0){
+                if (isSeries && episodesList.size() > 0) {
                     getBinding().nextEpisode.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     getBinding().nextEpisode.setVisibility(View.GONE);
                 }
                 getBinding().seekBar.setVisibility(View.VISIBLE);
@@ -2354,51 +2357,54 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
 
         player.addListener(this, PlayerEvent.playheadUpdated, event -> {
-            if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) > 0) {
-                if (introStartTime != 0 && introEndTime != 0 || creditStartTime != 0 && creditEndTime != 0) {
-                    Log.w("introValues", runningPlayer.getCurrentPosition() + "----" + introStartTime + "----" + playerTimeInSeconds(runningPlayer.getCurrentPosition()));
-                    if (introStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introEndTime) {
-                        getBinding().skipIntro.setText(labelIntro);
-                        getBinding().skipIntro.setVisibility(View.VISIBLE);
-                        skipValue = 1;
-                        getBinding().skipRecap.setVisibility(View.GONE);
-                        getBinding().skipCredits.setVisibility(View.GONE);
-                    } else {
-                        getBinding().skipIntro.setText(labelIntro);
-                        getBinding().skipIntro.setVisibility(View.GONE);
-                        skipValue = -1;
-                    }
-
-                    if (recapStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > recapStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < recapEndTime) {
-                        getBinding().skipRecap.setText(labelRecap);
-                        getBinding().skipRecap.setVisibility(View.VISIBLE);
-                        skipValue = 2;
-                        getBinding().skipIntro.setVisibility(View.GONE);
-                        getBinding().skipCredits.setVisibility(View.GONE);
-                    } else {
-                        getBinding().skipRecap.setText("");
-                        getBinding().skipRecap.setVisibility(View.GONE);
-                        skipValue = -1;
-                    }
-
-                    if (creditStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditEndTime) {
-                        if (!isSkipCreditVisible) {
-                            getBinding().skipCredits.setText(labelCredit);
-                            getBinding().skipCredits.setVisibility(View.VISIBLE);
-                            isSkipCreditVisible = true;
+            if (!isLivePlayer) {
+                if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) > 0) {
+                    if (introStartTime != 0 && introEndTime != 0 || creditStartTime != 0 && creditEndTime != 0) {
+                        Log.w("introValues", runningPlayer.getCurrentPosition() + "----" + introStartTime + "----" + playerTimeInSeconds(runningPlayer.getCurrentPosition()));
+                        if (introStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introEndTime) {
+                            getBinding().skipIntro.setText(labelIntro);
+                            getBinding().skipIntro.setVisibility(View.VISIBLE);
+                            skipValue = 1;
+                            getBinding().skipRecap.setVisibility(View.GONE);
+                            getBinding().skipCredits.setVisibility(View.GONE);
+                        } else {
+                            getBinding().skipIntro.setText(labelIntro);
+                            getBinding().skipIntro.setVisibility(View.GONE);
+                            skipValue = -1;
                         }
+
+                        if (recapStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > recapStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < recapEndTime) {
+                            getBinding().skipRecap.setText(labelRecap);
+                            getBinding().skipRecap.setVisibility(View.VISIBLE);
+                            skipValue = 2;
+                            getBinding().skipIntro.setVisibility(View.GONE);
+                            getBinding().skipCredits.setVisibility(View.GONE);
+                        } else {
+                            getBinding().skipRecap.setText("");
+                            getBinding().skipRecap.setVisibility(View.GONE);
+                            skipValue = -1;
+                        }
+
+                        if (creditStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditEndTime) {
+                            if (!isSkipCreditVisible) {
+                                getBinding().skipCredits.setText(labelCredit);
+                                getBinding().skipCredits.setVisibility(View.VISIBLE);
+                                isSkipCreditVisible = true;
+                                isUserGeneratedCredit = false;
+                                hideSkipIntro();
+                            }
                             skipValue = 3;
                             getBinding().skipIntro.setVisibility(View.GONE);
                             getBinding().skipRecap.setVisibility(View.GONE);
 
-                    } else {
+                        } else {
 //                        getBinding().skipCredits.setText("");
 //                        getBinding().skipCredits.setVisibility(View.GONE);
-                        skipValue = -1;
-                        if (!isLivePlayer) {
+                            skipValue = -1;
+                            isUserGeneratedCredit = true;
                             checkPercentagePlayedOfVideo();
+
                         }
-                    }
 
                /* if (playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introStartTime) {
                     getBinding().skipIntro.setVisibility(View.GONE);
@@ -2426,11 +2432,19 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (creditEndTime == playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
                     getBinding().skipIntro.setVisibility(View.GONE);
                 }*/
-                } else {
-                    getBinding().skipIntro.setVisibility(View.GONE);
-                    getBinding().skipRecap.setVisibility(View.GONE);
-                    getBinding().skipCredits.setVisibility(View.GONE);
+                    } else {
+                        getBinding().skipIntro.setVisibility(View.GONE);
+                        getBinding().skipRecap.setVisibility(View.GONE);
+                        skipValue = -1;
+                        isUserGeneratedCredit = true;
+                        checkPercentagePlayedOfVideo();
+                        //getBinding().skipCredits.setVisibility(View.GONE);
+                    }
                 }
+            }else {
+                getBinding().skipIntro.setVisibility(View.GONE);
+                getBinding().skipRecap.setVisibility(View.GONE);
+                getBinding().skipCredits.setVisibility(View.GONE);
             }
         });
 
@@ -2499,7 +2513,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().skipIntro.setVisibility(View.GONE);
                 getBinding().skipRecap.setVisibility(View.GONE);
                 getBinding().skipCredits.setVisibility(View.GONE);
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
@@ -2710,6 +2724,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (aBoolean != null && aBoolean) {
                         getBinding().pBar.setVisibility(View.GONE);
 //                        getBinding().urlimage.setVisibility(View.GONE);
+                        if (!isLivePlayer)
                         setVideoQuality();
                     }
                 });
@@ -2807,7 +2822,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //        getBinding().autoplaylayout.close.bringToFront();
 //        getBinding().autoplaylayout.close.setOnClickListener(v -> exitPlayeriew(player));
 
-       // getBinding().autoplaylayout.close.bringToFront();
+        // getBinding().autoplaylayout.close.bringToFront();
         if (!hasEpisodesList)
             getNextEpisode(asset);
 
@@ -3331,8 +3346,27 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         getBinding().skipCredits.setOnClickListener(v -> {
             //Please add logic of next episode Here
-            getBinding().skipCredits.setVisibility(View.GONE);
-            runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 10000);
+            handler1.removeCallbacksAndMessages(null);
+            if (asset.getType() == MediaTypeConstant.getEpisode(getActivity())) {
+                if (isUserGeneratedCredit) {
+                    getBinding().skipCredits.setVisibility(View.GONE);
+                    getBinding().nextEpisode.setVisibility(View.GONE);
+                    playNextEpisode();
+                } else {
+                    if (creditEndTime < recapStartTime || creditEndTime < introStartTime) {
+                        getBinding().skipCredits.setVisibility(View.GONE);
+                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 10000);
+                    } else {
+                        getBinding().nextEpisode.setVisibility(View.GONE);
+                        getBinding().skipCredits.setVisibility(View.GONE);
+                        playNextEpisode();
+                    }
+                }
+            } else {
+                getBinding().skipCredits.setVisibility(View.GONE);
+                runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 10000);
+            }
+
 //            if (creditEndTime > playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
 //                runningPlayer.seekTo((creditEndTime * 1000) + 500);
 //            }
@@ -3378,6 +3412,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void playNextEpisode() {
         isLiveChannel = false;
+
         cancelTimer();
         if (hasNextEpisode) {
             if (runningPlayer != null) {
@@ -3401,6 +3436,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 }, 3000);
                 playerChecks(asset);
             }
+        }else {
+            if (runningPlayer!=null)
+                exitPlayeriew(runningPlayer);
         }
     }
 
@@ -3585,8 +3623,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                                }
 //
 //                            }
-                            Log.w("audioAndSubtitle", trackItems+"   "+audioTracks.get(0).getLabel());
-                            if (audioTracks.get(0).getLanguage()!=null){
+                            Log.w("audioAndSubtitle", trackItems + "   " + audioTracks.get(0).getLabel());
+                            if (audioTracks.get(0).getLanguage() != null) {
                                 audioList = trackItems;
                                 AudioAdapter audioAdapter = new AudioAdapter(trackItems);
                                 getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
@@ -3664,8 +3702,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 }
             }
-        },1200);
-
+        }, 1200);
 
 
     }
@@ -3774,7 +3811,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                   boolean fromTouch) {
 
 
-
         if (seekbar.getId() == R.id.seekBar1) {
             WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
             layout.screenBrightness = progress / 100F;
@@ -3791,17 +3827,43 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void checkPercentagePlayedOfVideo() {
         double currentPosition = runningPlayer.getCurrentPosition();
-        double totalDuration  = runningPlayer.getDuration();
-        double percentagePlayed = ((currentPosition/totalDuration)*100L);
-        if (percentagePlayed>=98) {
+        double totalDuration = runningPlayer.getDuration();
+        double percentagePlayed = ((currentPosition / totalDuration) * 100L);
+        if (percentagePlayed >= 98) {
 
             if (!isSkipCreditVisible) {
                 isSkipCreditVisible = true;
                 getBinding().skipCredits.setText(labelCredit);
                 getBinding().skipCredits.setVisibility(View.VISIBLE);
+
+                hideSkipIntro();
             }
         }
 
+    }
+
+    private void hideSkipIntro() {
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                    getBinding().skipCredits.setText("");
+                    getBinding().skipCredits.setVisibility(View.GONE);
+                    if (asset.getType() == MediaTypeConstant.getEpisode(getActivity())) {
+                        if (isUserGeneratedCredit) {
+                            getBinding().nextEpisode.setVisibility(View.GONE);
+                            playNextEpisode();
+                        } else {
+                            if (creditEndTime < recapStartTime || creditEndTime < introStartTime) {
+
+                            } else {
+                                getBinding().nextEpisode.setVisibility(View.GONE);
+                                playNextEpisode();
+                            }
+                        }
+                    }
+
+            }
+        }, 10000);
     }
 
     @Override
