@@ -165,7 +165,7 @@
     <string name="no_video_available">Oops! Seems like there\'s no video quality available</string>
 
     <string name="no_tracks_available">Sorry, there\'s no audio tracks available</string>
-    <string name="no_caption_available">Sorry, there\'s no subtitles available</string>
+    <string name="no_caption_available">Sorry, there\'s no subtitles and audio tracks available</string>
     <string name="no_result_found">No Result Found</string>
     <string name="FOR_PURCHASE_SUBSCRIPTION_ONLY">SUBSCRIPTION_PURCHASED</string>
     <string name="FOR_PURCHASED">FOR_PURCHASE_SUBSCRIPTION_ONLY</string>

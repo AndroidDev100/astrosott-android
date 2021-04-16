@@ -3248,7 +3248,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
 
         getBinding().backward.setOnClickListener(view -> {
+            getBinding().skipCredits.setText("");
+            getBinding().skipCredits.setVisibility(View.GONE);
+            isSkipCreditVisible = false;
             getBinding().pBar.setVisibility(View.VISIBLE);
+
             final LiveData<Boolean> booleanLiveData = viewModel.seekPlayerBackward();
             if (booleanLiveData == null || baseActivity == null) {
                 return;
@@ -3647,12 +3651,21 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             });
         }
 
-        if (captionList != null || audioList != null) {
-            getBinding().audioDialog.setVisibility(View.VISIBLE);
-            getBinding().audioDialog.bringToFront();
-        } else {
-            getBinding().audioDialog.setVisibility(View.GONE);
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (captionList != null || audioList != null) {
+                    getBinding().audioDialog.setVisibility(View.VISIBLE);
+                    getBinding().audioDialog.bringToFront();
+                } else {
+
+                    getBinding().audioDialog.setVisibility(View.GONE);
+                    ToastHandler.show(baseActivity.getResources().getString(R.string.no_caption_available), baseActivity.getApplicationContext());
+
+                }
+            }
+        },1200);
+
 
 
     }
@@ -3772,7 +3785,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             viewModel.sendSeekBarProgress(seekbar.getProgress()).observe(this, s -> getBinding().currentTime.setText(s));
         }
 
+
     }
+
 
     private void checkPercentagePlayedOfVideo() {
         double currentPosition = runningPlayer.getCurrentPosition();
@@ -3813,10 +3828,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             });
         }
 
+        getBinding().skipCredits.setText("");
+        getBinding().skipCredits.setVisibility(View.GONE);
+
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
+        isSkipCreditVisible = false;
         if (seekBar.getId() == R.id.seekBar1) {
 
         } else if (seekBar.getId() == R.id.seekBar2) {
