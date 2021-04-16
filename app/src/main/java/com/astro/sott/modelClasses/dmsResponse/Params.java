@@ -138,6 +138,42 @@ public class Params {
     private AdTagURL AdTagURL;
 
 
+    public ZendeskURL getZendeskURL() {
+        return zendeskURL;
+    }
+
+    public void setZendeskURL(ZendeskURL zendeskURL) {
+        this.zendeskURL = zendeskURL;
+    }
+
+    @SerializedName("ZendeskURL")
+    @Expose
+    private ZendeskURL zendeskURL;
+
+    @SerializedName("TermsAndConditionsURL")
+    @Expose
+    private TermsAndConditionsURL termsAndConditionsURL;
+
+    @SerializedName("PrivacyPolicyURL")
+    @Expose
+    private PrivacyPolicyURL privacyPolicyURL;
+
+    public TermsAndConditionsURL getTermsAndConditionsURL() {
+        return termsAndConditionsURL;
+    }
+
+    public void setTermsAndConditionsURL(TermsAndConditionsURL termsAndConditionsURL) {
+        this.termsAndConditionsURL = termsAndConditionsURL;
+    }
+
+    public PrivacyPolicyURL getPrivacyPolicyURL() {
+        return privacyPolicyURL;
+    }
+
+    public void setPrivacyPolicyURL(PrivacyPolicyURL privacyPolicyURL) {
+        this.privacyPolicyURL = privacyPolicyURL;
+    }
+
     @SerializedName("lowBitRateMaxLimit")
     @Expose
     private String lowBitRateMaxLimit;

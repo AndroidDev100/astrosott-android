@@ -1,7 +1,9 @@
 package com.astro.sott.activities.webview.ui;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -10,6 +12,8 @@ import android.webkit.WebSettings;
 
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.WebviewBinding;
+import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
@@ -18,6 +22,7 @@ public class WebViewActivity extends BaseBindingActivity<WebviewBinding> {
 
 
     private String strWebview = "";
+    private String url = "";
 
     @Override
     public WebviewBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -59,7 +64,22 @@ public class WebViewActivity extends BaseBindingActivity<WebviewBinding> {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
             }
+            ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(this);
 
+            if (strWebview.equalsIgnoreCase(AppLevelConstants.HELP)) {
+                if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getZendeskURL() != null && responseDmsModel.getParams().getZendeskURL().getURL() != null) {
+                    url = responseDmsModel.getParams().getZendeskURL().getURL();
+                }
+
+            } else if (strWebview.equalsIgnoreCase(AppLevelConstants.TNC)) {
+                if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getTermsAndConditionsURL() != null && responseDmsModel.getParams().getTermsAndConditionsURL().getURL() != null) {
+                    url = responseDmsModel.getParams().getTermsAndConditionsURL().getURL();
+                }
+            } else {
+                if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getPrivacyPolicyURL() != null && responseDmsModel.getParams().getPrivacyPolicyURL().getURL() != null) {
+                    url = responseDmsModel.getParams().getPrivacyPolicyURL().getURL();
+                }
+            }
 
             WebSettings webSettings = getBinding().webview.getSettings();
             webSettings.setJavaScriptEnabled(true);
@@ -71,8 +91,8 @@ public class WebViewActivity extends BaseBindingActivity<WebviewBinding> {
                     getBinding().webview.loadUrl(AppConstants.TNC_URL);
 
                 } else if (strWebview.equalsIgnoreCase(AppLevelConstants.HELP)) {*/
-                    getBinding().webview.loadUrl(AppConstants.HELP_URL);
-               /* }*/
+                getBinding().webview.loadUrl(url);
+                /* }*/
             }
 
         } else {
