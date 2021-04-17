@@ -484,7 +484,11 @@ public class PlayerRepository {
                 trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
             } else {
                 TextTrack textTrackInfo = textTracks.get(i);
+<<<<<<< HEAD
                 String name = textTrackInfo.getLanguage();
+=======
+                String name = textTrackInfo.getLabel();
+>>>>>>> 9a54c93a372ba1cceb4b3b782a642b60c7d1e9c3
                 trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
             }
         }
@@ -967,14 +971,21 @@ public class PlayerRepository {
                     setMinBufferAfterReBufferMs(2000).
                     setMinBufferAfterInteractionMs(2000).
                     setRetainBackBufferFromKeyframe(true);
-            player.getSettings().setPlayerBuffers(loadControlBuffers);
+            // player.getSettings().setPlayerBuffers(loadControlBuffers);
 
             subscribePhoenixAnalyticsReportEvent();
 
 //            player.getSettings().setABRSettings(new ABRSettings().setMinVideoBitrate(200000).setInitialBitrateEstimate(150000));
+<<<<<<< HEAD
             if (asset.getType() != MediaTypeConstant.getLinear(context)) {
+=======
+           /* if (asset.getType() == MediaTypeConstant.getLinear(context)) {
+                player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit()) / 2));
+            } else {*/
+>>>>>>> 9a54c93a372ba1cceb4b3b782a642b60c7d1e9c3
                 player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
-            }
+
+          /*  }*/
 
             player.prepare(mediaConfig);
             player.play();

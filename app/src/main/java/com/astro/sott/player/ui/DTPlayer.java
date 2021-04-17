@@ -53,6 +53,7 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -1892,72 +1893,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             }
 
         };
-        startDishOttMediaLoadingProd(playLoadedEntry, asset);
+        startOttMediaLoadingProd(playLoadedEntry, asset);
     }
 
-    private void getHungamaUrlToPlayContent(String providerExternalContentId) {
-        viewModel.getHungamaUrl(providerExternalContentId).observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String contentUrl) {
-                if (contentUrl != null) {
-                    Log.d("asasasasaasa", contentUrl);
-                    PKMediaEntry mediaEntry = createMediaEntry(contentUrl);
-                    onMediaLoaded(mediaEntry);
-                } else {
-                    isError = true;
-                    showDialog(getString(R.string.something_went_wrong_try_again));
-                }
-
-            }
-        });
-    }
-
-    private PKMediaEntry createMediaEntry(String contentUrl) {
-        PKMediaEntry mediaEntry = new PKMediaEntry();
-
-        //Set id for the entry.
-        mediaEntry.setId(String.valueOf(asset.getId()));
-        mediaEntry.setName(asset.getName());
-        // mediaEntry.setDuration(881000);
-        //Set media entry type. It could be Live,Vod or Unknown.
-        //In this sample we use Vod.
-        mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.Vod);
-
-        //Create list that contains at least 1 media source.
-        //Each media entry can contain a couple of different media sources.
-        //All of them represent the same content, the difference is in it format.
-        //For example same entry can contain PKMediaSource with dash and another
-        // PKMediaSource can be with hls. The player will decide by itself which source is
-        // preferred for playback.
-        List<PKMediaSource> mediaSources = createMediaSources(contentUrl);
-
-        //Set media sources to the entry.
-        mediaEntry.setSources(mediaSources);
-
-        return mediaEntry;
-    }
-
-    private List<PKMediaSource> createMediaSources(String contentUrl) {
-        PKMediaSource mediaSource = new PKMediaSource();
-
-        //Set the id.
-        mediaSource.setId(String.valueOf(asset.getId()));
-
-        //Set the content url. In our case it will be link to hls source(.m3u8).
-        mediaSource.setUrl(contentUrl);
-
-        //Set the format of the source. In our case it will be hls in case of mpd/wvm formats you have to to call mediaSource.setDrmData method as well
-        mediaSource.setMediaFormat(PKMediaFormat.hls);
-
-        // Add DRM data if required
-//        if (LICENSE_URL != null) {
-//            mediaSource.setDrmData(Collections.singletonList(
-//                    new PKDrmParams(LICENSE_URL, PKDrmParams.Scheme.WidevineCENC)
-//            ));
-//        }
-
-        return Collections.singletonList(mediaSource);
-    }
 
     private void loggedOutMessage() {
         try {
@@ -1990,7 +1928,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
-    private void startDishOttMediaLoadingProd(final OnMediaLoadCompletion completion, Asset asset) {
+    private void startOttMediaLoadingProd(final OnMediaLoadCompletion completion, Asset asset) {
         SessionProvider ksSessionProvider = new SessionProvider() {
             @Override
             public String baseUrl() {
@@ -2091,9 +2029,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void onMediaLoaded(PKMediaEntry mediaEntry) {
         try {
-            if (dvrEnabled) {
-                mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.DvrLive);
+            if (playerAsset.getType() == MediaTypeConstant.getLinear(getActivity())) {
+                mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.Live);
+            } else {
+                mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.Vod);
+
             }
+
 
             if (getActivity() != null && getActivity().getSystemService(Context.AUDIO_SERVICE) != null) {
                 mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
@@ -2113,6 +2055,38 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
+    private void getPlayerState() {
+        runningPlayer.addListener(this, PlayerEvent.Type.STATE_CHANGED, event -> {
+            PlayerEvent.StateChanged stateChanged = (PlayerEvent.StateChanged) event;
+            switch (stateChanged.newState) {
+                case IDLE:
+                    Log.d("StateChange ", "IDLE");
+
+                    //  log.d("StateChange Idle");
+                    break;
+                case LOADING:
+                    Log.d("StateChange ", "LOADING");
+
+                    //  log.d("StateChange Loading");
+                    break;
+                case READY:
+                    getBinding().pBar.setVisibility(View.GONE);
+
+                    Log.d("StateChange ", "Ready");
+                    //  mPlayerControlsView.setProgressBarVisibility(false);
+                    break;
+                case BUFFERING:
+                    Log.d("StateChange ", "Buffering");
+                    getBinding().pBar.setVisibility(View.VISIBLE);
+                    // log.e("StateChange Buffering");
+                    // mPlayerControlsView.setProgressBarVisibility(true);
+                    // booleanMutableLiveData.postValue(false);
+                    break;
+            }
+
+        });
+    }
+
     private void startPlayer(PKMediaEntry mediaEntry) {
     /*    new KsServices(baseActivity).callBookMarking(asset, position -> {
             if (assetType == MediaTypeConstant.getProgram(baseActivity)) {
@@ -2129,7 +2103,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     adsCallBackHandling(player);
                     getPlayerView(player);
                     player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fill);
-
+                    getPlayerState();
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -2482,7 +2456,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().skipIntro.setVisibility(View.GONE);
                 getBinding().skipRecap.setVisibility(View.GONE);
                 getBinding().skipCredits.setVisibility(View.GONE);
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
@@ -2693,7 +2667,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (aBoolean != null && aBoolean) {
                         getBinding().pBar.setVisibility(View.GONE);
 //                        getBinding().urlimage.setVisibility(View.GONE);
-                        setVideoQuality();
+                        if (playerAsset.getType() != MediaTypeConstant.getLinear(getActivity()))
+                            setVideoQuality();
                     }
                 });
             }
@@ -3552,8 +3527,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                                }
 //
 //                            }
-                            Log.w("audioAndSubtitle", trackItems+"   "+audioTracks.get(0).getLabel());
-                            if (audioTracks.get(0).getLanguage()!=null){
+                            Log.w("audioAndSubtitle", trackItems + "   " + audioTracks.get(0).getLabel());
+                            if (audioTracks.get(0).getLanguage() != null) {
                                 audioList = trackItems;
                                 AudioAdapter audioAdapter = new AudioAdapter(trackItems);
                                 getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
