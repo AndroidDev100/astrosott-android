@@ -140,8 +140,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:clickable="true"
-                        android:focusable="true"
+                        android:layout_centerInParent="true"
+                        android:layout_centerHorizontal="true"
                         android:fontFamily="@font/heebo_medium"
                         android:text="@string/become_vip"
                         android:textColor="@color/white"
@@ -228,7 +228,6 @@
                         android:visibility="gone"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:tabBackground="@color/transparentColor"
                         app:tabIndicator="@color/transparentColor"
                         app:tabSelectedTextColor="@color/white"
                         app:tabTextAppearance="@style/MineCustomTabText"
@@ -236,21 +235,20 @@
 
                         />
 
-                    <View
-                        android:id="@+id/black_line"
-                        android:layout_width="match_parent"
-                        android:layout_height="4dp"
-                        android:layout_below="@id/tabLayout"
-                        android:background="@color/egg_plant"
-                        android:visibility="gone" />
-
-                    <View
-                        android:id="@+id/indicator"
-                        android:layout_width="0dp"
-                        android:layout_height="4dp"
-                        android:layout_below="@id/tabLayout"
-                        android:background="@drawable/tab_indicator"
-                        android:visibility="gone" />
+                <View
+                    android:id="@+id/black_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@color/egg_plant"
+                    android:layout_below="@id/tabLayout"
+                    android:visibility="gone" />
+                <View
+                    android:id="@+id/indicator"
+                    android:layout_width="0dp"
+                    android:layout_height="4dp"
+                    android:visibility="gone"
+                    android:layout_below="@id/tabLayout"
+                    android:background="@drawable/tab_indicator"/>
                 </RelativeLayout>
                 <!-- View pager to swipe views -->
                 <com.astro.sott.utils.helpers.LiveTvViewPager

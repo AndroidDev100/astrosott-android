@@ -125,6 +125,8 @@ public interface AppLevelConstants {
     String NOADS = "NoAds";
 
     String XOFFERWINDOW = "XOfferWindow";
+    String LiveEventProgramEndDate = "LiveEventProgramEndDate";
+    String LiveEventProgramStartDate = "LiveEventProgramStartDate";
     String RAIL_DATA_OBJECT = "railData";
     String RAIL_LIST = "railList";
     String PROGRAM_ASSET = "program_asset";

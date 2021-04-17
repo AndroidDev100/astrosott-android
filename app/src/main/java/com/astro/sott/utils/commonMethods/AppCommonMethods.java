@@ -288,6 +288,12 @@ public class AppCommonMethods {
         return tsLong.toString();
     }
 
+    public static Long getCurrentTimeStampLong() {
+
+        Long tsLong = System.currentTimeMillis() / 1000;
+        return tsLong;
+    }
+
 
     public static String getNextDateTimeStamp(int type, int dateIndex) {
         String formattedDate;
@@ -756,7 +762,6 @@ public class AppCommonMethods {
         }
         return fileId;
     }
-
 
 
     public static Uri getImageURI(int resId, ImageView imageView) {

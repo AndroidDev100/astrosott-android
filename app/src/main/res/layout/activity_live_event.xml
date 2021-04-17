@@ -127,7 +127,7 @@
                 </LinearLayout>
 
                 <RelativeLayout
-                    android:id="@+id/watch_button"
+                    android:id="@+id/play_button"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:visibility="gone"
@@ -152,8 +152,6 @@
                         android:layout_centerInParent="true"
                         android:layout_centerHorizontal="true"
                         android:layout_weight="1"
-                        android:clickable="true"
-                        android:focusable="true"
                         android:fontFamily="@font/heebo_medium"
                         android:text="@string/become_vip"
                         android:textColor="@color/white"

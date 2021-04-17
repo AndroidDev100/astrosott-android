@@ -91,6 +91,7 @@
     <string name="live">Live Now</string>
     <string name="similar_channel">Similar Channel</string>
     <string name="title_exclusives">Exclusive</string>
+    <string name="live_event_msg">We know you are excited! Set a reminder and come back later when the event starts. See you!</string>
     <string name="actors">Actors: </string>
     <string name="sub_title">Subtitle Language: </string>
     <string name="duration">Content Duration: </string>

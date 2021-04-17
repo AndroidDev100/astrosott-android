@@ -74,6 +74,7 @@ import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.LongValue;
 import com.kaltura.client.types.MultilingualStringValue;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.PersonalList;
@@ -158,7 +159,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     }
 
     private void getDataFromBack(RailCommonData commonRailData, int layout) {
-        getBinding().watchButton.setVisibility(View.GONE);
+        getBinding().playButton.setVisibility(View.GONE);
         railData = commonRailData;
         asset = railData.getObject();
         layoutType = layout;
@@ -184,16 +185,20 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     }
 
     private void setPlayerFragment() {
+        getBinding().backImg.setOnClickListener(view -> onBackPressed());
 
         manager = getSupportFragmentManager();
-        //getBinding().playButton.setClickable(true);
-        getBinding().watchButton.setOnClickListener(view -> {
+        getBinding().playButton.setOnClickListener(view -> {
             if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
             if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
-                playerChecks(railData);
+                if (AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate && liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong()) {
+                    playerChecks(railData);
+                } else {
+                    ToastHandler.display(getResources().getString(R.string.live_event_msg), this);
+                }
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
                 if (UserInfo.getInstance(this).isActive()) {
                     fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
@@ -379,9 +384,9 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             if (apiStatus) {
                 if (purchasedStatus) {
                     runOnUiThread(() -> {
-                        getBinding().watchButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                        getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                         getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                        getBinding().watchButton.setVisibility(View.VISIBLE);
+                        getBinding().playButton.setVisibility(View.VISIBLE);
                         getBinding().starIcon.setVisibility(View.GONE);
                         getBinding().playText.setTextColor(getResources().getColor(R.color.black));
 
@@ -393,9 +398,9 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
                         if (xofferWindowValue) {
                             runOnUiThread(() -> {
-                                getBinding().watchButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                getBinding().watchButton.setVisibility(View.VISIBLE);
+                                getBinding().playButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.VISIBLE);
                             });
                         }
@@ -404,9 +409,9 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                         if (xofferWindowValue) {
                             runOnUiThread(() -> {
-                                getBinding().watchButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                                getBinding().watchButton.setVisibility(View.VISIBLE);
+                                getBinding().playButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
 
                             });
@@ -606,7 +611,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     private void setMetaDataValues(Asset asset, int type) {
         map = asset.getTags();
         yearMap = asset.getMetas();
-
+        getEventDate(yearMap);
         PrintLogging.printLog(this.getClass(), "", "YearMapIS" + map.get("SubtitleLanguage"));
 
         StringBuilderHolder.getInstance().clear();
@@ -624,6 +629,23 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         assetType = asset.getType();
 
 
+    }
+
+    Long liveEventStartDate;
+    Long liveEventEndDate;
+
+    private void getEventDate(Map<String, Value> yearMap) {
+        LongValue startValue = null, endValue = null;
+        if (yearMap != null) {
+            startValue = (LongValue) yearMap.get(AppLevelConstants.LiveEventProgramStartDate);
+            endValue = (LongValue) yearMap.get(AppLevelConstants.LiveEventProgramEndDate);
+            if (startValue != null) {
+                liveEventStartDate = startValue.getValue();
+            }
+            if (endValue != null) {
+                liveEventEndDate = endValue.getValue();
+            }
+        }
     }
 
 
@@ -662,7 +684,6 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             StringBuilderHolder.getInstance().append(" | ");
 
         }
-
     }
 
 
@@ -735,7 +756,6 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                 break;
             }
         }
-        getBinding().backImg.setOnClickListener(view -> onBackPressed());
 
 
     }
