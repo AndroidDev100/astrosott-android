@@ -99,6 +99,9 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
 
             }
         });
+        viewHolder.scheduleItemBinding.share.setOnClickListener(v -> {
+            AppCommonMethods.openShareDialog(context, data.get(i).getObject(), context);
+        });
 
 
         String currentTime = AppCommonMethods.getCurrentTimeStamp();

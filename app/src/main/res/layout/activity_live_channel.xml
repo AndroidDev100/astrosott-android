@@ -101,6 +101,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/share"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -114,7 +115,7 @@
                     android:text="@string/share"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/font_small"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <RelativeLayout
                     android:id="@+id/vip_button_live"
@@ -122,9 +123,9 @@
                     android:layout_height="50dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="15dp"
-                    android:visibility="gone"
                     android:layout_marginRight="16dp"
-                    android:background="@drawable/vip_gradient_button">
+                    android:background="@drawable/vip_gradient_button"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/star_icon"
@@ -139,9 +140,9 @@
                         android:id="@+id/play_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_centerInParent="true"
                         android:layout_centerHorizontal="true"
+                        android:layout_weight="1"
                         android:fontFamily="@font/heebo_medium"
                         android:text="@string/become_vip"
                         android:textColor="@color/white"
@@ -167,8 +168,8 @@
                             android:id="@+id/channel_logo"
                             android:layout_width="64dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/ic_landscape_placeholder"
                             android:layout_gravity="center"
+                            android:background="@drawable/ic_landscape_placeholder"
                             android:scaleType="fitXY"></ImageView>
 
                         <TextView
@@ -235,20 +236,21 @@
 
                         />
 
-                <View
-                    android:id="@+id/black_line"
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:background="@color/egg_plant"
-                    android:layout_below="@id/tabLayout"
-                    android:visibility="gone" />
-                <View
-                    android:id="@+id/indicator"
-                    android:layout_width="0dp"
-                    android:layout_height="4dp"
-                    android:visibility="gone"
-                    android:layout_below="@id/tabLayout"
-                    android:background="@drawable/tab_indicator"/>
+                    <View
+                        android:id="@+id/black_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_below="@id/tabLayout"
+                        android:background="@color/egg_plant"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/indicator"
+                        android:layout_width="0dp"
+                        android:layout_height="4dp"
+                        android:layout_below="@id/tabLayout"
+                        android:background="@drawable/tab_indicator"
+                        android:visibility="gone" />
                 </RelativeLayout>
                 <!-- View pager to swipe views -->
                 <com.astro.sott.utils.helpers.LiveTvViewPager
