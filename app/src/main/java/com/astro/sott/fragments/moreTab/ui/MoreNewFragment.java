@@ -135,6 +135,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         });
         getBinding().edit.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         });
 
@@ -274,6 +275,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().rlManageDevice.setOnClickListener(view -> {
             if (UserInfo.getInstance(getActivity()).isActive()) {
                 Intent manageDeviceIntent = new Intent(getActivity(), ManageDeviceActivity.class);
+                manageDeviceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(manageDeviceIntent);
             } else {
                 new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
@@ -285,6 +287,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().rlHelp.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), WebViewActivity.class);
             intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         });
 
@@ -336,7 +339,10 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             @Override
             public void onClick(View view) {
                 Intent intent1 = new Intent(getActivity(), LanguageSettingsActivity.class);
+                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent1);
+
+
             }
         });
 //        mBinding.rlDownloadsMore.setOnClickListener(new View.OnClickListener() {

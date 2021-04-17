@@ -231,7 +231,7 @@ public class NowPlaying extends BaseBindingFragment<FragmentNowPlayingBinding> {
             image_url = image_url + AppLevelConstants.WIDTH + (int) getResources().getDimension(R.dimen.catchup_image_width) + AppLevelConstants.HEIGHT + (int) getResources().getDimension(R.dimen.catchup_image_height) + AppLevelConstants.QUALITY;
 
             if (liveChannel != null)
-                ImageHelper.getInstance(baseActivity).loadImageTo(liveChannel.getBinding().playerImage, image_url, R.drawable.landscape);
+                ImageHelper.getInstance(baseActivity).loadImageTo(liveChannel.getBinding().playerImage, image_url, R.drawable.ic_landscape_placeholder);
         }
 
         getBinding().descriptionText.setText(asset.getDescription());

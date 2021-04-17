@@ -163,10 +163,10 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 // holder.landscapeItemBinding.setImage(assetCommonImages);
                 // Glide.with(mContext).load(assetCommonImages.getImageUrl()).into(holder.landscapeItemBinding.itemImage);
-                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToLandscape(landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.landscape);
+                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToLandscape(landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.ic_landscape_placeholder);
 
             } else {
-                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToPlaceholder(landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.landscape, landscapeItemBinding.itemImage), R.drawable.landscape);
+                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToPlaceholder(landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.ic_landscape_placeholder, landscapeItemBinding.itemImage), R.drawable.ic_landscape_placeholder);
 
             }
 
@@ -209,10 +209,10 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 // holder.landscapeItemBinding.setImage(assetCommonImages);
                 // Glide.with(mContext).load(assetCommonImages.getImageUrl()).into(holder.landscapeItemBinding.itemImage);
-                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToLandscape(landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.landscape);
+                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToLandscape(landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.ic_landscape_placeholder);
 
             } else {
-                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToPlaceholder(landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.landscape, landscapeItemBinding.itemImage), R.drawable.landscape);
+                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToPlaceholder(landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.ic_landscape_placeholder, landscapeItemBinding.itemImage), R.drawable.ic_landscape_placeholder);
 
             }
 
@@ -253,10 +253,10 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 // holder.landscapeItemBinding.setImage(assetCommonImages);
                 // Glide.with(mContext).load(assetCommonImages.getImageUrl()).into(holder.landscapeItemBinding.itemImage);
-                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToLandscape(landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.landscape);
+                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToLandscape(landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.ic_landscape_placeholder);
 
             } else {
-                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToPlaceholder(landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.landscape, landscapeItemBinding.itemImage), R.drawable.landscape);
+                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToPlaceholder(landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.ic_landscape_placeholder, landscapeItemBinding.itemImage), R.drawable.ic_landscape_placeholder);
 
             }
 

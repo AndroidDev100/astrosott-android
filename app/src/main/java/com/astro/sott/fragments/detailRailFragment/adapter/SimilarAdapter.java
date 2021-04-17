@@ -68,10 +68,10 @@ public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SingleIt
         RailCommonData singleItem = similarItemList.get(position);
         if (singleItem.getImages().size() > 0) {
             AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
-            ImageHelper.getInstance(holder.landscapeItemBinding.image.getContext()).loadImageToLandscape(holder.landscapeItemBinding.image, assetCommonImages.getImageUrl(), R.drawable.landscape);
+            ImageHelper.getInstance(holder.landscapeItemBinding.image.getContext()).loadImageToLandscape(holder.landscapeItemBinding.image, assetCommonImages.getImageUrl(), R.drawable.ic_landscape_placeholder);
 
         } else {
-            ImageHelper.getInstance(holder.landscapeItemBinding.image.getContext()).loadImageToPlaceholder(holder.landscapeItemBinding.image, AppCommonMethods.getImageURI(R.drawable.landscape, holder.landscapeItemBinding.image), R.drawable.landscape);
+            ImageHelper.getInstance(holder.landscapeItemBinding.image.getContext()).loadImageToPlaceholder(holder.landscapeItemBinding.image, AppCommonMethods.getImageURI(R.drawable.ic_landscape_placeholder, holder.landscapeItemBinding.image), R.drawable.ic_landscape_placeholder);
 
         }
         try {

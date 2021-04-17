@@ -53,7 +53,7 @@ public class MovieShowsAdapter extends RecyclerView.Adapter<MovieShowsAdapter.Si
                 if (mediaFile.getRatio().equalsIgnoreCase("2x3")) {
                     String image_url = mediaFile.getUrl();
                     String final_url = image_url + AppLevelConstants.WIDTH + (int) 200 + AppLevelConstants.HEIGHT + (int) 300 + AppLevelConstants.QUALITY;
-                    ImageHelper.getInstance(holder.landscapeItemBinding.image.getContext()).loadImageTo(holder.landscapeItemBinding.image, final_url, R.drawable.landscape);
+                    ImageHelper.getInstance(holder.landscapeItemBinding.image.getContext()).loadImageTo(holder.landscapeItemBinding.image, final_url, R.drawable.ic_potrait_placeholder);
                 }
             }
         }

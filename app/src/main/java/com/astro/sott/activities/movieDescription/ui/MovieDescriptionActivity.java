@@ -676,12 +676,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         getBinding().noConnectionLayout.setVisibility(View.GONE);
         setExpandable();
         getBinding().share.setOnClickListener(view -> {
-
-            /*if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
+            if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
-            openShareDialouge();*/
+            openShareDialouge();
 
         });
         setWatchlist();

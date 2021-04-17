@@ -28,7 +28,7 @@
                     android:id="@+id/image"
                     android:layout_width="160dp"
                     android:layout_height="90dp"
-                    android:background="@drawable/landscape"
+                    android:background="@drawable/ic_landscape_placeholder"
                     android:scaleType="fitXY"></ImageView>
 
                 <ImageView

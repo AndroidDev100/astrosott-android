@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@drawable/landscape"
+                android:background="@drawable/ic_landscape_placeholder"
                 android:scaleType="fitXY" />
         </androidx.cardview.widget.CardView>
 

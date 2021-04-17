@@ -17,7 +17,7 @@ import com.astro.sott.databinding.ActivityForgotPasswordBinding
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.CustomTextWatcher
 
-class ForgotPasswordActivity : AppCompatActivity() {
+class ForgotPasswordActivity : AppCompatActivity()   {
     private var activityForgotPasswordBinding: ActivityForgotPasswordBinding? = null
     private var astroLoginViewModel: AstroLoginViewModel? = null
     private var email_mobile: String? = null
@@ -29,15 +29,17 @@ class ForgotPasswordActivity : AppCompatActivity() {
         setCLicks()
     }
 
+
     private fun setCLicks() {
+
         activityForgotPasswordBinding?.submit?.setOnClickListener {
             if (checkEmailVaildation()) {
                 searchAccountv2()
             }
-            activityForgotPasswordBinding?.backIcon?.setOnClickListener({
-                onBackPressed()
-            })
         }
+        activityForgotPasswordBinding?.backIcon?.setOnClickListener({
+            onBackPressed()
+        })
 
         activityForgotPasswordBinding?.emailMobileEdt?.addTextChangedListener(CustomTextWatcher(this, object : TextWatcherCallBack {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}

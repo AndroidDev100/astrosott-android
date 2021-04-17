@@ -93,7 +93,7 @@ public class MoreListingAdapter extends RecyclerView.Adapter<MoreListingAdapter.
             String imageURl = "";
             if (singleItem.getImages() != null && singleItem.getImages().size() > 0) {
                 imageURl = setImageUrl(asset, layout);
-                ImageHelper.getInstance(viewHolder.watchlistItemBinding.itemImage.getContext()).loadImageTo(viewHolder.watchlistItemBinding.itemImage, imageURl,R.drawable.landscape);
+                ImageHelper.getInstance(viewHolder.watchlistItemBinding.itemImage.getContext()).loadImageTo(viewHolder.watchlistItemBinding.itemImage, imageURl,R.drawable.ic_landscape_placeholder);
                 viewHolder.watchlistItemBinding.setMUrl(imageURl);
 
             }
@@ -145,7 +145,7 @@ public class MoreListingAdapter extends RecyclerView.Adapter<MoreListingAdapter.
     public void setCircularImage(ImageView imageView, String imageURl) {
         Glide.with(mContext)
                 .load(imageURl)
-                .apply(new RequestOptions().placeholder(R.drawable.landscape).error(R.drawable.landscape))
+                .apply(new RequestOptions().placeholder(R.drawable.ic_landscape_placeholder).error(R.drawable.ic_landscape_placeholder))
                 .into(imageView);
 
     }

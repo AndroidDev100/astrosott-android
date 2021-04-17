@@ -120,6 +120,7 @@ public class ActivityLauncher {
 
     public void astrLoginActivity(Activity source, Class<AstrLoginActivity> destination) {
         Intent intent = new Intent(source, destination);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
 
@@ -131,12 +132,13 @@ public class ActivityLauncher {
 
     public void signupActivity(Activity source, Class<SignUpActivity> destination) {
         Intent intent = new Intent(source, destination);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
 
     public void forgotPasswordActivity(Activity source, Class<ForgotPasswordActivity> destination) {
         Intent intent = new Intent(source, destination);
-        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
 
@@ -210,6 +212,7 @@ public class ActivityLauncher {
 
     public void searchActivity(Activity source, Class<ActivitySearch> destination) {
         Intent intent = new Intent(source, destination);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
 
@@ -627,6 +630,7 @@ public class ActivityLauncher {
         Intent intent = new Intent(source, destination);
         intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
 

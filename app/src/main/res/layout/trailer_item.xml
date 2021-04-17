@@ -20,7 +20,7 @@
             <ImageView
                 android:id="@+id/trailer_image"
                 android:layout_width="match_parent"
-                android:background="@drawable/landscape"
+                android:background="@drawable/ic_landscape_placeholder"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY" />
 

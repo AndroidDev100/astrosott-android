@@ -120,13 +120,13 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_15sdp"
                                 android:orientation="horizontal"
-                                android:weightSum="1">
+                                android:gravity="center">
 
                                 <TextView
                                     android:id="@+id/watchList"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/share_margin_top"
+
                                     android:layout_weight="1"
                                     android:clickable="true"
                                     android:drawablePadding="5dp"
@@ -140,10 +140,9 @@
 
                                 <TextView
                                     android:id="@+id/share"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/share_margin_top"
-                                    android:visibility="gone"
+                                    android:visibility="visible"
                                     android:layout_weight="1"
                                     android:drawableTop="@drawable/ic_share_24_px"
                                     android:drawablePadding="5dp"
@@ -155,9 +154,8 @@
 
                                 <TextView
                                     android:id="@+id/playlist"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/share_margin_top"
                                     android:layout_weight="1"
                                     android:clickable="true"
                                     android:drawableTop="@drawable/ic_file_download_24px"

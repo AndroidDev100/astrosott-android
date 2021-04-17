@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/landscape_item_height_large"
                 card_view:cardBackgroundColor="@color/grape_purple"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -115,7 +115,7 @@
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:paddingLeft="@dimen/_3sdp"
+
                         android:paddingTop="@dimen/_2sdp"
                         android:textColor="@color/white"
                         android:textSize="12sp"
@@ -129,7 +129,7 @@
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:paddingLeft="@dimen/_3sdp"
+
                         android:paddingBottom="@dimen/_2sdp"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_9sdp"

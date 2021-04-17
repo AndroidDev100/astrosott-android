@@ -151,7 +151,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                     if (mediaImages.getRatio().equalsIgnoreCase("16X9")) {
                         String image_url = mediaImages.getUrl();
                         String final_url = image_url + AppLevelConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
-                        ImageHelper.getInstance(viewHolder.watchlistItemBinding.landscapeImage.getContext()).loadImageTo(viewHolder.watchlistItemBinding.landscapeImage, final_url, R.drawable.landscape);
+                        ImageHelper.getInstance(viewHolder.watchlistItemBinding.landscapeImage.getContext()).loadImageTo(viewHolder.watchlistItemBinding.landscapeImage, final_url, R.drawable.ic_landscape_placeholder);
                     }
                 }
 

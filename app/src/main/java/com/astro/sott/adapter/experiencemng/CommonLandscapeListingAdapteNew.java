@@ -115,9 +115,9 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
             if (singleItem.getObject().getImages().size() > 0) {
                 setImageUrl(singleItem.getObject());
                 if (landscapeUrl != null)
-                    ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTo(holder.landscapeItemBinding.itemImage, landscapeUrl,R.drawable.landscape);
+                    ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTo(holder.landscapeItemBinding.itemImage, landscapeUrl,R.drawable.ic_landscape_placeholder);
                 else if (potraitUrl != null)
-                    ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTo(holder.landscapeItemBinding.itemImage, potraitUrl,R.drawable.landscape);
+                    ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTo(holder.landscapeItemBinding.itemImage, potraitUrl,R.drawable.ic_landscape_placeholder);
             } else {
                 /*if (new KsPreferenceKeys(mContext).getCurrentTheme().equalsIgnoreCase(AppConstants.LIGHT_THEME)) {
                     ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTo(holder.landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.shimmer_landscape, holder.landscapeItemBinding.itemImage));

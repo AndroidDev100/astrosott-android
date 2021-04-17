@@ -126,20 +126,19 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_15sdp"
-                                android:orientation="horizontal"
-                                android:weightSum="1">
+                                android:gravity="center"
+                                android:orientation="horizontal">
 
                                 <TextView
                                     android:id="@+id/webwatchList"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/share_margin_top"
+                                    android:layout_width="0dp"                                   android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:clickable="true"
+
                                     android:drawablePadding="5dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_regular"
-                                    android:gravity="center"
+                                    android:gravity="center_horizontal"
                                     android:text="@string/my_list"
                                     android:textColor="@color/grey"
                                     android:textSize="@dimen/font_small"
@@ -147,11 +146,11 @@
 
                                 <TextView
                                     android:id="@+id/shareWith"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/share_margin_top"
                                     android:layout_weight="1"
                                     android:clickable="true"
+
                                     android:drawableTop="@drawable/ic_share_24_px"
                                     android:drawablePadding="5dp"
                                     android:focusable="true"
@@ -164,16 +163,16 @@
 
                                 <TextView
                                     android:id="@+id/playlist"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/share_margin_top"
+                                    android:layout_width="0dp"
                                     android:layout_weight="1"
+                                    android:layout_height="wrap_content"
                                     android:clickable="true"
                                     android:drawableTop="@drawable/ic_file_download_24px"
                                     android:drawablePadding="5dp"
                                     android:focusable="true"
+
                                     android:fontFamily="@font/heebo_regular"
-                                    android:gravity="center"
+                                    android:gravity="center_horizontal"
                                     android:text="@string/download"
                                     android:textColor="@color/grey"
                                     android:textSize="@dimen/font_medium"

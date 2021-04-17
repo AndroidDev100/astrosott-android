@@ -125,10 +125,10 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
 //                singleItem.getType();
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
 
-                ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPotrait(potraitItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.portrait);
+                ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPotrait(potraitItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.ic_potrait_placeholder);
 
             } else {
-                ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPlaceholder(potraitItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.portrait, potraitItemBinding.itemImage), R.drawable.portrait);
+                ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPlaceholder(potraitItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.ic_potrait_placeholder, potraitItemBinding.itemImage), R.drawable.ic_potrait_placeholder);
 
             }
             if (singleItem.getPosition() > 0) {
@@ -176,10 +176,10 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
 //                singleItem.getType();
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
 
-                ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPotrait(potraitItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.portrait);
+                ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPotrait(potraitItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.ic_potrait_placeholder);
 
             } else {
-                ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPlaceholder(potraitItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.portrait, potraitItemBinding.itemImage), R.drawable.portrait);
+                ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPlaceholder(potraitItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.ic_potrait_placeholder, potraitItemBinding.itemImage), R.drawable.ic_potrait_placeholder);
 
             }
             if (singleItem.getPosition() > 0) {
@@ -225,10 +225,10 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
 //                singleItem.getType();
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
 
-                ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPotrait(potraitItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.portrait);
+                ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPotrait(potraitItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.ic_potrait_placeholder);
 
             } else {
-                ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPlaceholder(potraitItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.portrait, potraitItemBinding.itemImage), R.drawable.portrait);
+                ImageHelper.getInstance(potraitItemBinding.itemImage.getContext()).loadImageToPlaceholder(potraitItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.ic_potrait_placeholder, potraitItemBinding.itemImage), R.drawable.ic_potrait_placeholder);
 
             }
 

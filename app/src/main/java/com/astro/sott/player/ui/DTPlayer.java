@@ -2803,12 +2803,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (asset.getImages().get(i).getRatio().equalsIgnoreCase("16:9")) {
                 image_url = asset.getImages().get(0).getUrl();
                 image_url = image_url + AppLevelConstants.WIDTH + (int) getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
-                ImageHelper.getInstance(getActivity()).loadImageTo(getBinding().autoplaylayout.assetImage, image_url, R.drawable.landscape);
+                ImageHelper.getInstance(getActivity()).loadImageTo(getBinding().autoplaylayout.assetImage, image_url, R.drawable.ic_landscape_placeholder);
                 ratioFound = true;
             }
         }
         if (ratioFound) {
-            ImageHelper.getInstance(getActivity()).loadImageTo(getBinding().autoplaylayout.assetImage, image_url, R.drawable.landscape);
+            ImageHelper.getInstance(getActivity()).loadImageTo(getBinding().autoplaylayout.assetImage, image_url, R.drawable.ic_landscape_placeholder);
         }
     }
 
@@ -4496,7 +4496,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 captionList[position].setSelected(true);
                 captionName = captionList[position].getTrackName();
                 viewModel.changeTextTrack(captionList[position].getUniqueId());
-                // getBinding().audioDialog.setVisibility(View.GONE);
+                 getBinding().audioDialog.setVisibility(View.GONE);
                 // dialogQuality.cancel();
                 hideSoftKeyButton();
 

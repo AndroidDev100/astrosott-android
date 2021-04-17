@@ -23,7 +23,6 @@ public class SubscriptionAndMyPlanActivity extends BaseBindingActivity<ActivityM
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setSupportActionBar(getBinding().include.toolbar);
 
         if (getSupportActionBar() != null) {

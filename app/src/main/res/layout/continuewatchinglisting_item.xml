@@ -17,7 +17,7 @@
             android:background="@color/fragment_background_color"
             android:contentDescription="@string/potrait_item_image"
             android:scaleType="fitXY"
-            android:src="@drawable/portrait"
+            android:src="@drawable/ic_potrait_placeholder"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintDimensionRatio="H,9:16"
             card_view:layout_constraintStart_toStartOf="parent"
