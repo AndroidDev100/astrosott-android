@@ -484,7 +484,7 @@ public class PlayerRepository {
                 trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(),textTrackInfo.getLanguage());
             } else {
                 TextTrack textTrackInfo = textTracks.get(i);
-                String name = textTrackInfo.getLabel();
+                String name = textTrackInfo.getLanguage();
                 trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(),textTrackInfo.getLanguage());
             }
         }
@@ -937,15 +937,15 @@ public class PlayerRepository {
 
             playerPluginConfig.setPluginConfig(PhoenixAnalyticsPlugin.factory.getName(), phoenixPluginConfig.toJson());
 
-            if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
+           /* if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
                 PrintLogging.printLog("ValueIS", "0");
-            } else {
+            } else {*/
                 if (AppCommonMethods.isAdsEnable) {
                     if (AssetContent.isAdsEnable(asset.getMetas())) {
                         addIMAConfig(context, playerPluginConfig);
                     }
                 }
-            }
+            /*  }*/
 
 
             player = PlayKitManager.loadPlayer(context, playerPluginConfig);
