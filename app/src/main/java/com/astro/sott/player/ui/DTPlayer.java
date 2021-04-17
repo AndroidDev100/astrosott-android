@@ -53,6 +53,7 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -2091,9 +2092,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void onMediaLoaded(PKMediaEntry mediaEntry) {
         try {
-            if (dvrEnabled) {
-                mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.DvrLive);
+            if (playerAsset.getType() == MediaTypeConstant.getLinear(getActivity())) {
+                mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.Live);
             }
+
 
             if (getActivity() != null && getActivity().getSystemService(Context.AUDIO_SERVICE) != null) {
                 mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
@@ -2113,6 +2115,38 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
+    private void getPlayerState() {
+        runningPlayer.addListener(this, PlayerEvent.Type.STATE_CHANGED, event -> {
+            PlayerEvent.StateChanged stateChanged = (PlayerEvent.StateChanged) event;
+            switch (stateChanged.newState) {
+                case IDLE:
+                    Log.d("StateChange ", "IDLE");
+
+                    //  log.d("StateChange Idle");
+                    break;
+                case LOADING:
+                    Log.d("StateChange ", "LOADING");
+
+                    //  log.d("StateChange Loading");
+                    break;
+                case READY:
+                    getBinding().pBar.setVisibility(View.GONE);
+
+                    Log.d("StateChange ", "Ready");
+                    //  mPlayerControlsView.setProgressBarVisibility(false);
+                    break;
+                case BUFFERING:
+                    Log.d("StateChange ", "Buffering");
+                    getBinding().pBar.setVisibility(View.VISIBLE);
+                    // log.e("StateChange Buffering");
+                    // mPlayerControlsView.setProgressBarVisibility(true);
+                    // booleanMutableLiveData.postValue(false);
+                    break;
+            }
+
+        });
+    }
+
     private void startPlayer(PKMediaEntry mediaEntry) {
     /*    new KsServices(baseActivity).callBookMarking(asset, position -> {
             if (assetType == MediaTypeConstant.getProgram(baseActivity)) {
@@ -2129,7 +2163,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     adsCallBackHandling(player);
                     getPlayerView(player);
                     player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fill);
-
+                    getPlayerState();
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -2482,7 +2516,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().skipIntro.setVisibility(View.GONE);
                 getBinding().skipRecap.setVisibility(View.GONE);
                 getBinding().skipCredits.setVisibility(View.GONE);
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
@@ -2693,7 +2727,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (aBoolean != null && aBoolean) {
                         getBinding().pBar.setVisibility(View.GONE);
 //                        getBinding().urlimage.setVisibility(View.GONE);
-                        setVideoQuality();
+                        // setVideoQuality();
                     }
                 });
             }
@@ -3552,8 +3586,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                                }
 //
 //                            }
-                            Log.w("audioAndSubtitle", trackItems+"   "+audioTracks.get(0).getLabel());
-                            if (audioTracks.get(0).getLanguage()!=null){
+                            Log.w("audioAndSubtitle", trackItems + "   " + audioTracks.get(0).getLabel());
+                            if (audioTracks.get(0).getLanguage() != null) {
                                 audioList = trackItems;
                                 AudioAdapter audioAdapter = new AudioAdapter(trackItems);
                                 getBinding().audioQuality.recycleviewAudio.setAdapter(audioAdapter);
