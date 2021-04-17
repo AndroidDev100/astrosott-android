@@ -52,11 +52,11 @@
                                 android:id="@+id/back_img"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_margin="14dp"
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:contentDescription="@string/back_icon"
                                 android:elevation="@dimen/dp2"
                                 android:padding="10dp"
-                                android:layout_margin="14dp"
                                 android:src="@drawable/ic_back"
                                 tools:ignore="ContentDescription"
                                 tools:targetApi="lollipop" />
@@ -69,8 +69,6 @@
                                 android:scaleType="fitXY"
                                 android:src="@drawable/landscape"
                                 tools:ignore="ContentDescription" />
-
-
 
 
                             <FrameLayout
@@ -88,11 +86,11 @@
                                 android:layout_height="64dp"
                                 android:layout_centerInParent="true"
                                 android:layout_marginEnd="@dimen/web_series_iv_player_icon_margin_right"
-                                android:elevation="4dp"
                                 android:layout_marginBottom="@dimen/web_series_iv_player_icon_margin_bottom"
                                 android:background="@drawable/ic_green_play_buton"
                                 android:contentDescription="@string/play_icon"
-                                android:visibility="visible"
+                                android:elevation="4dp"
+                                android:visibility="gone"
                                 tools:ignore="ContentDescription" />
 
 
@@ -107,7 +105,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/share_margin_top"
-                    android:visibility="gone"
                     android:clickable="true"
                     android:drawableTop="@drawable/ic_share_24_px"
                     android:drawablePadding="7dp"
@@ -116,35 +113,38 @@
                     android:gravity="center"
                     android:text="@string/share"
                     android:textColor="@color/grey"
-                    android:textSize="@dimen/font_small" />
+                    android:textSize="@dimen/font_small"
+                    android:visibility="gone" />
 
                 <RelativeLayout
+                    android:id="@+id/vip_button_live"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="15dp"
+                    android:visibility="gone"
                     android:layout_marginRight="16dp"
                     android:background="@drawable/vip_gradient_button">
+
                     <ImageView
+                        android:id="@+id/star_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_24_px"
                         android:layout_centerInParent="true"
-                        android:id="@+id/star_icon"
                         android:layout_marginEnd="@dimen/dimen14dp"
-                        android:layout_toStartOf="@id/vip_button_live"
-                       />
+                        android:layout_toStartOf="@id/play_text"
+                        android:src="@drawable/ic_star_24_px" />
 
                     <TextView
+                        android:id="@+id/play_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_centerHorizontal="true"
                         android:layout_weight="1"
                         android:clickable="true"
                         android:focusable="true"
-                        android:id="@+id/vip_button_live"
                         android:fontFamily="@font/heebo_medium"
-                        android:layout_centerInParent="true"
-                        android:layout_centerHorizontal="true"
                         android:text="@string/become_vip"
                         android:textColor="@color/white"
                         android:textSize="@dimen/font_medium_large" />
@@ -169,8 +169,8 @@
                             android:id="@+id/channel_logo"
                             android:layout_width="64dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/landscape"
                             android:layout_gravity="center"
+                            android:background="@drawable/landscape"
                             android:scaleType="fitXY"></ImageView>
 
                         <TextView
@@ -195,8 +195,8 @@
                         android:id="@+id/metas"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/heebo_regular"
                         android:layout_marginTop="1dp"
+                        android:fontFamily="@font/heebo_regular"
                         android:lineHeight="24sp"
                         android:textColor="@color/yellow_orange"
                         android:textSize="@dimen/font_medium"></TextView>
@@ -226,11 +226,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="10dp"
-                        android:visibility="gone"
                         android:background="@drawable/tab_bg"
-                        app:tabBackground="@color/transparentColor"
+                        android:visibility="gone"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
+                        app:tabBackground="@color/transparentColor"
                         app:tabIndicator="@color/transparentColor"
                         app:tabSelectedTextColor="@color/white"
                         app:tabTextAppearance="@style/MineCustomTabText"
@@ -238,20 +238,21 @@
 
                         />
 
-                <View
-                    android:id="@+id/black_line"
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:background="@color/egg_plant"
-                    android:layout_below="@id/tabLayout"
-                    android:visibility="gone" />
-                <View
-                    android:id="@+id/indicator"
-                    android:layout_width="0dp"
-                    android:layout_height="4dp"
-                    android:visibility="gone"
-                    android:layout_below="@id/tabLayout"
-                    android:background="@drawable/tab_indicator"/>
+                    <View
+                        android:id="@+id/black_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_below="@id/tabLayout"
+                        android:background="@color/egg_plant"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/indicator"
+                        android:layout_width="0dp"
+                        android:layout_height="4dp"
+                        android:layout_below="@id/tabLayout"
+                        android:background="@drawable/tab_indicator"
+                        android:visibility="gone" />
                 </RelativeLayout>
                 <!-- View pager to swipe views -->
                 <com.astro.sott.utils.helpers.LiveTvViewPager

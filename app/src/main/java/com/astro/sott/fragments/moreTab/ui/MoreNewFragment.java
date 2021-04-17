@@ -287,6 +287,18 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
             startActivity(intent);
         });
+
+        getBinding().rlTerms.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+            intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC);
+            startActivity(intent);
+        });
+
+        getBinding().rlPrivacy.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+            intent.putExtra(AppLevelConstants.WEBVIEW, "PRIVACY POLICIES");
+            startActivity(intent);
+        });
 //
 //       getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
 //            @Override

@@ -24,6 +24,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
@@ -63,7 +64,9 @@ import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.ProgramAsset;
+import com.kaltura.client.types.StringValue;
 import com.kaltura.client.types.UserAssetRule;
+import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.text.SimpleDateFormat;
@@ -82,11 +85,14 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private static final String TAG = "LiveChannel";
     private RailCommonData railData;
     private int layoutType;
+    private String vodType;
     private FragmentManager manager;
     private String externalIDs, programName = "";
     private LiveChannelViewModel activityViewModel;
     private long lastClickTime;
     private String image_url = "";
+    private boolean xofferWindowValue = false, playbackControlValue = false;
+
     private int errorCode = -1;
     private Asset asset;
     private boolean playerChecksCompleted = false;
@@ -250,6 +256,25 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             viewPagerIntializtion();
 
         }*/
+        if (backRailData.getObject() != null && backRailData.getObject().getMetas() != null) {
+            getPlayBackControl(backRailData.getObject().getMetas());
+            getXofferWindow(backRailData.getObject().getMetas());
+
+        }
+        getBinding().vipButtonLive.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                return;
+            }
+            lastClickTime = SystemClock.elapsedRealtime();
+
+            getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
+
+            });
+            callProgressBar();
+            if (programAsset != null)
+                programName = programAsset.getName();
+            playerChecks(railData);
+        });
         getBinding().astroPlayButton.setOnClickListener(view -> {
             if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
                 return;
@@ -259,14 +284,6 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
 
             });
-
-            /*if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                callProgressBar();
-                programName = Constants.programName;
-                playerChecks(railData);
-            }else {
-                DialogHelper.showLoginDialog(LiveChannel.this);
-            }*/
             callProgressBar();
             if (programAsset != null)
                 programName = programAsset.getName();
@@ -274,9 +291,125 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
 
         });
+        if (playbackControlValue)
+            checkEntitleMent(railData);
+
         callYouMaylAlsoLike();
 
         getBinding().backImg.setOnClickListener(view -> onBackPressed());
+    }
+
+    private void getPlayBackControl(Map<String, Value> metas) {
+        if (metas != null) {
+            playbackControlValue = activityViewModel.getPlayBackControl(metas);
+        } else {
+            playbackControlValue = true;
+        }
+    }
+
+    private String fileId = "";
+
+    private void checkEntitleMent(final RailCommonData railCommonData) {
+
+
+        fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+
+        new EntitlementCheck().checkAssetPurchaseStatus(LiveChannel.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+            this.errorCode = AppLevelConstants.NO_ERROR;
+            if (apiStatus) {
+                if (purchasedStatus) {
+                    runOnUiThread(() -> {
+                        getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                        getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                        getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+                        getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                        getBinding().starIcon.setVisibility(View.GONE);
+                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+
+
+                    });
+                    this.vodType = EntitlementCheck.FREE;
+
+                } else {
+                    if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                        if (xofferWindowValue) {
+                            runOnUiThread(() -> {
+                                getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                                getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.VISIBLE);
+                            });
+                        }
+                        this.vodType = EntitlementCheck.SVOD;
+
+                    } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
+                        if (xofferWindowValue) {
+                            runOnUiThread(() -> {
+                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                getBinding().playText.setText(getResources().getString(R.string.rent_movie));
+                                getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+
+                            });
+                        }
+
+                        this.vodType = EntitlementCheck.TVOD;
+
+
+                    }
+                }
+
+            } else {
+
+            }
+        });
+
+       /* new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
+            if (status) {
+                playerChecksCompleted = true;
+                if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
+                    errorCode = AppLevelConstants.NO_ERROR;
+                    railData = railCommonData;
+                } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
+                    if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                        isDtvAccountAdded(railCommonData);
+                    } else {
+                        errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
+                    }
+                } else {
+                    if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
+                        isDtvAccountAdded(railCommonData);
+                    } else {
+                        errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
+                    }
+                }
+            } else {
+                callProgressBar();
+                if (message != "")
+                    showDialog(message);
+            }
+        });
+*/
+
+    }
+
+    private void getXofferWindow(Map<String, Value> metas) {
+        StringValue stringValue = null;
+        String xofferValue = "";
+        if (metas != null) {
+            stringValue = (StringValue) metas.get(AppLevelConstants.XOFFERWINDOW);
+        }
+        if (stringValue != null) {
+            xofferValue = stringValue.getValue();
+        }
+        if (!xofferValue.equalsIgnoreCase("")) {
+            xofferWindowValue = activityViewModel.isXofferWindow(xofferValue);
+        } else {
+            xofferWindowValue = true;
+        }
     }
 
     private int adapterCount = 1;
@@ -505,7 +638,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 if (totalCount != 0) {
                     checkBlockingErrors(response);
                 } else {
-                    checkEntitleMent(railData);
+                    playerChecksCompleted = true;
+                    checkErrors();
                 }
             } else {
                 callProgressBar();
@@ -529,60 +663,14 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 //                        checkEntitleMent(railData);
 //                        break;
                     default:
-                        checkEntitleMent(railData);
+                        playerChecksCompleted = true;
+                        checkErrors();
                         break;
                 }
             }
         }
     }
 
-    private void checkUserLoginCondition(RailCommonData railData) {
-//        boolean status = KsPreferenceKey.getInstance(getApplicationContext()).getUserActive();
-//        if (!status) {
-        checkEntitleMent(railData);
-//        }else{
-//            playerChecksCompleted=true;
-//        }
-    }
-
-    private void checkEntitleMent(final RailCommonData railCommonData) {
-        String fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
-        new EntitlementCheck().checkAssetType(LiveChannel.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
-            if (status) {
-                playerChecksCompleted = true;
-                if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
-                    errorCode = AppLevelConstants.NO_ERROR;
-                    railData = railCommonData;
-                    checkErrors();
-                } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
-
-                    if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                        isDtvAccountAdded(railCommonData);
-                        //check Dtv Account Added or Not
-                    } else {
-                        errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
-                        checkErrors();
-                    }
-                } else {
-                    if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                        isDtvAccountAdded(railCommonData);
-                        //check Dtv Account Added or Not
-                    } else {
-                        errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
-                        checkErrors();
-                        //not play
-                    }
-
-                }
-            } else {
-                callProgressBar();
-                if (message != "")
-                    showDialog(message);
-            }
-        });
-
-
-    }
 
     //DynamicData Api Call to Check DtvAccount
     private void isDtvAccountAdded(RailCommonData railCommonData) {

@@ -27,7 +27,11 @@ import com.kaltura.client.types.MediaImage;
 import com.kaltura.client.types.MultilingualStringValue;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleItemRowHolder> {
     private final List<RailCommonData> railList;
@@ -73,6 +77,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
 
             if (AssetContent.checkComingSoon(asset.getMetas())) {
                 viewHolder.watchlistItemBinding.tvTitle.setText("Coming Soon");
+                viewHolder.watchlistItemBinding.tvduration.setText("Premiering " + AssetContent.getPlayBackDate(asset.getMetas()));
             } else {
 
                 String duration = AppCommonMethods.getURLDuration(asset);
@@ -96,6 +101,12 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                     description = stringValue.getValue();
 
                 viewHolder.watchlistItemBinding.tvDescription.setText(description);
+                viewHolder.watchlistItemBinding.landscapeImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        itemClickListener.moveToPlay(position, railList.get(position), 0, railList);
+                    }
+                });
             }
             if (singleItem.getProgress() == 0) {
                 viewHolder.watchlistItemBinding.progressBar.setVisibility(View.GONE);
@@ -174,13 +185,9 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
 
                 }
             });
-            viewHolder.watchlistItemBinding.episodeTransparent.setOnClickListener(v -> {});
-            viewHolder.watchlistItemBinding.landscapeImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    itemClickListener.moveToPlay(position, railList.get(position), 0, railList);
-                }
+            viewHolder.watchlistItemBinding.episodeTransparent.setOnClickListener(v -> {
             });
+
 
         } catch (Exception e) {
             Log.w("FSEFESFSEFESFESFESFSEF", e + "");

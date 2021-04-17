@@ -1433,6 +1433,31 @@ public class AssetContent {
 
     }
 
+    public static String getPlayBackDate(Map<String, Value> metas) {
+        StringValue playbackStart;
+        String date = "";
+        Date inputDate;
+        playbackStart = (StringValue) metas.get(AppLevelConstants.PLAYBACK_START_DATE);
+
+        if (playbackStart != null) {
+            date = playbackStart.getValue();
+            if (date != null && !date.equalsIgnoreCase("")) {
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                SimpleDateFormat outputFormat = new SimpleDateFormat("MMM dd");
+                inputFormat.setTimeZone(TimeZone.getDefault());
+                try {
+                    inputDate = inputFormat.parse(date);
+                    date = outputFormat.format(inputDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return date;
+
+    }
+
     public static boolean checkComingSoon(Map<String, Value> metas) {
         StringValue startValue;
         String startDate;

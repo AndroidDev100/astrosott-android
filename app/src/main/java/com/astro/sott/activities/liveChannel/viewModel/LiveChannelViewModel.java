@@ -13,6 +13,7 @@ import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.fragments.nowPlaying.layers.LiveNowPrograms;
 import com.astro.sott.fragments.nowPlaying.layers.SimilarChannels;
 import com.astro.sott.utils.TabsData;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.baseModel.CategoryRailLayer;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
@@ -23,6 +24,7 @@ import com.astro.sott.repositories.splash.SplashRepository;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MultilingualStringValueArray;
+import com.kaltura.client.types.Value;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -94,6 +96,13 @@ public class LiveChannelViewModel extends AndroidViewModel {
         return time;
     }
 
+    public boolean getPlayBackControl(Map<String, Value> metas) {
+        return AssetContent.plabackControl(metas);
+    }
+
+    public boolean isXofferWindow(String xofferValue) {
+        return AppCommonMethods.isXofferWindow(xofferValue);
+    }
     public String getProgramTime(Asset asset, int type) {
         Long _time;
         try {
