@@ -972,12 +972,12 @@ public class PlayerRepository {
             subscribePhoenixAnalyticsReportEvent();
 
 //            player.getSettings().setABRSettings(new ABRSettings().setMinVideoBitrate(200000).setInitialBitrateEstimate(150000));
-            if (asset.getType() == MediaTypeConstant.getLinear(context)) {
+           /* if (asset.getType() == MediaTypeConstant.getLinear(context)) {
                 player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit()) / 2));
-            } else {
+            } else {*/
                 player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
 
-            }
+          /*  }*/
 
             player.prepare(mediaConfig);
             player.play();

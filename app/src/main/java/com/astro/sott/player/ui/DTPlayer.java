@@ -1893,72 +1893,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             }
 
         };
-        startDishOttMediaLoadingProd(playLoadedEntry, asset);
+        startOttMediaLoadingProd(playLoadedEntry, asset);
     }
 
-    private void getHungamaUrlToPlayContent(String providerExternalContentId) {
-        viewModel.getHungamaUrl(providerExternalContentId).observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String contentUrl) {
-                if (contentUrl != null) {
-                    Log.d("asasasasaasa", contentUrl);
-                    PKMediaEntry mediaEntry = createMediaEntry(contentUrl);
-                    onMediaLoaded(mediaEntry);
-                } else {
-                    isError = true;
-                    showDialog(getString(R.string.something_went_wrong_try_again));
-                }
-
-            }
-        });
-    }
-
-    private PKMediaEntry createMediaEntry(String contentUrl) {
-        PKMediaEntry mediaEntry = new PKMediaEntry();
-
-        //Set id for the entry.
-        mediaEntry.setId(String.valueOf(asset.getId()));
-        mediaEntry.setName(asset.getName());
-        // mediaEntry.setDuration(881000);
-        //Set media entry type. It could be Live,Vod or Unknown.
-        //In this sample we use Vod.
-        mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.Vod);
-
-        //Create list that contains at least 1 media source.
-        //Each media entry can contain a couple of different media sources.
-        //All of them represent the same content, the difference is in it format.
-        //For example same entry can contain PKMediaSource with dash and another
-        // PKMediaSource can be with hls. The player will decide by itself which source is
-        // preferred for playback.
-        List<PKMediaSource> mediaSources = createMediaSources(contentUrl);
-
-        //Set media sources to the entry.
-        mediaEntry.setSources(mediaSources);
-
-        return mediaEntry;
-    }
-
-    private List<PKMediaSource> createMediaSources(String contentUrl) {
-        PKMediaSource mediaSource = new PKMediaSource();
-
-        //Set the id.
-        mediaSource.setId(String.valueOf(asset.getId()));
-
-        //Set the content url. In our case it will be link to hls source(.m3u8).
-        mediaSource.setUrl(contentUrl);
-
-        //Set the format of the source. In our case it will be hls in case of mpd/wvm formats you have to to call mediaSource.setDrmData method as well
-        mediaSource.setMediaFormat(PKMediaFormat.hls);
-
-        // Add DRM data if required
-//        if (LICENSE_URL != null) {
-//            mediaSource.setDrmData(Collections.singletonList(
-//                    new PKDrmParams(LICENSE_URL, PKDrmParams.Scheme.WidevineCENC)
-//            ));
-//        }
-
-        return Collections.singletonList(mediaSource);
-    }
 
     private void loggedOutMessage() {
         try {
@@ -1991,7 +1928,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
-    private void startDishOttMediaLoadingProd(final OnMediaLoadCompletion completion, Asset asset) {
+    private void startOttMediaLoadingProd(final OnMediaLoadCompletion completion, Asset asset) {
         SessionProvider ksSessionProvider = new SessionProvider() {
             @Override
             public String baseUrl() {
@@ -2094,6 +2031,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         try {
             if (playerAsset.getType() == MediaTypeConstant.getLinear(getActivity())) {
                 mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.Live);
+            } else {
+                mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.Vod);
+
             }
 
 
@@ -2727,7 +2667,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (aBoolean != null && aBoolean) {
                         getBinding().pBar.setVisibility(View.GONE);
 //                        getBinding().urlimage.setVisibility(View.GONE);
-                        // setVideoQuality();
+                        if (playerAsset.getType() != MediaTypeConstant.getLinear(getActivity()))
+                            setVideoQuality();
                     }
                 });
             }
