@@ -208,7 +208,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    >
 
                     <include
                         android:id="@+id/volume_seek"
@@ -236,7 +237,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="@dimen/seek_bar_margin_start"
                     android:layout_marginEnd="@dimen/seek_bar_margin_start"
-                    android:layout_marginBottom="70dp"
+                    android:layout_marginBottom="85dp"
                     android:maxHeight="6dp"
                     android:paddingBottom="2dp"
                     android:progressDrawable="@drawable/seekbarprogress_style"
@@ -251,7 +252,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="@dimen/seek_bar_margin_start"
                     android:layout_marginEnd="@dimen/seek_bar_margin_start"
-                    android:layout_marginBottom="33dp">
+                    android:layout_marginBottom="39dp">
 
 
                     <TextView
@@ -259,15 +260,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3dp"
-                        android:layout_marginTop="@dimen/_4dp"
                         android:layout_toRightOf="@+id/slash"
                         android:fontFamily="@font/heebo_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
-                        android:padding="@dimen/_1sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
                         android:text=""
+                        android:layout_marginTop="32.7dp"
                         android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/_16sp"
+                        android:textSize="@dimen/dimen15sp"
                         android:visibility="visible" />
 
                     <TextView
@@ -276,14 +277,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="13dp"
-                        android:layout_marginTop="@dimen/_4dp"
                         android:fontFamily="@font/heebo_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
-                        android:padding="@dimen/_1sdp"
+                        android:layout_marginTop="32.7dp"
+                        android:layout_marginBottom="@dimen/_8sdp"
                         android:text=""
                         android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/_16sp"
+                        android:textSize="@dimen/dimen15sp"
                         android:visibility="visible" />
 
                     <TextView
@@ -291,16 +292,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3dp"
-                        android:layout_marginTop="@dimen/_4dp"
                         android:layout_toRightOf="@+id/current_time"
                         android:fontFamily="@font/heebo_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
-                        android:padding="@dimen/_1sdp"
                         android:text="/"
+                        android:layout_marginTop="32.7dp"
                         android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/_16sp"
-                        android:visibility="visible" />
+                        android:textSize="@dimen/dimen15sp"
+                        android:visibility="visible"
+                        android:layout_marginBottom="@dimen/_8sdp"/>
 
 
 
@@ -331,7 +332,8 @@
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="33dp"
+                                    android:layout_marginBottom="39dp"
+                                    android:layout_marginTop="32.7dp"
                                     android:layout_alignParentBottom="true"
                                     android:layout_alignParentRight="true"
                                     android:gravity="center"
@@ -370,10 +372,10 @@
                                     android:textAllCaps="false"
                                     android:lineHeight="32sp"
                                     android:textColor="@color/pale_gray"
-                                    android:textSize="@dimen/_16sp"
+                                    android:textSize="@dimen/dimen15sp"
                                     android:layout_weight="1"
                                     android:layout_marginEnd="3.5dp"
-                                    android:layout_marginBottom="2dp"></TextView>
+                                    ></TextView>
                                     </FrameLayout>
                                     <TextView
                                         android:id="@+id/subtitle_audio"
@@ -391,7 +393,7 @@
                                         android:layout_toLeftOf="@+id/next_episode"
                                         android:textAllCaps="false"
                                         android:textColor="@color/pale_gray"
-                                        android:textSize="@dimen/_16sp"
+                                        android:textSize="@dimen/dimen15sp"
                                         android:layout_marginTop="@dimen/_2dp"
 
                                         ></TextView>
@@ -411,7 +413,7 @@
                                         android:text="@string/next_episode"
                                         android:textAllCaps="false"
                                         android:textColor="@color/pale_gray"
-                                        android:textSize="@dimen/_16sp"
+                                        android:textSize="@dimen/dimen15sp"
                                         android:layout_marginTop="@dimen/_4dp"
                                        android:visibility="gone"></TextView>
                                 </LinearLayout>
@@ -720,15 +722,17 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="128dp"
             android:gravity="bottom">
 
             <TextView
                 android:id="@+id/skipIntro"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dimen40dp"
+                android:textSize="@dimen/dimen15sp"
+                android:gravity="center"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="@dimen/_60sdp"
+                android:layout_marginRight="@dimen/dimen55dp"
                 android:background="@drawable/skip_intro_button"
                 android:fontFamily="@font/heebo_regular"
                 android:padding="@dimen/_7sdp"
@@ -746,15 +750,17 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="128dp"
             android:gravity="bottom">
 
             <TextView
                 android:id="@+id/skipRecap"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dimen40dp"
+                android:textSize="@dimen/dimen15sp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="@dimen/_60sdp"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/dimen55dp"
                 android:background="@drawable/skip_intro_button"
                 android:fontFamily="@font/heebo_regular"
                 android:padding="@dimen/_7sdp"
@@ -772,15 +778,17 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="@dimen/_128dp"
             android:gravity="bottom">
 
             <TextView
                 android:id="@+id/skipCredits"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dimen40dp"
+                android:textSize="@dimen/dimen15sp"
+                android:gravity="center"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="@dimen/_60sdp"
+                android:layout_marginRight="@dimen/dimen55dp"
                 android:background="@drawable/skip_intro_button"
                 android:fontFamily="@font/heebo_regular"
                 android:padding="@dimen/_7sdp"

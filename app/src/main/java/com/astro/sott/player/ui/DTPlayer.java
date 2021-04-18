@@ -2264,7 +2264,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     getBinding().subtitleAudio.setVisibility(View.GONE);
                 }
             }
-        },1200);
+        },2000);
 
 
     }
@@ -3963,22 +3963,24 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     getBinding().pBar.setVisibility(View.GONE);
                 }
             });
+
+            getBinding().skipCredits.setText("");
+            getBinding().skipCredits.setVisibility(View.GONE);
+
         }
 
-        getBinding().skipCredits.setText("");
-        getBinding().skipCredits.setVisibility(View.GONE);
 
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        isSkipCreditVisible = false;
+
         if (seekBar.getId() == R.id.seekBar1) {
 
         } else if (seekBar.getId() == R.id.seekBar2) {
 
         } else {
-
+            isSkipCreditVisible = false;
             getBinding().pBar.setVisibility(View.VISIBLE);
             viewModel.getPlayerView(seekBar);
             callHandler();
