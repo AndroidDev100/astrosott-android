@@ -2470,6 +2470,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             getBinding().skipIntro.setVisibility(View.GONE);
                             getBinding().skipRecap.setVisibility(View.GONE);
 
+
                         } else {
 //                        getBinding().skipCredits.setText("");
 //                        getBinding().skipCredits.setVisibility(View.GONE);
@@ -3901,13 +3902,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         double totalDuration = runningPlayer.getDuration();
         double percentagePlayed = ((currentPosition / totalDuration) * 100L);
         if (percentagePlayed >= 98) {
+            if (creditEndTime < recapStartTime || creditEndTime < introStartTime) {
 
-            if (!isSkipCreditVisible) {
-                isSkipCreditVisible = true;
-                getBinding().skipCredits.setText(labelCredit);
-                getBinding().skipCredits.setVisibility(View.VISIBLE);
+            }else {
+                if (!isSkipCreditVisible) {
+                    isSkipCreditVisible = true;
+                    getBinding().skipCredits.setText(labelCredit);
+                    getBinding().skipCredits.setVisibility(View.VISIBLE);
 
-                hideSkipIntro();
+                    hideSkipIntro();
+                }
             }
         }
 
