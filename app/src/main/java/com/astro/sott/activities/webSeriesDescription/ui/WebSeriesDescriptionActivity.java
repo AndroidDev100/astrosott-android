@@ -1207,7 +1207,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
                     } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                         if (xofferWindowValue) {
-                            getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_button));
+                            getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                             getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                             getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.GONE);
