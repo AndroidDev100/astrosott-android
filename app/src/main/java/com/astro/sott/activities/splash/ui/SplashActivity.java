@@ -77,6 +77,7 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.types.Asset;
 import com.kaltura.playkit.PKDrmParams;
 import com.kaltura.playkit.player.MediaSupport;
+import com.kaltura.playkit.player.PKDeviceCapabilitiesInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -341,8 +342,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     private void initDrm() {
         MediaSupport.initializeDrm(this, new MediaSupport.DrmInitCallback() {
             @Override
-            public void onDrmInitComplete(Set<PKDrmParams.Scheme> supportedDrmSchemes, boolean isHardwareDrmSupported, boolean provisionPerformed, Exception provisionError) {
-                if (provisionPerformed) {
+            public void onDrmInitComplete(PKDeviceCapabilitiesInfo pkDeviceCapabilitiesInfo, Exception provisionError) {
+                if (pkDeviceCapabilitiesInfo.isProvisionPerformed()) {
                     if (provisionError != null) {
                         PrintLogging.printLog(SplashActivity.class, "", "DRM Provisioning failed-->>" + provisionError);
                     } else {
@@ -350,7 +351,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     }
                 }
 
-                if (supportedDrmSchemes.contains(PKDrmParams.Scheme.WidevineCENC)) {
+                if (pkDeviceCapabilitiesInfo.getSupportedDrmSchemes().contains(PKDrmParams.Scheme.WidevineCENC)) {
                     PrintLogging.printLog(SplashActivity.class, "", "Widevinesupported:-->>");
                 } else {
                     PrintLogging.printLog(SplashActivity.class, "", "Widevinenotsupported-->>");
@@ -576,16 +577,16 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //        },6000);
 
         FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(pendingDynamicLinkData -> {
-            Log.w("deepLink","in"+pendingDynamicLinkData);
+            Log.w("deepLink", "in" + pendingDynamicLinkData);
             if (pendingDynamicLinkData != null) {
-                Log.w("deepLink","in2"+pendingDynamicLinkData.getLink());
+                Log.w("deepLink", "in2" + pendingDynamicLinkData.getLink());
                 Uri deepLink = pendingDynamicLinkData.getLink();
-                if (deepLink!=null){
-                    Log.w("deepLink",deepLink.getQueryParameter("id"));
-                    Log.w("deepLink",deepLink.getQueryParameter("mediaType"));
-                    Log.w("deepLink",deepLink.getQueryParameter("name"));
+                if (deepLink != null) {
+                    Log.w("deepLink", deepLink.getQueryParameter("id"));
+                    Log.w("deepLink", deepLink.getQueryParameter("mediaType"));
+                    Log.w("deepLink", deepLink.getQueryParameter("name"));
                     callSpecficAssetApi(String.valueOf(deepLink.getQueryParameter("id")));
-                }else {
+                } else {
                     if (branchObject != null) {
                         if (branchObject.has("assetId")) {
                             redirectionCondition(branchObject);
@@ -597,7 +598,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     }
                     Log.d("deepLink", "getDynamicLink: no link found");
                 }
-            }else {
+            } else {
                 if (branchObject != null) {
                     if (branchObject.has("assetId")) {
                         redirectionCondition(branchObject);
@@ -609,8 +610,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 }
             }
         });
-
-
 
 
 //            branchReferralInitListener = new Branch.BranchReferralInitListener() {
@@ -849,8 +848,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         Bundle bundle = getIntent().getExtras();
 
 
-
-
         if (bundle != null) {
 
             try {
@@ -906,8 +903,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
         try {
             Window window = this.getWindow();
-            window.setStatusBarColor(ContextCompat.getColor(this,R.color.grape_purple));
-        }catch (Exception ignored){
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.grape_purple));
+        } catch (Exception ignored) {
 
         }
         processIntent(getIntent());

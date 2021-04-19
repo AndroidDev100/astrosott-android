@@ -4471,7 +4471,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 captionList[position].setSelected(true);
                 captionName = captionList[position].getTrackName();
                 viewModel.changeTextTrack(captionList[position].getUniqueId());
-                 getBinding().audioDialog.setVisibility(View.GONE);
+                getBinding().audioDialog.setVisibility(View.GONE);
                 // dialogQuality.cancel();
                 hideSoftKeyButton();
 
