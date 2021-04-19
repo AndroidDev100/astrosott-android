@@ -383,6 +383,7 @@
                     android:textColor="@color/black"
                     android:drawablePadding="2dp"
                     android:paddingLeft="@dimen/dimen42dp"
+                    android:visibility="invisible"
                     android:paddingEnd="@dimen/dimen30dp"
                     android:textSize="@dimen/_14sp"
                     app:layout_constraintLeft_toLeftOf="parent"

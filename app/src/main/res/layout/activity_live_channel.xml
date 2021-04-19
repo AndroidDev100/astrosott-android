@@ -115,7 +115,7 @@
                     android:text="@string/share"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/font_small"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <RelativeLayout
                     android:id="@+id/vip_button_live"
