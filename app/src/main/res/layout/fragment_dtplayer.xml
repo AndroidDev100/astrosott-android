@@ -7,12 +7,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:filterTouchesWhenObscured="true"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:filterTouchesWhenObscured="true"
             android:keepScreenOn="true">
 
 
@@ -29,9 +30,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
 
-
             </RelativeLayout>
-
 
 
             <RelativeLayout
@@ -60,8 +59,8 @@
                         android:layout_toRightOf="@id/iv_cancel"
                         android:fontFamily="@font/heebo_regular"
                         android:gravity="center"
-                        android:maxLines="1"
                         android:lineHeight="32sp"
+                        android:maxLines="1"
                         android:textColor="@color/pale_gray"
                         android:textSize="@dimen/dimen20sp"
                         android:visibility="gone" />
@@ -78,20 +77,21 @@
                         android:clickable="true"
                         android:contentDescription="@string/quality_icon"
                         android:focusable="true"
-                        android:visibility="gone"
                         android:padding="@dimen/dp10"
                         android:src="@drawable/ic_settings"
+                        android:visibility="gone"
                         tools:ignore="ContentDescription" />
+
                     <ImageView
                         android:layout_width="120dp"
                         android:layout_height="@dimen/_24sdp"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/ic_sooka_logo"
-                        android:contentDescription=""
-                        tools:ignore="ContentDescription"
                         android:layout_marginStart="@dimen/dimen10dp"
                         android:layout_marginEnd="@dimen/already_user_text_margin_top"
-                        android:layout_alignParentEnd="true"/>
+                        android:background="@drawable/ic_sooka_logo"
+                        android:contentDescription=""
+                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:id="@+id/shareWith"
@@ -133,9 +133,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:layout_marginRight="16dp"
                         android:layout_centerInParent="true"
                         android:layout_marginStart="36dp"
+                        android:layout_marginRight="16dp"
                         android:clickable="true"
                         android:contentDescription="@string/cancel_icon"
                         android:focusable="true"
@@ -173,32 +173,20 @@
                     android:textColor="#fff"
                     android:textSize="@dimen/player_small_text_size"
                     android:visibility="gone" />
-                <LinearLayout
-                    android:id="@+id/video_dialog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="183dp"
-                    android:layout_marginTop="@dimen/dimen15dp"
-                    android:visibility="gone">
-                    <include
-                        android:id="@+id/video_quality"
-                        layout="@layout/layout_dialog_settings"
-                        />
-                </LinearLayout>
+
+
 
                 <LinearLayout
                     android:id="@+id/audio_dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
                     android:visibility="gone">
+
                     <include
                         android:id="@+id/audio_quality"
-                        layout="@layout/layout_caption_audio_setting"
-                        />
+                        layout="@layout/layout_caption_audio_setting" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -207,12 +195,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
-                    android:visibility="gone"
-                    >
+                    android:visibility="gone">
+
                     <include
                         android:id="@+id/brightness_seek"
-                        layout="@layout/brightness_up_down"
-                        />
+                        layout="@layout/brightness_up_down" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -223,10 +210,10 @@
                     android:layout_centerInParent="true"
                     android:visibility="gone"
                     >
+
                     <include
                         android:id="@+id/volume_seek"
-                        layout="@layout/volume_up_down"
-                        />
+                        layout="@layout/volume_up_down" />
                 </LinearLayout>
                 <!--</RelativeLayout>-->
                 <!--            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
@@ -240,9 +227,6 @@
                 <!--                android:layout_marginBottom="@dimen/dimen80dp">-->
 
 
-
-
-
                 <!--            </RelativeLayout>-->
 
 
@@ -251,14 +235,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="@dimen/seek_bar_margin_start"
-                    android:layout_marginBottom="70dp"
-                    android:paddingBottom="2dp"
-                    android:maxHeight="6dp"
                     android:layout_marginStart="@dimen/seek_bar_margin_start"
+                    android:layout_marginEnd="@dimen/seek_bar_margin_start"
+                    android:layout_marginBottom="85dp"
+                    android:maxHeight="6dp"
+                    android:paddingBottom="2dp"
                     android:progressDrawable="@drawable/seekbarprogress_style"
-                    android:visibility="visible"
-                    android:thumb="@drawable/ic_thumb_icon" />
+                    android:thumb="@drawable/ic_thumb_icon"
+                    android:visibility="visible" />
 
 
                 <RelativeLayout
@@ -266,104 +250,69 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="33dp"
                     android:layout_marginStart="@dimen/seek_bar_margin_start"
-                    android:layout_marginEnd="@dimen/seek_bar_margin_start">
+                    android:layout_marginEnd="@dimen/seek_bar_margin_start"
+                    android:layout_marginBottom="39dp">
 
 
                     <TextView
                         android:id="@+id/total_duration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:lineHeight="32sp"
-                        android:gravity="center"
-                        android:padding="@dimen/_1sdp"
-                        android:fontFamily="@font/heebo_regular"
-                        android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/_16sp"
-                        android:visibility="visible"
                         android:layout_marginStart="@dimen/_3dp"
-                        android:layout_marginTop="@dimen/_4dp"
-                        android:layout_toRightOf="@+id/slash"/>
+                        android:layout_toRightOf="@+id/slash"
+                        android:fontFamily="@font/heebo_regular"
+                        android:gravity="center"
+                        android:lineHeight="32sp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:text=""
+                        android:layout_marginTop="32.7dp"
+                        android:textColor="@color/pale_gray"
+                        android:textSize="@dimen/dimen15sp"
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/current_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/_16sp"
-                        android:lineHeight="32sp"
-                        android:layout_marginTop="@dimen/_4dp"
-                        android:gravity="center"
+                        android:layout_marginStart="13dp"
                         android:fontFamily="@font/heebo_regular"
-                        android:visibility="visible"
+                        android:gravity="center"
+                        android:lineHeight="32sp"
+                        android:layout_marginTop="32.7dp"
+                        android:layout_marginBottom="@dimen/_8sdp"
                         android:text=""
-                        android:padding="@dimen/_1sdp"
-                        android:layout_marginStart="13dp"/>
+                        android:textColor="@color/pale_gray"
+                        android:textSize="@dimen/dimen15sp"
+                        android:visibility="visible" />
+
                     <TextView
                         android:id="@+id/slash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/_16sp"
-                        android:layout_marginTop="@dimen/_4dp"
-                        android:lineHeight="32sp"
-                        android:gravity="center"
-                        android:fontFamily="@font/heebo_regular"
-                        android:visibility="visible"
-                        android:text="/"
-                        android:padding="@dimen/_1sdp"
                         android:layout_marginStart="@dimen/_3dp"
-                        android:layout_toRightOf="@+id/current_time"/>
+                        android:layout_toRightOf="@+id/current_time"
+                        android:fontFamily="@font/heebo_regular"
+                        android:gravity="center"
+                        android:lineHeight="32sp"
+                        android:text="/"
+                        android:layout_marginTop="32.7dp"
+                        android:textColor="@color/pale_gray"
+                        android:textSize="@dimen/dimen15sp"
+                        android:visibility="visible"
+                        android:layout_marginBottom="@dimen/_8sdp"/>
 
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/subtitle_audio"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:drawablePadding="@dimen/_6dp"-->
-<!--                        android:layout_alignParentEnd="true"-->
-<!--                        android:drawableLeft="@drawable/ic_subtitle"-->
-<!--                        android:fontFamily="@font/heebo_regular"-->
-<!--                        android:padding="@dimen/_1sdp"-->
-<!--                        android:lineHeight="32sp"-->
-<!--                        android:gravity="center"-->
-<!--                        android:text="@string/subtitle_audio"-->
-<!--                        android:textAllCaps="false"-->
-<!--                        android:textColor="@color/pale_gray"-->
-<!--                        android:textSize="@dimen/_16sp"-->
-<!--                        android:layout_marginTop="@dimen/_4dp"-->
-<!--                        android:layout_marginEnd="@dimen/_16sp"></TextView>-->
-
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/quality"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:drawableLeft="@drawable/ic_video_quality"-->
-<!--                        android:drawablePadding="@dimen/_6dp"-->
-<!--                        android:fontFamily="@font/heebo_regular"-->
-<!--                        android:layout_toLeftOf="@+id/subtitle_audio"-->
-<!--                        android:padding="@dimen/_1sdp"-->
-<!--                        android:gravity="center"-->
-<!--                        android:text="@string/manage_quality"-->
-<!--                        android:textAllCaps="false"-->
-<!--                        android:layout_marginEnd="@dimen/_16sp"-->
-<!--                        android:lineHeight="32sp"-->
-<!--                        android:textColor="@color/pale_gray"-->
-<!--                        android:textSize="@dimen/_16sp"-->
-<!--                        android:layout_marginStart="@dimen/_16sp"></TextView>-->
 
                     <RelativeLayout
                         android:id="@+id/fullscreen"
                         android:layout_width="@dimen/player_rl_full_sereen_width"
                         android:layout_height="@dimen/player_rl_full_screen_height"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginBottom="30dp"
                         android:layout_alignParentBottom="true"
                         android:layout_marginStart="@dimen/player_rl_full_margin_left"
+                        android:layout_marginBottom="30dp"
                         android:visibility="gone">
 
                         <ImageView
@@ -380,57 +329,186 @@
                             tools:ignore="ContentDescription" />
                     </RelativeLayout>
                 </RelativeLayout>
-                <TextView
-                    android:id="@+id/subtitle_audio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/_6dp"
-                    android:layout_alignParentEnd="true"
-                    android:drawableLeft="@drawable/ic_subtitle"
-                    android:fontFamily="@font/heebo_regular"
-                    android:padding="@dimen/_1sdp"
-                    android:lineHeight="32sp"
-                    android:gravity="center"
-                    android:text="@string/subtitle_audio"
-                    android:textAllCaps="false"
-                    android:textColor="@color/pale_gray"
-                    android:textSize="@dimen/_16sp"
-                    android:layout_marginBottom="33dp"
-                    android:layout_marginTop="@dimen/_4dp"
-                    android:layout_marginEnd="@dimen/uploaded_image_height"
-                    android:layout_alignParentBottom="true"></TextView>
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="39dp"
+                                    android:layout_marginTop="32.7dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="center"
+                                    android:orientation="horizontal"
+                                    android:weightSum="3"
+                                    android:layout_marginEnd="@dimen/uploaded_image_height">
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        >
+                                        <LinearLayout
+                                            android:id="@+id/video_dialog"
+                                            android:layout_width="190dp"
+                                            android:layout_height="137dp"
+                                            android:gravity="center"
+                                            android:elevation="10dp"
+                                            android:visibility="gone">
+
+                                            <include
+                                                android:id="@+id/video_quality"
+                                                layout="@layout/layout_dialog_settings" />
+                                        </LinearLayout>
+                                <TextView
+                                    android:id="@+id/quality"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:drawableLeft="@drawable/ic_video_quality"
+                                    android:drawablePadding="@dimen/_6dp"
+                                    android:fontFamily="@font/heebo_regular"
+                                    android:padding="@dimen/_4sdp"
+                                    android:gravity="center"
+                                    android:text="@string/manage_quality"
+                                    android:layout_gravity="bottom|center"
+                                    android:textAllCaps="false"
+                                    android:lineHeight="32sp"
+                                    android:textColor="@color/pale_gray"
+                                    android:textSize="@dimen/dimen15sp"
+                                    android:layout_weight="1"
+                                    android:layout_marginEnd="3.5dp"
+                                    ></TextView>
+                                    </FrameLayout>
+                                    <TextView
+                                        android:id="@+id/subtitle_audio"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:drawablePadding="@dimen/_6dp"
+                                        android:drawableLeft="@drawable/ic_subtitle"
+                                        android:fontFamily="@font/heebo_regular"
+                                        android:padding="@dimen/_4sdp"
+                                        android:lineHeight="32sp"
+                                        android:gravity="center"
+                                        android:layout_weight="1"
+                                        android:layout_gravity="bottom"
+                                        android:text="@string/subtitle_audio"
+                                        android:layout_toLeftOf="@+id/next_episode"
+                                        android:textAllCaps="false"
+                                        android:textColor="@color/pale_gray"
+                                        android:textSize="@dimen/dimen15sp"
+                                        android:layout_marginTop="@dimen/_2dp"
+
+                                        ></TextView>
+                                    <TextView
+                                        android:id="@+id/next_episode"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:drawablePadding="@dimen/_6dp"
+                                        android:layout_alignParentEnd="true"
+                                        android:drawableLeft="@drawable/ic_next_episode"
+                                        android:fontFamily="@font/heebo_regular"
+                                        android:padding="@dimen/_4sdp"
+                                        android:lineHeight="32sp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:layout_gravity="bottom"
+                                        android:text="@string/next_episode"
+                                        android:textAllCaps="false"
+                                        android:textColor="@color/pale_gray"
+                                        android:textSize="@dimen/dimen15sp"
+                                        android:layout_marginTop="@dimen/_4dp"
+                                       android:visibility="gone"></TextView>
+                                </LinearLayout>
 
 
-                <TextView
-                    android:id="@+id/quality"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_video_quality"
-                    android:drawablePadding="@dimen/_6dp"
-                    android:fontFamily="@font/heebo_regular"
-                    android:layout_toLeftOf="@+id/subtitle_audio"
-                    android:padding="@dimen/_1sdp"
-                    android:gravity="center"
-                    android:text="@string/manage_quality"
-                    android:textAllCaps="false"
-                    android:layout_marginEnd="@dimen/_16sp"
-                    android:lineHeight="32sp"
-                    android:textColor="@color/pale_gray"
-                    android:textSize="@dimen/_16sp"
-                    android:layout_marginBottom="33dp"
-                    android:layout_marginStart="@dimen/_16sp"
-                    android:layout_alignParentBottom="true"></TextView>
+
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginBottom="33dp"-->
+<!--                    android:layout_marginEnd="@dimen/uploaded_image_height">-->
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/video_dialog"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                       -->
+<!--                        android:layout_alignParentBottom="true"-->
+<!--                        android:layout_marginStart="@dimen/_100sdp"-->
+<!--                        android:visibility="">-->
+
+<!--                        <include-->
+<!--                            android:id="@+id/video_quality"-->
+<!--                            layout="@layout/layout_dialog_settings" />-->
+<!--                    </LinearLayout>-->
+<!--                <TextView-->
+<!--                    android:id="@+id/subtitle_audio"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentBottom="true"-->
+<!--                    android:layout_marginTop="@dimen/_4dp"-->
+
+<!--                    android:drawableLeft="@drawable/ic_subtitle"-->
+<!--                    android:drawablePadding="@dimen/_6dp"-->
+<!--                    android:fontFamily="@font/heebo_regular"-->
+<!--                    android:gravity="center"-->
+<!--                    android:lineHeight="32sp"-->
+<!--                    android:layout_toLeftOf="@+id/next_episode"-->
+<!--                    android:padding="@dimen/_1sdp"-->
+<!--                    android:text="@string/subtitle_audio"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textColor="@color/pale_gray"-->
+<!--                    android:textSize="@dimen/_16sp"></TextView>-->
+
+
+<!--                <TextView-->
+<!--                    android:id="@+id/quality"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentBottom="true"-->
+<!--                    android:layout_marginStart="@dimen/_16sp"-->
+<!--                    android:layout_marginEnd="@dimen/_16sp"-->
+
+<!--                    android:layout_toLeftOf="@+id/subtitle_audio"-->
+<!--                    android:drawableLeft="@drawable/ic_video_quality"-->
+<!--                    android:drawablePadding="@dimen/_6dp"-->
+<!--                    android:fontFamily="@font/heebo_regular"-->
+<!--                    android:gravity="center"-->
+<!--                    android:lineHeight="32sp"-->
+<!--                    android:padding="@dimen/_1sdp"-->
+<!--                    android:text="@string/manage_quality"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textColor="@color/pale_gray"-->
+<!--                    android:textSize="@dimen/_16sp"></TextView>-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/next_episode"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="@dimen/_4dp"-->
+<!--                    android:drawableLeft="@drawable/ic_next_episode"-->
+<!--                    android:drawablePadding="@dimen/_6dp"-->
+<!--                    android:fontFamily="@font/heebo_regular"-->
+<!--                    android:gravity="center"-->
+<!--                    android:lineHeight="32sp"-->
+<!--                    android:padding="@dimen/_1sdp"-->
+<!--                    android:text="@string/next_episode"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textColor="@color/pale_gray"-->
+<!--                    android:textSize="@dimen/_16sp"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_alignParentBottom="true"-->
+<!--                    >-->
+<!--                    </TextView>-->
+<!--                </RelativeLayout>-->
 
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    >
+                    android:layout_alignParentBottom="true">
+
                     <include
                         android:id="@+id/bottom_sheet_layout"
-                        layout="@layout/bottom_sheet"
-                        />
+                        layout="@layout/bottom_sheet" />
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
                 <ImageButton
                     android:id="@+id/arrow_back"
                     style="?android:attr/borderlessButtonStyle"
@@ -444,6 +522,7 @@
                     android:src="@drawable/skip_previous"
                     android:visibility="gone"
                     tools:ignore="ContentDescription" />
+
                 <ImageButton
                     android:id="@+id/play_catchup"
                     style="?android:attr/borderlessButtonStyle"
@@ -454,6 +533,7 @@
                     android:src="@drawable/ic_pause"
                     android:visibility="invisible"
                     tools:ignore="ContentDescription" />
+
                 <ImageButton
                     android:id="@+id/arrow_forward"
                     style="?android:attr/borderlessButtonStyle"
@@ -467,8 +547,6 @@
                     android:src="@drawable/skip_next"
                     android:visibility="gone"
                     tools:ignore="ContentDescription" />
-
-
 
 
                 <RelativeLayout
@@ -638,27 +716,28 @@
             </LinearLayout>
 
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="100dp"
-            android:gravity="bottom"
-            android:layout_height="match_parent">
+            android:layout_marginBottom="128dp"
+            android:gravity="bottom">
 
             <TextView
                 android:id="@+id/skipIntro"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SKIP INTRO"
+                android:layout_height="@dimen/dimen40dp"
+                android:textSize="@dimen/dimen15sp"
+                android:gravity="center"
                 android:layout_alignParentBottom="true"
-                android:padding="@dimen/_7sdp"
+                android:layout_marginRight="@dimen/dimen55dp"
                 android:background="@drawable/skip_intro_button"
-                android:layout_marginRight="@dimen/_60sdp"
-                android:textColor="@color/pale_gray"
                 android:fontFamily="@font/heebo_regular"
+                android:padding="@dimen/_7sdp"
+                android:text="SKIP INTRO"
+                android:textColor="@color/pale_gray"
                 android:visibility="gone">
 
 
@@ -669,22 +748,24 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="100dp"
-            android:gravity="bottom"
-            android:layout_height="match_parent">
+            android:layout_marginBottom="128dp"
+            android:gravity="bottom">
 
             <TextView
                 android:id="@+id/skipRecap"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SKIP INTRO"
+                android:layout_height="@dimen/dimen40dp"
+                android:textSize="@dimen/dimen15sp"
                 android:layout_alignParentBottom="true"
-                android:padding="@dimen/_7sdp"
-                android:layout_marginRight="@dimen/_60sdp"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/dimen55dp"
                 android:background="@drawable/skip_intro_button"
-                android:textColor="@color/pale_gray"
                 android:fontFamily="@font/heebo_regular"
+                android:padding="@dimen/_7sdp"
+                android:text="SKIP INTRO"
+                android:textColor="@color/pale_gray"
                 android:visibility="gone">
 
 
@@ -695,22 +776,24 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="100dp"
-            android:gravity="bottom"
-            android:layout_height="match_parent">
+            android:layout_marginBottom="@dimen/_128dp"
+            android:gravity="bottom">
 
             <TextView
                 android:id="@+id/skipCredits"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SKIP INTRO"
+                android:layout_height="@dimen/dimen40dp"
+                android:textSize="@dimen/dimen15sp"
+                android:gravity="center"
                 android:layout_alignParentBottom="true"
-                android:padding="@dimen/_7sdp"
+                android:layout_marginRight="@dimen/dimen55dp"
                 android:background="@drawable/skip_intro_button"
-                android:layout_marginRight="@dimen/_60sdp"
-                android:textColor="@color/pale_gray"
                 android:fontFamily="@font/heebo_regular"
+                android:padding="@dimen/_7sdp"
+                android:text="SKIP INTRO"
+                android:textColor="@color/pale_gray"
                 android:visibility="gone">
 
 
@@ -718,8 +801,6 @@
 
 
         </LinearLayout>
-
-
 
 
     </RelativeLayout>
