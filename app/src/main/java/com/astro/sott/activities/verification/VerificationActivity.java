@@ -180,7 +180,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     private void changePassword() {
         astroLoginViewModel.changePassword(UserInfo.getInstance(this).getAccessToken(), oldPassword, password).observe(this, changePasswordResponse -> {
             if (changePasswordResponse.isStatus() && changePasswordResponse.getResponse().getChangePasswordResponseMessage() != null) {
-                Toast.makeText(this, "Password changed Suceesfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
                 new ActivityLauncher(VerificationActivity.this).homeScreen(VerificationActivity.this, HomeActivity.class);
 
             } else {
@@ -220,7 +220,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
                 getContact();
-                Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.registered_success), Toast.LENGTH_SHORT).show();
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
@@ -256,6 +256,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
                 UserInfo.getInstance(this).setActive(true);
                 new ActivityLauncher(VerificationActivity.this).homeScreen(VerificationActivity.this, HomeActivity.class);
+                Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
 
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {

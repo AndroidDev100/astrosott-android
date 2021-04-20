@@ -4117,19 +4117,19 @@ public class KsServices {
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         responseList.add(null);
-                                        homechannelCallBack.response(true, responseList, channelList);
+                                        homechannelCallBack.response(false, responseList, channelList);
 
                                     }
                                 }
                             });
                         else {
                             responseList.add(null);
-                            homechannelCallBack.response(true, responseList, channelList);
+                            homechannelCallBack.response(false, responseList, channelList);
 
                         }
                     } else {
                         responseList.add(null);
-                        homechannelCallBack.response(true, responseList, channelList);
+                        homechannelCallBack.response(false, responseList, channelList);
 
                     }
 
@@ -4137,7 +4137,7 @@ public class KsServices {
                 }
             }
         });
-        builder.setResponseProfile(responseProfile);
+        // builder.setResponseProfile(responseProfile);
         getRequestQueue().queue(builder.build(client));
     }
 

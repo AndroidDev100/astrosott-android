@@ -379,7 +379,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
     private void showAlertDialog(String title, String msg) {
         FragmentManager fm = getFragmentManager();
-        AlertDialogFragment alertDialog = AlertDialogFragment.newInstance(title, msg, getResources().getString(R.string.ok), getResources().getString(R.string.cancel));
+        AlertDialogFragment alertDialog = AlertDialogFragment.newInstance(title, msg, getResources().getString(R.string.yes), getResources().getString(R.string.oops_no));
         alertDialog.setAlertDialogCallBack(this);
         alertDialog.show(Objects.requireNonNull(fm), "fragment_alert");
     }

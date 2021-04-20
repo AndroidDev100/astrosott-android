@@ -104,9 +104,9 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 getBinding().separator.setVisibility(View.GONE);
                 getBinding().autoRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
                 getBinding().llRecentSearchLayout.setVisibility(View.GONE);
-                if (!searchHappen){
-                    if (charSequence.toString().trim().length()==0){
-                       // getBinding().searchText.setText("");
+                if (!searchHappen) {
+                    if (charSequence.toString().trim().length() == 0) {
+                        // getBinding().searchText.setText("");
                         getBinding().clearEdt.setVisibility(View.GONE);
                         return;
                     }
@@ -362,7 +362,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 if (detailRailFragment != null) {
                     selectedGenreValues = detailRailFragment.getSelectedGenres();
                     if (selectedGenreValues == null || selectedGenreValues.equalsIgnoreCase("")) {
-                        ToastHandler.show("Select at least one!", getApplicationContext());
+                        ToastHandler.show(getResources().getString(R.string.select_one), getApplicationContext());
                     } else {
                         if (!searchHappen) {
                             counter = 0;

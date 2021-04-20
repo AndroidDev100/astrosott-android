@@ -77,16 +77,6 @@ class EvergentErrorHandling {
             "eV2143" -> message = context.resources.getString(R.string.device_exceeded)
             "ev1226" -> message = context.resources.getString(R.string.invalid_confirm_password)
             "ev1225" -> message = context.resources.getString(R.string.invalid_new_password)
-
-
-
-
-
-
-
-
-
-
             else -> message = errorBody?.get(0)?.errorMessage.toString()
         }
 

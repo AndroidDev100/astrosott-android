@@ -71,7 +71,7 @@ class ForgotPasswordActivity : AppCompatActivity()   {
         astroLoginViewModel!!.createOtp(type, email_mobile).observe(this, Observer { evergentCommonResponse ->
             activityForgotPasswordBinding?.progressBar?.visibility = View.GONE
             if (evergentCommonResponse.isStatus) {
-                Toast.makeText(this, "Verification code had be sent to $email_mobile", Toast.LENGTH_SHORT).show()
+               // Toast.makeText(this, "Verification code had be sent to $email_mobile", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, VerificationActivity::class.java)
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type)
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile)

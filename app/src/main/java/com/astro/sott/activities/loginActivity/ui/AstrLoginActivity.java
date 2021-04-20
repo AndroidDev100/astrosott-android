@@ -338,7 +338,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
                 UserInfo.getInstance(this).setActive(true);
-                Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
                 // setCleverTap();
                 new ActivityLauncher(AstrLoginActivity.this).homeScreen(AstrLoginActivity.this, HomeActivity.class);
             } else {
@@ -491,7 +491,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             getBinding().progressBar.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus()) {
-                Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, VerificationActivity.class);
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type);
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);

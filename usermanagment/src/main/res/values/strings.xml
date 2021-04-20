@@ -25,9 +25,9 @@
     <string name="invalid_state">Service Address: Invalid State</string>
     <string name="social_login_id_exists">Social Login Id with its type already exists</string>
     <string name="missing_param">Missing Required Parameter</string>
-    <string name="no_account_found">No Accounts Found</string>
+    <string name="no_account_found">Please try again or reset your password at Forgot Password.</string>
     <string name="verify_account_and_login">Please verify your account and login again</string>
-    <string name="wrong_username_or_password">Wrong Username or Password</string>
+    <string name="wrong_username_or_password">Please try again or reset your password at Forgot Password.</string>
     <string name="invalid_refresh_token">Invalid RefreshToken</string>
     <string name="country_mandatory">Country is mandatory</string>
     <string name="email_mobile_provided">Either email or mobile number should be provided</string>
@@ -41,11 +41,12 @@
     <string name="invalid_sp">Invalid SP Account ID: XXXX for Business Unit name</string>
     <string name="invalid_contactid">Invalid ContactId</string>
     <string name="invalid_gender">Invalid gender</string>
+    <string name="password_changed">You have successfully updated your password. All other registered devices will be auto logout for security purposes.</string>
     <string name="middle_name_exceeds">Middle Name length should not exceed 1</string>
     <string name="invalid_mobile">Invalid  Mobile Phone</string>
     <string name="username_exists">User already exists with the given mobile number</string>
     <string name="logout">Log out successfully</string>
-    <string name="invalid_session">Invalid Session Token</string>
+    <string name="invalid_session">Device is removed from the account. Please login again.</string>
     <string name="passward_given">Your given password Shouldn\'t be \"Password\</string>
     <string name="invalid_current_password">Invalid current password</string>
     <string name="device_dont_exist">Device does not exist</string>

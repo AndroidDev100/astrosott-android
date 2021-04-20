@@ -3,6 +3,7 @@ package com.astro.sott.fragments.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -18,7 +19,7 @@ public class AlertDialogNetworkFragment extends DialogFragment {
     private AlertDialogNetworkFragment.AlertDialogNetworkListener alertDialogListener;
 
     private String strMessage = "";
-    private String strPositiveButtonText = "";
+    private String strPositiveButtonText = "", strTitle = "";
     private String strNegativeButtonText = "";
     private BaseActivity baseActivity;
 
@@ -56,7 +57,7 @@ public class AlertDialogNetworkFragment extends DialogFragment {
 
 
         if (getArguments() != null) {
-//            strTitle = getArguments().getString(AppLevelConstants.TITLE);
+            strTitle = getArguments().getString(AppLevelConstants.TITLE);
             strMessage = getArguments().getString(AppLevelConstants.MESSAGE);
             strPositiveButtonText = getArguments().getString(AppLevelConstants.POSITIVE_BUTTON_TEXT);
             strNegativeButtonText = getArguments().getString(AppLevelConstants.NEGATIVE_BUTTON_TEXT);
@@ -66,13 +67,13 @@ public class AlertDialogNetworkFragment extends DialogFragment {
         alertDialogBuilder.setTitle(getResources().getString(R.string.dialog));
         alertDialogBuilder.setMessage("" + strMessage);
         alertDialogBuilder.setPositiveButton(strPositiveButtonText, (dialog, which) -> {
-            if(alertDialogListener != null){
+            if (alertDialogListener != null) {
                 alertDialogListener.onFinishDialog(true);
             }
             dialog.dismiss();
         });
         alertDialogBuilder.setNegativeButton(strNegativeButtonText, (dialog, which) -> {
-            if(alertDialogListener != null){
+            if (alertDialogListener != null) {
                 alertDialogListener.onFinishDialog(false);
             }
             dialog.dismiss();
@@ -90,7 +91,6 @@ public class AlertDialogNetworkFragment extends DialogFragment {
             baseActivity = null;
         }
     }
-
 
 
     // 1. Defines the listener interface with a method passing back data result.
