@@ -116,15 +116,24 @@ public class ApplicationMain extends MultiDexApplication {
     }
 
     private void connectionWarmup() {
+        if (BuildConfig.FLAVOR.equalsIgnoreCase("prod")) {
+            PKHttpClientManager.warmUp(
+                    "https://linear01-playback.sooka.my/",
+                    "https://linear02-playback.sooka.my/",
+                    "https://vod-playback.sooka.my/favicon.ico",
+                    "https://rest-as.ott.kaltura.com/crossdomain.xml",
+                    "https://cdnapisec.kaltura.com/favicon.ico"
 
-        PKHttpClientManager.setHttpProvider("okhttp");
+            );
+        }
+       /* PKHttpClientManager.setHttpProvider("okhttp");
         PKHttpClientManager.warmUp(
                 "https://restv4-as.ott.kaltura.com/crossdomain.xml",
                 "https://rest-as.ott.kaltura.com/crossdomain.xml",
                 "https://cdnapisec.kaltura.com/favicon.ico",
                 "https://livelinearsddash2.akamaized.net",
                 "https://cfvod.kaltura.com/favicon.ico"
-        );
+        );*/
     }
 
 
