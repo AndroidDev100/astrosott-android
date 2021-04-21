@@ -3355,7 +3355,7 @@ public class KsServices {
     private void setQuickSearchBuilder(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack, String searchKeyword, String selectedGenre) {
         final FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
-        filterPager.setPageSize(20);
+        filterPager.setPageSize(15);
 
         Log.e(String.valueOf(count) + "====>", currentMediaTypes.get(count).getId());
 

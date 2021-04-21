@@ -1,6 +1,7 @@
 package com.astro.sott.utils.commonMethods;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -647,8 +648,8 @@ public class AppCommonMethods {
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     .setLink(Uri.parse(uri))
-                    .setDomainUriPrefix("https://stagingsott.page.link")
-                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.astro.stagingsott")
+                    .setDomainUriPrefix("https://sooka.my")
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.astro.sott")
                             .setMinimumVersion(1)
                             .build())
                     .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
@@ -667,6 +668,7 @@ public class AppCommonMethods {
                                     public void run() {
                                         if (dynamicLinkUri != null) {
                                             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                                           // sharingIntent.setComponent(new ComponentName("com.google.android.apps.docs", "com.google.android.apps.docs.app.SendTextToClipboardActivity"));
                                             sharingIntent.setType("text/plain");
 
                                             sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + dynamicLinkUri.toString());
@@ -679,7 +681,8 @@ public class AppCommonMethods {
                                 });
 
                             } else {
-                                Log.w("dynamicUrl", dynamicLinkUri.toString());
+                               // Log.w("dynamicUrl", dynamicLinkUri.toString());
+                                //new ToastHandler(WebSeriesDescriptionActivity.this).show(getApplicationContext().getResources().getString(R.string.removed_from_watchlist));
                             }
                         }
                     });
@@ -2474,4 +2477,14 @@ public class AppCommonMethods {
 
     }
 
+    public static String maskedEmail(Activity context) {
+        String email="";
+        try {
+            String s = UserInfo.getInstance(context).getEmail();
+            email = s.replaceAll("(?<=.{3}).(?=.*@)", "*");
+        }catch (Exception ignored){
+            email="";
+        }
+       return email;
+    }
 }
