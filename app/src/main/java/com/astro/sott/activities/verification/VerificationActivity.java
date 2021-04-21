@@ -197,7 +197,6 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
             if (evergentCommonResponse.isStatus()) {
                 countDownTimer();
-                Toast.makeText(this, "Verification code had be sent to " + emailMobile, Toast.LENGTH_SHORT).show();
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();

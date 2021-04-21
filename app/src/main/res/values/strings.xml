@@ -302,6 +302,7 @@
     <string name="play_check_message">Looks like you have an unstable network at the moment, please try again when network stabilizes.</string>
     <string name="yay">Yay, </string>
     <string name="movie_text">Movie</string>
+    <string name="show_is">Show is</string>
     <string name="video_text">video</string>
     <string name="episode_text">Episode</string>
 
