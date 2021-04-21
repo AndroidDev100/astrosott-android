@@ -103,7 +103,7 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
         astroLoginViewModel.createOtp("email", UserInfo.getInstance(this).getEmail()).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
-               // Toast.makeText(this, getResources().getString(R.string.verification_code_Send) + email_mobile, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, getResources().getString(R.string.verification_code_Send) + email_mobile, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, VerificationActivity.class);
                 intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);

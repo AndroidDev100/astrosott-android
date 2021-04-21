@@ -73,6 +73,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private HomeFragment homeFragment;
     private VideoFragment videoFragment;
     private BillingProcessor billingProcessor;
+    private boolean notFirstTime = true;
     private LiveTvFragment liveTvFragment;
     private SubscriptionViewModel subscriptionViewModel;
     private Fragment moreFragment;
@@ -97,9 +98,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 case R.id.navigation_live_tv:
                     if (liveTvFragment == null) {
                         initFrameFragment();
-                        // liveTvFragment = new LiveTvFragment();
-                        //fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "3").hide(liveTvFragment).commitAllowingStateLoss();
-                        //  switchToLiveTvFragment();
                     } else {
                         switchToLiveTvFragment();
                     }
@@ -138,10 +136,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //                    return true;
                 case R.id.navigation_more:
                     if (moreNewFragment == null) {
-
                         setProfileFragment();
-
-
                     } else {
                         switchToNewMoreFragment();
                     }
@@ -403,17 +398,15 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             setProfileFragment();
             UIinitialization();
             navigation.setSelectedItemId(R.id.navigation_more);
+            setViewPager();
         } else {
             initialFragment(this);
-
         }
+
 
     }
 
-    // tab titles
-    private String[] titles = new String[]{"TV SHOWS", "MOVIES", "SPORTS"};
-
-    private void initialFragment(HomeActivity homeActivity) {
+    private void setViewPager() {
         getBinding().viewPager.setUserInputEnabled(false);
         getBinding().viewPager.setAdapter(new ViewPagerFragmentAdapter(this, titles));
         // attaching tab mediator
@@ -421,18 +414,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 (tab, position) -> tab.setText(titles[position])).attach();
 
 //        getBinding().tabs.setupWithViewPager(getBinding().pager);
-        getBinding().tabs.post(new Runnable() {
-            @Override
-            public void run() {
-                if (getBinding().tabs.getTabCount() > 0) {
-                    indicatorWidth = getBinding().tabs.getWidth() / getBinding().tabs.getTabCount();
-                }
-                //Assign new width
-                AppBarLayout.LayoutParams indicatorParams = (AppBarLayout.LayoutParams) getBinding().indicator.getLayoutParams();
-                indicatorParams.width = indicatorWidth;
-                getBinding().indicator.setLayoutParams(indicatorParams);
-            }
-        });
+
 
         getBinding().viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -456,6 +438,13 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 super.onPageScrollStateChanged(state);
             }
         });
+    }
+
+    // tab titles
+    private String[] titles = new String[]{"TV SHOWS", "MOVIES", "SPORTS"};
+
+    private void initialFragment(HomeActivity homeActivity) {
+        setViewPager();
         UIinitialization();
         navigation.setSelectedItemId(R.id.navigation_home);
 
@@ -493,7 +482,18 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().indicator.setVisibility(View.VISIBLE);
         getBinding().viewPager.setVisibility(View.VISIBLE);
 
-
+        getBinding().tabs.post(new Runnable() {
+            @Override
+            public void run() {
+                if (getBinding().tabs.getTabCount() > 0) {
+                    indicatorWidth = getBinding().tabs.getWidth() / getBinding().tabs.getTabCount();
+                }
+                //Assign new width
+                AppBarLayout.LayoutParams indicatorParams = (AppBarLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                indicatorParams.width = indicatorWidth;
+                getBinding().indicator.setLayoutParams(indicatorParams);
+            }
+        });
     }
 
 
