@@ -484,7 +484,7 @@ public class PlayerRepository {
                 trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
             } else {
                 TextTrack textTrackInfo = textTracks.get(i);
-                String name = textTrackInfo.getLanguage();
+                String name = textTrackInfo.getLabel();
                 trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
             }
         }
@@ -978,9 +978,9 @@ public class PlayerRepository {
                 player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit()) / 2));
             } else {*/
 
-                player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
+            player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
 
-          /*  }*/
+            /*  }*/
 
             player.prepare(mediaConfig);
             player.play();
