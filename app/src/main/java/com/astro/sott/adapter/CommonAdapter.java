@@ -824,7 +824,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         } else {
                             new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 1);
                         }*/
-                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class);
+                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class,"profile");
 
                     } else {
                         int layoutType = AppCommonMethods.getRailTypeAccToMedia(activity, getLayoutPosition(), dataList, i);
@@ -961,7 +961,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         } else {
                             new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 1);
                         }*/
-                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class);
+                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class,"profile");
 
                     } else {
                         int layoutType = AppCommonMethods.getRailTypeAccToMedia(activity, getLayoutPosition(), dataList, i);

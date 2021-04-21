@@ -208,7 +208,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(LiveEventActivity.this).astrLoginActivity(LiveEventActivity.this, AstrLoginActivity.class);
+                    new ActivityLauncher(LiveEventActivity.this).astrLoginActivity(LiveEventActivity.this, AstrLoginActivity.class,"");
                 }
 
             }

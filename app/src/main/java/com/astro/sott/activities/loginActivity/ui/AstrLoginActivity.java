@@ -58,6 +58,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private String email_mobile, type;
     private GoogleSignInClient mGoogleSignInClient;
     private CallbackManager callbackManager;
+    private String from;
     private boolean passwordVisibility = false;
     private String name = "";
     private final String MOBILE_REGEX = "^[0-9]*$";
@@ -75,7 +76,8 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (getIntent().getStringExtra(AppLevelConstants.FROM_KEY) != null)
+            from = getIntent().getStringExtra(AppLevelConstants.FROM_KEY);
         modelCall();
         setClicks();
         setGoogleSignIn();
@@ -340,7 +342,11 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setActive(true);
                 Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
                 // setCleverTap();
-                new ActivityLauncher(AstrLoginActivity.this).profileScreenRedirection(AstrLoginActivity.this, HomeActivity.class);
+                if (from.equalsIgnoreCase("")) {
+                    onBackPressed();
+                } else {
+                    new ActivityLauncher(AstrLoginActivity.this).profileScreenRedirection(AstrLoginActivity.this, HomeActivity.class);
+                }
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
                     EvergentRefreshToken.refreshToken(AstrLoginActivity.this, UserInfo.getInstance(AstrLoginActivity.this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {

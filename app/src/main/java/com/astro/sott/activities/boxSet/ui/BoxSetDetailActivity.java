@@ -916,7 +916,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(BoxSetDetailActivity.this).astrLoginActivity(BoxSetDetailActivity.this, AstrLoginActivity.class);
+                    new ActivityLauncher(BoxSetDetailActivity.this).astrLoginActivity(BoxSetDetailActivity.this, AstrLoginActivity.class,"");
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), BoxSetDetailActivity.this);

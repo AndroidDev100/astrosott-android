@@ -64,7 +64,7 @@ public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePa
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 Toast.makeText(this, "You have successfully updated your password. All other registered devices will be auto logout for security purposes.", Toast.LENGTH_SHORT).show();
-                new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class);
+                new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class, "profile");
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();

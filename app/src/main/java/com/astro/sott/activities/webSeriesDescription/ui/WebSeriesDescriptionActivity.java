@@ -210,7 +210,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class);
+                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class,"");
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), WebSeriesDescriptionActivity.this);
@@ -1125,7 +1125,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     public void onFinishDialog() {
         if (isPurchased) {
             isPurchased = false;
-            new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class);
+            new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class,"");
 
         }
     }

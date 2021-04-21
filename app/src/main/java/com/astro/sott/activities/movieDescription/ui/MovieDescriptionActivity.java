@@ -212,7 +212,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(MovieDescriptionActivity.this).astrLoginActivity(MovieDescriptionActivity.this, AstrLoginActivity.class);
+                    new ActivityLauncher(MovieDescriptionActivity.this).astrLoginActivity(MovieDescriptionActivity.this, AstrLoginActivity.class,"");
                 }
 
             }
@@ -1005,7 +1005,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(MovieDescriptionActivity.this).astrLoginActivity(MovieDescriptionActivity.this, AstrLoginActivity.class);
+                    new ActivityLauncher(MovieDescriptionActivity.this).astrLoginActivity(MovieDescriptionActivity.this, AstrLoginActivity.class,"");
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), MovieDescriptionActivity.this);

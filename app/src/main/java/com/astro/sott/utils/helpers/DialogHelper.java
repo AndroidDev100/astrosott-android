@@ -168,7 +168,7 @@ public class DialogHelper {
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.login), (dialog, id) -> {
                         //dialog.cancel();
-                        new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class);
+                        new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class, "");
 
                         //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
                     })
