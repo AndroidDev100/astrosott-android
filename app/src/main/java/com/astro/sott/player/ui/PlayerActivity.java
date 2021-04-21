@@ -97,7 +97,6 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
                 if (railData != null) {
                     Asset asset = railData.getObject();
                     getDuration(asset);
-                    ConvivaManager.setreportPlaybackRequested(this, railData, duraton, isLivePlayer);
 
                     getUrlToPlay(asset);
                 }
