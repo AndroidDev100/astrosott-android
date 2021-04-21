@@ -497,7 +497,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
 
-
     private void switchToLiveTvFragment() {
         setToolBarScroll(0);
         getBinding().appbar.setVisibility(View.VISIBLE);

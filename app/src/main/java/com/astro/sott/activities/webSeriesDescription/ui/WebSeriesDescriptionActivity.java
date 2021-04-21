@@ -298,8 +298,11 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
 
             if (!TextUtils.isEmpty(s)) {
-
-                StringBuilderHolder.getInstance().append(s.substring(0, 4));
+                if (s.length() > 3) {
+                    StringBuilderHolder.getInstance().append(s.substring(0, 4));
+                } else {
+                    StringBuilderHolder.getInstance().append(s);
+                }
                 StringBuilderHolder.getInstance().append(" | ");
 
             }
@@ -625,7 +628,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         });
     }
 
-    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<RailCommonData> railList) {
+    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<
+            RailCommonData> railList) {
 //        if (this.railList!=null){
 //            this.railList.clear();
 //        }
@@ -1150,7 +1154,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         });
     }
 
-    private void checkBlockingErrors(Response<ListResponse<UserAssetRule>> response, RailCommonData railCommonData) {
+    private void checkBlockingErrors
+            (Response<ListResponse<UserAssetRule>> response, RailCommonData railCommonData) {
         if (response != null && response.results != null && response.results.getObjects() != null) {
             for (UserAssetRule userAssetRule :
                     response.results.getObjects()) {

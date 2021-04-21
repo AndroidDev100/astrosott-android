@@ -832,7 +832,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
             if (!TextUtils.isEmpty(s)) {
 
-                StringBuilderHolder.getInstance().append(s.substring(0, 4));
+                if (s.length() > 3) {
+                    StringBuilderHolder.getInstance().append(s.substring(0, 4));
+                } else {
+                    StringBuilderHolder.getInstance().append(s);
+                }
                 StringBuilderHolder.getInstance().append(" | ");
 
             }
