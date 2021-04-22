@@ -138,7 +138,7 @@ public class AssetContent {
             boolean value = adsValue.getValue();
             return value;
         } else {
-            return false;
+            return true;
         }
     }
 
