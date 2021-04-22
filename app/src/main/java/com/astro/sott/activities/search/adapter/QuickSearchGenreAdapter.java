@@ -46,7 +46,7 @@ public class QuickSearchGenreAdapter extends RecyclerView.Adapter<QuickSearchGen
 
 //1571db
         if (railCommonData.isChecked()) {
-            holder.binding.mainLayout.setBackgroundColor(Color.parseColor("#1571db"));
+          //  holder.binding.mainLayout.setBackgroundColor(Color.parseColor("#1571db"));
             holder.binding.halfCircle.setVisibility(View.VISIBLE);
             holder.binding.imageView.setVisibility(View.GONE);
            // holder.binding.border.setVisibility(View.VISIBLE);
@@ -56,9 +56,9 @@ public class QuickSearchGenreAdapter extends RecyclerView.Adapter<QuickSearchGen
             Log.w("selectedColor",railCommonData.getSelectedColor()+"  "+railCommonData.isChecked());
             if (railCommonData.getSelectedColor()!=null && !railCommonData.getSelectedColor().equalsIgnoreCase("")){
                 if (railCommonData.getSelectedColor().equalsIgnoreCase("1")){
-                    holder.binding.mainLayout.setBackgroundColor(Color.parseColor("#1571db"));
+                  //  holder.binding.mainLayout.setBackgroundColor(Color.parseColor("#1571db"));
                 }else {
-                    holder.binding.mainLayout.setBackgroundColor(Color.parseColor("#303255"));
+                   // holder.binding.mainLayout.setBackgroundColor(Color.parseColor("#303255"));
                 }
             }
            // holder.binding.mainLayout.setBackgroundColor(Color.parseColor(railCommonData.getSelectedColor()));

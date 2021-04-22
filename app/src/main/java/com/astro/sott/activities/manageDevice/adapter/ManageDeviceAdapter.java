@@ -60,7 +60,7 @@ public class ManageDeviceAdapter extends RecyclerView.Adapter<ManageDeviceAdapte
         } else {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_android_24px));
         }
-        holder.manageDeviceItemBinding.title.setText(itemList.get(position).getDeviceName());
+        holder.manageDeviceItemBinding.title.setText(itemList.get(position).getDeviceName() +" "+ itemList.get(position).getModelNo());
         holder.manageDeviceItemBinding.activeDate.setText("Last active " + getDate(itemList.get(position).getLastLoginTime()));
         holder.manageDeviceItemBinding.deleteIcon.setOnClickListener(view -> {
             if (itemList.get(position).getSerialNo() != null)

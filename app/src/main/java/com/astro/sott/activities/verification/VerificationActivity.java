@@ -76,11 +76,9 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 int seconds = (int) (millisUntilFinished / 1000);
                 int minutes = seconds / 60;
                 seconds = seconds % 60;
-                getBinding().otpTitle.setVisibility(View.GONE);
+
                 getBinding().otpValid.setVisibility(View.VISIBLE);
-                getBinding().resendOtp.setVisibility(View.GONE);
-                getBinding().otpValid.setText("OTP valid for " + String.format("%02d", minutes)
-                        + ":" + String.format("%02d", seconds) + "s");
+                getBinding().otpValid.setText("OTP valid for " + String.format("%02d", minutes) + ":" + String.format("%02d", seconds) + "s");
                 if (String.format("%02d", minutes).equalsIgnoreCase("03")) {
                     getBinding().otpTitle.setVisibility(View.VISIBLE);
                     getBinding().resendOtp.setVisibility(View.VISIBLE);
@@ -151,7 +149,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                         token = evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getToken();
                         if (!token.equalsIgnoreCase("")) {
                             Intent intent = new Intent(this, ChangePasswordActivity.class);
-                            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                            intent.setFlags(intent.getFlags() |Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra("token", token);
                             startActivity(intent);
                         }

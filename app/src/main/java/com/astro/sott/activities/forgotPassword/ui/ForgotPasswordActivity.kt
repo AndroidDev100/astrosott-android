@@ -77,7 +77,7 @@ class ForgotPasswordActivity : AppCompatActivity()   {
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile)
                 intent.putExtra(AppLevelConstants.PASSWORD_KEY, "password")
                 intent.putExtra(AppLevelConstants.FROM_KEY, "signIn")
-                intent.flags = intent.flags or Intent.FLAG_ACTIVITY_NO_HISTORY
+                intent.flags = intent.flags or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             } else {
                 Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()

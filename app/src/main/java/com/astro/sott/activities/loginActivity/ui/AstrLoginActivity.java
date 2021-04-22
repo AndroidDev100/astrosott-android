@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.detailConfirmation.DetailConfirmationActivity;
+import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
@@ -233,10 +234,12 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             //  confirmOtp();
         });
         getBinding().apple.setOnClickListener(view -> {
+
             //   resetPassword();
         });
         getBinding().signup.setOnClickListener(view -> {
             new ActivityLauncher(this).signupActivity(this, SignUpActivity.class);
+
         });
         setTextWatcher();
     }
