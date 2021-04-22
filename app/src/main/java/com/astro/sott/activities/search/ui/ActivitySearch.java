@@ -379,7 +379,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         getBinding().searchText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 if (NetworkConnectivity.isOnline(ActivitySearch.this)) {
-                    if ((getBinding().searchText.getText().toString().length() > 0)) {
+                    if ((getBinding().searchText.getText().toString().length() > 2)) {
                         String keyword = getBinding().searchText.getText().toString().trim();
                         if (!keyword.equalsIgnoreCase("")) {
                             if (!searchHappen) {

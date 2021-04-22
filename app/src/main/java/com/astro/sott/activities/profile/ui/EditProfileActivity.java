@@ -11,6 +11,7 @@ import android.view.View;
 import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityEditProfileBinding;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfileBinding> {
@@ -27,7 +28,12 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     }
 
     private void setClicks() {
-        getBinding().email.setText(UserInfo.getInstance(this).getEmail());
+        try {
+            String masked=AppCommonMethods.maskedEmail(EditProfileActivity.this);
+            getBinding().email.setText(masked);
+        }catch (Exception ignored){
+
+        }
         getBinding().backButton.setOnClickListener(v -> {
             onBackPressed();
         });

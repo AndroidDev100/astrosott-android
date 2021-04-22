@@ -150,14 +150,23 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
     private void UIinitialization() {
         setRecyclerProperties(getBinding().recyclerView);
     }
-
+    private boolean tabletSize;
     public void setRecyclerProperties(RecyclerView recyclerView) {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(false);
-        recyclerView.addItemDecoration(new SpacingItemDecoration(20, 2));
 
-        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
-        recyclerView.setLayoutManager(mLayoutManager);
+        tabletSize = getActivity().getResources().getBoolean(R.bool.isTablet);
+        Log.w("isTablet",tabletSize+"");
+        if (tabletSize){
+            recyclerView.addItemDecoration(new SpacingItemDecoration(20, 2));
+            GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 4);
+            recyclerView.setLayoutManager(mLayoutManager);
+        }else {
+            recyclerView.addItemDecoration(new SpacingItemDecoration(20, 2));
+            GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+            recyclerView.setLayoutManager(mLayoutManager);
+        }
+
 
         setPagination();
     }
