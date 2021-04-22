@@ -746,6 +746,31 @@ public class AssetContent {
         return connection;
     }
 
+    public static String getActor(Map<String, MultilingualStringValueArray> map) {
+
+        String cast = "";
+        List<MultilingualStringValue> cast_value = new ArrayList<>();
+        MultilingualStringValueArray cast_list = map.get(AppLevelConstants.KEY_CAST_ACTOR);
+        if (cast_list != null)
+//            for (MultilingualStringValue value : cast_list.getObjects()) {
+//                cast_value.add(value);
+//            }
+            cast_value.addAll(cast_list.getObjects());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= cast_value.size() - 1; i++) {
+
+            stringBuilder.append(cast_value.get(i).getValue()).append(", ");
+
+        }
+
+        if (stringBuilder.length() > 0) {
+            cast = stringBuilder.toString();
+            cast = cast.substring(0, cast.length() - 2);
+        }
+
+        return cast;
+    }
+
     public static LiveData<String> getLanguageData(Map<String, MultilingualStringValueArray> map) {
 
         final MutableLiveData<String> connection = new MutableLiveData<>();
@@ -843,6 +868,30 @@ public class AssetContent {
         }
         connection.postValue(crew + "");
         return connection;
+    }
+
+    public static String getDirector(Map<String, MultilingualStringValueArray> map) {
+        String crew;
+        List<MultilingualStringValue> crew_value = new ArrayList<>();
+        MultilingualStringValueArray crew_list = map.get(AppLevelConstants.KEY_DIRECTOR);
+        if (crew_list != null)
+//            for (MultilingualStringValue value : crew_list.getObjects()) {
+//                crew_value.add(value);
+//            }
+            crew_value.addAll(crew_list.getObjects());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= crew_value.size() - 1; i++) {
+            stringBuilder.append(crew_value.get(i).getValue()).append(", ");
+        }
+
+        if (stringBuilder.length() > 0) {
+            crew = stringBuilder.toString();
+            crew = crew.substring(0, crew.length() - 2);
+        } else {
+            crew = "";
+        }
+
+        return crew;
     }
 
     public static String getProvider(Map<String, MultilingualStringValueArray> map) {

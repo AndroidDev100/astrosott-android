@@ -31,6 +31,7 @@ public class ConvivaManager {
     private static final String GENRE = "c3.cm.genre";
     private static final String GENRE_LIST = "c3.cm.genreList";
     private static final String ASSET_ID = "c3.cm.id";
+    private static final String SHOW_TITLE = "c3.cm.showTitle";
 
 
     private static final String CATEGORY_TYPE = "c3.cm.categoryType";
@@ -41,15 +42,27 @@ public class ConvivaManager {
     private static final String APP_VERSION = "c3.app.version";
     private static final String CONTENT_LENGTH = "appVersion";
     private static final String CONNECTION_TYPE = "connectionType";
-    private static final String ASSET_PROVIDER_NAME = "assetProviderName";
-
+    private static final String ASSET_PROVIDER_NAME = "c3.cm.name";
+    private static final String AFFILIATE = "c3.cm.affiliate";
+    private static final String RATING = "rating";
     private static final String WIRELESS = "Wireless";
     private static final String MOBILE = "Mobile";
     private static final String LINEAR = "Linear";
     private static final String VOD = "VOD";
-    public static final String AD_STITCHER = "adStitcherSystem";
-    public static final String AD_SYSTEM = "adSystem";
-    public static final String AD_TECHNOLOGY = "adTechnology";
+    public static final String AD_ID = "c3.ad.id";
+    public static final String AD_IS_SLATE = "c3.ad.isSlate";
+    public static final String FIRST_AID_SYSTEM = "c3.ad.firstAdSystem";
+    public static final String ACTORS = "actors";
+    public static final String DIRECTORS = "directors";
+    public static final String DEVICE_ID = "deviceId";
+    public static final String PRODUCT_ID = "productId";
+    public static final String STREAM_PROTOCOL = "streamProtocol";
+    public static final String CONTENT_PLAYBACK_TYPE = "contentPlaybackType";
+    public static final String MEDIA_FILE_FRAMEWORK = "c3.ad.mediaFileApiFramework";
+    public static final String AD_POSITION = "c3.ad.position";
+    public static final String AD_STITCHER = "c3.ad.adStitcher";
+    public static final String AD_SYSTEM = "c3.ad.system";
+    public static final String AD_TECHNOLOGY = "c3.ad.technology";
     public static final String UTM_URL = " c3.cm.utmTrackingUrl";
 
 
@@ -94,9 +107,31 @@ public class ConvivaManager {
         }
         contentInfo.put(ConvivaSdkConstants.ASSET_NAME, railData.getName());
         contentInfo.put(ConvivaSdkConstants.IS_LIVE, isLivePlayer + "");
+        contentInfo.put(AFFILIATE, "NA");
         contentInfo.put(ConvivaSdkConstants.FRAMEWORK_NAME, "Kaltura");
         contentInfo.put(ConvivaSdkConstants.DURATION, AppCommonMethods.getDurationFromUrl(railData));
-        contentInfo.put(ConvivaSdkConstants.FRAMEWORK_VERSION, "Kaltura 4.8.3");
+        contentInfo.put(ConvivaSdkConstants.FRAMEWORK_VERSION, "Kaltura 4.13.3");
+        if (AssetContent.getActor(railData.getTags()).equalsIgnoreCase("")) {
+            contentInfo.put(ACTORS, "NA");
+        } else {
+            contentInfo.put(ACTORS, AssetContent.getActor(railData.getTags()));
+        }
+        if (AssetContent.getDirector(railData.getTags()).equalsIgnoreCase("")) {
+            contentInfo.put(DIRECTORS, "NA");
+        } else {
+            contentInfo.put(DIRECTORS, AssetContent.getDirector(railData.getTags()));
+        }
+        if (AssetContent.getParentalRating(railData.getTags()).equalsIgnoreCase("")) {
+            contentInfo.put(RATING, "NA");
+        } else {
+            contentInfo.put(RATING, AssetContent.getParentalRating(railData.getTags()));
+
+        }
+        contentInfo.put(PRODUCT_ID, "Astro-Sooka");
+        contentInfo.put(STREAM_PROTOCOL, "DASH");
+
+        contentInfo.put(DEVICE_ID, AppCommonMethods.getDeviceId(context.getContentResolver()));
+
         if (UserInfo.getInstance(context).isActive()) {
             if (UserInfo.getInstance(context).getCpCustomerId() != null) {
                 contentInfo.put(ConvivaSdkConstants.VIEWER_ID, UserInfo.getInstance(context).getCpCustomerId());
@@ -111,12 +146,14 @@ public class ConvivaManager {
         } else {
             contentInfo.put(CONNECTION_TYPE, MOBILE);
         }
+
         if (isLivePlayer) {
             contentInfo.put(CONTENT_TYPE, LINEAR);
             contentInfo.put(CHANNEL, railData.getName());
-
+            contentInfo.put(CONTENT_PLAYBACK_TYPE, "LIVE");
         } else {
-            if (AssetContent.getProvider(railData.getTags()).equalsIgnoreCase("")) {
+            contentInfo.put(CONTENT_PLAYBACK_TYPE, "VOD");
+            if (!AssetContent.getProvider(railData.getTags()).equalsIgnoreCase("")) {
                 contentInfo.put(BRAND, AssetContent.getProvider(railData.getTags()));
             } else {
                 contentInfo.put(BRAND, "NA");
@@ -127,11 +164,15 @@ public class ConvivaManager {
                 contentInfo.put(CHANNEL, "NA");
 
             }
+            if (railData.getType() == MediaTypeConstant.getSeries(context)) {
+                contentInfo.put(SERIES_NAME, railData.getName());
+            }
+            contentInfo.put(SHOW_TITLE, railData.getName());
             contentInfo.put(CONTENT_TYPE, VOD);
             contentInfo.put(ASSET_ID, railData.getExternalId());
         }
 
-        if (AssetContent.getProvider(railData.getTags()).equalsIgnoreCase("")) {
+        if (!AssetContent.getProvider(railData.getTags()).equalsIgnoreCase("")) {
             contentInfo.put(ASSET_PROVIDER_NAME, AssetContent.getProvider(railData.getTags()));
         } else {
             contentInfo.put(ASSET_PROVIDER_NAME, "NA");
@@ -146,7 +187,7 @@ public class ConvivaManager {
         contentInfo.put(UTM_URL, "NA");
         //
         contentInfo.put(CATEGORY_TYPE, AppCommonMethods.getAssetType(railData.getType(), context));
-        contentInfo.put(APP_NAME, "SOTT Android");
+        contentInfo.put(APP_NAME, "Sooka Android");
         contentInfo.put(APP_VERSION, BuildConfig.VERSION_NAME);
         if (AssetContent.getGenredataString(railData.getTags()).equals("")) {
             contentInfo.put(GENRE, "NA");
@@ -159,7 +200,7 @@ public class ConvivaManager {
         } else {
             contentInfo.put(GENRE_LIST, AssetContent.getSubGenredataString(railData.getTags()));
         }
-        contentInfo.put(ConvivaSdkConstants.PLAYER_NAME, "SOTT Android");
+        contentInfo.put(ConvivaSdkConstants.PLAYER_NAME, "Sooka Android");
         ConvivaManager.getConvivaVideoAnalytics(context).reportPlaybackRequested(contentInfo);
     }
 
