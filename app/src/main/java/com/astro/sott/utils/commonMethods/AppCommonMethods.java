@@ -651,7 +651,7 @@ public class AppCommonMethods {
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     .setDomainUriPrefix("https://stagingsott.page.link")
-                    .setLink(Uri.parse("https://stagingsott.page.link/?link=https://www.example.com/?id=342082&apn=com.astro.stagingsott"))
+                    .setLink(Uri.parse("https://stagingsott.page.link/?link=https://www.example.com/?id="+asset.getId()+"&apn=com.astro.stagingsott"))
                     .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
                             .build())
                     .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.astro.stagingsott").setFallbackUrl(Uri.parse("www.google.com"))
@@ -671,21 +671,26 @@ public class AppCommonMethods {
                                 dynamicLinkUri = task.getResult().getShortLink();
                                 Uri flowchartLink = task.getResult().getPreviewLink();
                                 Log.w("dynamicUrl",dynamicLinkUri.toString()+flowchartLink);
-                                activity.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (dynamicLinkUri!=null){
-                                            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                                            sharingIntent.setType("text/plain");
-                                            sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + dynamicLinkUri.toString());
-                                            // sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + "https://stagingsott.page.link/?link="+dynamicLinkUri.toString()+"&apn=com.astro.stagingsott");
+                                try {
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (dynamicLinkUri!=null){
+                                                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                                                sharingIntent.setType("text/plain");
+                                                sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + dynamicLinkUri.toString());
+                                                // sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + "https://stagingsott.page.link/?link="+dynamicLinkUri.toString()+"&apn=com.astro.stagingsott");
 
-                                            activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
+                                                activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
+
+                                            }
 
                                         }
+                                    });
+                                }catch (Exception ignored){
 
-                                    }
-                                });
+                                }
+
 
                             } else {
                                 // Log.w("dynamicUrl",dynamicLinkUri.toString());
