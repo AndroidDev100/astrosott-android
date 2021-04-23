@@ -344,7 +344,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
                 UserInfo.getInstance(this).setActive(true);
                 Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
-                // setCleverTap();
+                setCleverTap();
                 if (from.equalsIgnoreCase("")) {
                     onBackPressed();
                 } else {
@@ -371,7 +371,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
     private void setCleverTap() {
 
-       /* HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+        HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
         profileUpdate.put("Name", UserInfo.getInstance(this).getFirstName());    // String
         profileUpdate.put("Identity", UserInfo.getInstance(this).getCpCustomerId());      // String or number
         profileUpdate.put("Email", UserInfo.getInstance(this).getEmail()); // Email address of the user
@@ -394,7 +394,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         profileUpdate.put("MyStuff", otherStuff);                   //String Array
 
 
-        CleverTapAPI.getDefaultInstance(getApplicationContext()).onUserLogin(profileUpdate);*/
+        CleverTapAPI.getDefaultInstance(getApplicationContext()).onUserLogin(profileUpdate);
 
 
      /*   CleverTapAPI clevertapDefaultInstance =
@@ -410,7 +410,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 // each of the below mentioned fields are optional
 // with the exception of one of Identity, Email, or FBID
 
-        CleverTapAPI clevertapDefaultInstance =
+     /*   CleverTapAPI clevertapDefaultInstance =
                 CleverTapAPI.getDefaultInstance(getApplicationContext(), "__horizon43503");
         HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
         profileUpdate.put("Name", UserInfo.getInstance(this).getFirstName());    // String
@@ -435,7 +435,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         profileUpdate.put("MyStuff", otherStuff);                   //String Array
 
 
-        clevertapDefaultInstance.onUserLogin(profileUpdate, "__horizon43503");
+        clevertapDefaultInstance.onUserLogin(profileUpdate, "__horizon43503");*/
 
 
     }
