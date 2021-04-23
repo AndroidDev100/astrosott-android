@@ -29,6 +29,7 @@ import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_CST_CUSTOM;
 import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_CUSTOM;
 import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_LANDSCAPE;
 import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_LDS_LANDSCAPE;
+import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_POSTER;
 import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_POTRAIT;
 import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_PR_POTRAIT;
 import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_SQR_SQUARE;
@@ -409,6 +410,15 @@ public class CategoryRails {
                 assetCommonBean1.setID(dtChannel.getId());
                 setRailData(context,dtChannel, list, 0, assetCommonBean1, i, AppConstants.TYPE1);
                 break;
+            case CAROUSEL_POSTER:
+                assetCommonBean1.setStatus(true);
+                assetCommonBean1.setWidgetType(CAROUSEL_PR_POTRAIT);
+                assetCommonBean1.setRailType(AppConstants.Rail1);
+                assetCommonBean1.setRailDetail(dtChannel);
+                assetCommonBean1.setTitle(dtChannel.getName());
+                assetCommonBean1.setID(dtChannel.getId());
+                setRailData(context,dtChannel, list, 0, assetCommonBean1, i, AppConstants.TYPE1);
+                break;
             case CAROUSEL_POTRAIT:
                 assetCommonBean1.setStatus(true);
                 assetCommonBean1.setWidgetType(CAROUSEL_PR_POTRAIT);
@@ -448,6 +458,7 @@ public class CategoryRails {
                 setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE5);
                 assetCommonBean1.setRailType(AppConstants.Rail5);
                 break;
+
             case HORIZONTAL_POTRAIT:
                 assetCommonBean1.setStatus(true);
                 assetCommonBean1.setRailDetail(dtChannel);
@@ -800,9 +811,9 @@ public class CategoryRails {
         if (asset.getImages().size() > 0) {
             if (channelList != null && channelList.getKalturaOTTImageType() != null && !channelList.getKalturaOTTImageType().equalsIgnoreCase("")) {
                 //12=Poster, 11= Landscape
-                if (type == 12) {
+                if (type == 12 || type == 13) {
                     for (int i = 0; i < asset.getImages().size(); i++) {
-                        if (asset.getImages().get(i).getRatio().equals(channelList.getKalturaOTTImageType())) {
+                        if (asset.getImages().get(i).getRatio().equals("16x9")) {
                             String image_url = AppConstants.WEBP_URL + asset.getImages().get(i).getUrl();
                             potraitUrl = image_url + AppConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.carousel_image_width) + AppConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.carousel_image_height) + AppConstants.QUALITY;
                         }
@@ -816,7 +827,7 @@ public class CategoryRails {
                     }
                 }
             } else {
-                if (type == 12) {
+                if (type == 12 || type == 13) {
                     for (int i = 0; i < asset.getImages().size(); i++) {
                         if (asset.getImages().get(i).getRatio().equals("2x3")) {
                             String image_url = AppConstants.WEBP_URL + asset.getImages().get(i).getUrl();

@@ -222,6 +222,7 @@ public interface AppConstants {
     public static final String CAROUSEL_LANDSCAPE = "CAROUSEL_LANDSCAPE";
     public static final String CAROUSEL_POTRAIT = "CAROUSEL_POTRAIT";
     public static final String CAROUSEL_SQUARE = "CAROUSEL_SQUARE";
+    public static final String CAROUSEL_POSTER = "CAROUSEL_POSTER";
     public static final String CAROUSEL_CUSTOM = "CAROUSEL_CUSTOM";
 
 

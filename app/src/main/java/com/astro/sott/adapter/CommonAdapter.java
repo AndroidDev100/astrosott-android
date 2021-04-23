@@ -71,6 +71,7 @@ import static com.astro.sott.utils.constants.AppConstants.ADS_BANNER;
 import static com.astro.sott.utils.constants.AppConstants.ADS_MREC;
 import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_CST_CUSTOM;
 import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_LDS_LANDSCAPE;
+import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_PR_POSTER;
 import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_PR_POTRAIT;
 import static com.astro.sott.utils.constants.AppConstants.CAROUSEL_SQR_SQUARE;
 import static com.astro.sott.utils.constants.AppConstants.HERO_CIR_CIRCLE;
@@ -186,6 +187,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return new PotraitCarouselHolder(carouselPotraitLayoutBinding, viewType);
             case CAROUSEL_LDS_LANDSCAPE:
             case CAROUSEL_SQR_SQUARE:
+            case CAROUSEL_PR_POSTER:
             case CAROUSEL_CST_CUSTOM:
                 HeaderRecyclerItemBinding headerRecyclerItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.header_recycler_item, parent, false);
                 return new HeaderHolder(headerRecyclerItemBinding, viewType);
@@ -778,6 +780,15 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 }
                 break;
+                case CAROUSEL_PR_POSTER: {
+                    int height = (int) (width / 1.80);
+                    if (isTablet)
+                        height = (int) (height / 1.7);
+                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, height);
+                    layoutParams.height = (int) (height + (headerRecyclerItemBinding.constraintLayout.getContext().getResources().getDimension(R.dimen.carousal_landscape_indicator_padding)));
+                }
+                break;
+
                 case CAROUSEL_CST_CUSTOM: {
                     int height = (int) (width / 1.77);
                     if (isTablet)
