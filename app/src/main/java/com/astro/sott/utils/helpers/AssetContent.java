@@ -129,6 +129,39 @@ public class AssetContent {
         return ref_id;
     }
 
+
+    public static String getSeriesName(Map<String, MultilingualStringValueArray> map) {
+        String ref_id = "";
+        List<MultilingualStringValue> crew_value = new ArrayList<>();
+        MultilingualStringValueArray crew_list = map.get(AppLevelConstants.SERIES_NAME);
+        if (crew_list != null)
+            crew_value.addAll(crew_list.getObjects());
+//            for (MultilingualStringValue value : crew_list.getObjects()) {
+//                crew_value.add(value);
+//            }
+        if (crew_value.size() > 0) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i <= crew_value.size() - 1; i++) {
+                stringBuilder.append(crew_value.get(i).getValue());
+            }
+            ref_id = stringBuilder.toString();
+        }
+
+        return ref_id;
+    }
+
+    public static String getYear(Map<String, Value> metas) {
+        DoubleValue doubleValue = null;
+        String year = "";
+        if (metas != null) {
+            doubleValue = (DoubleValue) metas.get(AppLevelConstants.YEAR);
+        }
+        if (doubleValue != null) {
+            year = String.valueOf(doubleValue.getValue());
+        }
+        return year;
+    }
+
     public static boolean isAdsEnable(Map<String, Value> metas) {
         BooleanValue adsValue = null;
         if (metas != null) {
@@ -255,7 +288,8 @@ public class AssetContent {
         return value;
     }
 
-    public static LiveData<String> getCastActorsData(Map<String, MultilingualStringValueArray> map) {
+    public static LiveData<String> getCastActorsData
+            (Map<String, MultilingualStringValueArray> map) {
         final MutableLiveData<String> connection = new MutableLiveData<>();
         String cast;
         List<MultilingualStringValue> cast_value = new ArrayList<>();
@@ -338,6 +372,32 @@ public class AssetContent {
         return rating;
     }
 
+    public static String getProviderContentTier(Map<String, MultilingualStringValueArray> map) {
+        String rating;
+        List<MultilingualStringValue> cast_value = new ArrayList<>();
+        MultilingualStringValueArray rating_list = map.get(AppLevelConstants.ProviderContentTier);
+        if (rating_list != null)
+            cast_value.addAll(rating_list.getObjects());
+//            for (MultilingualStringValue value : rating_list.getObjects()) {
+//                cast_value.add(value);
+//            }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= cast_value.size() - 1; i++) {
+
+            stringBuilder.append(cast_value.get(i).getValue()).append(", ");
+
+        }
+
+        if (stringBuilder.length() > 0) {
+            rating = stringBuilder.toString();
+            rating = rating.substring(0, rating.length() - 2);
+        } else {
+            rating = "";
+        }
+
+        return rating;
+    }
+
 
     public static boolean getBillingId(Map<String, MultilingualStringValueArray> map) {
         List<MultilingualStringValue> cast_value = new ArrayList<>();
@@ -362,7 +422,8 @@ public class AssetContent {
 
     }
 
-    public static int getParentalRatingForChecks(Map<String, MultilingualStringValueArray> map, Context applicationContext) {
+    public static int getParentalRatingForChecks
+            (Map<String, MultilingualStringValueArray> map, Context applicationContext) {
         String rating;
         int priorityRestrictionLevel = -1;
         String mappingKey = "";
@@ -412,7 +473,8 @@ public class AssetContent {
         return priorityRestrictionLevel;
     }
 
-    public static boolean getAssetKey(Map<String, MultilingualStringValueArray> map, String userSelectedParentalRating, Context applicationContext) {
+    public static boolean getAssetKey(Map<String, MultilingualStringValueArray> map, String
+            userSelectedParentalRating, Context applicationContext) {
         String rating;
         boolean mappingKey = false;
         List<MultilingualStringValue> cast_value = new ArrayList<>();
@@ -523,7 +585,8 @@ public class AssetContent {
     }
 
 
-    public static LiveData<String> getGenredata(Map<String, MultilingualStringValueArray> map) {
+    public static LiveData<String> getGenredata
+            (Map<String, MultilingualStringValueArray> map) {
         final MutableLiveData<String> connection = new MutableLiveData<>();
         String genre;
         List<MultilingualStringValue> genre_values = new ArrayList<>();
@@ -602,7 +665,8 @@ public class AssetContent {
         return keyword;
     }
 
-    public static LiveData<String> getSubGenredata(Map<String, MultilingualStringValueArray> map) {
+    public static LiveData<String> getSubGenredata
+            (Map<String, MultilingualStringValueArray> map) {
         final MutableLiveData<String> connection = new MutableLiveData<>();
         String genre;
         List<MultilingualStringValue> genre_values = new ArrayList<>();
@@ -658,7 +722,8 @@ public class AssetContent {
     }
 
 
-    public static LiveData<String> getRefIdData(Map<String, MultilingualStringValueArray> map) {
+    public static LiveData<String> getRefIdData
+            (Map<String, MultilingualStringValueArray> map) {
         final MutableLiveData<String> connection = new MutableLiveData<>();
         String ref_id;
         List<MultilingualStringValue> crew_value = new ArrayList<>();
@@ -771,7 +836,8 @@ public class AssetContent {
         return cast;
     }
 
-    public static LiveData<String> getLanguageData(Map<String, MultilingualStringValueArray> map) {
+    public static LiveData<String> getLanguageData
+            (Map<String, MultilingualStringValueArray> map) {
 
         final MutableLiveData<String> connection = new MutableLiveData<>();
         String language = "";
@@ -817,7 +883,8 @@ public class AssetContent {
         return language;
     }
 
-    public static LiveData<String> getSubTitleLanguageData(Map<String, MultilingualStringValueArray> map) {
+    public static LiveData<String> getSubTitleLanguageData
+            (Map<String, MultilingualStringValueArray> map) {
 
         final MutableLiveData<String> connection = new MutableLiveData<>();
         String language = "";
@@ -1023,7 +1090,8 @@ public class AssetContent {
         return genre;
     }
 
-    public static LiveData<String> getVideoResolution(Map<String, MultilingualStringValueArray> map) {
+    public static LiveData<String> getVideoResolution
+            (Map<String, MultilingualStringValueArray> map) {
         final MutableLiveData<String> connection = new MutableLiveData<>();
         if (map.containsKey(AppLevelConstants.KEY_VIDEO_RESOLUTION)) {
             MultilingualStringValueArray cast_list = map.get(AppLevelConstants.KEY_VIDEO_RESOLUTION);
@@ -1066,7 +1134,8 @@ public class AssetContent {
         return genre;
     }
 
-    public static void getUserTypeForDialogAndNonDialogUser(Map<String, StringValue> map, Context context) {
+    public static void getUserTypeForDialogAndNonDialogUser
+            (Map<String, StringValue> map, Context context) {
         String userType = "";
 
         if (KsPreferenceKey.getInstance(context).getUserType().equalsIgnoreCase("")) {
@@ -1300,7 +1369,8 @@ public class AssetContent {
         return dvrEnabled;
     }
 
-    public static boolean isPurchaseAllowed(Map<String, Value> metas, Asset object, Activity activity) {
+    public static boolean isPurchaseAllowed(Map<String, Value> metas, Asset object, Activity
+            activity) {
         boolean isPurchaseAllowed = false;
 
         if (object.getType() == MediaTypeConstant.getLinear(activity) || object.getType() == MediaTypeConstant.getProgram(activity)) {
@@ -1384,7 +1454,8 @@ public class AssetContent {
         return isHungamaTag;
     }
 
-    public static String getProviderExternalContentId(Map<String, MultilingualStringValueArray> map) {
+    public static String getProviderExternalContentId
+            (Map<String, MultilingualStringValueArray> map) {
         String externalId = "";
         if (map.containsKey(AppLevelConstants.KEY_PROVIDER_EXTERNAL_CONTENT_ID)) {
             MultilingualStringValueArray cast_list = map.get(AppLevelConstants.KEY_PROVIDER_EXTERNAL_CONTENT_ID);

@@ -6,6 +6,7 @@ import com.astro.sott.activities.SelectAccount.SelectAccountModel.Response;
 import com.astro.sott.modelClasses.DTVContactInfoModel;
 import com.astro.sott.modelClasses.OtpModel;
 import com.astro.sott.modelClasses.TokenModel;
+import com.astro.sott.modelClasses.playbackContext.PlaybackContextResponse;
 import com.astro.sott.utils.constants.AppConstants;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -22,6 +23,11 @@ public interface ApiInterface {
     @Headers("Content-Type: application/json")
     @POST("configurations/action/serveByDevice")
     Call<ResponseDmsModel> getDMS(@Body JsonObject apiVersion);
+
+
+    @POST("asset/action/getPlaybackContext")
+    Call<PlaybackContextResponse> getPlaybackContext(@Body JsonObject apiVersion);
+
 
     @GET(AppConstants.SMS_API_END_POINT)
     Call<OtpModel> getmPin(@Query("number") String msisdn);
@@ -44,6 +50,7 @@ public interface ApiInterface {
 
     @GET("QA/getAPIToken_QA")
     Call<TokenModel> getToken();
+
     @GET(".")
     Call<OtpModel> getMsisdn();
 }

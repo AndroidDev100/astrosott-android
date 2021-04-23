@@ -67,6 +67,7 @@ import com.astro.sott.callBacks.DoubleClick;
 import com.astro.sott.callBacks.WindowFocusCallback;
 import com.astro.sott.callBacks.commonCallBacks.CatchupCallBack;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
+import com.astro.sott.callBacks.kalturaCallBacks.PlayBackContextCallBack;
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.fragments.nowPlaying.NowPlaying;
@@ -503,8 +504,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         this.asset = asset;
         if (railCommonDataList != null)
             this.railList = railCommonDataList;
-        String duraton = AppCommonMethods.getDuration(asset);
-        ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer);
+        setEventConvivaEvent(isLivePlayer);
 
         isSeries = (asset.getType() == MediaTypeConstant.getEpisode(getActivity()));
         skipIntro();
@@ -602,6 +602,23 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
         checkAssetTypeCondition(urlToplay, asset, prog);
 
+    }
+
+    private void setEventConvivaEvent(Boolean isLivePlayer) {
+        String fileId = "";
+        String duraton = AppCommonMethods.getDuration(asset);
+        fileId = AppCommonMethods.getFileIdOfAssest(playerAsset);
+        if (!isLivePlayer && !fileId.equalsIgnoreCase("")) {
+            new KsServices(baseActivity).getPlaybackContext(playerAsset.getId() + "", fileId, new PlayBackContextCallBack() {
+                @Override
+                public void getUrl(String url) {
+                    ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, url);
+                }
+            });
+        } else {
+            ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, "");
+
+        }
     }
 
     private void getCurrentCatchupTimeStamp(Asset asset) {
@@ -2523,8 +2540,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         player.addListener(this, AdEvent.started, event -> {
             AdEvent.AdStartedEvent adStartedEvent = event;
             Map<String, Object> contentInfo = new HashMap<String, Object>();
-
             contentInfo.put(ConvivaManager.AD_ID, adStartedEvent.adInfo.getAdId());
+            contentInfo.put(ConvivaManager.FIRST_AD_ID, adStartedEvent.adInfo.getAdId());
+            contentInfo.put(ConvivaManager.FIRST_CREATIVE_ID, adStartedEvent.adInfo.getCreativeAdId());
             contentInfo.put(ConvivaManager.AD_POSITION, adStartedEvent.adInfo.getAdPositionType());
             contentInfo.put(ConvivaSdkConstants.ASSET_NAME, adStartedEvent.adInfo.getAdTitle());
             contentInfo.put(ConvivaSdkConstants.STREAM_URL, "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=");
