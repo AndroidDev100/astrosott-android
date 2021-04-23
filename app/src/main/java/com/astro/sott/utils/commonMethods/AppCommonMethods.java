@@ -650,14 +650,19 @@ public class AppCommonMethods {
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                    .setLink(Uri.parse(uri))
-                    .setDomainUriPrefix("https://sooka.my")
-                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.astro.sott")
-                            .setMinimumVersion(1)
+                    .setDomainUriPrefix("https://stagingsott.page.link")
+                    .setLink(Uri.parse("https://stagingsott.page.link/?link=https://www.example.com/?id=342082&apn=com.astro.stagingsott"))
+                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
                             .build())
-                    .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
-                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true).build())
-                    .buildShortDynamicLink()
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.astro.stagingsott").setFallbackUrl(Uri.parse("www.google.com"))
+                            .build())
+                    .setSocialMetaTagParameters(
+                            new DynamicLink.SocialMetaTagParameters.Builder()
+                                    .setTitle(asset.getName())
+                                    .setDescription(asset.getDescription())
+                                    .setImageUrl(Uri.parse(AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType())))
+                                    .build())
+                    .buildShortDynamicLink(ShortDynamicLink.Suffix.SHORT)
                     .addOnCompleteListener(activity, new OnCompleteListener<ShortDynamicLink>() {
                         @Override
                         public void onComplete(@NonNull Task<ShortDynamicLink> task) {
@@ -665,16 +670,15 @@ public class AppCommonMethods {
 
                                 dynamicLinkUri = task.getResult().getShortLink();
                                 Uri flowchartLink = task.getResult().getPreviewLink();
-                                Log.w("dynamicUrl", dynamicLinkUri.toString());
+                                Log.w("dynamicUrl",dynamicLinkUri.toString()+flowchartLink);
                                 activity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (dynamicLinkUri != null) {
+                                        if (dynamicLinkUri!=null){
                                             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                                           // sharingIntent.setComponent(new ComponentName("com.google.android.apps.docs", "com.google.android.apps.docs.app.SendTextToClipboardActivity"));
                                             sharingIntent.setType("text/plain");
-
                                             sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + dynamicLinkUri.toString());
+                                            // sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + "https://stagingsott.page.link/?link="+dynamicLinkUri.toString()+"&apn=com.astro.stagingsott");
 
                                             activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
 
@@ -684,33 +688,35 @@ public class AppCommonMethods {
                                 });
 
                             } else {
-                               // Log.w("dynamicUrl", dynamicLinkUri.toString());
-                                //new ToastHandler(WebSeriesDescriptionActivity.this).show(getApplicationContext().getResources().getString(R.string.removed_from_watchlist));
+                                // Log.w("dynamicUrl",dynamicLinkUri.toString());
                             }
                         }
                     });
 
+            shortLinkTask.toString();
 
         } catch (Exception ignored) {
 
         }
     }
 
-    private static String createURI(Asset asset, Activity activity) {
-        String uri = "";
+    private static String createURI(Asset asset,Activity activity) {
+        String uri="";
         try {
-            String assetId = asset.getId() + "";
-            String assetType = asset.getType() + "";
+            String assetId=asset.getId()+"";
+            String assetType=asset.getType()+"";
             uri = Uri.parse("https://www.example.com/")
                     .buildUpon()
+                    .authority("https://stagingsott.page.link")
                     .appendQueryParameter("id", assetId)
                     .appendQueryParameter("mediaType", assetType)
                     .appendQueryParameter("image", AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType()))
                     .appendQueryParameter("name", asset.getName())
+                    .appendQueryParameter("erf", "1")
                     .build().toString();
 
-        } catch (Exception ignored) {
-            uri = "";
+        }catch (Exception ignored){
+            uri="";
         }
 
         return uri;
