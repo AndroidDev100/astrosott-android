@@ -140,6 +140,7 @@ import com.kaltura.client.enums.InboxMessageStatus;
 import com.kaltura.client.enums.PinType;
 import com.kaltura.client.enums.RuleLevel;
 import com.kaltura.client.enums.TransactionType;
+import com.kaltura.client.enums.WatchStatus;
 import com.kaltura.client.services.AppTokenService;
 import com.kaltura.client.services.AssetHistoryService;
 import com.kaltura.client.services.AssetService;
@@ -4078,7 +4079,7 @@ public class KsServices {
 
         clientSetupKs();
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
-        assetHistoryFilter.statusEqual("all");
+        assetHistoryFilter.statusEqual(WatchStatus.PROGRESS.name());
         assetHistoryFilter.daysLessThanOrEqual(AppCommonMethods.getAssetHistory(activity));
 
         FilterPager pagerFilter = new FilterPager();

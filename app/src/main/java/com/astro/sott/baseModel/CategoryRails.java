@@ -18,6 +18,7 @@ import com.astro.sott.utils.helpers.carousel.model.Slide;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.enveu.Enum.ImageSource;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -667,6 +668,7 @@ public class CategoryRails {
                                          AssetCommonBean assetCommonBean, int position, String tileType, List<RailCommonData> railList,VIUChannel channelList) {
 
         List<Long> longList = AppCommonMethods.getContinueWatchingIDsPreferences(context);
+        List<AssetHistory> continueWatchingList = AppCommonMethods.getContinueWatchingPreferences(context);
         if (longList != null) {
             if (longList.size() > 0) {
                 for (int y = 0; y < longList.size(); y++) {
@@ -718,10 +720,13 @@ public class CategoryRails {
                                 if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getUGCVideo(context) ||list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context) ||
                                         list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getLinear(context)) {
                                 } else {
-                                    continueWatchingRailCount++;
-                                    continueWatchingCount = 1;
-                                    railList.add(railCommonData);
-                                    assetCommonBean.setTotalCount(continueWatchingRailCount);
+                                    boolean included=AppCommonMethods.shouldItemIncluded(continueWatchingList,list.get(position).results.getObjects().get(j).getId()+"");
+                                    if (included){
+                                        continueWatchingRailCount++;
+                                        continueWatchingCount = 1;
+                                        railList.add(railCommonData);
+                                        assetCommonBean.setTotalCount(continueWatchingRailCount);
+                                    }
                                 }
                             } else {
                                 assetCommonBean.setTotalCount(list.get(position).results.getTotalCount());

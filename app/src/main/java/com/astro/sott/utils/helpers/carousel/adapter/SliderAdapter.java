@@ -74,15 +74,31 @@ public class SliderAdapter extends PagerAdapter {
             view = layoutInflater.inflate(R.layout.row_slider_live, container, false);
             ImageView sliderImage = view.findViewById(R.id.sliderImage);
             TextView title_text = view.findViewById(R.id.slider_text);
+            TextView slider_text_des = view.findViewById(R.id.slider_text_des);
 
 
 
 
 
-            //title_text.setText(items.get(position).getTitle());
+            title_text.setText(items.get(position).getTitle());
+
             if (items.get(position).getType() == MediaTypeConstant.getLinear(context)) {
                 ImageHelper.getInstance(context).loadImageTo(sliderImage, items.get(position).getImageFromUrl(), R.drawable.ic_landscape_placeholder);
-            }else {
+                if (AssetContent.isLiveEvent(items.get(position).getObjects().getMetas())) {
+                    String metas=AppCommonMethods.getMetas(items.get(position).getObjects(),3);
+                    slider_text_des.setText(metas);
+                }else {
+                    String metas=AppCommonMethods.getMetas(items.get(position).getObjects(),5);
+                    slider_text_des.setText(metas);
+                }
+
+            }else if (items.get(position).getType() == MediaTypeConstant.getProgram(context)){
+                String metas=AppCommonMethods.getMetas(items.get(position).getObjects(),4);
+                slider_text_des.setText(metas);
+            }
+            else {
+                String metas=AppCommonMethods.getMetas(items.get(position).getObjects(),2);
+                slider_text_des.setText(metas);
                 ImageHelper.getInstance(context).loadImageToCarousal(sliderImage, items.get(position).getImageFromUrl(), R.drawable.ic_landscape_placeholder);
             }
             sliderImage.setOnClickListener(v -> itemClickListener.onItemClick(null, container.getRootView(), position, carouselPosition));
