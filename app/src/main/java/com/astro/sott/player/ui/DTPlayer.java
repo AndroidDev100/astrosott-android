@@ -2364,6 +2364,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             isPlayerEnded = true;
             Log.d(TAG, "PlayerEnded");
             try {
+                if (handler1!=null) {
+                    handler1.removeCallbacksAndMessages(null);
+                }
                 getBinding().skipIntro.setVisibility(View.GONE);
                 getBinding().skipRecap.setVisibility(View.GONE);
                 getBinding().skipCredits.setVisibility(View.GONE);
