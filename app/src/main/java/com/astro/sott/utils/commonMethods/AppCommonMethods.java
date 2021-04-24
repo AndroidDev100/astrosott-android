@@ -140,7 +140,11 @@ public class AppCommonMethods {
     }
 
     public static void removeUserPrerences(Context context) {
-
+        UserInfo.getInstance(context).setUserName("");
+        UserInfo.getInstance(context).setCpCustomerId("");
+        UserInfo.getInstance(context).setLastName("");
+        UserInfo.getInstance(context).setEmail("");
+        UserInfo.getInstance(context).setAlternateUserName("");
         UserInfo.getInstance(context).setAccessToken("");
         UserInfo.getInstance(context).setRefreshToken("");
         UserInfo.getInstance(context).setExternalSessionToken("");
@@ -668,7 +672,7 @@ public class AppCommonMethods {
                                     public void run() {
                                         if (dynamicLinkUri != null) {
                                             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                                           // sharingIntent.setComponent(new ComponentName("com.google.android.apps.docs", "com.google.android.apps.docs.app.SendTextToClipboardActivity"));
+                                            // sharingIntent.setComponent(new ComponentName("com.google.android.apps.docs", "com.google.android.apps.docs.app.SendTextToClipboardActivity"));
                                             sharingIntent.setType("text/plain");
 
                                             sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + dynamicLinkUri.toString());
@@ -681,7 +685,7 @@ public class AppCommonMethods {
                                 });
 
                             } else {
-                               // Log.w("dynamicUrl", dynamicLinkUri.toString());
+                                // Log.w("dynamicUrl", dynamicLinkUri.toString());
                                 //new ToastHandler(WebSeriesDescriptionActivity.this).show(getApplicationContext().getResources().getString(R.string.removed_from_watchlist));
                             }
                         }
@@ -2478,13 +2482,32 @@ public class AppCommonMethods {
     }
 
     public static String maskedEmail(Activity context) {
-        String email="";
+        String email = "";
         try {
             String s = UserInfo.getInstance(context).getEmail();
-            email = s.replaceAll("(?<=.{3}).(?=.*@)", "*");
-        }catch (Exception ignored){
-            email="";
+            email = s.replaceAll("(?<=.{1}).(?=[^@]*?.@)", "*");
+        } catch (Exception ignored) {
+            email = "";
         }
-       return email;
+        return email;
+    }
+
+    public static String maskedMobile(Activity context) {
+        StringBuilder email = new StringBuilder();
+        try {
+            String s = UserInfo.getInstance(context).getAlternateUserName();
+            for (int i = 0; i < s.length(); i++) {
+                if (i <= s.length() - 5) {
+                    email.append("*");
+                } else {
+                    email.append(s.charAt(i));
+                }
+            }
+
+        } catch (Exception ignored) {
+            email.append("");
+            email.toString();
+        }
+        return email.toString();
     }
 }
