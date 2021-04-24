@@ -368,7 +368,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 token = instanceIdResult.getToken();
                 SharedPrefHelper.getInstance(getApplicationContext()).setString(AppLevelConstants.FCM_TOKEN, token);
                 Log.e(TAG, "pushToken: " + token);
-                myViewModel.pushToken(this, token).observe(this, aBoolean -> {
+                setBranchInit();
+              /*  myViewModel.pushToken(this, token).observe(this, aBoolean -> {
 
                     //setBranchInit();
                     getBinding().noConnectionLayout.setVisibility(View.GONE);
@@ -393,13 +394,13 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     }
 
 
-                });
+                });*/
             })
                     .addOnFailureListener(e -> {
                         // DialogHelper.showAlertDialog(this, getString(R.string.something_went_wrong_try_again), getString(R.string.ok), this);
                         getBinding().noConnectionLayout.setVisibility(View.GONE);
-
-                        try {
+                        setBranchInit();
+/*                        try {
                             String response = KsPreferenceKey.getInstance(SplashActivity.this).getNotificationResponse();
                             if (response.equalsIgnoreCase("")) {
                                 PrintLogging.printLog("", "d a");
@@ -415,10 +416,11 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
                         } catch (Exception ex) {
 
-                        }
+                        }*/
                     });
         } else {
-            myViewModel.pushToken(this, token).observe(this, aBoolean -> {
+            setBranchInit();
+            /*myViewModel.pushToken(this, token).observe(this, aBoolean -> {
 
                 //setBranchInit();
                 getBinding().noConnectionLayout.setVisibility(View.GONE);
@@ -427,7 +429,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     String response = KsPreferenceKey.getInstance(SplashActivity.this).getNotificationResponse();
                     if (response.equalsIgnoreCase("")) {
                         PrintLogging.printLog("", "d a");
-                        setBranchInit();
+
                         // checkUserPreferences();
                     } else {
 
@@ -441,7 +443,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
                 }
 
-            });
+            });*/
         }
     }
 
