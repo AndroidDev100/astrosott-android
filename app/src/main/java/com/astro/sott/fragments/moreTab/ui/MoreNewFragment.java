@@ -141,7 +141,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
         getBinding().loginSignupMore.setOnClickListener(view -> {
 
-            new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
+            new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class,"profile");
 
         });
         getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
@@ -199,7 +199,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                     transaction.commit();
                 } else {
-                    new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
+                    new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class,"profile");
 
                 }
 //                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
@@ -278,7 +278,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 manageDeviceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(manageDeviceIntent);
             } else {
-                new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class);
+                new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class,"profile");
 
             }
 

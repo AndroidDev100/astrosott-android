@@ -16,6 +16,7 @@ import com.conviva.sdk.ConvivaAdAnalytics;
 import com.conviva.sdk.ConvivaAnalytics;
 import com.conviva.sdk.ConvivaSdkConstants;
 import com.conviva.sdk.ConvivaVideoAnalytics;
+import com.kaltura.client.types.Asset;
 import com.kaltura.playkit.Player;
 
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class ConvivaManager {
     private static final String SERIES_NUMBER = "c3.cm.seasonNumber";
     private static final String EPISODE_NUMBER = "c3.cm.episodeNumber";
     private static final String APP_NAME = "appName";
-    private static final String APP_VERSION = "appVersion";
+    private static final String APP_VERSION = "c3.app.version";
     private static final String CONTENT_LENGTH = "appVersion";
     private static final String CONNECTION_TYPE = "connectionType";
     private static final String ASSET_PROVIDER_NAME = "assetProviderName";
@@ -83,18 +84,18 @@ public class ConvivaManager {
         return convivaAdAnalytics;
     }
 
-    public static void setreportPlaybackRequested(Context context, RailCommonData railData, String duraton, Boolean isLivePlayer) {
+    public static void setreportPlaybackRequested(Context context, Asset railData, String duraton, Boolean isLivePlayer) {
         Map<String, Object> contentInfo = new HashMap<String, Object>();
 
-        if (!AppCommonMethods.getPlayerUrl(railData.getObject()).equalsIgnoreCase("")) {
-            contentInfo.put(ConvivaSdkConstants.STREAM_URL, AppCommonMethods.getPlayerUrl(railData.getObject()));
+        if (!AppCommonMethods.getPlayerUrl(railData).equalsIgnoreCase("")) {
+            contentInfo.put(ConvivaSdkConstants.STREAM_URL, AppCommonMethods.getPlayerUrl(railData));
         } else {
             contentInfo.put(ConvivaSdkConstants.STREAM_URL, "NA");
         }
-        contentInfo.put(ConvivaSdkConstants.ASSET_NAME, railData.getObject().getName());
+        contentInfo.put(ConvivaSdkConstants.ASSET_NAME, railData.getName());
         contentInfo.put(ConvivaSdkConstants.IS_LIVE, isLivePlayer + "");
         contentInfo.put(ConvivaSdkConstants.FRAMEWORK_NAME, "Kaltura");
-        contentInfo.put(ConvivaSdkConstants.DURATION, AppCommonMethods.getDurationFromUrl(railData.getObject()));
+        contentInfo.put(ConvivaSdkConstants.DURATION, AppCommonMethods.getDurationFromUrl(railData));
         contentInfo.put(ConvivaSdkConstants.FRAMEWORK_VERSION, "Kaltura 4.8.3");
         if (UserInfo.getInstance(context).isActive()) {
             if (UserInfo.getInstance(context).getCpCustomerId() != null) {
@@ -112,51 +113,51 @@ public class ConvivaManager {
         }
         if (isLivePlayer) {
             contentInfo.put(CONTENT_TYPE, LINEAR);
-            contentInfo.put(CHANNEL, railData.getObject().getName());
+            contentInfo.put(CHANNEL, railData.getName());
 
         } else {
-            if (AssetContent.getProvider(railData.getObject().getTags()).equalsIgnoreCase("")) {
-                contentInfo.put(BRAND, AssetContent.getProvider(railData.getObject().getTags()));
+            if (AssetContent.getProvider(railData.getTags()).equalsIgnoreCase("")) {
+                contentInfo.put(BRAND, AssetContent.getProvider(railData.getTags()));
             } else {
                 contentInfo.put(BRAND, "NA");
             }
-            if (!AssetContent.getKeyworddata(railData.getObject().getTags()).equalsIgnoreCase("")) {
-                contentInfo.put(CHANNEL, AssetContent.getKeyworddata(railData.getObject().getTags()));
+            if (!AssetContent.getKeyworddata(railData.getTags()).equalsIgnoreCase("")) {
+                contentInfo.put(CHANNEL, AssetContent.getKeyworddata(railData.getTags()));
             } else {
                 contentInfo.put(CHANNEL, "NA");
 
             }
             contentInfo.put(CONTENT_TYPE, VOD);
-            contentInfo.put(ASSET_ID, railData.getObject().getExternalId());
+            contentInfo.put(ASSET_ID, railData.getExternalId());
         }
 
-        if (AssetContent.getProvider(railData.getObject().getTags()).equalsIgnoreCase("")) {
-            contentInfo.put(ASSET_PROVIDER_NAME, AssetContent.getProvider(railData.getObject().getTags()));
+        if (AssetContent.getProvider(railData.getTags()).equalsIgnoreCase("")) {
+            contentInfo.put(ASSET_PROVIDER_NAME, AssetContent.getProvider(railData.getTags()));
         } else {
             contentInfo.put(ASSET_PROVIDER_NAME, "NA");
 
         }
-        if (railData.getObject().getType() == MediaTypeConstant.getEpisode(context)) {
-            contentInfo.put(EPISODE_NUMBER, railData.getObject().getName());
+        if (railData.getType() == MediaTypeConstant.getEpisode(context)) {
+            contentInfo.put(EPISODE_NUMBER, railData.getName());
         } else {
             contentInfo.put(EPISODE_NUMBER, "NA");
 
         }
         contentInfo.put(UTM_URL, "NA");
         //
-        contentInfo.put(CATEGORY_TYPE, AppCommonMethods.getAssetType(railData.getObject().getType(), context));
+        contentInfo.put(CATEGORY_TYPE, AppCommonMethods.getAssetType(railData.getType(), context));
         contentInfo.put(APP_NAME, "SOTT Android");
         contentInfo.put(APP_VERSION, BuildConfig.VERSION_NAME);
-        if (AssetContent.getGenredataString(railData.getObject().getTags()).equals("")) {
+        if (AssetContent.getGenredataString(railData.getTags()).equals("")) {
             contentInfo.put(GENRE, "NA");
         } else {
-            contentInfo.put(GENRE, AssetContent.getGenredataString(railData.getObject().getTags()));
+            contentInfo.put(GENRE, AssetContent.getGenredataString(railData.getTags()));
         }
 
-        if (AssetContent.getSubGenredataString(railData.getObject().getTags()).equals("")) {
+        if (AssetContent.getSubGenredataString(railData.getTags()).equals("")) {
             contentInfo.put(GENRE_LIST, "NA");
         } else {
-            contentInfo.put(GENRE_LIST, AssetContent.getSubGenredataString(railData.getObject().getTags()));
+            contentInfo.put(GENRE_LIST, AssetContent.getSubGenredataString(railData.getTags()));
         }
         contentInfo.put(ConvivaSdkConstants.PLAYER_NAME, "SOTT Android");
         ConvivaManager.getConvivaVideoAnalytics(context).reportPlaybackRequested(contentInfo);

@@ -15,9 +15,11 @@ import com.astro.sott.R;
 import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityVerificationBinding;
+import com.astro.sott.fragments.verification.Verification;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -74,11 +76,9 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 int seconds = (int) (millisUntilFinished / 1000);
                 int minutes = seconds / 60;
                 seconds = seconds % 60;
-                getBinding().otpTitle.setVisibility(View.GONE);
+
                 getBinding().otpValid.setVisibility(View.VISIBLE);
-                getBinding().resendOtp.setVisibility(View.GONE);
-                getBinding().otpValid.setText("OTP valid for " + String.format("%02d", minutes)
-                        + ":" + String.format("%02d", seconds) + "s");
+                getBinding().otpValid.setText("OTP valid for " + String.format("%02d", minutes) + ":" + String.format("%02d", seconds) + "s");
                 if (String.format("%02d", minutes).equalsIgnoreCase("03")) {
                     getBinding().otpTitle.setVisibility(View.VISIBLE);
                     getBinding().resendOtp.setVisibility(View.VISIBLE);
@@ -149,7 +149,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                         token = evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getToken();
                         if (!token.equalsIgnoreCase("")) {
                             Intent intent = new Intent(this, ChangePasswordActivity.class);
-                            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                            intent.setFlags(intent.getFlags() |Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra("token", token);
                             startActivity(intent);
                         }
@@ -181,7 +181,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         astroLoginViewModel.changePassword(UserInfo.getInstance(this).getAccessToken(), oldPassword, password).observe(this, changePasswordResponse -> {
             if (changePasswordResponse.isStatus() && changePasswordResponse.getResponse().getChangePasswordResponseMessage() != null) {
                 Toast.makeText(this, getResources().getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
-                new ActivityLauncher(VerificationActivity.this).homeScreen(VerificationActivity.this, HomeActivity.class);
+                new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);
 
             } else {
                 Toast.makeText(this, changePasswordResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
@@ -197,7 +197,6 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
             if (evergentCommonResponse.isStatus()) {
                 countDownTimer();
-                Toast.makeText(this, "Verification code had be sent to " + emailMobile, Toast.LENGTH_SHORT).show();
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
@@ -255,7 +254,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 UserInfo.getInstance(this).setLastName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getLastName());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
                 UserInfo.getInstance(this).setActive(true);
-                new ActivityLauncher(VerificationActivity.this).homeScreen(VerificationActivity.this, HomeActivity.class);
+                new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);
                 Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
 
             } else {

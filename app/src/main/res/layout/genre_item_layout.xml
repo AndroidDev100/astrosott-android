@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:filterTouchesWhenObscured="true"
-        card_view:cardBackgroundColor="#303255"
+        card_view:cardBackgroundColor="#474787"
         card_view:cardCornerRadius="@dimen/_4sdp"
         card_view:cardElevation="1dp"
         card_view:cardMaxElevation="1dp"
@@ -37,7 +37,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginRight="@dimen/_2sdp"
                 android:layout_marginBottom="@dimen/_2sdp"
-                android:background="#303255"
+                android:background="#474787"
                 android:gravity="center_vertical"
                 android:layout_height="match_parent">
 

@@ -74,7 +74,7 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
                 if (!holder.binding.btnBuy.getText().toString().equalsIgnoreCase("subscribed"))
                     cardCLickedCallBack.onCardClicked(packDetailList.get(position).getProductsResponseMessageItem().getAppChannels().get(0).getAppID());
             } else {
-                new ActivityLauncher(fragment).astrLoginActivity(fragment, AstrLoginActivity.class);
+                new ActivityLauncher(fragment).astrLoginActivity(fragment, AstrLoginActivity.class,"");
 
             }
         });

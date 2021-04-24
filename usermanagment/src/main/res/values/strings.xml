@@ -56,6 +56,7 @@
     <string name="password_expired">your password has been expired.</string>
     <string name="invalid_confirm_password">Invalid Confirm Password</string>
     <string name="invalid_new_password">IInvalid New Password</string>
+    <string name="max_otp_limit">Sorry, you have reached the maximum number of One Time Passcode resend. Please try again 24 hours later.</string>
 
     <string name="device_exceeded">Exceeded maximum device allowed to be registered</string>
     <string name="password_character">Password should contain alphabets along with Numerics or special character @#$%^+=!</string>
