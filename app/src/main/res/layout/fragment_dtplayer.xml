@@ -498,54 +498,54 @@
                 <!--                    </TextView>-->
                 <!--                </RelativeLayout>-->
 
-                <androidx.coordinatorlayout.widget.CoordinatorLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true">
+<!--                <androidx.coordinatorlayout.widget.CoordinatorLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentBottom="true">-->
 
-                    <include
-                        android:id="@+id/bottom_sheet_layout"
-                        layout="@layout/bottom_sheet" />
-                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+<!--                    <include-->
+<!--                        android:id="@+id/bottom_sheet_layout"-->
+<!--                        layout="@layout/bottom_sheet" />-->
+<!--                </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
 
-                <ImageButton
-                    android:id="@+id/arrow_back"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/play_catchup"
-                    android:layout_centerInParent="true"
-                    android:layout_marginEnd="@dimen/player_backward_margin_left"
-                    android:contentDescription="@string/rw_icon"
-                    android:padding="15dp"
-                    android:src="@drawable/skip_previous"
-                    android:visibility="gone"
-                    tools:ignore="ContentDescription" />
+<!--                <ImageButton-->
+<!--                    android:id="@+id/arrow_back"-->
+<!--                    style="?android:attr/borderlessButtonStyle"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignEnd="@+id/play_catchup"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:layout_marginEnd="@dimen/player_backward_margin_left"-->
+<!--                    android:contentDescription="@string/rw_icon"-->
+<!--                    android:padding="15dp"-->
+<!--                    android:src="@drawable/skip_previous"-->
+<!--                    android:visibility="gone"-->
+<!--                    tools:ignore="ContentDescription" />-->
 
-                <ImageButton
-                    android:id="@+id/play_catchup"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="@dimen/player_button_sizes"
-                    android:layout_height="@dimen/player_button_sizes"
-                    android:layout_centerInParent="true"
-                    android:contentDescription="@string/play_icon"
-                    android:src="@drawable/ic_pause"
-                    android:visibility="invisible"
-                    tools:ignore="ContentDescription" />
+<!--                <ImageButton-->
+<!--                    android:id="@+id/play_catchup"-->
+<!--                    style="?android:attr/borderlessButtonStyle"-->
+<!--                    android:layout_width="@dimen/player_button_sizes"-->
+<!--                    android:layout_height="@dimen/player_button_sizes"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:contentDescription="@string/play_icon"-->
+<!--                    android:src="@drawable/ic_pause"-->
+<!--                    android:visibility="invisible"-->
+<!--                    tools:ignore="ContentDescription" />-->
 
-                <ImageButton
-                    android:id="@+id/arrow_forward"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/play_catchup"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="@dimen/player_forward_margin_right"
-                    android:contentDescription="@string/ff_icon"
-                    android:padding="15dp"
-                    android:src="@drawable/skip_next"
-                    android:visibility="gone"
-                    tools:ignore="ContentDescription" />
+<!--                <ImageButton-->
+<!--                    android:id="@+id/arrow_forward"-->
+<!--                    style="?android:attr/borderlessButtonStyle"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignStart="@+id/play_catchup"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:layout_marginStart="@dimen/player_forward_margin_right"-->
+<!--                    android:contentDescription="@string/ff_icon"-->
+<!--                    android:padding="15dp"-->
+<!--                    android:src="@drawable/skip_next"-->
+<!--                    android:visibility="gone"-->
+<!--                    tools:ignore="ContentDescription" />-->
 
 
                 <RelativeLayout
