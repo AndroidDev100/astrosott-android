@@ -331,6 +331,11 @@ class SignUpActivity : AppCompatActivity() {
                 UserInfo.getInstance(this).firstName = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.firstName
                 UserInfo.getInstance(this).lastName = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.lastName
                 UserInfo.getInstance(this).email = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.email
+                if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.userName != null && !evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.userName.equals("", ignoreCase = true)) {
+                    UserInfo.getInstance(this).userName = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.userName
+                } else if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName != null && !evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName.equals("", ignoreCase = true)) {
+                    UserInfo.getInstance(this).alternateUserName = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName
+                }
                 UserInfo.getInstance(this).cpCustomerId = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.cpCustomerID
                 UserInfo.getInstance(this).isActive = true
                 Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT).show()
@@ -376,7 +381,7 @@ class SignUpActivity : AppCompatActivity() {
             activitySinUpBinding?.progressBar?.visibility = View.GONE
 
             if (evergentCommonResponse.isStatus) {
-               // Toast.makeText(this, "Verification code had be sent to $emailMobile", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(this, "Verification code had be sent to $emailMobile", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, VerificationActivity::class.java)
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type)
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, emailMobile)

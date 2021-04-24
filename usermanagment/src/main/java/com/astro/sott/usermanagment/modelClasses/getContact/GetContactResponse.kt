@@ -66,6 +66,9 @@ data class ContactMessageItem(
         @field:SerializedName("userName")
         val userName: String? = null,
 
+        @field:SerializedName("alternateUserName")
+        val alternateUserName: String? = null,
+
         @field:SerializedName("allowTracking")
         val allowTracking: Boolean? = null,
 

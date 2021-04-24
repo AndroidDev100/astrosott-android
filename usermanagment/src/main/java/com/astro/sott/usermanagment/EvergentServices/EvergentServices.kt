@@ -57,10 +57,12 @@ class EvergentServices {
         var searchAccountJson = JsonObject()
         var json = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
-        json.addProperty("userName", emailMobile)
 
         if (type.equals("mobile", true)) {
             json.addProperty("alternateUserName", emailMobile)
+        } else if (type.equals("email", true)) {
+            json.addProperty("userName", emailMobile)
+
         }
 
         searchAccountJson.add("SearchAccountV2RequestMessage", json)

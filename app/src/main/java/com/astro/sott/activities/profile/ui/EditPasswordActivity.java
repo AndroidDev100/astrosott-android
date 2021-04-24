@@ -98,14 +98,23 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
         }));
     }
 
+    private String email_mobile = "",type="";
+
     private void createOtp() {
-        String email_mobile = UserInfo.getInstance(this).getEmail();
-        astroLoginViewModel.createOtp("email", UserInfo.getInstance(this).getEmail()).observe(this, evergentCommonResponse -> {
+        if (!UserInfo.getInstance(this).getUserName().equalsIgnoreCase("")) {
+            type = "email";
+            email_mobile = UserInfo.getInstance(this).getUserName();
+        } else if (!UserInfo.getInstance(this).getAlternateUserName().equalsIgnoreCase("")) {
+            type = "mobile";
+            email_mobile = UserInfo.getInstance(this).getAlternateUserName();
+        }
+
+        astroLoginViewModel.createOtp(type, email_mobile).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 // Toast.makeText(this, getResources().getString(R.string.verification_code_Send) + email_mobile, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, VerificationActivity.class);
-                intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
+                intent.putExtra(AppLevelConstants.TYPE_KEY, type);
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);
                 intent.putExtra(AppLevelConstants.OLD_PASSWORD_KEY, getBinding().existingPsw.getText().toString());
                 intent.putExtra(AppLevelConstants.PASSWORD_KEY, getBinding().newPsw.getText().toString());

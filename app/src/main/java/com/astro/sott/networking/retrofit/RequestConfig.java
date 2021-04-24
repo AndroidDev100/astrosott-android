@@ -20,6 +20,7 @@ public class RequestConfig {
     private static Retrofit dtvRetrofit = null;
 
     private static String OLD_BASE_URL = null;
+
     public static Retrofit getClient(String BASE_URL) {
         if (retrofit == null || !OLD_BASE_URL.equals(BASE_URL)) {
             OLD_BASE_URL = BASE_URL;
@@ -50,7 +51,7 @@ public class RequestConfig {
         if (dtvRetrofit == null || !OLD_BASE_URL.equals(BASE_URL)) {
             OLD_BASE_URL = BASE_URL;
             dtvRetrofit = new Retrofit.Builder()
-                    .baseUrl("https://"+BASE_URL)
+                    .baseUrl("https://" + BASE_URL)
                     .client(getDTVHttpClient(BASE_URL))
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
@@ -115,6 +116,7 @@ public class RequestConfig {
         }
         return otpRetrofit;
     }
+
     public static Retrofit getVerifyOTPClient(String BASE_URL) {
         if (verifyOtpRetrofit == null) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
