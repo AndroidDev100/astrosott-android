@@ -265,9 +265,14 @@ class EvergentServices {
         } else if (type.equals("Facebook", true) || type.equals("Google", true)) {
             json.addProperty("email", emailMobile)
             json.addProperty("customerUsername", emailMobile)
-            json.addProperty("firstName", name)
+
             json.addProperty("socialLoginID", password)
             json.addProperty("socialLoginType", type)
+        }
+        if (name.equals("", true)) {
+            json.addProperty("firstName", "Sooka Superstar")
+        } else {
+            json.addProperty("firstName", name)
         }
 
         devicejson.addProperty("serialNo", getDeviceId(context.contentResolver))
