@@ -42,6 +42,10 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
 
     private void setClicks() {
 
+        getBinding().terms.setOnClickListener(v -> {
+            new ActivityLauncher(this).termAndCondition(this);
+
+        });
         getBinding().backIcon.setOnClickListener(v -> {
             onBackPressed();
         });
@@ -72,7 +76,7 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
 
     private void createUser(String password) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
-        astroLoginViewModel.createUser(type, email_mobile, password,name).observe(this, evergentCommonResponse -> {
+        astroLoginViewModel.createUser(type, email_mobile, password, name).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getAccessToken());
                 UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getRefreshToken());

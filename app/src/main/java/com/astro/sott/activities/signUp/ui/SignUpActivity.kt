@@ -145,6 +145,9 @@ class SignUpActivity : AppCompatActivity() {
 
     fun setClicks() {
 
+        activitySinUpBinding?.terms?.setOnClickListener {
+            ActivityLauncher(this).termAndCondition(this)
+        }
         activitySinUpBinding?.google?.setOnClickListener {
             mGoogleSignInClient!!.signOut()
             val signInIntent = mGoogleSignInClient!!.signInIntent
