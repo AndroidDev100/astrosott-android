@@ -3176,6 +3176,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
                 if (isPlayerStart) {
+                    if(getBinding().skipCredits.getVisibility() == View.VISIBLE){
+                        getBinding().skipCredits.setVisibility(View.GONE);
+                    }
 
                     if (lockEnable) {
 //                        if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
@@ -3222,6 +3225,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             public void onSingleClick(View view) {
 
                 if (isPlayerStart) {
+                    if(getBinding().skipCredits.getVisibility() == View.VISIBLE){
+                        getBinding().skipCredits.setVisibility(View.GONE);
+                    }
                     if (lockEnable) {
 //                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
 //                                getBinding().lockIcon.setVisibility(View.GONE);
