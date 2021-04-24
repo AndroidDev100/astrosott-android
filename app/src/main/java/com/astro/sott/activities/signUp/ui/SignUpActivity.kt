@@ -145,6 +145,10 @@ class SignUpActivity : AppCompatActivity() {
 
     fun setClicks() {
 
+        activitySinUpBinding?.term?.setOnClickListener(View.OnClickListener {
+            ActivityLauncher(this).termAndCondition(this)
+
+        })
         activitySinUpBinding?.google?.setOnClickListener {
             mGoogleSignInClient!!.signOut()
             val signInIntent = mGoogleSignInClient!!.signInIntent
@@ -376,7 +380,7 @@ class SignUpActivity : AppCompatActivity() {
             activitySinUpBinding?.progressBar?.visibility = View.GONE
 
             if (evergentCommonResponse.isStatus) {
-               // Toast.makeText(this, "Verification code had be sent to $emailMobile", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(this, "Verification code had be sent to $emailMobile", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, VerificationActivity::class.java)
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type)
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, emailMobile)

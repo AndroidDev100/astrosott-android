@@ -42,6 +42,10 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
 
     private void setClicks() {
 
+        getBinding().term.setOnClickListener(v -> {
+            new ActivityLauncher(this).termAndCondition(this);
+
+        });
         getBinding().backIcon.setOnClickListener(v -> {
             onBackPressed();
         });

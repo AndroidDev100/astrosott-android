@@ -55,6 +55,7 @@ import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionAndMyPlanActivity;
 import com.astro.sott.activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
+import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.beanModel.commonBeanModel.SearchModel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -136,7 +137,11 @@ public class ActivityLauncher {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
-
+    public void termAndCondition(Activity source) {
+        Intent intent = new Intent(source, WebViewActivity.class);
+        intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC);
+        activity.startActivity(intent);
+    }
     public void forgotPasswordActivity(Activity source, Class<ForgotPasswordActivity> destination) {
         Intent intent = new Intent(source, destination);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
