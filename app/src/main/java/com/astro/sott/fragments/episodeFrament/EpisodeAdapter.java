@@ -112,10 +112,17 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                 viewHolder.watchlistItemBinding.progressBar.setVisibility(View.GONE);
             } else {
                 try {
+
                     long totalDuration = AppCommonMethods.getDurationFromUrl(asset);
-                    int progress = singleItem.getProgress() * 100 / (int) totalDuration;
-                    viewHolder.watchlistItemBinding.progressBar.setProgress(progress);
-                    viewHolder.watchlistItemBinding.progressBar.setVisibility(View.VISIBLE);
+                    boolean include=AppCommonMethods.checkContinueWatchingPercentage((int) totalDuration,singleItem.getProgress());
+                    if (include){
+                        int progress = singleItem.getProgress() * 100 / (int) totalDuration;
+                        viewHolder.watchlistItemBinding.progressBar.setProgress(progress);
+                        viewHolder.watchlistItemBinding.progressBar.setVisibility(View.VISIBLE);
+                    }else {
+                        viewHolder.watchlistItemBinding.progressBar.setVisibility(View.GONE);
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

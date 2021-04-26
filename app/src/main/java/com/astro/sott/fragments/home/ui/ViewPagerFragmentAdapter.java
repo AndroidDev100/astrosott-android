@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.astro.sott.fragments.homenewtab.ui.HomeTabNew;
 import com.astro.sott.fragments.livetv.ui.LiveTvFragment;
 import com.astro.sott.fragments.sports.ui.SportsFragment;
 import com.astro.sott.fragments.video.ui.VideoFragment;
@@ -24,10 +25,12 @@ public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new HomeFragment();
+                return new HomeTabNew();
             case 1:
-                return new VideoFragment();
+                return new HomeFragment();
             case 2:
+                return new VideoFragment();
+            case 3:
                 return new SportsFragment();
         }
         return new HomeFragment();

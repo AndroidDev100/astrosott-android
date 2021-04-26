@@ -151,8 +151,10 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
 
     private void connectionValidation(Boolean aBoolean) {
+        Log.e(TAG, "oncreate: " + "in3"+aBoolean);
         if (aBoolean) {
             if (!CommonUtils.isRooted(this)) {
+                Log.e(TAG, "oncreate: " + "in4");
                 isFirstTimeUser = SharedPrefHelper.getInstance(getApplication()).getBoolean("isFirstTime", false);
                 if (!isFirstTimeUser) {
                     SharedPrefHelper.getInstance(getApplication()).setString("DMS_Date", "mDate");
@@ -184,14 +186,17 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     private void callViewModel() {
+        Log.e(TAG, "oncreate: " + "in2");
         myViewModel = ViewModelProviders.of(this).get(SplashViewModel.class);
         connectionObserver();
     }
 
     private void versionStatus() {
+        Log.e(TAG, "oncreate: " + "in2");
         myViewModel.getVersion(this).observe(this, new Observer<List<AppVersionStatus>>() {
             @Override
             public void onChanged(@Nullable List<AppVersionStatus> appVersionStatuses) {
+                Log.e(TAG, "oncreate: " + "in3");
                 if (appVersionStatuses != null && appVersionStatuses.get(0) != null && appVersionStatuses.get(0).getStatus()) {
                     pushToken();
 
@@ -315,8 +320,10 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     private void DMSCall() {
+        Log.e(TAG, "oncreate: " + "in5");
         myViewModel.DMSCall(this).observe(this, s -> {
             dms_response = s;
+            Log.e(TAG, "oncreate: " + "in6"+dms_response);
             if (dms_response != null && !TextUtils.isEmpty(dms_response)) {
 
                 if (TextUtils.isEmpty(KsPreferenceKey.getInstance(this).getQualityName())) {
@@ -368,7 +375,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 token = instanceIdResult.getToken();
                 SharedPrefHelper.getInstance(getApplicationContext()).setString(AppLevelConstants.FCM_TOKEN, token);
                 Log.e(TAG, "pushToken: " + token);
-                myViewModel.pushToken(this, token).observe(this, aBoolean -> {
+                setBranchInit();
+              /*  myViewModel.pushToken(this, token).observe(this, aBoolean -> {
 
                     //setBranchInit();
                     getBinding().noConnectionLayout.setVisibility(View.GONE);
@@ -393,13 +401,13 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     }
 
 
-                });
+                });*/
             })
                     .addOnFailureListener(e -> {
                         // DialogHelper.showAlertDialog(this, getString(R.string.something_went_wrong_try_again), getString(R.string.ok), this);
                         getBinding().noConnectionLayout.setVisibility(View.GONE);
-
-                        try {
+                        setBranchInit();
+/*                        try {
                             String response = KsPreferenceKey.getInstance(SplashActivity.this).getNotificationResponse();
                             if (response.equalsIgnoreCase("")) {
                                 PrintLogging.printLog("", "d a");
@@ -415,10 +423,11 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
                         } catch (Exception ex) {
 
-                        }
+                        }*/
                     });
         } else {
-            myViewModel.pushToken(this, token).observe(this, aBoolean -> {
+            setBranchInit();
+            /*myViewModel.pushToken(this, token).observe(this, aBoolean -> {
 
                 //setBranchInit();
                 getBinding().noConnectionLayout.setVisibility(View.GONE);
@@ -427,7 +436,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     String response = KsPreferenceKey.getInstance(SplashActivity.this).getNotificationResponse();
                     if (response.equalsIgnoreCase("")) {
                         PrintLogging.printLog("", "d a");
-                        setBranchInit();
+
                         // checkUserPreferences();
                     } else {
 
@@ -441,7 +450,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
                 }
 
-            });
+            });*/
         }
     }
 
@@ -577,16 +586,45 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //        },6000);
 
         FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(pendingDynamicLinkData -> {
-            Log.w("deepLink", "in" + pendingDynamicLinkData);
-            if (pendingDynamicLinkData != null) {
-                Log.w("deepLink", "in2" + pendingDynamicLinkData.getLink());
-                Uri deepLink = pendingDynamicLinkData.getLink();
-                if (deepLink != null) {
-                    Log.w("deepLink", deepLink.getQueryParameter("id"));
-                    Log.w("deepLink", deepLink.getQueryParameter("mediaType"));
-                    Log.w("deepLink", deepLink.getQueryParameter("name"));
-                    callSpecficAssetApi(String.valueOf(deepLink.getQueryParameter("id")));
-                } else {
+            Log.w("deepLink","in"+pendingDynamicLinkData);
+            try {
+                if (pendingDynamicLinkData != null) {
+                    Log.w("deepLink","in2"+pendingDynamicLinkData.getLink());
+                    Uri deepLink = pendingDynamicLinkData.getLink();
+                    Log.w("deepLink","in2"+pendingDynamicLinkData.getLink()+" "+deepLink.getQuery());
+                    if (deepLink!=null){
+                        if (deepLink.getQuery()!=null && deepLink.getQuery().contains("link=")){
+                            String arr[]=deepLink.getQuery().toString().split("link=");
+                            String url=arr[1];
+                            Log.w("deepLink","in2"+url);
+                            Uri newU=Uri.parse(url);
+                            Log.w("deepLink","in2"+newU.toString());
+                            Log.w("deepLink","in2"+newU.getQueryParameter("id"));
+                            // Log.w("deepLink",deepLink.getQuery().getQueryParameter("id"));
+                            // Log.w("deepLink",deepLink.getQueryParameter("mediaType"));
+                            // Log.w("deepLink",deepLink.getQueryParameter("name"));
+                            callSpecficAssetApi(String.valueOf(newU.getQueryParameter("id")));
+                        }else {
+                            if (pendingDynamicLinkData.getLink()!=null && pendingDynamicLinkData.getLink().getQueryParameter("id")!=null){
+                                callSpecficAssetApi(String.valueOf(pendingDynamicLinkData.getLink().getQueryParameter("id")));
+                            }else {
+                                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                            }
+                        }
+
+                    }else {
+                        if (branchObject != null) {
+                            if (branchObject.has("assetId")) {
+                                redirectionCondition(branchObject);
+                            } else {
+                                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                            }
+                        } else {
+                            new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                        }
+                        Log.d("deepLink", "getDynamicLink: no link found");
+                    }
+                }else {
                     if (branchObject != null) {
                         if (branchObject.has("assetId")) {
                             redirectionCondition(branchObject);
@@ -596,19 +634,11 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     } else {
                         new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
                     }
-                    Log.d("deepLink", "getDynamicLink: no link found");
                 }
-            } else {
-                if (branchObject != null) {
-                    if (branchObject.has("assetId")) {
-                        redirectionCondition(branchObject);
-                    } else {
-                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                    }
-                } else {
-                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                }
+            }catch (Exception e){
+                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
             }
+
         });
 
 
@@ -892,7 +922,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
             }
         }
-
+        Log.e(TAG, "oncreate: " + "in");
         AppCommonMethods.isAdsEnable = true;
         callViewModel();
         showAnimation();

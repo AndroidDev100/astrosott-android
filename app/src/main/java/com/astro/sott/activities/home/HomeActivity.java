@@ -441,7 +441,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     // tab titles
-    private String[] titles = new String[]{"TV SHOWS", "MOVIES", "SPORTS"};
+    private String[] titles = new String[]{"ALL","TV SHOWS", "MOVIES", "SPORTS"};
 
     private void initialFragment(HomeActivity homeActivity) {
         setViewPager();
@@ -684,9 +684,12 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     @Override
-    public void onCardClicked(String productId) {
-        billingProcessor.subscribe(this, productId, "DEVELOPER PAYLOAD HERE");
-
+    public void onCardClicked(String productId, String serviceType) {
+        if (serviceType.equalsIgnoreCase("ppv")) {
+            billingProcessor.purchase(this, productId, "DEVELOPER PAYLOAD HERE");
+        } else {
+            billingProcessor.subscribe(this, productId, "DEVELOPER PAYLOAD HERE");
+        }
     }
 
     public SkuDetails getSubscriptionDetail(String productId) {

@@ -153,6 +153,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
     private void setGoogleSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("662890960559-7d95cecvfd7frip2jqsu8knelfi6c7rr.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 

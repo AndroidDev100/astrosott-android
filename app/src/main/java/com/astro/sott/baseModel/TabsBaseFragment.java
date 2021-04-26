@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
+import com.astro.sott.fragments.homenewtab.viewModel.HomeTabNewViewModel;
 import com.astro.sott.fragments.sports.viewModel.SportsViewModel;
 import com.astro.sott.fragments.video.viewModel.VideoViewModel;
 import com.astro.sott.repositories.homeTab.HomeFragmentRepository;
@@ -456,7 +457,11 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
             screenID = String.valueOf(AppConstants.TAB_SECOND);
         } else if (viewModel instanceof SportsViewModel) {
             screenID = String.valueOf(AppConstants.TAB_THIRD);
-        } else {
+        }
+        else if (viewModel instanceof HomeTabNewViewModel) {
+            screenID = String.valueOf(AppConstants.TAB_HOME_NEW_ID);
+        }
+        else {
             screenID = String.valueOf(AppConstants.TAB_FIRST);
         }
     }
