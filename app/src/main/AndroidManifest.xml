@@ -33,7 +33,8 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.liveEvent.LiveEventActivity"></activity>
+        <activity android:name=".activities.profile.ui.EditNameActivity"></activity>
+        <activity android:name=".activities.liveEvent.LiveEventActivity" />
         <activity android:name=".activities.detailConfirmation.DetailConfirmationActivity" />
         <activity
             android:name=".activities.subscriptionActivity.ui.SubscriptionDetailActivity"
@@ -179,7 +180,6 @@
                     android:pathPrefix="/stagingsott"
                     android:scheme="https" />
             </intent-filter>
-
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -193,7 +193,6 @@
                     android:host="example.com/link"
                     android:scheme="https" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".activities.moreListing.ui.ListingActivity"
@@ -331,7 +330,6 @@
         <activity
             android:name=".activities.appSettings.ui.AppSettingsActivity"
             android:screenOrientation="locked" />
-
         <activity
             android:name=".activities.videoQuality.ui.VideoQualityActivity"
             android:screenOrientation="locked" />

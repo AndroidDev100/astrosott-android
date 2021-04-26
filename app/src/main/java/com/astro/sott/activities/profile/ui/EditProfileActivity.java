@@ -32,12 +32,18 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             String masked = AppCommonMethods.maskedEmail(EditProfileActivity.this);
             getBinding().email.setText(masked);
             getBinding().name.setText(UserInfo.getInstance(this).getFirstName());
+            getBinding().psw.setText("********");
             getBinding().mobileNo.setText(AppCommonMethods.maskedMobile(EditProfileActivity.this));
         } catch (Exception ignored) {
 
         }
         getBinding().backButton.setOnClickListener(v -> {
             onBackPressed();
+        });
+        getBinding().editname.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(), EditNameActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
         });
         getBinding().editemail.setOnClickListener(view -> {
             Intent i = new Intent(getApplicationContext(), EditEmailActivity.class);

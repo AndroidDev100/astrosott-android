@@ -519,7 +519,14 @@
     <string name="password">Password</string>
     <string name="update_profile">Update Profile</string>
     <string name="edit_email">Edit Email</string>
+    <string name="set_email">Set Email</string>
+    <string name="set_name">Set Name</string>
+    <string name="edit_name">Edit Name</string>
+
+    <string name="existing_name">Existing Name</string>
     <string name="existing_email">Existing Email</string>
+    <string name="new_name">New Name</string>
+
     <string name="new_email">New Email</string>
     <string name="edit_password">Edit Password</string>
     <string name="existing_password">Existing Password</string>
