@@ -147,7 +147,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                         getBinding().progressBar.setVisibility(View.GONE);
 
                         token = evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getToken();
-                        if (!token.equalsIgnoreCase("")) {
+                        if (token != null && !token.equalsIgnoreCase("")) {
                             Intent intent = new Intent(this, ChangePasswordActivity.class);
                             intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra("token", token);
