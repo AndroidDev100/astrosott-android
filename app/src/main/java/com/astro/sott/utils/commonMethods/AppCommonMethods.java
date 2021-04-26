@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.search.constants.SearchFilterEnum;
@@ -67,7 +68,9 @@ import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.LongValue;
 import com.kaltura.client.types.MediaImage;
+import com.kaltura.client.types.MultilingualStringValue;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
@@ -651,14 +654,19 @@ public class AppCommonMethods {
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                    .setLink(Uri.parse(uri))
-                    .setDomainUriPrefix("https://sooka.my")
-                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.astro.sott")
-                            .setMinimumVersion(1)
+                    .setDomainUriPrefix("https://stagingsott.page.link")
+                    .setLink(Uri.parse("https://stagingsott.page.link/?link=https://www.example.com/?id="+asset.getId()+"&apn=com.astro.stagingsott"))
+                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
                             .build())
-                    .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
-                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true).build())
-                    .buildShortDynamicLink()
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.astro.stagingsott").setFallbackUrl(Uri.parse("www.google.com"))
+                            .build())
+                    .setSocialMetaTagParameters(
+                            new DynamicLink.SocialMetaTagParameters.Builder()
+                                    .setTitle(asset.getName())
+                                    .setDescription(asset.getDescription())
+                                    .setImageUrl(Uri.parse(AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType())))
+                                    .build())
+                    .buildShortDynamicLink(ShortDynamicLink.Suffix.SHORT)
                     .addOnCompleteListener(activity, new OnCompleteListener<ShortDynamicLink>() {
                         @Override
                         public void onComplete(@NonNull Task<ShortDynamicLink> task) {
@@ -666,52 +674,58 @@ public class AppCommonMethods {
 
                                 dynamicLinkUri = task.getResult().getShortLink();
                                 Uri flowchartLink = task.getResult().getPreviewLink();
-                                Log.w("dynamicUrl", dynamicLinkUri.toString());
-                                activity.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (dynamicLinkUri != null) {
-                                            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                                            // sharingIntent.setComponent(new ComponentName("com.google.android.apps.docs", "com.google.android.apps.docs.app.SendTextToClipboardActivity"));
-                                            sharingIntent.setType("text/plain");
+                                Log.w("dynamicUrl",dynamicLinkUri.toString()+flowchartLink);
+                                try {
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (dynamicLinkUri!=null){
+                                                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                                                sharingIntent.setType("text/plain");
+                                                sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + dynamicLinkUri.toString());
+                                                // sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + "https://stagingsott.page.link/?link="+dynamicLinkUri.toString()+"&apn=com.astro.stagingsott");
 
-                                            sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + dynamicLinkUri.toString());
+                                                activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
 
-                                            activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
+                                            }
 
                                         }
+                                    });
+                                }catch (Exception ignored){
 
-                                    }
-                                });
+                                }
+
 
                             } else {
-                                // Log.w("dynamicUrl", dynamicLinkUri.toString());
-                                //new ToastHandler(WebSeriesDescriptionActivity.this).show(getApplicationContext().getResources().getString(R.string.removed_from_watchlist));
+                                // Log.w("dynamicUrl",dynamicLinkUri.toString());
                             }
                         }
                     });
 
+            shortLinkTask.toString();
 
         } catch (Exception ignored) {
 
         }
     }
 
-    private static String createURI(Asset asset, Activity activity) {
-        String uri = "";
+    private static String createURI(Asset asset,Activity activity) {
+        String uri="";
         try {
-            String assetId = asset.getId() + "";
-            String assetType = asset.getType() + "";
+            String assetId=asset.getId()+"";
+            String assetType=asset.getType()+"";
             uri = Uri.parse("https://www.example.com/")
                     .buildUpon()
+                    .authority("https://stagingsott.page.link")
                     .appendQueryParameter("id", assetId)
                     .appendQueryParameter("mediaType", assetType)
                     .appendQueryParameter("image", AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType()))
                     .appendQueryParameter("name", asset.getName())
+                    .appendQueryParameter("erf", "1")
                     .build().toString();
 
-        } catch (Exception ignored) {
-            uri = "";
+        }catch (Exception ignored){
+            uri="";
         }
 
         return uri;
@@ -2491,6 +2505,208 @@ public class AppCommonMethods {
         }
         return email;
     }
+
+    public static boolean shouldItemIncluded(List<AssetHistory> continueWatchingList, String assetID) {
+        boolean shouldInclude=false;
+        try {
+            for (int i=0;i<continueWatchingList.size();i++){
+                AssetHistory assetHistory=continueWatchingList.get(i);
+                if (String.valueOf(assetHistory.getAssetId()).equalsIgnoreCase(assetID)){
+                   shouldInclude= checkContinueWatchingPercentage(assetHistory.getDuration(),assetHistory.getPosition());
+                }
+            }
+        }catch (Exception e){
+
+        }
+        return shouldInclude;
+    }
+
+    public static boolean checkContinueWatchingPercentage(int astDuration,int position) {
+        boolean condition=false;
+        try {
+            /*if (count==0){
+                playingPosition = 730;//assetHistory.getPosition();
+                count++;
+            }else {
+                 playingPosition = assetHistory.getPosition();
+            }*/
+            int playingPosition = position;
+            int totalDuration = astDuration;
+            Double duration=Double.valueOf(totalDuration);
+            double onePercent = (duration * 0.01);
+            double nintyEightPercent = (duration * 0.98);
+            Log.w("percentge-->>",onePercent+" "+nintyEightPercent);
+            if (playingPosition>onePercent && playingPosition<nintyEightPercent){
+                condition=true;
+            }else {
+                condition=false;
+            }
+        }catch (Exception ignored){
+
+        }
+        return condition;
+    }
+
+
+    public static String getMetas(Asset asset,int type) {
+        Long liveEventStartDate=0l;
+        Long liveEventEndDate=0l;
+        StringBuilderHolder.getInstance().clear();
+         if (type==4){
+            String liveEventStartTime=AppCommonMethods.getLiveEventStartDate(asset.getStartDate())+"";
+            String liveEventEndTime=AppCommonMethods.getLiveEventEndTime(asset.getEndDate())+"";
+            if (liveEventStartTime!=null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime!=null && !liveEventEndTime.equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append(liveEventStartTime + " - " + liveEventEndTime);
+                StringBuilderHolder.getInstance().append(" | ");
+            }
+        }
+        else if (type==5){
+
+        }
+        else if (type==3){
+            Map<String, Value> metas=asset.getMetas();
+            LongValue startValue = null, endValue = null;
+            if (metas != null) {
+                startValue = (LongValue) metas.get(AppLevelConstants.LiveEventProgramStartDate);
+                endValue = (LongValue) metas.get(AppLevelConstants.LiveEventProgramEndDate);
+                if (startValue != null) {
+                    liveEventStartDate = startValue.getValue();
+                }
+                if (endValue != null) {
+                    liveEventEndDate = endValue.getValue();
+                }
+            }
+            String liveEventStartTime=AppCommonMethods.getLiveEventStartDate(liveEventStartDate)+"";
+            String liveEventEndTime=AppCommonMethods.getLiveEventEndTime(liveEventEndDate)+"";
+            if (liveEventStartTime!=null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime!=null && !liveEventEndTime.equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append(liveEventStartTime + " - " + liveEventEndTime);
+                StringBuilderHolder.getInstance().append(" | ");
+            }
+        }
+        else {
+            DoubleValue doubleValue=null;
+            Map<String, Value>  yearMap = asset.getMetas();
+            if (yearMap != null && yearMap.get(AppLevelConstants.YEAR) instanceof DoubleValue) {
+                doubleValue = (DoubleValue) yearMap.get(AppLevelConstants.YEAR);
+            }
+            if (doubleValue != null) {
+                String s = String.valueOf(doubleValue.getValue());
+
+
+                if (!TextUtils.isEmpty(s)) {
+                    if (s.length() > 3) {
+                        StringBuilderHolder.getInstance().append(s.substring(0, 4));
+                    } else {
+                        StringBuilderHolder.getInstance().append(s);
+                    }
+                    StringBuilderHolder.getInstance().append(" | ");
+
+                }
+            }
+        }
+
+        getSubGenre(StringBuilderHolder.getInstance(),asset.getTags());
+
+        return StringBuilderHolder.getInstance().getText().toString();
+    }
+
+    private static void getSubGenre(StringBuilderHolder builder, Map<String, MultilingualStringValueArray> map) {
+        String genre;
+        List<MultilingualStringValue> genre_values = new ArrayList<>();
+        MultilingualStringValueArray genre_list = map.get(AppLevelConstants.KEY_SUB_GENRE);
+        if (genre_list != null)
+
+            genre_values.addAll(genre_list.getObjects());
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= genre_values.size() - 1; i++) {
+            stringBuilder.append(genre_values.get(i).getValue()).append(", ");
+        }
+
+        if (stringBuilder.length() > 0) {
+            genre = stringBuilder.toString();
+            genre = genre.substring(0, genre.length() - 2);
+
+        } else {
+            genre = "";
+        }
+
+        if (!TextUtils.isEmpty(genre)) {
+            builder.append(genre.trim());
+            builder.append(" | ");
+
+        }
+
+        getLanguage(builder,map);
+    }
+
+    private static void getLanguage(StringBuilderHolder builder, Map<String, MultilingualStringValueArray> map) {
+        String language = "";
+        List<MultilingualStringValue> language_value = new ArrayList<>();
+        MultilingualStringValueArray language_list = map.get(AppLevelConstants.KEY_LANGUAGE);
+        if (language_list != null)
+//            for (MultilingualStringValue value : language_list.getObjects()) {
+//                language_value.add(value);
+//            }
+            language_value.addAll(language_list.getObjects());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= language_value.size() - 1; i++) {
+
+            stringBuilder.append(language_value.get(i).getValue()).append(", ");
+
+        }
+
+        if (stringBuilder.length() > 0) {
+            language = stringBuilder.toString();
+            language = language.substring(0, language.length() - 2);
+        }
+
+
+        if (!TextUtils.isEmpty(language)) {
+            builder.append(language);
+            builder.append(" | ");
+        }
+
+        getMovieRatings(builder,map);
+
+    }
+
+    private static void getMovieRatings(StringBuilderHolder builder, Map<String, MultilingualStringValueArray> map) {
+        if (AssetContent.getParentalRating(map).length() > 0) {
+            builder.append(AssetContent.getParentalRating(map));
+            builder.append(" ");
+        }
+    }
+
+    public static String getLiveEventStartDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa");
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+    public static String getLiveEventEndTime(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa");
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+
 
     public static String maskedMobile(Activity context) {
         StringBuilder email = new StringBuilder();

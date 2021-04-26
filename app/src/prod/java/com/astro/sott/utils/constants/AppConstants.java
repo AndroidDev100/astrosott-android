@@ -72,6 +72,7 @@ public interface AppConstants {
     public static final String CAROUSEL_LANDSCAPE = "CAROUSEL_LANDSCAPE";
     public static final String CAROUSEL_POTRAIT = "CAROUSEL_POTRAIT";
     public static final String CAROUSEL_SQUARE = "CAROUSEL_SQUARE";
+    public static final String CAROUSEL_POSTER = "CAROUSEL_POSTER";
     public static final String CAROUSEL_CUSTOM = "CAROUSEL_CUSTOM";
 
 
@@ -216,6 +217,7 @@ public interface AppConstants {
     public static int TAB_SECOND = 1;
     public static int TAB_THIRD = 2;
     public static int TAB_FOUR = 3;
+    public static int TAB_HOME_NEW_ID = 4;
     public static int TAB_FIVE = 4;
     public static int TAB_SIX = 5;
 

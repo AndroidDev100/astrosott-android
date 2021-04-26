@@ -218,7 +218,12 @@ public class VIUChannel implements Parcelable {
             } else if (layoutImageType.equalsIgnoreCase(ImageType.SQR.name())) {
                 railType = AppConstants.CAROUSEL_SQUARE;
                 this.widgetType = AppConstants.CAROUSEL_SQR_SQUARE;
-            } else if (layoutImageType.equalsIgnoreCase(ImageType.CST.name())) {
+            }
+            else if (layoutImageType.equalsIgnoreCase(ImageType.PR2.name())) {
+                railType = AppConstants.CAROUSEL_POSTER;
+                this.widgetType = AppConstants.CAROUSEL_PR_POSTER;
+            }
+            else if (layoutImageType.equalsIgnoreCase(ImageType.CST.name())) {
                 railType = AppConstants.CAROUSEL_CUSTOM;
                 this.widgetType = AppConstants.CAROUSEL_CST_CUSTOM;
             }

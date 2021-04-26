@@ -142,6 +142,7 @@ import com.kaltura.client.enums.InboxMessageStatus;
 import com.kaltura.client.enums.PinType;
 import com.kaltura.client.enums.RuleLevel;
 import com.kaltura.client.enums.TransactionType;
+import com.kaltura.client.enums.WatchStatus;
 import com.kaltura.client.services.AppTokenService;
 import com.kaltura.client.services.AssetHistoryService;
 import com.kaltura.client.services.AssetService;
@@ -3676,12 +3677,13 @@ public class KsServices {
         requestParam.addProperty("tag", BuildConfig.KALTURA_TAG);
         requestParam.addProperty("partnerId", BuildConfig.KALTURA_PARTNER_ID);
         Log.e("REQUEST", requestParam.toString());
+        Log.e( "oncreate: " , "in8");
         Call<ResponseDmsModel> call = endpoint.getDMS(requestParam);
         call.enqueue(new Callback<ResponseDmsModel>() {
             @Override
             public void onResponse(@NonNull Call<ResponseDmsModel> call, @NonNull retrofit2.Response<ResponseDmsModel> response) {
 
-
+                Log.e( "oncreate: " , "in9");
                 PrintLogging.printLog(this.getClass(), "Dms Log response", "" + response.toString());
                 // Log.e("Mytag", "" + response.body().getParams().getMediaTypes().getMovie());
                 PrintLogging.printLog(this.getClass(), "", "DMS" + "--" + response.isSuccessful());
@@ -3815,13 +3817,14 @@ public class KsServices {
                     Log.d("ParentalLevel", FileFormatHelper.getDash_widevine(activity));
                     callBack.configuration(true);
                 } catch (Exception e) {
-
+                    Log.e( "oncreate: " , "in10"+"crash");
                 }
 
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseDmsModel> call, @NonNull Throwable t) {
+                Log.e( "oncreate: " , "in10");
                 PrintLogging.printLog(this.getClass(), "", "responseDMS" + t.toString());
             }
         });
@@ -4124,7 +4127,7 @@ public class KsServices {
 
         clientSetupKs();
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
-        assetHistoryFilter.statusEqual("all");
+        assetHistoryFilter.statusEqual(WatchStatus.PROGRESS.name());
         assetHistoryFilter.daysLessThanOrEqual(AppCommonMethods.getAssetHistory(activity));
 
         FilterPager pagerFilter = new FilterPager();

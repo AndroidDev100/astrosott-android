@@ -90,7 +90,7 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
 
         StringBuilderHolder.getInstance().clear();
         StringBuilderHolder.getInstance().append(getResources().getString(R.string.all) + " ");
-        StringBuilderHolder.getInstance().append(allResult.getHeaderTitle() + "s");
+        StringBuilderHolder.getInstance().append(allResult.getHeaderTitle() + "");
         StringBuilderHolder.getInstance().append(" " + getResources().getString(R.string.results));
         StringBuilderHolder.getInstance().append(" (" + allResult.getTotalCount() + ")");
         getBinding().toolbar.tvSearchResultHeader.setText(StringBuilderHolder.getInstance().getText());
@@ -235,6 +235,11 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
 
                 }
 
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
 
             }
 
