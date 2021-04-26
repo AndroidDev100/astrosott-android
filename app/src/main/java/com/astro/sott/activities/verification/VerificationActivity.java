@@ -158,6 +158,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
                     } else if (from.equalsIgnoreCase("changePassword")) {
                         changePassword();
+                    } else if (from.equalsIgnoreCase("confirmPassword")) {
+                        updateProfile(emailMobile);
                     }
 
                 } else {
@@ -175,6 +177,21 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
             getBinding().invalidOtp.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void updateProfile(String name) {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        String acessToken = UserInfo.getInstance(this).getAccessToken();
+        astroLoginViewModel.updateProfile("email", name, acessToken).observe(this, updateProfileResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
+                new ActivityLauncher(this).profileActivity(this);
+                Toast.makeText(this, updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getMessage() + "", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     private void changePassword() {

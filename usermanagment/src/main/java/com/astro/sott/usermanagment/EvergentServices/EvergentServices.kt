@@ -9,6 +9,7 @@ import com.astro.sott.usermanagment.callBacks.*
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
 import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordResponse
+import com.astro.sott.usermanagment.modelClasses.checkCredential.CheckCredentialResponse
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
@@ -152,13 +153,57 @@ class EvergentServices {
 
     }
 
+    fun checkCredential(context: Context, password: String, emailMobile: String, evergentUpdateProfileCallback: EvergentResponseCallBack<CheckCredentialResponse>) {
+
+        var updateProfileJson = JsonObject()
+        var json = JsonObject()
+
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        json.addProperty("contactUserName", emailMobile)
+        json.addProperty("contactPassword", password)
+        updateProfileJson.add("CheckCredentialsRequestMessage", json)
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.checkCredentials(updateProfileJson)
+        call?.enqueue(object : Callback<CheckCredentialResponse?> {
+            override fun onFailure(call: Call<CheckCredentialResponse?>, t: Throwable) {
+                evergentUpdateProfileCallback.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<CheckCredentialResponse?>, response: Response<CheckCredentialResponse?>) {
+                if (response.body() != null && response.body()?.checkCredentialsResponseMessage != null && response.body()?.checkCredentialsResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.checkCredentialsResponseMessage?.responseCode.equals("1", true)) {
+                        evergentUpdateProfileCallback.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.checkCredentialsResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.checkCredentialsResponseMessage?.failureMessage, context)
+                            evergentUpdateProfileCallback.onFailure(errorModel.errorMessage, errorModel.errorCode)
+                        } else {
+                            evergentUpdateProfileCallback.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                } else {
+                    evergentUpdateProfileCallback.onFailure("Something Went Wrong", "")
+
+                }
+            }
+        }
+
+        )
+
+
+    }
 
     fun updateProfile(context: Context, type: String, emailMobile: String, acessToken: String, evergentUpdateProfileCallback: EvergentResponseCallBack<UpdateProfileResponse>) {
 
         var updateProfileJson = JsonObject()
         var json = JsonObject()
-        if (type.equals("email", true) || type.equals("Google", true) || type.equals("Facebook", true)) {
-            json.addProperty(EMAIL, emailMobile)
+        if (type.equals("email", true)  ) {
+            json.addProperty(EMAIL, "Sunnykadan.1994+6@gmail.com")
+            json.addProperty("customerUsername", "Sunnykadan.1994+6@gmail.com")
+
 
         } else if (type.equals("name", true)) {
             json.addProperty(FIRST_NAME, emailMobile)

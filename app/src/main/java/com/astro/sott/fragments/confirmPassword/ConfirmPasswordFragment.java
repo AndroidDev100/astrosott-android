@@ -1,17 +1,25 @@
 package com.astro.sott.fragments.confirmPassword;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentConfirmPasswordBinding;
+import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
+import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.userInfo.UserInfo;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +27,7 @@ import com.astro.sott.databinding.FragmentConfirmPasswordBinding;
  * create an instance of this fragment.
  */
 public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirmPasswordBinding> {
+    private SubscriptionViewModel subscriptionViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,6 +60,10 @@ public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirm
         return fragment;
     }
 
+    private void modelCall() {
+        subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel.class);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +71,52 @@ public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirm
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        modelCall();
+
+        setClicks();
+    }
+
+    private String password;
+
+    private void setClicks() {
+        getBinding().update.setOnClickListener(v -> {
+            password = getBinding().passwordEdt.getText().toString();
+            checkCredential();
+        });
+
+    }
+
+    private void checkCredential() {
+        subscriptionViewModel.checkCredential(password, UserInfo.getInstance(getActivity()).getUserName()).observe(this, checkCredentialResponse -> {
+            if (checkCredentialResponse != null && checkCredentialResponse.getResponse() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
+                createOtp();
+            } else {
+                Toast.makeText(getActivity(), checkCredentialResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void createOtp() {
+        subscriptionViewModel.createOtp("email", UserInfo.getInstance(getActivity()).getUserName()).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+
+            if (evergentCommonResponse.isStatus()) {
+                Intent intent = new Intent(getActivity(), VerificationActivity.class);
+                intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
+                intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, UserInfo.getInstance(getActivity()).getUserName());
+                intent.putExtra(AppLevelConstants.PASSWORD_KEY, password);
+                intent.putExtra(AppLevelConstants.FROM_KEY, "confirmPassword");
+                startActivity(intent);
+
+            } else {
+                Toast.makeText(getActivity(), evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

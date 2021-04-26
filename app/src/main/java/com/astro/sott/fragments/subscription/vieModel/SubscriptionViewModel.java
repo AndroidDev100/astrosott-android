@@ -6,12 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.astro.sott.repositories.loginRepository.AstrLoginRepository;
 import com.astro.sott.repositories.mysubscriptionplan.MySubscriptionPlanRepository;
 import com.astro.sott.repositories.subscription.SubscriptionRepository;
 import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse;
 import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordResponse;
+import com.astro.sott.usermanagment.modelClasses.checkCredential.CheckCredentialResponse;
+import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.invoice.InvoiceResponse;
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse;
@@ -59,8 +62,16 @@ public class SubscriptionViewModel extends AndroidViewModel {
         return MySubscriptionPlanRepository.getInstance().getLastSubscription(getApplication(), acessToken);
     }
 
-    public LiveData<EvergentCommonResponse<UpdateProfileResponse>> updateProfile(String type, String emailMobile,String accessToken) {
-        return MySubscriptionPlanRepository.getInstance().updateProfile(getApplication(), type, emailMobile,accessToken);
+    public LiveData<EvergentCommonResponse<UpdateProfileResponse>> updateProfile(String type, String emailMobile, String accessToken) {
+        return MySubscriptionPlanRepository.getInstance().updateProfile(getApplication(), type, emailMobile, accessToken);
+    }
+
+    public LiveData<EvergentCommonResponse<CheckCredentialResponse>> checkCredential(String password, String emailMobile) {
+        return MySubscriptionPlanRepository.getInstance().checkCredential(getApplication(), password, emailMobile);
+    }
+
+    public LiveData<EvergentCommonResponse<CreateOtpResponse>> createOtp(String type, String emailMobile) {
+        return AstrLoginRepository.getInstance().createOtp(getApplication(), type, emailMobile);
     }
 
     public LiveData<EvergentCommonResponse<RemoveSubscriptionResponse>> removeSubscription(String acessToken, String productId) {

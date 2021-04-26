@@ -3,6 +3,7 @@ package com.astro.sott.usermanagment.networkManager.retrofit
 import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
 import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordResponse
+import com.astro.sott.usermanagment.modelClasses.checkCredential.CheckCredentialResponse
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
@@ -36,6 +37,10 @@ interface EvergentApiInterface {
 
     @POST("astro/updateProfile")
     fun updateProfile(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<UpdateProfileResponse?>?
+
+
+    @POST("astro/checkCredentials")
+    fun checkCredentials(@Body jsonObject: JsonObject?): Call<CheckCredentialResponse?>?
 
     @POST("astro/confirmOTP")
     fun confirmOtp(@Body jsonObject: JsonObject?): Call<ConfirmOtpResponse?>?
