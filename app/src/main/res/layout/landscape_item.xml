@@ -21,7 +21,9 @@
             ></include>
 
 
-        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_landscape"
+            xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="@dimen/landscape_item_width"
             android:layout_height="wrap_content"
@@ -97,51 +99,7 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/titleLayout"
-                android:layout_width="@dimen/landscape_item_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/landscape_item_height"
-                card_view:cardBackgroundColor="@color/grape_purple"
-                android:visibility="gone">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/roboto_regular"
-                        android:gravity="left"
-                        android:maxLines="1"
-                        android:paddingTop="@dimen/_2sdp"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:text="achjasdgh"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/tvDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/roboto_regular"
-                        android:gravity="left"
-                        android:maxLines="1"
-                        android:paddingBottom="@dimen/_2sdp"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_9sdp"
-                        android:text="xyldd"
-                        android:visibility="gone" />
-
-
-                </LinearLayout>
-
-            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/billing_image"
@@ -173,7 +131,52 @@
                 android:visibility="gone"
                 layout="@layout/exclusive_item" />
         </androidx.cardview.widget.CardView>
+        <RelativeLayout
+            android:id="@+id/titleLayout"
+            android:layout_below="@+id/cv_landscape"
+            android:layout_width="@dimen/landscape_item_width"
+            android:layout_height="wrap_content"
 
+            card_view:cardBackgroundColor="@color/grape_purple"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="left"
+                    android:maxLines="1"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:text="achjasdgh"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="left"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_9sdp"
+                    android:text="xyldd"
+                    android:visibility="gone" />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
     </RelativeLayout>
 
 </layout>

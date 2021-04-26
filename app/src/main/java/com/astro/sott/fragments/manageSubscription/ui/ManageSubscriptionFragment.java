@@ -90,6 +90,11 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
         getBinding().planRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         modelCall();
         getActiveSubscription();
+
+
+        getBinding().toolbar.backButton.setOnClickListener(v -> {
+            getActivity().onBackPressed();
+        });
     }
 
     private void getActiveSubscription() {

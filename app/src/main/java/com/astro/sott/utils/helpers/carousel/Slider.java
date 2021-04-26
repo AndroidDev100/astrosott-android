@@ -106,8 +106,6 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
         viewPager.addOnPageChangeListener(Slider.this);
         addView(viewPager);
         SliderAdapter adapter = new SliderAdapter(getContext(), type, slideList, (adapterView, view, i, l) -> itemClickListener.onItemClick(adapterView, view, i, l), position);
-
-
         viewPager.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         slideCount = slideList.size();
@@ -129,7 +127,7 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
                 int mWidth = ((displaymetrics.widthPixels - 80) * 10) / 15;
                 viewPager.setPadding(mWidth / 2, 0, mWidth / 2, 0);
             } else*/
-            viewPager.setPadding(0, 10, 0, 10);
+            viewPager.setPadding(0, 10, 0, 90);
         }
         viewPager.setPageMargin(20);
 

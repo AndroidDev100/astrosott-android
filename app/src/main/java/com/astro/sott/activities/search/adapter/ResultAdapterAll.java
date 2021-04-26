@@ -51,11 +51,12 @@ public class ResultAdapterAll extends RecyclerView.Adapter<ResultAdapterAll.Sing
     public void onBindViewHolder(@NonNull SingleItemRowHolder viewHolder, final int position) {
         // viewHolder.searchItemBinding.setSingleItem(itemsList.get(position));
         if (itemsList.get(position).getImages().size()>0){
-            ImageHelper.getInstance(viewHolder.searchItemBinding.itemImage.getContext()).loadImageToLandscape(viewHolder.searchItemBinding.itemImage, itemsList.get(position).getImages().get(0).getUrl(),R.drawable.ic_landscape_placeholder);
+            ImageHelper.getInstance(viewHolder.searchItemBinding.image.getContext()).loadImageToLandscape(viewHolder.searchItemBinding.image, itemsList.get(position).getImages().get(0).getUrl(),R.drawable.ic_landscape_placeholder);
         }else {
-            ImageHelper.getInstance(viewHolder.searchItemBinding.itemImage.getContext()).loadPlaceHolder(viewHolder.searchItemBinding.itemImage, R.drawable.ic_landscape_placeholder);
+            ImageHelper.getInstance(viewHolder.searchItemBinding.image.getContext()).loadPlaceHolder(viewHolder.searchItemBinding.image, R.drawable.ic_landscape_placeholder);
         }
         viewHolder.searchItemBinding.tvTitle.setText(itemsList.get(position).getName());
+        viewHolder.searchItemBinding.tvShortDescription.setText(itemsList.get(position).getDescription());
         viewHolder.searchItemBinding.setSingleItem(itemsList.get(position));
 
 /*        if (itemsList.get(position).getType() == MediaTypeConstant.getLinear(context)) {

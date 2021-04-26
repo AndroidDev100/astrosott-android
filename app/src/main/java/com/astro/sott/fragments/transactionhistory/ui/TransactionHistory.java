@@ -108,6 +108,11 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     }
 
     private void setClicks() {
+
+        getBinding().backButton.setOnClickListener(v -> {
+            getActivity().onBackPressed();
+        });
+
         getBinding().arrow.setOnClickListener(v -> {
             if (getBinding().separator.getVisibility() == View.GONE) {
                 setArrow(true);
@@ -471,4 +476,6 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
 
         }
     }
+
+
 }

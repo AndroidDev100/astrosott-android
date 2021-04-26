@@ -104,10 +104,17 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
         });
 
 
-        String currentTime = AppCommonMethods.getCurrentTimeStamp();
+        Long currentTime = AppCommonMethods.getCurrentTimeStampLong();
         Long startTime = data.get(i).getObject().getStartDate();
+        Log.e("currentTime", String.valueOf(Long.valueOf(currentTime)));
+        Log.e("startTime", String.valueOf(startTime));
 
         Boolean enable = ((ProgramAsset) data.get(i).getObject()).getEnableCatchUp();
+
+        if(startTime>currentTime){
+            viewHolder.scheduleItemBinding.playIcon.setVisibility(View.GONE);
+
+        }
 
 
     }
