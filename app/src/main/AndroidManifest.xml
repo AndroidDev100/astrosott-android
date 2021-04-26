@@ -331,6 +331,7 @@
         <activity
             android:name=".activities.appSettings.ui.AppSettingsActivity"
             android:screenOrientation="locked" />
+
         <activity
             android:name=".activities.videoQuality.ui.VideoQualityActivity"
             android:screenOrientation="locked" />
@@ -362,6 +363,11 @@
             android:name=".player.ui.PlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="sensorLandscape" />
+
+        <activity
+            android:name=".activities.myList.MyListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
 
         <receiver
             android:name=".Alarm.MyReceiver"
