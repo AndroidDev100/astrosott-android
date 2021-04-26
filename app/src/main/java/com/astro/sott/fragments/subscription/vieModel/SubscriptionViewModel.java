@@ -15,6 +15,7 @@ import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordRe
 import com.astro.sott.usermanagment.modelClasses.invoice.InvoiceResponse;
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse;
+import com.astro.sott.usermanagment.modelClasses.updateProfile.UpdateProfileResponse;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.google.gson.JsonArray;
 import com.kaltura.client.types.Subscription;
@@ -35,7 +36,7 @@ public class SubscriptionViewModel extends AndroidViewModel {
     }
 
     public LiveData<EvergentCommonResponse> getProductForLogin(String accessToken, JsonArray subscriptionId) {
-        return MySubscriptionPlanRepository.getInstance().getProductsForLogin(getApplication(), subscriptionId,accessToken);
+        return MySubscriptionPlanRepository.getInstance().getProductsForLogin(getApplication(), subscriptionId, accessToken);
     }
 
     public LiveData<EvergentCommonResponse> getPaymentV2(String acessToken) {
@@ -56,6 +57,10 @@ public class SubscriptionViewModel extends AndroidViewModel {
 
     public LiveData<EvergentCommonResponse<LastSubscriptionResponse>> getLastSubscription(String acessToken) {
         return MySubscriptionPlanRepository.getInstance().getLastSubscription(getApplication(), acessToken);
+    }
+
+    public LiveData<EvergentCommonResponse<UpdateProfileResponse>> updateProfile(String type, String emailMobile,String accessToken) {
+        return MySubscriptionPlanRepository.getInstance().updateProfile(getApplication(), type, emailMobile,accessToken);
     }
 
     public LiveData<EvergentCommonResponse<RemoveSubscriptionResponse>> removeSubscription(String acessToken, String productId) {

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.confirmPassword.ui.ConfirmPasswordActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityEditEmailBinding;
 import com.astro.sott.utils.billing.BillingProcessor;
@@ -27,6 +28,7 @@ import java.util.List;
 
 public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBinding> implements BillingProcessor.IBillingHandler, View.OnClickListener {
     private BillingProcessor billingProcessor;
+    private boolean alreadyEmail = false;
 
     @Override
     protected ActivityEditEmailBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -40,28 +42,46 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
         getBinding().backButton.setOnClickListener(v -> {
             onBackPressed();
         });
+
+
+        if (UserInfo.getInstance(this).getUserName().equalsIgnoreCase("")) {
+
+            getBinding().title.setText(getResources().getString(R.string.set_email));
+        } else {
+            getBinding().layoutEmail.setVisibility(View.VISIBLE);
+            getBinding().title.setText(getResources().getString(R.string.edit_email));
+            alreadyEmail = true;
+            getBinding().email.setText(UserInfo.getInstance(this).getUserName());
+
+        }
+
         intializeBilling();
 
 
         getBinding().button.setOnClickListener(v -> {
+            if (alreadyEmail && UserInfo.getInstance(this).isPasswordExists()) {
+                Intent intent = new Intent(this, ConfirmPasswordActivity.class);
+                startActivity(intent);
+            }
+
+        });
 
 
-           //   billingProcessor.purchase(this, "com.sott.astro.com.my.tvod.1290", "DEVELOPER PAYLOAD HERE");
+        //   billingProcessor.purchase(this, "com.sott.astro.com.my.tvod.1290", "DEVELOPER PAYLOAD HERE");
          /* List<String> purchases = billingProcessor.listOwnedProducts();
 
             for (String purchase: purchases){
                 Log.w("Purchased Item", purchase);
             }
 */
-           // billingProcessor.consumePurchase("com.sott.astro.com.my.tvod.1290");
-        });
+        // billingProcessor.consumePurchase("com.sott.astro.com.my.tvod.1290");
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
-              //  signIn();
+                //  signIn();
                 break;
             // ...
         }

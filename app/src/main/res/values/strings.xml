@@ -219,7 +219,8 @@
     <string name="text_error">Error</string>
     <string name="pls_enter_device_name">Please enter device name.</string>
     <string name="pls_enter_title">Please give a name for the playlist</string>
-
+    <string name="make_Sure">Just Wanted to Make Sure \n You are You</string>
+    <string name="key_password">Please key in your password \n to update email.</string>
     <string name="remove_notification">Are you sure you want to remove this notification?</string>
     <string name="update_device">Update Device</string>
     <string name="edit_device_name">Edit Device Name</string>

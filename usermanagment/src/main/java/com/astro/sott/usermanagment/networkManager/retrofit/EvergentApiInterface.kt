@@ -18,6 +18,7 @@ import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceRespon
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
+import com.astro.sott.usermanagment.modelClasses.updateProfile.UpdateProfileResponse
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.Body
@@ -31,6 +32,10 @@ interface EvergentApiInterface {
 
     @POST("astro/createOTP")
     fun createOtp(@Body jsonObject: JsonObject?): Call<CreateOtpResponse?>?
+
+
+    @POST("astro/updateProfile")
+    fun updateProfile(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<UpdateProfileResponse?>?
 
     @POST("astro/confirmOTP")
     fun confirmOtp(@Body jsonObject: JsonObject?): Call<ConfirmOtpResponse?>?

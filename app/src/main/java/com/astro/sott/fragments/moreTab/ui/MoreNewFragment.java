@@ -134,9 +134,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             startActivity(intent);*/
         });
         getBinding().edit.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            new ActivityLauncher(getActivity()).profileActivity(getActivity());
         });
 
         getBinding().loginSignupMore.setOnClickListener(view -> {

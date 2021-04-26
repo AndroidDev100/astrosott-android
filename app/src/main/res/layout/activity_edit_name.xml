@@ -67,6 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
+                    android:enabled="false"
                     android:fontFamily="@font/heebo_regular"
                     android:foregroundTint="@color/white"
                     android:hint="@string/existing_name"
@@ -122,5 +123,13 @@
 
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:theme="@style/progressBarBlue"
+            android:visibility="gone"></ProgressBar>
     </RelativeLayout>
 </layout>

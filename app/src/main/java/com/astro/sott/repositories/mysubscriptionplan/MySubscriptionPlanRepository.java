@@ -23,6 +23,7 @@ import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse;
 import com.astro.sott.usermanagment.modelClasses.invoice.InvoiceResponse;
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse;
+import com.astro.sott.usermanagment.modelClasses.updateProfile.UpdateProfileResponse;
 import com.google.gson.JsonArray;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.Entitlement;
@@ -166,6 +167,30 @@ public class MySubscriptionPlanRepository {
 
             @Override
             public void onSuccess(@NotNull ChangePasswordResponse getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setResponse(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
+    public LiveData<EvergentCommonResponse<UpdateProfileResponse>> updateProfile(Context context, String type, String emailMobile,String accessToken) {
+        MutableLiveData<EvergentCommonResponse<UpdateProfileResponse>> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().updateProfile(context, type, emailMobile,accessToken, new EvergentResponseCallBack<UpdateProfileResponse>() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull UpdateProfileResponse getDevicesResponse) {
                 evergentCommonResponse.setStatus(true);
                 evergentCommonResponse.setResponse(getDevicesResponse);
                 mutableLiveData.postValue(evergentCommonResponse);

@@ -62,14 +62,14 @@
                 android:id="@+id/change_profilePhoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_below="@+id/circular_profile"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/heebo_regular"
                 android:text="@string/change_profile_photo"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_14sp" />
+                android:textSize="@dimen/_14sp"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/ll1"
@@ -380,6 +380,13 @@
                 </RelativeLayout>
             </RelativeLayout>
 
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:theme="@style/progressBarBlue"
+                android:visibility="gone"></ProgressBar>
         </RelativeLayout>
     </ScrollView>
 </layout>
