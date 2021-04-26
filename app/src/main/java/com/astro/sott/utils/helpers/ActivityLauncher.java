@@ -828,6 +828,7 @@ public class ActivityLauncher {
 
     public void myListActivity(Activity activity, Class<MyListActivity> myListActivityClass,AssetCommonBean data) {
         Intent intent = new Intent(activity, myListActivityClass);
+        intent.putExtra("baseCategory", data.getRailDetail());
         intent.putExtra(AppLevelConstants.ASSET_COMMON_BEAN, data);
         activity.startActivity(intent);
     }

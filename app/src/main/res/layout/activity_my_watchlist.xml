@@ -6,7 +6,17 @@
         android:layout_width="match_parent"
         android:filterTouchesWhenObscured="true"
         android:layout_height="wrap_content"
+        android:background="@color/grape_purple"
         android:clipChildren="false">
+
+        <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/progressBarBlue"
+            android:visibility="gone"
+            android:layout_centerInParent="true"/>
 
 
         <LinearLayout
@@ -60,7 +70,7 @@
 
             <include
                 android:id="@+id/toolbar"
-                layout="@layout/toolbar_back_arrow"></include>
+                layout="@layout/toolbar_more_listing"></include>
         </LinearLayout>
 
         <LinearLayout

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.astro.sott.R;
+import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.ItemClickListener;
@@ -28,10 +29,11 @@ public class MyWatchlistAdapter extends RecyclerView.Adapter<MyWatchlistAdapter.
     private final List<RailCommonData> railList;
     private final Activity mContext;
     private long lastClickTime = 0;
-
-    public MyWatchlistAdapter(Activity activity, List<RailCommonData> itemsList) {
+    VIUChannel channel;
+    public MyWatchlistAdapter(Activity activity, List<RailCommonData> itemsList, VIUChannel channel) {
         this.railList = itemsList;
         this.mContext = activity;
+        this.channel=channel;
     }
 
     @NonNull

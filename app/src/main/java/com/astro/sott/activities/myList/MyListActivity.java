@@ -21,8 +21,12 @@ import com.astro.sott.activities.deviceMangment.helper.RecyclerTouchListener;
 import com.astro.sott.activities.moreListing.ui.ListingActivityNew;
 import com.astro.sott.activities.myList.adapter.MyWatchlistAdapter;
 import com.astro.sott.activities.myList.viewModel.MyWatchlistViewModel;
+import com.astro.sott.adapter.experiencemng.CommonLandscapeListingAdapteNew;
 import com.astro.sott.baseModel.BaseBindingActivity;
+import com.astro.sott.beanModel.VIUChannel;
+import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.callBacks.commonCallBacks.ClickListener;
+import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.callBacks.commonCallBacks.ItemClickListener;
 import com.astro.sott.databinding.ActivityMyWatchlistBinding;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
@@ -42,7 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MyListActivity extends BaseBindingActivity<ActivityMyWatchlistBinding>{
+public class MyListActivity extends BaseBindingActivity<ActivityMyWatchlistBinding> implements DetailRailClick {
     private final ArrayList<RailCommonData> arrayList = new ArrayList<>();
     int type;
     private MyWatchlistViewModel viewModel;
@@ -50,7 +54,7 @@ public class MyListActivity extends BaseBindingActivity<ActivityMyWatchlistBindi
     private boolean mIsLoading = true;
     private boolean isScrolling = false;
     private List<PersonalList> personalLists = new ArrayList<>();
-    private MyWatchlistAdapter searchNormalAdapter;
+    private CommonLandscapeListingAdapteNew searchNormalAdapter;
     private int count = 1, totalCOunt = 0, counter = 1;
     private int pastVisiblesItems, visibleItemCount, totalItemCount, firstVisiblePosition;
     private int itemPosition;
@@ -64,7 +68,6 @@ public class MyListActivity extends BaseBindingActivity<ActivityMyWatchlistBindi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-      //  new ToolBarHandler(this).myWatchlistAction(getBinding());
         connectionObserver();
 /*
 
@@ -133,7 +136,19 @@ public class MyListActivity extends BaseBindingActivity<ActivityMyWatchlistBindi
 
     int spacing;
     int spanCount;
+    VIUChannel category;
+    private boolean tabletSize;
+    AssetCommonBean assetCommonBean;
     private void UIinitialization() {
+        category = (VIUChannel) getIntent().getExtras().getParcelable("baseCategory");
+        assetCommonBean = getIntent().getExtras().getParcelable("assetCommonBean");
+        new ToolBarHandler(this).myWatchlistAction(getBinding(),assetCommonBean);
+        getBinding().toolbar.homeIconBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         swipeToRefresh();
         getBinding().recyclerViewMore.addOnItemTouchListener(new RecyclerTouchListener(this, getBinding().recyclerViewMore, new ClickListener() {
 
@@ -154,9 +169,17 @@ public class MyListActivity extends BaseBindingActivity<ActivityMyWatchlistBindi
 
             }
         }));
-        spanCount = AppConstants.SPAN_COUNT_LANDSCAPE;
-        Resources r = getResources();
-        spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, AppConstants.LANSCAPE_SPACING, r.getDisplayMetrics());
+        tabletSize = getResources().getBoolean(R.bool.isTablet);
+        if (tabletSize) {
+            spanCount = 4;
+            Resources r = getResources();
+            spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, AppConstants.LANSCAPE_SPACING, r.getDisplayMetrics());
+        }else {
+            spanCount = AppConstants.SPAN_COUNT_LANDSCAPE;
+            Resources r = getResources();
+            spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, AppConstants.LANSCAPE_SPACING, r.getDisplayMetrics());
+        }
+
 
         getBinding().recyclerViewMore.hasFixedSize();
         getBinding().recyclerViewMore.setNestedScrollingEnabled(false);
@@ -166,9 +189,9 @@ public class MyListActivity extends BaseBindingActivity<ActivityMyWatchlistBindi
     }
 
     private void getWatchListDetail() {
-
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         viewModel.getAllWatchlist(getAssetId(personalListsInChunks)).observe(this, railCommonData -> {
-
+            getBinding().progressBar.setVisibility(View.GONE);
             if (railCommonData != null) {
                 if (railCommonData.size() > 0) {
                     if (railCommonData.get(0).getStatus()) {
@@ -192,7 +215,9 @@ public class MyListActivity extends BaseBindingActivity<ActivityMyWatchlistBindi
     }
 
     private void loadDataFromModel() {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         viewModel.getWatchlistData(counter).observe(this, commonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
             swipeToRefreshCheck();
             if (commonResponse != null) {
                 totalCOunt = commonResponse.getTotalCount();
@@ -242,12 +267,14 @@ public class MyListActivity extends BaseBindingActivity<ActivityMyWatchlistBindi
         return value;
 
     }
-
     private void setUIComponets(List<RailCommonData> railCommonData) {
         arrayList.addAll(railCommonData);
 
         if (!isScrolling) {
-            searchNormalAdapter = new MyWatchlistAdapter(MyListActivity.this, arrayList);
+           // searchNormalAdapter = new MyWatchlistAdapter(MyListActivity.this, arrayList,category);
+           // getBinding().recyclerViewMore.setAdapter(searchNormalAdapter);
+
+            searchNormalAdapter = new CommonLandscapeListingAdapteNew(this, arrayList, AppConstants.Rail7, assetCommonBean.getTitle(),category.getCategory());
             getBinding().recyclerViewMore.setAdapter(searchNormalAdapter);
             mIsLoading = searchNormalAdapter.getItemCount() != totalCOunt;
 
@@ -397,6 +424,11 @@ public class MyListActivity extends BaseBindingActivity<ActivityMyWatchlistBindi
         String two = String.valueOf(idofasset);
         String three = "'";
         return one.concat(two).concat(three);
+    }
+
+    @Override
+    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
+
     }
 
 

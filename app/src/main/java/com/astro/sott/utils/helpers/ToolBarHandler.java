@@ -17,6 +17,7 @@ import com.astro.sott.activities.moreListing.ui.DetailListingActivity;
 import com.astro.sott.activities.moreListing.ui.ListingActivityNew;
 import com.astro.sott.activities.myList.MyListActivity;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
+import com.astro.sott.databinding.ActivityMyWatchlistBinding;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.Enum.ListingLayoutType;
@@ -310,5 +311,9 @@ public class ToolBarHandler {
         searchIcon.setVisibility(View.INVISIBLE);
         homeIcon.setBackgroundResource(R.drawable.ic_arrow_back_black_24dp);
         homeIcon.setOnClickListener(view -> activity.onBackPressed());
+    }
+
+    public void myWatchlistAction(ActivityMyWatchlistBinding binding, AssetCommonBean assetCommonBean) {
+        binding.toolbar.tvSearchResultHeader.setText(assetCommonBean.getTitle());
     }
 }
