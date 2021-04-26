@@ -355,6 +355,11 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="sensorLandscape" />
 
+        <activity
+            android:name=".activities.myList.MyListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+
         <receiver
             android:name=".Alarm.MyReceiver"
             android:enabled="true"

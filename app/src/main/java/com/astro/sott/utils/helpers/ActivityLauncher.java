@@ -19,6 +19,7 @@ import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.liveEvent.LiveEventActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.moreListing.ui.GridListingActivity;
+import com.astro.sott.activities.myList.MyListActivity;
 import com.astro.sott.activities.myplaylist.ui.MyPlaylist;
 import com.astro.sott.R;
 import com.astro.sott.activities.SelectAccount.UI.SelectDtvAccountActivity;
@@ -823,6 +824,12 @@ public class ActivityLauncher {
         intent.putExtra(AppLevelConstants.ASSET_COMMON_BEAN, assetCommonBean);
         activity.startActivity(intent);
 
+    }
+
+    public void myListActivity(Activity activity, Class<MyListActivity> myListActivityClass,AssetCommonBean data) {
+        Intent intent = new Intent(activity, myListActivityClass);
+        intent.putExtra(AppLevelConstants.ASSET_COMMON_BEAN, data);
+        activity.startActivity(intent);
     }
 }
 

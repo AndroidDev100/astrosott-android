@@ -441,7 +441,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     // tab titles
-    private String[] titles = new String[]{"HOME","TV SHOWS", "MOVIES", "SPORTS"};
+    private String[] titles = new String[]{"ALL","TV SHOWS", "MOVIES", "SPORTS"};
 
     private void initialFragment(HomeActivity homeActivity) {
         setViewPager();

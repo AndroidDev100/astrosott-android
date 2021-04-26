@@ -156,6 +156,11 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
                 }
             }
 
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+
             private void confirmDeletion() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(homeActivity, R.style.AlertDialogStyle);
                 builder.setTitle(getResources().getString(R.string.dialog));

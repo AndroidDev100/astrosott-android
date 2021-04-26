@@ -151,8 +151,10 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
 
     private void connectionValidation(Boolean aBoolean) {
+        Log.e(TAG, "oncreate: " + "in3"+aBoolean);
         if (aBoolean) {
             if (!CommonUtils.isRooted(this)) {
+                Log.e(TAG, "oncreate: " + "in4");
                 isFirstTimeUser = SharedPrefHelper.getInstance(getApplication()).getBoolean("isFirstTime", false);
                 if (!isFirstTimeUser) {
                     SharedPrefHelper.getInstance(getApplication()).setString("DMS_Date", "mDate");
@@ -184,14 +186,17 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     private void callViewModel() {
+        Log.e(TAG, "oncreate: " + "in2");
         myViewModel = ViewModelProviders.of(this).get(SplashViewModel.class);
         connectionObserver();
     }
 
     private void versionStatus() {
+        Log.e(TAG, "oncreate: " + "in2");
         myViewModel.getVersion(this).observe(this, new Observer<List<AppVersionStatus>>() {
             @Override
             public void onChanged(@Nullable List<AppVersionStatus> appVersionStatuses) {
+                Log.e(TAG, "oncreate: " + "in3");
                 if (appVersionStatuses != null && appVersionStatuses.get(0) != null && appVersionStatuses.get(0).getStatus()) {
                     pushToken();
 
@@ -315,8 +320,10 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     private void DMSCall() {
+        Log.e(TAG, "oncreate: " + "in5");
         myViewModel.DMSCall(this).observe(this, s -> {
             dms_response = s;
+            Log.e(TAG, "oncreate: " + "in6"+dms_response);
             if (dms_response != null && !TextUtils.isEmpty(dms_response)) {
 
                 if (TextUtils.isEmpty(KsPreferenceKey.getInstance(this).getQualityName())) {
@@ -913,7 +920,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
             }
         }
-
+        Log.e(TAG, "oncreate: " + "in");
         AppCommonMethods.isAdsEnable = true;
         callViewModel();
         showAnimation();

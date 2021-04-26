@@ -120,7 +120,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         textView.setText(stringBuilder.toString());
         headerSearchCount.setText(stringBuilder2.toString());
 
-        if (count < 20)
+        if (count < 15)
             all.setVisibility(View.GONE);
 
 

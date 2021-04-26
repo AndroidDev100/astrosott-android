@@ -637,10 +637,10 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (dataList.get(position).getMoreType() == LIVE_CHANNEL_LIST || dataList.get(position).getMoreType() == SIMILLAR_UGC_VIDEOS || dataList.get(position).getMoreType() == YOU_MAY_LIKE) {
             holder.landscapeRecyclerItemBinding.headerTitle.setVisibility(View.VISIBLE);
             if (dataList.get(position).getMoreType() == SIMILLAR_UGC_VIDEOS) {
-                if (totalCount > 5)
+                if (totalCount > 2)
                     holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
             } else {
-                if (totalCount > 20)
+                if (totalCount > 2)
                     holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
             }
 
@@ -652,7 +652,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
                 }
             } else {
-                if (totalCount >= 10) {
+                if (totalCount >= 2) {
                     new ToolBarHandler(activity).setContinueWatchingListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
                 } else {
                     ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
@@ -660,7 +660,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
 
         } else {
-            if (totalCount > 20) {
+            if (totalCount > 2) {
                 holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
             } else {
                 holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);

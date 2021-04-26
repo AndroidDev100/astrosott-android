@@ -650,7 +650,8 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     private void setCLosedSeriesAdapter(List<RailCommonData> finalEpisodeList) {
         checkExpiry(list);
         adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this, this);
-        getActivity().runOnUiThread(() -> {
+        if (getActivity()!=null && !getActivity().isFinishing()){
+            getActivity().runOnUiThread(() -> {
             getBinding().recyclerView.setAdapter(adapter);
 
             int count = adapter.getItemCount();
@@ -660,8 +661,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 getBinding().loadMoreButton.setVisibility(View.VISIBLE);
             }
         });
-
-
+        }
     }
 
     private void setOpenSeriesAdapter(List<RailCommonData> finalEpisodeList) {

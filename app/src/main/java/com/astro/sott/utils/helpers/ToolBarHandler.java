@@ -15,10 +15,12 @@ import com.astro.sott.activities.moreListing.ui.ListingActivity;
 import com.astro.sott.R;
 import com.astro.sott.activities.moreListing.ui.DetailListingActivity;
 import com.astro.sott.activities.moreListing.ui.ListingActivityNew;
+import com.astro.sott.activities.myList.MyListActivity;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.Enum.ListingLayoutType;
+import com.enveu.Enum.PredefinePlaylistType;
 
 public class ToolBarHandler {
     private final Activity activity;
@@ -53,9 +55,31 @@ public class ToolBarHandler {
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (data.getContentListinglayout() != null && !data.getContentListinglayout().equalsIgnoreCase("") && data.getContentListinglayout().equalsIgnoreCase(ListingLayoutType.LST.name())) {
-                    try {
-                        Log.e("getRailData", "LST");
+                if(data.getPredefPlaylistType() != null && !data.getPredefPlaylistType().equalsIgnoreCase("") && data.getPredefPlaylistType().equalsIgnoreCase(PredefinePlaylistType.MY_W.name())){
+                    new ActivityLauncher(activity).myListActivity(activity, MyListActivity.class,assetCommonBean);
+                }else {
+                    if (data.getContentListinglayout() != null && !data.getContentListinglayout().equalsIgnoreCase("") && data.getContentListinglayout().equalsIgnoreCase(ListingLayoutType.LST.name())) {
+                        try {
+                            Log.e("getRailData", "LST");
+                            AssetCommonBean assetCommonBean1 = new AssetCommonBean();
+                            assetCommonBean1.setID(assetCommonBean.getID());
+                            assetCommonBean1.setTitle(assetCommonBean.getTitle());
+                            assetCommonBean1.setMoreType(assetCommonBean.getMoreType());
+                            assetCommonBean1.setAsset(assetCommonBean.getRailAssetList().get(0).getObject());
+                            assetCommonBean1.setMoreID(assetCommonBean.getMoreID());
+                            assetCommonBean1.setMoreSeriesID(assetCommonBean.getMoreSeriesID());
+                            assetCommonBean1.setMoreAssetType(assetCommonBean.getMoreAssetType());
+                            assetCommonBean1.setMoreGenre(assetCommonBean.getMoreGenre());
+                            assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
+                            new ActivityLauncher(activity).gridListing(activity, GridListingActivity.class, data.getContentImageType(), assetCommonBean1);
+
+                        } catch (Exception e) {
+
+                        }
+
+
+                    } else if (data.getContentListinglayout() != null && !data.getContentListinglayout().equalsIgnoreCase("") && data.getContentListinglayout().equalsIgnoreCase(ListingLayoutType.GRD.name())) {
+
                         AssetCommonBean assetCommonBean1 = new AssetCommonBean();
                         assetCommonBean1.setID(assetCommonBean.getID());
                         assetCommonBean1.setTitle(assetCommonBean.getTitle());
@@ -66,35 +90,18 @@ public class ToolBarHandler {
                         assetCommonBean1.setMoreAssetType(assetCommonBean.getMoreAssetType());
                         assetCommonBean1.setMoreGenre(assetCommonBean.getMoreGenre());
                         assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
-                        new ActivityLauncher(activity).gridListing(activity, GridListingActivity.class, data.getContentImageType(), assetCommonBean1);
-
-                    } catch (Exception e) {
-
-                    }
+                        assetCommonBean1.setCategory(assetCommonBean.getRailDetail().getCategory());
+                        // dont get confused with name as potrait its for grid
+                        new ActivityLauncher(activity).listListing(activity, ListingActivityNew.class, data.getContentImageType(), assetCommonBean1);
 
 
-                } else if (data.getContentListinglayout() != null && !data.getContentListinglayout().equalsIgnoreCase("") && data.getContentListinglayout().equalsIgnoreCase(ListingLayoutType.GRD.name())) {
-
-                    AssetCommonBean assetCommonBean1 = new AssetCommonBean();
-                    assetCommonBean1.setID(assetCommonBean.getID());
-                    assetCommonBean1.setTitle(assetCommonBean.getTitle());
-                    assetCommonBean1.setMoreType(assetCommonBean.getMoreType());
-                    assetCommonBean1.setAsset(assetCommonBean.getRailAssetList().get(0).getObject());
-                    assetCommonBean1.setMoreID(assetCommonBean.getMoreID());
-                    assetCommonBean1.setMoreSeriesID(assetCommonBean.getMoreSeriesID());
-                    assetCommonBean1.setMoreAssetType(assetCommonBean.getMoreAssetType());
-                    assetCommonBean1.setMoreGenre(assetCommonBean.getMoreGenre());
-                    assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
-                    assetCommonBean1.setCategory(assetCommonBean.getRailDetail().getCategory());
-                    // dont get confused with name as potrait its for grid
-                    new ActivityLauncher(activity).listListing(activity, ListingActivityNew.class, data.getContentImageType(), assetCommonBean1);
-
-
-                } else {
-                    Log.e("getRailData", "PDF");
-                    if (data.getName() != null) {
                     } else {
+                        Log.e("getRailData", "PDF");
+                        if (data.getName() != null) {
+                        } else {
+                        }
                     }
+
                 }
 
             }
