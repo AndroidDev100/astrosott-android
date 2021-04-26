@@ -27,115 +27,173 @@
 
         >
 
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="@dimen/related_item_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/transparentColor"
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/searchItemImage"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/search_item_padding"
-            android:layout_marginRight="@dimen/search_item_padding"
-            android:layout_marginTop="@dimen/search_item_padding"
-            app:layout_constraintStart_toStartOf="parent">
-
-
-            <LinearLayout
-                android:id="@+id/creator_lay"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@drawable/creator_name_background"
-                android:gravity="center"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/creator_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLength="2"
-                    android:text=""
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_medium" />
-
-            </LinearLayout>
 
             <androidx.cardview.widget.CardView
-                android:layout_width="@dimen/tab_search_width"
-                android:layout_height="@dimen/tab_search_height"
-                android:background="@color/fragment_background_color"
-                app:cardCornerRadius="@dimen/trailor_btn_left">
+                android:id="@+id/card_view"
+                android:layout_width="@dimen/related_item_width"
+                android:layout_height="@dimen/related_item_height"
+                app:cardCornerRadius="9dp">
 
-            <ImageView
-                android:id="@+id/itemImage"
-                setImageUrlSearch="@{singleItem.images.size() > 0 ? singleItem.images.get(0) : null}"
-                android:layout_width="@dimen/tab_search_width"
-                android:layout_height="@dimen/tab_search_height"
-                android:contentDescription="@string/banner_image"
-                android:scaleType="fitXY"
-                tools:ignore="ContentDescription"
-               android:layout_gravity="center"
-                android:background="@color/fragment_background_color"
-                />
-
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_landscape_placeholder"
+                    android:scaleType="fitXY"></ImageView>
 
             </androidx.cardview.widget.CardView>
-            <!--<ImageView-->
-                <!--android:id="@+id/channel_image"-->
-                <!--setImageUrlSearch="@{singleItem.images.size() > 0 ? singleItem.images.get(0) : null}"-->
-                <!--android:layout_width="@dimen/tab_search_width"-->
-                <!--android:layout_height="@dimen/tab_search_height"-->
-                <!--android:contentDescription="@string/channel_logo"-->
-                <!--android:scaleType="fitXY"-->
-                <!--android:visibility="gone"-->
-                <!--tools:ignore="ContentDescription" />-->
-
-        </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/search_item_padding"
-            android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            >
 
             <TextView
-                android:id="@+id/tvTitle"
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/font_medium"
                 android:ellipsize="end"
-                android:fontFamily="@font/roboto_medium"
+                android:layout_below="@id/card_view"
+                android:fontFamily="@font/heebo_regular"
                 android:maxLines="1"
-                android:ems="10"
-                android:text="@{ResultAllXmlUtils.setTitle(singleItem)}"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_medium_large"
-                />
+                android:textColor="@color/title_color">
 
+            </TextView>
             <TextView
-                android:id="@+id/tvEpisode"
+                android:id="@+id/tv_short_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_marginTop="1dp"
                 android:ellipsize="end"
-                android:fontFamily="@font/roboto_regular"
+                android:textSize="@dimen/font_small"
+                android:text=""
+                android:layout_below="@id/tv_title"
+                android:fontFamily="@font/heebo_regular"
                 android:maxLines="1"
-                android:ems="10"
-                android:text="@{ResultAllXmlUtils.setDetails(context,singleItem)}"
-                android:textColor="@color/search_sub_title"
-                android:textSize="@dimen/font_medium_large" />
+                android:textColor="@color/title_color">
 
-        </LinearLayout>
+            </TextView>
 
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/search_item_seperator_width"
-            android:visibility="gone"
-            android:background="@color/search_toolbar_background"
-            app:layout_constraintBottom_toBottomOf="parent" />
+        </RelativeLayout>
 
+
+
+        <!--  <FrameLayout
+              android:id="@+id/searchItemImage"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:layout_gravity="center"
+              android:layout_marginLeft="@dimen/search_item_padding"
+              android:layout_marginRight="@dimen/search_item_padding"
+              android:layout_marginTop="@dimen/search_item_padding"
+              app:layout_constraintStart_toStartOf="parent">
+
+
+              <LinearLayout
+                  android:id="@+id/creator_lay"
+                  android:layout_width="45dp"
+                  android:layout_height="45dp"
+                  android:background="@drawable/creator_name_background"
+                  android:gravity="center"
+                  android:visibility="gone">
+
+                  <TextView
+                      android:id="@+id/creator_name"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:maxLength="2"
+                      android:text=""
+                      android:textColor="@color/white"
+                      android:textSize="@dimen/font_medium" />
+
+              </LinearLayout>
+
+              <androidx.cardview.widget.CardView
+                  android:layout_width="@dimen/tab_search_width"
+                  android:layout_height="@dimen/tab_search_height"
+                  android:background="@color/fragment_background_color"
+                  app:cardCornerRadius="@dimen/trailor_btn_left">
+
+              <ImageView
+                  android:id="@+id/itemImage"
+                  setImageUrlSearch="@{singleItem.images.size() > 0 ? singleItem.images.get(0) : null}"
+                  android:layout_width="@dimen/tab_search_width"
+                  android:layout_height="@dimen/tab_search_height"
+                  android:contentDescription="@string/banner_image"
+                  android:scaleType="fitXY"
+                  tools:ignore="ContentDescription"
+                 android:layout_gravity="center"
+                  android:background="@color/fragment_background_color"
+                  />
+
+
+              </androidx.cardview.widget.CardView>
+              &lt;!&ndash;<ImageView&ndash;&gt;
+                  &lt;!&ndash;android:id="@+id/channel_image"&ndash;&gt;
+                  &lt;!&ndash;setImageUrlSearch="@{singleItem.images.size() > 0 ? singleItem.images.get(0) : null}"&ndash;&gt;
+                  &lt;!&ndash;android:layout_width="@dimen/tab_search_width"&ndash;&gt;
+                  &lt;!&ndash;android:layout_height="@dimen/tab_search_height"&ndash;&gt;
+                  &lt;!&ndash;android:contentDescription="@string/channel_logo"&ndash;&gt;
+                  &lt;!&ndash;android:scaleType="fitXY"&ndash;&gt;
+                  &lt;!&ndash;android:visibility="gone"&ndash;&gt;
+                  &lt;!&ndash;tools:ignore="ContentDescription" />&ndash;&gt;
+
+          </FrameLayout>
+
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="@dimen/search_item_padding"
+              android:orientation="vertical"
+              app:layout_constraintLeft_toLeftOf="parent"
+              app:layout_constraintBottom_toBottomOf="parent"
+              >
+
+              <TextView
+                  android:id="@+id/tvTitle"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:ellipsize="end"
+                  android:fontFamily="@font/roboto_medium"
+                  android:maxLines="1"
+                  android:ems="10"
+                  android:text="@{ResultAllXmlUtils.setTitle(singleItem)}"
+                  android:textColor="@color/white"
+                  android:textSize="@dimen/font_medium_large"
+                  />
+
+              <TextView
+                  android:id="@+id/tvEpisode"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center_vertical"
+                  android:ellipsize="end"
+                  android:fontFamily="@font/roboto_regular"
+                  android:maxLines="1"
+                  android:ems="10"
+                  android:text="@{ResultAllXmlUtils.setDetails(context,singleItem)}"
+                  android:textColor="@color/search_sub_title"
+                  android:textSize="@dimen/font_medium_large" />
+
+          </LinearLayout>
+
+
+
+          <View
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/search_item_seperator_width"
+              android:visibility="gone"
+              android:background="@color/search_toolbar_background"
+              app:layout_constraintBottom_toBottomOf="parent" />
+  -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

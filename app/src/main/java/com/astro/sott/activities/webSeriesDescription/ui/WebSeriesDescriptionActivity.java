@@ -299,9 +299,17 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
             if (!TextUtils.isEmpty(s)) {
                 if (s.length() > 3) {
-                    StringBuilderHolder.getInstance().append(s.substring(0, 4));
+                    try {
+                        StringBuilderHolder.getInstance().append(s.substring(0, 4));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    StringBuilderHolder.getInstance().append(s);
+                    try {
+                        StringBuilderHolder.getInstance().append(s);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 StringBuilderHolder.getInstance().append(" | ");
 
