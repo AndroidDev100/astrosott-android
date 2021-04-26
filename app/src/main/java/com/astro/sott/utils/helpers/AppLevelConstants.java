@@ -97,6 +97,8 @@ public interface AppLevelConstants {
     String KSQL_GENRE_END = "' Genre='";
     String PROMO_ASSET_NAME = "name";
     String PARENTAL_RATING = "ParentalRating";
+    String ProviderContentTier = "ProviderContentTier";
+
     String BILLING_ID = "BillingId";
 
     String KEY_SEASON_NUMBER = "SeasonNumber";
@@ -115,6 +117,8 @@ public interface AppLevelConstants {
     String KEY_EXTERNAL_REF_ID = "ExternalReferenceId";
 
     String KEY_REF_ID = "Ref Id";
+    String SERIES_NAME = "SeriesName";
+
     String YEAR = "Year";
     String IS_SPONSORED = "IsSponsored";
     String IS_LIVE_EVENT = "LiveEventChannel";

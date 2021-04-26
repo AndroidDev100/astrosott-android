@@ -942,7 +942,7 @@ public class PlayerRepository {
                 PrintLogging.printLog("ValueIS", "0");
             } else {*/
             if (AppCommonMethods.isAdsEnable) {
-                if (AssetContent.isAdsEnable(asset.getMetas())) {
+                if (!AssetContent.isAdsEnable(asset.getMetas())) {
                     addIMAConfig(context, playerPluginConfig);
                 }
             }

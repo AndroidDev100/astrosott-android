@@ -25,10 +25,10 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
         android:resizeableActivity="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:requestLegacyExternalStorage="true"
         android:theme="@style/MyMaterialTheme"
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
@@ -132,10 +132,10 @@
             android:value=".activities.splash.ui.SplashActivity" />
         <meta-data
             android:name="CLEVERTAP_ACCOUNT_ID"
-            android:value="TEST-775-W65-ZZ6Z" />
+            android:value="@string/cleverTap_ACCOUNT_ID" />
         <meta-data
             android:name="CLEVERTAP_TOKEN"
-            android:value="TEST-560-5aa" />
+            android:value="@string/cleverTap_token" />
         <!--
  <meta-data
              android:name="CLEVERTAP_USE_CUSTOM_ID"
@@ -170,20 +170,28 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="example.com"
                     android:pathPrefix="/stagingsott"
-                    android:scheme="https"/>
+                    android:scheme="https" />
             </intent-filter>
 
             <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:host="stagingsott.page.link" android:scheme="http"/>
-                <data android:host="example.com/link" android:scheme="https"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="stagingsott.page.link"
+                    android:scheme="http" />
+                <data
+                    android:host="example.com/link"
+                    android:scheme="https" />
             </intent-filter>
 
         </activity>
@@ -214,8 +222,8 @@
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.home.HomeActivity"
-            android:launchMode="singleTask"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.search.ui.ActivitySearch"
@@ -312,7 +320,7 @@
 
         <meta-data
             android:name="FCM_SENDER_ID"
-            android:value="id:929669716426" />
+            android:value="@string/fcm_sender_id" />
 
         <service android:name=".thirdParty.fcm.SookaFirebaseInstanceIdService">
             <intent-filter>
@@ -323,6 +331,7 @@
         <activity
             android:name=".activities.appSettings.ui.AppSettingsActivity"
             android:screenOrientation="locked" />
+
         <activity
             android:name=".activities.videoQuality.ui.VideoQualityActivity"
             android:screenOrientation="locked" />

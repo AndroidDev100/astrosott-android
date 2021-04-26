@@ -141,7 +141,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
         getBinding().loginSignupMore.setOnClickListener(view -> {
 
-            new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class,"profile");
+            new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "profile");
 
         });
         getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
@@ -199,7 +199,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                     transaction.commit();
                 } else {
-                    new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class,"profile");
+                    new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "profile");
 
                 }
 //                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
@@ -278,7 +278,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 manageDeviceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(manageDeviceIntent);
             } else {
-                new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class,"profile");
+                new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "profile");
 
             }
 
@@ -396,8 +396,18 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             getBinding().loginUi.setVisibility(View.VISIBLE);
             getBinding().loginSignupMore.setVisibility(View.GONE);
             getBinding().rlLogout.setVisibility(View.VISIBLE);
-            getBinding().tvName.setText(UserInfo.getInstance(getActivity()).getFirstName() + " " + UserInfo.getInstance(getActivity()).getLastName());
-            getBinding().tvEmail.setText(UserInfo.getInstance(getActivity()).getEmail());
+            if (!UserInfo.getInstance(getActivity()).getFirstName().equalsIgnoreCase("")) {
+                getBinding().tvName.setText(UserInfo.getInstance(getActivity()).getFirstName());
+            } else {
+                getBinding().tvName.setText("Sooka Superstar");
+
+            }
+            if (!UserInfo.getInstance(getActivity()).getEmail().equalsIgnoreCase("")) {
+                getBinding().tvEmail.setText(AppCommonMethods.maskedEmail(getActivity()));
+            } else {
+                getBinding().tvEmail.setText(AppCommonMethods.maskedMobile(getActivity()));
+            }
+
             getBinding().edit.setVisibility(View.VISIBLE);
         } else {
             getBinding().loginUi.setVisibility(View.GONE);
@@ -411,11 +421,12 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
     public void setUiForLogout() {
         if (UserInfo.getInstance(getActivity()).isActive()) {
-            getBinding().tvVIPUser.setText(getResources().getString(R.string.free_sooka));
+            getBinding().tvVIPUser.setText(getResources().getString(R.string.free_sooka) + " User");
         } else {
             getBinding().tvVIPUser.setText(getResources().getString(R.string.guest_user));
 
         }
+        getBinding().tvBilling.setVisibility(View.GONE);
         getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
         getBinding().tvSubscribeNow.setText(getResources().getString(R.string.subscibe_now));
         getBinding().subscribe.setText(getResources().getString(R.string.subscribe_more));
@@ -434,16 +445,16 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
                         if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE")) {
                             if (accountServiceMessageItem.getDisplayName() != null)
-                                getBinding().tvVIPUser.setText(accountServiceMessageItem.getDisplayName());
-                            if (accountServiceMessageItem.getProductCategory() != null) {
-                                getBinding().productCategory.setVisibility(View.VISIBLE);
-                                getBinding().productCategory.setText(accountServiceMessageItem.getProductCategory());
-                            }
+                                getBinding().tvVIPUser.setText(accountServiceMessageItem.getDisplayName() + " User");
                             if (!accountServiceMessageItem.isRenewal()) {
                                 getBinding().tvSubscribeNow.setVisibility(View.GONE);
                             } else {
                                 getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
                                 getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getDateFromTimeStamp(accountServiceMessageItem.getValidityTill()));
+                            }
+                            if (accountServiceMessageItem.getPaymentMethod() != null && !accountServiceMessageItem.getPaymentMethod().equalsIgnoreCase("")) {
+                                getBinding().productCategory.setText(accountServiceMessageItem.getPaymentMethod());
+                                getBinding().productCategory.setVisibility(View.VISIBLE);
                             }
                             getBinding().subscribe.setVisibility(View.VISIBLE);
                             getBinding().subscribe.setText(getResources().getString(R.string.manage_subscription));
@@ -486,7 +497,6 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             if (newLang.equalsIgnoreCase("ms")) {
                 getBinding().loginSignupMore.setText("Log masuk / Daftar");
                 getBinding().tvVIPUser.setText("Pengguna tetamu");
-                getBinding().tvBilling.setText("Bil Rakan Kongsi");
                 getBinding().subscribe.setText("Langgan");
                 getBinding().tvManagePayments.setText("Urus Pembayaran");
                 getBinding().tvTranscHistory.setText("sejarah transaksi");
@@ -500,7 +510,6 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 getBinding().tvVersion.setText("Versi" + BuildConfig.VERSION_NAME);
             } else {
                 getBinding().loginSignupMore.setText("Sign In/Sign Up");
-                getBinding().tvBilling.setText("Partner Billing");
                 getBinding().tvManagePayments.setText("Manage Payments");
                 getBinding().tvTranscHistory.setText("Transaction History");
                 getBinding().tvLanguageSettings.setText("Language Selection");

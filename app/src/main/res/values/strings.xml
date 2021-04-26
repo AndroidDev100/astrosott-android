@@ -67,7 +67,7 @@
     <string name="deviceconfirmation">5 Devices already added !</string>
     <string name="notification_message">No new notifications</string>
     <string name="remove_watchlist_item">Do you want to remove this video from your playlist?</string>
-    <string name="search_dialog">Search Astro</string>
+    <string name="search_dialog">Search Sooka</string>
     <string name="geo_location_dialouge">Uh-no! Looks like you are not in Malaysia at the moment. You may still browse around to checkout our contents. Come back soon to enjoy your favourite shows and movies!</string>
     <string name="purchase_dialouge">Please login to view this content.</string>
     <string name="live_tag">LIVE</string>
@@ -109,7 +109,7 @@
     <string name="removed_from_watchlist">removed from your My List</string>
     <string name="playlist_removed">Video removed from your playlist</string>
     <string name="checkout">Checkout</string>
-    <string name="on_Dialog">on SOTT!</string>
+    <string name="on_Dialog">on sooka!</string>
     <string name="added_to_watchlist">added to your My List</string>
 
     <string name="become_vip">BECOME A VIP</string>
@@ -187,7 +187,7 @@
     <string name="verification">Verification</string>
     <string name="enter_phone">Enter your phone number</string>
     <string name="enter_pin">Please enter the PIN sent to your phone number</string>
-    <string name="already_user">Already a SOTT user ? </string>
+    <string name="already_user">Already a sooka user ? </string>
     <string name="dont_have_account">Don’t have an account ?</string>
     <string name="resend_text">Resend PIN</string>
     <string name="phone_number">Phone Number</string>
@@ -229,7 +229,7 @@
     <string name="incorrect_phone_number">Incorrect mobile number. Try again</string>
     <string name="incorrect_account_number">Oh no, that can\'t be right. Lets recheck the account number</string>
     <string name="incorrect_mobile_number">Oh no, that can\'t be right. Lets recheck the mobile number</string>
-    <string name="dialog">SOTT</string>
+    <string name="dialog">Sooka</string>
     <string name="new_version">New Version Available</string>
     <string name="pin_required">PIN cannot be blank</string>
     <string name="incorrect_pin">Incorrect PIN. Try again</string>
@@ -284,7 +284,7 @@
     <string name="square_placeholder">Square Placeholder</string>
     <string name="close_icon">Close Icon</string>
     <string name="title_icon">Title Icon</string>
-    <string name="viu_image">SOTT image</string>
+    <string name="viu_image">sooka image</string>
     <string name="share_icon">Share Icon</string>
     <string name="bullet_symbol">\u2022</string>
     <string name="device_icon">Device Icon</string>

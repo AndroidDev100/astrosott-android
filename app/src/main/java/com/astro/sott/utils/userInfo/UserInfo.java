@@ -12,6 +12,10 @@ public class UserInfo {
     private boolean active;
     private String firstName;
     private String lastName;
+    private String userName;
+    private String alternateUserName;
+
+
     private String email;
     private String cpCustomerId;
 
@@ -31,6 +35,23 @@ public class UserInfo {
 
     public void setEmail(String email) {
         session.setString("AstroEmail", email);
+    }
+
+
+    public String getUserName() {
+        return session.getString("AstroUserName", "");
+    }
+
+    public void setUserName(String userName) {
+        session.setString("AstroUserName", userName);
+    }
+
+    public String getAlternateUserName() {
+        return session.getString("AstroAlternateUserName", "");
+    }
+
+    public void setAlternateUserName(String alternateUserName) {
+        session.setString("AstroAlternateUserName", alternateUserName);
     }
 
     public String getLastName() {

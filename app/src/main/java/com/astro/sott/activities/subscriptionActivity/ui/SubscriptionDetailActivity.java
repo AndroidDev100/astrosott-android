@@ -114,6 +114,10 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         return billingProcessor.getSubscriptionListingDetails(productId);
     }
 
+    public SkuDetails getPurchaseDetail(String productId) {
+        return billingProcessor.getPurchaseListingDetails(productId);
+    }
+
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
         if (details.purchaseInfo != null && details.purchaseInfo.purchaseData != null && details.purchaseInfo.purchaseData.purchaseToken != null) {
@@ -160,8 +164,13 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     }
 
     @Override
-    public void onCardClicked(String productId) {
-        billingProcessor.subscribe(this, productId, "DEVELOPER PAYLOAD HERE");
+    public void onCardClicked(String productId, String serviceType) {
+        if (serviceType.equalsIgnoreCase("ppv")) {
+            //  billingProcessor.consumePurchase(productId);
+            billingProcessor.purchase(this, productId, "DEVELOPER PAYLOAD HERE");
+        } else {
+            billingProcessor.subscribe(this, productId, "DEVELOPER PAYLOAD HERE");
+        }
 
     }
 }
