@@ -29,9 +29,11 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
 
     private void setClicks() {
         try {
-            String masked=AppCommonMethods.maskedEmail(EditProfileActivity.this);
+            String masked = AppCommonMethods.maskedEmail(EditProfileActivity.this);
             getBinding().email.setText(masked);
-        }catch (Exception ignored){
+            getBinding().name.setText(UserInfo.getInstance(this).getFirstName());
+            getBinding().mobileNo.setText(AppCommonMethods.maskedMobile(EditProfileActivity.this));
+        } catch (Exception ignored) {
 
         }
         getBinding().backButton.setOnClickListener(v -> {

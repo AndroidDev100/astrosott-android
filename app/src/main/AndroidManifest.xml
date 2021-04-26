@@ -331,6 +331,7 @@
         <activity
             android:name=".activities.appSettings.ui.AppSettingsActivity"
             android:screenOrientation="locked" />
+
         <activity
             android:name=".activities.videoQuality.ui.VideoQualityActivity"
             android:screenOrientation="locked" />

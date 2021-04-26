@@ -3202,6 +3202,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
                 if (isPlayerStart) {
+
                     if (lockEnable) {
 //                        if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
 //                            getBinding().lockIcon.setVisibility(View.GONE);
@@ -4146,10 +4147,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                         if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
                             Log.d("PlayerPauseCalled", "Pause1");
-                            getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.play));
+                            getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_play));
                         } else {
                             Log.d("PlayerPauseCalled", "Pause2");
-                            getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.play));
+                            getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_play));
                         }
                         try {
                             if (isLivePlayer) {
