@@ -443,7 +443,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
                         if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE")) {
                             if (accountServiceMessageItem.getDisplayName() != null)
-                                getBinding().tvVIPUser.setText(accountServiceMessageItem.getDisplayName() + " User");
+                                getBinding().tvVIPUser.setText(accountServiceMessageItem.getDisplayName());
                             if (!accountServiceMessageItem.isRenewal()) {
                                 getBinding().tvSubscribeNow.setVisibility(View.GONE);
                             } else {
