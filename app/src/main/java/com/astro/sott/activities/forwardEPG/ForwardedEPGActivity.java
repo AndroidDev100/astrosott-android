@@ -641,7 +641,7 @@ public class ForwardedEPGActivity extends BaseBindingActivity<ForwardedEpgActivi
     }
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(ForwardedEPGActivity.this, asset, getApplication().getApplicationContext());
+        AppCommonMethods.openShareDialog(ForwardedEPGActivity.this, asset, getApplication().getApplicationContext(),"");
     }
 
     @Override

@@ -65,6 +65,7 @@ import com.astro.sott.callBacks.kalturaCallBacks.NextEpisodeCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.NotificationCallback;
 import com.astro.sott.callBacks.kalturaCallBacks.NotificationStatusCallback;
 import com.astro.sott.callBacks.kalturaCallBacks.OttUserDetailsCallBack;
+import com.astro.sott.callBacks.kalturaCallBacks.PlayBackContextCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.PopularSearchCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.PushTokenCallBack;
@@ -93,6 +94,7 @@ import com.astro.sott.modelClasses.dmsResponse.ParentalMapping;
 import com.astro.sott.modelClasses.dmsResponse.ParentalRatingLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.modelClasses.dmsResponse.SubtitleLanguages;
+import com.astro.sott.modelClasses.playbackContext.PlaybackContextResponse;
 import com.astro.sott.networking.refreshToken.RefreshKS;
 import com.astro.sott.networking.retrofit.ApiInterface;
 import com.astro.sott.networking.retrofit.RequestConfig;
@@ -3595,6 +3597,50 @@ public class KsServices {
             @Override
             public void onFailure(@NonNull Call<ResponseDmsModel> call, @NonNull Throwable t) {
                 dmsCallBack.configuration(false);
+            }
+        });
+    }
+
+
+    public void getPlaybackContext(String assetId, String fileId, PlayBackContextCallBack playBackContextCallBack) {
+
+        ApiInterface endpoint = RequestConfig.getClient(BuildConfig.KALTURA_BASE_URL).create(ApiInterface.class);
+        JsonObject requestParam = new JsonObject();
+        JsonObject contextDataParams = new JsonObject();
+
+        requestParam.addProperty("apiVersion", BuildConfig.KALTURA_API_VERSION);
+        requestParam.addProperty("assetId", assetId);
+        requestParam.addProperty("assetType", "media");
+        String ks = "";
+        if (UserInfo.getInstance(activity).isActive()) {
+            ks = KsPreferenceKey.getInstance(activity).getStartSessionKs();
+        } else {
+            ks = KsPreferenceKey.getInstance(activity).getAnonymousks();
+        }
+        requestParam.addProperty("ks", ks);
+        contextDataParams.addProperty("objectType", "KalturaPlaybackContextOptions");
+        contextDataParams.addProperty("mediaProtocol", "https");
+        contextDataParams.addProperty("assetFileIds", fileId);
+        contextDataParams.addProperty("context", "PLAYBACK");
+        contextDataParams.addProperty("streamerType", "mpegdash");
+        contextDataParams.addProperty("urlType", "PLAYMANIFEST");
+        requestParam.add("contextDataParams", contextDataParams);
+
+
+        Call<PlaybackContextResponse> call = endpoint.getPlaybackContext(requestParam);
+        call.enqueue(new Callback<PlaybackContextResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<PlaybackContextResponse> call, @NonNull retrofit2.Response<PlaybackContextResponse> response) {
+                if (response != null && response.isSuccessful() && response.body() != null && response.body().getResult() != null && response.body().getResult().getSources() != null && response.body().getResult().getSources().get(0) != null && response.body().getResult().getSources().get(0).getUrl() != null) {
+                    playBackContextCallBack.getUrl(response.body().getResult().getSources().get(0).getUrl());
+                } else {
+                    playBackContextCallBack.getUrl("");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<PlaybackContextResponse> call, @NonNull Throwable t) {
+                playBackContextCallBack.getUrl("");
             }
         });
     }

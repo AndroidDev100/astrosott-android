@@ -984,7 +984,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<ActivityW
     }
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(this, asset, getApplicationContext());
+        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(),"");
     }
 
     @Override

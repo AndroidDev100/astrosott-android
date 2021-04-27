@@ -3,4 +3,8 @@
     <!--<string name="branch_key" tools:ignore="MissingTranslation">key_live_imHk1Yk227icBqFUkAMG5pknFBlQ508V</string>-->
     <string name="facebook_app_id" translatable="false">712171319736837</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb712171319736837</string>
+    <string name="cleverTap_token" translatable="false">560-5a6</string>
+    <string name="cleverTap_ACCOUNT_ID" translatable="false">675-W65-ZZ6Z</string>
+    <string name="fcm_sender_id" translatable="false">id:456838347753</string>
+
 </resources>

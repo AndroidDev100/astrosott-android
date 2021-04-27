@@ -52,6 +52,7 @@ import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.StringBuilderHolder;
+import com.astro.sott.utils.helpers.SubMediaTypes;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -874,7 +875,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     }
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(this, asset, getApplicationContext());
+        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), SubMediaTypes.BoxSet.name());
     }
 
     @Override

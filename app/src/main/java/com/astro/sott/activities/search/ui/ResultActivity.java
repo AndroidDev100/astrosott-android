@@ -24,6 +24,7 @@ import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.callBacks.commonCallBacks.CheckLiveProgram;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.SpacingItemDecoration;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.R;
 import com.astro.sott.activities.forwardEPG.ForwardedEPGActivity;
@@ -106,11 +107,18 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
 
         boolean isTablet = this.getResources().getBoolean(R.bool.isTablet);
         if (isTablet) {
-            getBinding().resultRecycler.setLayoutManager(new GridLayoutManager(this, 5));
-        } else {
+           // getBinding().resultRecycler.setLayoutManager(new GridLayoutManager(this, 5));
 
-            getBinding().resultRecycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+            getBinding().resultRecycler.addItemDecoration(new SpacingItemDecoration(20, 2));
+            GridLayoutManager mLayoutManager = new GridLayoutManager(this, 4);
+            getBinding().resultRecycler.setLayoutManager(mLayoutManager);
+        } else {
+            getBinding().resultRecycler.addItemDecoration(new SpacingItemDecoration(20, 2));
+            GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+            getBinding().resultRecycler.setLayoutManager(mLayoutManager);
+            //getBinding().resultRecycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         }
+
         swipeToRefresh();
 
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());

@@ -167,7 +167,12 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
                 if (getActivity() instanceof HomeActivity) {
                     skuDetails = ((HomeActivity) getActivity()).getSubscriptionDetail(responseMessageItem.getAppChannels().get(0).getAppID());
                 } else if (getActivity() instanceof SubscriptionDetailActivity) {
-                    skuDetails = ((SubscriptionDetailActivity) getActivity()).getSubscriptionDetail(responseMessageItem.getAppChannels().get(0).getAppID());
+                    if (responseMessageItem.getServiceType().equalsIgnoreCase("ppv")) {
+                        skuDetails = ((SubscriptionDetailActivity) getActivity()).getPurchaseDetail(responseMessageItem.getAppChannels().get(0).getAppID());
+                    } else {
+                        skuDetails = ((SubscriptionDetailActivity) getActivity()).getSubscriptionDetail(responseMessageItem.getAppChannels().get(0).getAppID());
+
+                    }
                 }
                 if (skuDetails != null) {
                     PackDetail packDetail = new PackDetail();
@@ -200,7 +205,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
 
 
     @Override
-    public void onCardClicked(String productId) {
+    public void onCardClicked(String productId, String serviceType) {
 
     }
 }

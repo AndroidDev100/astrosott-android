@@ -865,7 +865,7 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
     }
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(this, asset, getApplicationContext());
+        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(),"");
     }
 
     @Override

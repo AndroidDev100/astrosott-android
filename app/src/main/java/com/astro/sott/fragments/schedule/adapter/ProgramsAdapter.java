@@ -100,14 +100,21 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
             }
         });
         viewHolder.scheduleItemBinding.share.setOnClickListener(v -> {
-            AppCommonMethods.openShareDialog(context, data.get(i).getObject(), context);
+            AppCommonMethods.openShareDialog(context, data.get(i).getObject(), context,"");
         });
 
 
-        String currentTime = AppCommonMethods.getCurrentTimeStamp();
+        Long currentTime = AppCommonMethods.getCurrentTimeStampLong();
         Long startTime = data.get(i).getObject().getStartDate();
+        Log.e("currentTime", String.valueOf(Long.valueOf(currentTime)));
+        Log.e("startTime", String.valueOf(startTime));
 
         Boolean enable = ((ProgramAsset) data.get(i).getObject()).getEnableCatchUp();
+
+        if(startTime>currentTime){
+            viewHolder.scheduleItemBinding.playIcon.setVisibility(View.GONE);
+
+        }
 
 
     }

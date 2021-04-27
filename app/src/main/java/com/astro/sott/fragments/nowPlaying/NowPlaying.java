@@ -384,7 +384,7 @@ public class NowPlaying extends BaseBindingFragment<FragmentNowPlayingBinding> {
 
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(baseActivity, asset, baseActivity.getApplicationContext());
+        AppCommonMethods.openShareDialog(baseActivity, asset, baseActivity.getApplicationContext(),"");
     }
 
 

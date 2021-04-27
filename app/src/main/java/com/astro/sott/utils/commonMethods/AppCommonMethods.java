@@ -143,7 +143,11 @@ public class AppCommonMethods {
     }
 
     public static void removeUserPrerences(Context context) {
-
+        UserInfo.getInstance(context).setUserName("");
+        UserInfo.getInstance(context).setCpCustomerId("");
+        UserInfo.getInstance(context).setLastName("");
+        UserInfo.getInstance(context).setEmail("");
+        UserInfo.getInstance(context).setAlternateUserName("");
         UserInfo.getInstance(context).setAccessToken("");
         UserInfo.getInstance(context).setRefreshToken("");
         UserInfo.getInstance(context).setExternalSessionToken("");
@@ -601,7 +605,7 @@ public class AppCommonMethods {
 
     static Uri dynamicLinkUri;
 
-    public static void openShareDialog(final Activity activity, final Asset asset, Context context) {
+    public static void openShareDialog(final Activity activity, final Asset asset, Context context,String subMediaType) {
         /*WeakReference<Activity> mActivity = new WeakReference<>(activity);
         BranchUniversalObject buo = new BranchUniversalObject()
                 .setTitle(asset.getName())
@@ -650,12 +654,15 @@ public class AppCommonMethods {
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                    .setDomainUriPrefix("https://stagingsott.page.link")
-                    .setLink(Uri.parse("https://stagingsott.page.link/?link=https://www.example.com/?id="+asset.getId()+"&apn=com.astro.stagingsott"))
+                    //.setDomainUriPrefix("https://stagingsott.page.link/")
+                    .setLink(Uri.parse(uri))
+                    .setDomainUriPrefix("https://stagingsott.page.link/")
+                    //.setLink(Uri.parse(uri))
                     .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
                             .build())
                     .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.astro.stagingsott").setFallbackUrl(Uri.parse("www.google.com"))
                             .build())
+                    .setIosParameters(new DynamicLink.IosParameters.Builder("com.astro.stagingsott").setAppStoreId("507874739").build())
                     .setSocialMetaTagParameters(
                             new DynamicLink.SocialMetaTagParameters.Builder()
                                     .setTitle(asset.getName())
@@ -712,12 +719,11 @@ public class AppCommonMethods {
             String assetType=asset.getType()+"";
             uri = Uri.parse("https://www.example.com/")
                     .buildUpon()
-                    .authority("https://stagingsott.page.link")
                     .appendQueryParameter("id", assetId)
                     .appendQueryParameter("mediaType", assetType)
                     .appendQueryParameter("image", AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType()))
                     .appendQueryParameter("name", asset.getName())
-                    .appendQueryParameter("erf", "1")
+                    .appendQueryParameter("apn","com.astro.stagingsott")
                     .build().toString();
 
         }catch (Exception ignored){
@@ -2492,14 +2498,14 @@ public class AppCommonMethods {
     }
 
     public static String maskedEmail(Activity context) {
-        String email="";
+        String email = "";
         try {
             String s = UserInfo.getInstance(context).getEmail();
-            email = s.replaceAll("(?<=.{3}).(?=.*@)", "*");
-        }catch (Exception ignored){
-            email="";
+            email = s.replaceAll("(?<=.{1}).(?=[^@]*?.@)", "*");
+        } catch (Exception ignored) {
+            email = "";
         }
-       return email;
+        return email;
     }
 
     public static boolean shouldItemIncluded(List<AssetHistory> continueWatchingList, String assetID) {
@@ -2703,4 +2709,23 @@ public class AppCommonMethods {
     }
 
 
+
+    public static String maskedMobile(Activity context) {
+        StringBuilder email = new StringBuilder();
+        try {
+            String s = UserInfo.getInstance(context).getAlternateUserName();
+            for (int i = 0; i < s.length(); i++) {
+                if (i <= s.length() - 5) {
+                    email.append("*");
+                } else {
+                    email.append(s.charAt(i));
+                }
+            }
+
+        } catch (Exception ignored) {
+            email.append("");
+            email.toString();
+        }
+        return email.toString();
+    }
 }
