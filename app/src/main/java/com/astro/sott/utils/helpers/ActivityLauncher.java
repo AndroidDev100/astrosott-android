@@ -149,11 +149,11 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
-    public void termAndCondition(Activity source) {
+ /*   public void termAndCondition(Activity source) {
         Intent intent = new Intent(source, WebViewActivity.class);
         intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC);
         activity.startActivity(intent);
-    }
+    }*/
 
     public void continueWatchingListing(Activity source, Class<ContinueWatchingActivity> destination, String type, AssetCommonBean assetCommonBean) {
         Intent intent = new Intent(source, destination);
