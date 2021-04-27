@@ -153,13 +153,18 @@ class EvergentServices {
 
     }
 
-    fun checkCredential(context: Context, password: String, emailMobile: String, evergentUpdateProfileCallback: EvergentResponseCallBack<CheckCredentialResponse>) {
+    fun checkCredential(context: Context, password: String, emailMobile: String, type: String, evergentUpdateProfileCallback: EvergentResponseCallBack<CheckCredentialResponse>) {
 
         var updateProfileJson = JsonObject()
         var json = JsonObject()
 
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
-        json.addProperty("contactUserName", emailMobile)
+
+        if (type.equals("mobile", true)) {
+            json.addProperty("alternateUserName", emailMobile)
+        } else {
+            json.addProperty("contactUserName", emailMobile)
+        }
         json.addProperty("contactPassword", password)
         updateProfileJson.add("CheckCredentialsRequestMessage", json)
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
@@ -200,9 +205,9 @@ class EvergentServices {
 
         var updateProfileJson = JsonObject()
         var json = JsonObject()
-        if (type.equals("email", true)  ) {
-            json.addProperty(EMAIL, "Sunnykadan.1994+6@gmail.com")
-            json.addProperty("customerUsername", "Sunnykadan.1994+6@gmail.com")
+        if (type.equals("email", true)) {
+            json.addProperty(EMAIL, emailMobile)
+            json.addProperty("customerUsername", emailMobile)
 
 
         } else if (type.equals("name", true)) {

@@ -90,6 +90,9 @@ data class ContactMessageItem(
         @field:SerializedName("pin")
         val pin: Boolean? = null,
 
+
+        @field:SerializedName("mobileNumber")
+        val mobileNumber: String? = null,
         @field:SerializedName("isPrimaryContact")
         val isPrimaryContact: Boolean? = null,
 

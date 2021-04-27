@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.text.Editable;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +18,11 @@ import android.widget.Toast;
 import com.astro.sott.R;
 import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
+import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.FragmentConfirmPasswordBinding;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 /**
@@ -28,6 +32,9 @@ import com.astro.sott.utils.userInfo.UserInfo;
  */
 public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirmPasswordBinding> {
     private SubscriptionViewModel subscriptionViewModel;
+    private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
+    private String newEmail;
+    private boolean passwordVisibility = false;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,7 +77,9 @@ public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirm
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            newEmail = getArguments().getString("newEmail");
         }
+
     }
 
     @Override
@@ -85,38 +94,90 @@ public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirm
 
     private void setClicks() {
         getBinding().update.setOnClickListener(v -> {
+
             password = getBinding().passwordEdt.getText().toString();
-            checkCredential();
+            if (!password.equalsIgnoreCase("") && password.matches(PASSWORD_REGEX)) {
+                checkCredential();
+            } else {
+                getBinding().errorPasssword.setVisibility(View.VISIBLE);
+            }
         });
+        getBinding().eyeIconConfirmPassword.setOnClickListener(view -> {
+            if (passwordVisibility) {
+                getBinding().eyeIconConfirmPassword.setBackgroundResource(R.drawable.ic_outline_visibility_off_light);
+                getBinding().passwordEdt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                passwordVisibility = false;
+            } else {
+                passwordVisibility = true;
+                getBinding().passwordEdt.setInputType(InputType.TYPE_CLASS_TEXT);
+                getBinding().eyeIconConfirmPassword.setBackgroundResource(R.drawable.ic_outline_visibility_light);
+
+            }
+            getBinding().passwordEdt.setSelection(getBinding().passwordEdt.getText().length());
+        });
+        getBinding().passwordEdt.addTextChangedListener(new CustomTextWatcher(getActivity(), new TextWatcherCallBack() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                getBinding().errorPasssword.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        }));
 
     }
 
+    String email_mobile = "", type = "";
+
     private void checkCredential() {
-        subscriptionViewModel.checkCredential(password, UserInfo.getInstance(getActivity()).getUserName()).observe(this, checkCredentialResponse -> {
+        if (UserInfo.getInstance(getActivity()).getEmail().equalsIgnoreCase("")) {
+            type = "mobile";
+            email_mobile = UserInfo.getInstance(getActivity()).getMobileNumber();
+        } else {
+            type = "email";
+            email_mobile = UserInfo.getInstance(getActivity()).getEmail();
+        }
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        subscriptionViewModel.checkCredential(password, email_mobile, type).observe(this, checkCredentialResponse -> {
             if (checkCredentialResponse != null && checkCredentialResponse.getResponse() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 createOtp();
             } else {
+                getBinding().progressBar.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), checkCredentialResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void createOtp() {
-        subscriptionViewModel.createOtp("email", UserInfo.getInstance(getActivity()).getUserName()).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+    String email = "";
 
+    private void createOtp() {
+        if (!UserInfo.getInstance(getActivity()).getEmail().equalsIgnoreCase("")) {
+            email = UserInfo.getInstance(getActivity()).getEmail();
+        } else {
+            email = newEmail;
+        }
+        subscriptionViewModel.createOtp("email", email).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 Intent intent = new Intent(getActivity(), VerificationActivity.class);
                 intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
-                intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, UserInfo.getInstance(getActivity()).getUserName());
+                intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email);
+                intent.putExtra("newEmail", newEmail);
                 intent.putExtra(AppLevelConstants.PASSWORD_KEY, password);
-                intent.putExtra(AppLevelConstants.FROM_KEY, "confirmPassword");
+                intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD);
                 startActivity(intent);
-
             } else {
                 Toast.makeText(getActivity(), evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     @Override

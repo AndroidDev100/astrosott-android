@@ -46,6 +46,7 @@ import com.astro.sott.activities.myplaylist.ui.MultiplePlaylistActivity;
 import com.astro.sott.activities.notification.ui.NotificationActivity;
 import com.astro.sott.activities.parentalControl.ui.ViewingRestrictionActivity;
 import com.astro.sott.activities.profile.ui.EditProfileActivity;
+import com.astro.sott.activities.profile.ui.SetPasswordActivity;
 import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.activities.search.ui.ResultActivity;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
@@ -135,6 +136,11 @@ public class ActivityLauncher {
     public void profileActivity(Activity source) {
         Intent intent = new Intent(source, EditProfileActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+    }
+
+    public void setPasswordActivity(Activity source) {
+        Intent intent = new Intent(source, SetPasswordActivity.class);
         activity.startActivity(intent);
     }
 

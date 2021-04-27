@@ -201,10 +201,10 @@ public class MySubscriptionPlanRepository {
     }
 
 
-    public LiveData<EvergentCommonResponse<CheckCredentialResponse>> checkCredential(Context context, String password, String emailMobile) {
+    public LiveData<EvergentCommonResponse<CheckCredentialResponse>> checkCredential(Context context, String password, String emailMobile, String type) {
         MutableLiveData<EvergentCommonResponse<CheckCredentialResponse>> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().checkCredential(context, password, emailMobile, new EvergentResponseCallBack<CheckCredentialResponse>() {
+        EvergentServices.Companion.getInstance().checkCredential(context, password, emailMobile,type, new EvergentResponseCallBack<CheckCredentialResponse>() {
 
 
             @Override

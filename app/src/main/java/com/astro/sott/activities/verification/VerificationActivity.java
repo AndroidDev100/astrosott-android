@@ -30,7 +30,7 @@ import com.astro.sott.utils.userInfo.UserInfo;
 
 public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> {
     private AstroLoginViewModel astroLoginViewModel;
-    private String loginType, emailMobile, password, oldPassword = "", from, token = "";
+    private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "";
     private CountDownTimer countDownTimer;
 
     @Override
@@ -52,12 +52,14 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         emailMobile = getIntent().getExtras().getString(AppLevelConstants.EMAIL_MOBILE_KEY);
         if (getIntent().getExtras().getString(AppLevelConstants.OLD_PASSWORD_KEY) != null)
             oldPassword = getIntent().getExtras().getString(AppLevelConstants.OLD_PASSWORD_KEY);
-
+        if (getIntent().getExtras().getString("newEmail") != null)
+            newEmail = getIntent().getExtras().getString("newEmail");
         password = getIntent().getExtras().getString(AppLevelConstants.PASSWORD_KEY);
         from = getIntent().getExtras().getString(AppLevelConstants.FROM_KEY);
         if (emailMobile != null && !emailMobile.equalsIgnoreCase("")) {
             getBinding().descriptionTxt.setText(getResources().getString(R.string.onetime_pass_code_text) + "\n" + emailMobile);
         }
+
     }
 
     private void modelCall() {
@@ -158,8 +160,10 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
                     } else if (from.equalsIgnoreCase("changePassword")) {
                         changePassword();
-                    } else if (from.equalsIgnoreCase("confirmPassword")) {
-                        updateProfile(emailMobile);
+                    } else if (from.equalsIgnoreCase(AppLevelConstants.CONFIRM_PASSWORD)) {
+                        updateProfile(newEmail);
+                    } else if (from.equalsIgnoreCase(AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD)) {
+                        setPassword();
                     }
 
                 } else {
@@ -177,6 +181,10 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
             getBinding().invalidOtp.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setPassword() {
+        new ActivityLauncher(this).setPasswordActivity(this);
     }
 
     private void updateProfile(String name) {

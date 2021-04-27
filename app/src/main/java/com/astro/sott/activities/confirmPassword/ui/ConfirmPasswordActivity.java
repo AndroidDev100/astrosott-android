@@ -15,6 +15,7 @@ import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 
 public class ConfirmPasswordActivity extends BaseBindingActivity<ActivityConfirmPasswordBinding> {
+    private String newEmail;
 
     @Override
     protected ActivityConfirmPasswordBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -24,12 +25,16 @@ public class ConfirmPasswordActivity extends BaseBindingActivity<ActivityConfirm
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        newEmail = getIntent().getStringExtra("newEmail");
         setFragment();
     }
 
     private void setFragment() {
         FragmentManager fm = getSupportFragmentManager();
         ConfirmPasswordFragment confirmPasswordFragment = new ConfirmPasswordFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("newEmail", newEmail);
+        confirmPasswordFragment.setArguments(bundle);
         fm.beginTransaction().replace(R.id.frameContent, confirmPasswordFragment).commitNow();
     }
 }
