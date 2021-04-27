@@ -2,6 +2,7 @@ package com.astro.sott.activities.profile.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +10,11 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.confirmPassword.ui.ConfirmPasswordActivity;
+import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
@@ -33,6 +36,7 @@ import java.util.List;
 
 public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBinding> implements BillingProcessor.IBillingHandler, View.OnClickListener {
     private BillingProcessor billingProcessor;
+    private AstroLoginViewModel astroLoginViewModel;
     private boolean alreadyEmail = false;
     private final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -47,6 +51,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHeader();
+        modelCall();
         intializeBilling();
         setClicks();
 
@@ -79,31 +84,19 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
         });
         getBinding().button.setOnClickListener(v -> {
             String email = getBinding().newEmail.getText().toString();
-            if (true) {
+            if (email.matches(EMAIL_REGEX)) {
                 if (alreadyEmail && UserInfo.getInstance(this).isPasswordExists()) {
                     Intent intent = new Intent(this, ConfirmPasswordActivity.class);
                     intent.putExtra("newEmail", email);
                     startActivity(intent);
                 } else if (alreadyEmail && !UserInfo.getInstance(this).isPasswordExists()) {
-                    Intent intent = new Intent(this, VerificationActivity.class);
-                    intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
-                    intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, UserInfo.getInstance(this).getEmail());
-                    intent.putExtra("newEmail", email);
-                    intent.putExtra(AppLevelConstants.PASSWORD_KEY, "");
-                    intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD);
-                    startActivity(intent);
+                    createOtp(email);
                 } else if (!alreadyEmail && UserInfo.getInstance(this).isPasswordExists()) {
                     Intent intent = new Intent(this, ConfirmPasswordActivity.class);
                     intent.putExtra("newEmail", email);
                     startActivity(intent);
                 } else if (!alreadyEmail && !UserInfo.getInstance(this).isPasswordExists()) {
-                    Intent intent = new Intent(this, VerificationActivity.class);
-                    intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
-                    intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email);
-                    intent.putExtra("newEmail", email);
-                    intent.putExtra(AppLevelConstants.PASSWORD_KEY, "");
-                    intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD);
-                    startActivity(intent);
+
                 }
             } else {
                 getBinding().errorEmail.setVisibility(View.VISIBLE);
@@ -150,6 +143,48 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    private void createOtp(String email) {
+        if (alreadyEmail) {
+            astroLoginViewModel.createOtp("email", UserInfo.getInstance(this).getEmail()).observe(this, evergentCommonResponse -> {
+
+                if (evergentCommonResponse.isStatus()) {
+                    //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(this, VerificationActivity.class);
+                    intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
+                    intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, UserInfo.getInstance(this).getEmail());
+                    intent.putExtra("newEmail", email);
+                    intent.putExtra(AppLevelConstants.PASSWORD_KEY, "");
+                    intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD);
+                    startActivity(intent);
+
+
+                } else {
+                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            astroLoginViewModel.createOtp("email", email).observe(this, evergentCommonResponse -> {
+
+                if (evergentCommonResponse.isStatus()) {
+                    //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(this, VerificationActivity.class);
+                    intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
+                    intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email);
+                    intent.putExtra("newEmail", email);
+                    intent.putExtra(AppLevelConstants.PASSWORD_KEY, "");
+                    intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD);
+                    startActivity(intent);
+
+
+                } else {
+                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void intializeBilling() {
@@ -213,6 +248,11 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
     @Override
     public void onBillingInitialized() {
         Log.w("billingProcessor_play", "intialized");
+
+    }
+
+    private void modelCall() {
+        astroLoginViewModel = ViewModelProviders.of(this).get(AstroLoginViewModel.class);
 
     }
 }

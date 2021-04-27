@@ -33,7 +33,7 @@ import com.astro.sott.utils.userInfo.UserInfo;
 public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirmPasswordBinding> {
     private SubscriptionViewModel subscriptionViewModel;
     private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
-    private String newEmail;
+    private String newEmail = "", newMobile = "";
     private boolean passwordVisibility = false;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -77,7 +77,10 @@ public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirm
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            newEmail = getArguments().getString("newEmail");
+            if (getArguments().getString("newEmail") != null)
+                newEmail = getArguments().getString("newEmail");
+            if (getArguments().getString("newMobile") != null)
+                newMobile = getArguments().getString("newMobile");
         }
 
     }
@@ -137,12 +140,22 @@ public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirm
     String email_mobile = "", type = "";
 
     private void checkCredential() {
-        if (UserInfo.getInstance(getActivity()).getEmail().equalsIgnoreCase("")) {
-            type = "mobile";
-            email_mobile = UserInfo.getInstance(getActivity()).getMobileNumber();
+        if (!newEmail.equalsIgnoreCase("")) {
+            if (UserInfo.getInstance(getActivity()).getEmail().equalsIgnoreCase("")) {
+                type = "mobile";
+                email_mobile = UserInfo.getInstance(getActivity()).getMobileNumber();
+            } else {
+                type = "email";
+                email_mobile = UserInfo.getInstance(getActivity()).getEmail();
+            }
         } else {
-            type = "email";
-            email_mobile = UserInfo.getInstance(getActivity()).getEmail();
+            if (UserInfo.getInstance(getActivity()).getMobileNumber().equalsIgnoreCase("")) {
+                type = "email";
+                email_mobile = UserInfo.getInstance(getActivity()).getEmail();
+            } else {
+                type = "mobile";
+                email_mobile = "8219233454";
+            }
         }
         getBinding().progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.checkCredential(password, email_mobile, type).observe(this, checkCredentialResponse -> {
@@ -158,18 +171,31 @@ public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirm
     String email = "";
 
     private void createOtp() {
-        if (!UserInfo.getInstance(getActivity()).getEmail().equalsIgnoreCase("")) {
-            email = UserInfo.getInstance(getActivity()).getEmail();
+        if (!newEmail.equalsIgnoreCase("")) {
+            type = "email";
+            if (!UserInfo.getInstance(getActivity()).getEmail().equalsIgnoreCase("")) {
+                email = UserInfo.getInstance(getActivity()).getEmail();
+            } else {
+                email = newEmail;
+            }
         } else {
-            email = newEmail;
+            type = "mobile";
+            if (!UserInfo.getInstance(getActivity()).getMobileNumber().equalsIgnoreCase("")) {
+                email = UserInfo.getInstance(getActivity()).getMobileNumber();
+            } else {
+                email = newMobile;
+            }
         }
-        subscriptionViewModel.createOtp("email", email).observe(this, evergentCommonResponse -> {
+        subscriptionViewModel.createOtp(type, email).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 Intent intent = new Intent(getActivity(), VerificationActivity.class);
-                intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
+                intent.putExtra(AppLevelConstants.TYPE_KEY, type);
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email);
-                intent.putExtra("newEmail", newEmail);
+                if (!newEmail.equalsIgnoreCase(""))
+                    intent.putExtra("newEmail", newEmail);
+                if (!newMobile.equalsIgnoreCase(""))
+                    intent.putExtra("newMobile", newMobile);
                 intent.putExtra(AppLevelConstants.PASSWORD_KEY, password);
                 intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD);
                 startActivity(intent);

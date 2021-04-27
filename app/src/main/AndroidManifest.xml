@@ -33,7 +33,8 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.profile.ui.SetPasswordActivity"></activity>
+        <activity android:name=".activities.profile.ui.EditMobileActivity"></activity>
+        <activity android:name=".activities.profile.ui.SetPasswordActivity" />
         <activity android:name=".activities.confirmPassword.ui.ConfirmPasswordActivity" />
         <activity android:name=".activities.profile.ui.EditNameActivity" />
         <activity android:name=".activities.liveEvent.LiveEventActivity" />

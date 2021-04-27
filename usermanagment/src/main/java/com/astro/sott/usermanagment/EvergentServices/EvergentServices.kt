@@ -212,8 +212,10 @@ class EvergentServices {
 
         } else if (type.equals("name", true)) {
             json.addProperty(FIRST_NAME, emailMobile)
-        } else {
+        } else if (type.equals("mobile", true)) {
             json.addProperty(MOBILE_NUMBER, emailMobile)
+            json.addProperty("alternateUserName", emailMobile)
+
 
         }
         updateProfileJson.add("UpdateProfileRequestMessage", json)

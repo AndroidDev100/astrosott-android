@@ -520,6 +520,10 @@
     <string name="password">Password</string>
     <string name="update_profile">Update Profile</string>
     <string name="edit_email">Edit Email</string>
+    <string name="edit_Mobile">Edit Mobile Number</string>
+    <string name="set_Mobile">Set Mobile Number</string>
+
+
     <string name="set_email">Set Email</string>
     <string name="set_name">Set Name</string>
     <string name="set_password">Set Password</string>
@@ -527,9 +531,12 @@
 
     <string name="existing_name">Existing Name</string>
     <string name="existing_email">Existing Email</string>
+    <string name="existing_mobile">Existing Mobile Number</string>
+
     <string name="new_name">New Name</string>
     <string name="new_password">New Password</string>
 
+    <string name="new_mobile">New Mobile number</string>
 
     <string name="new_email">New Email</string>
     <string name="edit_password">Edit Password</string>

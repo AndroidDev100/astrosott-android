@@ -2495,7 +2495,7 @@ public class AppCommonMethods {
     public static String maskedMobile(Activity context) {
         StringBuilder email = new StringBuilder();
         try {
-            String s = UserInfo.getInstance(context).getAlternateUserName();
+            String s = UserInfo.getInstance(context).getMobileNumber();
             for (int i = 0; i < s.length(); i++) {
                 if (i <= s.length() - 5) {
                     email.append("*");

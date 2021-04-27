@@ -69,10 +69,19 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             } else {
                 holder.binding.date.setText("");
             }
-            if (checkBoxVisible) {
-                holder.binding.checkbox.setVisibility(View.VISIBLE);
+            if (orderItems.get(position).getPaymentsInfo().get(0).getPostingStatus().equalsIgnoreCase("Posted")) {
+                if (orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase("Google Wallet") || orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase("App Store Billing")) {
+                    holder.binding.checkbox.setVisibility(View.GONE);
+                } else {
+                    if (checkBoxVisible) {
+                        holder.binding.checkbox.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.binding.checkbox.setVisibility(View.GONE);
+                    }
+                }
             } else {
                 holder.binding.checkbox.setVisibility(View.GONE);
+
             }
             holder.binding.checkbox.setOnClickListener(v -> {
                 if (!holder.binding.checkbox.isChecked()) {

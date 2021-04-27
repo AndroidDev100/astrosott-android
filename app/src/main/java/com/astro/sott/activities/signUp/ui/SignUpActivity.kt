@@ -340,6 +340,7 @@ class SignUpActivity : AppCompatActivity() {
                     UserInfo.getInstance(this).alternateUserName = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName
                 }
                 UserInfo.getInstance(this).isPasswordExists = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.isPasswordExists!!
+                UserInfo.getInstance(this).mobileNumber = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.mobileNumber
 
                 UserInfo.getInstance(this).cpCustomerId = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.cpCustomerID
                 UserInfo.getInstance(this).isActive = true
