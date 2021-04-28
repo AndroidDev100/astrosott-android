@@ -1363,7 +1363,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(getActivity(), asset, getActivity());
+        AppCommonMethods.openShareDialog(getActivity(), asset, getActivity(),"");
     }
 
 

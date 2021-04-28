@@ -48,7 +48,7 @@
                 <LinearLayout
                     android:id="@+id/shadow"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_110sdp"
+                    android:layout_height="@dimen/_60sdp"
                     android:layout_alignParentBottom="true"
                     android:background="@drawable/carousal_shadow"
                     android:orientation="vertical" />
@@ -84,7 +84,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/heebo_bold"
                         android:maxLines="1"
-                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
                         android:text=""
                         android:textColor="@color/yellow_orange"
                         android:textSize="@dimen/font_medium" />

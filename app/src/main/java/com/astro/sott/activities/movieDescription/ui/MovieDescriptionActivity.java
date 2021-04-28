@@ -961,7 +961,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(this, asset, getApplicationContext());
+        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(),"");
     }
 
     @Override

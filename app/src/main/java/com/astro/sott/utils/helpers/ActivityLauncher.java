@@ -161,11 +161,6 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
-    public void termAndCondition(Activity source) {
-        Intent intent = new Intent(source, WebViewActivity.class);
-        intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC);
-        activity.startActivity(intent);
-    }
 
     public void continueWatchingListing(Activity source, Class<ContinueWatchingActivity> destination, String type, AssetCommonBean assetCommonBean) {
         Intent intent = new Intent(source, destination);
@@ -568,7 +563,7 @@ public class ActivityLauncher {
         }
     }
 
-    private void checkCurrentProgram(final Asset itemValue) {
+    public void checkCurrentProgram(final Asset itemValue) {
         try {
 
             ProgramAsset progAsset = (ProgramAsset) itemValue;
@@ -851,6 +846,7 @@ public class ActivityLauncher {
 
     public void myListActivity(Activity activity, Class<MyListActivity> myListActivityClass,AssetCommonBean data) {
         Intent intent = new Intent(activity, myListActivityClass);
+        intent.putExtra("baseCategory", data.getRailDetail());
         intent.putExtra(AppLevelConstants.ASSET_COMMON_BEAN, data);
         activity.startActivity(intent);
     }

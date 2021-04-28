@@ -605,7 +605,7 @@ public class AppCommonMethods {
 
     static Uri dynamicLinkUri;
 
-    public static void openShareDialog(final Activity activity, final Asset asset, Context context) {
+    public static void openShareDialog(final Activity activity, final Asset asset, Context context,String subMediaType) {
         /*WeakReference<Activity> mActivity = new WeakReference<>(activity);
         BranchUniversalObject buo = new BranchUniversalObject()
                 .setTitle(asset.getName())
@@ -654,12 +654,15 @@ public class AppCommonMethods {
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                    .setDomainUriPrefix("https://stagingsott.page.link")
-                    .setLink(Uri.parse("https://stagingsott.page.link/?link=https://www.example.com/?id="+asset.getId()+"&apn=com.astro.stagingsott"))
+                    //.setDomainUriPrefix("https://stagingsott.page.link/")
+                    .setLink(Uri.parse(uri))
+                    .setDomainUriPrefix("https://stagingsott.page.link/")
+                    //.setLink(Uri.parse(uri))
                     .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
                             .build())
                     .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.astro.stagingsott").setFallbackUrl(Uri.parse("www.google.com"))
                             .build())
+                    .setIosParameters(new DynamicLink.IosParameters.Builder("com.astro.stagingsott").setAppStoreId("507874739").build())
                     .setSocialMetaTagParameters(
                             new DynamicLink.SocialMetaTagParameters.Builder()
                                     .setTitle(asset.getName())
@@ -716,12 +719,11 @@ public class AppCommonMethods {
             String assetType=asset.getType()+"";
             uri = Uri.parse("https://www.example.com/")
                     .buildUpon()
-                    .authority("https://stagingsott.page.link")
                     .appendQueryParameter("id", assetId)
                     .appendQueryParameter("mediaType", assetType)
                     .appendQueryParameter("image", AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType()))
                     .appendQueryParameter("name", asset.getName())
-                    .appendQueryParameter("erf", "1")
+                    .appendQueryParameter("apn","com.astro.stagingsott")
                     .build().toString();
 
         }catch (Exception ignored){

@@ -277,7 +277,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         });
 
         getBinding().share.setOnClickListener(v -> {
-            AppCommonMethods.openShareDialog(this, programAsset, this);
+            AppCommonMethods.openShareDialog(this, programAsset, this,"");
         });
         getBinding().astroPlayButton.setOnClickListener(view -> {
             if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {

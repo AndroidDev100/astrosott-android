@@ -993,7 +993,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(this, asset, getApplicationContext());
+        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(),"");
     }
 
     @Override

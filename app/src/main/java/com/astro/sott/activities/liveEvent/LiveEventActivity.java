@@ -21,6 +21,7 @@ import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ImageHelper;
+import com.astro.sott.utils.helpers.SubMediaTypes;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.conviva.sdk.ConvivaSdkConstants;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -709,7 +710,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(this, asset, getApplicationContext());
+        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(),SubMediaTypes.LiveEvent.name());
     }
 
     @Override
