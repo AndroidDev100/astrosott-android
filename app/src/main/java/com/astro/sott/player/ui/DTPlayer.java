@@ -165,7 +165,7 @@ import static android.content.Context.TELEPHONY_SERVICE;
 public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> implements SeekBar.OnSeekBarChangeListener,
         PhoneListenerCallBack, WindowFocusCallback, AlertDialogFragment.AlertDialogListener,
         AlertDialogSingleButtonFragment.AlertDialogListener, View.OnClickListener, AudioManager.OnAudioFocusChangeListener,
-        NetworkChangeReceiver.ConnectivityReceiverListener, AlertDialogNetworkFragment.AlertDialogNetworkListener, CatchupCallBack, SwipeListener {
+        NetworkChangeReceiver.ConnectivityReceiverListener, AlertDialogNetworkFragment.AlertDialogNetworkListener {
 
     private static final String TAG = "DTPlayer";
 
@@ -527,77 +527,17 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         this.isLivePlayer = isLivePlayer;
         // if(urlToplay!=null&&urlToplay.equalsIgnoreCase(""))
         if (!this.isLivePlayer) {
-            dvrEnabled = false;
-            if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue()) {
-
-                getBinding().rlDown.setVisibility(View.VISIBLE);
-                getBinding().liveTxt.setVisibility(View.INVISIBLE);
-                getBinding().playerMediaControls.setVisibility(View.INVISIBLE);
-
-
-                if (currentRailCommonData != null && currentRailCommonData.size() > 0) {
-                    getCurrentCatchupTimeStamp(asset);
-                    performClickForCatchUpContent();
-                } else {
-                    try {
-//                        ProgramAsset programAsset = (ProgramAsset) asset;
-
-                        Log.d("externalIDIs", NowPlaying.EXTERNAL_IDS);
-
-                        getCurrentCatchupTimeStamp(asset);
-                        performClickForCatchUpContent();
-                    } catch (Exception e) {
-
-                    }
-                }
-            } else {
-                getBinding().rlDown.setVisibility(View.VISIBLE);
-                getBinding().liveTxt.setVisibility(View.INVISIBLE);
-                getBinding().playerMediaControls.setVisibility(View.VISIBLE);
-            }
+            getBinding().rlDown.setVisibility(View.VISIBLE);
+            getBinding().liveTxt.setVisibility(View.INVISIBLE);
+            getBinding().playerMediaControls.setVisibility(View.VISIBLE);
 
 
             //  getBinding().goLive.setVisibility(View.GONE);
         } else {
-
-            dvrMap = asset.getMetas();
-            dvrEnabled = AssetContent.getTSTVData(dvrMap);
-            isEnable = ((LiveAsset) asset).getEnableCatchUp();
-
-
-            // isEnable = false;
-            Log.d("IsCatchupEnable", dvrEnabled + "");
-            Log.d("IsCatchupEnable", isLivePlayer + "");
-            mediaAsset = (MediaAsset) asset;
-            NowPlaying.EXTERNAL_IDS = mediaAsset.getExternalIds();
-
-            try {
-
-                getCurrentProgramTimeStamp();
-                performClickForCatchUpContent();
-
-
-            } catch (Exception e) {
-                Log.d("ExceptionIs", e.getMessage());
-            }
-
-
-            if (dvrEnabled) {
-
-                getBinding().seekBar.setVisibility(View.VISIBLE);
-                getBinding().rlDown.setVisibility(View.GONE);
-                getBinding().liveTxt.setVisibility(View.VISIBLE);
-                getBinding().playerMediaControls.setVisibility(View.GONE);
-                performClickForCatchUpContent();
-                // getBinding().goLive.setVisibility(View.VISIBLE);
-
-            } else {
-                getBinding().rlDown.setVisibility(View.GONE);
-                getBinding().seekBar.setVisibility(View.GONE);
-                getBinding().liveTxt.setVisibility(View.VISIBLE);
-                getBinding().playerMediaControls.setVisibility(View.GONE);
-                // getBinding().goLive.setVisibility(View.GONE);
-            }
+            getBinding().rlDown.setVisibility(View.GONE);
+            getBinding().seekBar.setVisibility(View.GONE);
+            getBinding().liveTxt.setVisibility(View.VISIBLE);
+            getBinding().playerMediaControls.setVisibility(View.GONE);
 
         }
         checkAssetTypeCondition(urlToplay, asset, prog);
@@ -621,20 +561,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
-    private void getCurrentCatchupTimeStamp(Asset asset) {
-        try {
-            startTime = asset.getStartDate();
-
-            currentProgramId = String.valueOf(asset.getId());
-
-            //Showing bottomSheet for CatchupTV
-            //   showCatchupUI(startTime, asset);
-
-        } catch (Exception e) {
-
-        }
-
-    }
 
 
     private void checkAssetTypeCondition(String urlToplay, Asset asset, int prog) {
@@ -763,15 +689,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
                         parentalCheck(asset);
                     } else {
-                        if (isProgramClicked) {
-                            if (checkIsliveAsset) {
-                                getUrl(AssetContent.getURL(asset), asset, playerProgress, true, catchupLiveProgName, railList);
-                            } else {
-                                getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, asset.getName(), railList);
-                            }
-                        } else {
-                            getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
-                        }
+                        getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
+//                        if (isProgramClicked) {
+//                            if (checkIsliveAsset) {
+//                                getUrl(AssetContent.getURL(asset), asset, playerProgress, true, catchupLiveProgName, railList);
+//                            } else {
+//                                getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, asset.getName(), railList);
+//                            }
+//                        } else {
+//                            getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
+//                        }
                     }
                 } else {
                     PrintLogging.printLog("", "elseValuePrint-->>" + assetRuleErrorCode + "  " + errorCode);
@@ -810,15 +737,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     }
                 }
             } else {
-                if (isProgramClicked) {
-                    if (checkIsliveAsset) {
-                        getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, true, catchupLiveProgName, railList);
-                    } else {
-                        getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, DTPlayer.asset.getName(), railList);
-                    }
-                } else {
-                    getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, isLivePlayer, "", railList);
-                }
+                getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, isLivePlayer, "", railList);
+//                if (isProgramClicked) {
+//                    if (checkIsliveAsset) {
+//                        getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, true, catchupLiveProgName, railList);
+//                    } else {
+//                        getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, DTPlayer.asset.getName(), railList);
+//                    }
+//                } else {
+//                    getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, isLivePlayer, "", railList);
+//                }
             }
         }
     }
@@ -875,16 +803,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             @Override
                             public void run() {
 
-
-                                if (isProgramClicked) {
-                                    if (checkIsliveAsset) {
-                                        getUrl(AssetContent.getURL(asset), asset, playerProgress, true, catchupLiveProgName, railList);
-                                    } else {
-                                        getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, asset.getName(), railList);
-                                    }
-                                } else {
-                                    getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
-                                }
+                                getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
+//                                if (isProgramClicked) {
+//                                    if (checkIsliveAsset) {
+//                                        getUrl(AssetContent.getURL(asset), asset, playerProgress, true, catchupLiveProgName, railList);
+//                                    } else {
+//                                        getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, asset.getName(), railList);
+//                                    }
+//                                } else {
+//                                    getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
+//                                }
                             }
                         });
                     } else {
@@ -1138,16 +1066,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 }
                 getBinding().seekBar.setVisibility(View.VISIBLE);
 
-                if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue()) {
-                    getBinding().arrowBack.setVisibility(View.VISIBLE);
-                    getBinding().arrowForward.setVisibility(View.VISIBLE);
-                    getBinding().playCatchup.setVisibility(View.VISIBLE);
-                    getBinding().currentTime.setVisibility(View.VISIBLE);
-                    getBinding().totalDuration.setVisibility(View.VISIBLE);
-                    getBinding().ivCancel.setVisibility(View.VISIBLE);
-                    getBinding().slash.setVisibility(View.VISIBLE);
-                    getBinding().quality.setVisibility(View.VISIBLE);
-                }
+//                if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue()) {
+//                    getBinding().arrowBack.setVisibility(View.VISIBLE);
+//                    getBinding().arrowForward.setVisibility(View.VISIBLE);
+//                    getBinding().playCatchup.setVisibility(View.VISIBLE);
+//                    getBinding().currentTime.setVisibility(View.VISIBLE);
+//                    getBinding().totalDuration.setVisibility(View.VISIBLE);
+//                    getBinding().ivCancel.setVisibility(View.VISIBLE);
+//                    getBinding().slash.setVisibility(View.VISIBLE);
+//                    getBinding().quality.setVisibility(View.VISIBLE);
+//                }
 
             } else {
                 getBinding().seekBar.setVisibility(View.GONE);
@@ -1179,258 +1107,29 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         //   getBinding().lockIcon.setVisibility(View.VISIBLE);
         getBinding().rlUp.setVisibility(View.VISIBLE);
 
-        if (currentRailCommonData != null && currentRailCommonData.size() > 0) {
-            getBinding().bottomSheetLayout.bottomSheet.setVisibility(View.VISIBLE);
-        }
 
         if (!isLivePlayer)
             getBinding().rlDown.setVisibility(View.VISIBLE);
 
     }
 
-    private void getCurrentProgramTimeStamp() {
-        viewModel.liveCatchupData(NowPlaying.EXTERNAL_IDS).observe(this, railCommonData -> {
-            if (railCommonData != null && railCommonData.size() > 0) {
-                try {
-                    startTime = railCommonData.get(0).getObject().getStartDate();
-
-                    currentProgramId = String.valueOf(railCommonData.get(0).getObject().getId());
-
-                    //Showing bottomSheet for CatchupTV
-                    showCatchupUI(startTime, railCommonData.get(0).getObject());
-
-                } catch (Exception e) {
-
-                }
-
-            }
-        });
-    }
 
     //Performing Single and Double Tap on Forward and Backward Icon
-    private void performClickForCatchUpContent() {
-        getBinding().playCatchup.setOnClickListener(view -> {
-            playPauseControl();
-        });
 
-        getBinding().arrowBack.setOnClickListener(new DoubleClick(new DoubleClickListener() {
-            @Override
-            public void onSingleClick(View v) {
-                if (isLivePlayer) {
-                    if (dvrEnabled) {
-                        getBinding().pBar.setVisibility(View.VISIBLE);
-                        final LiveData<Boolean> booleanLiveData = viewModel.seekToStart();
-                        booleanLiveData.observe(baseActivity, aBoolean -> {
-
-                            booleanLiveData.removeObservers(baseActivity);
-                            if (booleanLiveData.hasObservers()) return;
-                            if (aBoolean != null && aBoolean) {
-                                getBinding().pBar.setVisibility(View.GONE);
-                            }
-                            try {
-                                getBinding().seekBar.setProgress(((int) runningPlayer.getCurrentPosition()));
-                                getBinding().currentTime.setText(stringForTime(getBinding().seekBar.getProgress()));
-
-                            } catch (Exception w) {
-                                PrintLogging.printLog("Exception", "", "" + w);
-                            }
-                        });
-                    }
-//                    if (currentRailCommonData!=null && currentRailCommonData.size() > 0) {
-//                        int size = currentRailCommonData.size();
-//                        // Checking CurrentProgramId with previous ProgramId
-//                        for (int i = 0; i < size; i++) {
-//                            if (currentProgramId.equalsIgnoreCase(String.valueOf(currentRailCommonData.get(i).getObject().getId()))) {
-//
-//                                checkcurrentProgramIsLive(currentRailCommonData.get(i - 1).getObject());
-//                            }
-//                        }
-//                    }
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onDoubleClick(View v) {
-                if (currentRailCommonData != null && currentRailCommonData.size() > 0) {
-                    getBinding().pBar.setVisibility(View.VISIBLE);
-
-                    if (runningPlayer != null) {
-                        if (runningPlayer.isPlaying()) {
-                            runningPlayer.pause();
-                        }
-                    }
-
-                    int size = currentRailCommonData.size();
-                    // Checking CurrentProgramId with previous ProgramId
-
-                    Log.d("SizeIs", size + "");
-
-                    for (int i = 0; i < size; i++) {
-                        if (currentProgramId.equalsIgnoreCase(String.valueOf(currentRailCommonData.get(i).getObject().getId()))) {
-                            getBinding().bottomSheetLayout.bottomSheet.setVisibility(View.INVISIBLE);
-                            getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                            try {
-                                checkcurrentProgramIsLive(currentRailCommonData.get(i - 1).getObject());
-                                Log.d("SizeIs", currentRailCommonData.get(i - 1).getObject().getName() + "");
-                            } catch (IndexOutOfBoundsException e) {
-
-                            }
-
-                        }
-                    }
-                }
-            }
-        }));
-
-        getBinding().arrowForward.setOnClickListener(new DoubleClick(new DoubleClickListener() {
-            @Override
-            public void onSingleClick(View v) {
-
-                if (isLivePlayer) {
-                    if (dvrEnabled) {
-                        getBinding().pBar.setVisibility(View.VISIBLE);
-                        final LiveData<Boolean> booleanLiveData = viewModel.seekToDuration();
-                        booleanLiveData.observe(baseActivity, aBoolean -> {
-
-                            booleanLiveData.removeObservers(baseActivity);
-                            if (booleanLiveData.hasObservers()) return;
-                            if (aBoolean != null && aBoolean) {
-                                getBinding().pBar.setVisibility(View.GONE);
-                            }
-                            try {
-                                getBinding().seekBar.setProgress(((int) runningPlayer.getCurrentPosition()));
-                                getBinding().currentTime.setText(stringForTime(getBinding().seekBar.getProgress()));
-
-                            } catch (Exception w) {
-                                PrintLogging.printLog("Exception", "", "" + w);
-                            }
-                        });
-                    }
-//                    if (currentRailCommonData!=null && currentRailCommonData.size() > 0) {
-//
-//                        int size = currentRailCommonData.size();
-//                        // Checking CurrentProgramId with next ProgramId
-//                        for (int i = 0; i < size; i++) {
-//
-//                            if (currentProgramId.equalsIgnoreCase(String.valueOf(currentRailCommonData.get(i).getObject().getId()))) {
-//
-//
-//                                checkcurrentProgramIsLive(currentRailCommonData.get(i + 1).getObject());
-//                            }
-//                        }
-//                    }
-
-
-                } else {
-
-                }
-
-
-            }
-
-            @Override
-            public void onDoubleClick(View v) {
-
-                if (currentRailCommonData != null && currentRailCommonData.size() > 0) {
-                    getBinding().pBar.setVisibility(View.VISIBLE);
-                    if (runningPlayer != null) {
-                        if (runningPlayer.isPlaying()) {
-                            runningPlayer.pause();
-                        }
-                    }
-
-                    int size = currentRailCommonData.size();
-                    // Checking CurrentProgramId with next ProgramId
-                    for (int i = 0; i < size; i++) {
-
-                        if (currentProgramId.equalsIgnoreCase(String.valueOf(currentRailCommonData.get(i).getObject().getId()))) {
-                            getBinding().bottomSheetLayout.bottomSheet.setVisibility(View.INVISIBLE);
-                            getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                            try {
-                                checkcurrentProgramIsLive(currentRailCommonData.get(i + 1).getObject());
-                            } catch (IndexOutOfBoundsException e) {
-
-                            }
-                        }
-                    }
-                }
-            }
-        }));
-
-
-    }
 
     private void openShareDialouge() {
         AppCommonMethods.openShareDialog(getActivity(), asset, getActivity(),"");
     }
 
 
-    private void checkcurrentProgramIsLive(Asset object) {
-        isLiveChannel = true;
-        viewModel.liveCatchupData(NowPlaying.EXTERNAL_IDS).observe(this, railCommonData -> {
-            if (railCommonData != null && railCommonData.size() > 0) {
-                try {
-
-                    if (object.getStartDate() > railCommonData.get(0).getObject().getStartDate()) {
-                        getBinding().pBar.setVisibility(View.GONE);
-                        // ToastHandler.display("Forwarded EPG", getActivity());
-                        setReminder(object);
-                        KsPreferenceKey.getInstance(getActivity()).setCatchupValue(true);
-                        checkIsliveAsset = false;
-                    } else if (object.getStartDate() < railCommonData.get(0).getObject().getStartDate()) {
-                        KsPreferenceKey.getInstance(getActivity()).setCatchupValue(true);
-                        ProgramAsset programAsset = (ProgramAsset) object;
-                        //TODO Show popup for No Catchup Enable Program and finish activity
-                        if (!programAsset.getEnableCatchUp()) {
-                            getBinding().pBar.setVisibility(View.GONE);
-                            noCatchupEnabledDialog();
-
-                        } else {
-                            if (object.getType() == MediaTypeConstant.getProgram(getActivity())) {
-                                hideCatchupControls();
-                                KsPreferenceKey.getInstance(getActivity()).setCatchupValue(true);
-                                checkIsliveAsset = false;
-                                isProgramClicked = true;
-                                getSpecificAsset(object);
-                            }
-                        }
-
-
-                        // getUrl(AssetContent.getURL(object), object, playerProgress, false, object.getName());
-
-
-                        //ToastHandler.display("Backward EPG", getActivity());
-                    } else if (object.getStartDate().equals(railCommonData.get(0).getObject().getStartDate())) {
-                        catchupLiveProgName = railCommonData.get(0).getObject().getName();
-                        if (object.getType() == MediaTypeConstant.getProgram(getActivity())) {
-                            hideCatchupControls();
-                            KsPreferenceKey.getInstance(getActivity()).setCatchupValue(false);
-                            checkIsliveAsset = true;
-                            isProgramClicked = true;
-                            getSpecificAsset(object);
-                        }
-
-
-                    }
-
-
-                } catch (Exception e) {
-
-                }
-
-            }
-        });
-    }
 
     private void hideCatchupControls() {
         getBinding().rl1.setVisibility(View.GONE);
-        getBinding().arrowBack.setVisibility(View.GONE);
-        getBinding().arrowForward.setVisibility(View.GONE);
+//        getBinding().arrowBack.setVisibility(View.GONE);
+//        getBinding().arrowForward.setVisibility(View.GONE);
         getBinding().currentTime.setVisibility(View.GONE);
         getBinding().totalDuration.setVisibility(View.GONE);
-        getBinding().playCatchup.setVisibility(View.GONE);
+       // getBinding().playCatchup.setVisibility(View.GONE);
         getBinding().goLive.setVisibility(View.GONE);
         getBinding().seekBar.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
@@ -1438,41 +1137,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().quality.setVisibility(View.GONE);
     }
 
-    private void noCatchupEnabledDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle);
-        builder.setTitle(getActivity().getResources().getString(R.string.dialog));
-        if (getActivity() != null) {
-            builder.setMessage(getActivity().getResources().getString(R.string.catchup_message))
-                    .setCancelable(false)
-                    .setPositiveButton(getActivity().getString(R.string.ok), (dialog, id) -> {
-
-//                        if (!((Activity) getActivity()).isFinishing()) {
-//                            if (getActivity() != null) {
-//                                getActivity().onBackPressed();
-//                                KsPreferenceKey.getInstance(getActivity()).setCatchupValue(false);
-//
-//                            }
-//                        }
-
-                        if (runningPlayer != null) {
-                            if (!runningPlayer.isPlaying()) {
-                                runningPlayer.play();
-                                KsPreferenceKey.getInstance(getActivity()).setCatchupValue(true);
-
-                            }
-                        }
-                        getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                        getBinding().bottomSheetLayout.bottomSheet.setVisibility(View.VISIBLE);
-
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
-
-            Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-        }
-
-    }
 
     private void getSpecificAsset(Asset object) {
 
@@ -1502,141 +1166,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
-    private void setReminder(Asset object) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle);
-        builder.setTitle(getActivity().getResources().getString(R.string.dialog));
-        if (getActivity() != null) {
-            builder.setMessage(getActivity().getResources().getString(R.string.set_catchup_reminder))
-                    .setCancelable(false)
-                    .setPositiveButton(getActivity().getString(R.string.yes), (dialog, id) -> {
-
-                        setReminderTime(object, dialog);
-
-                    })
-                    .setNegativeButton(getActivity().getString(R.string.no), (dialog, id) -> {
-                        dialog.cancel();
-                        if (runningPlayer != null) {
-                            if (!runningPlayer.isPlaying()) {
-                                runningPlayer.play();
 
 
-                            }
-                        }
-                        getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                        getBinding().bottomSheetLayout.bottomSheet.setVisibility(View.VISIBLE);
-
-//                        if (!((Activity) getActivity()).isFinishing()) {
-//                            if (getActivity() != null) {
-//                                getActivity().onBackPressed();
-//                                KsPreferenceKey.getInstance(getActivity()).setCatchupValue(false);
-//
-//                            }
-//                        }
-
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
-            Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-            bn.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
-            Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-
-        }
-    }
-
-    private void setReminderTime(Asset object, DialogInterface dialog) {
-        splitStartTime(AppCommonMethods.get24HourTime(object, 1) + "");
-        Calendar c = (AppCommonMethods.getDate(object));
-
-        month = checkDigit(c.get(Calendar.MONTH));
-        dd = checkDigit(c.get(Calendar.DATE));
-        year = checkDigit(c.get(Calendar.YEAR));
-
-        Log.d("DateValueIs", month + dd + year + "");
-
-
-        Random random = new Random();
-        Long code = object.getId();
-
-        int requestCode = code.intValue();
-        PrintLogging.printLog("", "notificationRequestId-->>" + requestCode);
-        //String requestCode = String.valueOf(asset.getExternalId());
-        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-
-        myIntent = new Intent(getActivity(), MyReceiver.class);
-        myIntent.putExtra(AppLevelConstants.ID, object.getId());
-        myIntent.putExtra(AppLevelConstants.Title, object.getName());
-        myIntent.putExtra(AppLevelConstants.DESCRIPTION, object.getDescription());
-        myIntent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
-        myIntent.putExtra("requestcode", requestCode);
-        myIntent.setAction("com.dialog.dialoggo.MyIntent");
-        myIntent.setComponent(new ComponentName(getActivity().getPackageName(), "com.dialog.dialoggo.Alarm.MyReceiver"));
-
-//                    Random random = new Random();
-//                    int requestCode = Integer.parseInt(String.format("%02d", random.nextInt(10000)));
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
-
-            Intent intent = new Intent();
-
-            intent.putExtra(AppLevelConstants.ID, object.getId());
-            intent.putExtra(AppLevelConstants.Title, object.getName());
-            intent.putExtra(AppLevelConstants.DESCRIPTION, object.getDescription());
-            intent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
-            intent.putExtra("requestcode", requestCode);
-
-            intent.setComponent(new ComponentName(getActivity().getPackageName(), "com.dialog.dialoggo.Alarm.MyReceiver"));
-            intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-            pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-        } else {
-
-            pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-
-        Calendar calendarToSchedule = Calendar.getInstance();
-        calendarToSchedule.setTimeInMillis(System.currentTimeMillis());
-        calendarToSchedule.clear();
-
-        calendarToSchedule.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(dd), Integer.parseInt(hour), Integer.parseInt(minute), 0);
-
-
-        reminderDateTimeInMilliseconds = calendarToSchedule.getTimeInMillis();
-
-        PrintLogging.printLog("", "valueIsform" + reminderDateTimeInMilliseconds);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
-            alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(reminderDateTimeInMilliseconds, pendingIntent), pendingIntent);
-        } else {
-
-            alarmManager.set(AlarmManager.RTC_WAKEUP, reminderDateTimeInMilliseconds, pendingIntent);
-        }
-
-        new KsPreferenceKey(getActivity()).setReminderId(object.getId().toString(), true);
-        ToastHandler.show(getActivity().getResources().getString(R.string.reminder), getActivity());
-        dialog.cancel();
-        if (runningPlayer != null) {
-            if (!runningPlayer.isPlaying()) {
-                runningPlayer.play();
-
-
-            }
-        }
-        getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-        getBinding().bottomSheetLayout.bottomSheet.setVisibility(View.VISIBLE);
-
-//        if (!((Activity) getActivity()).isFinishing()) {
-//            if (getActivity() != null) {
-//                getActivity().onBackPressed();
-//                KsPreferenceKey.getInstance(getActivity()).setCatchupValue(false);
-//
-//            }
-//        }
-    }
 
 
     private String checkDigit(int number) {
@@ -1644,245 +1175,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
 
-    private void showCatchupUI(Long startTime, Asset object) {
-        /*try {
 
-            bottomSheetBehavior = BottomSheetBehavior.from(getBinding().bottomSheetLayout.bottomSheet);
-            // bottomSheetBehavior.setPeekHeight(360);
-            // change the state of the bottom sheet
-
-            gestureDetector = new GestureDetector(getActivity(), new SwipeGestureListener(bottomSheetBehavior, new DragListner() {
-                @Override
-                public void dragging(String name) {
-                    if (name.equalsIgnoreCase("up")) {
-                        drag = true;
-                        timeHandler.removeCallbacks(myRunnable);
-                        getBinding().seekBar.setVisibility(View.GONE);
-                        getBinding().rlUp.setVisibility(View.GONE);
-                        getBinding().playerMediaControls.setVisibility(View.GONE);
-                        getBinding().currentTime.setVisibility(View.GONE);
-                        getBinding().totalDuration.setVisibility(View.GONE);
-                        getBinding().goLive.setVisibility(View.GONE);
-                        getBinding().lockImg.setVisibility(View.GONE);
-                        getBinding().arrowBack.setVisibility(View.GONE);
-                        getBinding().arrowForward.setVisibility(View.GONE);
-                        getBinding().playCatchup.setVisibility(View.INVISIBLE);
-                    } else if (name.equalsIgnoreCase("down")) {
-                        Log.d("ElseCalled", "True");
-                        drag = false;
-                    }
-                }
-            }));
-
-
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-
-            //Initializing RecyclerView
-            getBinding().bottomSheetLayout.recycleview.hasFixedSize();
-            getBinding().bottomSheetLayout.recycleview.setNestedScrollingEnabled(false);
-            getBinding().bottomSheetLayout.recycleview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-
-
-            loadPreviousCatchup(startTime, object);
-
-            // set hideable or not
-            bottomSheetBehavior.setHideable(false);
-
-            bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-                @Override
-                public void onStateChanged(@NonNull View view, int newState) {
-
-
-                    String state = "";
-
-                    switch (newState) {
-                        case BottomSheetBehavior.STATE_DRAGGING: {
-                            state = "DRAGGING";
-
-                            //Removing Animation and Hiding Views
-                            if (timer && timeHandler != null) {
-                                timeHandler.removeCallbacks(myRunnable);
-                                getBinding().seekBar.setVisibility(View.GONE);
-                                getBinding().rlUp.setVisibility(View.GONE);
-                                getBinding().playerMediaControls.setVisibility(View.GONE);
-                                getBinding().currentTime.setVisibility(View.GONE);
-                                getBinding().totalDuration.setVisibility(View.GONE);
-                                getBinding().goLive.setVisibility(View.GONE);
-                                getBinding().lockImg.setVisibility(View.GONE);
-                                getBinding().arrowBack.setVisibility(View.GONE);
-                                getBinding().arrowForward.setVisibility(View.GONE);
-                                getBinding().playCatchup.setVisibility(View.INVISIBLE);
-
-                            }
-                            break;
-                        }
-                        case BottomSheetBehavior.STATE_SETTLING: {
-                            break;
-                        }
-                        case BottomSheetBehavior.STATE_EXPANDED: {
-                            bottomSheetBehavior.setPeekHeight(180);
-                            break;
-                        }
-                        case BottomSheetBehavior.STATE_COLLAPSED: {
-                            getBinding().bottomSheetLayout.bottomSheet.setVisibility(View.VISIBLE);
-                            //Calling Animation and Showing View
-                            bottomSheetBehavior.setPeekHeight(40);
-                            callHandler();
-                            //  ShowAndHideView();
-
-
-                            if (isLivePlayer) {
-
-                                if (dvrEnabled) {
-                                    getBinding().goLive.setVisibility(View.VISIBLE);
-                                    getBinding().seekBar.setVisibility(View.VISIBLE);
-                                    getBinding().rlUp.setVisibility(View.VISIBLE);
-                                    getBinding().playerMediaControls.setVisibility(View.GONE);
-                                    getBinding().currentTime.setVisibility(View.GONE);
-                                    getBinding().totalDuration.setVisibility(View.GONE);
-                                    getBinding().lockImg.setVisibility(View.VISIBLE);
-                                    getBinding().arrowBack.setVisibility(View.VISIBLE);
-                                    getBinding().arrowForward.setVisibility(View.VISIBLE);
-                                    getBinding().playCatchup.setVisibility(View.VISIBLE);
-                                } else {
-                                    getBinding().goLive.setVisibility(View.GONE);
-                                    getBinding().seekBar.setVisibility(View.GONE);
-                                    getBinding().playerMediaControls.setVisibility(View.GONE);
-                                    getBinding().currentTime.setVisibility(View.GONE);
-                                    getBinding().totalDuration.setVisibility(View.GONE);
-                                    getBinding().lockImg.setVisibility(View.VISIBLE);
-                                    getBinding().rlUp.setVisibility(View.VISIBLE);
-                                    getBinding().arrowBack.setVisibility(View.VISIBLE);
-                                    getBinding().arrowForward.setVisibility(View.VISIBLE);
-                                    getBinding().playCatchup.setVisibility(View.INVISIBLE);
-                                }
-
-
-                            } else {
-                                if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue()) {
-                                    getBinding().seekBar.setVisibility(View.VISIBLE);
-                                    getBinding().rlUp.setVisibility(View.VISIBLE);
-                                    getBinding().playerMediaControls.setVisibility(View.GONE);
-                                    getBinding().currentTime.setVisibility(View.VISIBLE);
-                                    getBinding().totalDuration.setVisibility(View.VISIBLE);
-                                    getBinding().lockImg.setVisibility(View.VISIBLE);
-                                    getBinding().goLive.setVisibility(View.GONE);
-                                    getBinding().arrowBack.setVisibility(View.VISIBLE);
-                                    getBinding().arrowForward.setVisibility(View.VISIBLE);
-                                    getBinding().playCatchup.setVisibility(View.VISIBLE);
-                                } else {
-                                    getBinding().seekBar.setVisibility(View.VISIBLE);
-                                    getBinding().rlUp.setVisibility(View.VISIBLE);
-                                    getBinding().playerMediaControls.setVisibility(View.VISIBLE);
-                                    getBinding().currentTime.setVisibility(View.VISIBLE);
-                                    getBinding().totalDuration.setVisibility(View.VISIBLE);
-                                    getBinding().lockImg.setVisibility(View.VISIBLE);
-                                    getBinding().goLive.setVisibility(View.GONE);
-                                    getBinding().arrowBack.setVisibility(View.GONE);
-                                    getBinding().arrowForward.setVisibility(View.GONE);
-                                    getBinding().playCatchup.setVisibility(View.INVISIBLE);
-                                }
-
-
-                            }
-
-
-                            break;
-                        }
-                        case BottomSheetBehavior.STATE_HIDDEN: {
-                            state = "HIDDEN";
-                            break;
-                        }
-                    }
-
-
-                }
-
-                @Override
-                public void onSlide(@NonNull View view, float v) {
-
-                }
-            });
-        } catch (IllegalArgumentException e) {
-            Log.d("ExceptionIs", e.getMessage());
-        }*/
-    }
-
-    private void loadPreviousCatchup(Long startTime, Asset object) {
-        viewModel.loadCatchupData(NowPlaying.EXTERNAL_IDS, String.valueOf(startTime), 1).observe(this, railCommonData -> {
-            if (railCommonData != null && railCommonData.size() > 0) {
-                try {
-                    Collections.reverse(railCommonData);
-
-                    RailCommonData currentRailCommonData = new RailCommonData();
-
-                    currentRailCommonData.setObject(object);
-                    railCommonData.add(currentRailCommonData);
-
-                    loadNextCatchup(startTime, railCommonData);
-
-                } catch (Exception e) {
-
-                }
-
-            } else {
-                RailCommonData currentRailCommonData = new RailCommonData();
-
-                currentRailCommonData.setObject(object);
-                railCommonData.add(currentRailCommonData);
-
-                loadNextCatchup(startTime, railCommonData);
-            }
-        });
-    }
-
-    private void loadNextCatchup(Long startTime, List<RailCommonData> railCommonDataPrevious) {
-        viewModel.loadCatchupData(NowPlaying.EXTERNAL_IDS, String.valueOf(startTime), 2).observe(this, railCommonData -> {
-            if (railCommonData != null && railCommonData.size() > 0) {
-                try {
-
-                    railCommonDataPrevious.addAll(railCommonData);
-
-                    currentRailCommonData = new ArrayList<>();
-                    for (int i = 0; i < railCommonDataPrevious.size(); i++) {
-                        currentRailCommonData.add(railCommonDataPrevious.get(i));
-                    }
-
-
-                    for (int i = 0; i < railCommonDataPrevious.size(); i++) {
-//                        int stTime = Integer.parseInt(AppCommonMethods.getProgramTime(railCommonDataPrevious.get(i).getObject(), 1));
-//                        int endTime = Integer.parseInt(AppCommonMethods.getProgramTime(railCommonDataPrevious.get(i).getObject(), 2));
-
-                        Long stTime = railCommonDataPrevious.get(i).getObject().getStartDate();
-                        Long endTime = railCommonDataPrevious.get(i).getObject().getEndDate();
-
-                        //    Long currentTime = Integer.parseInt(getDateTimeStamp(System.currentTimeMillis()));
-
-
-                        String currentTime = AppCommonMethods.getCurrentTimeStamp();
-                        // Long currentTime = System.currentTimeMillis();
-                        if (Long.valueOf(currentTime) > stTime && Long.valueOf(currentTime) < endTime) {
-                            new KsPreferenceKey(getActivity()).setLiveCatchUpId(railCommonDataPrevious.get(i).getObject().getId().toString(), true);
-                        } else {
-                            new KsPreferenceKey(getActivity()).setLiveCatchUpId(railCommonDataPrevious.get(i).getObject().getId().toString(), false);
-                        }
-                    }
-
-//                    getBinding().bottomSheetLayout.bottomSheet.setVisibility(View.VISIBLE);
-
-                    CatchupTvAdapter catchupTvAdapter = new CatchupTvAdapter(getActivity(), railCommonDataPrevious, isLivePlayer, currentProgramId, DTPlayer.this);
-                    getBinding().bottomSheetLayout.recycleview.setAdapter(catchupTvAdapter);
-
-
-                    //  Log.d("asdsadsad", railCommonData1.size() + "");
-                } catch (Exception e) {
-
-                }
-
-            }
-        });
-    }
 
     private String getDateTimeStamp(Long timeStamp) {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm a", Locale.US);
@@ -2381,6 +1674,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             isPlayerEnded = true;
             Log.d(TAG, "PlayerEnded");
             try {
+                if (handler1!=null) {
+                    handler1.removeCallbacksAndMessages(null);
+                }
                 getBinding().skipIntro.setVisibility(View.GONE);
                 getBinding().skipRecap.setVisibility(View.GONE);
                 getBinding().skipCredits.setVisibility(View.GONE);
@@ -3127,8 +2423,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().seekBar.setProgress(0);
         getBinding().seekBar.setMax(100);
 
-        swipe = new Swipe();
-        swipe.setListener(this);
         getBinding().brightnessSeek.seekBar1.setProgress(50);
         getBinding().brightnessSeek.seekBar1.setOnSeekBarChangeListener(this);
 
@@ -3191,17 +2485,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 if (drag)
                     drag = false;
-                try {
-                    if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                        getBinding().bottomSheetLayout.bottomSheet.setVisibility(View.INVISIBLE);
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    }
-                } catch (Exception e) {
-
-                }
-
 
                 if (isPlayerStart) {
+                    if(getBinding().skipCredits.getVisibility() == View.VISIBLE){
+                        getBinding().skipCredits.setVisibility(View.GONE);
+                    }
 
                     if (lockEnable) {
 //                        if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
@@ -3248,6 +2536,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             public void onSingleClick(View view) {
 
                 if (isPlayerStart) {
+                    if(getBinding().skipCredits.getVisibility() == View.VISIBLE){
+                        getBinding().skipCredits.setVisibility(View.GONE);
+                    }
                     if (lockEnable) {
 //                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
 //                                getBinding().lockIcon.setVisibility(View.GONE);
@@ -3862,20 +3153,21 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         viewModel.playPauseControl().observe(this, aBoolean -> {
             if (aBoolean != null && aBoolean) {
-
-                if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
-                    getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                } else {
-
-                    getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                }
+                getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//                if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
+//                    getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//                } else {
+//
+//                    getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//                }
             } else {
                 if (NetworkConnectivity.isOnline(baseActivity)) {
-                    if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
-                        getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_play));
-                    } else {
-                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_play));
-                    }
+                    getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_play));
+//                    if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
+//                        getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_play));
+//                    } else {
+//                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_play));
+//                    }
 //                        getBinding().playButton.setBackgroundResource(R.drawable.play);
                 } else {
 
@@ -4035,13 +3327,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             if (runningPlayer != null) {
                                 //  runningPlayer.play();
                                 hidePlayerWigetOnResume();
-                                if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
-                                    //  runningPlayer.play();
-                                    getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                                } else {
-                                    //   runningPlayer.play();
-                                    getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                                }
+                                getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//                                if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
+//                                    //  runningPlayer.play();
+//                                    getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//                                } else {
+//                                    //   runningPlayer.play();
+//                                    getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//                                }
                             }
 
 
@@ -4144,28 +3437,29 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (isPlayerStart) {
                 viewModel.getPausestate().observe(this, aBoolean -> {
                     if (aBoolean != null && aBoolean) {
+                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_play));
 
-                        if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
-                            Log.d("PlayerPauseCalled", "Pause1");
-                            getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_play));
-                        } else {
-                            Log.d("PlayerPauseCalled", "Pause2");
-                            getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_play));
-                        }
-                        try {
-                            if (isLivePlayer) {
-                                if (runningPlayer != null) {
-                                    runningPlayer.play();
-                                    if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
-                                        Log.d("PlayerPauseCalled", "Pause3");
-                                        getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-
-                                    }
-                                }
-                            }
-                        } catch (Exception e) {
-
-                        }
+//                        if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
+//                            Log.d("PlayerPauseCalled", "Pause1");
+//                            getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_play));
+//                        } else {
+//                            Log.d("PlayerPauseCalled", "Pause2");
+//                            getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_play));
+//                        }
+//                        try {
+//                            if (isLivePlayer) {
+//                                if (runningPlayer != null) {
+//                                    runningPlayer.play();
+//                                    if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
+//                                        Log.d("PlayerPauseCalled", "Pause3");
+//                                        getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//
+//                                    }
+//                                }
+//                            }
+//                        } catch (Exception e) {
+//
+//                        }
 
                     }
                 });
@@ -4198,15 +3492,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (player != null) {
                         if (!player.isPlaying() && isPause) {
                             isPause = false;
-                            if (player != null)
+                            if (player != null) {
                                 player.play();
-                            if (KsPreferenceKey.getInstance(getActivity()).getCatchupValue() || dvrEnabled) {
-                                getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                            } else {
-
                                 getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
                             }
-
 
                         }
                     }
@@ -4387,34 +3676,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             mAudioManager.abandonAudioFocus(this);
     }
 
-    @Override
-    public void catchupCallback(String url, RailCommonData commonData, String programName) {
-
-        if (currentProgramId.equalsIgnoreCase(commonData.getObject().getId().toString())) {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            if (drag)
-                drag = false;
-        } else {
-            getBinding().bottomSheetLayout.bottomSheet.setVisibility(View.INVISIBLE);
-
-            //  bottomSheetBehavior.setPeekHeight(0);
-            //  getBinding().bottomSheetLayout.bottomSheet.setVisibility(View.GONE);
-            if (runningPlayer != null) {
-                if (runningPlayer.isPlaying()) {
-                    runningPlayer.pause();
-                }
-            }
-            // bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            getBinding().pBar.setVisibility(View.VISIBLE);
-            checkcurrentProgramIsLive(commonData.getObject());
-            getBinding().playCatchup.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-            if (drag)
-                drag = false;
-        }
-
-
-        // getUrl(playerURL,commonData.getObject(),0,false,programName);
-    }
 
     @Override
     public void onStop() {
@@ -4446,72 +3707,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         PrintLogging.printLog("", "hoursandMinuteIs" + hour + minute);
     }
 
-    @Override
-    public void onSwipingLeft(MotionEvent event) {
-
-    }
-
-    @Override
-    public boolean onSwipedLeft(MotionEvent event) {
-        return false;
-    }
-
-    @Override
-    public void onSwipingRight(MotionEvent event) {
-
-    }
-
-    @Override
-    public boolean onSwipedRight(MotionEvent event) {
-        return false;
-    }
-
-    @Override
-    public void onSwipingUp(MotionEvent event) {
-
-        if (event.getX() <= getScreenWidth(getActivity()) / 2) {
-            if (getBinding().brightnessSeek.seekBar1.getProgress() <= 100)
-                getBinding().brightnessSeek.seekBar1.setProgress(getBinding().brightnessSeek.seekBar1.getProgress() + 1);
-        } else {
-            if (getBinding().volumeSeek.seekBar2.getProgress() <= getBinding().volumeSeek.seekBar2.getMax())
-                getBinding().volumeSeek.seekBar2.setProgress(getBinding().volumeSeek.seekBar2.getProgress() + 1);
-        }
-
-    }
-
-    @Override
-    public boolean onSwipedUp(MotionEvent event) {
-        return false;
-    }
-
-    @Override
-    public void onSwipingDown(MotionEvent event) {
-        if (event.getX() <= getScreenWidth(getActivity()) / 2) {
-            if (getBinding().brightnessSeek.seekBar1.getProgress() >= 1)
-                getBinding().brightnessSeek.seekBar1.setProgress(getBinding().brightnessSeek.seekBar1.getProgress() - 1);
-        } else {
-            if (getBinding().volumeSeek.seekBar2.getProgress() <= getBinding().volumeSeek.seekBar2.getMax())
-                getBinding().volumeSeek.seekBar2.setProgress(getBinding().volumeSeek.seekBar2.getProgress() - 1);
-        }
-    }
-
-    @Override
-    public boolean onSwipedDown(MotionEvent event) {
-        return false;
-    }
-
-    public static int getScreenWidth(@NonNull Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowMetrics windowMetrics = activity.getWindowManager().getCurrentWindowMetrics();
-            Insets insets = windowMetrics.getWindowInsets()
-                    .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars());
-            return windowMetrics.getBounds().width() - insets.left - insets.right;
-        } else {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            return displayMetrics.widthPixels;
-        }
-    }
 
     static class ViewHolder1 extends RecyclerView.ViewHolder {
 
