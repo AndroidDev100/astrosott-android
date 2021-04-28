@@ -99,7 +99,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
 
     private void getActiveSubscription() {
         getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
-        subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
+        subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken(), "").observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);

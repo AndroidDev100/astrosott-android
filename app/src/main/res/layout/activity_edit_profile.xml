@@ -15,357 +15,378 @@
             tools:context=".activities.profile.ui.EditProfileActivity">
 
             <RelativeLayout
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/dark_toolbar"
-                android:id="@+id/toolbar">
+                android:background="@color/dark_toolbar">
 
                 <ImageView
+                    android:id="@+id/back_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/back_button"
-                    android:padding="7dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_margin="@dimen/_7sdp"
+                    android:padding="7dp"
                     android:src="@drawable/ic_back" />
 
                 <TextView
+                    android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:id="@+id/title"
-                    android:textAllCaps="true"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/_14sp"
-                    android:letterSpacing="0.09"
-                    android:fontFamily="@font/heebo_medium"
-                    android:layout_gravity="center"
                     android:layout_centerInParent="true"
-                    android:text="@string/edit_profile"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginBottom="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_15sdp"></TextView>
+                    android:fontFamily="@font/heebo_medium"
+                    android:letterSpacing="0.09"
+                    android:text="@string/edit_profile"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sp"></TextView>
 
             </RelativeLayout>
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circular_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/circular_profile"
-                android:src="@drawable/ic_account_circle_80px"
-                android:layout_centerInParent="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="@dimen/_65sdp" />
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_65sdp"
+                android:src="@drawable/ic_account_circle_80px" />
 
             <TextView
+                android:id="@+id/change_profilePhoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/circular_profile"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/heebo_regular"
+                android:text="@string/change_profile_photo"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp"
-                android:fontFamily="@font/heebo_regular"
-                android:id="@+id/change_profilePhoto"
-                android:text="@string/change_profile_photo" />
+                android:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/ll1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_13sdp"
-                android:layout_marginEnd="@dimen/_13sdp"
-                android:id="@+id/ll1"
                 android:layout_below="@+id/change_profilePhoto"
+                android:layout_marginStart="@dimen/_13sdp"
                 android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_13sdp"
                 android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:foregroundTint="@color/white"
-                    app:boxStrokeColor="@color/white"
-                    app:hintTextColor="@color/grey"
-                    android:textColorHint="@color/grey"
-                    android:id="@+id/layout_name">
+                    android:layout_height="wrap_content">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/name"
-                        android:id="@+id/name"
-                        android:fontFamily="@font/heebo_regular"
-                        android:textSize="@dimen/_16sp"
-                        android:enabled="false"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/grey"
-                        android:backgroundTint="@color/white"
-                        android:maxLines="1"
                         android:foregroundTint="@color/white"
-                        android:textCursorDrawable="@color/white" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:textColorHint="@color/grey"
+                        app:boxStrokeColor="@color/white"
+                        app:hintTextColor="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
+                            android:enabled="false"
+                            android:fontFamily="@font/heebo_regular"
+                            android:foregroundTint="@color/white"
+                            android:hint="@string/name"
+                            android:maxLines="1"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/grey"
+                            android:textCursorDrawable="@color/white"
+                            android:textSize="@dimen/_16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/editname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:drawableRight="@drawable/ic_edit_24px" />
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:foregroundTint="@color/white"
-                        app:boxStrokeColor="@color/white"
-                        app:hintTextColor="@color/grey"
-                        android:textColorHint="@color/grey"
-                        android:layout_marginTop="@dimen/_10sdp"
                         android:id="@+id/layout_email"
-                        app:endIconTint="@color/white">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:foregroundTint="@color/white"
+                        android:textColorHint="@color/grey"
+                        app:boxStrokeColor="@color/white"
+                        app:endIconTint="@color/white"
+                        app:hintTextColor="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/email"
-                            android:textColor="@color/white"
-                            android:textColorHint="@color/white"
-                            android:backgroundTint="@color/white"
-                            android:maxLines="1"
                             android:id="@+id/email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
                             android:enabled="false"
                             android:foregroundTint="@color/white"
+                            android:hint="@string/email"
                             android:inputType="textEmailAddress"
-                            android:textCursorDrawable="@color/white" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/editemail"
-                        android:layout_centerInParent="true"
-                        android:drawableRight="@drawable/ic_edit_24px"
-                        android:layout_alignParentRight="true" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:foregroundTint="@color/white"
-                        app:boxStrokeColor="@color/white"
-                        app:hintTextColor="@color/grey"
-                        android:textColorHint="@color/grey"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:id="@+id/layout_mobileNo"
-                        app:endIconTint="@color/white">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/mobile_no"
-                            android:textColor="@color/white"
-                            android:textColorHint="@color/white"
-                            android:backgroundTint="@color/white"
-                            android:maxLength="10"
-                            android:enabled="false"
-                            android:textSize="@dimen/_16sp"
-                            android:fontFamily="@font/heebo_regular"
-                            android:id="@+id/mobile_no"
-                            android:foregroundTint="@color/white"
-                            android:inputType="number"
-                            android:textCursorDrawable="@color/white" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/editMobileNo"
-                        android:layout_centerInParent="true"
-                        android:drawableRight="@drawable/ic_edit_24px"
-                        android:layout_alignParentRight="true" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:foregroundTint="@color/white"
-                        app:boxStrokeColor="@color/white"
-                        app:hintTextColor="@color/grey"
-                        android:textColorHint="@color/grey"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:id="@+id/layout_psw"
-                        app:endIconTint="@color/white">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/password"
-                            android:textColor="@color/white"
-                            android:textColorHint="@color/white"
-                            android:backgroundTint="@color/white"
                             android:maxLines="1"
-                            android:enabled="false"
-                            android:textSize="16sp"
-                            android:fontFamily="@font/heebo_regular"
-                            android:id="@+id/psw"
-                            android:foregroundTint="@color/white"
-                            android:inputType="textPassword"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
                             android:textCursorDrawable="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
+                        android:id="@+id/editemail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/editpassword"
+                        android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:drawableRight="@drawable/ic_edit_24px"
-                        android:layout_alignParentRight="true" />
+                        android:drawableRight="@drawable/ic_edit_24px" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout_mobileNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:foregroundTint="@color/white"
+                        android:textColorHint="@color/grey"
+                        app:boxStrokeColor="@color/white"
+                        app:endIconTint="@color/white"
+                        app:hintTextColor="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/mobile_no"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
+                            android:enabled="false"
+                            android:fontFamily="@font/heebo_regular"
+                            android:foregroundTint="@color/white"
+                            android:hint="@string/mobile_no"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textCursorDrawable="@color/white"
+                            android:textSize="@dimen/_16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/editMobileNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:drawableRight="@drawable/ic_edit_24px" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout_psw"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:foregroundTint="@color/white"
+                        android:textColorHint="@color/grey"
+                        app:boxStrokeColor="@color/white"
+                        app:endIconTint="@color/white"
+                        app:hintTextColor="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/psw"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
+                            android:enabled="false"
+                            android:fontFamily="@font/heebo_regular"
+                            android:foregroundTint="@color/white"
+                            android:hint="@string/password"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textCursorDrawable="@color/white"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/editpassword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:drawableRight="@drawable/ic_edit_24px" />
                 </RelativeLayout>
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_30sdp"
                     android:layout_marginStart="@dimen/_45sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
                     android:layout_marginEnd="@dimen/_45sdp"
+                    android:background="@drawable/gradient_button"
+                    android:fontFamily="@font/heebo_medium"
                     android:text="@string/update_profile"
                     android:textAllCaps="true"
-                    android:textSize="@dimen/_16sp"
-                    android:visibility="gone"
-                    android:fontFamily="@font/heebo_medium"
                     android:textColor="@color/white"
-                    android:background="@drawable/gradient_button" />
+                    android:textSize="@dimen/_16sp"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/rl1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/ll1"
-                android:id="@+id/rl1"
                 android:layout_marginTop="@dimen/dimen32dp">
 
                 <TextView
+                    android:id="@+id/linked_accounts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_16sp"
-                    android:id="@+id/linked_accounts"
-                    android:fontFamily="@font/heebo_bold"
-                    android:textColor="@color/white"
                     android:layout_marginStart="@dimen/dimen16dp"
-                    android:text="@string/linked_accounts" />
+                    android:fontFamily="@font/heebo_bold"
+                    android:text="@string/linked_accounts"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16sp" />
 
                 <RelativeLayout
+                    android:id="@+id/rl2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/dimen18dp"
                     android:layout_below="@id/linked_accounts"
-                    android:id="@+id/rl2">
+                    android:layout_marginTop="@dimen/dimen18dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_16sp"
+                        android:layout_alignParentLeft="true"
                         android:layout_gravity="left"
+                        android:layout_marginStart="@dimen/dimen16dp"
                         android:drawableLeft="@drawable/fb_white_icon"
-                        android:fontFamily="@font/heebo_regular"
-                        android:textColor="@color/white"
                         android:drawablePadding="@dimen/_8dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginStart="@dimen/dimen16dp"
-                        android:text="@string/facebook" />
+                        android:fontFamily="@font/heebo_regular"
+                        android:text="@string/facebook"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_16sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_16sp"
-                        android:layout_gravity="end"
-                        android:padding="@dimen/_6dp"
                         android:id="@+id/link_fb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:fontFamily="@font/heebo_regular"
-                        android:textColor="@color/aqua_marine"
+                        android:layout_gravity="end"
                         android:layout_marginEnd="@dimen/dimen16dp"
-                        android:text="@string/link" />
+                        android:fontFamily="@font/heebo_regular"
+                        android:padding="@dimen/_6dp"
+                        android:text="@string/link"
+                        android:textColor="@color/aqua_marine"
+                        android:textSize="@dimen/_16sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/dimen32dp"
                     android:layout_below="@id/rl2"
-                    android:id="@+id/rl3">
+                    android:layout_marginTop="@dimen/dimen32dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_16sp"
-                        android:layout_gravity="left"
-                        android:drawableLeft="@drawable/google_white_icon"
-                        android:fontFamily="@font/heebo_regular"
-                        android:textColor="@color/white"
-                        android:drawablePadding="@dimen/_8dp"
                         android:layout_alignParentLeft="true"
+                        android:layout_gravity="left"
                         android:layout_marginStart="@dimen/dimen16dp"
-                        android:text="@string/google" />
+                        android:drawableLeft="@drawable/google_white_icon"
+                        android:drawablePadding="@dimen/_8dp"
+                        android:fontFamily="@font/heebo_regular"
+                        android:text="@string/google"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_16sp" />
 
                     <TextView
+                        android:id="@+id/link_google"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_16sp"
-                        android:layout_gravity="end"
-                        android:id="@+id/link_google"
-                        android:padding="@dimen/_6dp"
                         android:layout_alignParentRight="true"
-                        android:fontFamily="@font/heebo_regular"
-                        android:textColor="@color/aqua_marine"
+                        android:layout_gravity="end"
                         android:layout_marginEnd="@dimen/dimen16dp"
-                        android:text="@string/link" />
+                        android:fontFamily="@font/heebo_regular"
+                        android:padding="@dimen/_6dp"
+                        android:text="@string/link"
+                        android:textColor="@color/aqua_marine"
+                        android:textSize="@dimen/_16sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/dimen32dp"
                     android:layout_below="@id/rl3"
+                    android:layout_marginTop="@dimen/dimen32dp"
                     android:layout_marginBottom="@dimen/dimen60dp"
-                    android:id="@+id/rl4">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_16sp"
-                        android:layout_gravity="left"
-                        android:drawableLeft="@drawable/apple_white_icon"
-                        android:fontFamily="@font/heebo_regular"
-                        android:textColor="@color/white"
-                        android:drawablePadding="@dimen/_8dp"
                         android:layout_alignParentLeft="true"
+                        android:layout_gravity="left"
                         android:layout_marginStart="@dimen/dimen16dp"
-                        android:text="@string/apple" />
+                        android:drawableLeft="@drawable/apple_white_icon"
+                        android:drawablePadding="@dimen/_8dp"
+                        android:fontFamily="@font/heebo_regular"
+                        android:text="@string/apple"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_16sp" />
 
                     <TextView
+                        android:id="@+id/link_apple"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_16sp"
-                        android:layout_gravity="end"
-                        android:padding="@dimen/_6dp"
-                        android:id="@+id/link_apple"
                         android:layout_alignParentRight="true"
-                        android:fontFamily="@font/heebo_regular"
-                        android:textColor="@color/aqua_marine"
+                        android:layout_gravity="end"
                         android:layout_marginEnd="@dimen/dimen16dp"
-                        android:text="@string/link" />
+                        android:fontFamily="@font/heebo_regular"
+                        android:padding="@dimen/_6dp"
+                        android:text="@string/link"
+                        android:textColor="@color/aqua_marine"
+                        android:textSize="@dimen/_16sp" />
                 </RelativeLayout>
             </RelativeLayout>
 
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:theme="@style/progressBarBlue"
+                android:visibility="gone"></ProgressBar>
         </RelativeLayout>
     </ScrollView>
 </layout>

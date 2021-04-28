@@ -30,7 +30,7 @@ import com.astro.sott.utils.userInfo.UserInfo;
 
 public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> {
     private AstroLoginViewModel astroLoginViewModel;
-    private String loginType, emailMobile, password, oldPassword = "", from, token = "";
+    private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "";
     private CountDownTimer countDownTimer;
 
     @Override
@@ -52,12 +52,16 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         emailMobile = getIntent().getExtras().getString(AppLevelConstants.EMAIL_MOBILE_KEY);
         if (getIntent().getExtras().getString(AppLevelConstants.OLD_PASSWORD_KEY) != null)
             oldPassword = getIntent().getExtras().getString(AppLevelConstants.OLD_PASSWORD_KEY);
-
+        if (getIntent().getExtras().getString("newEmail") != null)
+            newEmail = getIntent().getExtras().getString("newEmail");
+        if (getIntent().getExtras().getString("newMobile") != null)
+            newMobile = getIntent().getExtras().getString("newMobile");
         password = getIntent().getExtras().getString(AppLevelConstants.PASSWORD_KEY);
         from = getIntent().getExtras().getString(AppLevelConstants.FROM_KEY);
         if (emailMobile != null && !emailMobile.equalsIgnoreCase("")) {
             getBinding().descriptionTxt.setText(getResources().getString(R.string.onetime_pass_code_text) + "\n" + emailMobile);
         }
+
     }
 
     private void modelCall() {
@@ -140,14 +144,14 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String otp = getBinding().pin.getText().toString();
         if (!otp.equalsIgnoreCase("") && otp.length() == 6) {
-            astroLoginViewModel.confirmOtp(loginType, emailMobile, otp).observe(this, evergentCommonResponse -> {
+            astroLoginViewModel.confirmOtp(loginType, "+91" + emailMobile, otp).observe(this, evergentCommonResponse -> {
                 if (evergentCommonResponse.isStatus()) {
                     // Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
                     if (from.equalsIgnoreCase("signIn")) {
                         getBinding().progressBar.setVisibility(View.GONE);
 
                         token = evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getToken();
-                        if (!token.equalsIgnoreCase("")) {
+                        if (token != null && !token.equalsIgnoreCase("")) {
                             Intent intent = new Intent(this, ChangePasswordActivity.class);
                             intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra("token", token);
@@ -158,6 +162,13 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
                     } else if (from.equalsIgnoreCase("changePassword")) {
                         changePassword();
+                    } else if (from.equalsIgnoreCase(AppLevelConstants.CONFIRM_PASSWORD)) {
+                        if (!newEmail.equalsIgnoreCase(""))
+                            updateProfile(newEmail, "email");
+                        if (!newMobile.equalsIgnoreCase(""))
+                            updateProfile(newMobile, "mobile");
+                    } else if (from.equalsIgnoreCase(AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD)) {
+                        setPassword();
                     }
 
                 } else {
@@ -175,6 +186,26 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
             getBinding().invalidOtp.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setPassword() {
+        getBinding().progressBar.setVisibility(View.GONE);
+        new ActivityLauncher(this).setPasswordActivity(this);
+    }
+
+    private void updateProfile(String name, String type) {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        String acessToken = UserInfo.getInstance(this).getAccessToken();
+        astroLoginViewModel.updateProfile(type, name, acessToken).observe(this, updateProfileResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
+                new ActivityLauncher(this).profileActivity(this);
+                Toast.makeText(this, updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getMessage() + "", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     private void changePassword() {
@@ -257,6 +288,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 } else if (evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getAlternateUserName() != null && !evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getAlternateUserName().equalsIgnoreCase("")) {
                     UserInfo.getInstance(this).setAlternateUserName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getAlternateUserName());
                 }
+                UserInfo.getInstance(this).setMobileNumber(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getMobileNumber());
+                UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
                 UserInfo.getInstance(this).setActive(true);
                 new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);

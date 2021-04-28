@@ -18,11 +18,13 @@ import com.astro.sott.usermanagment.callBacks.EvergentResponseCallBack;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse;
 import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordResponse;
+import com.astro.sott.usermanagment.modelClasses.checkCredential.CheckCredentialResponse;
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response;
 import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse;
 import com.astro.sott.usermanagment.modelClasses.invoice.InvoiceResponse;
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse;
+import com.astro.sott.usermanagment.modelClasses.updateProfile.UpdateProfileResponse;
 import com.google.gson.JsonArray;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.Entitlement;
@@ -126,10 +128,10 @@ public class MySubscriptionPlanRepository {
     }
 
 
-    public LiveData<EvergentCommonResponse<GetActiveResponse>> getActiveSubscription(Context context, String acessToken) {
+    public LiveData<EvergentCommonResponse<GetActiveResponse>> getActiveSubscription(Context context, String acessToken, String from) {
         MutableLiveData<EvergentCommonResponse<GetActiveResponse>> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().getActiveSubscripton(context, acessToken, new EvergentResponseCallBack<GetActiveResponse>() {
+        EvergentServices.Companion.getInstance().getActiveSubscripton(context, acessToken,from, new EvergentResponseCallBack<GetActiveResponse>() {
 
 
             @Override
@@ -166,6 +168,55 @@ public class MySubscriptionPlanRepository {
 
             @Override
             public void onSuccess(@NotNull ChangePasswordResponse getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setResponse(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
+    public LiveData<EvergentCommonResponse<UpdateProfileResponse>> updateProfile(Context context, String type, String emailMobile, String accessToken) {
+        MutableLiveData<EvergentCommonResponse<UpdateProfileResponse>> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().updateProfile(context, type, emailMobile, accessToken, new EvergentResponseCallBack<UpdateProfileResponse>() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull UpdateProfileResponse getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setResponse(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
+
+    public LiveData<EvergentCommonResponse<CheckCredentialResponse>> checkCredential(Context context, String password, String emailMobile, String type) {
+        MutableLiveData<EvergentCommonResponse<CheckCredentialResponse>> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().checkCredential(context, password, emailMobile,type, new EvergentResponseCallBack<CheckCredentialResponse>() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull CheckCredentialResponse getDevicesResponse) {
                 evergentCommonResponse.setStatus(true);
                 evergentCommonResponse.setResponse(getDevicesResponse);
                 mutableLiveData.postValue(evergentCommonResponse);

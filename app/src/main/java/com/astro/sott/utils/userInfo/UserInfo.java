@@ -10,6 +10,9 @@ public class UserInfo {
     private String refreshToken;
     private String externalSessionToken;
     private boolean active;
+
+    private boolean passwordExists;
+
     private String firstName;
     private String lastName;
     private String userName;
@@ -18,6 +21,23 @@ public class UserInfo {
 
     private String email;
     private String cpCustomerId;
+    private String mobileNumber;
+
+    public String getMobileNumber() {
+        return session.getString("mobileNumber", "");
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        session.setString("mobileNumber", mobileNumber);
+    }
+
+    public boolean isPasswordExists() {
+        return session.getBoolean("passwordExists", false);
+    }
+
+    public void setPasswordExists(boolean passwordExists) {
+        session.setBoolean("passwordExists", passwordExists);
+    }
 
 
     public String getCpCustomerId() {
@@ -32,6 +52,7 @@ public class UserInfo {
         return session.getString("AstroEmail", "");
 
     }
+
 
     public void setEmail(String email) {
         session.setString("AstroEmail", email);

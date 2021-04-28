@@ -166,7 +166,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     @Override
     public void onCardClicked(String productId, String serviceType) {
         if (serviceType.equalsIgnoreCase("ppv")) {
-            //  billingProcessor.consumePurchase(productId);
+            // billingProcessor.consumePurchase(productId);
             billingProcessor.purchase(this, productId, "DEVELOPER PAYLOAD HERE");
         } else {
             billingProcessor.subscribe(this, productId, "DEVELOPER PAYLOAD HERE");

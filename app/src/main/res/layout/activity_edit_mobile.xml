@@ -70,7 +70,7 @@
                     android:enabled="false"
                     android:fontFamily="@font/heebo_regular"
                     android:foregroundTint="@color/white"
-                    android:hint="@string/existing_email"
+                    android:hint="@string/existing_mobile"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:textColor="@color/white"
@@ -91,13 +91,13 @@
                 app:hintTextColor="@color/grey">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/new_email"
+                    android:id="@+id/new_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
                     android:fontFamily="@font/heebo_regular"
                     android:foregroundTint="@color/white"
-                    android:hint="@string/new_email"
+                    android:hint="@string/new_mobile"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:textColor="@color/white"

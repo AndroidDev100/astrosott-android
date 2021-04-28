@@ -3,6 +3,7 @@ package com.astro.sott.usermanagment.networkManager.retrofit
 import com.astro.sott.usermanagment.modelClasses.addSubscripton.AddSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
 import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordResponse
+import com.astro.sott.usermanagment.modelClasses.checkCredential.CheckCredentialResponse
 import com.astro.sott.usermanagment.modelClasses.confirmOtp.ConfirmOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse
 import com.astro.sott.usermanagment.modelClasses.createUser.CreateUserResponse
@@ -18,6 +19,7 @@ import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceRespon
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.resetPassword.ResetPasswordResponse
 import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2Response
+import com.astro.sott.usermanagment.modelClasses.updateProfile.UpdateProfileResponse
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.Body
@@ -31,6 +33,14 @@ interface EvergentApiInterface {
 
     @POST("astro/createOTP")
     fun createOtp(@Body jsonObject: JsonObject?): Call<CreateOtpResponse?>?
+
+
+    @POST("astro/updateProfile")
+    fun updateProfile(@Header("Authorization") key: String, @Body jsonObject: JsonObject?): Call<UpdateProfileResponse?>?
+
+
+    @POST("astro/checkCredentials")
+    fun checkCredentials(@Body jsonObject: JsonObject?): Call<CheckCredentialResponse?>?
 
     @POST("astro/confirmOTP")
     fun confirmOtp(@Body jsonObject: JsonObject?): Call<ConfirmOtpResponse?>?

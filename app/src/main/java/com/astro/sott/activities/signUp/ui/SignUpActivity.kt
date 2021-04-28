@@ -339,6 +339,9 @@ class SignUpActivity : AppCompatActivity() {
                 } else if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName != null && !evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName.equals("", ignoreCase = true)) {
                     UserInfo.getInstance(this).alternateUserName = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName
                 }
+                UserInfo.getInstance(this).isPasswordExists = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.isPasswordExists!!
+                UserInfo.getInstance(this).mobileNumber = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.mobileNumber
+
                 UserInfo.getInstance(this).cpCustomerId = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.cpCustomerID
                 UserInfo.getInstance(this).isActive = true
                 Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT).show()

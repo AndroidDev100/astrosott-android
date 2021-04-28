@@ -134,9 +134,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             startActivity(intent);*/
         });
         getBinding().edit.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            new ActivityLauncher(getActivity()).profileActivity(getActivity());
         });
 
         getBinding().loginSignupMore.setOnClickListener(view -> {
@@ -436,31 +434,42 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
     }
 
+    String displayName = "", paymentMethod = "";
+    boolean isRenewal = false;
+    Long validTill;
+
     private void getActiveSubscription() {
         getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
-        subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
+        subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken(), "profile").observe(this, evergentCommonResponse -> {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
                     for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
-                        if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE")) {
+                        if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && !accountServiceMessageItem.isFreemium()) {
                             if (accountServiceMessageItem.getDisplayName() != null)
-                                getBinding().tvVIPUser.setText(accountServiceMessageItem.getDisplayName() + " User");
-                            if (!accountServiceMessageItem.isRenewal()) {
-                                getBinding().tvSubscribeNow.setVisibility(View.GONE);
-                            } else {
-                                getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
-                                getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getDateFromTimeStamp(accountServiceMessageItem.getValidityTill()));
+                                displayName = accountServiceMessageItem.getDisplayName();
+                            isRenewal = accountServiceMessageItem.isRenewal();
+                            if (isRenewal) {
+                                validTill = accountServiceMessageItem.getValidityTill();
                             }
                             if (accountServiceMessageItem.getPaymentMethod() != null && !accountServiceMessageItem.getPaymentMethod().equalsIgnoreCase("")) {
-                                getBinding().productCategory.setText(accountServiceMessageItem.getPaymentMethod());
-                                getBinding().productCategory.setVisibility(View.VISIBLE);
+                                paymentMethod = accountServiceMessageItem.getPaymentMethod();
                             }
-                            getBinding().subscribe.setVisibility(View.VISIBLE);
-                            getBinding().subscribe.setText(getResources().getString(R.string.manage_subscription));
-                            break;
+
                         }
                     }
+                    getBinding().tvVIPUser.setText(displayName);
+                    if (isRenewal) {
+                        getBinding().tvSubscribeNow.setVisibility(View.GONE);
+                    } else {
+                        getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
+                        getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getDateFromTimeStamp(validTill));
+                    }
+                    getBinding().productCategory.setText(paymentMethod);
+                    getBinding().productCategory.setVisibility(View.VISIBLE);
+
+                    getBinding().subscribe.setVisibility(View.VISIBLE);
+                    getBinding().subscribe.setText(getResources().getString(R.string.manage_subscription));
                 } else {
                     setUiForLogout();
                 }

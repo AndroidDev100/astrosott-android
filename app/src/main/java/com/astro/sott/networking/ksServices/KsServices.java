@@ -5197,7 +5197,11 @@ public class KsServices {
             } else if (list.get(counter).getDescription().contains(AppConstants.KEY_FB_FANTABLET)) {
                 homechannelCallBack.response(true, responseList, list);
             } else if (list.get(counter).getDescription().contains(AppConstants.KEY_MY_WATCHLIST)) {
-                getWatchlistRails(list.get(counter), list);
+                if (UserInfo.getInstance(activity).isActive()) {
+                    getWatchlistRails(list.get(counter), list);
+                } else {
+                    homechannelCallBack.response(false, null, null);
+                }
             } else if (!StringUtils.isNullOrEmptyOrZero(list.get(counter).getDescription()) && list.get(counter).getDescription().toUpperCase().contains(AppConstants.KEY_DFP_ADS)) {
                 try {
                     /*if (!new UserDefault(activity).isSubscribed()){
@@ -5323,7 +5327,11 @@ public class KsServices {
             } else if (list.get(counter).getDescription().contains(AppConstants.CAROUSEL_CUSTOM)) {
                 homechannelCallBack.response(false, responseList, list);
             } else if (list.get(counter).getDescription().contains(AppConstants.KEY_MY_WATCHLIST)) {
-                getWatchlistRails(list.get(counter), list);
+                if (UserInfo.getInstance(activity).isActive()) {
+                    getWatchlistRails(list.get(counter), list);
+                } else {
+                    homechannelCallBack.response(false, null, null);
+                }
             } else {
                 clientSetupKs();
                 PrintLogging.printLog("", "idsPrint" + +channelID + "-->>" + list.get(counter).getName() + "-->>" + list.get(counter).getDescription());
