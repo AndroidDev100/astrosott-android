@@ -323,7 +323,7 @@ public interface AppConstants {
     public static final String LABEL_CREDIT = "labelendcredit";
 
 
-    public static final String FIREBASE_DPLNK_URL = "https://www.example.com/";
+    public static final String FIREBASE_DPLNK_URL = "https://www.web-app-staging.bpastro.com/";
     public static final String FIREBASE_DPLNK_PREFIX = "https://stagingsott.page.link/";
     public static final String FIREBASE_IOS_PACKAGE = "com.astro.stagingsott";
     public static final String FIREBASE_ANDROID_PACKAGE = "com.astro.stagingsott";
