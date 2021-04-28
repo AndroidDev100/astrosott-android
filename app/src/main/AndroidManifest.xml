@@ -179,8 +179,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="example.com"
-                    android:pathPrefix="/stagingsott"
+                    android:host="@string/fcm_host"
+                    android:pathPrefix="@string/fcm_prefix"
                     android:scheme="https" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
@@ -190,10 +190,10 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="stagingsott.page.link"
+                    android:host="@string/fcm_prefix_link"
                     android:scheme="http" />
                 <data
-                    android:host="example.com/link"
+                    android:host="@string/fcm_host_link"
                     android:scheme="https" />
             </intent-filter>
         </activity>
