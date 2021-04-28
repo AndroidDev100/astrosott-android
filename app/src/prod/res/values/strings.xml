@@ -7,4 +7,10 @@
     <string name="cleverTap_ACCOUNT_ID" translatable="false">675-W65-ZZ6Z</string>
     <string name="fcm_sender_id" translatable="false">id:456838347753</string>
 
+
+    <string name="fcm_prefix_link" translatable="false">links.sooka.my</string>
+    <string name="fcm_prefix" translatable="false">/links</string>
+    <string name="fcm_host" translatable="false">sooka.my</string>
+    <string name="fcm_host_link" translatable="false">sooka.my/link</string>
+
 </resources>

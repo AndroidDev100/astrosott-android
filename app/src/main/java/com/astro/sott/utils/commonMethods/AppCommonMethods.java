@@ -656,13 +656,13 @@ public class AppCommonMethods {
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     //.setDomainUriPrefix("https://stagingsott.page.link/")
                     .setLink(Uri.parse(uri))
-                    .setDomainUriPrefix("https://stagingsott.page.link/")
+                    .setDomainUriPrefix(AppConstants.FIREBASE_DPLNK_PREFIX)
                     //.setLink(Uri.parse(uri))
                     .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
                             .build())
-                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.astro.stagingsott").setFallbackUrl(Uri.parse("www.google.com"))
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE)
                             .build())
-                    .setIosParameters(new DynamicLink.IosParameters.Builder("com.astro.stagingsott").setAppStoreId("507874739").build())
+                    .setIosParameters(new DynamicLink.IosParameters.Builder(AppConstants.FIREBASE_IOS_PACKAGE).build())
                     .setSocialMetaTagParameters(
                             new DynamicLink.SocialMetaTagParameters.Builder()
                                     .setTitle(asset.getName())
@@ -717,13 +717,13 @@ public class AppCommonMethods {
         try {
             String assetId=asset.getId()+"";
             String assetType=asset.getType()+"";
-            uri = Uri.parse("https://www.example.com/")
+            uri = Uri.parse(AppConstants.FIREBASE_DPLNK_URL)
                     .buildUpon()
                     .appendQueryParameter("id", assetId)
                     .appendQueryParameter("mediaType", assetType)
                     .appendQueryParameter("image", AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType()))
                     .appendQueryParameter("name", asset.getName())
-                    .appendQueryParameter("apn","com.astro.stagingsott")
+                    .appendQueryParameter("apn",AppConstants.FIREBASE_ANDROID_PACKAGE)
                     .build().toString();
 
         }catch (Exception ignored){
@@ -745,9 +745,9 @@ public class AppCommonMethods {
 
             } else {
                 if (mediaImage.get(i).getRatio().equals("16x9")) {
-                    imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.square_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.square_image_height) + AppLevelConstants.QUALITY;
+                    imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
                 } else if (mediaImage.get(i).getRatio().equals("1:1")) {
-                    imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.square_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.square_image_height) + AppLevelConstants.QUALITY;
+                    imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.QUALITY;
 
                 }
 
