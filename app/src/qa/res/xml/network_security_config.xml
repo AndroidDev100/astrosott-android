@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--suppress XmlHighlighting -->
-<network-security-config xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="UnusedResources">
-    <base-config cleartextTrafficPermitted="true">
+<network-security-config>
+    <base-config>
         <trust-anchors>
+            <!-- Trust preinstalled CAs -->
             <certificates src="system" />
-        </trust-anchors>
-    </base-config>
-    <debug-overrides>
-        <trust-anchors>
+            <!-- Additionally trust user added CAs -->
             <certificates src="user" />
         </trust-anchors>
-    </debug-overrides>
+    </base-config>
 </network-security-config>
