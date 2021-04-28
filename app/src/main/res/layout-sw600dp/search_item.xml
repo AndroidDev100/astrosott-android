@@ -21,7 +21,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clRoot"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="230dp"
         android:orientation="vertical"
 
@@ -29,7 +29,7 @@
 
         <RelativeLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="@dimen/related_item_width"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,11 +42,11 @@
                 android:id="@+id/card_view"
                 android:layout_width="@dimen/related_item_width"
                 android:layout_height="@dimen/related_item_height"
-                app:cardCornerRadius="9dp">
+                app:cardCornerRadius="10dp">
 
                 <ImageView
                     android:id="@+id/image"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/related_item_width"
                     android:layout_height="match_parent"
                     android:background="@drawable/ic_landscape_placeholder"
                     android:scaleType="fitXY"></ImageView>
@@ -55,7 +55,7 @@
 
             <TextView
                 android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/font_medium"
                 android:ellipsize="end"
@@ -67,7 +67,7 @@
             </TextView>
             <TextView
                 android:id="@+id/tv_short_description"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:ellipsize="end"
