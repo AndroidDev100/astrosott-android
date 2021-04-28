@@ -458,18 +458,22 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
                         }
                     }
-                    getBinding().tvVIPUser.setText(displayName);
-                    if (isRenewal) {
-                        getBinding().tvSubscribeNow.setVisibility(View.GONE);
-                    } else {
-                        getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
-                        getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getDateFromTimeStamp(validTill));
-                    }
-                    getBinding().productCategory.setText(paymentMethod);
-                    getBinding().productCategory.setVisibility(View.VISIBLE);
+                    if (!displayName.equalsIgnoreCase("")) {
+                        getBinding().tvVIPUser.setText(displayName);
+                        if (!isRenewal) {
+                            getBinding().tvSubscribeNow.setVisibility(View.GONE);
+                        } else {
+                            getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
+                            getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getDateFromTimeStamp(validTill));
+                        }
+                        getBinding().productCategory.setText(paymentMethod);
+                        getBinding().productCategory.setVisibility(View.VISIBLE);
 
-                    getBinding().subscribe.setVisibility(View.VISIBLE);
-                    getBinding().subscribe.setText(getResources().getString(R.string.manage_subscription));
+                        getBinding().subscribe.setVisibility(View.VISIBLE);
+                        getBinding().subscribe.setText(getResources().getString(R.string.manage_subscription));
+                    } else {
+                        setUiForLogout();
+                    }
                 } else {
                     setUiForLogout();
                 }

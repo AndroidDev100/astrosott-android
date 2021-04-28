@@ -573,7 +573,9 @@
     <string name="detail_confrm">Details Confirmation</string>
     <string name="please_confirm_detail">Please confirm your details below</string>
     <string name="forget_psw">Forgot Password</string>
+    <string name="is_that_you">Is this you?</string>
     <string name="new_psw_para">Please key in your new password</string>
+    <string name="registered_password">Please login with you registered password \n to continue.</string>
     <string name="confirm_psw">Confirm Password</string>
     <string name="update">UPDATE</string>
     <string name="key_in_email_address">Please key in your email address</string>

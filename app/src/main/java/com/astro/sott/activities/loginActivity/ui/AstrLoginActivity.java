@@ -17,6 +17,7 @@ import com.astro.sott.activities.detailConfirmation.DetailConfirmationActivity;
 import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.activities.isThatYou.IsThatYouActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.verification.VerificationActivity;
@@ -313,12 +314,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 getBinding().progressBar.setVisibility(View.GONE);
                 if (type.equalsIgnoreCase("Facebook") || type.equalsIgnoreCase("Google")) {
                     if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2327")) {
-                        Intent intent = new Intent(this, DetailConfirmationActivity.class);
-                        intent.putExtra(AppLevelConstants.TYPE_KEY, type);
-                        intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);
-                        intent.putExtra(AppLevelConstants.PASSWORD_KEY, password);
-                        intent.putExtra("name", name);
-                        startActivity(intent);
+                        searchAccountv2(password);
 
                     } else {
                         Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
@@ -447,18 +443,28 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
     }
 
-    private void searchAccountv2() {
+    private void searchAccountv2(String password) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
-        astroLoginViewModel.searchAccountV2(type, email_mobile).observe(this, evergentCommonResponse -> {
-
+        astroLoginViewModel.searchAccountV2("email", email_mobile).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
-                createOtp();
-                // Toast.makeText(this, evergentCommonResponse.getSearchAccountv2Response().getSearchAccountV2ResponseMessage().getMessage(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, IsThatYouActivity.class);
+                intent.putExtra(AppLevelConstants.TYPE_KEY, type);
+                intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);
+                intent.putExtra(AppLevelConstants.SOCIAL_ID, password);
+                startActivity(intent);
 
             } else {
-                getBinding().progressBar.setVisibility(View.GONE);
-
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2327")) {
+                    Intent intent = new Intent(this, DetailConfirmationActivity.class);
+                    intent.putExtra(AppLevelConstants.TYPE_KEY, type);
+                    intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);
+                    intent.putExtra(AppLevelConstants.PASSWORD_KEY, password);
+                    intent.putExtra("name", name);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -507,16 +513,21 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             getBinding().progressBar.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus()) {
-                //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, VerificationActivity.class);
-                intent.putExtra(AppLevelConstants.TYPE_KEY, type);
+                Intent intent = new Intent(this, IsThatYouActivity.class);
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);
-                intent.putExtra(AppLevelConstants.PASSWORD_KEY, "password");
-                intent.putExtra(AppLevelConstants.FROM_KEY, "signIn");
                 startActivity(intent);
 
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2327")) {
+                    Intent intent = new Intent(this, VerificationActivity.class);
+                    intent.putExtra(AppLevelConstants.TYPE_KEY, type);
+                    intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);
+                    intent.putExtra(AppLevelConstants.PASSWORD_KEY, "password");
+                    intent.putExtra(AppLevelConstants.FROM_KEY, "signIn");
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
