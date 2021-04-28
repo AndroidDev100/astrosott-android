@@ -50,8 +50,8 @@ public class SubscriptionViewModel extends AndroidViewModel {
         return SubscriptionRepository.getInstance().getSubscriptionPackageList(getApplication().getApplicationContext(), assetId);
     }
 
-    public LiveData<EvergentCommonResponse<GetActiveResponse>> getActiveSubscription(String acessToken) {
-        return MySubscriptionPlanRepository.getInstance().getActiveSubscription(getApplication(), acessToken);
+    public LiveData<EvergentCommonResponse<GetActiveResponse>> getActiveSubscription(String acessToken,String profile) {
+        return MySubscriptionPlanRepository.getInstance().getActiveSubscription(getApplication(), acessToken,profile);
     }
 
     public LiveData<EvergentCommonResponse<ChangePasswordResponse>> changePassword(String acessToken, String oldPassword, String newPassword) {

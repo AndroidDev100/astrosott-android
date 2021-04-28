@@ -592,10 +592,13 @@ class EvergentServices {
 
     }
 
-    fun getActiveSubscripton(context: Context, acessToken: String, evergentGetDeviceCallback: EvergentResponseCallBack<GetActiveResponse>) {
+    fun getActiveSubscripton(context: Context, acessToken: String, from: String, evergentGetDeviceCallback: EvergentResponseCallBack<GetActiveResponse>) {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
+        if (from.equals("profile", true)) {
+            json.addProperty("returnLiveEvents", "F")
+        }
         createUserJson.add("GetActiveSubscriptionsRequestMessage", json)
 
 
