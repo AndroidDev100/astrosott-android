@@ -173,7 +173,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     private void getListofActivePacks(List<AccountServiceMessageItem> accountServiceMessage) {
         productIdList = new ArrayList<>();
         for (AccountServiceMessageItem accountServiceMessageItem : accountServiceMessage) {
-            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE")) {
+            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && !accountServiceMessageItem.isFreemium()) {
                 if (accountServiceMessageItem.getServiceID() != null)
                     productIdList.add(accountServiceMessageItem.getServiceID());
 
