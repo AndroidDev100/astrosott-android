@@ -1652,6 +1652,10 @@ public class AppCommonMethods {
                 } else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())) {
                     if (commonData.getObject().getType() == MediaTypeConstant.getProgram(context)) {
                         tvDescription.setVisibility(View.VISIBLE);
+                    }else if (commonData.getObject().getType() == MediaTypeConstant.getLinear(context)){
+                        if (AssetContent.isLiveEvent(commonData.getObject().getMetas())) {
+                            tvDescription.setVisibility(View.VISIBLE);
+                        }
                     }
                     titleLayout.setVisibility(View.VISIBLE);
                     tvTitle.setVisibility(View.VISIBLE);
