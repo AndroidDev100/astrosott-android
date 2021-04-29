@@ -38,6 +38,7 @@ import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
+import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -547,6 +548,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().rlLogout.setVisibility(View.GONE);
         getBinding().loginSignupMore.setVisibility(View.VISIBLE);
         getBinding().loginUi.setVisibility(View.GONE);
+        LoginManager.getInstance().logOut();
         getBinding().edit.setVisibility(View.GONE);
 
     }

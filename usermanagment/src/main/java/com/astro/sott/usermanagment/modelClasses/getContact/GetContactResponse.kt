@@ -26,6 +26,9 @@ data class GetContactResponseMessage(
         @field:SerializedName("contactMessage")
         val contactMessage: List<ContactMessageItem?>? = null,
 
+        @field:SerializedName("channelPartnerID")
+        val channelPartnerID: String? = null,
+
         @field:SerializedName("isMobileVerified")
         val isMobileVerified: Boolean? = null,
 
@@ -34,11 +37,11 @@ data class GetContactResponseMessage(
 
         @field:SerializedName("message")
         val message: String? = null,
-        @field:SerializedName("failureMessage")
-        val failureMessage: List<FailureMessageItem?>? = null,
+
         @field:SerializedName("responseCode")
         val responseCode: String? = null,
-
+        @field:SerializedName("failureMessage")
+        val failureMessage: List<FailureMessageItem?>? = null,
         @field:SerializedName("isProfileComplete")
         val isProfileComplete: Boolean? = null
 )
@@ -51,6 +54,9 @@ data class ContactMessageItem(
         @field:SerializedName("contactID")
         val contactID: String? = null,
 
+        @field:SerializedName("mobileNumber")
+        val mobileNumber: String? = null,
+
         @field:SerializedName("parentalControl")
         val parentalControl: Boolean? = null,
 
@@ -60,14 +66,14 @@ data class ContactMessageItem(
         @field:SerializedName("externalId")
         val externalId: String? = null,
 
+        @field:SerializedName("socialLoginType")
+        val socialLoginType: String? = null,
+
         @field:SerializedName("main")
         val main: Boolean? = null,
 
         @field:SerializedName("userName")
         val userName: String? = null,
-
-        @field:SerializedName("alternateUserName")
-        val alternateUserName: String? = null,
 
         @field:SerializedName("allowTracking")
         val allowTracking: Boolean? = null,
@@ -90,12 +96,24 @@ data class ContactMessageItem(
         @field:SerializedName("pin")
         val pin: Boolean? = null,
 
+        @field:SerializedName("alternateUserName")
+        val alternateUserName: String? = null,
 
-        @field:SerializedName("mobileNumber")
-        val mobileNumber: String? = null,
+        @field:SerializedName("SocialLoginTypes")
+        val socialLoginTypes: List<SocialLoginTypesItem?>? = null,
+
+        @field:SerializedName("socialLoginID")
+        val socialLoginID: String? = null,
+
         @field:SerializedName("isPrimaryContact")
         val isPrimaryContact: Boolean? = null,
 
         @field:SerializedName("email")
         val email: String? = null
+)
+
+data class SocialLoginTypesItem(
+
+        @field:SerializedName("socialLoginType")
+        val socialLoginType: String? = null
 )

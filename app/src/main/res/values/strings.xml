@@ -196,7 +196,7 @@
     <string name="continue_text">CONTINUE</string>
     <string name="continue_btn_txt">Continue</string>
     <string name="notifications">Notifications</string>
-    <string name="dtv_account">Dialog TV Account</string>
+    <string name="dtv_account">Sooka TV Account</string>
     <string name="mbb_account">Mobile Account</string>
     <string name="hbb_account">Home Broadband Account</string>
     <string name="phone_no">Phone number</string>
@@ -241,7 +241,7 @@
     <string name="error_sms_failure">Sorry verification PIN cannot be sent right now. Please try again later</string>
     <string name="error_verification_failure">Invalid OTP</string>
     <string name="default_password">123456</string>
-    <string name="update_app_msg">We have a new version available. Kindly update to enjoy Dialog.</string>
+    <string name="update_app_msg">We have a new version available. Kindly update to enjoy Sooka.</string>
     <string name="error_code_user_not_exist">2000</string>
     <string name="error_code_user_not_exist_">1011</string>
     <string name="already_unfollow">You have already unfollowing this series</string>
@@ -317,7 +317,7 @@
     <string name="parental_restriction">Parental restriction</string>
     <string name="parental_control">Parental control</string>
     <string name="change_pin">Change pin</string>
-    <string name="dtv_text">Dialog TV</string>
+    <string name="dtv_text">Sooka TV</string>
     <string name="mbb_text">Mobile</string>
     <string name="hbb_text">Home Broadband</string>
     <string name="subscription">Subscription</string>
@@ -400,11 +400,11 @@
     <string name="YES">YES</string>
     <string name="error_dtv_failure">Oops, something went wrong. Please try again later</string>
     <string name="select_your_account">Select Your Account</string>
-    <string name="dtv_channel_text">Add Your Dialog TV account to see more channels.</string>
+    <string name="dtv_channel_text">Add Your Sooka TV account to see more channels.</string>
     <string name="mbb_channel_text">Add Your Mobile account to see more channels.</string>
     <string name="hbb_channel_text">Add Your Home Broadband account to see more channels.</string>
     <string name="dtv_account_not_added">Sorry, this channel is not available for viewing on this app.</string>
-    <string name="dtv_account_added_but_channel_not_availabele">Sorry, you may not be able to watch this channel due to the disconnection of your registered Dialog TV account or you may have not activated this channel on your registered account. Please check the status of your registered Dialog TV account at home and try again.</string>
+    <string name="dtv_account_added_but_channel_not_availabele">Sorry, you may not be able to watch this channel due to the disconnection of your registered Sooka TV account or you may have not activated this channel on your registered account. Please check the status of your registered Sooka TV account at home and try again.</string>
     <string name="restriction_text">All videos can be watched without a PIN</string>
     <string name="restricton_update">Viewing restrictions updated</string>
     <string name="All_parental_level">Watch TV shows and movies suƒitable for everyone.</string>
@@ -430,7 +430,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="all_channel">Package details</string>
-    <string name="dialog_connection">Dialog Connection</string>
+    <string name="dialog_connection">Sooka Connection</string>
     <string name="payment_description">Lorem ipsum dolor sit amet, consectetur adipscing elitsed do eu smod tempor incididunt ut labore et dolore.</string>
     <string name="payment_method_title">Select Your payment method.</string>
     <string name="plan_price"> 99</string>
@@ -447,7 +447,7 @@
     <string name="verifying">Verifying otp</string>
     <string name="home_broad_band">Home Broadband</string>
     <string name="mobile">Mobile</string>
-    <string name="dialog_tv">Dialog TV</string>
+    <string name="dialog_tv">Sooka TV</string>
 
     <string name="subscription_date">Subscription Date:</string>
     <string name="expiry_date">Expiry Date:</string>
@@ -478,7 +478,7 @@
     <string name="taxes">(excluding tax)</string>
     <string name="cancel_subscription_dislog">Do you really want to go?</string>
     <string name="cancellation_text">You are going to miss the entertainment of Live TV and 1000+ videos.</string>
-    <string name="non_dialog_user_message">Sorry! please purchase the pack using Dialog Number.</string>
+    <string name="non_dialog_user_message">Sorry! please purchase the pack using Sooka Number.</string>
     <string name="plan_details_error">Sorry , we could not process your request please try again later.</string>
     <string name="no_active_plan">You do not have any active plan</string>
     <string name="insufficient_balance">Sorry! You do not have sufficient balance in your account to make this purchase. Please recharge your account  and try again</string>
@@ -548,7 +548,7 @@
     <string name="verification_code_Send">Verification code had be sent to </string>
     <string name="select_one">You need to make at least one selection first!</string>
     <string name="profile_txt">PROFILE</string>
-    <string name="live_home">LIVE</string>
+    <string name="live_home">LIVE TV</string>
     <string name="signup_login"><u>Log In</u></string>
     <string name="terms_and_conditions">I agree to the <font color='#2cd8e5'> <u>Term and Conditions</u>.</font> </string>
     <string name="already_have_an_account">Already have an account? </string>
@@ -633,6 +633,7 @@
     <string name="privacy_polices">Privacy Policies</string>
     <string name="onetime_pass_code_text"><![CDATA[One time passcode had been sent to registered]]></string>
     <string name="link"><u>Link</u></string>
+    <string name="unlink"><u>Unlink</u></string>
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
     <string name="apple">Apple</string>

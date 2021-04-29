@@ -21,6 +21,7 @@ import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityEditEmailBinding;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.TransactionDetails;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -73,7 +74,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
             getBinding().layoutEmail.setVisibility(View.VISIBLE);
             getBinding().title.setText(getResources().getString(R.string.edit_email));
             alreadyEmail = true;
-            getBinding().email.setText(UserInfo.getInstance(this).getEmail());
+            getBinding().email.setText(AppCommonMethods.maskedEmail(this));
 
         }
     }

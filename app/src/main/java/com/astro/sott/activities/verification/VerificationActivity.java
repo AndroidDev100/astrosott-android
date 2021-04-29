@@ -21,6 +21,7 @@ import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityVerificationBinding;
 import com.astro.sott.fragments.verification.Verification;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -28,11 +29,13 @@ import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 
+import java.util.List;
+
 public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> {
     private AstroLoginViewModel astroLoginViewModel;
     private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "";
     private CountDownTimer countDownTimer;
-
+    private List<SocialLoginTypesItem> socialLoginTypesItem;
     @Override
     protected ActivityVerificationBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
         return ActivityVerificationBinding.inflate(inflater);
@@ -144,7 +147,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String otp = getBinding().pin.getText().toString();
         if (!otp.equalsIgnoreCase("") && otp.length() == 6) {
-            astroLoginViewModel.confirmOtp(loginType, "+91" + emailMobile, otp).observe(this, evergentCommonResponse -> {
+            astroLoginViewModel.confirmOtp(loginType, emailMobile, otp).observe(this, evergentCommonResponse -> {
                 if (evergentCommonResponse.isStatus()) {
                     // Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
                     if (from.equalsIgnoreCase("signIn")) {
@@ -287,6 +290,10 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                     UserInfo.getInstance(this).setUserName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getUserName());
                 } else if (evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getAlternateUserName() != null && !evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getAlternateUserName().equalsIgnoreCase("")) {
                     UserInfo.getInstance(this).setAlternateUserName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getAlternateUserName());
+                }
+                if (evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getSocialLoginTypes() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getSocialLoginTypes().size() > 0) {
+                    socialLoginTypesItem = evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getSocialLoginTypes();
+                    AppCommonMethods.checkSocailLinking(this, socialLoginTypesItem);
                 }
                 UserInfo.getInstance(this).setMobileNumber(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getMobileNumber());
                 UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());

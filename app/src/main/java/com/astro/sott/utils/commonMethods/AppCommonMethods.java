@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 
 import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.search.constants.SearchFilterEnum;
 import com.astro.sott.baseModel.PrefrenceBean;
 import com.astro.sott.beanModel.VIUChannel;
@@ -36,6 +37,7 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.kalturaCallBacks.DMSCallBack;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.ksServices.KsServices;
+import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.usermanagment.modelClasses.getDevice.AccountDeviceDetailsItem;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
@@ -605,7 +607,7 @@ public class AppCommonMethods {
 
     static Uri dynamicLinkUri;
 
-    public static void openShareDialog(final Activity activity, final Asset asset, Context context,String subMediaType) {
+    public static void openShareDialog(final Activity activity, final Asset asset, Context context, String subMediaType) {
         /*WeakReference<Activity> mActivity = new WeakReference<>(activity);
         BranchUniversalObject buo = new BranchUniversalObject()
                 .setTitle(asset.getName())
@@ -677,12 +679,12 @@ public class AppCommonMethods {
 
                                 dynamicLinkUri = task.getResult().getShortLink();
                                 Uri flowchartLink = task.getResult().getPreviewLink();
-                                Log.w("dynamicUrl",dynamicLinkUri.toString()+flowchartLink);
+                                Log.w("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
                                 try {
                                     activity.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            if (dynamicLinkUri!=null){
+                                            if (dynamicLinkUri != null) {
                                                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                                                 sharingIntent.setType("text/plain");
                                                 sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + dynamicLinkUri.toString());
@@ -694,7 +696,7 @@ public class AppCommonMethods {
 
                                         }
                                     });
-                                }catch (Exception ignored){
+                                } catch (Exception ignored) {
 
                                 }
 
@@ -712,22 +714,22 @@ public class AppCommonMethods {
         }
     }
 
-    private static String createURI(Asset asset,Activity activity) {
-        String uri="";
+    private static String createURI(Asset asset, Activity activity) {
+        String uri = "";
         try {
-            String assetId=asset.getId()+"";
-            String assetType=asset.getType()+"";
+            String assetId = asset.getId() + "";
+            String assetType = asset.getType() + "";
             uri = Uri.parse(AppConstants.FIREBASE_DPLNK_URL)
                     .buildUpon()
                     .appendQueryParameter("id", assetId)
                     .appendQueryParameter("mediaType", assetType)
                     .appendQueryParameter("image", AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType()))
                     .appendQueryParameter("name", asset.getName())
-                    .appendQueryParameter("apn",AppConstants.FIREBASE_ANDROID_PACKAGE)
+                    .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE)
                     .build().toString();
 
-        }catch (Exception ignored){
-            uri="";
+        } catch (Exception ignored) {
+            uri = "";
         }
 
         return uri;
@@ -2509,22 +2511,22 @@ public class AppCommonMethods {
     }
 
     public static boolean shouldItemIncluded(List<AssetHistory> continueWatchingList, String assetID) {
-        boolean shouldInclude=false;
+        boolean shouldInclude = false;
         try {
-            for (int i=0;i<continueWatchingList.size();i++){
-                AssetHistory assetHistory=continueWatchingList.get(i);
-                if (String.valueOf(assetHistory.getAssetId()).equalsIgnoreCase(assetID)){
-                   shouldInclude= checkContinueWatchingPercentage(assetHistory.getDuration(),assetHistory.getPosition());
+            for (int i = 0; i < continueWatchingList.size(); i++) {
+                AssetHistory assetHistory = continueWatchingList.get(i);
+                if (String.valueOf(assetHistory.getAssetId()).equalsIgnoreCase(assetID)) {
+                    shouldInclude = checkContinueWatchingPercentage(assetHistory.getDuration(), assetHistory.getPosition());
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return shouldInclude;
     }
 
-    public static boolean checkContinueWatchingPercentage(int astDuration,int position) {
-        boolean condition=false;
+    public static boolean checkContinueWatchingPercentage(int astDuration, int position) {
+        boolean condition = false;
         try {
             /*if (count==0){
                 playingPosition = 730;//assetHistory.getPosition();
@@ -2534,39 +2536,37 @@ public class AppCommonMethods {
             }*/
             int playingPosition = position;
             int totalDuration = astDuration;
-            Double duration=Double.valueOf(totalDuration);
+            Double duration = Double.valueOf(totalDuration);
             double onePercent = (duration * 0.01);
             double nintyEightPercent = (duration * 0.98);
-            Log.w("percentge-->>",onePercent+" "+nintyEightPercent);
-            if (playingPosition>onePercent && playingPosition<nintyEightPercent){
-                condition=true;
-            }else {
-                condition=false;
+            Log.w("percentge-->>", onePercent + " " + nintyEightPercent);
+            if (playingPosition > onePercent && playingPosition < nintyEightPercent) {
+                condition = true;
+            } else {
+                condition = false;
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
         return condition;
     }
 
 
-    public static String getMetas(Asset asset,int type) {
-        Long liveEventStartDate=0l;
-        Long liveEventEndDate=0l;
+    public static String getMetas(Asset asset, int type) {
+        Long liveEventStartDate = 0l;
+        Long liveEventEndDate = 0l;
         StringBuilderHolder.getInstance().clear();
-         if (type==4){
-            String liveEventStartTime=AppCommonMethods.getLiveEventStartDate(asset.getStartDate())+"";
-            String liveEventEndTime=AppCommonMethods.getLiveEventEndTime(asset.getEndDate())+"";
-            if (liveEventStartTime!=null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime!=null && !liveEventEndTime.equalsIgnoreCase("")){
+        if (type == 4) {
+            String liveEventStartTime = AppCommonMethods.getLiveEventStartDate(asset.getStartDate()) + "";
+            String liveEventEndTime = AppCommonMethods.getLiveEventEndTime(asset.getEndDate()) + "";
+            if (liveEventStartTime != null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime != null && !liveEventEndTime.equalsIgnoreCase("")) {
                 StringBuilderHolder.getInstance().append(liveEventStartTime + " - " + liveEventEndTime);
                 StringBuilderHolder.getInstance().append(" | ");
             }
-        }
-        else if (type==5){
+        } else if (type == 5) {
 
-        }
-        else if (type==3){
-            Map<String, Value> metas=asset.getMetas();
+        } else if (type == 3) {
+            Map<String, Value> metas = asset.getMetas();
             LongValue startValue = null, endValue = null;
             if (metas != null) {
                 startValue = (LongValue) metas.get(AppLevelConstants.LiveEventProgramStartDate);
@@ -2578,16 +2578,15 @@ public class AppCommonMethods {
                     liveEventEndDate = endValue.getValue();
                 }
             }
-            String liveEventStartTime=AppCommonMethods.getLiveEventStartDate(liveEventStartDate)+"";
-            String liveEventEndTime=AppCommonMethods.getLiveEventEndTime(liveEventEndDate)+"";
-            if (liveEventStartTime!=null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime!=null && !liveEventEndTime.equalsIgnoreCase("")){
+            String liveEventStartTime = AppCommonMethods.getLiveEventStartDate(liveEventStartDate) + "";
+            String liveEventEndTime = AppCommonMethods.getLiveEventEndTime(liveEventEndDate) + "";
+            if (liveEventStartTime != null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime != null && !liveEventEndTime.equalsIgnoreCase("")) {
                 StringBuilderHolder.getInstance().append(liveEventStartTime + " - " + liveEventEndTime);
                 StringBuilderHolder.getInstance().append(" | ");
             }
-        }
-        else {
-            DoubleValue doubleValue=null;
-            Map<String, Value>  yearMap = asset.getMetas();
+        } else {
+            DoubleValue doubleValue = null;
+            Map<String, Value> yearMap = asset.getMetas();
             if (yearMap != null && yearMap.get(AppLevelConstants.YEAR) instanceof DoubleValue) {
                 doubleValue = (DoubleValue) yearMap.get(AppLevelConstants.YEAR);
             }
@@ -2607,7 +2606,7 @@ public class AppCommonMethods {
             }
         }
 
-        getSubGenre(StringBuilderHolder.getInstance(),asset.getTags());
+        getSubGenre(StringBuilderHolder.getInstance(), asset.getTags());
 
         return StringBuilderHolder.getInstance().getText().toString();
     }
@@ -2639,7 +2638,7 @@ public class AppCommonMethods {
 
         }
 
-        getLanguage(builder,map);
+        getLanguage(builder, map);
     }
 
     private static void getLanguage(StringBuilderHolder builder, Map<String, MultilingualStringValueArray> map) {
@@ -2669,7 +2668,7 @@ public class AppCommonMethods {
             builder.append(" | ");
         }
 
-        getMovieRatings(builder,map);
+        getMovieRatings(builder, map);
 
     }
 
@@ -2709,7 +2708,6 @@ public class AppCommonMethods {
     }
 
 
-
     public static String maskedMobile(Activity context) {
         StringBuilder email = new StringBuilder();
         try {
@@ -2727,5 +2725,15 @@ public class AppCommonMethods {
             email.toString();
         }
         return email.toString();
+    }
+
+    public static void checkSocailLinking(Context context, List<SocialLoginTypesItem> socialLoginTypesItem) {
+        for (SocialLoginTypesItem socialItem : socialLoginTypesItem) {
+            if (socialItem.getSocialLoginType() != null && socialItem.getSocialLoginType().equalsIgnoreCase("Facebook")) {
+                UserInfo.getInstance(context).setFbLinked(true);
+            } else if (socialItem.getSocialLoginType() != null && socialItem.getSocialLoginType().equalsIgnoreCase("Google")) {
+                UserInfo.getInstance(context).setGoogleLinked(true);
+            }
+        }
     }
 }

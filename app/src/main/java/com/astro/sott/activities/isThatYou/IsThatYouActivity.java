@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
@@ -76,7 +77,9 @@ public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBind
 
             }
         }));
-
+        getBinding().forgotText.setOnClickListener(v -> {
+            new ActivityLauncher(this).forgotPasswordActivity(this, ForgotPasswordActivity.class);
+        });
         getBinding().eyeIconConfirmPassword.setOnClickListener(view -> {
             if (passwordVisibilityConfirmPassword) {
                 getBinding().eyeIconConfirmPassword.setBackgroundResource(R.drawable.ic_outline_visibility_off_light);

@@ -45,7 +45,15 @@ public class ManageSubscriptionAdapter extends RecyclerView.Adapter<ManageSubscr
         holder.manageSubscriptionItemBinding.planName.setText(accountServiceMessageItems.get(position).getDisplayName());
         holder.manageSubscriptionItemBinding.currency.setText(accountServiceMessageItems.get(position).getCurrencyCode() + " " + accountServiceMessageItems.get(position).getPlanPrice());
         if (accountServiceMessageItems.get(position).getStatus().equalsIgnoreCase("ACTIVE")) {
-            holder.manageSubscriptionItemBinding.change.setVisibility(View.VISIBLE);
+            if (!accountServiceMessageItems.get(position).getPaymentMethod().equalsIgnoreCase("Google Wallet")) {
+                holder.manageSubscriptionItemBinding.cancel.setVisibility(View.GONE);
+                holder.manageSubscriptionItemBinding.change.setVisibility(View.GONE);
+
+            } else {
+                holder.manageSubscriptionItemBinding.cancel.setVisibility(View.VISIBLE);
+                holder.manageSubscriptionItemBinding.change.setVisibility(View.VISIBLE);
+            }
+
             holder.manageSubscriptionItemBinding.status.setText(accountServiceMessageItems.get(position).getStatus());
             holder.manageSubscriptionItemBinding.status.setBackgroundColor(mContext.getResources().getColor(R.color.green));
 

@@ -104,7 +104,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                     getListofActivePacks(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
-                    loadData(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
+                    checkForFreemium(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
                 } else {
                     getLastSubscription();
                 }
@@ -125,6 +125,18 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
 
             }
         });
+    }
+
+    private List<AccountServiceMessageItem> freemiumFilterationList;
+
+    private void checkForFreemium(List<AccountServiceMessageItem> accountServiceMessage) {
+        freemiumFilterationList = new ArrayList<>();
+        for (AccountServiceMessageItem accountServiceMessageItem : accountServiceMessage) {
+            if (!accountServiceMessageItem.isFreemium()) {
+                freemiumFilterationList.add(accountServiceMessageItem);
+            }
+        }
+        loadData(freemiumFilterationList);
     }
 
     private void getLastSubscription() {
