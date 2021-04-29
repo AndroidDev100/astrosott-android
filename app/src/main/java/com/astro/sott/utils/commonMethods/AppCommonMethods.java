@@ -2728,4 +2728,34 @@ public class AppCommonMethods {
         }
         return email.toString();
     }
+
+    public static String getLiveEventTime(Asset asset) {
+        try {
+            Long liveEventStartDate=0l;
+            Long liveEventEndDate=0l;
+            StringBuilderHolder.getInstance().clear();
+            Map<String, Value> metas=asset.getMetas();
+            LongValue startValue = null, endValue = null;
+            if (metas != null) {
+                startValue = (LongValue) metas.get(AppLevelConstants.LiveEventProgramStartDate);
+                endValue = (LongValue) metas.get(AppLevelConstants.LiveEventProgramEndDate);
+                if (startValue != null) {
+                    liveEventStartDate = startValue.getValue();
+                }
+                if (endValue != null) {
+                    liveEventEndDate = endValue.getValue();
+                }
+            }
+            String liveEventStartTime=AppCommonMethods.getLiveEventStartDate(liveEventStartDate)+"";
+            String liveEventEndTime=AppCommonMethods.getLiveEventEndTime(liveEventEndDate)+"";
+            if (liveEventStartTime!=null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime!=null && !liveEventEndTime.equalsIgnoreCase("")){
+                StringBuilderHolder.getInstance().append(liveEventStartTime + " - " + liveEventEndTime);
+                StringBuilderHolder.getInstance().append(" | ");
+            }
+        }catch (Exception ignored){
+
+        }
+
+        return StringBuilderHolder.getInstance().getText().toString();
+    }
 }
