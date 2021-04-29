@@ -445,6 +445,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.VISIBLE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
                             });
                         }
                         this.vodType = EntitlementCheck.SVOD;
@@ -456,6 +458,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
 
                             });
                         }

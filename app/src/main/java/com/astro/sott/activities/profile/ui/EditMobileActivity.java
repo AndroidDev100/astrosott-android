@@ -22,6 +22,7 @@ import com.astro.sott.databinding.ActivityEditEmailBinding;
 import com.astro.sott.databinding.ActivityEditMobileBinding;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.TransactionDetails;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -72,7 +73,7 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
             getBinding().layoutEmail.setVisibility(View.VISIBLE);
             getBinding().title.setText(getResources().getString(R.string.edit_Mobile));
             alreadyMobile = true;
-            getBinding().email.setText(UserInfo.getInstance(this).getMobileNumber());
+            getBinding().email.setText(AppCommonMethods.maskedMobile(this));
 
         }
     }
@@ -143,7 +144,7 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
                 }
             });
         } else {
-            astroLoginViewModel.createOtp("mobile","+91"+ mobile).observe(this, evergentCommonResponse -> {
+            astroLoginViewModel.createOtp("mobile", "+91" + mobile).observe(this, evergentCommonResponse -> {
 
                 if (evergentCommonResponse.isStatus()) {
                     //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();

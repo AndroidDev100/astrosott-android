@@ -11,6 +11,8 @@ public class UserInfo {
     private String externalSessionToken;
     private boolean active;
 
+    private boolean fbLinked;
+    private boolean googleLinked;
     private boolean passwordExists;
 
     private String firstName;
@@ -29,6 +31,23 @@ public class UserInfo {
 
     public void setMobileNumber(String mobileNumber) {
         session.setString("mobileNumber", mobileNumber);
+    }
+
+
+    public void setFbLinked(boolean fbLinked) {
+        session.setBoolean("isFbLinked", fbLinked);
+    }
+
+    public void setGoogleLinked(boolean googleLinked) {
+        session.setBoolean("isGoogleLinked", googleLinked);
+    }
+
+    public boolean isFbLinked() {
+        return session.getBoolean("isFbLinked", false);
+    }
+
+    public boolean isGoogleLinked() {
+        return session.getBoolean("isGoogleLinked", false);
     }
 
     public boolean isPasswordExists() {

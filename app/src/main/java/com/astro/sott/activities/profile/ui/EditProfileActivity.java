@@ -1,28 +1,48 @@
 package com.astro.sott.activities.profile.ui;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
-import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
-import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityEditProfileBinding;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
-import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.userInfo.UserInfo;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+
+import org.json.JSONException;
+
+import java.util.List;
 
 public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfileBinding> {
     private AstroLoginViewModel astroLoginViewModel;
+    private CallbackManager callbackManager;
+    private String email_mobile = "";
+    private String type = "";
+    private List<SocialLoginTypesItem> socialLoginTypesItem;
+    private GoogleSignInClient mGoogleSignInClient;
+
 
     @Override
     protected ActivityEditProfileBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -34,6 +54,8 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
         super.onCreate(savedInstanceState);
         modelCall();
         setClicks();
+        setFb();
+        setGoogleSignIn();
     }
 
     private void modelCall() {
@@ -48,7 +70,17 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     }
 
     private void setClicks() {
+        if (UserInfo.getInstance(this).isFbLinked()) {
+            getBinding().linkFb.setText(getResources().getString(R.string.unlink));
+        } else {
+            getBinding().linkFb.setText(getResources().getString(R.string.link));
+        }
 
+        if (UserInfo.getInstance(this).isGoogleLinked()) {
+            getBinding().linkGoogle.setText(getResources().getString(R.string.unlink));
+        } else {
+            getBinding().linkGoogle.setText(getResources().getString(R.string.link));
+        }
         getBinding().backButton.setOnClickListener(v -> {
             onBackPressed();
         });
@@ -71,6 +103,34 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             Intent i = new Intent(getApplicationContext(), EditPasswordActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
+        });
+
+        getBinding().linkFb.setOnClickListener(v -> {
+            if (getBinding().linkFb.getText().toString().equalsIgnoreCase("Link")) {
+                if (!UserInfo.getInstance(this).getEmail().equalsIgnoreCase("")) {
+                    LoginManager.getInstance().logOut();
+                    getBinding().loginButton.performClick();
+                } else {
+                    Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                updateProfile("null", "Facebook", false);
+            }
+
+        });
+        getBinding().linkGoogle.setOnClickListener(v -> {
+            if (getBinding().linkGoogle.getText().toString().equalsIgnoreCase("Link")) {
+                if (!UserInfo.getInstance(this).getEmail().equalsIgnoreCase("")) {
+                    mGoogleSignInClient.signOut();
+                    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                    startActivityForResult(signInIntent, 4001);
+                } else {
+                    Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
+
+                }
+            } else {
+                updateProfile("null", "Google", false);
+            }
         });
 
     }
@@ -100,6 +160,11 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                 } else if (evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getAlternateUserName() != null && !evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getAlternateUserName().equalsIgnoreCase("")) {
                     UserInfo.getInstance(this).setAlternateUserName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getAlternateUserName());
                 }
+                if (evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getSocialLoginTypes() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getSocialLoginTypes().size() > 0) {
+                    socialLoginTypesItem = evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getSocialLoginTypes();
+                    AppCommonMethods.checkSocailLinking(this, socialLoginTypesItem);
+                }
+
                 UserInfo.getInstance(this).setMobileNumber(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getMobileNumber());
                 UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
@@ -132,5 +197,143 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
 
             }
         });
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == 4001) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        } else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            type = "Google";
+            if (account.getId() != null && !account.getId().equalsIgnoreCase("") && account.getEmail() != null && !account.getEmail().equalsIgnoreCase("")) {
+                email_mobile = account.getEmail();
+                if (email_mobile.equalsIgnoreCase(UserInfo.getInstance(this).getEmail())) {
+                    updateProfile(account.getId(), type, true);
+                } else {
+                    Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+
+            }
+            // Signed in successfully, show authenticated UI.
+            //  updateUI(account);
+        } catch (ApiException e) {
+            Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setFb() {
+        callbackManager = CallbackManager.Factory.create();
+        //  LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL));
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        // App code
+
+                        Log.w("fb_login", loginResult + "");
+                        GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
+                            if (object != null) {
+                                if (object.has("email")) {
+                                    try {
+                                        String id = object.getString("id");
+                                        email_mobile = object.getString("email");
+                                        type = "Facebook";
+                                        if (email_mobile != null && !email_mobile.equalsIgnoreCase("") && id != null && !id.equalsIgnoreCase("")) {
+                                            if (email_mobile.equalsIgnoreCase(UserInfo.getInstance(EditProfileActivity.this).getEmail())) {
+                                                updateProfile(id, type, true);
+                                            } else {
+                                                Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                                    LoginManager.getInstance().logOut();
+                                }
+                            }
+                        });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields",
+                                "id,name,email");
+                        graphRequest.setParameters(parameters);
+                        graphRequest.executeAsync();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });
+
+
+    }
+
+    private void updateProfile(String name, String type, boolean isLinking) {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        String acessToken = UserInfo.getInstance(this).getAccessToken();
+        astroLoginViewModel.updateProfile(type, name, acessToken).observe(this, updateProfileResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
+                if (type.equalsIgnoreCase("Facebook")) {
+                    if (isLinking) {
+                        UserInfo.getInstance(this).setFbLinked(true);
+                        getBinding().linkFb.setText(getResources().getString(R.string.unlink));
+                        Toast.makeText(this, getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
+                    } else {
+                        UserInfo.getInstance(this).setFbLinked(false);
+                        getBinding().linkFb.setText(getResources().getString(R.string.link));
+                        Toast.makeText(this, getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
+                    }
+                } else if (type.equalsIgnoreCase("Google")) {
+                    if (isLinking) {
+                        Toast.makeText(this, getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
+                        UserInfo.getInstance(this).setGoogleLinked(true);
+                        getBinding().linkGoogle.setText(getResources().getString(R.string.unlink));
+                    } else {
+                        UserInfo.getInstance(this).setGoogleLinked(false);
+                        getBinding().linkGoogle.setText(getResources().getString(R.string.link));
+                        Toast.makeText(this, getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            } else {
+                Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    private void setGoogleSignIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
     }
 }

@@ -56,13 +56,15 @@ public interface AppLevelConstants {
     int TAB_FORWARDED_EPG_DETAIL = 8;
     String EMAIL_MOBILE_KEY = "emailMobile";
     String FROM_KEY = "from";
-    String CONFIRM_PASSWORD="confirmPassword" ;
-    String CONFIRM_PASSWORD_WITHOUT_PASSWORD="confirmPassword_without_Password" ;
+    String CONFIRM_PASSWORD = "confirmPassword";
+    String CONFIRM_PASSWORD_WITHOUT_PASSWORD = "confirmPassword_without_Password";
 
     String TYPE_KEY = "type";
     String FILE_ID_KEY = "file_id";
     String OLD_PASSWORD_KEY = "oldPassword";
     String PASSWORD_KEY = "password";
+    String SOCIAL_ID = "social_id";
+    String GOOGLE_WALLET="Google Wallet";
     String SUBSCRIPTION_ID_KEY = "subscription_id";
     String SIGN_UP = "SignUp";
     String CONTINUE = "Continue";

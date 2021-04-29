@@ -14,12 +14,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.astro.sott.R
 import com.astro.sott.activities.detailConfirmation.DetailConfirmationActivity
 import com.astro.sott.activities.home.HomeActivity
+import com.astro.sott.activities.isThatYou.IsThatYouActivity
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
+import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem
 import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.helpers.ActivityLauncher
 import com.astro.sott.utils.helpers.AppLevelConstants
@@ -40,7 +42,7 @@ import org.json.JSONObject
 import java.lang.Double.parseDouble
 
 class SignUpActivity : AppCompatActivity() {
-
+    private var socialLoginTypesItem: List<SocialLoginTypesItem>? = null
     private var astroLoginViewModel: AstroLoginViewModel? = null
     private var activitySinUpBinding: ActivitySinUpBinding? = null
     private var callbackManager: CallbackManager? = null
@@ -310,12 +312,7 @@ class SignUpActivity : AppCompatActivity() {
                 activitySinUpBinding?.progressBar?.visibility = View.GONE
                 if (type.equals("Facebook", ignoreCase = true) || type.equals("Google", ignoreCase = true)) {
                     if (evergentCommonResponse.errorCode.equals("eV2327", ignoreCase = true)) {
-                        val intent = Intent(this, DetailConfirmationActivity::class.java)
-                        intent.putExtra(AppLevelConstants.TYPE_KEY, type)
-                        intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, emailMobile)
-                        intent.putExtra(AppLevelConstants.PASSWORD_KEY, password)
-                        intent.putExtra("name", name)
-                        startActivity(intent)
+                        socialSearchAccountv2(password, type, emailMobile)
                     } else {
                         Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()
                     }
@@ -338,6 +335,10 @@ class SignUpActivity : AppCompatActivity() {
                     UserInfo.getInstance(this).userName = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.userName
                 } else if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName != null && !evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName.equals("", ignoreCase = true)) {
                     UserInfo.getInstance(this).alternateUserName = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName
+                }
+                if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.socialLoginTypes != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.socialLoginTypes!!.size > 0) {
+                    socialLoginTypesItem = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.socialLoginTypes as List<SocialLoginTypesItem>?
+                    AppCommonMethods.checkSocailLinking(this, socialLoginTypesItem)
                 }
                 UserInfo.getInstance(this).isPasswordExists = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.isPasswordExists!!
                 UserInfo.getInstance(this).mobileNumber = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.mobileNumber
@@ -400,5 +401,29 @@ class SignUpActivity : AppCompatActivity() {
         })
     }
 
+    private fun socialSearchAccountv2(password: String, type: String, emailMobile: String) {
+        activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+        astroLoginViewModel!!.searchAccountV2("email", emailMobile).observe(this, Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
+            activitySinUpBinding?.progressBar?.visibility = View.GONE
+            if (evergentCommonResponse.isStatus) {
+                val intent = Intent(this, IsThatYouActivity::class.java)
+                intent.putExtra(AppLevelConstants.TYPE_KEY, type)
+                intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, emailMobile)
+                intent.putExtra(AppLevelConstants.SOCIAL_ID, password)
+                startActivity(intent)
+            } else {
+                if (evergentCommonResponse.errorCode.equals("eV2327", ignoreCase = true)) {
+                    val intent = Intent(this, DetailConfirmationActivity::class.java)
+                    intent.putExtra(AppLevelConstants.TYPE_KEY, type)
+                    intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, emailMobile)
+                    intent.putExtra(AppLevelConstants.PASSWORD_KEY, password)
+                    intent.putExtra("name", name)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
 
 }

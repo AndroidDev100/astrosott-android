@@ -17,6 +17,7 @@ import com.astro.sott.databinding.ManageSubscriptionItemBinding;
 import com.astro.sott.fragments.manageSubscription.ui.ManageSubscriptionFragment;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 
 import java.util.List;
 
@@ -45,7 +46,15 @@ public class ManageSubscriptionAdapter extends RecyclerView.Adapter<ManageSubscr
         holder.manageSubscriptionItemBinding.planName.setText(accountServiceMessageItems.get(position).getDisplayName());
         holder.manageSubscriptionItemBinding.currency.setText(accountServiceMessageItems.get(position).getCurrencyCode() + " " + accountServiceMessageItems.get(position).getPlanPrice());
         if (accountServiceMessageItems.get(position).getStatus().equalsIgnoreCase("ACTIVE")) {
-            holder.manageSubscriptionItemBinding.change.setVisibility(View.VISIBLE);
+            if (!accountServiceMessageItems.get(position).getPaymentMethod().equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
+                holder.manageSubscriptionItemBinding.cancel.setVisibility(View.GONE);
+                holder.manageSubscriptionItemBinding.change.setVisibility(View.GONE);
+
+            } else {
+                holder.manageSubscriptionItemBinding.cancel.setVisibility(View.VISIBLE);
+                holder.manageSubscriptionItemBinding.change.setVisibility(View.VISIBLE);
+            }
+
             holder.manageSubscriptionItemBinding.status.setText(accountServiceMessageItems.get(position).getStatus());
             holder.manageSubscriptionItemBinding.status.setBackgroundColor(mContext.getResources().getColor(R.color.green));
 
@@ -84,11 +93,11 @@ public class ManageSubscriptionAdapter extends RecyclerView.Adapter<ManageSubscr
             holder.manageSubscriptionItemBinding.renew.setVisibility(View.GONE);
         }
         holder.manageSubscriptionItemBinding.change.setOnClickListener(v -> {
-            changePlanCallBack.onClick();
+            changePlanCallBack.onClick(accountServiceMessageItems.get(position).getPaymentMethod());
         });
         holder.manageSubscriptionItemBinding.cancel.setOnClickListener(v -> {
             if (accountServiceMessageItems.get(position).getServiceID() != null)
-                changePlanCallBack.onCancel(accountServiceMessageItems.get(position).getServiceID());
+                changePlanCallBack.onCancel(accountServiceMessageItems.get(position).getServiceID(), accountServiceMessageItems.get(position).getPaymentMethod());
         });
     }
 

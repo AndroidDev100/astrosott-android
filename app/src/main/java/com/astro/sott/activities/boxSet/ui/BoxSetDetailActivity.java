@@ -389,6 +389,8 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                         getBinding().playText.setText(getResources().getString(R.string.watch_now));
                         getBinding().astroPlayButton.setVisibility(View.GONE);
                         getBinding().starIcon.setVisibility(View.GONE);
+                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+
 
                     });
                     this.vodType = EntitlementCheck.FREE;
@@ -399,6 +401,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                             runOnUiThread(() -> {
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                 getBinding().astroPlayButton.setVisibility(View.GONE);
                                 getBinding().starIcon.setVisibility(View.VISIBLE);
 
@@ -412,6 +415,8 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                                 getBinding().astroPlayButton.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
                             });
                         }
 

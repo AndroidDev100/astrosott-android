@@ -1,6 +1,6 @@
 package com.astro.sott.callBacks.commonCallBacks;
 
 public interface ChangePlanCallBack {
-    void onClick();
-    void onCancel(String serviceId);
+    void onClick(String paymentType);
+    void onCancel(String serviceId,String type);
 }

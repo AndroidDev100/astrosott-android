@@ -403,6 +403,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                 getBinding().playButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.VISIBLE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
                             });
                         }
                         this.vodType = EntitlementCheck.SVOD;
@@ -414,6 +416,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                                 getBinding().playButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
 
                             });
                         }

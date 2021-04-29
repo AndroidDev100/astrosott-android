@@ -216,6 +216,11 @@ class EvergentServices {
             json.addProperty(MOBILE_NUMBER, emailMobile)
             json.addProperty("alternateUserName", emailMobile)
 
+        } else if (type.equals("Google", true) || type.equals("Facebook", true)) {
+            json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+            json.addProperty("socialLoginID", emailMobile)
+            json.addProperty("socialLoginType", type)
+            json.addProperty("isGenerateJWT", true)
 
         }
         updateProfileJson.add("UpdateProfileRequestMessage", json)

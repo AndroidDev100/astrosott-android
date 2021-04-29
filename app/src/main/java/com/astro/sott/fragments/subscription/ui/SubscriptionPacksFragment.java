@@ -118,17 +118,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     private void getProducts() {
         getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         if (!UserInfo.getInstance(getActivity()).isActive()) {
-            subscriptionViewModel.getProduct().observe(this, evergentCommonResponse -> {
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                if (evergentCommonResponse.isStatus()) {
-                    if (evergentCommonResponse.getGetProductResponse() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage().size() > 0) {
-                        checkIfDetailAvailableOnPlaystore(evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage());
-
-                    }
-                } else {
-
-                }
-            });
+            getProductsForLogout();
         } else {
             if (subscriptionIds != null) {
                 JsonArray jsonArray = new JsonArray();
@@ -155,8 +145,24 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
                         }
                     }
                 });
+            } else {
+                getProductsForLogout();
             }
         }
+    }
+
+    private void getProductsForLogout() {
+        subscriptionViewModel.getProduct().observe(this, evergentCommonResponse -> {
+            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+            if (evergentCommonResponse.isStatus()) {
+                if (evergentCommonResponse.getGetProductResponse() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage().size() > 0) {
+                    checkIfDetailAvailableOnPlaystore(evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage());
+
+                }
+            } else {
+
+            }
+        });
     }
 
     private void checkIfDetailAvailableOnPlaystore(List<ProductsResponseMessageItem> productsResponseMessage) {
