@@ -52,11 +52,11 @@
                                 android:id="@+id/back_img"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_margin="14dp"
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:contentDescription="@string/back_icon"
                                 android:elevation="@dimen/dp2"
                                 android:padding="10dp"
-                                android:layout_margin="14dp"
                                 android:src="@drawable/ic_back"
                                 tools:ignore="ContentDescription"
                                 tools:targetApi="lollipop" />
@@ -71,8 +71,6 @@
                                 tools:ignore="ContentDescription" />
 
 
-
-
                             <FrameLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -81,19 +79,6 @@
 
 
                             </FrameLayout>
-
-                            <ImageView
-                                android:id="@+id/astro_play_button"
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_centerInParent="true"
-                                android:layout_marginEnd="@dimen/web_series_iv_player_icon_margin_right"
-                                android:elevation="4dp"
-                                android:layout_marginBottom="@dimen/web_series_iv_player_icon_margin_bottom"
-                                android:background="@drawable/ic_green_play_buton"
-                                android:contentDescription="@string/play_icon"
-                                android:visibility="visible"
-                                tools:ignore="ContentDescription" />
 
 
                         </RelativeLayout>
@@ -106,61 +91,75 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:orientation="horizontal"
-                    android:layout_weight="2"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    android:layout_weight="3">
+                    <RelativeLayout
+                        android:id="@+id/play_button"
+                        android:layout_width="@dimen/_246dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="@dimen/dimen15dp"
+                        android:visibility="gone"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:background="@drawable/vip_gradient_button">
 
-                <RelativeLayout
-                    android:id="@+id/vip_button_live"
-                    android:layout_width="@dimen/_246dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginRight="@dimen/_15sdp"
-                    android:background="@drawable/vip_gradient_button">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_24_px"
-                        android:layout_centerInParent="true"
-                        android:id="@+id/star_icon"
-                        android:layout_marginEnd="@dimen/dimen14dp"
-                        android:layout_toStartOf="@id/play_text"
-                        />
+                        <ImageView
+                            android:id="@+id/star_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="@dimen/dimen14dp"
+                            android:layout_toStartOf="@id/play_text"
+                            android:src="@drawable/ic_star_24_px" />
+
+                        <TextView
+                            android:id="@+id/play_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/heebo_medium"
+                            android:text="@string/become_vip"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/font_medium_large" />
+
+
+                    </RelativeLayout>
 
                     <TextView
+                        android:id="@+id/reminder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:clickable="true"
+                        android:drawablePadding="7dp"
                         android:focusable="true"
-                        android:id="@+id/play_text"
-                        android:fontFamily="@font/heebo_medium"
-                        android:layout_centerInParent="true"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/become_vip"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/font_medium_large" />
+                        android:visibility="gone"
+                        android:fontFamily="@font/heebo_regular"
+                        android:gravity="center"
+                        android:text="@string/remind_me"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/font_small"
+                        app:drawableTopCompat="@drawable/ic_notifications_48_px" />
 
-
-                </RelativeLayout>
                     <TextView
                         android:id="@+id/share"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/share_margin_top"
-                        android:clickable="true"
                         android:drawableTop="@drawable/ic_share_24_px"
                         android:drawablePadding="7dp"
-                        android:focusable="true"
                         android:fontFamily="@font/heebo_regular"
                         android:gravity="center"
                         android:text="@string/share"
+                        android:layout_marginEnd="@dimen/_15sdp"
                         android:textColor="@color/grey"
-                        android:textSize="@dimen/font_small" />
+                        android:textSize="@dimen/font_small"
+                        android:visibility="visible" />
+
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -179,8 +178,8 @@
                             android:id="@+id/channel_logo"
                             android:layout_width="64dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/ic_landscape_placeholder"
                             android:layout_gravity="center"
+                            android:background="@drawable/ic_landscape_placeholder"
                             android:scaleType="fitXY"></ImageView>
 
                         <TextView
@@ -205,8 +204,8 @@
                         android:id="@+id/metas"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/heebo_regular"
                         android:layout_marginTop="1dp"
+                        android:fontFamily="@font/heebo_regular"
                         android:lineHeight="24sp"
                         android:textColor="@color/yellow_orange"
                         android:textSize="@dimen/font_medium"></TextView>
@@ -224,50 +223,57 @@
                         android:textSize="@dimen/font_medium_large" />
                 </LinearLayout>
 
-                <RelativeLayout
+                <FrameLayout
+                    android:id="@+id/rail_fragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:baselineAligned="false">
+                    android:layout_height="match_parent">
+
+                </FrameLayout>
+                <!-- <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="20dp"
+                     android:baselineAligned="false">
 
 
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tabLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="10dp"
-                        android:visibility="gone"
-                        android:background="@drawable/tab_bg"
-                        app:tabBackground="@color/transparentColor"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tabIndicator="@color/transparentColor"
-                        app:tabSelectedTextColor="@color/white"
-                        app:tabTextAppearance="@style/MineCustomTabText"
-                        app:tabTextColor="@color/grey"
+                     <com.google.android.material.tabs.TabLayout
+                         android:id="@+id/tabLayout"
+                         android:layout_width="match_parent"
+                         android:layout_height="50dp"
+                         android:layout_marginTop="10dp"
+                         android:background="@drawable/tab_bg"
+                         android:visibility="gone"
+                         app:layout_constraintLeft_toLeftOf="parent"
+                         app:layout_constraintTop_toTopOf="parent"
+                         app:tabBackground="@color/transparentColor"
+                         app:tabIndicator="@color/transparentColor"
+                         app:tabSelectedTextColor="@color/white"
+                         app:tabTextAppearance="@style/MineCustomTabText"
+                         app:tabTextColor="@color/grey"
 
-                        />
+                         />
 
-                    <View
-                        android:id="@+id/black_line"
-                        android:layout_width="match_parent"
-                        android:layout_height="4dp"
-                        android:background="@color/egg_plant"
-                        android:layout_below="@id/tabLayout"
-                        android:visibility="gone" />
-                    <View
-                        android:id="@+id/indicator"
-                        android:layout_width="0dp"
-                        android:layout_height="4dp"
-                        android:visibility="gone"
-                        android:layout_below="@id/tabLayout"
-                        android:background="@drawable/tab_indicator"/>
-                </RelativeLayout>
-                <!-- View pager to swipe views -->
-                <com.astro.sott.utils.helpers.LiveTvViewPager
-                    android:id="@+id/pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                     <View
+                         android:id="@+id/black_line"
+                         android:layout_width="match_parent"
+                         android:layout_height="4dp"
+                         android:layout_below="@id/tabLayout"
+                         android:background="@color/egg_plant"
+                         android:visibility="gone" />
+
+                     <View
+                         android:id="@+id/indicator"
+                         android:layout_width="0dp"
+                         android:layout_height="4dp"
+                         android:layout_below="@id/tabLayout"
+                         android:background="@drawable/tab_indicator"
+                         android:visibility="gone" />
+                 </RelativeLayout>
+                 &lt;!&ndash; View pager to swipe views &ndash;&gt;
+                 <com.astro.sott.utils.helpers.LiveTvViewPager
+                     android:id="@+id/pager"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent" />-->
             </LinearLayout>
         </ScrollView>
 

@@ -50,7 +50,7 @@
             <RelativeLayout
                 android:id="@+id/ll1_more"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_110sdp"
+                android:layout_height="@dimen/_90sdp"
                 android:layout_marginStart="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
@@ -587,7 +587,7 @@
                 android:layout_gravity="left"
                 android:layout_marginLeft="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_30sdp"
-                android:layout_marginBottom="@dimen/_42sdp"
+                android:layout_marginBottom="@dimen/_32sdp"
                 android:fontFamily="@font/heebo_regular"
                 android:padding="@dimen/_1sdp"
                 android:textAllCaps="false"
