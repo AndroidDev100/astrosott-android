@@ -408,7 +408,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void setViewPager() {
         getBinding().viewPager.setUserInputEnabled(false);
-        getBinding().viewPager.setOffscreenPageLimit(2);
+        //getBinding().viewPager.setOffscreenPageLimit(2);
         getBinding().viewPager.setAdapter(new ViewPagerFragmentAdapter(this, titles));
         // attaching tab mediator
         new TabLayoutMediator(getBinding().tabs, getBinding().viewPager,
