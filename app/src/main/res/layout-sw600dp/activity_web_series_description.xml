@@ -124,51 +124,86 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="3"
                                 android:layout_marginTop="@dimen/_15sdp"
                                 android:orientation="horizontal"
+                                android:layout_gravity="center_horizontal"
                                 android:gravity="center">
+
+                                <RelativeLayout
+                                    android:id="@+id/iv_play_icon"
+                                    android:layout_width="@dimen/_246dp"
+                                    android:layout_height="@dimen/dimen50dp"
+                                    android:visibility="gone"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginEnd="@dimen/_15sdp"
+                                    android:background="@drawable/gradient_button">
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/star_icon"
+                                        android:visibility="gone"
+                                        android:layout_centerInParent="true"
+                                        android:layout_toLeftOf="@+id/play_text"
+                                        android:layout_marginEnd="@dimen/_8dp"
+                                        android:src="@drawable/ic_star_24_px"/>
+                                    <TextView
+                                        android:id="@+id/play_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/share_margin_top"
+                                        android:layout_weight="1"
+                                        android:drawablePadding="7dp"
+                                        android:focusable="true"
+                                        android:layout_centerInParent="true"
+                                        android:fontFamily="@font/heebo_medium"
+                                        android:layout_gravity="center"
+                                        android:text="@string/play_now"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/font_medium_large" />
+
+
+
+                                </RelativeLayout>
                                 <TextView
                                     android:id="@+id/webwatchList"
-                                    android:layout_width="0dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-
-                                    android:layout_weight="1"
                                     android:clickable="true"
-                                    android:drawablePadding="5dp"
+                                    android:drawablePadding="7dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_regular"
                                     android:gravity="center"
                                     android:text="@string/my_list"
+                                    android:layout_marginEnd="@dimen/_15sdp"
                                     android:textColor="@color/grey"
                                     android:textSize="@dimen/font_small"
                                     app:drawableTopCompat="@drawable/favorite_unselected" />
 
                                 <TextView
                                     android:id="@+id/shareWith"
-                                    android:layout_width="0dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
                                     android:visibility="visible"
                                     android:clickable="true"
                                     android:drawableTop="@drawable/ic_share_24_px"
-                                    android:drawablePadding="5dp"
+                                    android:drawablePadding="7dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_regular"
                                     android:gravity="center"
                                     android:text="@string/share"
+                                    android:layout_marginEnd="@dimen/_15sdp"
                                     android:textColor="@color/grey"
                                     android:textSize="@dimen/font_small" />
 
                                 <TextView
                                     android:id="@+id/playlist"
-                                    android:layout_width="0dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-
-                                    android:layout_weight="1"
                                     android:clickable="true"
                                     android:drawableTop="@drawable/ic_file_download_24px"
-                                    android:drawablePadding="5dp"
+                                    android:drawablePadding="7dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_regular"
                                     android:gravity="center"
@@ -179,43 +214,6 @@
 
 
                             </LinearLayout>
-
-
-                            <RelativeLayout
-                                android:id="@+id/iv_play_icon"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/dimen50dp"
-                                android:layout_marginTop="@dimen/_20sdp"
-                                android:visibility="gone"
-                                android:background="@drawable/gradient_button">
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/star_icon"
-                                    android:visibility="gone"
-                                    android:layout_centerInParent="true"
-                                    android:layout_toLeftOf="@+id/play_text"
-                                    android:layout_marginEnd="@dimen/_8dp"
-                                    android:src="@drawable/ic_star_24_px"/>
-                                <TextView
-                                    android:id="@+id/play_text"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/share_margin_top"
-                                    android:layout_weight="1"
-                                    android:drawablePadding="7dp"
-                                    android:focusable="true"
-                                    android:layout_centerInParent="true"
-                                    android:fontFamily="@font/heebo_medium"
-                                    android:layout_gravity="center"
-                                    android:text="@string/play_now"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/font_medium_large" />
-
-
-
-                            </RelativeLayout>
-
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -254,7 +252,9 @@
                                         android:lineHeight="24sp"
                                         android:textColor="@color/yellow_orange"
                                         android:textSize="@dimen/font_medium" />
-
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
 
                                     <com.astro.sott.utils.helpers.ExpandableTextView
                                         android:id="@+id/description_text"
@@ -268,6 +268,14 @@
                                         android:maxLines="3"
                                         android:textColor="@color/white"
                                         android:textSize="@dimen/font_medium_large" />
+                                       <FrameLayout
+                                            android:id="@+id/shadow"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="70dp"
+                                            android:layout_alignParentBottom="true"
+                                            android:background="@drawable/above_dark_shadow"></FrameLayout>
+                                    </RelativeLayout>
+
 
                                     <com.astro.sott.utils.helpers.ExpandableCardLayout
                                         android:id="@+id/expandable_layout"
