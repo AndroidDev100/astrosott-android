@@ -93,11 +93,11 @@ public class ManageSubscriptionAdapter extends RecyclerView.Adapter<ManageSubscr
             holder.manageSubscriptionItemBinding.renew.setVisibility(View.GONE);
         }
         holder.manageSubscriptionItemBinding.change.setOnClickListener(v -> {
-            changePlanCallBack.onClick();
+            changePlanCallBack.onClick(accountServiceMessageItems.get(position).getPaymentMethod());
         });
         holder.manageSubscriptionItemBinding.cancel.setOnClickListener(v -> {
             if (accountServiceMessageItems.get(position).getServiceID() != null)
-                changePlanCallBack.onCancel(accountServiceMessageItems.get(position).getServiceID());
+                changePlanCallBack.onCancel(accountServiceMessageItems.get(position).getServiceID(), accountServiceMessageItems.get(position).getPaymentMethod());
         });
     }
 

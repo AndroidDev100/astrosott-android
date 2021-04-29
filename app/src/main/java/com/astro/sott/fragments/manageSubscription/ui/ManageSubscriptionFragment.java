@@ -38,7 +38,7 @@ import java.util.List;
  * Use the {@link ManageSubscriptionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentManageSubscriptionBinding> implements ChangePlanCallBack, CancelDialogFragment.EditDialogListener {
+public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentManageSubscriptionBinding> implements ChangePlanCallBack, CancelDialogFragment.EditDialogListener, PlanNotUpdated.PlanUpdatedListener {
     private SubscriptionViewModel subscriptionViewModel;
     private ArrayList<String> productIdList;
     private String cancelId;
@@ -201,24 +201,38 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
 
 
     @Override
-    public void onClick() {
-        SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("productList", productIdList);
-        someFragment.setArguments(bundle);
-        transaction.replace(R.id.content_frame, someFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+    public void onClick(String paymentType) {
+        if (paymentType.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
+            SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("productList", productIdList);
+            someFragment.setArguments(bundle);
+            transaction.replace(R.id.content_frame, someFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else {
+            FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+            PlanNotUpdated planNotUpdated = PlanNotUpdated.newInstance(getActivity().getResources().getString(R.string.plan_with_different_payment), "");
+            planNotUpdated.setEditDialogCallBack(ManageSubscriptionFragment.this);
+            planNotUpdated.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        }
     }
 
     @Override
-    public void onCancel(String serviceId) {
-        cancelId = serviceId;
-        FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-        CancelDialogFragment cancelDialogFragment = CancelDialogFragment.newInstance(getActivity().getResources().getString(R.string.create_playlist_name_title), "");
-        cancelDialogFragment.setEditDialogCallBack(ManageSubscriptionFragment.this);
-        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+    public void onCancel(String serviceId, String paymentType) {
+        if (paymentType.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
+            cancelId = serviceId;
+            FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+            CancelDialogFragment cancelDialogFragment = CancelDialogFragment.newInstance(getActivity().getResources().getString(R.string.create_playlist_name_title), "");
+            cancelDialogFragment.setEditDialogCallBack(ManageSubscriptionFragment.this);
+            cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        } else {
+            FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+            PlanNotUpdated planNotUpdated = PlanNotUpdated.newInstance(getActivity().getResources().getString(R.string.cancel_plan_with_different_payment), "");
+            planNotUpdated.setEditDialogCallBack(ManageSubscriptionFragment.this);
+            planNotUpdated.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        }
     }
 
     @Override
@@ -245,5 +259,11 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
             }
 
         });
+    }
+
+    @Override
+    public void onPlanUpdated() {
+
+
     }
 }
