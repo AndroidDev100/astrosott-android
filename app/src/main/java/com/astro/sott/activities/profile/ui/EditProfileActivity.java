@@ -111,7 +111,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     LoginManager.getInstance().logOut();
                     getBinding().loginButton.performClick();
                 } else {
-
+                    Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
                 }
             } else {
                 updateProfile("null", "Facebook", false);
@@ -124,8 +124,8 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     mGoogleSignInClient.signOut();
                     Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                     startActivityForResult(signInIntent, 4001);
-
                 } else {
+                    Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
 
                 }
             } else {
@@ -223,8 +223,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                 if (email_mobile.equalsIgnoreCase(UserInfo.getInstance(this).getEmail())) {
                     updateProfile(account.getId(), type, true);
                 } else {
-                    Toast.makeText(EditProfileActivity.this, "Email Mismatch", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
@@ -258,7 +257,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                                             if (email_mobile.equalsIgnoreCase(UserInfo.getInstance(EditProfileActivity.this).getEmail())) {
                                                 updateProfile(id, type, true);
                                             } else {
-                                                Toast.makeText(EditProfileActivity.this, "Email Mismatch", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
                                             Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
@@ -304,17 +303,21 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     if (isLinking) {
                         UserInfo.getInstance(this).setFbLinked(true);
                         getBinding().linkFb.setText(getResources().getString(R.string.unlink));
+                        Toast.makeText(this, getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
                     } else {
                         UserInfo.getInstance(this).setFbLinked(false);
                         getBinding().linkFb.setText(getResources().getString(R.string.link));
+                        Toast.makeText(this, getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
                     }
                 } else if (type.equalsIgnoreCase("Google")) {
                     if (isLinking) {
+                        Toast.makeText(this, getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
                         UserInfo.getInstance(this).setGoogleLinked(true);
                         getBinding().linkGoogle.setText(getResources().getString(R.string.unlink));
                     } else {
                         UserInfo.getInstance(this).setGoogleLinked(false);
                         getBinding().linkGoogle.setText(getResources().getString(R.string.link));
+                        Toast.makeText(this, getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
                     }
                 }
 

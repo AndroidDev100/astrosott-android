@@ -64,7 +64,7 @@ public interface AppLevelConstants {
     String OLD_PASSWORD_KEY = "oldPassword";
     String PASSWORD_KEY = "password";
     String SOCIAL_ID = "social_id";
-
+    String GOOGLE_WALLET="Google Wallet";
     String SUBSCRIPTION_ID_KEY = "subscription_id";
     String SIGN_UP = "SignUp";
     String CONTINUE = "Continue";

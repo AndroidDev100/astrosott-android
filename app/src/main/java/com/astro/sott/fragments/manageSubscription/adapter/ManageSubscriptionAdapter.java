@@ -17,6 +17,7 @@ import com.astro.sott.databinding.ManageSubscriptionItemBinding;
 import com.astro.sott.fragments.manageSubscription.ui.ManageSubscriptionFragment;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class ManageSubscriptionAdapter extends RecyclerView.Adapter<ManageSubscr
         holder.manageSubscriptionItemBinding.planName.setText(accountServiceMessageItems.get(position).getDisplayName());
         holder.manageSubscriptionItemBinding.currency.setText(accountServiceMessageItems.get(position).getCurrencyCode() + " " + accountServiceMessageItems.get(position).getPlanPrice());
         if (accountServiceMessageItems.get(position).getStatus().equalsIgnoreCase("ACTIVE")) {
-            if (!accountServiceMessageItems.get(position).getPaymentMethod().equalsIgnoreCase("Google Wallet")) {
+            if (!accountServiceMessageItems.get(position).getPaymentMethod().equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
                 holder.manageSubscriptionItemBinding.cancel.setVisibility(View.GONE);
                 holder.manageSubscriptionItemBinding.change.setVisibility(View.GONE);
 
