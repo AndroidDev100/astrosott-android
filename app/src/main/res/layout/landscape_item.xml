@@ -170,7 +170,7 @@
                     android:paddingBottom="@dimen/_2sdp"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_9sdp"
-                    android:text="xyldd"
+                    android:text=""
                     android:visibility="gone" />
 
 

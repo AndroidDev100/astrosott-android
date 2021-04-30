@@ -179,7 +179,16 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
                     landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
-                }else {
+                }
+                else if (itemsList.get(i).getType()==MediaTypeConstant.getLinear(mContext)){
+                    if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
+                        String liveEventTime=AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
+                        landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                        landscapeItemBinding.tvDescription.setText(liveEventTime);
+                    }
+
+                }
+                else {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
                 }
@@ -225,7 +234,16 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
                     landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
-                }else {
+                }
+                else if (itemsList.get(i).getType()==MediaTypeConstant.getLinear(mContext)){
+                    if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
+                        String liveEventTime=AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
+                        landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                        landscapeItemBinding.tvDescription.setText(liveEventTime);
+                    }
+
+                }
+                else {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
                 }
@@ -269,6 +287,13 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
                     landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
+                }else if (itemsList.get(i).getType()==MediaTypeConstant.getLinear(mContext)){
+                    if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
+                        String liveEventTime=AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
+                        landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                        landscapeItemBinding.tvDescription.setText(liveEventTime);
+                    }
+
                 }else {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());

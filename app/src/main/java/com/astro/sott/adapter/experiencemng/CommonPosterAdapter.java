@@ -204,7 +204,16 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
                 itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
                 itemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
-            }else {
+            }
+            else if (itemsList.get(i).getType()==MediaTypeConstant.getLinear(mContext)){
+                    if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
+                        String liveEventTime=AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
+                        itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                        itemBinding.tvDescription.setText(liveEventTime);
+                    }
+
+                }
+            else {
                 itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                 itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
             }
@@ -259,7 +268,16 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
                 itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
                 itemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
-            }else {
+            }
+             else if (itemsList.get(i).getType()==MediaTypeConstant.getLinear(mContext)){
+                    if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
+                        String liveEventTime=AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
+                        itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                        itemBinding.tvDescription.setText(liveEventTime);
+                    }
+
+                }
+            else {
                 itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                 itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
             }
@@ -313,7 +331,16 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
                 itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
                 itemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
-            }else {
+            }
+            else if (itemsList.get(i).getType()==MediaTypeConstant.getLinear(mContext)){
+                    if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
+                        String liveEventTime=AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
+                        itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                        itemBinding.tvDescription.setText(liveEventTime);
+                    }
+
+                }
+            else {
                 itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                 itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
             }

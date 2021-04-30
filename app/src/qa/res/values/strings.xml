@@ -7,6 +7,6 @@
     <string name="fcm_sender_id">id:929669716426</string>
     <string name="fcm_prefix_link" translatable="false">stagingsott.page.link</string>
     <string name="fcm_prefix" translatable="false">/stagingsott</string>
-    <string name="fcm_host" translatable="false">example.com</string>
-    <string name="fcm_host_link" translatable="false">example.com/link</string>
+    <string name="fcm_host" translatable="false">web-app-staging.bpastro.com</string>
+    <string name="fcm_host_link" translatable="false">web-app-staging.bpastro.com/link</string>
 </resources>
