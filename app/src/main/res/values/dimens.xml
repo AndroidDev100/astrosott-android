@@ -614,5 +614,6 @@
     <dimen name="dimen26dp">26dp</dimen>
     <dimen name="button_width_300dp">300dp</dimen>
     <dimen name="dimen125dp">125dp</dimen>
+    <dimen name="_246dp">246dp</dimen>
 
 </resources>

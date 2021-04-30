@@ -26,6 +26,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:nestedScrollingEnabled="false"
+
             android:layout_marginTop="@dimen/_50sdp" />
 
         <LinearLayout
@@ -119,6 +122,5 @@
             android:layout_below="@id/season"
             android:visibility="gone"></ProgressBar>
     </RelativeLayout>
-
 
 </layout>
