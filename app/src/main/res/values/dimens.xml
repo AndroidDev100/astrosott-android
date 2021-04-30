@@ -430,6 +430,9 @@
     <dimen name="schedule_chip_padding_top">12dp</dimen>
     <dimen name="constraint_list_card_width">150dp</dimen>
     <dimen name="schedule_chip_padding_left">10dp</dimen>
+    <dimen name="updated_dialog_width">400dp</dimen>
+    <dimen name="updated_dialog_height">300dp</dimen>
+
     <dimen name="playlist_dialog_fragment_height">280dp</dimen>
     <dimen name="schedule_chip_text_size">18sp</dimen>
     <dimen name="test">1sp</dimen>
@@ -611,5 +614,6 @@
     <dimen name="dimen26dp">26dp</dimen>
     <dimen name="button_width_300dp">300dp</dimen>
     <dimen name="dimen125dp">125dp</dimen>
+    <dimen name="_246dp">246dp</dimen>
 
 </resources>

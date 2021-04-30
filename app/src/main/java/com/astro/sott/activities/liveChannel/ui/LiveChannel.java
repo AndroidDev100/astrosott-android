@@ -340,6 +340,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                             runOnUiThread(() -> {
                                 getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                 getBinding().vipButtonLive.setVisibility(View.VISIBLE);
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.VISIBLE);
@@ -356,6 +357,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                                 getBinding().vipButtonLive.setVisibility(View.VISIBLE);
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
 
                             });
                         }

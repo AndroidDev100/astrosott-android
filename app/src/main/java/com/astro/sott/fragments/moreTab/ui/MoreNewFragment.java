@@ -38,6 +38,7 @@ import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
+import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -458,18 +459,22 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
                         }
                     }
-                    getBinding().tvVIPUser.setText(displayName);
-                    if (isRenewal) {
-                        getBinding().tvSubscribeNow.setVisibility(View.GONE);
-                    } else {
-                        getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
-                        getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getDateFromTimeStamp(validTill));
-                    }
-                    getBinding().productCategory.setText(paymentMethod);
-                    getBinding().productCategory.setVisibility(View.VISIBLE);
+                    if (!displayName.equalsIgnoreCase("")) {
+                        getBinding().tvVIPUser.setText(displayName);
+                        if (!isRenewal) {
+                            getBinding().tvSubscribeNow.setVisibility(View.GONE);
+                        } else {
+                            getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
+                            getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getDateFromTimeStamp(validTill));
+                        }
+                        getBinding().productCategory.setText(paymentMethod);
+                        getBinding().productCategory.setVisibility(View.VISIBLE);
 
-                    getBinding().subscribe.setVisibility(View.VISIBLE);
-                    getBinding().subscribe.setText(getResources().getString(R.string.manage_subscription));
+                        getBinding().subscribe.setVisibility(View.VISIBLE);
+                        getBinding().subscribe.setText(getResources().getString(R.string.manage_subscription));
+                    } else {
+                        setUiForLogout();
+                    }
                 } else {
                     setUiForLogout();
                 }
@@ -543,6 +548,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().rlLogout.setVisibility(View.GONE);
         getBinding().loginSignupMore.setVisibility(View.VISIBLE);
         getBinding().loginUi.setVisibility(View.GONE);
+        LoginManager.getInstance().logOut();
         getBinding().edit.setVisibility(View.GONE);
 
     }

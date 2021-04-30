@@ -38,7 +38,7 @@ import java.util.List;
  * Use the {@link ManageSubscriptionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentManageSubscriptionBinding> implements ChangePlanCallBack, CancelDialogFragment.EditDialogListener {
+public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentManageSubscriptionBinding> implements ChangePlanCallBack, CancelDialogFragment.EditDialogListener, PlanNotUpdated.PlanUpdatedListener {
     private SubscriptionViewModel subscriptionViewModel;
     private ArrayList<String> productIdList;
     private String cancelId;
@@ -104,7 +104,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                     getListofActivePacks(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
-                    loadData(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
+                    checkForFreemium(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
                 } else {
                     getLastSubscription();
                 }
@@ -125,6 +125,18 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
 
             }
         });
+    }
+
+    private List<AccountServiceMessageItem> freemiumFilterationList;
+
+    private void checkForFreemium(List<AccountServiceMessageItem> accountServiceMessage) {
+        freemiumFilterationList = new ArrayList<>();
+        for (AccountServiceMessageItem accountServiceMessageItem : accountServiceMessage) {
+            if (!accountServiceMessageItem.isFreemium()) {
+                freemiumFilterationList.add(accountServiceMessageItem);
+            }
+        }
+        loadData(freemiumFilterationList);
     }
 
     private void getLastSubscription() {
@@ -161,7 +173,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     private void getListofActivePacks(List<AccountServiceMessageItem> accountServiceMessage) {
         productIdList = new ArrayList<>();
         for (AccountServiceMessageItem accountServiceMessageItem : accountServiceMessage) {
-            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE")) {
+            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && !accountServiceMessageItem.isFreemium()) {
                 if (accountServiceMessageItem.getServiceID() != null)
                     productIdList.add(accountServiceMessageItem.getServiceID());
 
@@ -189,24 +201,38 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
 
 
     @Override
-    public void onClick() {
-        SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("productList", productIdList);
-        someFragment.setArguments(bundle);
-        transaction.replace(R.id.content_frame, someFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+    public void onClick(String paymentType) {
+        if (paymentType.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
+            SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("productList", productIdList);
+            someFragment.setArguments(bundle);
+            transaction.replace(R.id.content_frame, someFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else {
+            FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+            PlanNotUpdated planNotUpdated = PlanNotUpdated.newInstance(getActivity().getResources().getString(R.string.plan_with_different_payment), "");
+            planNotUpdated.setEditDialogCallBack(ManageSubscriptionFragment.this);
+            planNotUpdated.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        }
     }
 
     @Override
-    public void onCancel(String serviceId) {
-        cancelId = serviceId;
-        FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-        CancelDialogFragment cancelDialogFragment = CancelDialogFragment.newInstance(getActivity().getResources().getString(R.string.create_playlist_name_title), "");
-        cancelDialogFragment.setEditDialogCallBack(ManageSubscriptionFragment.this);
-        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+    public void onCancel(String serviceId, String paymentType) {
+        if (paymentType.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
+            cancelId = serviceId;
+            FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+            CancelDialogFragment cancelDialogFragment = CancelDialogFragment.newInstance(getActivity().getResources().getString(R.string.create_playlist_name_title), "");
+            cancelDialogFragment.setEditDialogCallBack(ManageSubscriptionFragment.this);
+            cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        } else {
+            FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+            PlanNotUpdated planNotUpdated = PlanNotUpdated.newInstance(getActivity().getResources().getString(R.string.cancel_plan_with_different_payment), "");
+            planNotUpdated.setEditDialogCallBack(ManageSubscriptionFragment.this);
+            planNotUpdated.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        }
     }
 
     @Override
@@ -233,5 +259,11 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
             }
 
         });
+    }
+
+    @Override
+    public void onPlanUpdated() {
+
+
     }
 }

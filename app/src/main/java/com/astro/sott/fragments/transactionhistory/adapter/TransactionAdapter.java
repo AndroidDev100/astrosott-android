@@ -17,6 +17,7 @@ import com.astro.sott.fragments.subscription.adapter.SubscriptionAdapter;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.transactionhistory.ui.TransactionHistory;
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.OrderItem;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -70,7 +71,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                 holder.binding.date.setText("");
             }
             if (orderItems.get(position).getPaymentsInfo().get(0).getPostingStatus().equalsIgnoreCase("Posted")) {
-                if (orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase("Google Wallet") || orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase("App Store Billing")) {
+                if (orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET) || orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase("App Store Billing")) {
                     holder.binding.checkbox.setVisibility(View.GONE);
                 } else {
                     if (checkBoxVisible) {

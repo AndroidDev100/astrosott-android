@@ -382,6 +382,8 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
                         getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                         getBinding().playText.setText(getResources().getString(R.string.watch_now));
                         getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+
 
                     });
                     this.vodType = EntitlementCheck.FREE;
@@ -393,6 +395,8 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
                             });
                         }
                         this.vodType = EntitlementCheck.SVOD;
@@ -403,6 +407,8 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_button));
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
                             });
                         }
 
@@ -846,7 +852,10 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
 
             if (getBinding().descriptionText.isExpanded()) {
                 getBinding().descriptionText.setEllipsize(null);
+                getBinding().shadow.setVisibility(View.GONE);
+
             } else {
+                getBinding().shadow.setVisibility(View.VISIBLE);
                 getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
             }
 
