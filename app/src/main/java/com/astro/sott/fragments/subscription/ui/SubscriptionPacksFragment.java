@@ -202,6 +202,10 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         getBinding().recyclerView.hasFixedSize();
         getBinding().recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
 
+        getBinding().closeIcon.setOnClickListener(v -> {
+            if (getActivity() != null)
+                getActivity().onBackPressed();
+        });
     }
 
     @Override

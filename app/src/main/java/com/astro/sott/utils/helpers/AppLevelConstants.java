@@ -25,6 +25,8 @@ public interface AppLevelConstants {
     String PARENTAL_SWITCH = "ParentalSwitch";
     String TITLE = "title";
     String MESSAGE = "message";
+    String DATE = "date";
+
     String POSITIVE_BUTTON_TEXT = "positiveButtonText";
     String FORCE = "force";
     String NO_RESULT_FOUND = "noResultFound";
