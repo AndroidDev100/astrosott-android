@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 
+import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.search.constants.SearchFilterEnum;
@@ -1654,7 +1655,7 @@ public class AppCommonMethods {
                 } else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())) {
                     if (commonData.getObject().getType() == MediaTypeConstant.getProgram(context)) {
                         tvDescription.setVisibility(View.VISIBLE);
-                    }else if (commonData.getObject().getType() == MediaTypeConstant.getLinear(context)){
+                    } else if (commonData.getObject().getType() == MediaTypeConstant.getLinear(context)) {
                         if (AssetContent.isLiveEvent(commonData.getObject().getMetas())) {
                             tvDescription.setVisibility(View.VISIBLE);
                         }
@@ -2743,10 +2744,10 @@ public class AppCommonMethods {
 
     public static String getLiveEventTime(Asset asset) {
         try {
-            Long liveEventStartDate=0l;
-            Long liveEventEndDate=0l;
+            Long liveEventStartDate = 0l;
+            Long liveEventEndDate = 0l;
             StringBuilderHolder.getInstance().clear();
-            Map<String, Value> metas=asset.getMetas();
+            Map<String, Value> metas = asset.getMetas();
             LongValue startValue = null, endValue = null;
             if (metas != null) {
                 startValue = (LongValue) metas.get(AppLevelConstants.LiveEventProgramStartDate);
@@ -2758,16 +2759,55 @@ public class AppCommonMethods {
                     liveEventEndDate = endValue.getValue();
                 }
             }
-            String liveEventStartTime=AppCommonMethods.getLiveEventStartDate(liveEventStartDate)+"";
-            String liveEventEndTime=AppCommonMethods.getLiveEventEndTime(liveEventEndDate)+"";
-            if (liveEventStartTime!=null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime!=null && !liveEventEndTime.equalsIgnoreCase("")){
+            String liveEventStartTime = AppCommonMethods.getLiveEventStartDate(liveEventStartDate) + "";
+            String liveEventEndTime = AppCommonMethods.getLiveEventEndTime(liveEventEndDate) + "";
+            if (liveEventStartTime != null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime != null && !liveEventEndTime.equalsIgnoreCase("")) {
                 StringBuilderHolder.getInstance().append(liveEventStartTime + " - " + liveEventEndTime);
                 StringBuilderHolder.getInstance().append(" | ");
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
         return StringBuilderHolder.getInstance().getText().toString();
+    }
+
+    public static String getAdsUrl(String url, Asset asset, Context context) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(url);
+        stringBuilder.append("?cust_params%3Ddid%3D" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+        if (UserInfo.getInstance(context).getCpCustomerId() != null && !UserInfo.getInstance(context).getCpCustomerId().equalsIgnoreCase(""))
+            stringBuilder.append("&cid%3D" + UserInfo.getInstance(context).getCpCustomerId());
+        if (!asset.getName().equalsIgnoreCase(""))
+            stringBuilder.append("&vtitle%3D" + asset.getName());
+
+        stringBuilder.append("&ver%3D" + BuildConfig.VERSION_NAME);
+        stringBuilder.append("&vid%3D" + asset.getId());
+        if (asset.getType() == MediaTypeConstant.getLinear(context)) {
+            if (AssetContent.isLiveEvent(asset.getMetas())) {
+                stringBuilder.append("&vtype%3DLive Event");
+            } else {
+                stringBuilder.append("&ch%3D" + asset.getName());
+                stringBuilder.append("&vtype%3DLinear Programme");
+            }
+        } else {
+            stringBuilder.append("&vtype%3DVOD");
+        }
+        if (!AssetContent.getGenredataString(asset.getTags()).equalsIgnoreCase(""))
+            stringBuilder.append("&genre%3D" + AssetContent.getGenredataString(asset.getTags()));
+        if (!AssetContent.getSubGenredataString(asset.getTags()).equalsIgnoreCase(""))
+            stringBuilder.append("&subgenre%3D" + AssetContent.getSubGenredataString(asset.getTags()));
+
+        if (!AssetContent.getLanguageDataString(asset.getTags()).equalsIgnoreCase(""))
+            stringBuilder.append("&vlang%3D" + AssetContent.getLanguageDataString(asset.getTags()));
+
+        if (!AssetContent.getProvider(asset.getTags()).equalsIgnoreCase(""))
+            stringBuilder.append("&vpro%3D" + AssetContent.getProvider(asset.getTags()));
+
+        if (!AssetContent.getSubTitleLanguageDataString(asset.getTags()).equalsIgnoreCase(""))
+            stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags()));
+        stringBuilder.append("&lang%3D" + "English");
+
+        return stringBuilder.toString();
     }
 }
