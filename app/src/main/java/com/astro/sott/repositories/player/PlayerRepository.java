@@ -943,6 +943,7 @@ public class PlayerRepository {
             } else {*/
             if (AppCommonMethods.isAdsEnable) {
                 if (!AssetContent.isAdsEnable(asset.getMetas())) {
+                    getAdsContextApi();
                     addIMAConfig(context, playerPluginConfig);
                 }
             }
@@ -992,6 +993,9 @@ public class PlayerRepository {
 
 
         return playerMutableLiveData;
+    }
+
+    private void getAdsContextApi() {
     }
 
     private void addKavaPluginConfig(Context context, PKPluginConfigs pluginConfigs, Asset asset) {

@@ -28,6 +28,9 @@ public interface ApiInterface {
     @POST("asset/action/getPlaybackContext")
     Call<PlaybackContextResponse> getPlaybackContext(@Body JsonObject apiVersion);
 
+    @POST("asset/action/getPlaybackContext")
+    Call<PlaybackContextResponse> getAdContext(@Body JsonObject apiVersion);
+
 
     @GET(AppConstants.SMS_API_END_POINT)
     Call<OtpModel> getmPin(@Query("number") String msisdn);
