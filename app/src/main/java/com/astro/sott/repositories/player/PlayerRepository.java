@@ -908,6 +908,11 @@ public class PlayerRepository {
         }
 
         this.context = context;
+        if (AppCommonMethods.isAdsEnable) {
+            if (!AssetContent.isAdsEnable(asset.getMetas())) {
+                getAdsContextApi(asset);
+            }
+        }
         if (isPurchased == 1) {
             formatBuilder = new StringBuilder();
             formatter = new Formatter(formatBuilder, Locale.getDefault());
@@ -941,36 +946,36 @@ public class PlayerRepository {
            /* if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
                 PrintLogging.printLog("ValueIS", "0");
             } else {*/
-            if (AppCommonMethods.isAdsEnable) {
-                if (!AssetContent.isAdsEnable(asset.getMetas())) {
-                    getAdsContextApi();
-                    addIMAConfig(context, playerPluginConfig);
-                }
-            }
+
             /*  }*/
 
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    player = PlayKitManager.loadPlayer(context, playerPluginConfig);
+                    playerMutableLiveData.postValue(player);
+                    KalturaPlaybackRequestAdapter.install(player, "com.astro.sott"); // in case app developer wants to give customized referrer instead the default referrer in the playmanifest
+                    KalturaUDRMLicenseRequestAdapter.install(player, "com.astro.sott");
+                    player.getSettings().allowClearLead(true);
+                    player.getSettings().setSecureSurface(true);
+                    player.getSettings().setAdAutoPlayOnResume(true);
+                    subscribePhoenixAnalyticsReportEvent();
+                    player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
 
-            player = PlayKitManager.loadPlayer(context, playerPluginConfig);
+                    player.prepare(mediaConfig);
+                    player.play();
+                }
+            }, 2000);
 
-            playerMutableLiveData.postValue(player);
-
-            KalturaPlaybackRequestAdapter.install(player, "com.astro.sott"); // in case app developer wants to give customized referrer instead the default referrer in the playmanifest
-            KalturaUDRMLicenseRequestAdapter.install(player, "com.astro.sott");
-
-            player.getSettings().allowClearLead(true);
-            player.getSettings().setSecureSurface(true);
-            player.getSettings().setAdAutoPlayOnResume(true);
-
-            LoadControlBuffers loadControlBuffers = new LoadControlBuffers().
+           /* LoadControlBuffers loadControlBuffers = new LoadControlBuffers().
                     setMinPlayerBufferMs(2000).
                     setMaxPlayerBufferMs(40000).
                     setBackBufferDurationMs(2000).
                     setMinBufferAfterReBufferMs(2000).
                     setMinBufferAfterInteractionMs(2000).
-                    setRetainBackBufferFromKeyframe(true);
+                    setRetainBackBufferFromKeyframe(true);*/
             // player.getSettings().setPlayerBuffers(loadControlBuffers);
 
-            subscribePhoenixAnalyticsReportEvent();
 
 //            player.getSettings().setABRSettings(new ABRSettings().setMinVideoBitrate(200000).setInitialBitrateEstimate(150000));
 
@@ -979,12 +984,9 @@ public class PlayerRepository {
                 player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit()) / 2));
             } else {*/
 
-            player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
 
             /*  }*/
 
-            player.prepare(mediaConfig);
-            player.play();
 //        subscribeToTracksAvailableEvent();
 
         } else {
@@ -995,7 +997,17 @@ public class PlayerRepository {
         return playerMutableLiveData;
     }
 
-    private void getAdsContextApi() {
+    private void getAdsContextApi(Asset asset) {
+        String assetId = asset.getId() + "";
+        String fileId = AppCommonMethods.getFileIdOfAssest(asset);
+
+        new KsServices(context).getAdsContext(assetId, fileId, policy -> {
+            if (policy.equalsIgnoreCase(AppLevelConstants.KEEP_ADS)) {
+                addIMAConfig(context, playerPluginConfig);
+            }
+        });
+
+
     }
 
     private void addKavaPluginConfig(Context context, PKPluginConfigs pluginConfigs, Asset asset) {

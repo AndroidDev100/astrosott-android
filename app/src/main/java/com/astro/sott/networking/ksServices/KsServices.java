@@ -43,6 +43,7 @@ import com.astro.sott.callBacks.commonCallBacks.SubscriptionAssetListResponse;
 import com.astro.sott.callBacks.commonCallBacks.SubscriptionResponseCallBack;
 import com.astro.sott.callBacks.commonCallBacks.UpdatePaymentMethodCallBack;
 import com.astro.sott.callBacks.commonCallBacks.UserPrefrencesCallBack;
+import com.astro.sott.callBacks.kalturaCallBacks.AdContextCallback;
 import com.astro.sott.callBacks.kalturaCallBacks.AddWatchListCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.AllWatchlistCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.ContinueWatchingCallBack;
@@ -137,6 +138,7 @@ import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.RequestQueue;
 import com.kaltura.client.enums.AssetReferenceType;
+import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.EntityReferenceBy;
 import com.kaltura.client.enums.InboxMessageStatus;
 import com.kaltura.client.enums.PinType;
@@ -206,6 +208,7 @@ import com.kaltura.client.types.PaymentGatewayConfiguration;
 import com.kaltura.client.types.PersonalList;
 import com.kaltura.client.types.PersonalListFilter;
 import com.kaltura.client.types.Pin;
+import com.kaltura.client.types.PlaybackContextOptions;
 import com.kaltura.client.types.ProductPriceFilter;
 import com.kaltura.client.types.Purchase;
 import com.kaltura.client.types.RelatedFilter;
@@ -418,6 +421,26 @@ public class KsServices {
             getRequestQueue().queue(listAssetBuilder.build(client));
         };
         new Thread(runnable).start();
+    }
+
+    public void getAdsContext(String assetId, String fileId, AdContextCallback callBack) {
+        clientSetupKs();
+        PlaybackContextOptions playbackContextOptions = new PlaybackContextOptions();
+        playbackContextOptions.assetFileIds(fileId);
+        playbackContextOptions.mediaProtocol("https");
+        playbackContextOptions.context("PLAYBACK");
+        playbackContextOptions.urlType("PLAYMANIFEST");
+        playbackContextOptions.streamerType("");
+
+        AssetService.GetAdsContextAssetBuilder listAssetBuilder = AssetService.getAdsContext(assetId, AssetType.MEDIA, playbackContextOptions).setCompletion(result -> {
+            if (result.isSuccess() && result.results != null && result.results.getSources() != null && result.results.getSources().size() > 0 && result.results.getSources().get(0) != null && result.results.getSources().get(0).getAdsPolicy() != null && result.results.getSources().get(0).getAdsPolicy() != null) {
+                callBack.getAdsPolicy(result.results.getSources().get(0).getAdsPolicy().getValue());
+            } else {
+                callBack.getAdsPolicy("");
+            }
+        });
+        getRequestQueue().queue(listAssetBuilder.build(client));
+
     }
 
     private List<VIUChannel> dtChannelList;
@@ -3677,13 +3700,13 @@ public class KsServices {
         requestParam.addProperty("tag", BuildConfig.KALTURA_TAG);
         requestParam.addProperty("partnerId", BuildConfig.KALTURA_PARTNER_ID);
         Log.e("REQUEST", requestParam.toString());
-        Log.e( "oncreate: " , "in8");
+        Log.e("oncreate: ", "in8");
         Call<ResponseDmsModel> call = endpoint.getDMS(requestParam);
         call.enqueue(new Callback<ResponseDmsModel>() {
             @Override
             public void onResponse(@NonNull Call<ResponseDmsModel> call, @NonNull retrofit2.Response<ResponseDmsModel> response) {
 
-                Log.e( "oncreate: " , "in9");
+                Log.e("oncreate: ", "in9");
                 PrintLogging.printLog(this.getClass(), "Dms Log response", "" + response.toString());
                 // Log.e("Mytag", "" + response.body().getParams().getMediaTypes().getMovie());
                 PrintLogging.printLog(this.getClass(), "", "DMS" + "--" + response.isSuccessful());
@@ -3817,14 +3840,14 @@ public class KsServices {
                     Log.d("ParentalLevel", FileFormatHelper.getDash_widevine(activity));
                     callBack.configuration(true);
                 } catch (Exception e) {
-                    Log.e( "oncreate: " , "in10"+"crash");
+                    Log.e("oncreate: ", "in10" + "crash");
                 }
 
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseDmsModel> call, @NonNull Throwable t) {
-                Log.e( "oncreate: " , "in10");
+                Log.e("oncreate: ", "in10");
                 PrintLogging.printLog(this.getClass(), "", "responseDMS" + t.toString());
             }
         });
