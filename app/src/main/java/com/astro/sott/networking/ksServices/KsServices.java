@@ -4209,7 +4209,7 @@ public class KsServices {
                 }
             }
         });
-        // builder.setResponseProfile(responseProfile);
+        builder.setResponseProfile(responseProfile);
         getRequestQueue().queue(builder.build(client));
     }
 
@@ -5355,6 +5355,8 @@ public class KsServices {
                 } else {
                     homechannelCallBack.response(false, null, null);
                 }
+            } else if (list.get(counter).getDescription().contains(AppLevelConstants.PPV_RAIL)) {
+                getPurchaseList();
             } else {
                 clientSetupKs();
                 PrintLogging.printLog("", "idsPrint" + +channelID + "-->>" + list.get(counter).getName() + "-->>" + list.get(counter).getDescription());
@@ -5413,6 +5415,57 @@ public class KsServices {
             }
         }
 
+
+    }
+
+    private void getPurchaseList() {
+
+        clientSetupKs();
+        EntitlementFilter entitlementFilter = new EntitlementFilter();
+        entitlementFilter.productTypeEqual("PPV");
+        entitlementFilter.entityReferenceEqual("USER");
+        entitlementFilter.isExpiredEqual(false + "");
+        entitlementFilter.orderBy("PURCHASE_DATE_ASC");
+
+
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(20);
+
+        EntitlementService.ListEntitlementBuilder builder = EntitlementService.list(entitlementFilter, filterPager).setCompletion(new OnCompletion<Response<ListResponse<Entitlement>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Entitlement>> result) {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                    } else {
+                    }
+                } else {
+
+
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        Log.e("errorCodessName", errorCode);
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getPurchaseList();
+                                    } else {
+                                    }
+                                }
+                            });
+
+                        } else {
+                        }
+                    } else {
+                    }
+
+
+                }
+            }
+        });
+        getRequestQueue().queue(builder.build(client));
 
     }
 
@@ -6430,6 +6483,7 @@ public class KsServices {
         EntitlementFilter entitlementFilter = new EntitlementFilter();
         entitlementFilter.productTypeEqual("subscription");
         entitlementFilter.entityReferenceEqual("user");
+
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);

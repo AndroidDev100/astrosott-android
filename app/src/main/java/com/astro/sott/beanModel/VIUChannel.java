@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.astro.sott.R;
 import com.astro.sott.utils.constants.AppConstants;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.Enum.AdType;
@@ -88,8 +89,8 @@ public class VIUChannel implements Parcelable {
             this.contentSize = category.getContentSize() == null ? 0 : category.getContentSize();
             this.morePageSize = category.getMorePageSize() == null ? 0 : category.getMorePageSize();
             this.displayOrder = category.getDisplayOrder() == null ? 0 : category.getDisplayOrder();
-            this.adHeight = category.getHeight() == null ? 0 : (int)((double)category.getHeight());
-            this.adWidth = category.getWidth() == null ? 0 : (int)((double)category.getWidth());
+            this.adHeight = category.getHeight() == null ? 0 : (int) ((double) category.getHeight());
+            this.adWidth = category.getWidth() == null ? 0 : (int) ((double) category.getWidth());
 
 
             this.isProgram = category.isProgram() == null ? false : category.isProgram();
@@ -179,6 +180,8 @@ public class VIUChannel implements Parcelable {
     private void getRailDetails(BaseCategory screenWidget) {
         if (screenWidget.getLayout() != null && screenWidget.getLayout().equalsIgnoreCase(Layouts.HRO.name())) {
             getHeroDetails(screenWidget);
+        } else if (screenWidget.getLayout() != null && screenWidget.getLayout().equalsIgnoreCase(Layouts.CUS.name())) {
+            getCustomDetails(screenWidget);
         } else {
             if (screenWidget.getContentPlayListType() != null && (screenWidget.getContentPlayListType().equalsIgnoreCase(PlaylistType.BVC.name()) || screenWidget.getContentPlayListType().equalsIgnoreCase(PlaylistType.EN_OVP.name()))) {
                 //TODO: Get Playlist data for Other
@@ -203,6 +206,15 @@ public class VIUChannel implements Parcelable {
         }
     }
 
+    private void getCustomDetails(BaseCategory screenWidget) {
+        if (screenWidget.getCustomRailType().equalsIgnoreCase("PURCHASE-PPV")) {
+            this.description = AppLevelConstants.PPV_RAIL;
+        } else {
+            this.description = "";
+
+        }
+    }
+
 
     private void setRailType(BaseCategory screenWidget, boolean isRail) {
         String railType = "";
@@ -218,12 +230,10 @@ public class VIUChannel implements Parcelable {
             } else if (layoutImageType.equalsIgnoreCase(ImageType.SQR.name())) {
                 railType = AppConstants.CAROUSEL_SQUARE;
                 this.widgetType = AppConstants.CAROUSEL_SQR_SQUARE;
-            }
-            else if (layoutImageType.equalsIgnoreCase(ImageType.PR2.name())) {
+            } else if (layoutImageType.equalsIgnoreCase(ImageType.PR2.name())) {
                 railType = AppConstants.CAROUSEL_POSTER;
                 this.widgetType = AppConstants.CAROUSEL_PR_POSTER;
-            }
-            else if (layoutImageType.equalsIgnoreCase(ImageType.CST.name())) {
+            } else if (layoutImageType.equalsIgnoreCase(ImageType.CST.name())) {
                 railType = AppConstants.CAROUSEL_CUSTOM;
                 this.widgetType = AppConstants.CAROUSEL_CST_CUSTOM;
             }
@@ -291,7 +301,7 @@ public class VIUChannel implements Parcelable {
             this.widgetType = AppConstants.HERO_SQR_SQUARE;
         } else if (layoutImageType.equalsIgnoreCase(ImageType.CIR.name())) {
             this.widgetType = AppConstants.HERO_CIR_CIRCLE;
-        }else if (layoutImageType.equalsIgnoreCase(ImageType.LDS2.name())) {
+        } else if (layoutImageType.equalsIgnoreCase(ImageType.LDS2.name())) {
             this.widgetType = AppConstants.HERO_LDS_BANNER;
         }
 
@@ -715,7 +725,7 @@ public class VIUChannel implements Parcelable {
         this.id = in.readLong();
         this.widgetType = in.readInt();
         this.description = in.readString();
-        this.kalturaOTTImageType=in.readString();
+        this.kalturaOTTImageType = in.readString();
         this.name = in.readString();
         this.screen = in.readString();
         this.type = in.readString();
