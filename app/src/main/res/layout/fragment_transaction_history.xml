@@ -54,8 +54,6 @@
         </RelativeLayout>
 
 
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
@@ -63,12 +61,14 @@
             android:layout_below="@id/toolbar"
             android:layout_marginTop="@dimen/_80sdp"
             android:layout_marginBottom="@dimen/dimen20dp" />
+
         <include
             android:id="@+id/include_progressbar"
             layout="@layout/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
+
         <LinearLayout
             android:id="@+id/status_lay"
             android:layout_width="wrap_content"
@@ -78,7 +78,8 @@
             android:layout_marginTop="@dimen/dimen32dp"
             android:layout_marginRight="18dp"
             android:background="@drawable/gradient_outline_button"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/status"

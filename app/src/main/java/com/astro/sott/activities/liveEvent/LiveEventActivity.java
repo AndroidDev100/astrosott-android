@@ -209,7 +209,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(LiveEventActivity.this).astrLoginActivity(LiveEventActivity.this, AstrLoginActivity.class,"");
+                    new ActivityLauncher(LiveEventActivity.this).astrLoginActivity(LiveEventActivity.this, AstrLoginActivity.class, "");
                 }
 
             }
@@ -329,6 +329,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
             //  ConvivaManager.getConvivaAdAnalytics(this);
             Intent intent = new Intent(LiveEventActivity.this, PlayerActivity.class);
+            intent.putExtra("isLivePlayer", true);
             intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
             startActivity(intent);
 
@@ -714,7 +715,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(),SubMediaTypes.LiveEvent.name());
+        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), SubMediaTypes.LiveEvent.name());
     }
 
     @Override
