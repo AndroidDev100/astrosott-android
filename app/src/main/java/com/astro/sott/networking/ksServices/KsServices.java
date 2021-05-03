@@ -89,9 +89,6 @@ import com.astro.sott.modelClasses.DTVContactInfoModel;
 import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.modelClasses.dmsResponse.FilterLanguages;
 import com.astro.sott.modelClasses.dmsResponse.FilterValues;
-import com.astro.sott.modelClasses.dmsResponse.ParentalDescription;
-import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
-import com.astro.sott.modelClasses.dmsResponse.ParentalMapping;
 import com.astro.sott.modelClasses.dmsResponse.ParentalRatingLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.modelClasses.dmsResponse.SubtitleLanguages;
@@ -178,7 +175,6 @@ import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.AssetHistoryFilter;
 import com.kaltura.client.types.AssetHistorySuppressFilter;
 import com.kaltura.client.types.AssetMetaOrTagGroupBy;
-import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.BookmarkFilter;
 import com.kaltura.client.types.Channel;
 import com.kaltura.client.types.ChannelFilter;
@@ -196,8 +192,6 @@ import com.kaltura.client.types.HouseholdPaymentMethod;
 import com.kaltura.client.types.InboxMessage;
 import com.kaltura.client.types.InboxMessageFilter;
 import com.kaltura.client.types.KeyValue;
-import com.kaltura.client.types.Language;
-import com.kaltura.client.types.LanguageFilter;
 import com.kaltura.client.types.LicensedUrlBaseRequest;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.LoginResponse;
@@ -223,7 +217,6 @@ import com.kaltura.client.types.UserAssetRuleFilter;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.response.OnCompletion;
 import com.kaltura.client.utils.response.base.Response;
-import com.kaltura.playkit.providers.api.ovp.services.ResponseProfile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -236,12 +229,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -5357,6 +5348,8 @@ public class KsServices {
                 }
             } else if (list.get(counter).getDescription().contains(AppLevelConstants.PPV_RAIL)) {
                 getPurchaseList();
+            } else if (list.get(counter).getDescription().contains(AppLevelConstants.TRENDING)) {
+                getTrending(responseList, list);
             } else {
                 clientSetupKs();
                 PrintLogging.printLog("", "idsPrint" + +channelID + "-->>" + list.get(counter).getName() + "-->>" + list.get(counter).getDescription());
@@ -7222,6 +7215,96 @@ public class KsServices {
                 callBack.getNextEpisode(false, null);
             }
         });
+        getRequestQueue().queue(builder.build(client));
+    }
+
+
+    public void getTrending(List<Response<ListResponse<Asset>>> responseList, List<VIUChannel> list) {
+        clientSetupKs();
+        SearchAssetFilter relatedFilter = new SearchAssetFilter();
+        relatedFilter.setTypeIn("685");
+        relatedFilter.setOrderBy("VIEWS_DESC");
+
+        List<AssetGroupBy> assetGroupByList = new ArrayList<>();
+        AssetMetaOrTagGroupBy assetMetaOrTagGroupBy = new AssetMetaOrTagGroupBy();
+        assetMetaOrTagGroupBy.setValue("SeriesID");
+        assetGroupByList.add(assetMetaOrTagGroupBy);
+        relatedFilter.setGroupBy(assetGroupByList);
+
+        List<DetachedResponseProfile> detachedResponseProfileList = new ArrayList<>();
+        DetachedResponseProfile detachedResponseProfile = new DetachedResponseProfile();
+
+        DetachedResponseProfile detachedResponseProfile1 = new DetachedResponseProfile();
+        detachedResponseProfile1.setName("Episodes_in_Series");
+        AggregationCountFilter aggregationCountFilter = new AggregationCountFilter();
+        detachedResponseProfile1.setFilter(aggregationCountFilter);
+        detachedResponseProfileList.add(detachedResponseProfile1);
+
+        detachedResponseProfile.setRelatedProfiles(detachedResponseProfileList);
+
+
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(100);
+
+        AssetService.ListAssetBuilder builder = AssetService.list(relatedFilter, filterPager).setCompletion(result -> {
+            try {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null) {
+                            if (result.results.getObjects().size() > 0) {
+                                responseList.add(result);
+                                homechannelCallBack.response(true, this.responseList, list);
+                            } else {
+                                this.responseList.add(null);
+                                homechannelCallBack.response(false, this.responseList, null);
+                            }
+                        } else {
+                            this.responseList.add(null);
+                            homechannelCallBack.response(false, this.responseList, null);
+                        }
+                    } else {
+                        this.responseList.add(null);
+                        homechannelCallBack.response(false, this.responseList, null);
+                    }
+                } else {
+
+                    if (result.error != null) {
+
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getTrending(responseList, list);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        KsServices.this.responseList.add(null);
+                                        homechannelCallBack.response(false, KsServices.this.responseList, null);
+
+                                    }
+                                }
+                            });
+                        else {
+                            this.responseList.add(null);
+                            homechannelCallBack.response(false, this.responseList, null);
+
+                        }
+                    } else {
+                        this.responseList.add(null);
+                        homechannelCallBack.response(false, this.responseList, null);
+
+                    }
+
+
+                }
+            } catch (Exception e) {
+                PrintLogging.printLog(this.getClass(), "Exception", "" + e);
+
+            }
+        });
+        builder.setResponseProfile(detachedResponseProfile);
         getRequestQueue().queue(builder.build(client));
     }
 

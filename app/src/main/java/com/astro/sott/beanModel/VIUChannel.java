@@ -209,6 +209,8 @@ public class VIUChannel implements Parcelable {
     private void getCustomDetails(BaseCategory screenWidget) {
         if (screenWidget.getCustomRailType().equalsIgnoreCase("PURCHASE-PPV")) {
             this.description = AppLevelConstants.PPV_RAIL;
+        } else if (screenWidget.getCustomRailType().equalsIgnoreCase(AppLevelConstants.TRENDING)) {
+            this.description = AppLevelConstants.TRENDING;
         } else {
             this.description = "";
 
