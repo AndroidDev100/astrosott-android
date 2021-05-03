@@ -835,7 +835,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         } else {
                             new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 1);
                         }*/
-                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class,"profile");
+                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class, "profile");
 
                     } else {
                         int layoutType = AppCommonMethods.getRailTypeAccToMedia(activity, getLayoutPosition(), dataList, i);
@@ -972,7 +972,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         } else {
                             new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 1);
                         }*/
-                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class,"profile");
+                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class, "profile");
 
                     } else {
                         int layoutType = AppCommonMethods.getRailTypeAccToMedia(activity, getLayoutPosition(), dataList, i);
@@ -1024,12 +1024,12 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (data.getRailDetail().isShowHeader())
                 header.setVisibility(View.VISIBLE);
             else
-                header.setVisibility(View.GONE);
+                header.setVisibility(View.INVISIBLE);
         if (data.getRailDetail() != null)
             if (data.getRailDetail().isContentShowMoreButton())
                 moreTextView.setVisibility(View.VISIBLE);
             else
-                moreTextView.setVisibility(View.GONE);
+                moreTextView.setVisibility(View.INVISIBLE);
 
 
     }
@@ -1039,12 +1039,12 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (data.getRailDetail().isShowHeader())
                 header.setVisibility(View.VISIBLE);
             else
-                header.setVisibility(View.GONE);
+                header.setVisibility(View.INVISIBLE);
         if (data.getRailDetail() != null)
             if (data.getRailDetail().isContentShowMoreButton())
                 moreTextView.setVisibility(View.VISIBLE);
             else
-                moreTextView.setVisibility(View.GONE);
+                moreTextView.setVisibility(View.INVISIBLE);
 
 
     }

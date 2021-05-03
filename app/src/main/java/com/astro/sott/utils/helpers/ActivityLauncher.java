@@ -18,6 +18,7 @@ import com.astro.sott.activities.catchUpRails.ui.CatchupActivity;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.liveEvent.LiveEventActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.moreListing.ui.CustomListingActivity;
 import com.astro.sott.activities.moreListing.ui.GridListingActivity;
 import com.astro.sott.activities.myList.MyListActivity;
 import com.astro.sott.activities.myplaylist.ui.MyPlaylist;
@@ -67,6 +68,7 @@ import com.astro.sott.repositories.liveChannel.LinearProgramDataLayer;
 import com.astro.sott.repositories.trailerFragment.TrailerHighlightsDataLayer;
 import com.astro.sott.repositories.webSeriesDescription.SeriesDataLayer;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.ProgramAsset;
@@ -122,6 +124,13 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
+    public void customListingActivity(Activity source, Class<CustomListingActivity> destination, AssetCommonBean data) {
+        Intent intent = new Intent(source, destination);
+        intent.putExtra("assetCommonBean", data);
+        intent.putExtra("baseCategory", data.getRailDetail());
+        activity.startActivity(intent);
+    }
+
     public void astrLoginActivity(Activity source, Class<AstrLoginActivity> destination, String from) {
         Intent intent = new Intent(source, destination);
         intent.putExtra(AppLevelConstants.FROM_KEY, from);
@@ -150,11 +159,13 @@ public class ActivityLauncher {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
+
     public void termAndCondition(Activity source) {
         Intent intent = new Intent(source, WebViewActivity.class);
         intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC);
         activity.startActivity(intent);
     }
+
     public void forgotPasswordActivity(Activity source, Class<ForgotPasswordActivity> destination) {
         Intent intent = new Intent(source, destination);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -844,7 +855,7 @@ public class ActivityLauncher {
 
     }
 
-    public void myListActivity(Activity activity, Class<MyListActivity> myListActivityClass,AssetCommonBean data) {
+    public void myListActivity(Activity activity, Class<MyListActivity> myListActivityClass, AssetCommonBean data) {
         Intent intent = new Intent(activity, myListActivityClass);
         intent.putExtra("baseCategory", data.getRailDetail());
         intent.putExtra(AppLevelConstants.ASSET_COMMON_BEAN, data);

@@ -47,6 +47,9 @@ class BaseCategory() : Parcelable {
     var isLoggedInUser: Any? = false
     var landingPageTitle: String? = ""
     var customRailType: String? = ""
+    var customMediaType: String? = ""
+    var customGenre: String? = ""
+    var customGenreRule: String? = ""
 
 
     var message: String? = ""
@@ -94,6 +97,9 @@ class BaseCategory() : Parcelable {
         predefPlaylistType = parcel.readString()
         landingPageTitle = parcel.readString()
         customRailType = parcel.readString()
+        customMediaType = parcel.readString()
+        customGenre = parcel.readString()
+        customGenreRule = parcel.readString()
         message = parcel.readString()
         widgetImageType = parcel.readString()
         status = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -135,6 +141,9 @@ class BaseCategory() : Parcelable {
         parcel.writeString(predefPlaylistType)
         parcel.writeString(landingPageTitle)
         parcel.writeString(customRailType)
+        parcel.writeString(customMediaType)
+        parcel.writeString(customGenre)
+        parcel.writeString(customGenreRule)
         parcel.writeString(message)
         parcel.writeString(widgetImageType)
         parcel.writeValue(status)

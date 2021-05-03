@@ -53,6 +53,9 @@ public class VIUChannel implements Parcelable {
     private String contentListinglayout;
     private String contentPlayListType;
     private String imageSource;
+    private String customGenre;
+    private String customGenreRule;
+    private String customMediaType;
 
     private String imageURL;
     private String manualImageAssetId;
@@ -207,6 +210,12 @@ public class VIUChannel implements Parcelable {
     }
 
     private void getCustomDetails(BaseCategory screenWidget) {
+        if (screenWidget.getCustomGenre() != null)
+            this.customGenre = screenWidget.getCustomGenre();
+        if (screenWidget.getCustomGenreRule() != null)
+            this.customGenreRule = screenWidget.getCustomGenreRule();
+        if (screenWidget.getCustomMediaType() != null)
+            this.customMediaType = screenWidget.getCustomMediaType();
         if (screenWidget.getCustomRailType().equalsIgnoreCase("PURCHASE-PPV")) {
             this.description = AppLevelConstants.PPV_RAIL;
         } else if (screenWidget.getCustomRailType().equalsIgnoreCase(AppLevelConstants.TRENDING)) {
@@ -326,6 +335,30 @@ public class VIUChannel implements Parcelable {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getCustomGenre() {
+        return customGenre;
+    }
+
+    public void setCustomGenre(String customGenre) {
+        this.customGenre = customGenre;
+    }
+
+    public String getCustomGenreRule() {
+        return customGenreRule;
+    }
+
+    public void setCustomGenreRule(String customGenreRule) {
+        this.customGenreRule = customGenreRule;
+    }
+
+    public String getCustomMediaType() {
+        return customMediaType;
+    }
+
+    public void setCustomMediaType(String customMediaType) {
+        this.customMediaType = customMediaType;
     }
 
     public void setName(String name) {

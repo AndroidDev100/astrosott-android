@@ -51,13 +51,14 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
     DisplayMetrics displaymetrics;
     boolean isTablet = false;
 
-   BaseCategory baseCategory;
+    BaseCategory baseCategory;
+
     public CommonLandscapeListingAdapteNew(Activity context, List<RailCommonData> itemsList, int type, String railName, BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
         strRailName = railName;
-        this.baseCategory=baseCat;
+        this.baseCategory = baseCat;
         try {
             displaymetrics = new DisplayMetrics();
             mContext.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -98,26 +99,26 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
                 holder.landscapeItemBinding.metas.billingImage.setVisibility(View.GONE);
                 setRecycler(holder.landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(holder.landscapeItemBinding.billingImage, singleItem.getObject().getTags());
-                AppCommonMethods.handleTitleDesc(holder.landscapeItemBinding.mediaTypeLayout.metaLayout,holder.landscapeItemBinding.mediaTypeLayout.lineOne,holder.landscapeItemBinding.mediaTypeLayout.lineTwo,baseCategory,itemsList.get(i),mContext);
+                AppCommonMethods.handleTitleDesc(holder.landscapeItemBinding.mediaTypeLayout.metaLayout, holder.landscapeItemBinding.mediaTypeLayout.lineOne, holder.landscapeItemBinding.mediaTypeLayout.lineTwo, baseCategory, itemsList.get(i), mContext);
                 holder.landscapeItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
-                if (itemsList.get(i).getType()== MediaTypeConstant.getProgram(mContext)){
+                if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
-                    holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
-                }else {
+                    holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + "");
+                } else {
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
                 }
                 //holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
             if (singleItem.getObject().getImages().size() > 0) {
                 setImageUrl(singleItem.getObject());
                 if (landscapeUrl != null)
-                    ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTo(holder.landscapeItemBinding.itemImage, landscapeUrl,R.drawable.ic_landscape_placeholder);
+                    ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTo(holder.landscapeItemBinding.itemImage, landscapeUrl, R.drawable.ic_landscape_placeholder);
                 else if (potraitUrl != null)
-                    ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTo(holder.landscapeItemBinding.itemImage, potraitUrl,R.drawable.ic_landscape_placeholder);
+                    ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTo(holder.landscapeItemBinding.itemImage, potraitUrl, R.drawable.ic_landscape_placeholder);
             } else {
                 /*if (new KsPreferenceKeys(mContext).getCurrentTheme().equalsIgnoreCase(AppConstants.LIGHT_THEME)) {
                     ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTo(holder.landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.shimmer_landscape, holder.landscapeItemBinding.itemImage));
@@ -139,7 +140,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
         holder.landscapeItemBinding.setTile(singleItem);
 
         try {
-           // mediaTypeCondition(i, holder.landscapeItemBinding);
+            // mediaTypeCondition(i, holder.landscapeItemBinding);
         } catch (Exception e) {
             holder.landscapeItemBinding.mediaTypeLayout.metaLayout.setVisibility(View.GONE);
             holder.landscapeItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
@@ -167,15 +168,15 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
             isImage = true;
             for (int i = 0; i < asset.getImages().size(); i++) {
                 if (asset.getImages().get(i).getRatio().equals("16x9")) {
-                    String image_url = AppConstants.WEBP_URL+asset.getImages().get(i).getUrl();
+                    String image_url = AppConstants.WEBP_URL + asset.getImages().get(i).getUrl();
                     landscapeUrl = image_url + AppConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.landscape_image_width) + AppConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.landscape_image_height) + AppConstants.QUALITY;
                 }
                 if (asset.getImages().get(i).getRatio().equals("9:16")) {
-                    String image_url = AppConstants.WEBP_URL+asset.getImages().get(i).getUrl();
+                    String image_url = AppConstants.WEBP_URL + asset.getImages().get(i).getUrl();
                     potraitUrl = image_url + AppConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.portrait_image_width) + AppConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.portrait_image_height) + AppConstants.QUALITY;
                 }
                 if (asset.getImages().get(i).getRatio().equals("1:1")) {
-                    String image_url = AppConstants.WEBP_URL+asset.getImages().get(i).getUrl();
+                    String image_url = AppConstants.WEBP_URL + asset.getImages().get(i).getUrl();
                     squareUrl = image_url + AppConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.square_image_width) + AppConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.square_image_height) + AppConstants.QUALITY;
                 }
             }
@@ -187,22 +188,22 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
     }
 
 
-    private void recommendedCondition(int position,   LandscapeListingNewBinding landscapeItemBinding) {
+    private void recommendedCondition(int position, LandscapeListingNewBinding landscapeItemBinding) {
         landscapeItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(position).getName());
         landscapeItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
         landscapeItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);
     }
 
-    private void mediaTypeCondition(int position,   LandscapeListingNewBinding potraitItemBinding) {
+    private void mediaTypeCondition(int position, LandscapeListingNewBinding potraitItemBinding) {
         if (Integer.parseInt(mediaTypes.getMovie()) == itemsList.get(0).getType()
                 || Integer.parseInt(mediaTypes.getSeries()) == itemsList.get(0).getType()
-                ) {
+        ) {
             getPremimumMark(position, potraitItemBinding);
             potraitItemBinding.exclusiveLayout.timmingLayout.setVisibility(View.GONE);
             potraitItemBinding.mediaTypeLayout.metaLayout.setVisibility(View.GONE);
 
         } else if (Integer.parseInt(mediaTypes.getEpisode()) == itemsList.get(0).getType()
-                ) {
+        ) {
             getPremimumMark(position, potraitItemBinding);
             potraitItemBinding.mediaTypeLayout.lineOne.setText("E" + 1 + " | " + itemsList.get(position).getName());
             potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);
@@ -213,7 +214,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
                 potraitItemBinding.exclusiveLayout.durationTxt.setText("0 sec");
 
             episodeNumber(position, potraitItemBinding);
-        }  else if (Integer.parseInt(mediaTypes.getProgram()) == itemsList.get(0).getType()) {
+        } else if (Integer.parseInt(mediaTypes.getProgram()) == itemsList.get(0).getType()) {
             potraitItemBinding.mediaTypeLayout.metaLayout.setVisibility(View.VISIBLE);
             potraitItemBinding.exclusiveLayout.exclLay.setVisibility(View.VISIBLE);
             potraitItemBinding.exclusiveLayout.flExclusive.setVisibility(View.GONE);
@@ -226,7 +227,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
             if (commonData != null) {
                 for (int i = 0; i < commonData.getObject().getImages().size(); i++) {
                     if (commonData.getObject().getImages().get(i).getRatio().equalsIgnoreCase("1:1")) {
-                        String channelLogoUrl = AppConstants.WEBP_URL+commonData.getObject().getImages().get(i).getUrl();
+                        String channelLogoUrl = AppConstants.WEBP_URL + commonData.getObject().getImages().get(i).getUrl();
                         String finalUrl = channelLogoUrl + AppConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.circle_image_width) + AppConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.circle_image_height) + AppConstants.QUALITY;
 
                         if (!TextUtils.isEmpty(channelLogoUrl)) {
@@ -244,7 +245,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
             }
 
 
-        }  else if (itemsList.get(0).getType() == AppConstants.Rail7) {
+        } else if (itemsList.get(0).getType() == AppConstants.Rail7) {
             potraitItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(position).getName());
             /*potraitItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
             potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);*/
@@ -254,7 +255,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
         }
     }
 
-    private void getPremimumMark(int position,   LandscapeListingNewBinding potraitItemBinding) {
+    private void getPremimumMark(int position, LandscapeListingNewBinding potraitItemBinding) {
         potraitItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
         Map<String, Value> map = itemsList.get(position).getObject().getMetas();
 
@@ -279,7 +280,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
         }
     }
 
-    private void episodeNumber(int position,   LandscapeListingNewBinding potraitItemBinding) {
+    private void episodeNumber(int position, LandscapeListingNewBinding potraitItemBinding) {
         Map<String, Value> map = itemsList.get(position).getObject().getMetas();
 
         Set keys = map.keySet();
@@ -304,9 +305,9 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
 
-        public final   LandscapeListingNewBinding landscapeItemBinding;
+        public final LandscapeListingNewBinding landscapeItemBinding;
 
-        public SingleItemRowHolder(  LandscapeListingNewBinding flightItemLayoutBinding) {
+        public SingleItemRowHolder(LandscapeListingNewBinding flightItemLayoutBinding) {
             super(flightItemLayoutBinding.getRoot());
             landscapeItemBinding = flightItemLayoutBinding;
             final String name = mContext.getClass().getSimpleName();
@@ -315,7 +316,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
             landscapeItemBinding.getRoot().setOnClickListener(view -> {
                 //GAManager.getInstance().setEvent(GAManager.BROWSING, GAManager.MORE_RESULT_CLICKED, GAManager.RAIL_NAVIGATION, GAManager.zero);
                 try {
-                    new ActivityLauncher(mContext).railClickCondition(strMenuNavigationName, strRailName, name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType,itemsList, (_url, position, type, commonData) -> detailRailClick.detailItemClicked(_url, position, type, commonData));
+                    new ActivityLauncher(mContext).railClickCondition(strMenuNavigationName, strRailName, name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType, itemsList, (_url, position, type, commonData) -> detailRailClick.detailItemClicked(_url, position, type, commonData));
                 } catch (Exception ignored) {
 
                 }

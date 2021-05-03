@@ -37,6 +37,10 @@ public class AssetCommonBean implements Parcelable {
     private String posterURL;
     private VIUChannel railDetail;
     private int widgetType;
+    private String customRailType;
+    private String customMediaType;
+    private String customGenre;
+    private String customGenreRule;
     private BaseCategory category;
     private boolean isClip;
 
@@ -62,6 +66,38 @@ public class AssetCommonBean implements Parcelable {
 
     public void setContestId(int contestId) {
         this.contestId = contestId;
+    }
+
+    public void setCustomMediaType(String customMediaType) {
+        this.customMediaType = customMediaType;
+    }
+
+    public String getCustomMediaType() {
+        return customMediaType;
+    }
+
+    public void setCustomGenreRule(String customGenreRule) {
+        this.customGenreRule = customGenreRule;
+    }
+
+    public String getCustomGenreRule() {
+        return customGenreRule;
+    }
+
+    public void setCustomGenre(String customGenre) {
+        this.customGenre = customGenre;
+    }
+
+    public String getCustomGenre() {
+        return customGenre;
+    }
+
+    public void setCustomRailType(String customRailType) {
+        this.customRailType = customRailType;
+    }
+
+    public String getCustomRailType() {
+        return customRailType;
     }
 
     public int getWidgetType() {
@@ -256,6 +292,10 @@ public class AssetCommonBean implements Parcelable {
         dest.writeInt(this.totalCount);
         dest.writeInt(this.moreType);
         dest.writeInt(this.moreID);
+        dest.writeString(this.customGenre);
+        dest.writeString(this.customGenreRule);
+        dest.writeString(this.customMediaType);
+        dest.writeString(this.customRailType);
         dest.writeString(this.moreGenre);
         dest.writeInt(this.moreAssetType);
         dest.writeString(this.moreSeriesID);
@@ -278,6 +318,10 @@ public class AssetCommonBean implements Parcelable {
         this.totalCount = in.readInt();
         this.moreType = in.readInt();
         this.moreID = in.readInt();
+        this.customGenre = in.readString();
+        this.customGenreRule = in.readString();
+        this.customMediaType = in.readString();
+        this.customRailType = in.readString();
         this.moreGenre = in.readString();
         this.moreAssetType = in.readInt();
         this.moreSeriesID = in.readString();
@@ -286,7 +330,7 @@ public class AssetCommonBean implements Parcelable {
         this.dtChannelList = new ArrayList<VIUChannel>();
         in.readList(this.dtChannelList, VIUChannel.class.getClassLoader());
         this.asset = in.readParcelable(Asset.class.getClassLoader());
-        this.contestId=in.readInt();
+        this.contestId = in.readInt();
 
     }
 

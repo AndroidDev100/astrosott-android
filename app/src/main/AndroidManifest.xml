@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="com.android.vending.BILLING" />
@@ -34,7 +34,8 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.isThatYou.IsThatYouActivity"></activity>
+        <activity android:name=".activities.moreListing.ui.CustomListingActivity"></activity>
+        <activity android:name=".activities.isThatYou.IsThatYouActivity" />
         <activity android:name=".activities.profile.ui.EditMobileActivity" />
         <activity android:name=".activities.profile.ui.SetPasswordActivity" />
         <activity android:name=".activities.confirmPassword.ui.ConfirmPasswordActivity" />

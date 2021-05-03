@@ -2810,4 +2810,23 @@ public class AppCommonMethods {
 
         return stringBuilder.toString();
     }
+
+    public static String splitGenre(String customGenre) {
+        StringBuilder ksql = new StringBuilder();
+        try {
+
+
+            String[] splitString = customGenre.split(",");
+            if (splitString.length > 0 && !splitString[0].equalsIgnoreCase("")) {
+                ksql.append("(or");
+                for (String genre : splitString) {
+                    ksql.append(" Genre='" + genre + "'");
+                }
+                ksql.append(")");
+            }
+        } catch (Exception e) {
+
+        }
+        return ksql.toString();
+    }
 }

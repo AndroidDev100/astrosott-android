@@ -27,6 +27,12 @@ class ModelGenerator {
             if (i?.layout.equals(Layouts.CUS.name, true) && i?.customFields != null && i?.customFields.railTile != null) {
                 cat.name = i?.customFields.railTile
                 cat.customRailType = i?.customFields?.typeRail
+                if (i?.customFields.mediaType != null)
+                    cat.customMediaType = i?.customFields.mediaType
+                if (i?.customFields.genre != null)
+                    cat.customGenre = i?.customFields.genre
+                if (i?.customFields.genreRule != null)
+                    cat.customGenreRule = i?.customFields.genreRule
             } else {
                 cat.name = i?.item?.title
             }
