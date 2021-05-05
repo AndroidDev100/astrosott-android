@@ -135,11 +135,11 @@ public class SearchKeywordAdapter extends RecyclerView.Adapter<RecyclerView.View
     private void checkGenreArrowVisibility(RecyclerView.ViewHolder holder) {
         if (((GenreHolder) holder).ItemBinding.recyclerView.getVisibility() == View.VISIBLE){
             ((GenreHolder) holder).ItemBinding.recyclerView.setVisibility(View.GONE);
-            ((GenreHolder) holder).ItemBinding.expandableArrow.setBackgroundResource(R.drawable.arrow_up);
+            ((GenreHolder) holder).ItemBinding.expandableArrow.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
 
         }else {
             ((GenreHolder) holder).ItemBinding.recyclerView.setVisibility(View.VISIBLE);
-            ((GenreHolder) holder).ItemBinding.expandableArrow.setBackgroundResource(R.drawable.arrow_down);
+            ((GenreHolder) holder).ItemBinding.expandableArrow.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_up_24);
 
         }
     }
@@ -147,11 +147,11 @@ public class SearchKeywordAdapter extends RecyclerView.Adapter<RecyclerView.View
     private void checkArrowVisibility(RecyclerView.ViewHolder holder) {
         if (((LanguageHolder) holder).ItemBinding.recyclerView.getVisibility() == View.VISIBLE){
             ((LanguageHolder) holder).ItemBinding.recyclerView.setVisibility(View.GONE);
-            ((LanguageHolder) holder).ItemBinding.expandableArrow.setBackgroundResource(R.drawable.arrow_up);
+            ((LanguageHolder) holder).ItemBinding.expandableArrow.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
 
         }else {
             ((LanguageHolder) holder).ItemBinding.recyclerView.setVisibility(View.VISIBLE);
-            ((LanguageHolder) holder).ItemBinding.expandableArrow.setBackgroundResource(R.drawable.arrow_down);
+            ((LanguageHolder) holder).ItemBinding.expandableArrow.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_up_24);
 
         }
     }

@@ -20,8 +20,8 @@
                 android:layout_alignParentLeft="true"/>
             <ImageView
                 android:id="@+id/expandable_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dimen32dp"
+                android:layout_height="@dimen/dimen32dp"
                 android:layout_marginTop="@dimen/_22sdp"
                 android:layout_centerInParent="true"
                 android:layout_marginEnd="@dimen/_14sdp"

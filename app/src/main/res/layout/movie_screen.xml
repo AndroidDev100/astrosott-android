@@ -93,7 +93,7 @@
                             <FrameLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/above_dark_shadow">
+                                android:background="@drawable/purple_shadow">
 
 
 
@@ -269,7 +269,7 @@
                                         <FrameLayout
                                             android:id="@+id/shadow"
                                             android:layout_width="match_parent"
-                                            android:layout_height="70dp"
+                                            android:layout_height="94dp"
                                             android:layout_alignParentBottom="true"
                                             android:background="@drawable/above_dark_shadow"></FrameLayout>
                                     </RelativeLayout>

@@ -62,7 +62,7 @@
     android:textAlignment="center"
     android:gravity="center"
     android:textColor="@color/grey_text"
-    android:background="@color/edit_text_blue_bg"
+    android:background="@drawable/round_purple_bg"
     android:text="@string/atoz"
     android:layout_weight="1"/>
         <TextView
@@ -76,7 +76,7 @@
             android:textColor="@color/grey_text"
             android:layout_marginStart="1.5dp"
             android:layout_marginEnd="1.5dp"
-            android:background="@color/edit_text_blue_bg"
+            android:background="@drawable/round_purple_bg"
             android:text="@string/popular"
             android:layout_weight="1"/>
         <TextView
@@ -88,7 +88,7 @@
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
-            android:background="@color/edit_text_blue_bg"
+            android:background="@drawable/round_purple_bg"
             android:text="@string/newest"
             android:layout_weight="1"/>
 
@@ -124,7 +124,7 @@
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
-            android:background="@color/edit_text_blue_bg"
+            android:background="@drawable/round_purple_bg"
             android:text="@string/all"
             android:layout_weight="1"/>
         <TextView
@@ -138,7 +138,7 @@
             android:textColor="@color/grey_text"
             android:layout_marginStart="1.5dp"
             android:layout_marginEnd="1.5dp"
-            android:background="@color/edit_text_blue_bg"
+            android:background="@drawable/round_purple_bg"
             android:text="@string/on_demand"
             android:layout_weight="1"/>
         <TextView
@@ -150,7 +150,7 @@
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
-            android:background="@color/edit_text_blue_bg"
+            android:background="@drawable/round_purple_bg"
             android:text="@string/live_home"
             android:layout_weight="1"/>
 
@@ -186,7 +186,7 @@
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
-            android:background="@color/edit_text_blue_bg"
+            android:background="@drawable/round_purple_bg"
             android:text="@string/all"
             android:layout_weight="1"/>
         <TextView
@@ -200,7 +200,7 @@
             android:textColor="@color/grey_text"
             android:layout_marginStart="1.5dp"
             android:layout_marginEnd="1.5dp"
-            android:background="@color/edit_text_blue_bg"
+            android:background="@drawable/round_purple_bg"
             android:text="@string/free"
             android:layout_weight="1"/>
         <TextView
@@ -212,7 +212,7 @@
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@color/grey_text"
-            android:background="@color/edit_text_blue_bg"
+            android:background="@drawable/round_purple_bg"
             android:text="@string/paid"
             android:layout_weight="1"/>
 

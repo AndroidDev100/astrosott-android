@@ -118,7 +118,7 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
         autoRotate=auto;
         autoRotateDuration=rotateDuration;
         if (tabletSize) {
-            viewPager.setPadding(getViewPagerPadding(type), 5, getViewPagerPadding(type), 20);
+            viewPager.setPadding(getViewPagerPadding(type), 0, getViewPagerPadding(type), 20);
         } else {
             /*if (slideList.get(0).getType() == CAROUSEL_PR_POTRAIT) {
                 DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -127,7 +127,7 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
                 int mWidth = ((displaymetrics.widthPixels - 80) * 10) / 15;
                 viewPager.setPadding(mWidth / 2, 0, mWidth / 2, 0);
             } else*/
-            viewPager.setPadding(0, 10, 0, 40);
+            viewPager.setPadding(0, 0, 0, 40);
         }
         viewPager.setPageMargin(20);
 

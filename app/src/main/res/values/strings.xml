@@ -583,10 +583,10 @@
     <string name="forget_psw">Forgot Password</string>
     <string name="is_that_you">Is this you?</string>
     <string name="new_psw_para">Please key in your new password</string>
-    <string name="registered_password">Please login with you registered password \n to continue.</string>
+    <string name="registered_password">Please login with your registered password \n to continue.</string>
     <string name="confirm_psw">Confirm Password</string>
     <string name="update">UPDATE</string>
-    <string name="key_in_email_address">Please key in your email address</string>
+    <string name="key_in_email_address">Please key in your registered email or\n mobile number</string>
     <string name="submit">SUBMIT</string>
     <string name="season_number">SEASON 1</string>
     <string name="search_astro">Search for title, genre, cast, etc.</string>
@@ -639,7 +639,7 @@
     <string name="next_episode">Next Episode</string>
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="privacy_polices">Privacy Policies</string>
-    <string name="onetime_pass_code_text"><![CDATA[One time passcode had been sent to registered]]></string>
+    <string name="onetime_pass_code_text"><![CDATA[One time passcode had been sent to ]]></string>
     <string name="link"><u>Link</u></string>
     <string name="unlink"><u>Unlink</u></string>
     <string name="facebook">Facebook</string>

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,12 +45,15 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.SingleItemHo
         if (filterLanguageList.get(position).isSelected()){
             holder.binding.titleText.setText(filterLanguageList.get(position).getKeyWords());
             holder.binding.titleText.setTextColor(context.getResources().getColor(R.color.filter_text_selected_color));
-            holder.binding.titleText.setBackgroundColor(context.getResources().getColor(R.color.filter_text_selected_bg));
+//            holder.binding.titleText.setBackgroundColor(context.getResources().getColor(R.color.filter_text_selected_bg));
+            holder.binding.titleText.setBackground(ContextCompat.getDrawable(context,R.drawable.filter_genre_selected));
 
         }else {
             holder.binding.titleText.setText(filterLanguageList.get(position).getKeyWords());
             holder.binding.titleText.setTextColor(context.getResources().getColor(R.color.grey_text));
-            holder.binding.titleText.setBackgroundColor(context.getResources().getColor(R.color.edit_text_blue_bg));
+//            holder.binding.titleText.setBackgroundColor(context.getResources().getColor(R.color.edit_text_blue_bg));
+            holder.binding.titleText.setBackground(ContextCompat.getDrawable(context,R.drawable.genre_unselected));
+
 
         }
 

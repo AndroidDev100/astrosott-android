@@ -219,6 +219,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
             } else {
                 Toast.makeText(this, changePasswordResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getResources().getString(R.string.password_change_failed), Toast.LENGTH_SHORT).show();
+
                 onBackPressed();
             }
         });

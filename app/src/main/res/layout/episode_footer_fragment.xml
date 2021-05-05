@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:overScrollMode="never"
             android:nestedScrollingEnabled="false"
-
             android:layout_marginTop="@dimen/_50sdp" />
 
         <LinearLayout

@@ -141,6 +141,7 @@
                         android:importantForAutofill="no"
                         android:inputType="text|textPassword"
                         android:maxLines="1"
+                        android:maxLength="16"
                         android:singleLine="true"
                         android:textColor="@color/white"
                         android:textColorHint="@color/grey"

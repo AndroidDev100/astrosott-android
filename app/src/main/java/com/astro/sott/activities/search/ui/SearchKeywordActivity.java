@@ -2,6 +2,7 @@ package com.astro.sott.activities.search.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -314,43 +315,43 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
         if (itemPosition == 1) {
             KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterFreePaid(SearchFilterEnum.ALL.name());
             getBinding().freePaidAll.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
-            getBinding().freePaidAll.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+            getBinding().freePaidAll.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_filter_selected));
 
             getBinding().freePaidFree.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().freePaidFree.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().freePaidFree.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
 
             getBinding().freePaidPaid.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().freePaidPaid.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().freePaidPaid.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
 
         } else if (itemPosition == 2) {
             KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterFreePaid(SearchFilterEnum.FREE.name());
             getBinding().freePaidFree.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
-            getBinding().freePaidFree.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+            getBinding().freePaidFree.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_filter_selected));
 
             getBinding().freePaidAll.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().freePaidAll.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().freePaidAll.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
 
             getBinding().freePaidPaid.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().freePaidPaid.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().freePaidPaid.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
         } else if (itemPosition == 3) {
             KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterFreePaid(SearchFilterEnum.PAID.name());
             getBinding().freePaidPaid.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
-            getBinding().freePaidPaid.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+            getBinding().freePaidPaid.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_filter_selected));
 
             getBinding().freePaidFree.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().freePaidFree.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().freePaidFree.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
 
             getBinding().freePaidAll.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().freePaidAll.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().freePaidAll.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
         } else {
             getBinding().freePaidPaid.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().freePaidPaid.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().freePaidPaid.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
 
             getBinding().freePaidFree.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().freePaidFree.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().freePaidFree.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
 
             getBinding().freePaidAll.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().freePaidAll.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().freePaidAll.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
         }
     }
 
@@ -358,45 +359,62 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
         if (itemPosition == 1) {
             KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterContentType(SearchFilterEnum.ALL.name());
             getBinding().contentTypeAll.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
-            getBinding().contentTypeAll.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+//            getBinding().contentTypeAll.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+            getBinding().contentTypeAll.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_filter_selected));
+
 
             getBinding().contentTypeOnDemand.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().contentTypeOnDemand.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().contentTypeOnDemand.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
 
             getBinding().contentTypeLive.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().contentTypeLive.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().contentTypeLive.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().contentTypeLive.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
 
         } else if (itemPosition == 2) {
             KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterContentType(SearchFilterEnum.ONDEMAND.name());
             getBinding().contentTypeOnDemand.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
-            getBinding().contentTypeOnDemand.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+//            getBinding().contentTypeOnDemand.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+            getBinding().contentTypeOnDemand.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_filter_selected));
+
 
             getBinding().contentTypeAll.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().contentTypeAll.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().contentTypeAll.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
 
             getBinding().contentTypeLive.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().contentTypeLive.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().contentTypeLive.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().contentTypeLive.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
 
         } else if (itemPosition == 3) {
             KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterContentType(SearchFilterEnum.LIVE.name());
             getBinding().contentTypeLive.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
-            getBinding().contentTypeLive.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+            getBinding().contentTypeLive.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_filter_selected));
 
             getBinding().contentTypeOnDemand.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().contentTypeOnDemand.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().contentTypeOnDemand.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().contentTypeOnDemand.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
 
             getBinding().contentTypeAll.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().contentTypeAll.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().contentTypeAll.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
 
         } else {
             getBinding().contentTypeLive.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().contentTypeLive.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().contentTypeLive.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().contentTypeLive.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
 
             getBinding().contentTypeOnDemand.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().contentTypeOnDemand.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().contentTypeOnDemand.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().contentTypeOnDemand.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
 
             getBinding().contentTypeAll.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().contentTypeAll.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().contentTypeAll.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().contentTypeAll.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
+
 
         }
     }
@@ -405,43 +423,67 @@ public class SearchKeywordActivity extends BaseBindingActivity<ActivitySearchKey
         if (itemPosition == 1) {
             KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterSortBy(SearchFilterEnum.AZ.name());
             getBinding().sortATZ.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
-            getBinding().sortATZ.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+//            getBinding().sortATZ.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+            getBinding().sortATZ.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_filter_selected));
+
 
             getBinding().sortPopular.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().sortPopular.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().sortPopular.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().sortPopular.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
 
             getBinding().sortNewest.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().sortNewest.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().sortNewest.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().sortNewest.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
 
         } else if (itemPosition == 2) {
             KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterSortBy(SearchFilterEnum.POPULAR.name());
             getBinding().sortPopular.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
-            getBinding().sortPopular.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+            getBinding().sortPopular.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_filter_selected));
+//            getBinding().sortPopular.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
 
             getBinding().sortATZ.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().sortATZ.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().sortATZ.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().sortATZ.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
+
 
             getBinding().sortNewest.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().sortNewest.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().sortNewest.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().sortNewest.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
         } else if (itemPosition == 3) {
             KsPreferenceKey.getInstance(SearchKeywordActivity.this).setFilterSortBy(SearchFilterEnum.NEWEST.name());
             getBinding().sortNewest.setTextColor(getResources().getColor(R.color.filter_text_selected_color));
-            getBinding().sortNewest.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+//            getBinding().sortNewest.setBackgroundColor(getResources().getColor(R.color.filter_text_selected_bg));
+            getBinding().sortNewest.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_filter_selected));
+
 
             getBinding().sortPopular.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().sortPopular.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().sortPopular.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().sortPopular.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
 
             getBinding().sortATZ.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().sortATZ.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().sortATZ.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().sortATZ.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
         } else {
             getBinding().sortNewest.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().sortNewest.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().sortNewest.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().sortNewest.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
 
             getBinding().sortPopular.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().sortPopular.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().sortPopular.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().sortPopular.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
 
             getBinding().sortATZ.setTextColor(getResources().getColor(R.color.grey_text));
-            getBinding().sortATZ.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+//            getBinding().sortATZ.setBackgroundColor(getResources().getColor(R.color.edit_text_blue_bg));
+            getBinding().sortATZ.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.round_purple_bg));
+
         }
     }
 

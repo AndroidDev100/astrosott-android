@@ -666,14 +666,15 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     private void setOpenSeriesAdapter(List<RailCommonData> finalEpisodeList) {
         adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this, this);
-        getActivity().runOnUiThread(() -> {
+        if (getActivity()!=null && !getActivity().isFinishing()){
+            getActivity().runOnUiThread(() -> {
             getBinding().recyclerView.setAdapter(adapter);
             if (seriesType.equalsIgnoreCase("open")) {
                 if (totalPages > 1)
                     getBinding().season.setEnabled(true);
             }
         });
-
+    }
 
     }
 

@@ -141,6 +141,7 @@
                     android:maxLines="1"
                     android:textCursorDrawable="@drawable/cursor_color"
                     android:singleLine="true"
+                    android:maxLength="16"
                     android:textColor="@color/white"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
