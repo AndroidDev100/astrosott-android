@@ -34,6 +34,10 @@ public class MyWatchlistViewModel extends AndroidViewModel {
         return MyWatchlistRepository.getInstance().getTrending(context, customMediaType, customGenre, customGenreRule, counter);
     }
 
+    public LiveData<ArrayList<RailCommonData>> getEpgListing(String customDays, String linearAssetId, int counter) {
+        return MyWatchlistRepository.getInstance().getEPGListing(context, customDays, linearAssetId, counter);
+    }
+
     public LiveData<ArrayList<RailCommonData>> getPurchaseListing(String customMediaType, String customGenre, String customGenreRule, int counter) {
         return MyWatchlistRepository.getInstance().getPurchaseListing(context, customMediaType, customGenre, customGenreRule, counter);
     }

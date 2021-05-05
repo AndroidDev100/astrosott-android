@@ -105,6 +105,20 @@ public class MyWatchlistRepository {
         return mutableLiveData;
     }
 
+    public LiveData<ArrayList<RailCommonData>> getEPGListing(Context context, String customDays, String linearAssetId, int counter) {
+        MutableLiveData<ArrayList<RailCommonData>> mutableLiveData = new MutableLiveData<>();
+        new KsServices(context).getLinearAssetIdListing(linearAssetId, customDays, counter, (status, assetListResponse, totalCount) ->
+        {
+            if (status) {
+                railList.clear();
+                getTrendingData(assetListResponse, totalCount, mutableLiveData);
+            } else {
+                mutableLiveData.postValue(null);
+            }
+        });
+        return mutableLiveData;
+    }
+
     public LiveData<ArrayList<RailCommonData>> getPurchaseListing(Context context, String customMediaType, String customGenre, String customGenreRule, int counter) {
         MutableLiveData<ArrayList<RailCommonData>> mutableLiveData = new MutableLiveData<>();
         new KsServices(context).getPurchaseListListing(counter, (status, assetListResponse, totalCount) ->

@@ -198,7 +198,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
-                landscapeItemBinding.livenowLay.setVisibility(View.VISIBLE);
+                landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             } else {
                 landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             }
@@ -252,7 +252,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
-                landscapeItemBinding.livenowLay.setVisibility(View.VISIBLE);
+                landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             } else {
                 landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             }
@@ -303,7 +303,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
-                landscapeItemBinding.livenowLay.setVisibility(View.VISIBLE);
+                landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             } else {
                 landscapeItemBinding.livenowLay.setVisibility(View.GONE);
             }

@@ -41,6 +41,8 @@ public class AssetCommonBean implements Parcelable {
     private String customMediaType;
     private String customGenre;
     private String customGenreRule;
+    private String customDays;
+    private String customLinearAssetId;
     private BaseCategory category;
     private boolean isClip;
 
@@ -94,6 +96,22 @@ public class AssetCommonBean implements Parcelable {
 
     public void setCustomRailType(String customRailType) {
         this.customRailType = customRailType;
+    }
+
+    public void setCustomDays(String customDays) {
+        this.customDays = customDays;
+    }
+
+    public String getCustomDays() {
+        return customDays;
+    }
+
+    public String getCustomLinearAssetId() {
+        return customLinearAssetId;
+    }
+
+    public void setCustomLinearAssetId(String customLinearAssetId) {
+        this.customLinearAssetId = customLinearAssetId;
     }
 
     public String getCustomRailType() {
@@ -295,6 +313,8 @@ public class AssetCommonBean implements Parcelable {
         dest.writeString(this.customGenre);
         dest.writeString(this.customGenreRule);
         dest.writeString(this.customMediaType);
+        dest.writeString(this.customDays);
+        dest.writeString(this.customLinearAssetId);
         dest.writeString(this.customRailType);
         dest.writeString(this.moreGenre);
         dest.writeInt(this.moreAssetType);
@@ -321,6 +341,8 @@ public class AssetCommonBean implements Parcelable {
         this.customGenre = in.readString();
         this.customGenreRule = in.readString();
         this.customMediaType = in.readString();
+        this.customDays = in.readString();
+        this.customLinearAssetId = in.readString();
         this.customRailType = in.readString();
         this.moreGenre = in.readString();
         this.moreAssetType = in.readInt();

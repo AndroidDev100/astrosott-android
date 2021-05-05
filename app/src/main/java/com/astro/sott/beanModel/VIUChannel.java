@@ -56,6 +56,8 @@ public class VIUChannel implements Parcelable {
     private String customGenre;
     private String customGenreRule;
     private String customMediaType;
+    private String customLinearAssetId;
+    private String customDays;
 
     private String imageURL;
     private String manualImageAssetId;
@@ -216,10 +218,16 @@ public class VIUChannel implements Parcelable {
             this.customGenreRule = screenWidget.getCustomGenreRule();
         if (screenWidget.getCustomMediaType() != null)
             this.customMediaType = screenWidget.getCustomMediaType();
+        if (screenWidget.getCustomLinearAssetId() != null)
+            this.customLinearAssetId = screenWidget.getCustomLinearAssetId();
+        if (screenWidget.getCustomDays() != null)
+            this.customDays = screenWidget.getCustomDays();
         if (screenWidget.getCustomRailType().equalsIgnoreCase("PURCHASE-PPV")) {
             this.description = AppLevelConstants.PPV_RAIL;
         } else if (screenWidget.getCustomRailType().equalsIgnoreCase(AppLevelConstants.TRENDING)) {
             this.description = AppLevelConstants.TRENDING;
+        } else if (screenWidget.getCustomRailType().equalsIgnoreCase(AppLevelConstants.LIVECHANNEL_RAIL)) {
+            this.description = AppLevelConstants.LIVECHANNEL_RAIL;
         } else {
             this.description = "";
 
@@ -359,6 +367,22 @@ public class VIUChannel implements Parcelable {
 
     public void setCustomMediaType(String customMediaType) {
         this.customMediaType = customMediaType;
+    }
+
+    public void setCustomDays(String customDays) {
+        this.customDays = customDays;
+    }
+
+    public String getCustomDays() {
+        return customDays;
+    }
+
+    public String getCustomLinearAssetId() {
+        return customLinearAssetId;
+    }
+
+    public void setCustomLinearAssetId(String customLinearAssetId) {
+        this.customLinearAssetId = customLinearAssetId;
     }
 
     public void setName(String name) {

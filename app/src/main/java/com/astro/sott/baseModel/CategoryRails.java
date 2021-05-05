@@ -366,6 +366,7 @@ public class CategoryRails {
                 break;
             case AppLevelConstants.PPV_RAIL:
             case AppConstants.KEY_MY_WATCHLIST:
+            case AppLevelConstants.LIVECHANNEL_RAIL:
             case AppLevelConstants.TRENDING:
                 assetCommonBean1.setStatus(true);
                 assetCommonBean1.setRailDetail(dtChannel);

@@ -50,6 +50,8 @@ class BaseCategory() : Parcelable {
     var customMediaType: String? = ""
     var customGenre: String? = ""
     var customGenreRule: String? = ""
+    var customLinearAssetId: String? = ""
+    var customDays: String? = ""
 
 
     var message: String? = ""
@@ -100,6 +102,8 @@ class BaseCategory() : Parcelable {
         customMediaType = parcel.readString()
         customGenre = parcel.readString()
         customGenreRule = parcel.readString()
+        customDays = parcel.readString()
+        customLinearAssetId = parcel.readString()
         message = parcel.readString()
         widgetImageType = parcel.readString()
         status = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -143,7 +147,9 @@ class BaseCategory() : Parcelable {
         parcel.writeString(customRailType)
         parcel.writeString(customMediaType)
         parcel.writeString(customGenre)
+        parcel.writeString(customLinearAssetId)
         parcel.writeString(customGenreRule)
+        parcel.writeString(customDays)
         parcel.writeString(message)
         parcel.writeString(widgetImageType)
         parcel.writeValue(status)

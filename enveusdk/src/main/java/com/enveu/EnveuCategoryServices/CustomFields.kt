@@ -14,5 +14,10 @@ data class CustomFields(
         @field:SerializedName("GENRE-RULE")
         val genreRule: String? = null,
         @field:SerializedName("MEDIA-TYPES")
-        val mediaType: String? = null
+        val mediaType: String? = null,
+        @field:SerializedName("LINEAR-ASSET-ID")
+        val linarAssetId: String? = null,
+        @field:SerializedName("NO-DAYS")
+        val no_days: String? = null
+
 )

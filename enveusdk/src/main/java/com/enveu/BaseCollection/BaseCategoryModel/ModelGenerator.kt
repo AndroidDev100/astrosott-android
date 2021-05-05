@@ -36,6 +36,11 @@ class ModelGenerator {
                     cat.customGenre = i?.customFields.genre
                 if (i?.customFields.genreRule != null)
                     cat.customGenreRule = i?.customFields.genreRule
+                if (i?.customFields.linarAssetId != null)
+                    cat.customLinearAssetId = i?.customFields.linarAssetId
+                if (i?.customFields.no_days != null)
+                    cat.customDays = i?.customFields.no_days
+
                 cat.railCardType = "CUS"
             } else {
                 cat.name = i?.item?.title

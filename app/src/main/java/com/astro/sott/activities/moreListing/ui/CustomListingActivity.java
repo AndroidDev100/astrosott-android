@@ -46,7 +46,7 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
 
     private MyWatchlistViewModel viewModel;
     private AssetCommonBean assetCommonBean;
-    private String customMediaType = "", customRailType = "", customGenre = "", customGenreRule = "", title = "";
+    private String customMediaType = "", customRailType = "", customGenre = "", customGenreRule = "", customDays = "", customLinearAssetId = "", title = "";
 
     @Override
     protected ActivityCustomListingBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -68,6 +68,10 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
                 customMediaType = assetCommonBean.getCustomMediaType();
             if (assetCommonBean.getCustomRailType() != null)
                 customRailType = assetCommonBean.getCustomRailType();
+            if (assetCommonBean.getCustomLinearAssetId() != null)
+                customLinearAssetId = assetCommonBean.getCustomLinearAssetId();
+            if (assetCommonBean.getCustomDays() != null)
+                customDays = assetCommonBean.getCustomDays();
         }
         connectionObserver();
     }
@@ -99,24 +103,47 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
     private void loadData() {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         if (customRailType.equalsIgnoreCase(AppLevelConstants.TRENDING)) {
-            viewModel.getTrendingListing(customMediaType, customGenre, customGenreRule, counter).observe(this, assetListResponse -> {
-                getBinding().progressBar.setVisibility(View.GONE);
-                if (assetListResponse != null && assetListResponse.size() > 0) {
-                    totalCOunt = assetListResponse.get(0).getTotalCount();
-                    arrayList.addAll(assetListResponse);
-                    setUiComponent();
-                }
-            });
+            getTrendingListing();
         } else if (customRailType.equalsIgnoreCase(AppLevelConstants.PPV_RAIL)) {
-            viewModel.getPurchaseListing(customMediaType, customGenre, customGenreRule, counter).observe(this, assetListResponse -> {
-                getBinding().progressBar.setVisibility(View.GONE);
-                if (assetListResponse != null && assetListResponse.size() > 0) {
-                    totalCOunt = assetListResponse.get(0).getTotalCount();
-                    arrayList.addAll(assetListResponse);
-                    setUiComponent();
-                }
-            });
+            getPPVLiSTING();
+        } else if (customRailType.equalsIgnoreCase(AppLevelConstants.LIVECHANNEL_RAIL)) {
+            getEpgListing();
         }
+    }
+
+    private void getTrendingListing() {
+        viewModel.getTrendingListing(customMediaType, customGenre, customGenreRule, counter).observe(this, assetListResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (assetListResponse != null && assetListResponse.size() > 0) {
+                totalCOunt = assetListResponse.get(0).getTotalCount();
+                arrayList.addAll(assetListResponse);
+                setUiComponent();
+            }
+        });
+    }
+
+    private void getEpgListing() {
+
+        viewModel.getEpgListing(customDays, customLinearAssetId, counter).observe(this, assetListResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (assetListResponse != null && assetListResponse.size() > 0) {
+                totalCOunt = assetListResponse.get(0).getTotalCount();
+                arrayList.addAll(assetListResponse);
+                setUiComponent();
+            }
+        });
+
+    }
+
+    private void getPPVLiSTING() {
+        viewModel.getPurchaseListing(customMediaType, customGenre, customGenreRule, counter).observe(this, assetListResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (assetListResponse != null && assetListResponse.size() > 0) {
+                totalCOunt = assetListResponse.get(0).getTotalCount();
+                arrayList.addAll(assetListResponse);
+                setUiComponent();
+            }
+        });
     }
 
     private void setPagination() {

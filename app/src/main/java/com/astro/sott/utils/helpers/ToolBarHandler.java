@@ -106,6 +106,8 @@ public class ToolBarHandler {
                         assetCommonBean1.setCustomGenreRule(data.getCustomGenreRule());
                         assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
                         assetCommonBean1.setCustomRailType(data.getCustomRailType());
+                        assetCommonBean1.setCustomLinearAssetId(data.getCustomLinearAssetId());
+                        assetCommonBean1.setCustomDays(data.getCustomDays());
                         new ActivityLauncher(activity).customListingActivity(activity, CustomListingActivity.class, assetCommonBean1);
                     } else {
                         Log.e("getRailData", "PDF");

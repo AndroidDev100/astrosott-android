@@ -2494,13 +2494,12 @@ public class AppCommonMethods {
 
     public static String getProgramTimeDate(long timestamp) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timestamp * 1000);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa");
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
+
+            Date date = new Date(timestamp * 1000L);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa", Locale.US);
+            simpleDateFormat.setTimeZone(TimeZone.getDefault());
+            String dateTimeValue = simpleDateFormat.format(date);
+            return dateTimeValue;
         } catch (IndexOutOfBoundsException e) {
         }
         return "";

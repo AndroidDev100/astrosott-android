@@ -196,6 +196,7 @@ import com.kaltura.client.types.KeyValue;
 import com.kaltura.client.types.LicensedUrlBaseRequest;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.LoginResponse;
+import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.NotificationsSettings;
 import com.kaltura.client.types.OTTCategory;
 import com.kaltura.client.types.OTTUser;
@@ -224,6 +225,9 @@ import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -233,7 +237,9 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -1809,6 +1815,127 @@ public class KsServices {
 
     }
 
+    public void callLiveEPGDRail(String externalId, String startDate, String endDate, List<VIUChannel> list) {
+        String EPGListKSQL;
+        clientSetupKs();
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+
+        EPGListKSQL = KSQL.forEPGListing(externalId, startDate, endDate);
+        searchAssetFilter.setKSql(EPGListKSQL);
+        searchAssetFilter.typeIn("0");
+        searchAssetFilter.setOrderBy("START_DATE_ASC");
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(20);
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
+            if (result != null) {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null) {
+                            responseList.add(result);
+                            homechannelCallBack.response(true, this.responseList, list);
+                        } else {
+                            homechannelCallBack.response(false, null, null);
+                        }
+                    }
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        Log.e("KsExpireDeviceManage", errorCode);
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        callLiveEPGDRail(externalId, startDate, endDate, list);
+                                    } else {
+                                        homechannelCallBack.response(false, null, null);
+
+                                    }
+                                }
+                            });
+
+                        } else {
+                            homechannelCallBack.response(false, null, null);
+
+                        }
+                    } else {
+                        homechannelCallBack.response(false, null, null);
+
+                    }
+                }
+            } else {
+                homechannelCallBack.response(false, null, null);
+
+            }
+        });
+
+        getRequestQueue().queue(builder.build(client));
+
+    }
+
+    public void callLiveEPGDRailListing(String externalId, String startDate, String endDate, int counter, TrendingCallBack trendingCallBack) {
+        String EPGListKSQL;
+        clientSetupKs();
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+
+        EPGListKSQL = KSQL.forEPGListing(externalId, startDate, endDate);
+        searchAssetFilter.setKSql(EPGListKSQL);
+        searchAssetFilter.typeIn("0");
+        searchAssetFilter.setOrderBy("START_DATE_ASC");
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(counter);
+        filterPager.setPageSize(20);
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
+            if (result != null) {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null) {
+                            trendingCallBack.getList(true, result.results.getObjects(), result.results.getTotalCount());
+
+                        } else {
+                            trendingCallBack.getList(false, null, 0);
+
+                        }
+                    }
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        Log.e("KsExpireDeviceManage", errorCode);
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        callLiveEPGDRailListing(externalId, startDate, endDate, counter, trendingCallBack);
+                                    } else {
+                                        trendingCallBack.getList(false, null, 0);
+
+                                    }
+                                }
+                            });
+
+                        } else {
+                            trendingCallBack.getList(false, null, 0);
+
+                        }
+                    } else {
+                        trendingCallBack.getList(false, null, 0);
+
+                    }
+                }
+            } else {
+                trendingCallBack.getList(false, null, 0);
+
+            }
+        });
+
+        getRequestQueue().queue(builder.build(client));
+
+    }
+
     public void callLiveEPGDayWise(String externalId, String startDate, String endDate, int type, int counter, SeasonCallBack callBack) {
         String EPGListKSQL;
         seasonCallBackSeries = callBack;
@@ -3295,13 +3422,25 @@ public class KsServices {
     }
 
 
-    public void getLinearAssetId(String assetId) {
+    public void getLinearAssetId(String assetId, List<VIUChannel> list, int counter) {
         clientSetupKs();
         AssetService.GetAssetBuilder builder = AssetService.get(assetId, AssetReferenceType.MEDIA).setCompletion(result -> {
             PrintLogging.printLog("", "SpecificAsset" + result.isSuccess());
             if (result.isSuccess()) {
                 if (result.results != null) {
+                    try {
+                        Asset asset = result.results;
+                        MediaAsset mediaAsset = (MediaAsset) asset;
+                        String externalId = mediaAsset.getExternalIds();
+                        int index = Integer.parseInt(list.get(counter).getCustomDays());
+                        String endDate = getNextDateTimeStamp(index + 1);
+                        callLiveEPGDRail(externalId, "0", endDate, list);
+                    } catch (Exception e) {
+                        homechannelCallBack.response(false, null, null);
+                    }
+
                 } else {
+                    homechannelCallBack.response(false, null, null);
                 }
             } else {
                 if (result.error != null) {
@@ -3312,20 +3451,130 @@ public class KsServices {
                             @Override
                             public void response(CommonResponse response) {
                                 if (response.getStatus()) {
+                                    getLinearAssetId(assetId, list, counter);
                                 } else {
+                                    homechannelCallBack.response(false, null, null);
                                 }
                             }
                         });
 
                     } else {
+                        homechannelCallBack.response(false, null, null);
                     }
                 } else {
+                    homechannelCallBack.response(false, null, null);
                 }
-                //channelCallBack.response(false, commonResponse);
             }
 
         });
         getRequestQueue().queue(builder.build(client));
+    }
+
+    public void getLinearAssetIdListing(String assetId, String customDays, int counter, TrendingCallBack trendingCallBack) {
+        clientSetupKs();
+        AssetService.GetAssetBuilder builder = AssetService.get(assetId, AssetReferenceType.MEDIA).setCompletion(result -> {
+            PrintLogging.printLog("", "SpecificAsset" + result.isSuccess());
+            if (result.isSuccess()) {
+                if (result.results != null) {
+                    try {
+                        Asset asset = result.results;
+                        MediaAsset mediaAsset = (MediaAsset) asset;
+                        String externalId = mediaAsset.getExternalIds();
+                        int index = Integer.parseInt(customDays);
+                        String endDate = getNextDateTimeStamp(index + 1);
+                        callLiveEPGDRailListing(externalId, "0", endDate, counter, trendingCallBack);
+                    } catch (Exception e) {
+                        trendingCallBack.getList(false, null, 0);
+
+                    }
+
+                } else {
+                    trendingCallBack.getList(false, null, 0);
+
+                }
+            } else {
+                if (result.error != null) {
+                    String errorCode = result.error.getCode();
+                    // PrintLogging.printLog("","errorCodess-->>"+errorCode);
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                            @Override
+                            public void response(CommonResponse response) {
+                                if (response.getStatus()) {
+                                    getLinearAssetIdListing(assetId, customDays, counter, trendingCallBack);
+                                } else {
+                                    trendingCallBack.getList(false, null, 0);
+
+                                }
+                            }
+                        });
+
+                    } else {
+                        trendingCallBack.getList(false, null, 0);
+
+                    }
+                } else {
+                    trendingCallBack.getList(false, null, 0);
+
+                }
+            }
+
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
+    public static String getNextDateTimeStamp(int dateIndex) {
+        String formattedDate;
+        int nextDay = 1;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, dateIndex);
+
+        Date tomorrow = calendar.getTime();
+
+
+        SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+        df.setTimeZone(TimeZone.getDefault());
+        formattedDate = df.format(tomorrow);
+
+        calendar.clear();
+        return getTimeStamp(formattedDate);
+    }
+
+    private static String getTimeStamp(String todayDate) {
+        /*Calendar currnetDateTime = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss a");
+        String  currentTime = df.format(currnetDateTime.getTime());
+        Log.w("currentTime-->>",currentTime);*/
+        long timestamp = 0;
+        String startTime = " 00:00:00 AM";
+        String dateStr;
+
+        dateStr = todayDate + startTime;
+
+        DateFormat readFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aa", Locale.US);
+        DateFormat writeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        Date date = null;
+        try {
+            date = readFormat.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String formattedDate = "";
+        if (date != null) {
+            formattedDate = writeFormat.format(date);
+        }
+
+        if (date != null) {
+            long output = date.getTime() / 1000L;
+            String str = Long.toString(output);
+            timestamp = Long.parseLong(str);
+            PrintLogging.printLog("AppCommonMethods", "", "printDatedate" + formattedDate + "-->>" + timestamp);
+            System.out.println(formattedDate);
+        }
+
+
+        return String.valueOf(timestamp);
     }
 
     public void searchKeyword(Context context, final String keyToSearch, final List<MediaTypeModel> model, int counter, SearchResultCallBack CallBack, String searchKeyword, String selectedGenre) {
@@ -5382,7 +5631,18 @@ public class KsServices {
                     homechannelCallBack.response(false, null, null);
                 }
             } else if (list.get(counter).getDescription().contains(AppLevelConstants.PPV_RAIL)) {
-                getPurchaseList(list);
+                if (UserInfo.getInstance(activity).isActive()) {
+                    getPurchaseList(list);
+                } else {
+                    homechannelCallBack.response(false, null, null);
+                }
+            } else if (list.get(counter).getDescription().contains(AppLevelConstants.LIVECHANNEL_RAIL)) {
+                if (!list.get(counter).getCustomLinearAssetId().equalsIgnoreCase("")) {
+                    getLinearAssetId(list.get(counter).getCustomLinearAssetId(), list, counter);
+                } else {
+                    homechannelCallBack.response(false, null, null);
+
+                }
             } else if (list.get(counter).getDescription().contains(AppLevelConstants.TRENDING)) {
                 getTrending(responseList, list, counter);
             } else {
@@ -7543,18 +7803,15 @@ public class KsServices {
                         if (result.results.getObjects() != null) {
                             if (result.results.getObjects().size() > 0) {
                                 responseList.add(result);
-                                homechannelCallBack.response(true, this.responseList, list);
+                                homechannelCallBack.response(true, null, list);
                             } else {
-                                this.responseList.add(null);
-                                homechannelCallBack.response(false, this.responseList, null);
+                                homechannelCallBack.response(false, null, null);
                             }
                         } else {
-                            this.responseList.add(null);
-                            homechannelCallBack.response(false, this.responseList, null);
+                            homechannelCallBack.response(false, null, null);
                         }
                     } else {
-                        this.responseList.add(null);
-                        homechannelCallBack.response(false, this.responseList, null);
+                        homechannelCallBack.response(false, null, null);
                     }
                 } else {
 
@@ -7569,20 +7826,17 @@ public class KsServices {
                                         getTrending(responseList, list, counter);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
-                                        KsServices.this.responseList.add(null);
-                                        homechannelCallBack.response(false, KsServices.this.responseList, null);
+                                        homechannelCallBack.response(false, null, null);
 
                                     }
                                 }
                             });
                         else {
-                            this.responseList.add(null);
-                            homechannelCallBack.response(false, this.responseList, null);
+                            homechannelCallBack.response(false, null, null);
 
                         }
                     } else {
-                        this.responseList.add(null);
-                        homechannelCallBack.response(false, this.responseList, null);
+                        homechannelCallBack.response(false, null, null);
 
                     }
 
