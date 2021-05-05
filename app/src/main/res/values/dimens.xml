@@ -353,6 +353,8 @@
     <dimen name="default_indicator_size">8dp</dimen>
 
     //login Fragment
+    <dimen name="blocked_fragment_width">411dp</dimen>
+    <dimen name="blocked_fragment_height">255dp</dimen>
 
     <dimen name="fragment_width">330dp</dimen>
     <dimen name="fragment_height">336dp</dimen>
