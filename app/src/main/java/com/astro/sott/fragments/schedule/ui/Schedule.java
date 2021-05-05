@@ -268,7 +268,11 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         PrintLogging.printLog(this.getClass(), "", "valueOfIis" + i);
         getCurrentTime(i);
         getBinding().programRecyclerview.setVisibility(View.GONE);
-        startTimeStamp = AppCommonMethods.getNextDateTimeStamp(1, i);
+        if (count==0){
+            startTimeStamp="0";
+        }else {
+            startTimeStamp = AppCommonMethods.getNextDateTimeStamp(1, i);
+        }
         endTimeStamp = AppCommonMethods.getNextDateTimeStamp(2, i);
         counter = 1;
         if (arrayList != null) {

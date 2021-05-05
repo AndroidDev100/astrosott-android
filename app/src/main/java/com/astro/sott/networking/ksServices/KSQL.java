@@ -73,7 +73,7 @@ class KSQL {
         _tw0 = "' start_date>='";
         _three = "' start_date<'";
         _four = "')";
-        KSQL = _one + externalId + _tw0 + "0" + _three + endDate + _four;
+        KSQL = _one + externalId + _tw0 + startDate + _three + endDate + _four;
         printKSQL(KSQL);
         return KSQL;
     }

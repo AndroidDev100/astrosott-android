@@ -3294,6 +3294,40 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
     }
 
+
+    public void getLinearAssetId(String assetId) {
+        clientSetupKs();
+        AssetService.GetAssetBuilder builder = AssetService.get(assetId, AssetReferenceType.MEDIA).setCompletion(result -> {
+            PrintLogging.printLog("", "SpecificAsset" + result.isSuccess());
+            if (result.isSuccess()) {
+                if (result.results != null) {
+                } else {
+                }
+            } else {
+                if (result.error != null) {
+                    String errorCode = result.error.getCode();
+                    // PrintLogging.printLog("","errorCodess-->>"+errorCode);
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                            @Override
+                            public void response(CommonResponse response) {
+                                if (response.getStatus()) {
+                                } else {
+                                }
+                            }
+                        });
+
+                    } else {
+                    }
+                } else {
+                }
+                //channelCallBack.response(false, commonResponse);
+            }
+
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
     public void searchKeyword(Context context, final String keyToSearch, final List<MediaTypeModel> model, int counter, SearchResultCallBack CallBack, String searchKeyword, String selectedGenre) {
         searchResultCallBack = CallBack;
         searchOutputModel = new ArrayList<>();
@@ -7575,10 +7609,10 @@ public class KsServices {
             }
         }
         if (customGenre != null && !customGenre.equalsIgnoreCase("")) {
-            if (customGenreRule!=null&&!customGenreRule.equalsIgnoreCase("")) {
-                kSql = AppCommonMethods.splitGenre(customGenre,customGenreRule);
-            }else {
-                kSql = AppCommonMethods.splitGenre(customGenre,"");
+            if (customGenreRule != null && !customGenreRule.equalsIgnoreCase("")) {
+                kSql = AppCommonMethods.splitGenre(customGenre, customGenreRule);
+            } else {
+                kSql = AppCommonMethods.splitGenre(customGenre, "");
 
             }
         }
