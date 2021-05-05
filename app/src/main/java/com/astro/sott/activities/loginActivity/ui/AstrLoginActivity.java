@@ -101,6 +101,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private void setFb() {
         callbackManager = CallbackManager.Factory.create();
         //  LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL));
+        Log.w("fb_login", "loginResult" + "");
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -110,6 +111,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                         Log.w("fb_login", loginResult + "");
                         GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
                             if (object != null) {
+                                Log.w("fb_login", object + "");
                                 if (object.has("email")) {
                                     try {
                                         String fbname = object.getString("name");
@@ -131,6 +133,8 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                                     Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
                                     LoginManager.getInstance().logOut();
                                 }
+                            }else {
+                                Log.w("fb_login", "null" + "");
                             }
                         });
                         Bundle parameters = new Bundle();
@@ -143,11 +147,13 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     @Override
                     public void onCancel() {
                         // App code
+                        Log.w("fb_login", "cancel" + "");
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
                         // App code
+                        Log.w("fb_login", exception.toString() + "");
                     }
                 });
 
