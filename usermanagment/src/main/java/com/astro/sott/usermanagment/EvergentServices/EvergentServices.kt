@@ -647,7 +647,7 @@ class EvergentServices {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
-        createUserJson.add("GetLastSubscriptionsRequestMessage", json)
+        createUserJson.add("GetLastSubscriptionRequestMessage", json)
 
 
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
@@ -842,6 +842,7 @@ class EvergentServices {
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty("dmaID", "001");
         json.addProperty("returnAppChannels", "T");
+        json.addProperty("returnPromotions", "T");
         appChannelJson.addProperty("appChannel", "Google Wallet")
         json.add("appChannels", appChannelJson)
         createUserJson.add("GetProductsRequestMessage", json)

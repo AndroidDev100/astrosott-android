@@ -24,6 +24,7 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.databinding.ActivityCustomListingBinding;
 import com.astro.sott.utils.constants.AppConstants;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.ToolBarHandler;
@@ -56,7 +57,7 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         assetCommonBean = getIntent().getExtras().getParcelable("assetCommonBean");
-        category = (VIUChannel) getIntent().getExtras().getParcelable("baseCategory");
+        category = getIntent().getExtras().getParcelable("baseCategory");
         if (assetCommonBean != null) {
             title = assetCommonBean.getTitle();
             if (assetCommonBean.getCustomGenre() != null)
@@ -97,14 +98,25 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
 
     private void loadData() {
         getBinding().progressBar.setVisibility(View.VISIBLE);
-        viewModel.getTrendingListing(customMediaType, customGenre, customGenreRule, counter).observe(this, assetListResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
-            if (assetListResponse != null && assetListResponse.size() > 0) {
-                totalCOunt = assetListResponse.get(0).getTotalCount();
-                arrayList.addAll(assetListResponse);
-                setUiComponent();
-            }
-        });
+        if (customRailType.equalsIgnoreCase(AppLevelConstants.TRENDING)) {
+            viewModel.getTrendingListing(customMediaType, customGenre, customGenreRule, counter).observe(this, assetListResponse -> {
+                getBinding().progressBar.setVisibility(View.GONE);
+                if (assetListResponse != null && assetListResponse.size() > 0) {
+                    totalCOunt = assetListResponse.get(0).getTotalCount();
+                    arrayList.addAll(assetListResponse);
+                    setUiComponent();
+                }
+            });
+        } else if (customRailType.equalsIgnoreCase(AppLevelConstants.PPV_RAIL)) {
+            viewModel.getPurchaseListing(customMediaType, customGenre, customGenreRule, counter).observe(this, assetListResponse -> {
+                getBinding().progressBar.setVisibility(View.GONE);
+                if (assetListResponse != null && assetListResponse.size() > 0) {
+                    totalCOunt = assetListResponse.get(0).getTotalCount();
+                    arrayList.addAll(assetListResponse);
+                    setUiComponent();
+                }
+            });
+        }
     }
 
     private void setPagination() {
@@ -142,7 +154,7 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
 
     private void setUiComponent() {
         if (commonLandscapeListingAdapteNew == null) {
-            commonLandscapeListingAdapteNew = new CommonLandscapeListingAdapteNew(this, arrayList, AppConstants.Rail5, assetCommonBean.getTitle(), null);
+            commonLandscapeListingAdapteNew = new CommonLandscapeListingAdapteNew(this, arrayList, AppConstants.Rail5, assetCommonBean.getTitle(), category.getCategory());
             getBinding().recyclerViewMore.setAdapter(commonLandscapeListingAdapteNew);
             mIsLoading = commonLandscapeListingAdapteNew.getItemCount() != totalCOunt;
 

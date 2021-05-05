@@ -181,7 +181,6 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return recommendedHolder;*/
 
             case RAIL_MY_WATCHLIST:
-
             case CAROUSEL_PR_POTRAIT:
                 CarouselPotraitLayoutBinding carouselPotraitLayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.carousel_potrait_layout, parent, false);
                 return new PotraitCarouselHolder(carouselPotraitLayoutBinding, viewType);

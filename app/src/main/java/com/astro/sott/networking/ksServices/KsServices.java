@@ -5348,7 +5348,7 @@ public class KsServices {
                     homechannelCallBack.response(false, null, null);
                 }
             } else if (list.get(counter).getDescription().contains(AppLevelConstants.PPV_RAIL)) {
-                getPurchaseList();
+                getPurchaseList(list);
             } else if (list.get(counter).getDescription().contains(AppLevelConstants.TRENDING)) {
                 getTrending(responseList, list, counter);
             } else {
@@ -5412,12 +5412,12 @@ public class KsServices {
 
     }
 
-    private void getPurchaseList() {
+    private void getPurchaseList(List<VIUChannel> list) {
 
         clientSetupKs();
         EntitlementFilter entitlementFilter = new EntitlementFilter();
-        entitlementFilter.productTypeEqual("PPV");
-        entitlementFilter.entityReferenceEqual("USER");
+        entitlementFilter.productTypeEqual("subscription");
+        entitlementFilter.entityReferenceEqual("household");
         entitlementFilter.isExpiredEqual(false + "");
         entitlementFilter.orderBy("PURCHASE_DATE_ASC");
 
@@ -5430,8 +5430,10 @@ public class KsServices {
             @Override
             public void onComplete(Response<ListResponse<Entitlement>> result) {
                 if (result.isSuccess()) {
-                    if (result.results != null) {
+                    if (result.results != null & result.results.getObjects() != null) {
+                        getSubscriptionInfo(result.results.getObjects(), list);
                     } else {
+                        homechannelCallBack.response(false, null, null);
                     }
                 } else {
 
@@ -5444,18 +5446,268 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        getPurchaseList();
+                                        getPurchaseList(list);
                                     } else {
+                                        homechannelCallBack.response(false, null, null);
                                     }
                                 }
                             });
 
                         } else {
+                            homechannelCallBack.response(false, null, null);
                         }
                     } else {
+                        homechannelCallBack.response(false, null, null);
                     }
 
 
+                }
+            }
+        });
+        getRequestQueue().queue(builder.build(client));
+
+    }
+
+    public void getPurchaseListListing(int counter, TrendingCallBack trendingCallBack) {
+
+        clientSetupKs();
+        EntitlementFilter entitlementFilter = new EntitlementFilter();
+        entitlementFilter.productTypeEqual("subscription");
+        entitlementFilter.entityReferenceEqual("household");
+        entitlementFilter.isExpiredEqual(false + "");
+        entitlementFilter.orderBy("PURCHASE_DATE_ASC");
+
+
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(20);
+
+        EntitlementService.ListEntitlementBuilder builder = EntitlementService.list(entitlementFilter, filterPager).setCompletion(new OnCompletion<Response<ListResponse<Entitlement>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Entitlement>> result) {
+                if (result.isSuccess()) {
+                    if (result.results != null & result.results.getObjects() != null) {
+                        getSubscriptionInfoListing(result.results.getObjects(), trendingCallBack);
+                    } else {
+                        trendingCallBack.getList(false, null, 0);
+
+                    }
+                } else {
+
+
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        Log.e("errorCodessName", errorCode);
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getPurchaseListListing(counter, trendingCallBack);
+                                    } else {
+                                        trendingCallBack.getList(false, null, 0);
+
+                                    }
+                                }
+                            });
+
+                        } else {
+                            trendingCallBack.getList(false, null, 0);
+
+                        }
+                    } else {
+                        trendingCallBack.getList(false, null, 0);
+
+                    }
+
+
+                }
+            }
+        });
+        getRequestQueue().queue(builder.build(client));
+
+    }
+
+    private void getSubscriptionInfo(List<Entitlement> objects, List<VIUChannel> list) {
+        String id = AppCommonMethods.getsubScriptionIds(objects);
+        clientSetupKs();
+
+        SubscriptionFilter subscriptionFilter = new SubscriptionFilter();
+        subscriptionFilter.subscriptionIdIn(id);
+
+        SubscriptionService.ListSubscriptionBuilder builder = SubscriptionService.list(subscriptionFilter).setCompletion(new OnCompletion<Response<ListResponse<Subscription>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Subscription>> result) {
+
+                if (result.isSuccess()) {
+                    if (result.results != null && result.results.getObjects() != null && result.results.getObjects().size() > 0 && result.results.getObjects().get(0) != null && result.results.getObjects().get(0).getChannels() != null && result.results.getObjects().get(0).getChannels().get(0) != null && result.results.getObjects().get(0).getChannels().get(0).getId() != null) {
+                        getChannelData(result.results.getObjects().get(0).getChannels().get(0).getId() + "", list);
+                    } else {
+                        homechannelCallBack.response(false, null, null);
+                    }
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        Log.e("errorCodessName", errorCode);
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getSubscriptionInfo(objects, list);
+                                    } else {
+                                        homechannelCallBack.response(false, null, null);
+                                    }
+                                }
+                            });
+
+                        } else {
+                            homechannelCallBack.response(false, null, null);
+                        }
+                    } else {
+                        homechannelCallBack.response(false, null, null);
+                    }
+                }
+
+            }
+        });
+
+        getRequestQueue().queue(builder.build(client));
+    }
+
+    private void getSubscriptionInfoListing(List<Entitlement> objects, TrendingCallBack trendingCallBack) {
+        String id = AppCommonMethods.getsubScriptionIds(objects);
+        clientSetupKs();
+
+        SubscriptionFilter subscriptionFilter = new SubscriptionFilter();
+        subscriptionFilter.subscriptionIdIn(id);
+
+        SubscriptionService.ListSubscriptionBuilder builder = SubscriptionService.list(subscriptionFilter).setCompletion(new OnCompletion<Response<ListResponse<Subscription>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Subscription>> result) {
+
+                if (result.isSuccess()) {
+                    if (result.results != null && result.results.getObjects() != null && result.results.getObjects().size() > 0 && result.results.getObjects().get(0) != null && result.results.getObjects().get(0).getChannels() != null && result.results.getObjects().get(0).getChannels().get(0) != null && result.results.getObjects().get(0).getChannels().get(0).getId() != null) {
+                        getChannelDataListing(result.results.getObjects().get(0).getChannels().get(0).getId() + "", trendingCallBack);
+                    } else {
+                    }
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        Log.e("errorCodessName", errorCode);
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getSubscriptionInfoListing(objects, trendingCallBack);
+                                    } else {
+                                        trendingCallBack.getList(false, null, 0);
+
+                                    }
+                                }
+                            });
+
+                        } else {
+                            trendingCallBack.getList(false, null, 0);
+
+                        }
+                    } else {
+                        trendingCallBack.getList(false, null, 0);
+
+                    }
+                }
+
+            }
+        });
+
+        getRequestQueue().queue(builder.build(client));
+    }
+
+    private void getChannelData(String id, List<VIUChannel> list) {
+
+        clientSetupKs();
+        ChannelFilter channelFilter = new ChannelFilter();
+        channelFilter.setIdEqual(Integer.valueOf(id));
+
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(20);
+
+        AssetService.ListAssetBuilder builder = AssetService.list(channelFilter, filterPager).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Asset>> result) {
+                if (result.isSuccess()) {
+                    responseList.add(result);
+                    homechannelCallBack.response(true, responseList, list);
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        Log.e("errorCodessName", errorCode);
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getChannelData(id, list);
+                                    } else {
+                                        homechannelCallBack.response(false, null, null);
+                                    }
+                                }
+                            });
+
+                        } else {
+                            homechannelCallBack.response(false, null, null);
+                        }
+                    } else {
+                        homechannelCallBack.response(false, null, null);
+                    }
+                }
+            }
+        });
+        getRequestQueue().queue(builder.build(client));
+
+    }
+
+    private void getChannelDataListing(String id, TrendingCallBack trendingCallBack) {
+
+        clientSetupKs();
+        ChannelFilter channelFilter = new ChannelFilter();
+        channelFilter.setIdEqual(Integer.valueOf(id));
+
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(20);
+
+        AssetService.ListAssetBuilder builder = AssetService.list(channelFilter, filterPager).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Asset>> result) {
+                if (result.isSuccess() && result.results != null && result.results.getObjects() != null) {
+                    trendingCallBack.getList(true, result.results.getObjects(), result.results.getTotalCount());
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        Log.e("errorCodessName", errorCode);
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getChannelDataListing(id, trendingCallBack);
+                                    } else {
+                                        trendingCallBack.getList(false, null, 0);
+                                    }
+                                }
+                            });
+
+                        } else {
+                            trendingCallBack.getList(false, null, 0);
+
+                        }
+                    } else {
+                        trendingCallBack.getList(false, null, 0);
+
+                    }
                 }
             }
         });
@@ -7229,10 +7481,17 @@ public class KsServices {
                 relatedFilter.setTypeIn(MediaTypeConstant.getEpisode(activity) + "");
             } else if (list.get(counter).getCustomMediaType().equalsIgnoreCase("MOVIES")) {
                 relatedFilter.setTypeIn(MediaTypeConstant.getMovie(activity) + "");
+            } else if (!list.get(counter).getCustomMediaType().equalsIgnoreCase("")) {
+                relatedFilter.setTypeIn(AppCommonMethods.getTypeIn(activity, list.get(counter).getCustomMediaType()));
             }
         }
         if (list.get(counter).getCustomGenre() != null) {
-            kSql = AppCommonMethods.splitGenre(list.get(counter).getCustomGenre());
+            if (list.get(counter).getCustomGenreRule() != null && !list.get(counter).getCustomGenreRule().equalsIgnoreCase("")) {
+                kSql = AppCommonMethods.splitGenre(list.get(counter).getCustomGenre(), list.get(counter).getCustomGenreRule());
+
+            } else {
+                kSql = AppCommonMethods.splitGenre(list.get(counter).getCustomGenre(), "");
+            }
         }
         if (!kSql.equalsIgnoreCase("")) {
             relatedFilter.setKSql(kSql);
@@ -7316,7 +7575,12 @@ public class KsServices {
             }
         }
         if (customGenre != null && !customGenre.equalsIgnoreCase("")) {
-            kSql = AppCommonMethods.splitGenre(customGenre);
+            if (customGenreRule!=null&&!customGenreRule.equalsIgnoreCase("")) {
+                kSql = AppCommonMethods.splitGenre(customGenre,customGenreRule);
+            }else {
+                kSql = AppCommonMethods.splitGenre(customGenre,"");
+
+            }
         }
         if (!kSql.equalsIgnoreCase("")) {
             relatedFilter.setKSql(kSql);
@@ -7336,11 +7600,11 @@ public class KsServices {
                         if (result.results.getObjects() != null && result.results.getObjects().size() > 0) {
                             trendingCallBack.getList(true, result.results.getObjects(), result.results.getTotalCount());
                         } else {
-                            trendingCallBack.getList(false, null,0);
+                            trendingCallBack.getList(false, null, 0);
 
                         }
                     } else {
-                        trendingCallBack.getList(false, null,0);
+                        trendingCallBack.getList(false, null, 0);
 
                     }
 
@@ -7354,21 +7618,21 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        getTrendingListing(customMediaType, customGenre, customGenreRule,counter, trendingCallBack);
+                                        getTrendingListing(customMediaType, customGenre, customGenreRule, counter, trendingCallBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
-                                        trendingCallBack.getList(false, null,0);
+                                        trendingCallBack.getList(false, null, 0);
 
                                     }
                                 }
                             });
                         else {
-                            trendingCallBack.getList(false, null,0);
+                            trendingCallBack.getList(false, null, 0);
 
 
                         }
                     } else {
-                        trendingCallBack.getList(false, null,0);
+                        trendingCallBack.getList(false, null, 0);
 
 
                     }

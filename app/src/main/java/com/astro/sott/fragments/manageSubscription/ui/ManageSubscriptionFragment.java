@@ -243,6 +243,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     private void removeSubscription() {
         subscriptionViewModel.removeSubscription(UserInfo.getInstance(getActivity()).getAccessToken(), cancelId).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
+                getActiveSubscription();
                 Toast.makeText(getActivity(), "Subscription Successfully Cancelled", Toast.LENGTH_SHORT).show();
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {

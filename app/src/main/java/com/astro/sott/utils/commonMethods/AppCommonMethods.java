@@ -70,11 +70,14 @@ import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
+import com.kaltura.client.types.Entitlement;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.LongValue;
 import com.kaltura.client.types.MediaImage;
 import com.kaltura.client.types.MultilingualStringValue;
 import com.kaltura.client.types.MultilingualStringValueArray;
+import com.kaltura.client.types.Subscription;
+import com.kaltura.client.types.SubscriptionEntitlement;
 import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -2811,16 +2814,22 @@ public class AppCommonMethods {
         return stringBuilder.toString();
     }
 
-    public static String splitGenre(String customGenre) {
+    public static String splitGenre(String customGenre, String customGenreRule) {
         StringBuilder ksql = new StringBuilder();
         try {
 
-
-            String[] splitString = customGenre.split(",");
+            String[] splitString = customGenre.split(";");
             if (splitString.length > 0 && !splitString[0].equalsIgnoreCase("")) {
-                ksql.append("(or");
-                for (String genre : splitString) {
-                    ksql.append(" Genre='" + genre + "'");
+                if (customGenreRule.equalsIgnoreCase("EXCLUDE")) {
+                    ksql.append("(and");
+                    for (String genre : splitString) {
+                        ksql.append(" Genre!='" + genre + "'");
+                    }
+                } else {
+                    ksql.append("(or");
+                    for (String genre : splitString) {
+                        ksql.append(" Genre='" + genre + "'");
+                    }
                 }
                 ksql.append(")");
             }
@@ -2828,5 +2837,41 @@ public class AppCommonMethods {
 
         }
         return ksql.toString();
+    }
+
+    public static String getsubScriptionIds(List<Entitlement> objects) {
+        StringBuilder idString = new StringBuilder();
+        for (Entitlement entitlement : objects) {
+            SubscriptionEntitlement subscriptionEntitlement = (SubscriptionEntitlement) entitlement;
+            if (!subscriptionEntitlement.getIsRenewable()) {
+                idString.append(entitlement.getProductId() + ",");
+            }
+        }
+        return idString.toString();
+    }
+
+    public static void getIdArray(List<Subscription> objects) {
+        List<String> arrayList = new ArrayList<>();
+
+    }
+
+    public static String getTypeIn(Context activity, String customMediaType) {
+        StringBuilder typeIn = new StringBuilder();
+        try {
+
+            String[] splitString = customMediaType.split(";");
+            if (splitString.length > 0 && !splitString[0].equalsIgnoreCase("")) {
+                for (String typeInItem : splitString) {
+                    if (typeInItem.equalsIgnoreCase("EPISODES"))
+                        typeIn.append(MediaTypeConstant.getEpisode(activity) + ",");
+                    if (typeInItem.equalsIgnoreCase("MOVIES"))
+                        typeIn.append(MediaTypeConstant.getMovie(activity) + ",");
+
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return typeIn.toString();
     }
 }

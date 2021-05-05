@@ -104,7 +104,7 @@ public class ToolBarHandler {
                         assetCommonBean1.setCustomGenre(data.getCustomGenre());
                         assetCommonBean1.setCustomMediaType(data.getCustomMediaType());
                         assetCommonBean1.setCustomGenreRule(data.getCustomGenreRule());
-                        assetCommonBean.setRailDetail(assetCommonBean.getRailDetail());
+                        assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
                         assetCommonBean1.setCustomRailType(data.getCustomRailType());
                         new ActivityLauncher(activity).customListingActivity(activity, CustomListingActivity.class, assetCommonBean1);
                     } else {

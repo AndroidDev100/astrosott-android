@@ -143,10 +143,13 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     @Override
                     public void onCancel() {
                         // App code
+                        Log.w("fACEBBOK", "");
+
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
+                        Log.w("fACEBBOK", exception + "");
                         // App code
                     }
                 });
@@ -233,6 +236,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         });
 
         getBinding().fb.setOnClickListener(view -> {
+            LoginManager.getInstance().logOut();
             getBinding().loginButton.performClick();
             //  confirmOtp();
         });

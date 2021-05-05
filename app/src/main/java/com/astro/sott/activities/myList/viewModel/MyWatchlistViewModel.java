@@ -31,7 +31,11 @@ public class MyWatchlistViewModel extends AndroidViewModel {
     }
 
     public LiveData<ArrayList<RailCommonData>> getTrendingListing(String customMediaType, String customGenre, String customGenreRule, int counter) {
-        return MyWatchlistRepository.getInstance().getTrending(context, customMediaType, customGenre,customGenreRule,counter);
+        return MyWatchlistRepository.getInstance().getTrending(context, customMediaType, customGenre, customGenreRule, counter);
+    }
+
+    public LiveData<ArrayList<RailCommonData>> getPurchaseListing(String customMediaType, String customGenre, String customGenreRule, int counter) {
+        return MyWatchlistRepository.getInstance().getPurchaseListing(context, customMediaType, customGenre, customGenreRule, counter);
     }
 
     public LiveData<CommonResponse> getWatchlistData(int counter) {

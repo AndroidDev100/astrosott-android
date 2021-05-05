@@ -125,7 +125,7 @@ public interface AppLevelConstants {
 
     String KEY_REF_ID = "Ref Id";
     String SERIES_NAME = "SeriesName";
-    String PPV_RAIL = "ppv_rail";
+    String PPV_RAIL = "PURCHASE-PPV";
     String TRENDING = "TRENDING";
 
     String YEAR = "Year";

@@ -25,7 +25,10 @@ class ModelGenerator {
             cat.screen = response.body()?.data?.screen
             cat.responseCode = response.body()?.responseCode
             if (i?.layout.equals(Layouts.CUS.name, true) && i?.customFields != null && i?.customFields.railTile != null) {
-                cat.name = i?.customFields.railTile
+                if (!i?.customFields.railTile.equals("", true)) {
+                    cat.name = i?.customFields.railTile
+                    cat.showHeader = true
+                }
                 cat.customRailType = i?.customFields?.typeRail
                 if (i?.customFields.mediaType != null)
                     cat.customMediaType = i?.customFields.mediaType
@@ -33,8 +36,11 @@ class ModelGenerator {
                     cat.customGenre = i?.customFields.genre
                 if (i?.customFields.genreRule != null)
                     cat.customGenreRule = i?.customFields.genreRule
+                cat.railCardType = "CUS"
             } else {
                 cat.name = i?.item?.title
+                cat.showHeader = i?.item?.showHeader
+                cat.railCardType = i?.item?.railCardType
             }
 
             cat.type = i?.type
@@ -67,10 +73,10 @@ class ModelGenerator {
             cat.height = i?.height
             cat.width = i?.width
             cat.contentImageType = i?.item?.imageType
-            cat.showHeader = i?.item?.showHeader
+
             cat.autoRotate = i?.item?.autoRotate
             cat.contentSize = i?.item?.listingLayoutContentSize
-            cat.railCardType = i?.item?.railCardType
+
             cat.railCardSize = i?.item?.railCardSize
             cat.autoRotateDuration = i?.item?.autoRotateDuration
             cat.contentShowMoreButton = i?.item?.showMoreButton
