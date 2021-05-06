@@ -575,6 +575,7 @@
     <string name="sign_in_fb">Continue With Facebook</string>
     <string name="sign_in_apple">Sign In With Apple</string>
     <string name="next">NEXT</string>
+    <string name="sooka_superstar">Sooka Superstar</string>
     <string name="otp_valid_for">OTP valid for</string>
     <string name="invalid_otp">Invalid OTP Entered</string>
     <string name="sign_up_text"><u>Sign Up</u></string>

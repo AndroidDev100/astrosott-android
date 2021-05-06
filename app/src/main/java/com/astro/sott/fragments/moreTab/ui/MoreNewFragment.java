@@ -399,7 +399,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             if (!UserInfo.getInstance(getActivity()).getFirstName().equalsIgnoreCase("")) {
                 getBinding().tvName.setText(UserInfo.getInstance(getActivity()).getFirstName());
             } else {
-                getBinding().tvName.setText("Sooka Superstar");
+                getBinding().tvName.setText(getResources().getString(R.string.sooka_superstar));
 
             }
             if (!UserInfo.getInstance(getActivity()).getEmail().equalsIgnoreCase("")) {
