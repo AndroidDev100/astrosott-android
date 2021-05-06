@@ -248,10 +248,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="locked" />
-        <activity
             android:name=".activities.forwardEPG.ForwardedEPGActivity"
             android:screenOrientation="locked" />
         <activity

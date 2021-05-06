@@ -1,7 +1,5 @@
 package com.astro.sott.activities.splash.ui;
 
-import android.app.ActionBar;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -15,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -29,11 +26,9 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.astro.sott.activities.boxSet.ui.BoxSetDetailActivity;
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.splash.viewModel.SplashViewModel;
-import com.astro.sott.activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.modelClasses.appVersion.AppVersionStatus;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
@@ -46,7 +41,6 @@ import com.astro.sott.utils.helpers.SharedPrefHelper;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
-import com.astro.sott.activities.forwardEPG.ForwardedEPGActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.liveChannel.liveChannelManager.LiveChannelManager;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
@@ -86,7 +80,6 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Set;
 
 import io.branch.referral.Branch;
 import io.branch.referral.BranchError;
@@ -798,7 +791,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getWebEpisode(SplashActivity.this)) {
             //finish();
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
-            new ActivityLauncher(SplashActivity.this).webDetailRedirection(railCommonData.getObject(), AppLevelConstants.Rail5);
+            new ActivityLauncher(SplashActivity.this).webDetailRedirection(railCommonData, AppLevelConstants.Rail5);
 
             // new ActivityLauncher(SplashActivity.this).webEpisodeActivity(SplashActivity.this, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getTrailer(SplashActivity.this)) {

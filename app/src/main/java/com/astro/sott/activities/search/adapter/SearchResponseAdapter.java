@@ -12,15 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.astro.sott.activities.boxSet.ui.BoxSetDetailActivity;
-import com.astro.sott.activities.catchUpRails.ui.CatchupActivity;
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
-import com.astro.sott.activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.R;
-import com.astro.sott.activities.forwardEPG.ForwardedEPGActivity;
 import com.astro.sott.activities.liveChannel.liveChannelManager.LiveChannelManager;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.beanModel.commonBeanModel.SearchModel;
@@ -30,7 +26,6 @@ import com.astro.sott.databinding.SearchReItemBinding;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
-import com.astro.sott.utils.helpers.StringBuilderHolder;
 import com.kaltura.client.types.Asset;
 
 import java.util.ArrayList;
@@ -150,7 +145,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getEpisode(activity)) {
             getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
             if (railCommonData.getImages().size() == itemValue.getImages().size())
-                new ActivityLauncher(activity).webDetailRedirection(railCommonData.getObject(), AppLevelConstants.Rail5);
+                new ActivityLauncher(activity).webDetailRedirection(railCommonData, AppLevelConstants.Rail5);
         } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getCollection(activity)) {
             getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
             if (railCommonData.getImages().size() == itemValue.getImages().size())

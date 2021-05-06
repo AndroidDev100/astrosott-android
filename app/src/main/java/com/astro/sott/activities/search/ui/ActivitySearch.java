@@ -5,13 +5,11 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +32,6 @@ import com.astro.sott.activities.search.adapter.SearchNormalAdapter;
 import com.astro.sott.activities.search.adapter.SearchResponseAdapter;
 import com.astro.sott.activities.search.constants.SearchFilterEnum;
 import com.astro.sott.activities.search.viewModel.SearchViewModel;
-import com.astro.sott.activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.commonBeanModel.MediaTypeModel;
@@ -42,7 +39,6 @@ import com.astro.sott.beanModel.commonBeanModel.SearchModel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.callBacks.commonCallBacks.DataLoadedOnFragment;
 import com.astro.sott.db.search.SearchedKeywords;
-import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -576,7 +572,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
         } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getEpisode(ActivitySearch.this)) {
             getRailCommonData(itemValue);
-            new ActivityLauncher(this).webDetailRedirection(railCommonData.getObject(), AppLevelConstants.Rail5);
+            new ActivityLauncher(this).webDetailRedirection(railCommonData, AppLevelConstants.Rail5);
 
             //new ActivityLauncher(this).webEpisodeActivity(this, WebEpisodeDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
 

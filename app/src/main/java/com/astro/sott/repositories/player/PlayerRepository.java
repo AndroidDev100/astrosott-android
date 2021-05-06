@@ -937,7 +937,12 @@ public class PlayerRepository {
             if (AppCommonMethods.isAdsEnable) {
                 if (!AssetContent.isAdsEnable(asset.getMetas())) {
                     getAdsContextApi(asset, playerMutableLiveData, mediaConfig);
+                }else {
+                    preparePlayer(playerPluginConfig,playerMutableLiveData,mediaConfig);
                 }
+            }else {
+                preparePlayer(playerPluginConfig,playerMutableLiveData,mediaConfig);
+
             }
 
           /*  new Handler().postDelayed(new Runnable() {

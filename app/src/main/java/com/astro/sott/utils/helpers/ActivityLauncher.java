@@ -68,7 +68,6 @@ import com.astro.sott.repositories.liveChannel.LinearProgramDataLayer;
 import com.astro.sott.repositories.trailerFragment.TrailerHighlightsDataLayer;
 import com.astro.sott.repositories.webSeriesDescription.SeriesDataLayer;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
-import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.ProgramAsset;
@@ -418,7 +417,7 @@ public class ActivityLauncher {
 
             new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getWebEpisode(activity)) {
-            webDetailRedirection(asset.getObject(), AppLevelConstants.Rail5);
+            webDetailRedirection(asset, AppLevelConstants.Rail5);
             //   new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getTrailer(activity)) {
 
@@ -481,7 +480,7 @@ public class ActivityLauncher {
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getLinear(activity)) {
             new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, itemsList);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getEpisode(activity)) {
-            webDetailRedirection(itemsList.getObject(), layoutType);
+            webDetailRedirection(itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getTrailer(activity)) {
             trailerDirection(itemsList.getObject(), layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getHighlight(activity)) {
@@ -529,21 +528,22 @@ public class ActivityLauncher {
 
     private long episodeClickTime = 0;
 
-    public void webDetailRedirection(Asset asset, int layoutType) {
+    public void webDetailRedirection(RailCommonData asset, int layoutType) {
         if (SystemClock.elapsedRealtime() - episodeClickTime < 1000) {
             return;
         }
         episodeClickTime = SystemClock.elapsedRealtime();
-        String seriesId = AssetContent.getSeriesId(asset.getMetas());
+        String seriesId = AssetContent.getSeriesId(asset.getObject().getMetas());
         if (!seriesId.equalsIgnoreCase("")) {
-            SeriesDataLayer.getSeries(activity, asset.getType(), seriesId).observe((LifecycleOwner) activity, asset1 -> {
+            SeriesDataLayer.getSeries(activity, asset.getObject().getType(), seriesId).observe((LifecycleOwner) activity, asset1 -> {
                 if (asset1 != null) {
                     RailCommonData railCommonData = new RailCommonData();
                     railCommonData.setObject(asset1);
                     new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, railCommonData, layoutType);
 
                 } else {
-                    Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                    new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
+
                 }
             });
         } else {
