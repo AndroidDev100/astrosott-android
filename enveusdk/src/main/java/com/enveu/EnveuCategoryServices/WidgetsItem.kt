@@ -1,6 +1,8 @@
 package com.watcho.enveu.bean
 
+import com.enveu.EnveuCategoryServices.CustomFields
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 data class WidgetsItem(
 
@@ -9,6 +11,9 @@ data class WidgetsItem(
 
         @field:SerializedName("item")
         val item: Item? = null,
+
+        @field:SerializedName("customFields")
+        val customFields: CustomFields? = null,
 
         @field:SerializedName("appScreens")
         val appScreens: Any? = null,

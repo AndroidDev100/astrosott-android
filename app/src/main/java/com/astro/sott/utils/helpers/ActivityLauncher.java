@@ -18,6 +18,7 @@ import com.astro.sott.activities.catchUpRails.ui.CatchupActivity;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.liveEvent.LiveEventActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.moreListing.ui.CustomListingActivity;
 import com.astro.sott.activities.moreListing.ui.GridListingActivity;
 import com.astro.sott.activities.myList.MyListActivity;
 import com.astro.sott.activities.myplaylist.ui.MyPlaylist;
@@ -122,6 +123,13 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
+    public void customListingActivity(Activity source, Class<CustomListingActivity> destination, AssetCommonBean data) {
+        Intent intent = new Intent(source, destination);
+        intent.putExtra("assetCommonBean", data);
+        intent.putExtra("baseCategory", data.getRailDetail());
+        activity.startActivity(intent);
+    }
+
     public void astrLoginActivity(Activity source, Class<AstrLoginActivity> destination, String from) {
         Intent intent = new Intent(source, destination);
         intent.putExtra(AppLevelConstants.FROM_KEY, from);
@@ -150,11 +158,13 @@ public class ActivityLauncher {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
+
     public void termAndCondition(Activity source) {
         Intent intent = new Intent(source, WebViewActivity.class);
         intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC);
         activity.startActivity(intent);
     }
+
     public void forgotPasswordActivity(Activity source, Class<ForgotPasswordActivity> destination) {
         Intent intent = new Intent(source, destination);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -407,7 +417,7 @@ public class ActivityLauncher {
 
             new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getWebEpisode(activity)) {
-            webDetailRedirection(asset.getObject(), AppLevelConstants.Rail5);
+            webDetailRedirection(asset, AppLevelConstants.Rail5);
             //   new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getTrailer(activity)) {
 
@@ -470,7 +480,7 @@ public class ActivityLauncher {
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getLinear(activity)) {
             new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, itemsList);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getEpisode(activity)) {
-            webDetailRedirection(itemsList.getObject(), layoutType);
+            webDetailRedirection(itemsList, layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getTrailer(activity)) {
             trailerDirection(itemsList.getObject(), layoutType);
         } else if (itemsList.getObject().getType() == MediaTypeConstant.getHighlight(activity)) {
@@ -518,21 +528,22 @@ public class ActivityLauncher {
 
     private long episodeClickTime = 0;
 
-    public void webDetailRedirection(Asset asset, int layoutType) {
+    public void webDetailRedirection(RailCommonData asset, int layoutType) {
         if (SystemClock.elapsedRealtime() - episodeClickTime < 1000) {
             return;
         }
         episodeClickTime = SystemClock.elapsedRealtime();
-        String seriesId = AssetContent.getSeriesId(asset.getMetas());
+        String seriesId = AssetContent.getSeriesId(asset.getObject().getMetas());
         if (!seriesId.equalsIgnoreCase("")) {
-            SeriesDataLayer.getSeries(activity, asset.getType(), seriesId).observe((LifecycleOwner) activity, asset1 -> {
+            SeriesDataLayer.getSeries(activity, asset.getObject().getType(), seriesId).observe((LifecycleOwner) activity, asset1 -> {
                 if (asset1 != null) {
                     RailCommonData railCommonData = new RailCommonData();
                     railCommonData.setObject(asset1);
                     new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, railCommonData, layoutType);
 
                 } else {
-                    Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                    new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
+
                 }
             });
         } else {
@@ -844,7 +855,7 @@ public class ActivityLauncher {
 
     }
 
-    public void myListActivity(Activity activity, Class<MyListActivity> myListActivityClass,AssetCommonBean data) {
+    public void myListActivity(Activity activity, Class<MyListActivity> myListActivityClass, AssetCommonBean data) {
         Intent intent = new Intent(activity, myListActivityClass);
         intent.putExtra("baseCategory", data.getRailDetail());
         intent.putExtra(AppLevelConstants.ASSET_COMMON_BEAN, data);

@@ -25,6 +25,8 @@ public interface AppLevelConstants {
     String PARENTAL_SWITCH = "ParentalSwitch";
     String TITLE = "title";
     String MESSAGE = "message";
+    String DATE = "date";
+
     String POSITIVE_BUTTON_TEXT = "positiveButtonText";
     String FORCE = "force";
     String NO_RESULT_FOUND = "noResultFound";
@@ -64,7 +66,7 @@ public interface AppLevelConstants {
     String OLD_PASSWORD_KEY = "oldPassword";
     String PASSWORD_KEY = "password";
     String SOCIAL_ID = "social_id";
-    String GOOGLE_WALLET="Google Wallet";
+    String GOOGLE_WALLET = "Google Wallet";
     String SUBSCRIPTION_ID_KEY = "subscription_id";
     String SIGN_UP = "SignUp";
     String CONTINUE = "Continue";
@@ -103,7 +105,7 @@ public interface AppLevelConstants {
     String PROMO_ASSET_NAME = "name";
     String PARENTAL_RATING = "ParentalRating";
     String ProviderContentTier = "ProviderContentTier";
-
+    String KEEP_ADS = "KEEP_ADS";
     String BILLING_ID = "BillingId";
 
     String KEY_SEASON_NUMBER = "SeasonNumber";
@@ -123,6 +125,9 @@ public interface AppLevelConstants {
 
     String KEY_REF_ID = "Ref Id";
     String SERIES_NAME = "SeriesName";
+    String PPV_RAIL = "PURCHASE-PPV";
+    String LIVECHANNEL_RAIL = "LIVE-CHANNEL";
+    String TRENDING = "TRENDING";
 
     String YEAR = "Year";
     String IS_SPONSORED = "IsSponsored";

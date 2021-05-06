@@ -29,6 +29,7 @@ import com.astro.sott.utils.helpers.CustomTextWatcher
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey
 import com.astro.sott.utils.userInfo.UserInfo
 import com.facebook.*
+import com.facebook.login.LoginBehavior
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -270,6 +271,7 @@ class SignUpActivity : AppCompatActivity() {
                         // App code
                     }
                 })
+        activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
     }
 
     private fun checkPassword(type: String, emailMobile: String, password: String) {

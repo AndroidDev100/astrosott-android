@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.AssetContent;
@@ -46,7 +45,6 @@ import com.kaltura.playkit.Player;
 import com.kaltura.playkit.PlayerEvent;
 import com.kaltura.playkit.player.ABRSettings;
 import com.kaltura.playkit.player.AudioTrack;
-import com.kaltura.playkit.player.LoadControlBuffers;
 import com.kaltura.playkit.player.PKAspectRatioResizeMode;
 import com.kaltura.playkit.player.PKTracks;
 import com.kaltura.playkit.player.TextTrack;
@@ -64,10 +62,8 @@ import com.kaltura.playkit.providers.MediaEntryProvider;
 
 import java.util.ArrayList;
 import java.util.Formatter;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import static com.kaltura.client.APIOkRequestsExecutor.TAG;
 
@@ -908,6 +904,7 @@ public class PlayerRepository {
         }
 
         this.context = context;
+
         if (isPurchased == 1) {
             formatBuilder = new StringBuilder();
             formatter = new Formatter(formatBuilder, Locale.getDefault());
@@ -937,39 +934,40 @@ public class PlayerRepository {
 
 
             playerPluginConfig.setPluginConfig(PhoenixAnalyticsPlugin.factory.getName(), phoenixPluginConfig.toJson());
+            if (AppCommonMethods.isAdsEnable) {
+                if (!AssetContent.isAdsEnable(asset.getMetas())) {
+                    getAdsContextApi(asset, playerMutableLiveData, mediaConfig);
+                }else {
+                    preparePlayer(playerPluginConfig,playerMutableLiveData,mediaConfig);
+                }
+            }else {
+                preparePlayer(playerPluginConfig,playerMutableLiveData,mediaConfig);
+
+            }
+
+          /*  new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    preparePlayer(playerPluginConfig, playerMutableLiveData, mediaConfig);
+                }
+            }, 2000);*/
 
            /* if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
                 PrintLogging.printLog("ValueIS", "0");
             } else {*/
-            if (AppCommonMethods.isAdsEnable) {
-                if (!AssetContent.isAdsEnable(asset.getMetas())) {
-                    addIMAConfig(context, playerPluginConfig);
-                }
-            }
+
             /*  }*/
 
 
-            player = PlayKitManager.loadPlayer(context, playerPluginConfig);
-
-            playerMutableLiveData.postValue(player);
-
-            KalturaPlaybackRequestAdapter.install(player, "com.astro.sott"); // in case app developer wants to give customized referrer instead the default referrer in the playmanifest
-            KalturaUDRMLicenseRequestAdapter.install(player, "com.astro.sott");
-
-            player.getSettings().allowClearLead(true);
-            player.getSettings().setSecureSurface(true);
-            player.getSettings().setAdAutoPlayOnResume(true);
-
-            LoadControlBuffers loadControlBuffers = new LoadControlBuffers().
+           /* LoadControlBuffers loadControlBuffers = new LoadControlBuffers().
                     setMinPlayerBufferMs(2000).
                     setMaxPlayerBufferMs(40000).
                     setBackBufferDurationMs(2000).
                     setMinBufferAfterReBufferMs(2000).
                     setMinBufferAfterInteractionMs(2000).
-                    setRetainBackBufferFromKeyframe(true);
+                    setRetainBackBufferFromKeyframe(true);*/
             // player.getSettings().setPlayerBuffers(loadControlBuffers);
 
-            subscribePhoenixAnalyticsReportEvent();
 
 //            player.getSettings().setABRSettings(new ABRSettings().setMinVideoBitrate(200000).setInitialBitrateEstimate(150000));
 
@@ -978,12 +976,9 @@ public class PlayerRepository {
                 player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit()) / 2));
             } else {*/
 
-            player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
 
             /*  }*/
 
-            player.prepare(mediaConfig);
-            player.play();
 //        subscribeToTracksAvailableEvent();
 
         } else {
@@ -992,6 +987,47 @@ public class PlayerRepository {
 
 
         return playerMutableLiveData;
+    }
+
+    private void getAdsContextApi(Asset asset, MutableLiveData<Player> playerMutableLiveData, PKMediaConfig mediaConfig) {
+        String assetId = asset.getId() + "";
+        String fileId = AppCommonMethods.getFileIdOfAssest(asset);
+
+        new KsServices(context).getAdsContext(assetId, fileId, policy -> {
+            if (policy.equalsIgnoreCase(AppLevelConstants.KEEP_ADS)) {
+                addIMAConfig(context, playerPluginConfig, asset);
+                preparePlayer(playerPluginConfig, playerMutableLiveData, mediaConfig);
+            } else {
+                preparePlayer(playerPluginConfig, playerMutableLiveData, mediaConfig);
+            }
+        });
+
+
+    }
+
+    private void preparePlayer(PKPluginConfigs playerPluginConfig, MutableLiveData<Player> playerMutableLiveData, PKMediaConfig mediaConfig) {
+        Handler mainHandler = new Handler(context.getMainLooper());
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                player = PlayKitManager.loadPlayer(context, playerPluginConfig);
+                playerMutableLiveData.postValue(player);
+                KalturaPlaybackRequestAdapter.install(player, "com.astro.sott"); // in case app developer wants to give customized referrer instead the default referrer in the playmanifest
+                KalturaUDRMLicenseRequestAdapter.install(player, "com.astro.sott");
+                player.getSettings().allowClearLead(true);
+                player.getSettings().setSecureSurface(true);
+                player.getSettings().setAdAutoPlayOnResume(true);
+                subscribePhoenixAnalyticsReportEvent();
+                player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
+
+                player.prepare(mediaConfig);
+                player.play();
+
+            } // This is your code
+        };
+        mainHandler.post(myRunnable);
+
     }
 
     private void addKavaPluginConfig(Context context, PKPluginConfigs pluginConfigs, Asset asset) {
@@ -1025,13 +1061,13 @@ public class PlayerRepository {
     }
 
 
-    private void addIMAConfig(Context context, PKPluginConfigs playerPluginConfig) {
+    private void addIMAConfig(Context context, PKPluginConfigs playerPluginConfig, Asset asset) {
 
         //   String imaVastTag = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=";
         String imaVastTag = "";
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
         if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAdTagURL() != null && responseDmsModel.getParams().getAdTagURL().getURL() != null) {
-            imaVastTag = responseDmsModel.getParams().getAdTagURL().getURL();
+            imaVastTag = AppCommonMethods.getAdsUrl(responseDmsModel.getParams().getAdTagURL().getURL(), asset, context);
         }
 
         //       String imaVastTag = "https://pubads.g.doubleclick.net/gampad/live/ads?sz=640x360&iu=%2F21633895671%2FQA%2FAndroid_Native_App%2FCOH&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=sample_ar%3Dskippablelinear%26Gender%3DU%26Age%3DNULL%26KidsPinEnabled%3DN%26AppVersion%3D0.1.58%26DeviceModel%3DAndroid%20SDK%20built%20for%20x86%26OptOut%3DFalse%26OSVersion%3D9%26PackageName%3Dcom.tv.v18.viola%26description_url%3Dhttps%253A%252F%252Fwww.voot.com%26first_time%3DFalse&cmsid=2467608&ppid=2fbdf28d-5bf9-4f43-b49e-19c4ca1f10f8&vid=0_o71549bv&ad_rule=1&correlator=246819";

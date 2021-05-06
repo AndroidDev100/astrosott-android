@@ -87,6 +87,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:foregroundTint="@color/white"
                 android:textColorHint="@color/grey"
+
                 app:boxStrokeColor="@color/white"
                 app:hintTextColor="@color/grey">
 
@@ -101,9 +102,10 @@
                     android:inputType="textEmailAddress"
                     android:maxLength="25"
                     android:maxLines="1"
+                    android:textCursorDrawable="@drawable/cursor_color"
+
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
-                    android:textCursorDrawable="@color/white"
                     android:textSize="@dimen/_16sp" />
             </com.google.android.material.textfield.TextInputLayout>
 

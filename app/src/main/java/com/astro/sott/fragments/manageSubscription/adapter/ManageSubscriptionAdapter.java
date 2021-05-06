@@ -96,8 +96,14 @@ public class ManageSubscriptionAdapter extends RecyclerView.Adapter<ManageSubscr
             changePlanCallBack.onClick(accountServiceMessageItems.get(position).getPaymentMethod());
         });
         holder.manageSubscriptionItemBinding.cancel.setOnClickListener(v -> {
-            if (accountServiceMessageItems.get(position).getServiceID() != null)
-                changePlanCallBack.onCancel(accountServiceMessageItems.get(position).getServiceID(), accountServiceMessageItems.get(position).getPaymentMethod());
+            if (accountServiceMessageItems.get(position).getServiceID() != null) {
+                if (accountServiceMessageItems.get(position).isRenewal() && accountServiceMessageItems.get(position).getValidityTill() != null) {
+                    changePlanCallBack.onCancel(accountServiceMessageItems.get(position).getServiceID(), accountServiceMessageItems.get(position).getPaymentMethod(), AppCommonMethods.getDateFromTimeStamp(accountServiceMessageItems.get(position).getValidityTill()));
+                } else {
+                    changePlanCallBack.onCancel(accountServiceMessageItems.get(position).getServiceID(), accountServiceMessageItems.get(position).getPaymentMethod(), "");
+
+                }
+            }
         });
     }
 

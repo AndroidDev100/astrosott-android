@@ -627,7 +627,7 @@ public class AssetContent {
 //            }
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i <= genre_values.size() - 1; i++) {
-            stringBuilder.append(genre_values.get(i).getValue()).append(", ");
+            stringBuilder.append(genre_values.get(i).getValue()).append(",");
         }
 
         if (stringBuilder.length() > 0) {
@@ -707,7 +707,7 @@ public class AssetContent {
 //            }
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i <= genre_values.size() - 1; i++) {
-            stringBuilder.append(genre_values.get(i).getValue()).append(", ");
+            stringBuilder.append(genre_values.get(i).getValue()).append(",");
         }
 
         if (stringBuilder.length() > 0) {
@@ -865,6 +865,33 @@ public class AssetContent {
         return connection;
     }
 
+    public static String getLanguageDataString
+            (Map<String, MultilingualStringValueArray> map) {
+
+        String language = "";
+        List<MultilingualStringValue> language_value = new ArrayList<>();
+        MultilingualStringValueArray language_list = map.get(AppLevelConstants.KEY_LANGUAGE);
+        if (language_list != null)
+//            for (MultilingualStringValue value : language_list.getObjects()) {
+//                language_value.add(value);
+//            }
+            language_value.addAll(language_list.getObjects());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= language_value.size() - 1; i++) {
+
+            stringBuilder.append(language_value.get(i).getValue()).append(",");
+
+        }
+
+        if (stringBuilder.length() > 0) {
+            language = stringBuilder.toString();
+            language = language.substring(0, language.length() - 2);
+        }
+
+
+        return language;
+    }
+
 
     public static String getParentRefId(Map<String, MultilingualStringValueArray> map) {
 
@@ -910,6 +937,32 @@ public class AssetContent {
 
         connection.postValue(language + "");
         return connection;
+    }
+
+    public static String getSubTitleLanguageDataString(Map<String, MultilingualStringValueArray> map) {
+
+        String language = "";
+        List<MultilingualStringValue> language_value = new ArrayList<>();
+        MultilingualStringValueArray language_list = map.get(AppLevelConstants.KEY_SUBTITLE_LANGUAGE);
+        if (language_list != null)
+//            for (MultilingualStringValue value : language_list.getObjects()) {
+//                language_value.add(value);
+//            }
+            language_value.addAll(language_list.getObjects());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= language_value.size() - 1; i++) {
+
+            stringBuilder.append(language_value.get(i).getValue()).append(",");
+
+        }
+
+        if (stringBuilder.length() > 0) {
+            language = stringBuilder.toString();
+            language = language.substring(0, language.length() - 2);
+        }
+
+
+        return language;
     }
 
     public static LiveData<String> getCrewData(Map<String, MultilingualStringValueArray> map) {
@@ -972,7 +1025,7 @@ public class AssetContent {
             crew_value.addAll(crew_list.getObjects());
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i <= crew_value.size() - 1; i++) {
-            stringBuilder.append(crew_value.get(i).getValue()).append(", ");
+            stringBuilder.append(crew_value.get(i).getValue()).append(",");
         }
 
         if (stringBuilder.length() > 0) {

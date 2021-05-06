@@ -26,7 +26,7 @@ public class CancelDialogFragment extends DialogFragment {
     private EditDialogListener editDialogListener;
     private EditText etDialog;
     private TextInputLayout inputLayoutDialog;
-    private String strTitle = "";
+    private String validDate = "";
     private String strMessage = "";
     private BaseActivity baseActivity;
 
@@ -40,7 +40,7 @@ public class CancelDialogFragment extends DialogFragment {
         CancelDialogFragment frag = new CancelDialogFragment();
         Bundle args = new Bundle();
         args.putString(AppLevelConstants.TITLE, title);
-        args.putString(AppLevelConstants.MESSAGE, message);
+        args.putString(AppLevelConstants.DATE, message);
         frag.setArguments(args);
         return frag;
     }
@@ -65,9 +65,12 @@ public class CancelDialogFragment extends DialogFragment {
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
             // Get field from view
             inputLayoutDialog = view.findViewById(R.id.input_layout_dialog);
-
+            validDate = getArguments().getString(AppLevelConstants.DATE);
             TextView btnCancel = view.findViewById(R.id.not_yet);
             TextView btnContinue = view.findViewById(R.id.sorry);
+            TextView date = view.findViewById(R.id.date);
+            date.setText(validDate);
+
             // Fetch arguments from bundle and set title
 
 //        getDialog().setTitle(title);

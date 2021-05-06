@@ -176,7 +176,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     boolean adRunning = false;
     TrackItem[] captionList;
     TrackItem[] audioList;
-
+    private boolean isAdsRunning = false;
     boolean isVideoError = false;
     boolean hasPostRoll = false;
     boolean hasMidRoll = false;
@@ -560,7 +560,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         }
     }
-
 
 
     private void checkAssetTypeCondition(String urlToplay, Asset asset, int prog) {
@@ -1118,9 +1117,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(getActivity(), asset, getActivity(),"");
+        AppCommonMethods.openShareDialog(getActivity(), asset, getActivity(), "");
     }
-
 
 
     private void hideCatchupControls() {
@@ -1129,7 +1127,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //        getBinding().arrowForward.setVisibility(View.GONE);
         getBinding().currentTime.setVisibility(View.GONE);
         getBinding().totalDuration.setVisibility(View.GONE);
-       // getBinding().playCatchup.setVisibility(View.GONE);
+        // getBinding().playCatchup.setVisibility(View.GONE);
         getBinding().goLive.setVisibility(View.GONE);
         getBinding().seekBar.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
@@ -1167,14 +1165,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
 
-
-
-
     private String checkDigit(int number) {
         return number <= 9 ? "0" + number : String.valueOf(number);
     }
-
-
 
 
     private String getDateTimeStamp(Long timeStamp) {
@@ -1400,7 +1393,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     break;
                 case BUFFERING:
                     Log.d("StateChange ", "Buffering");
-                    getBinding().pBar.setVisibility(View.VISIBLE);
+                    if (!isAdsRunning)
+                        getBinding().pBar.setVisibility(View.VISIBLE);
                     // log.e("StateChange Buffering");
                     // mPlayerControlsView.setProgressBarVisibility(true);
                     // booleanMutableLiveData.postValue(false);
@@ -1674,7 +1668,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             isPlayerEnded = true;
             Log.d(TAG, "PlayerEnded");
             try {
-                if (handler1!=null) {
+                if (handler1 != null) {
                     handler1.removeCallbacksAndMessages(null);
                 }
                 getBinding().skipIntro.setVisibility(View.GONE);
@@ -1834,6 +1828,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
 
         player.addListener(this, AdEvent.started, event -> {
+            isAdsRunning = true;
             AdEvent.AdStartedEvent adStartedEvent = event;
             Map<String, Object> contentInfo = new HashMap<String, Object>();
             contentInfo.put(ConvivaManager.AD_ID, adStartedEvent.adInfo.getAdId());
@@ -1887,6 +1882,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             ConvivaManager.convivaPlayerSeekStartedReportRequest(baseActivity);
         });
         player.addListener(this, AdEvent.skipped, event -> {
+            isAdsRunning = false;
             checkFatalError();
             ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
             ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
@@ -1904,6 +1900,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
 
         player.addListener(this, AdEvent.completed, event -> {
+            isAdsRunning = false;
             Log.d(TAG, "AD_COMPLETED");
             ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
             ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
@@ -2487,7 +2484,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     drag = false;
 
                 if (isPlayerStart) {
-                    if(getBinding().skipCredits.getVisibility() == View.VISIBLE){
+                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
                         getBinding().skipCredits.setVisibility(View.GONE);
                     }
 
@@ -2536,7 +2533,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             public void onSingleClick(View view) {
 
                 if (isPlayerStart) {
-                    if(getBinding().skipCredits.getVisibility() == View.VISIBLE){
+                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
                         getBinding().skipCredits.setVisibility(View.GONE);
                     }
                     if (lockEnable) {

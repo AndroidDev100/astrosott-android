@@ -2,6 +2,7 @@ package com.astro.sott.activities.myList;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
 
 import com.astro.sott.activities.login.ui.StartSessionLogin;
@@ -21,9 +22,11 @@ import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class MyWatchlistRepository {
     private static MyWatchlistRepository myWatchlistRepository;
     private ArrayList<RailCommonData> railList = new ArrayList<RailCommonData>();
+
     private MyWatchlistRepository() {
 
     }
@@ -39,46 +42,45 @@ public class MyWatchlistRepository {
 
     public LiveData<List<RailCommonData>> getAllWatchlist(final Context context, String ksql) {
         railList.clear();
-        final KsServices ksServices =  new KsServices(context);
+        final KsServices ksServices = new KsServices(context);
         final MutableLiveData<List<RailCommonData>> connection = new MutableLiveData<>();
-        callWatchList(context,ksql,ksServices,connection);
+        callWatchList(context, ksql, ksServices, connection);
         return connection;
     }
 
     private void callWatchList(final Context context, final String ksql, final KsServices ksServices,
                                final MutableLiveData<List<RailCommonData>> connection) {
         ksServices.getWatchlist(ksql, (status, errorCode, message, responseListt) -> {
-            PrintLogging.printLog("","valueWatchlistKs"+errorCode+"--"+message+" "+status);
+            PrintLogging.printLog("", "valueWatchlistKs" + errorCode + "--" + message + " " + status);
             if (status) {
-                if (responseListt!=null){
-                    if (responseListt.size()>0){
-                        int size=responseListt.get(0).results.getObjects().size();
-                        if (size>0){
-                            callDynamicData(AppConstants.TYPE5, responseListt,context);
+                if (responseListt != null) {
+                    if (responseListt.size() > 0) {
+                        int size = responseListt.get(0).results.getObjects().size();
+                        if (size > 0) {
+                            callDynamicData(AppConstants.TYPE5, responseListt, context);
                             connection.postValue(railList);
                         }
                     } else {
                         errorHandling();
                         connection.postValue(railList);
                     }
-                }
-                else {
+                } else {
                     errorHandling();
                     connection.postValue(railList);
                 }
 
             } else {
-                if (errorCode.equalsIgnoreCase("")){
+                if (errorCode.equalsIgnoreCase("")) {
                     errorHandling();
                     connection.postValue(railList);
-                }else if (errorCode.equalsIgnoreCase(AppConstants.KS_EXPIRE)){
+                } else if (errorCode.equalsIgnoreCase(AppConstants.KS_EXPIRE)) {
                     new StartSessionLogin(context).callUserLogin(KsPreferenceKey.getInstance(context).getUser().getUsername(), "", (status1, apiType, list) -> {
                         if (status1) {
                             PrintLogging.printLog("", "kalturaLogin" + status1);
                             callWatchList(context, ksql, ksServices, connection);
                         }
                     });
-                }else {
+                } else {
                     errorHandling();
                     connection.postValue(railList);
                 }
@@ -88,15 +90,69 @@ public class MyWatchlistRepository {
 
     }
 
+
+    public LiveData<ArrayList<RailCommonData>> getTrending(Context context, String customMediaType, String customGenre, String customGenreRule, int counter) {
+        MutableLiveData<ArrayList<RailCommonData>> mutableLiveData = new MutableLiveData<>();
+        new KsServices(context).getTrendingListing(customMediaType, customGenre, customGenreRule, counter, (status, assetListResponse, totalCount) ->
+        {
+            if (status) {
+                railList.clear();
+                getTrendingData(assetListResponse, totalCount, mutableLiveData);
+            } else {
+                mutableLiveData.postValue(null);
+            }
+        });
+        return mutableLiveData;
+    }
+
+    public LiveData<ArrayList<RailCommonData>> getEPGListing(Context context, String customDays, String linearAssetId, int counter) {
+        MutableLiveData<ArrayList<RailCommonData>> mutableLiveData = new MutableLiveData<>();
+        new KsServices(context).getLinearAssetIdListing(linearAssetId, customDays, counter, (status, assetListResponse, totalCount) ->
+        {
+            if (status) {
+                railList.clear();
+                getTrendingData(assetListResponse, totalCount, mutableLiveData);
+            } else {
+                mutableLiveData.postValue(null);
+            }
+        });
+        return mutableLiveData;
+    }
+
+    public LiveData<ArrayList<RailCommonData>> getPurchaseListing(Context context, String customMediaType, String customGenre, String customGenreRule, int counter) {
+        MutableLiveData<ArrayList<RailCommonData>> mutableLiveData = new MutableLiveData<>();
+        new KsServices(context).getPurchaseListListing(counter, (status, assetListResponse, totalCount) ->
+        {
+            if (status) {
+                railList.clear();
+                getTrendingData(assetListResponse, totalCount, mutableLiveData);
+            } else {
+                mutableLiveData.postValue(null);
+            }
+        });
+        return mutableLiveData;
+    }
+
+    private void getTrendingData(List<Asset> assetListResponse, int totalCount, MutableLiveData<ArrayList<RailCommonData>> mutableLiveData) {
+        for (Asset asset : assetListResponse) {
+            RailCommonData railCommonData = new RailCommonData();
+            railCommonData.setObject(asset);
+            railCommonData.setTotalCount(totalCount);
+            railList.add(railCommonData);
+        }
+        mutableLiveData.postValue(railList);
+
+    }
+
     private void errorHandling() {
-        railList=new ArrayList<>();
-        RailCommonData assetCommonBean=new RailCommonData();
+        railList = new ArrayList<>();
+        RailCommonData assetCommonBean = new RailCommonData();
         assetCommonBean.setStatus(false);
         railList.add(assetCommonBean);
 
     }
 
-    private void callDynamicData(String layout, List<Response<ListResponse<Asset>>> list,Context context) {
+    private void callDynamicData(String layout, List<Response<ListResponse<Asset>>> list, Context context) {
 
         for (int j = 0; j < list.get(0).results.getObjects().size(); j++) {
             RailCommonData railCommonData = new RailCommonData();
@@ -142,30 +198,29 @@ public class MyWatchlistRepository {
     public LiveData<CommonResponse> getWatchListData(int counter, Context context) {
         final MutableLiveData<CommonResponse> listMutableLiveData = new MutableLiveData<>();
         KsServices ksServices = new KsServices(context);
-        callWatchlistData(counter,listMutableLiveData,ksServices,context);
-        return  listMutableLiveData;
+        callWatchlistData(counter, listMutableLiveData, ksServices, context);
+        return listMutableLiveData;
     }
 
-    private void callWatchlistData(int counter,final MutableLiveData<CommonResponse> listMutableLiveData,
-                                   final KsServices ksServices,final Context context) {
-        ksServices.compareWatchlist(counter,(status, errorCode, result) -> {
+    private void callWatchlistData(int counter, final MutableLiveData<CommonResponse> listMutableLiveData,
+                                   final KsServices ksServices, final Context context) {
+        ksServices.compareWatchlist(counter, (status, errorCode, result) -> {
             CommonResponse commonResponse = new CommonResponse();
-            if (status){
+            if (status) {
                 commonResponse.setPersonalLists(result.results.getObjects());
                 commonResponse.setTotalCount(result.results.getTotalCount());
                 listMutableLiveData.postValue(commonResponse);
                 // compareLists(personalList,responseListt);
-            }
-            else {
-                if (errorCode.equalsIgnoreCase("")){
+            } else {
+                if (errorCode.equalsIgnoreCase("")) {
                     commonResponse.setPersonalLists(result.results.getObjects());
                     commonResponse.setTotalCount(result.results.getTotalCount());
                     listMutableLiveData.postValue(commonResponse);
-                }else if (errorCode.equalsIgnoreCase(AppConstants.KS_EXPIRE)){
+                } else if (errorCode.equalsIgnoreCase(AppConstants.KS_EXPIRE)) {
                     new StartSessionLogin(context).callUserLogin(KsPreferenceKey.getInstance(context).getUser().getUsername(), "", (status1, apiType, list) -> {
                         if (status1) {
                             PrintLogging.printLog("", "kalturaLogin" + status1);
-                            callWatchlistData(counter,listMutableLiveData, ksServices, context);
+                            callWatchlistData(counter, listMutableLiveData, ksServices, context);
                         }
                     });
                 }
@@ -178,15 +233,15 @@ public class MyWatchlistRepository {
 
     public LiveData<CommonResponse> deleteFromWatchlist(String assetId, Context mcontext) {
         final MutableLiveData<CommonResponse> booleanMutableLiveData = new MutableLiveData<>();
-        final CommonResponse commonResponse=new CommonResponse();
+        final CommonResponse commonResponse = new CommonResponse();
         KsServices ksServices = new KsServices(mcontext);
 
         ksServices.deleteFromWatchlistList(String.valueOf(assetId), (status, errorCode, message) -> {
-            if (status){
+            if (status) {
 
                 PrintLogging.printLog("", "deleteId" + status);
                 commonResponse.setStatus(true);
-            }else {
+            } else {
                 commonResponse.setStatus(false);
                 commonResponse.setErrorCode(errorCode);
                 commonResponse.setMessage(message);

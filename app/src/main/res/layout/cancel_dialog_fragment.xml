@@ -44,7 +44,6 @@
         android:fontFamily="@font/heebo_medium"
         android:gravity="center"
         android:lineHeight="20sp"
-        android:text="28/03/2021"
         android:textColor="@color/cancel_red_color"
         android:textSize="@dimen/font_medium_large"
         app:layout_constraintLeft_toLeftOf="parent"

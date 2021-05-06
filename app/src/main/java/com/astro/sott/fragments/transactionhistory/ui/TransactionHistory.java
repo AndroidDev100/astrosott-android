@@ -1,7 +1,11 @@
 package com.astro.sott.fragments.transactionhistory.ui;
 
 import android.app.DownloadManager;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +20,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,10 +41,14 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -108,11 +119,6 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     }
 
     private void setClicks() {
-
-        getBinding().backButton.setOnClickListener(v -> {
-            getActivity().onBackPressed();
-        });
-
         getBinding().arrow.setOnClickListener(v -> {
             if (getBinding().separator.getVisibility() == View.GONE) {
                 setArrow(true);
@@ -222,6 +228,8 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
 
                     }
                 } else {
+                    //   urls[count]="ankuryadav";
+                    //  new DownloadFileFromURL().execute(urls);
                     Toast.makeText(getActivity(), invoiceResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
 
@@ -229,6 +237,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
             });
         } else {
             if (urls.length > 0) {
+                transactionIdCount = 0;
                 new DownloadFileFromURL().execute(urls);
             } else {
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
@@ -401,8 +410,11 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         @Override
         protected String doInBackground(String... f_url) {
             for (int i = 0; i < f_url.length; i++) {
-                getFileFromBase64AndSaveInSDCard(f_url[i], "astro_transaction" + i, "pdf");
-
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    savePdfFile(f_url[i], "astro_transaction" + i);
+                } else {
+                    getFileFromBase64AndSaveInSDCard(f_url[i], "astro_transaction" + i, "pdf");
+                }
             }
 
             return null;
@@ -436,6 +448,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
             GetFilePathAndStatus getFilePathAndStatus = new GetFilePathAndStatus();
             try {
                 byte[] pdfAsBytes = Base64.decode(base64, 0);
+
                 FileOutputStream os;
                 os = new FileOutputStream(getReportPath(filename, extension), false);
                 os.write(pdfAsBytes);
@@ -447,6 +460,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "Invoice Downloaded", Toast.LENGTH_SHORT).show();
                     getBinding().downloadLay.setVisibility(View.GONE);
+
                 });
                 return getFilePathAndStatus;
             } catch (IOException e) {
@@ -461,14 +475,17 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         }
 
         public String getReportPath(String filename, String extension) {
-            File file = new File(Environment.getExternalStorageDirectory().getPath(), "sooka");
-            if (!file.exists()) {
-                file.mkdirs();
+            String root = getActivity().getExternalFilesDir(null).getAbsolutePath();
+            File myDir = new File(root + "/" + getActivity().getResources().getString(R.string.app_name));
+            if (!myDir.exists()) {
+                myDir.mkdirs();
             }
-            String uriSting = (file.getAbsolutePath() + "/" + filename + "." + extension);
+
+            String uriSting = (myDir.getAbsolutePath() + "/" + filename + "." + extension);
             return uriSting;
 
         }
+
 
         public class GetFilePathAndStatus {
             boolean filStatus;
@@ -477,5 +494,84 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         }
     }
 
+    private void savePdfFile(String base64, String s) {
+        try {
+            byte[] decodedBytes = Base64.decode(base64, 0);
+            InputStream in = new ByteArrayInputStream(decodedBytes);
+            Uri savedFileUri = savePdf(getActivity(), in, "files/pdf", s + ".pdf", "pdf");
+        } catch (Exception ignored) {
 
+        }
+    }
+
+    public Uri savePdf(@NonNull final Context context, @NonNull InputStream in,
+                       @NonNull final String mimeType,
+                       @NonNull final String displayName, @Nullable final String subFolder) throws IOException {
+        FileOutputStream fos;
+        File myDir = new File(getActivity().getExternalFilesDir(null) + "/" + getActivity().getResources().getString(R.string.app_name));
+        String relativeLocation = Environment.DIRECTORY_DOWNLOADS;
+
+        if (!TextUtils.isEmpty(subFolder)) {
+            relativeLocation += File.separator + subFolder;
+        }
+
+        final ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, displayName);
+        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, mimeType);
+        contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, relativeLocation);
+        contentValues.put(MediaStore.Video.Media.TITLE, "");
+        contentValues.put(MediaStore.Video.Media.DATE_ADDED, System.currentTimeMillis() / 1000);
+        contentValues.put(MediaStore.Video.Media.DATE_TAKEN, System.currentTimeMillis());
+        final ContentResolver resolver = context.getContentResolver();
+        OutputStream stream = null;
+        Uri uri = null;
+
+        try {
+            final Uri contentUri = MediaStore.Files.getContentUri("external");
+            uri = resolver.insert(contentUri, contentValues);
+            ParcelFileDescriptor pfd;
+            try {
+                assert uri != null;
+                pfd = getActivity().getContentResolver().openFileDescriptor(uri, "w");
+                assert pfd != null;
+                FileOutputStream out = new FileOutputStream(pfd.getFileDescriptor());
+
+                byte[] buf = new byte[4 * 1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+
+                    out.write(buf, 0, len);
+                }
+                out.close();
+                in.close();
+                pfd.close();
+                getActivity().runOnUiThread(() -> {
+                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "Invoice Downloaded", Toast.LENGTH_SHORT).show();
+                    getBinding().downloadLay.setVisibility(View.GONE);
+
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            contentValues.clear();
+            contentValues.put(MediaStore.Video.Media.IS_PENDING, 0);
+            getActivity().getContentResolver().update(uri, contentValues, null, null);
+            stream = resolver.openOutputStream(uri);
+            if (stream == null) {
+                throw new IOException("Failed to get output stream.");
+            }
+            return uri;
+        } catch (IOException e) {
+            // Don't leave an orphan entry in the MediaStore
+            resolver.delete(uri, null, null);
+            throw e;
+        } finally {
+            if (stream != null) {
+                stream.close();
+            }
+        }
+
+    }
 }

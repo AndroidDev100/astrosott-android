@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.astro.sott.activities.moreListing.ui.ContinueWatchingActivity;
+import com.astro.sott.activities.moreListing.ui.CustomListingActivity;
 import com.astro.sott.activities.moreListing.ui.GridListingActivity;
 import com.astro.sott.activities.moreListing.ui.ListingActivity;
 import com.astro.sott.R;
@@ -20,6 +21,7 @@ import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.databinding.ActivityMyWatchlistBinding;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
+import com.enveu.Enum.Layouts;
 import com.enveu.Enum.ListingLayoutType;
 import com.enveu.Enum.PredefinePlaylistType;
 
@@ -56,9 +58,9 @@ public class ToolBarHandler {
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(data.getPredefPlaylistType() != null && !data.getPredefPlaylistType().equalsIgnoreCase("") && data.getPredefPlaylistType().equalsIgnoreCase(PredefinePlaylistType.MY_W.name())){
-                    new ActivityLauncher(activity).myListActivity(activity, MyListActivity.class,assetCommonBean);
-                }else {
+                if (data.getPredefPlaylistType() != null && !data.getPredefPlaylistType().equalsIgnoreCase("") && data.getPredefPlaylistType().equalsIgnoreCase(PredefinePlaylistType.MY_W.name())) {
+                    new ActivityLauncher(activity).myListActivity(activity, MyListActivity.class, assetCommonBean);
+                } else {
                     if (data.getContentListinglayout() != null && !data.getContentListinglayout().equalsIgnoreCase("") && data.getContentListinglayout().equalsIgnoreCase(ListingLayoutType.LST.name())) {
                         try {
                             Log.e("getRailData", "LST");
@@ -96,6 +98,17 @@ public class ToolBarHandler {
                         new ActivityLauncher(activity).listListing(activity, ListingActivityNew.class, data.getContentImageType(), assetCommonBean1);
 
 
+                    } else if (data.getLayout() != null && data.getLayout().equalsIgnoreCase("CUS")) {
+                        AssetCommonBean assetCommonBean1 = new AssetCommonBean();
+                        assetCommonBean1.setTitle(data.getName() + "");
+                        assetCommonBean1.setCustomGenre(data.getCustomGenre());
+                        assetCommonBean1.setCustomMediaType(data.getCustomMediaType());
+                        assetCommonBean1.setCustomGenreRule(data.getCustomGenreRule());
+                        assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
+                        assetCommonBean1.setCustomRailType(data.getCustomRailType());
+                        assetCommonBean1.setCustomLinearAssetId(data.getCustomLinearAssetId());
+                        assetCommonBean1.setCustomDays(data.getCustomDays());
+                        new ActivityLauncher(activity).customListingActivity(activity, CustomListingActivity.class, assetCommonBean1);
                     } else {
                         Log.e("getRailData", "PDF");
                         if (data.getName() != null) {
@@ -183,22 +196,22 @@ public class ToolBarHandler {
     }
 
 
+    public void setMorePromoListener(final String type, final AssetCommonBean assetCommonBean) {
 
-    public void setMorePromoListener( final String type, final AssetCommonBean assetCommonBean) {
+        AssetCommonBean assetCommonBean1 = new AssetCommonBean();
+        assetCommonBean1.setID(assetCommonBean.getID());
+        assetCommonBean1.setTitle(assetCommonBean.getTitle());
+        assetCommonBean1.setMoreType(assetCommonBean.getMoreType());
+        assetCommonBean1.setMoreAssetType(assetCommonBean.getMoreAssetType());
 
-            AssetCommonBean assetCommonBean1 = new AssetCommonBean();
-            assetCommonBean1.setID(assetCommonBean.getID());
-            assetCommonBean1.setTitle(assetCommonBean.getTitle());
-            assetCommonBean1.setMoreType(assetCommonBean.getMoreType());
-            assetCommonBean1.setMoreAssetType(assetCommonBean.getMoreAssetType());
+        if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+            return;
+        }
+        lastClickTime = SystemClock.elapsedRealtime();
 
-            if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
-                return;
-            }
-            lastClickTime = SystemClock.elapsedRealtime();
-
-            new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, type, assetCommonBean1);
+        new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, type, assetCommonBean1);
     }
+
     public void setDetailMoreListener(LinearLayout more, final String type, final AssetCommonBean assetCommonBean) {
 
         more.setOnClickListener(view -> {
@@ -250,10 +263,10 @@ public class ToolBarHandler {
     public void setNotificationAction(View toolbar) {
         ImageView searchIcon = toolbar.findViewById(R.id.search_icon);
         ImageView homeIcon = toolbar.findViewById(R.id.home_icon);
-       // ImageView notification_icon = toolbar.findViewById(R.id.notification_icon);
+        // ImageView notification_icon = toolbar.findViewById(R.id.notification_icon);
         TextView title = toolbar.findViewById(R.id.toolbar_text);
         // title.setText("Notifications");
-       // notification_icon.setVisibility(View.INVISIBLE);
+        // notification_icon.setVisibility(View.INVISIBLE);
         searchIcon.setVisibility(View.INVISIBLE);
         homeIcon.setBackgroundResource(R.drawable.ic_arrow_back_black_24dp);
         homeIcon.setOnClickListener(view -> activity.onBackPressed());
@@ -264,10 +277,10 @@ public class ToolBarHandler {
 
         ImageView searchIcon = toolbar.findViewById(R.id.search_icon);
         ImageView homeIcon = toolbar.findViewById(R.id.home_icon);
-       // ImageView notification_icon = toolbar.findViewById(R.id.notification_icon);
+        // ImageView notification_icon = toolbar.findViewById(R.id.notification_icon);
         TextView title = toolbar.findViewById(R.id.toolbar_text);
         title.setText(context.getResources().getString(R.string.app_settings));
-     //   notification_icon.setVisibility(View.INVISIBLE);
+        //   notification_icon.setVisibility(View.INVISIBLE);
         searchIcon.setVisibility(View.INVISIBLE);
         homeIcon.setBackgroundResource(R.drawable.ic_arrow_back_black_24dp);
         homeIcon.setOnClickListener(view -> activity.onBackPressed());
@@ -276,10 +289,10 @@ public class ToolBarHandler {
     public void setVideoQuality(Context context, View toolbar) {
         ImageView searchIcon = toolbar.findViewById(R.id.search_icon);
         ImageView homeIcon = toolbar.findViewById(R.id.home_icon);
-      //  ImageView notification_icon = toolbar.findViewById(R.id.notification_icon);
+        //  ImageView notification_icon = toolbar.findViewById(R.id.notification_icon);
         TextView title = toolbar.findViewById(R.id.toolbar_text);
         title.setText(context.getResources().getString(R.string.video_quality));
-     //   notification_icon.setVisibility(View.INVISIBLE);
+        //   notification_icon.setVisibility(View.INVISIBLE);
         searchIcon.setVisibility(View.INVISIBLE);
         homeIcon.setBackgroundResource(R.drawable.ic_arrow_back_black_24dp);
         homeIcon.setOnClickListener(view -> activity.onBackPressed());
@@ -291,10 +304,10 @@ public class ToolBarHandler {
 
         ImageView searchIcon = toolbar.findViewById(R.id.search_icon);
         ImageView homeIcon = toolbar.findViewById(R.id.home_icon);
-      //  ImageView notification_icon = toolbar.findViewById(R.id.notification_icon);
+        //  ImageView notification_icon = toolbar.findViewById(R.id.notification_icon);
         TextView title = toolbar.findViewById(R.id.toolbar_text);
         title.setText(toolbarTitle);
-       // notification_icon.setVisibility(View.INVISIBLE);
+        // notification_icon.setVisibility(View.INVISIBLE);
         searchIcon.setVisibility(View.INVISIBLE);
         homeIcon.setBackgroundResource(R.drawable.ic_arrow_back_black_24dp);
         homeIcon.setOnClickListener(view -> activity.onBackPressed());
@@ -304,10 +317,10 @@ public class ToolBarHandler {
     public void setAction(LinearLayout toolbar) {
         ImageView searchIcon = toolbar.findViewById(R.id.search_icon);
         ImageView homeIcon = toolbar.findViewById(R.id.home_icon);
-      //  ImageView notification_icon = toolbar.findViewById(R.id.notification_icon);
+        //  ImageView notification_icon = toolbar.findViewById(R.id.notification_icon);
         TextView title = toolbar.findViewById(R.id.toolbar_text);
-         title.setText("DTV Account");
-      //  notification_icon.setVisibility(View.INVISIBLE);
+        title.setText("DTV Account");
+        //  notification_icon.setVisibility(View.INVISIBLE);
         searchIcon.setVisibility(View.INVISIBLE);
         homeIcon.setBackgroundResource(R.drawable.ic_arrow_back_black_24dp);
         homeIcon.setOnClickListener(view -> activity.onBackPressed());

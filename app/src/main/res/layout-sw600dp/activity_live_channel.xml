@@ -92,7 +92,7 @@
                                 android:layout_marginBottom="@dimen/web_series_iv_player_icon_margin_bottom"
                                 android:background="@drawable/ic_green_play_buton"
                                 android:contentDescription="@string/play_icon"
-                                android:visibility="visible"
+                                android:visibility="gone"
                                 tools:ignore="ContentDescription" />
 
 

@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 
+import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.search.constants.SearchFilterEnum;
@@ -69,11 +70,14 @@ import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
+import com.kaltura.client.types.Entitlement;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.LongValue;
 import com.kaltura.client.types.MediaImage;
 import com.kaltura.client.types.MultilingualStringValue;
 import com.kaltura.client.types.MultilingualStringValueArray;
+import com.kaltura.client.types.Subscription;
+import com.kaltura.client.types.SubscriptionEntitlement;
 import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -1654,7 +1658,7 @@ public class AppCommonMethods {
                 } else if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.CUS.name())) {
                     if (commonData.getObject().getType() == MediaTypeConstant.getProgram(context)) {
                         tvDescription.setVisibility(View.VISIBLE);
-                    }else if (commonData.getObject().getType() == MediaTypeConstant.getLinear(context)){
+                    } else if (commonData.getObject().getType() == MediaTypeConstant.getLinear(context)) {
                         if (AssetContent.isLiveEvent(commonData.getObject().getMetas())) {
                             tvDescription.setVisibility(View.VISIBLE);
                         }
@@ -2490,13 +2494,12 @@ public class AppCommonMethods {
 
     public static String getProgramTimeDate(long timestamp) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timestamp * 1000);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa");
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
+
+            Date date = new Date(timestamp * 1000L);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa", Locale.US);
+            simpleDateFormat.setTimeZone(TimeZone.getDefault());
+            String dateTimeValue = simpleDateFormat.format(date);
+            return dateTimeValue;
         } catch (IndexOutOfBoundsException e) {
         }
         return "";
@@ -2743,10 +2746,10 @@ public class AppCommonMethods {
 
     public static String getLiveEventTime(Asset asset) {
         try {
-            Long liveEventStartDate=0l;
-            Long liveEventEndDate=0l;
+            Long liveEventStartDate = 0l;
+            Long liveEventEndDate = 0l;
             StringBuilderHolder.getInstance().clear();
-            Map<String, Value> metas=asset.getMetas();
+            Map<String, Value> metas = asset.getMetas();
             LongValue startValue = null, endValue = null;
             if (metas != null) {
                 startValue = (LongValue) metas.get(AppLevelConstants.LiveEventProgramStartDate);
@@ -2758,16 +2761,116 @@ public class AppCommonMethods {
                     liveEventEndDate = endValue.getValue();
                 }
             }
-            String liveEventStartTime=AppCommonMethods.getLiveEventStartDate(liveEventStartDate)+"";
-            String liveEventEndTime=AppCommonMethods.getLiveEventEndTime(liveEventEndDate)+"";
-            if (liveEventStartTime!=null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime!=null && !liveEventEndTime.equalsIgnoreCase("")){
+            String liveEventStartTime = AppCommonMethods.getLiveEventStartDate(liveEventStartDate) + "";
+            String liveEventEndTime = AppCommonMethods.getLiveEventEndTime(liveEventEndDate) + "";
+            if (liveEventStartTime != null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime != null && !liveEventEndTime.equalsIgnoreCase("")) {
                 StringBuilderHolder.getInstance().append(liveEventStartTime + " - " + liveEventEndTime);
                 StringBuilderHolder.getInstance().append(" | ");
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
         return StringBuilderHolder.getInstance().getText().toString();
+    }
+
+    public static String getAdsUrl(String url, Asset asset, Context context) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(url);
+        stringBuilder.append("?cust_params%3Ddid%3D" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+        if (UserInfo.getInstance(context).getCpCustomerId() != null && !UserInfo.getInstance(context).getCpCustomerId().equalsIgnoreCase(""))
+            stringBuilder.append("&cid%3D" + UserInfo.getInstance(context).getCpCustomerId());
+        if (!asset.getName().equalsIgnoreCase(""))
+            stringBuilder.append("&vtitle%3D" + asset.getName());
+
+        stringBuilder.append("&ver%3D" + BuildConfig.VERSION_NAME);
+        stringBuilder.append("&vid%3D" + asset.getId());
+        if (asset.getType() == MediaTypeConstant.getLinear(context)) {
+            if (AssetContent.isLiveEvent(asset.getMetas())) {
+                stringBuilder.append("&vtype%3DLive Event");
+            } else {
+                stringBuilder.append("&ch%3D" + asset.getName());
+                stringBuilder.append("&vtype%3DLinear Programme");
+            }
+        } else {
+            stringBuilder.append("&vtype%3DVOD");
+        }
+        if (!AssetContent.getGenredataString(asset.getTags()).equalsIgnoreCase(""))
+            stringBuilder.append("&genre%3D" + AssetContent.getGenredataString(asset.getTags()));
+        if (!AssetContent.getSubGenredataString(asset.getTags()).equalsIgnoreCase(""))
+            stringBuilder.append("&subgenre%3D" + AssetContent.getSubGenredataString(asset.getTags()));
+
+        if (!AssetContent.getLanguageDataString(asset.getTags()).equalsIgnoreCase(""))
+            stringBuilder.append("&vlang%3D" + AssetContent.getLanguageDataString(asset.getTags()));
+
+        if (!AssetContent.getProvider(asset.getTags()).equalsIgnoreCase(""))
+            stringBuilder.append("&vpro%3D" + AssetContent.getProvider(asset.getTags()));
+
+        if (!AssetContent.getSubTitleLanguageDataString(asset.getTags()).equalsIgnoreCase(""))
+            stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags()));
+        stringBuilder.append("&lang%3D" + "English");
+
+        return stringBuilder.toString();
+    }
+
+    public static String splitGenre(String customGenre, String customGenreRule) {
+        StringBuilder ksql = new StringBuilder();
+        try {
+
+            String[] splitString = customGenre.split(";");
+            if (splitString.length > 0 && !splitString[0].equalsIgnoreCase("")) {
+                if (customGenreRule.equalsIgnoreCase("EXCLUDE")) {
+                    ksql.append("(and");
+                    for (String genre : splitString) {
+                        ksql.append(" Genre!='" + genre + "'");
+                    }
+                } else {
+                    ksql.append("(or");
+                    for (String genre : splitString) {
+                        ksql.append(" Genre='" + genre + "'");
+                    }
+                }
+                ksql.append(")");
+            }
+        } catch (Exception e) {
+
+        }
+        return ksql.toString();
+    }
+
+    public static String getsubScriptionIds(List<Entitlement> objects) {
+        StringBuilder idString = new StringBuilder();
+        for (Entitlement entitlement : objects) {
+            SubscriptionEntitlement subscriptionEntitlement = (SubscriptionEntitlement) entitlement;
+            if (!subscriptionEntitlement.getIsRenewable()) {
+                idString.append(entitlement.getProductId() + ",");
+            }
+        }
+        return idString.toString();
+    }
+
+    public static void getIdArray(List<Subscription> objects) {
+        List<String> arrayList = new ArrayList<>();
+
+    }
+
+    public static String getTypeIn(Context activity, String customMediaType) {
+        StringBuilder typeIn = new StringBuilder();
+        try {
+
+            String[] splitString = customMediaType.split(";");
+            if (splitString.length > 0 && !splitString[0].equalsIgnoreCase("")) {
+                for (String typeInItem : splitString) {
+                    if (typeInItem.equalsIgnoreCase("EPISODES"))
+                        typeIn.append(MediaTypeConstant.getEpisode(activity) + ",");
+                    if (typeInItem.equalsIgnoreCase("MOVIES"))
+                        typeIn.append(MediaTypeConstant.getMovie(activity) + ",");
+
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return typeIn.toString();
     }
 }

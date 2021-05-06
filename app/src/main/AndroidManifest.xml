@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="com.android.vending.BILLING" />
@@ -25,7 +27,6 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:requestLegacyExternalStorage="true"
         android:resizeableActivity="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -33,7 +34,8 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.isThatYou.IsThatYouActivity"></activity>
+        <activity android:name=".activities.moreListing.ui.CustomListingActivity"></activity>
+        <activity android:name=".activities.isThatYou.IsThatYouActivity" />
         <activity android:name=".activities.profile.ui.EditMobileActivity" />
         <activity android:name=".activities.profile.ui.SetPasswordActivity" />
         <activity android:name=".activities.confirmPassword.ui.ConfirmPasswordActivity" />
@@ -243,10 +245,6 @@
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.catchUpRails.ui.CatchupActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="locked" />
-        <activity
-            android:name=".activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="locked" />
         <activity

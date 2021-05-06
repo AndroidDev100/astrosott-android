@@ -17,7 +17,6 @@ import com.astro.sott.activities.catchUpRails.ui.CatchupActivity;
 import com.astro.sott.activities.deviceMangment.helper.RecyclerTouchListener;
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
-import com.astro.sott.activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
@@ -27,7 +26,6 @@ import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.SpacingItemDecoration;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.R;
-import com.astro.sott.activities.forwardEPG.ForwardedEPGActivity;
 import com.astro.sott.activities.liveChannel.liveChannelManager.LiveChannelManager;
 import com.astro.sott.activities.search.adapter.ResultAdapterAll;
 import com.astro.sott.activities.search.viewModel.ResultViewModel;
@@ -190,7 +188,7 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
                     } else if (itemValue.getType() == MediaTypeConstant.getEpisode(ResultActivity.this)) {
                         getRailCommonData(itemValue);
                         //  new ToastHandler(this).show(allResult.getHeaderTitle());
-                        new ActivityLauncher(ResultActivity.this).webDetailRedirection(railCommonData.getObject(), AppLevelConstants.Rail5);
+                        new ActivityLauncher(ResultActivity.this).webDetailRedirection(railCommonData, AppLevelConstants.Rail5);
 
                         //new ActivityLauncher(ResultActivity.this).webEpisodeActivity(ResultActivity.this, WebEpisodeDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
 //                    new ActivityLauncher(ResultActivity.this).detailActivity(ResultActivity.this, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);

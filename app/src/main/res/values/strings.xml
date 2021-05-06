@@ -130,10 +130,11 @@
     <string name="subscribe">Package Details</string>
     <string name="no_active_subs">Currently no Active Subscription</string>
     <string name="sad_to_see">Sad to See You Go</string>
-    <string name="update_plan_description">Kindly cancel current active subscription first. You may re-subscribe with a new payment method after current subscription ended.</string>
+    <string name="account_block">Account Locked</string>
+    <string name="update_plan_description">Kindly cancel current active subscription first. You may re-subscribe with a new git  method after current subscription ended.</string>
     <string name="plan_with_different_payment">Update Plan with Different Payment\n Method not Allowed!</string>
     <string name="cancel_plan_with_different_payment">Cancel Plan with Different Payment\n Method not Allowed!</string>
-
+    <string name="account_has_been_locked">Account has been locked due to maximum login attempts reached. Please use Forgot Password to unlock your account.</string>
     <string name="cancel_description">But goodbyes are not forever. You can \n always re-subscribe again! \n Your current subscription is valid until</string>
     <string name="no_feeds_available">No feeds available.</string>
     <string name="no_catchup_available">Sorry, Catch Up feature is not available for this channel.</string>
@@ -650,6 +651,7 @@
     <string name="reload_app">Reload App</string>
 
     <string name="logout_confirmation_message_new">Are you sure that you want to logout now?</string>
+    <string name="sooka_superstar">Sooka Superstar</string>
 
 
 </resources>

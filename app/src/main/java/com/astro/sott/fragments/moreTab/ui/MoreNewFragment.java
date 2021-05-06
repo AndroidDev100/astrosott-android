@@ -112,6 +112,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
     public void checkForLoginLogout() {
         if (UserInfo.getInstance(getActivity()).isActive()) {
+            displayName = "";
             getActiveSubscription();
         } else {
             setUiForLogout();

@@ -220,11 +220,11 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     }
 
     @Override
-    public void onCancel(String serviceId, String paymentType) {
+    public void onCancel(String serviceId, String paymentType, String date) {
         if (paymentType.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
             cancelId = serviceId;
             FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-            CancelDialogFragment cancelDialogFragment = CancelDialogFragment.newInstance(getActivity().getResources().getString(R.string.create_playlist_name_title), "");
+            CancelDialogFragment cancelDialogFragment = CancelDialogFragment.newInstance(getActivity().getResources().getString(R.string.create_playlist_name_title), date);
             cancelDialogFragment.setEditDialogCallBack(ManageSubscriptionFragment.this);
             cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
         } else {
@@ -243,6 +243,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     private void removeSubscription() {
         subscriptionViewModel.removeSubscription(UserInfo.getInstance(getActivity()).getAccessToken(), cancelId).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
+                getActiveSubscription();
                 Toast.makeText(getActivity(), "Subscription Successfully Cancelled", Toast.LENGTH_SHORT).show();
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {

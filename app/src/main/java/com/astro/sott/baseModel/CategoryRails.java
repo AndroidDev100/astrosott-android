@@ -11,6 +11,7 @@ import com.astro.sott.beanModel.ksBeanmodel.AssetCommonUrls;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.PrintLogging;
@@ -47,7 +48,7 @@ public class CategoryRails {
     private ArrayList<Slide> slides;
     int counterValue = 0;
 
-    public void setRails(Context context,List<Response<ListResponse<Asset>>> list, List<VIUChannel> channelList, int loopCount, ArrayList<Slide> slide, List<AssetCommonBean> assetList, int counter) {
+    public void setRails(Context context, List<Response<ListResponse<Asset>>> list, List<VIUChannel> channelList, int loopCount, ArrayList<Slide> slide, List<AssetCommonBean> assetList, int counter) {
         counterValue = counter;
         PrintLogging.printLog("", "printIndex--" + loopCount + "");
         slides = slide;
@@ -56,7 +57,7 @@ public class CategoryRails {
 
         if (channelList != null) {
 
-            setCommonAdapterRailData(context,counter, channelList, channelList.get(counter), list);
+            setCommonAdapterRailData(context, counter, channelList, channelList.get(counter), list);
          /*   int i = 0;
             String desc = channelList.get(counter).getDescription();
             PrintLogging.printLog("", "channelList--" + desc);
@@ -317,7 +318,7 @@ public class CategoryRails {
     }
 
 
-    public void setCommonAdapterRailData(Context context,int counter, List<VIUChannel> channelList, VIUChannel dtChannel, List<Response<ListResponse<Asset>>> list) {
+    public void setCommonAdapterRailData(Context context, int counter, List<VIUChannel> channelList, VIUChannel dtChannel, List<Response<ListResponse<Asset>>> list) {
         int i = 0;
         String desc = dtChannel.getDescription();
         PrintLogging.printLog("", "channelList--" + desc);
@@ -328,7 +329,7 @@ public class CategoryRails {
                 assetCommonBean1.setStatus(true);
                 if (dtChannel.getImageSource().equalsIgnoreCase(ImageSource.AST.name())) {
                     if (dtChannel.isProgram()) {
-                        setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE8);
+                        setRailData(context, dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE8);
                     } else {
                         assetCommonBean1.setRailDetail(dtChannel);
                     }
@@ -351,25 +352,27 @@ public class CategoryRails {
                 break;
             case AppConstants.KEY_CONTINUE_WATCHING:
                 assetCommonBean1.setStatus(true);
-                int index =  KsPreferenceKey.getInstance(context).getContinueWatchingIndex();
+                int index = KsPreferenceKey.getInstance(context).getContinueWatchingIndex();
                 PrintLogging.printLog("", "continueWatchingIndex" + index);
                 if (index == counter) {
                     try {
-                        setContinueWatchingList(context,dtChannel, channelList, i, list, assetCommonBean1);
-                    }catch (Exception ignored){
+                        setContinueWatchingList(context, dtChannel, channelList, i, list, assetCommonBean1);
+                    } catch (Exception ignored) {
 
                     }
 
                 }
                 assetCommonBean1.setRailDetail(dtChannel);
                 break;
-
+            case AppLevelConstants.PPV_RAIL:
             case AppConstants.KEY_MY_WATCHLIST:
+            case AppLevelConstants.LIVECHANNEL_RAIL:
+            case AppLevelConstants.TRENDING:
                 assetCommonBean1.setStatus(true);
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE5);
+                setRailData(context, dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE5);
                 assetCommonBean1.setRailType(AppConstants.Rail5);
 
                 break;
@@ -379,7 +382,7 @@ public class CategoryRails {
                 int index1 = KsPreferenceKey.getInstance(context).getContinueWatchingIndex();
                 PrintLogging.printLog("", "continueWatchingIndex" + index1);
                 if (index1 == counter) {
-                    setContinueWatchingList(context,dtChannel, channelList, i, list, assetCommonBean1);
+                    setContinueWatchingList(context, dtChannel, channelList, i, list, assetCommonBean1);
                 }
                 break;
 
@@ -389,7 +392,7 @@ public class CategoryRails {
                 assetCommonBean1.setRailType(AppConstants.Rail8);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE8);
+                setRailData(context, dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE8);
                 break;
 
             case "SERIESBANNER":
@@ -397,7 +400,7 @@ public class CategoryRails {
                 assetCommonBean1.setRailType(AppConstants.Rail10);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE10);
+                setRailData(context, dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE10);
                 break;
 
 
@@ -408,7 +411,7 @@ public class CategoryRails {
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 0, assetCommonBean1, i, AppConstants.TYPE1);
+                setRailData(context, dtChannel, list, 0, assetCommonBean1, i, AppConstants.TYPE1);
                 break;
             case CAROUSEL_POSTER:
                 assetCommonBean1.setStatus(true);
@@ -417,7 +420,7 @@ public class CategoryRails {
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 0, assetCommonBean1, i, AppConstants.TYPE1);
+                setRailData(context, dtChannel, list, 0, assetCommonBean1, i, AppConstants.TYPE1);
                 break;
             case CAROUSEL_POTRAIT:
                 assetCommonBean1.setStatus(true);
@@ -426,7 +429,7 @@ public class CategoryRails {
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 0, assetCommonBean1, i, AppConstants.TYPE1);
+                setRailData(context, dtChannel, list, 0, assetCommonBean1, i, AppConstants.TYPE1);
                 potraitSlideLoop(assetCommonBean1);
 
                 break;
@@ -437,7 +440,7 @@ public class CategoryRails {
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 0, assetCommonBean1, i, AppConstants.TYPE1);
+                setRailData(context, dtChannel, list, 0, assetCommonBean1, i, AppConstants.TYPE1);
                 break;
             case CAROUSEL_CUSTOM:
                 assetCommonBean1.setStatus(true);
@@ -445,7 +448,7 @@ public class CategoryRails {
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 0, assetCommonBean1, i, AppConstants.TYPE1);
+                setRailData(context, dtChannel, list, 0, assetCommonBean1, i, AppConstants.TYPE1);
                 assetCommonBean1.setRailType(AppConstants.Rail1);
                 break;
 
@@ -455,7 +458,7 @@ public class CategoryRails {
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE5);
+                setRailData(context, dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE5);
                 assetCommonBean1.setRailType(AppConstants.Rail5);
                 break;
 
@@ -464,7 +467,7 @@ public class CategoryRails {
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE3);
+                setRailData(context, dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE3);
                 assetCommonBean1.setRailType(AppConstants.Rail3);
                 break;
             // TODO create poster
@@ -473,7 +476,7 @@ public class CategoryRails {
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.POSTER);
+                setRailData(context, dtChannel, list, 1, assetCommonBean1, i, AppConstants.POSTER);
                 assetCommonBean1.setRailType(AppConstants.Rail12);
                 break;
             case HORIZONTAL_SQUARE:
@@ -481,7 +484,7 @@ public class CategoryRails {
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE4);
+                setRailData(context, dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE4);
                 assetCommonBean1.setRailType(AppConstants.Rail4);
                 break;
             case HORIZONTAL_CIRCLE:
@@ -489,7 +492,7 @@ public class CategoryRails {
                 assetCommonBean1.setRailDetail(dtChannel);
                 assetCommonBean1.setTitle(dtChannel.getName());
                 assetCommonBean1.setID(dtChannel.getId());
-                setRailData(context,dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE2);
+                setRailData(context, dtChannel, list, 1, assetCommonBean1, i, AppConstants.TYPE2);
                 assetCommonBean1.setRailType(AppConstants.Rail2);
                 break;
 
@@ -558,7 +561,7 @@ public class CategoryRails {
 
     int continueWatchingRailCount = 0;
 
-    private void setRailData(Context context,VIUChannel channelList, List<Response<ListResponse<Asset>>> list, int type,
+    private void setRailData(Context context, VIUChannel channelList, List<Response<ListResponse<Asset>>> list, int type,
                              AssetCommonBean assetCommonBean, int position, String tileType) {
         try {
             continueWatchingRailCount = 0;
@@ -568,12 +571,12 @@ public class CategoryRails {
                 if (list.get(position).results.getObjects().size() > 0) {
 
                     for (int j = 0; j < list.get(position).results.getObjects().size(); j++) {
-                        carouselDataInject(context,channelList, list, position, j);
+                        carouselDataInject(context, channelList, list, position, j);
                     }
 
                 } else {
                     for (int j = 0; j < list.get(position).results.getObjects().size(); j++) {
-                        carouselDataInject(context,channelList, list, position, j);
+                        carouselDataInject(context, channelList, list, position, j);
                     }
                 }
                 PrintLogging.printLog("", "typeValuess-->>" + slides.size());
@@ -588,7 +591,7 @@ public class CategoryRails {
                     List<RailCommonData> railList = new ArrayList<RailCommonData>();
                     if (tileType == AppConstants.TYPE6) {
                         PrintLogging.printLog("", "indexessss" + AppCommonMethods.getContinueWatchingIDsPreferences(context).get(0));
-                        sortContinueWatchingRail(context,list, 1, assetCommonBean, position, tileType, railList,channelList);
+                        sortContinueWatchingRail(context, list, 1, assetCommonBean, position, tileType, railList, channelList);
 
                     } else {
                         for (int j = 0; j < list.get(position).results.getObjects().size(); j++) {
@@ -600,9 +603,9 @@ public class CategoryRails {
                             railCommonData.setId(list.get(position).results.getObjects().get(j).getId());
                             railCommonData.setObject(list.get(position).results.getObjects().get(j));
                             if (tileType.equals(AppConstants.TYPE6)) {
-                                PrintLogging.printLog("", "valueeInLoop" + AssetContent.getVideoProgress(context,j, list.get(position).results.getObjects().get(j).getId().intValue()));
-                                railCommonData.setPosition(AssetContent.getVideoProgress(context,j, list.get(position).results.getObjects().get(j).getId().intValue()));
-                                railCommonData.setProgress(AssetContent.getVideoPosition(context,j, list.get(position).results.getObjects().get(j).getId().intValue()));
+                                PrintLogging.printLog("", "valueeInLoop" + AssetContent.getVideoProgress(context, j, list.get(position).results.getObjects().get(j).getId().intValue()));
+                                railCommonData.setPosition(AssetContent.getVideoProgress(context, j, list.get(position).results.getObjects().get(j).getId().intValue()));
+                                railCommonData.setProgress(AssetContent.getVideoPosition(context, j, list.get(position).results.getObjects().get(j).getId().intValue()));
                             }
                             if (tileType.equals(AppConstants.TYPE7)) {
                                 railCommonData.setType(AppConstants.Rail7);
@@ -616,7 +619,7 @@ public class CategoryRails {
                             } else {
                                 for (int k = 0; k < list.get(position).results.getObjects().get(j).getImages().size(); k++) {
                                     AssetCommonImages assetCommonImages = new AssetCommonImages();
-                                    AppCommonMethods.getCategoryImageList(context,tileType, position, j, k, list, assetCommonImages, imagesList,channelList);
+                                    AppCommonMethods.getCategoryImageList(context, tileType, position, j, k, list, assetCommonImages, imagesList, channelList);
                                 }
                             }
 
@@ -635,7 +638,7 @@ public class CategoryRails {
                             railCommonData.setImages(imagesList);
                             railCommonData.setUrls(urlList);
                             if (tileType.equals(AppConstants.TYPE6)) {
-                                if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getUGCVideo(context) ||list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context) ||
+                                if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getUGCVideo(context) || list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context) ||
                                         list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getLinear(context)) {
                                 } else {
                                     continueWatchingRailCount++;
@@ -675,8 +678,8 @@ public class CategoryRails {
 
     }
 
-    public void sortContinueWatchingRail(Context context,List<Response<ListResponse<Asset>>> list, int type,
-                                         AssetCommonBean assetCommonBean, int position, String tileType, List<RailCommonData> railList,VIUChannel channelList) {
+    public void sortContinueWatchingRail(Context context, List<Response<ListResponse<Asset>>> list, int type,
+                                         AssetCommonBean assetCommonBean, int position, String tileType, List<RailCommonData> railList, VIUChannel channelList) {
 
         List<Long> longList = AppCommonMethods.getContinueWatchingIDsPreferences(context);
         List<AssetHistory> continueWatchingList = AppCommonMethods.getContinueWatchingPreferences(context);
@@ -694,9 +697,9 @@ public class CategoryRails {
                             railCommonData.setId(list.get(position).results.getObjects().get(j).getId());
                             railCommonData.setObject(list.get(position).results.getObjects().get(j));
                             if (tileType.equals(AppConstants.TYPE6)) {
-                                PrintLogging.printLog("", "valueeInLoop" + AssetContent.getVideoProgress(context,j, list.get(position).results.getObjects().get(j).getId().intValue()));
-                                railCommonData.setPosition(AssetContent.getVideoProgress(context,j, list.get(position).results.getObjects().get(j).getId().intValue()));
-                                railCommonData.setProgress(AssetContent.getVideoPosition(context,j, list.get(position).results.getObjects().get(j).getId().intValue()));
+                                PrintLogging.printLog("", "valueeInLoop" + AssetContent.getVideoProgress(context, j, list.get(position).results.getObjects().get(j).getId().intValue()));
+                                railCommonData.setPosition(AssetContent.getVideoProgress(context, j, list.get(position).results.getObjects().get(j).getId().intValue()));
+                                railCommonData.setProgress(AssetContent.getVideoPosition(context, j, list.get(position).results.getObjects().get(j).getId().intValue()));
                             }
                             if (tileType.equals(AppConstants.TYPE7)) {
                                 railCommonData.setType(AppConstants.Rail7);
@@ -708,7 +711,7 @@ public class CategoryRails {
                             } else {
                                 for (int k = 0; k < list.get(position).results.getObjects().get(j).getImages().size(); k++) {
                                     AssetCommonImages assetCommonImages = new AssetCommonImages();
-                                    AppCommonMethods.getCategoryImageList(context,tileType, position, j, k, list, assetCommonImages, imagesList,channelList);
+                                    AppCommonMethods.getCategoryImageList(context, tileType, position, j, k, list, assetCommonImages, imagesList, channelList);
                                 }
                             }
 
@@ -728,11 +731,11 @@ public class CategoryRails {
                             railCommonData.setUrls(urlList);
                             if (tileType.equals(AppConstants.TYPE6)) {
 
-                                if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getUGCVideo(context) ||list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context) ||
+                                if (list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getUGCVideo(context) || list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context) ||
                                         list.get(position).results.getObjects().get(j).getType() == MediaTypeConstant.getLinear(context)) {
                                 } else {
-                                    boolean included=AppCommonMethods.shouldItemIncluded(continueWatchingList,list.get(position).results.getObjects().get(j).getId()+"");
-                                    if (included){
+                                    boolean included = AppCommonMethods.shouldItemIncluded(continueWatchingList, list.get(position).results.getObjects().get(j).getId() + "");
+                                    if (included) {
                                         continueWatchingRailCount++;
                                         continueWatchingCount = 1;
                                         railList.add(railCommonData);
@@ -757,7 +760,7 @@ public class CategoryRails {
 
     }
 
-    private void carouselDataInject(Context context,VIUChannel channelList, List<Response<ListResponse<Asset>>> list, int position, int j) {
+    private void carouselDataInject(Context context, VIUChannel channelList, List<Response<ListResponse<Asset>>> list, int position, int j) {
         try {
             Slide slide = new Slide();
             RailCommonData commonData = new RailCommonData();
@@ -784,7 +787,7 @@ public class CategoryRails {
 
                 }*/
 
-                slide.setImageFromUrl(setImageUrl(context,list.get(position).results.getObjects().get(j), channelList.getWidgetType(),channelList));
+                slide.setImageFromUrl(setImageUrl(context, list.get(position).results.getObjects().get(j), channelList.getWidgetType(), channelList));
 
             }
             String name = list.get(position).results.getObjects().get(j).getName();
@@ -803,7 +806,7 @@ public class CategoryRails {
 
     }
 
-    public String setImageUrl(Context context,Asset asset, int type,VIUChannel channelList) {
+    public String setImageUrl(Context context, Asset asset, int type, VIUChannel channelList) {
         Log.w("carousalData-->>", type + "");
         String landscapeUrl = "";
         String potraitUrl = "";
@@ -844,20 +847,20 @@ public class CategoryRails {
                 }
             }
         }
-            switch (type) {
-                case CAROUSEL_PR_POTRAIT:
-                    return potraitUrl;
-                case CAROUSEL_SQR_SQUARE:
-                    return squareUrl;
-                case CAROUSEL_CST_CUSTOM:
-                    return landscapeUrl;
-                default:
-                    return landscapeUrl;
-            }
+        switch (type) {
+            case CAROUSEL_PR_POTRAIT:
+                return potraitUrl;
+            case CAROUSEL_SQR_SQUARE:
+                return squareUrl;
+            case CAROUSEL_CST_CUSTOM:
+                return landscapeUrl;
+            default:
+                return landscapeUrl;
+        }
 
     }
 
-    private void setContinueWatchingList(Context context,VIUChannel category, List<VIUChannel> channelList, int i, List<Response<ListResponse<Asset>>> list, AssetCommonBean assetCommonBean) {
+    private void setContinueWatchingList(Context context, VIUChannel category, List<VIUChannel> channelList, int i, List<Response<ListResponse<Asset>>> list, AssetCommonBean assetCommonBean) {
 
         List<Long> listIds = AppCommonMethods.getContinueWatchingIDsPreferences(context);
         if (listIds != null) {
@@ -867,30 +870,30 @@ public class CategoryRails {
                 assetCommonBean.setMoreType(AppConstants.CONTINUE_WATCHING);
                 assetCommonBean.setID(channelList.get(counterValue).getId());
 
-                setRailData(context,category, list, 1, assetCommonBean, i, AppConstants.TYPE6);
+                setRailData(context, category, list, 1, assetCommonBean, i, AppConstants.TYPE6);
 
             }
         }
 
     }
 
-    private void setRecommendedList(Context context,VIUChannel category, List<VIUChannel> channelList, int i, List<Response<ListResponse<Asset>>> list, AssetCommonBean assetCommonBean) {
+    private void setRecommendedList(Context context, VIUChannel category, List<VIUChannel> channelList, int i, List<Response<ListResponse<Asset>>> list, AssetCommonBean assetCommonBean) {
         assetCommonBean.setRailType(AppConstants.Rail7);
         assetCommonBean.setTitle(channelList.get(counterValue).getName());
         assetCommonBean.setID(channelList.get(counterValue).getId());
 
-        setRailData(context,category, list, 1, assetCommonBean, i, AppConstants.TYPE7);
+        setRailData(context, category, list, 1, assetCommonBean, i, AppConstants.TYPE7);
     }
 
 
-    public void setDescriptionRails(Context context,List<Response<ListResponse<Asset>>> list, List<VIUChannel> channelList, List<AssetCommonBean> assetList, int counter) {
+    public void setDescriptionRails(Context context, List<Response<ListResponse<Asset>>> list, List<VIUChannel> channelList, List<AssetCommonBean> assetList, int counter) {
         counterValue = counter;
         assetCommonList = assetList;
         try {
             if (channelList != null) {
                 int i = 0;
 
-                setCommonAdapterRailData(context,counter, channelList, channelList.get(counter), list);
+                setCommonAdapterRailData(context, counter, channelList, channelList.get(counter), list);
              /*  String desc = channelList.get(counter).getDescription();
                 PrintLogging.printLog("", "channelList--" + channelList.get(counter).getDescription() + "");
                 if (desc.contains(HRO.name())) {
