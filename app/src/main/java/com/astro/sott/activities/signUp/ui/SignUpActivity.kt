@@ -13,9 +13,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.astro.sott.R
 import com.astro.sott.activities.detailConfirmation.DetailConfirmationActivity
+import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity
 import com.astro.sott.activities.home.HomeActivity
 import com.astro.sott.activities.isThatYou.IsThatYouActivity
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel
+import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivitySinUpBinding
@@ -42,7 +44,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.lang.Double.parseDouble
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListener {
     private var socialLoginTypesItem: List<SocialLoginTypesItem>? = null
     private var astroLoginViewModel: AstroLoginViewModel? = null
     private var activitySinUpBinding: ActivitySinUpBinding? = null
@@ -319,7 +321,14 @@ class SignUpActivity : AppCompatActivity() {
                         Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()
+                    if (evergentCommonResponse.errorCode.equals("eV4492", ignoreCase = true)) {
+                        val fm = supportFragmentManager
+                        val accountBlockedDialog = AccountBlockedDialog.newInstance(resources.getString(R.string.create_playlist_name_title), "")
+                        accountBlockedDialog.setEditDialogCallBack(this)
+                        accountBlockedDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT)
+                    } else {
+                        Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
@@ -426,6 +435,11 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onFinishEditDialog() {
+        ActivityLauncher(this).forgotPasswordActivity(this, ForgotPasswordActivity::class.java)
+
     }
 
 }

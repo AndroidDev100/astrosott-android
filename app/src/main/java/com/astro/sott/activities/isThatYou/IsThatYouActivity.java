@@ -2,6 +2,7 @@ package com.astro.sott.activities.isThatYou;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.astro.sott.R;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
+import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
@@ -27,7 +29,7 @@ import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 
-public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBinding> {
+public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBinding> implements AccountBlockedDialog.EditDialogListener {
     private String emailMobile = "", type = "", socialId = "";
     private boolean passwordVisibilityConfirmPassword = false;
 
@@ -109,9 +111,14 @@ public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBind
                 updateProfile(socialId, type);
 
             } else {
-                getBinding().progressBar.setVisibility(View.GONE);
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV4492")) {
+                    FragmentManager fm = getSupportFragmentManager();
+                    AccountBlockedDialog accountBlockedDialog = AccountBlockedDialog.newInstance(getResources().getString(R.string.create_playlist_name_title), "");
+                    accountBlockedDialog.setEditDialogCallBack(this);
+                    accountBlockedDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+                } else {
+                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -179,6 +186,12 @@ public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBind
 
     private void modelCall() {
         astroLoginViewModel = ViewModelProviders.of(this).get(AstroLoginViewModel.class);
+
+    }
+
+    @Override
+    public void onFinishEditDialog() {
+        new ActivityLauncher(this).forgotPasswordActivity(this, ForgotPasswordActivity.class);
 
     }
 }
