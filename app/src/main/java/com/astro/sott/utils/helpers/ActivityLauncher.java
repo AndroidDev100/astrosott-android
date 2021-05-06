@@ -57,7 +57,7 @@ import com.astro.sott.activities.sponsored.ui.SponsoredDetailActivity;
 import com.astro.sott.activities.subscription.ui.SingleLiveChannelSubscriptionActivity;
 import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionAndMyPlanActivity;
-import com.astro.sott.activities.webEpisodeDescription.ui.WebEpisodeDescriptionActivity;
+import com.astro.sott.activities.webEpisodeDescription.WebEpisodeDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.beanModel.commonBeanModel.SearchModel;
@@ -432,7 +432,7 @@ public class ActivityLauncher {
 
     }
 
-    private void finishWebEpisodeActivity(Activity source, Class<WebEpisodeDescriptionActivity> destination, RailCommonData railData, int layoutType) {
+    private void finishWebEpisodeActivity(Activity source, Class<WebEpisodeDetailActivity> destination, RailCommonData railData, int layoutType) {
         Intent intent = new Intent(source, destination);
         intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
@@ -450,7 +450,7 @@ public class ActivityLauncher {
 
     private void clearPlayerStack(String name, RailCommonData railCommonData, int layoutPosition, int layoutType, MediaTypeCallBack detailRailClick) {
         if (railCommonData.getObject().getType() == MediaTypeConstant.getWebEpisode(activity)) {
-            new ActivityLauncher(activity).finishWebEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, railCommonData, layoutType);
+            new ActivityLauncher(activity).finishWebEpisodeActivity(activity, WebEpisodeDetailActivity.class, railCommonData, layoutType);
         } else if (railCommonData.getObject().getType() == MediaTypeConstant.getLinear(activity)) {
             new ActivityLauncher(activity).finishLiveChannelActivity(activity, LiveChannel.class, railCommonData);
         } else if (railCommonData.getObject().getType() == MediaTypeConstant.getMovie(activity)) {
@@ -542,13 +542,11 @@ public class ActivityLauncher {
                     new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, railCommonData, layoutType);
 
                 } else {
-                    new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
-
+                    new ActivityLauncher(activity).webDetailActivity(activity, WebEpisodeDetailActivity.class, asset, AppLevelConstants.Rail5);
                 }
             });
         } else {
-            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
-
+            new ActivityLauncher(activity).webDetailActivity(activity, WebEpisodeDetailActivity.class, asset, AppLevelConstants.Rail5);
         }
 
     }
@@ -717,6 +715,15 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
+    public void webDetailActivity(Activity
+                                          source, Class<WebEpisodeDetailActivity> destination, RailCommonData railData,
+                                  int layoutType) {
+        Intent intent = new Intent(source, destination);
+        intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
+        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
+        activity.startActivity(intent);
+    }
+
     public void boxSetDetailActivity(Activity source, RailCommonData railData, int layoutType) {
         if (!AssetContent.isSponsored(railData.getObject().getMetas())) {
             Intent intent = new Intent(source, BoxSetDetailActivity.class);
@@ -737,14 +744,6 @@ public class ActivityLauncher {
         TaskStackBuilder.create(source).addNextIntentWithParentStack(intent).startActivities();
     }
 
-    public void webEpisodeActivity(Activity
-                                           source, Class<WebEpisodeDescriptionActivity> destination, RailCommonData railData,
-                                   int layoutType) {
-        Intent intent = new Intent(source, destination);
-        intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
-        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
-        activity.startActivity(intent);
-    }
 
 
     public void resultActivityBundle(Activity

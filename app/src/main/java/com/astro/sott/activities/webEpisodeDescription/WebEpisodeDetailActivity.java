@@ -1,4 +1,4 @@
-package com.astro.sott.activities.webEpisodeDescription.ui;
+package com.astro.sott.activities.webEpisodeDescription;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -6,6 +6,27 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
+import com.astro.sott.activities.subscription.manager.AllChannelManager;
+import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
+import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceStatusCallBack;
+import com.astro.sott.databinding.ActivityWebEpisodeDetailBinding;
+import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
+import com.astro.sott.networking.ksServices.KsServices;
+import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
+import com.astro.sott.thirdParty.conViva.ConvivaManager;
+import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.userInfo.UserInfo;
+import com.conviva.sdk.ConvivaSdkConstants;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import androidx.fragment.app.FragmentManager;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,38 +35,34 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
-import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
-import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
+import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
-import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.baseModel.RailBaseFragment;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
+import com.astro.sott.callBacks.commonCallBacks.PlaylistCallback;
 import com.astro.sott.databinding.MovieScreenBinding;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.RefreshKS;
-import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
 import com.astro.sott.player.houseHoldCheckManager.HouseHoldCheck;
 import com.astro.sott.player.ui.PlayerActivity;
 import com.astro.sott.repositories.player.PlayerRepository;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
-import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
+import com.astro.sott.utils.helpers.CommonPlaylistDialog;
 import com.astro.sott.utils.helpers.DialogHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
@@ -53,7 +70,6 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.StringBuilderHolder;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
-import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.DoubleValue;
@@ -67,11 +83,13 @@ import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScreenBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener {
+public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpisodeDetailBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener {
     ArrayList<ParentalLevels> parentalLevels;
     private RailCommonData railData;
     private Asset asset;
@@ -110,8 +128,8 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
 
 
     @Override
-    public MovieScreenBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
-        return MovieScreenBinding.inflate(inflater);
+    public ActivityWebEpisodeDetailBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+        return ActivityWebEpisodeDetailBinding.inflate(inflater);
     }
 
     @Override
@@ -196,7 +214,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(WebEpisodeDescriptionActivity.this).astrLoginActivity(WebEpisodeDescriptionActivity.this, AstrLoginActivity.class, "");
+                    new ActivityLauncher(WebEpisodeDetailActivity.this).astrLoginActivity(WebEpisodeDetailActivity.this, AstrLoginActivity.class, "");
                 }
 
             }
@@ -210,10 +228,10 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
     private void checkErrors() {
         if (playerChecksCompleted) {
             if (assetRuleErrorCode == AppLevelConstants.GEO_LOCATION_ERROR) {
-                runOnUiThread(() -> DialogHelper.openDialougeforGeoLocation(1, WebEpisodeDescriptionActivity.this));
+                runOnUiThread(() -> DialogHelper.openDialougeforGeoLocation(1, WebEpisodeDetailActivity.this));
                 callProgressBar();
             } else if (errorCode == AppLevelConstants.USER_ACTIVE_ERROR) {
-                runOnUiThread(() -> DialogHelper.openDialougeForEntitleMent(WebEpisodeDescriptionActivity.this));
+                runOnUiThread(() -> DialogHelper.openDialougeForEntitleMent(WebEpisodeDetailActivity.this));
                 callProgressBar();
             } else if (errorCode == AppLevelConstants.NO_ERROR) {
                 if (KsPreferenceKey.getInstance(this).getUserActive()) {
@@ -263,12 +281,12 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                DialogHelper.showValidatePinDialog(WebEpisodeDescriptionActivity.this, null, "MOVIE", new ParentalDialogCallbacks() {
+                DialogHelper.showValidatePinDialog(WebEpisodeDetailActivity.this, null, "MOVIE", new ParentalDialogCallbacks() {
                     @Override
                     public void onPositiveClick(String pinText) {
-                        ParentalControlViewModel parentalViewModel = ViewModelProviders.of(WebEpisodeDescriptionActivity.this).get(ParentalControlViewModel.class);
+                        ParentalControlViewModel parentalViewModel = ViewModelProviders.of(WebEpisodeDetailActivity.this).get(ParentalControlViewModel.class);
 
-                        parentalViewModel.validatePin(WebEpisodeDescriptionActivity.this, pinText).observe(WebEpisodeDescriptionActivity.this, commonResponse -> {
+                        parentalViewModel.validatePin(WebEpisodeDetailActivity.this, pinText).observe(WebEpisodeDetailActivity.this, commonResponse -> {
                             if (commonResponse.getStatus()) {
                                 DialogHelper.hideValidatePinDialog();
                                 assetRuleErrorCode = AppLevelConstants.NO_ERROR;
@@ -276,7 +294,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
                                 //checkErrors();
                                 checkOnlyDevice(railData);
                             } else {
-                                Toast.makeText(WebEpisodeDescriptionActivity.this, getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                Toast.makeText(WebEpisodeDetailActivity.this, getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
                                 assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
 
                             }
@@ -296,7 +314,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
     }
 
     private void checkOnlyDevice(RailCommonData railData) {
-        new HouseHoldCheck().checkHouseholdDevice(WebEpisodeDescriptionActivity.this, commonResponse -> {
+        new HouseHoldCheck().checkHouseholdDevice(WebEpisodeDetailActivity.this, commonResponse -> {
             if (commonResponse != null) {
                 if (commonResponse.getStatus()) {
                     runOnUiThread(() -> {
@@ -304,7 +322,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
                     });
                 } else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
-                        new RefreshKS(WebEpisodeDescriptionActivity.this).refreshKS(response -> checkDevice(railData));
+                        new RefreshKS(WebEpisodeDetailActivity.this).refreshKS(response -> checkDevice(railData));
                     } else {
                         callProgressBar();
                         showDialog(commonResponse.getMessage());
@@ -320,7 +338,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
         try {
             callProgressBar();
             //  ConvivaManager.getConvivaAdAnalytics(this);
-            Intent intent = new Intent(WebEpisodeDescriptionActivity.this, PlayerActivity.class);
+            Intent intent = new Intent(WebEpisodeDetailActivity.this, PlayerActivity.class);
             intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
             startActivity(intent);
 
@@ -363,7 +381,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
     }
 
     private void playerChecks(final RailCommonData railData) {
-        new GeoBlockingCheck().aseetAvailableOrNot(WebEpisodeDescriptionActivity.this, railData.getObject(), (status, response, totalCount, errorcode, message) -> {
+        new GeoBlockingCheck().aseetAvailableOrNot(WebEpisodeDetailActivity.this, railData.getObject(), (status, response, totalCount, errorcode, message) -> {
             if (status) {
                 if (totalCount != 0) {
                     checkBlockingErrors(response);
@@ -405,7 +423,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
 
         fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
 
-        new EntitlementCheck().checkAssetPurchaseStatus(WebEpisodeDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+        new EntitlementCheck().checkAssetPurchaseStatus(WebEpisodeDetailActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
             this.errorCode = AppLevelConstants.NO_ERROR;
             if (apiStatus) {
                 if (purchasedStatus) {
@@ -492,7 +510,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                viewModel.getDtvAccountList().observe(WebEpisodeDescriptionActivity.this, new Observer<String>() {
+                viewModel.getDtvAccountList().observe(WebEpisodeDetailActivity.this, new Observer<String>() {
                     @Override
                     public void onChanged(String dtvAccount) {
                         try {
@@ -531,26 +549,26 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
     private void checkForSubscription(boolean isDtvAdded, RailCommonData railCommonData) {
         //***** Mobile + Non-Dialog + Non-DTV *************//
         if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == false) {
-            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(WebEpisodeDescriptionActivity.this, false));
+            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(WebEpisodeDetailActivity.this, false));
         }
         //********** Mobile + Non-Dialog + DTV ******************//
         else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == true) {
-            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(WebEpisodeDescriptionActivity.this, false));
+            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(WebEpisodeDetailActivity.this, false));
         }
         //*********** Mobile + Dialog + Non-DTV *****************//
         else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == false) {
-            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), WebEpisodeDescriptionActivity.this)) {
-                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(WebEpisodeDescriptionActivity.this, true, false));
+            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), WebEpisodeDetailActivity.this)) {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(WebEpisodeDetailActivity.this, true, false));
             } else {
-                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(WebEpisodeDescriptionActivity.this, false, false));
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(WebEpisodeDetailActivity.this, false, false));
             }
         }
         //************ Mobile + Dialog + DTV ********************//
         else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == true) {
-            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), WebEpisodeDescriptionActivity.this)) {
-                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(WebEpisodeDescriptionActivity.this, true, false));
+            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), WebEpisodeDetailActivity.this)) {
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(WebEpisodeDetailActivity.this, true, false));
             } else {
-                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(WebEpisodeDescriptionActivity.this, false, false));
+                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(WebEpisodeDetailActivity.this, false, false));
             }
         } else {
             showDialog(getString(R.string.something_went_wrong_try_again));
@@ -558,13 +576,13 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
     }
 
     private void checkDevice(final RailCommonData railData) {
-        new HouseHoldCheck().checkHouseholdDevice(WebEpisodeDescriptionActivity.this, commonResponse -> {
+        new HouseHoldCheck().checkHouseholdDevice(WebEpisodeDetailActivity.this, commonResponse -> {
             if (commonResponse != null) {
                 if (commonResponse.getStatus()) {
                     runOnUiThread(() -> checkEntitleMent(railData));
                 } else {
                     if (commonResponse.getErrorCode().equals(AppLevelConstants.KS_EXPIRE)) {
-                        new RefreshKS(WebEpisodeDescriptionActivity.this).refreshKS(response -> checkDevice(railData));
+                        new RefreshKS(WebEpisodeDetailActivity.this).refreshKS(response -> checkDevice(railData));
                     } else {
                         callProgressBar();
                         showDialog(commonResponse.getMessage());
@@ -575,7 +593,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
     }
 
     private void getMediaType(Asset asset, RailCommonData railCommonData) {
-        if (asset.getType() == MediaTypeConstant.getTrailer(WebEpisodeDescriptionActivity.this)) {
+        if (asset.getType() == MediaTypeConstant.getTrailer(WebEpisodeDetailActivity.this)) {
             trailor_url = AssetContent.getTrailorUrl(asset);
             getRefId(1, asset);
         } else {
@@ -948,7 +966,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
     }
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(),"");
+        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), "");
     }
 
     @Override
@@ -992,10 +1010,10 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(WebEpisodeDescriptionActivity.this).astrLoginActivity(WebEpisodeDescriptionActivity.this, AstrLoginActivity.class, "");
+                    new ActivityLauncher(WebEpisodeDetailActivity.this).astrLoginActivity(WebEpisodeDetailActivity.this, AstrLoginActivity.class, "");
                 }
             } else {
-                ToastHandler.show(getResources().getString(R.string.no_internet_connection), WebEpisodeDescriptionActivity.this);
+                ToastHandler.show(getResources().getString(R.string.no_internet_connection), WebEpisodeDetailActivity.this);
 
             }
         });
@@ -1003,7 +1021,7 @@ public class WebEpisodeDescriptionActivity extends BaseBindingActivity<MovieScre
     }
 
     private void deleteWatchlist() {
-        viewModel.deleteWatchlist(idfromAssetWatchlist).observe(WebEpisodeDescriptionActivity.this, aBoolean -> {
+        viewModel.deleteWatchlist(idfromAssetWatchlist).observe(WebEpisodeDetailActivity.this, aBoolean -> {
             if (aBoolean != null && aBoolean.getStatus()) {
                 isAdded = false;
                 Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist), Toast.LENGTH_SHORT).show();

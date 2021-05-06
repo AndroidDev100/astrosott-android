@@ -191,7 +191,12 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             try {
                 String masked = AppCommonMethods.maskedEmail(EditProfileActivity.this);
                 getBinding().email.setText(masked);
-                getBinding().name.setText(UserInfo.getInstance(this).getFirstName());
+                if (!UserInfo.getInstance(this).getFirstName().equalsIgnoreCase("")) {
+                    getBinding().name.setText(UserInfo.getInstance(this).getFirstName());
+                } else {
+                    getBinding().name.setText(getResources().getString(R.string.sooka_superstar));
+
+                }
                 getBinding().psw.setText("********");
                 getBinding().mobileNo.setText(AppCommonMethods.maskedMobile(EditProfileActivity.this));
             } catch (Exception ignored) {

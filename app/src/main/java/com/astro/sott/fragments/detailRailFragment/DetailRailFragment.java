@@ -93,7 +93,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                 externalId = asset.getExternalId();
             if (asset.getType() == MediaTypeConstant.getSeries(getActivity())) {
                 getSeasons();
-            } else if (asset.getType() == MediaTypeConstant.getMovie(getActivity()) || asset.getType() == MediaTypeConstant.getLinear(getActivity())) {
+            } else if (asset.getType() == MediaTypeConstant.getEpisode(getActivity())||asset.getType() == MediaTypeConstant.getMovie(getActivity()) || asset.getType() == MediaTypeConstant.getLinear(getActivity())) {
                 getRefId(asset.getType());
             }
         } catch (NullPointerException e) {
