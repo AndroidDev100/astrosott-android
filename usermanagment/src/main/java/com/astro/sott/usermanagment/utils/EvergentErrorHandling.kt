@@ -64,7 +64,7 @@ class EvergentErrorHandling {
             "eV1075" -> message = context.resources.getString(R.string.invalid_mobile)
             "eV2231" -> message = context.resources.getString(R.string.logout)
             "eV2124" -> message = context.resources.getString(R.string.invalid_session)
-            "eV2380" -> message = context.resources.getString(R.string.invalid_current_password)
+            "eV2380" -> message = context.resources.getString(R.string.password_change_failed)
             "eV1227" -> message = context.resources.getString(R.string.password_same)
             "eV2515" -> message = context.resources.getString(R.string.password_shorter)
             "eV2516" -> message = context.resources.getString(R.string.passward_given)

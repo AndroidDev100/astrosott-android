@@ -326,7 +326,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                         getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                         getBinding().playText.setText(getResources().getString(R.string.watch_now));
                         getBinding().vipButtonLive.setVisibility(View.VISIBLE);
-                        getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+//                        getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                         getBinding().starIcon.setVisibility(View.GONE);
                         getBinding().playText.setTextColor(getResources().getColor(R.color.black));
 
@@ -351,11 +351,11 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                         if (xofferWindowValue) {
                             runOnUiThread(() -> {
-                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+//                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                                 getBinding().vipButtonLive.setVisibility(View.VISIBLE);
-                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+//                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
