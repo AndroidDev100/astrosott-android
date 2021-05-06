@@ -1158,11 +1158,18 @@ public class AppCommonMethods {
             case AppLevelConstants.TYPE6:
                 if (list.get(position).results.getObjects().get(j).getImages().size() > 0) {
                     if (channelList != null && channelList.getKalturaOTTImageType() != null && !channelList.getKalturaOTTImageType().equalsIgnoreCase("")) {
-                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals(channelList.getKalturaOTTImageType())) {
+                        if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9")) {
                             String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
-                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.portrait_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.portrait_image_height) + AppLevelConstants.QUALITY;
+                            String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
                             assetCommonImages.setImageUrl(final_url);
                             imagesList.add(assetCommonImages);
+                        } else {
+                            if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals(channelList.getKalturaOTTImageType())) {
+                                String image_url = list.get(position).results.getObjects().get(j).getImages().get(k).getUrl();
+                                String final_url = image_url + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.portrait_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.portrait_image_height) + AppLevelConstants.QUALITY;
+                                assetCommonImages.setImageUrl(final_url);
+                                imagesList.add(assetCommonImages);
+                            }
                         }
                     } else {
                         if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16x9")) {
