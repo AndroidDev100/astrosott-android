@@ -543,12 +543,10 @@ public class ActivityLauncher {
 
                 } else {
                     new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
-
                 }
             });
         } else {
-            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
-
+            new ActivityLauncher(activity).webEpisodeActivity(activity, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         }
 
     }
@@ -737,9 +735,7 @@ public class ActivityLauncher {
         TaskStackBuilder.create(source).addNextIntentWithParentStack(intent).startActivities();
     }
 
-    public void webEpisodeActivity(Activity
-                                           source, Class<WebEpisodeDescriptionActivity> destination, RailCommonData railData,
-                                   int layoutType) {
+    public void webEpisodeActivity(Activity source, Class<WebEpisodeDescriptionActivity> destination, RailCommonData railData, int layoutType) {
         Intent intent = new Intent(source, destination);
         intent.putExtra(AppLevelConstants.LAYOUT_TYPE, layoutType);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
