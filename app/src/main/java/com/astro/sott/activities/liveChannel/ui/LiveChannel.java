@@ -333,7 +333,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                         getBinding().starIcon.setVisibility(View.GONE);
                         getBinding().playText.setTextColor(getResources().getColor(R.color.black));
 
-                        getCridDetail();
+                        // getCridDetail();
                     });
                     this.vodType = EntitlementCheck.FREE;
 

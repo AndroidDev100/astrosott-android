@@ -3655,6 +3655,7 @@ public class KsServices {
 
 
     public void getCridDetail(Context context, final String cridId, SpecificAssetCallBack specificAssetCallBack) {
+        clientSetupKs();
         final FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
         filterPager.setPageSize(20);
