@@ -85,7 +85,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private static final String TAG = "LiveChannel";
     private RailCommonData railData;
     private int layoutType;
-    private String vodType;
+    private String vodType, cridId = "";
     private FragmentManager manager;
     private String externalIDs, programName = "";
     private LiveChannelViewModel activityViewModel;
@@ -196,6 +196,9 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
     private void setProgramMetas() {
         try {
+            ProgramAsset program = (ProgramAsset) programAsset;
+            if (program.getCrid() != null)
+                cridId = program.getCrid();
             getBinding().programTitle.setText(programAsset.getName());
             getBinding().descriptionText.setText(programAsset.getDescription());
             stringBuilder = new StringBuilder();
@@ -277,7 +280,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         });
 
         getBinding().share.setOnClickListener(v -> {
-            AppCommonMethods.openShareDialog(this, programAsset, this,"");
+            AppCommonMethods.openShareDialog(this, programAsset, this, "");
         });
         getBinding().astroPlayButton.setOnClickListener(view -> {
             if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
@@ -330,7 +333,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                         getBinding().starIcon.setVisibility(View.GONE);
                         getBinding().playText.setTextColor(getResources().getColor(R.color.black));
 
-
+                        getCridDetail();
                     });
                     this.vodType = EntitlementCheck.FREE;
 
@@ -347,6 +350,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                             });
                         }
                         this.vodType = EntitlementCheck.SVOD;
+
 
                     } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                         if (xofferWindowValue) {
@@ -401,6 +405,38 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         });
 */
 
+    }
+
+    private void getCridDetail() {
+        if (UserInfo.getInstance(this).isActive()) {
+            if (!cridId.equalsIgnoreCase("")) {
+                activityViewModel.getCridDetail(cridId).observe(this, asset1 -> {
+                    if (asset1 != null) {
+                        checkCridEntitleMent(asset1);
+                    }
+                });
+            }
+        }
+    }
+
+    private void checkCridEntitleMent(Asset asset1) {
+        String cridFileId = AppCommonMethods.getFileIdOfAssest(asset1);
+        new EntitlementCheck().checkAssetPurchaseStatus(LiveChannel.this, cridFileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+            this.errorCode = AppLevelConstants.NO_ERROR;
+            if (apiStatus) {
+                if (purchasedStatus) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LiveChannel.this, "Free Crid", Toast.LENGTH_SHORT).show();
+                    });
+
+                } else {
+
+                }
+
+            } else {
+
+            }
+        });
     }
 
     private void getXofferWindow(Map<String, Value> metas) {

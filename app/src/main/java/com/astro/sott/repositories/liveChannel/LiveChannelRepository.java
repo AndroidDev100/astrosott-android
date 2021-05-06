@@ -2,6 +2,7 @@ package com.astro.sott.repositories.liveChannel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
 
 import com.astro.sott.baseModel.CategoryRails;
@@ -42,12 +43,12 @@ public class LiveChannelRepository {
     }
 
     public LiveData<List<RailCommonData>> loadChannelsData(Context applicationContext,
-                                                           String externalId, final String startDate, String endDate, int type,int counter) {
+                                                           String externalId, final String startDate, String endDate, int type, int counter) {
         context = applicationContext;
         final MutableLiveData<List<RailCommonData>> connection = new MutableLiveData<>();
         KsServices ksServices = new KsServices(applicationContext);
         channelList = new ArrayList<>();
-        ksServices.callLiveEPGDayWise(externalId, startDate, endDate, type,counter, (status, result) -> {
+        ksServices.callLiveEPGDayWise(externalId, startDate, endDate, type, counter, (status, result) -> {
             if (status == true) {
                 setData(connection, result);
             } else {
@@ -65,11 +66,28 @@ public class LiveChannelRepository {
         final MutableLiveData<List<RailCommonData>> connection = new MutableLiveData<>();
         KsServices ksServices = new KsServices(applicationContext);
         channelList = new ArrayList<>();
-        ksServices.callCatchupData(externalId, startDate,type,(status, result) -> {
+        ksServices.callCatchupData(externalId, startDate, type, (status, result) -> {
             if (status == true) {
                 setData(connection, result);
             } else {
                 connection.postValue(channelList);
+            }
+        });
+
+        return connection;
+    }
+
+    public LiveData<Asset> getCridDetail(Context applicationContext,
+                                         String cridId) {
+        context = applicationContext;
+        final MutableLiveData<Asset> connection = new MutableLiveData<>();
+        KsServices ksServices = new KsServices(applicationContext);
+        channelList = new ArrayList<>();
+        ksServices.getCridDetail(applicationContext, cridId, (status, result) -> {
+            if (status == true) {
+                connection.postValue(result);
+            } else {
+                connection.postValue(null);
             }
         });
 
@@ -82,7 +100,7 @@ public class LiveChannelRepository {
         final MutableLiveData<List<RailCommonData>> connection = new MutableLiveData<>();
         KsServices ksServices = new KsServices(applicationContext);
         channelList = new ArrayList<>();
-        ksServices.liveCatchupData(externalId,(status, result) -> {
+        ksServices.liveCatchupData(externalId, (status, result) -> {
             if (status == true) {
                 setData(connection, result);
             } else {
@@ -143,7 +161,7 @@ public class LiveChannelRepository {
         final KsServices ksServices = new KsServices(context);
         AppCommonMethods.checkDMS(context, status -> {
             if (status) {
-                ksServices.callHomeChannels(context,0, AppLevelConstants.TAB_LIVETV_DETAIL, (status1, listResponseResponse, channelList) -> {
+                ksServices.callHomeChannels(context, 0, AppLevelConstants.TAB_LIVETV_DETAIL, (status1, listResponseResponse, channelList) -> {
                     if (status1) {
                         callDynamicData(listResponseResponse, channelList, layoutType);
                         mutableLiveData.postValue(assetCommonList);
@@ -203,7 +221,7 @@ public class LiveChannelRepository {
 
         }
         if (channelList != null && channelList.size() > 0)
-            new CategoryRails().setDescriptionRails(context,list, channelList, assetCommonList, 0);
+            new CategoryRails().setDescriptionRails(context, list, channelList, assetCommonList, 0);
     }
 
     private String calculateLatout(int layoutType) {
@@ -232,7 +250,7 @@ public class LiveChannelRepository {
                 List<RailCommonData> railList = new ArrayList<RailCommonData>();
                 for (int j = 0; j < list.get(position).results.getObjects().size(); j++) {
                     RailCommonData railCommonData = new RailCommonData();
-                   // railCommonData.setCatchUpBuffer(list.get(position).results.getObjects().get(j).getEnableCatchUp());
+                    // railCommonData.setCatchUpBuffer(list.get(position).results.getObjects().get(j).getEnableCatchUp());
                     railCommonData.setType(list.get(position).results.getObjects().get(j).getType());
                     railCommonData.setName(list.get(position).results.getObjects().get(j).getName());
                     railCommonData.setId(list.get(position).results.getObjects().get(j).getId());
@@ -244,7 +262,7 @@ public class LiveChannelRepository {
                         AssetCommonImages assetCommonImages = new AssetCommonImages();
                         //imageLogic(tileType,position,j,k,list,assetCommonImages,imagesList);
 
-                        AppCommonMethods.getImageList(context,tileType, position, j, k, list, assetCommonImages, imagesList);
+                        AppCommonMethods.getImageList(context, tileType, position, j, k, list, assetCommonImages, imagesList);
                     }
 
                     List<AssetCommonUrls> urlList = new ArrayList<AssetCommonUrls>();
@@ -274,15 +292,15 @@ public class LiveChannelRepository {
     }
 
 
-    public LiveData<List<AssetCommonBean>> callCategoryData(Asset asset,final int screen) {
+    public LiveData<List<AssetCommonBean>> callCategoryData(Asset asset, final int screen) {
         assetCommonList = new ArrayList<>();
         final MutableLiveData<List<AssetCommonBean>> mutableLiveData = new MutableLiveData<>();
         final KsServices ksServices = new KsServices(context);
-        AppCommonMethods.checkDMS(context,status -> {
+        AppCommonMethods.checkDMS(context, status -> {
             if (status) {
-                ksServices.callHomeChannels(context,0, screen, (status1, listResponseResponse, channelList) -> {
+                ksServices.callHomeChannels(context, 0, screen, (status1, listResponseResponse, channelList) -> {
                     if (status1) {
-                        new CategoryRails().setDescriptionRails(context,listResponseResponse, channelList, assetCommonList, 0);
+                        new CategoryRails().setDescriptionRails(context, listResponseResponse, channelList, assetCommonList, 0);
                         mutableLiveData.postValue(assetCommonList);
                     } else {
                         errorHandling();

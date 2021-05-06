@@ -1,10 +1,12 @@
 package com.astro.sott.activities.liveChannel.viewModel;
 
 import android.app.Application;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.annotation.NonNull;
+
 import android.util.Log;
 
 import com.astro.sott.activities.movieDescription.layers.YouMayAlsoLike;
@@ -54,8 +56,12 @@ public class LiveChannelViewModel extends AndroidViewModel {
         return AssetContent.getGenredata(map);
     }
 
-    public LiveData<List<RailCommonData>> getEPGChannelsList(String externalId, String startDate, String endDate, int type,int counter) {
-        return LiveChannelRepository.getInstance().loadChannelsData(getApplication().getApplicationContext(), externalId, startDate, endDate, type,counter);
+    public LiveData<List<RailCommonData>> getEPGChannelsList(String externalId, String startDate, String endDate, int type, int counter) {
+        return LiveChannelRepository.getInstance().loadChannelsData(getApplication().getApplicationContext(), externalId, startDate, endDate, type, counter);
+    }
+
+    public LiveData<Asset> getCridDetail(String cridId) {
+        return LiveChannelRepository.getInstance().getCridDetail(getApplication().getApplicationContext(), cridId);
     }
 
     public LiveData<List<AssetCommonBean>> getYouMayAlsoLike(int assetId,
@@ -79,9 +85,11 @@ public class LiveChannelViewModel extends AndroidViewModel {
         }
         return "";
     }
+
     public void setYouMayAlsoLikeData(List<RailCommonData> trailerData) {
         TabsData.getInstance().setYouMayAlsoLikeData(trailerData);
     }
+
     public String getProgramTime(Long endTime) {
         try {
             Date date = new Date(endTime * 1000L);
@@ -103,6 +111,7 @@ public class LiveChannelViewModel extends AndroidViewModel {
     public boolean isXofferWindow(String xofferValue) {
         return AppCommonMethods.isXofferWindow(xofferValue);
     }
+
     public String getProgramTime(Asset asset, int type) {
         Long _time;
         try {

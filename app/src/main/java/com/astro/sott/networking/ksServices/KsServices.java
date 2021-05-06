@@ -3653,6 +3653,44 @@ public class KsServices {
         getRequestQueue().queue(assetService.build(client));
     }
 
+
+    public void getCridDetail(Context context, final String cridId, SpecificAssetCallBack specificAssetCallBack) {
+        final FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        filterPager.setPageSize(20);
+        final SearchAssetFilter assetFilter = new SearchAssetFilter();
+        String KSql = "EventCRID = '" + cridId + "'";
+        assetFilter.setKSql(KSql);
+        assetFilter.setTypeIn(MediaTypeConstant.getLinear(context) + "");
+
+        AssetService.ListAssetBuilder assetService = AssetService.list(assetFilter, filterPager).setCompletion(result -> {
+            if (result.isSuccess()) {
+                if (result.results.getTotalCount() > 0) {
+                    if (result.results.getObjects() != null) {
+                        if (result.results.getObjects().size() > 0 && result.results.getObjects().get(0) != null) {
+                            specificAssetCallBack.getAsset(false, result.results.getObjects().get(0));
+
+                        } else {
+                            specificAssetCallBack.getAsset(false, null);
+
+                        }
+
+                    } else {
+                        specificAssetCallBack.getAsset(false, null);
+
+                    }
+
+                } else {
+                    specificAssetCallBack.getAsset(false, null);
+
+                }
+            } else {
+                specificAssetCallBack.getAsset(false, null);
+            }
+        });
+        getRequestQueue().queue(assetService.build(client));
+    }
+
     private void setQuickSearchBuilder(Context context, final String keyToSearch, final List<MediaTypeModel> model, int count, SearchResultCallBack CallBack, String searchKeyword, String selectedGenre) {
         final FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
@@ -5500,6 +5538,20 @@ public class KsServices {
                 } else {
                     homechannelCallBack.response(false, null, null);
                 }
+            } else if (list.get(counter).getDescription().contains(AppLevelConstants.PPV_RAIL)) {
+                if (UserInfo.getInstance(activity).isActive()) {
+                    getPurchaseList(list);
+                } else {
+                    homechannelCallBack.response(false, null, null);
+                }
+            } else if (list.get(counter).getDescription().contains(AppLevelConstants.LIVECHANNEL_RAIL)) {
+                if (!list.get(counter).getCustomLinearAssetId().equalsIgnoreCase("")) {
+                    getLinearAssetId(list.get(counter).getCustomLinearAssetId(), list, counter);
+                } else {
+                    homechannelCallBack.response(false, null, null);
+                }
+            } else if (list.get(counter).getDescription().contains(AppLevelConstants.TRENDING)) {
+                getTrending(responseList, list, counter);
             } else if (!StringUtils.isNullOrEmptyOrZero(list.get(counter).getDescription()) && list.get(counter).getDescription().toUpperCase().contains(AppConstants.KEY_DFP_ADS)) {
                 try {
                     /*if (!new UserDefault(activity).isSubscribed()){
@@ -5641,7 +5693,6 @@ public class KsServices {
                     getLinearAssetId(list.get(counter).getCustomLinearAssetId(), list, counter);
                 } else {
                     homechannelCallBack.response(false, null, null);
-
                 }
             } else if (list.get(counter).getDescription().contains(AppLevelConstants.TRENDING)) {
                 getTrending(responseList, list, counter);
