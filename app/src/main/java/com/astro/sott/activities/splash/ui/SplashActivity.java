@@ -788,7 +788,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
             //  finish();
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
             new ActivityLauncher(SplashActivity.this).detailActivity(SplashActivity.this, MovieDescriptionActivity.class, asset, AppLevelConstants.Rail5);
-        } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getWebEpisode(SplashActivity.this)) {
+        } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getEpisode(SplashActivity.this)) {
             //finish();
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
             new ActivityLauncher(SplashActivity.this).webDetailRedirection(railCommonData, AppLevelConstants.Rail5);
