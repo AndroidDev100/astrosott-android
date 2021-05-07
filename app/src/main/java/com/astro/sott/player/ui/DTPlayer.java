@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Insets;
+import android.hardware.display.DisplayManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -442,6 +443,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         baseActivity = (BaseActivity) context;
     }
 
+    DisplayManager mDisplayManager;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -458,6 +460,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         receiver = new NetworkChangeReceiver();
         filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+
+        mDisplayManager = (DisplayManager)baseActivity.getSystemService(Context.DISPLAY_SERVICE);
 
     }
 
@@ -3310,9 +3314,48 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             filter.addAction("com.dialog.dialoggo.Alarm.MyReceiver");
             getActivity().registerReceiver(myReceiver, filter);
 
+            mDisplayManager.registerDisplayListener(mDisplayListener, null);
+
         }
         resumePlayer();
     }
+
+    boolean isHdmiConnected=false;
+    private final DisplayManager.DisplayListener mDisplayListener =
+            new DisplayManager.DisplayListener() {
+                @Override
+                public void onDisplayAdded(int displayId) {
+                    Log.d(TAG, "Display " + displayId + " added.");
+                    Toast.makeText(getActivity(), "Display " + displayId + " added.", Toast.LENGTH_LONG).show();
+                    isHdmiConnected = true;
+                    if (runningPlayer!=null){
+                        runningPlayer.stop();
+                    }
+
+                }
+                @Override
+                public void onDisplayChanged(int displayId) {
+                    Log.d(TAG, "Display " + displayId + " changed.");
+                    Toast.makeText(getActivity(), "Display " + displayId + " changed.", Toast.LENGTH_LONG).show();
+                    // mDisplayListAdapter.updateContents();
+                }
+                @Override
+                public void onDisplayRemoved(int displayId) {
+                    Log.d(TAG, "Display " + displayId + " removed.");
+                    isHdmiConnected = false;
+                    Toast.makeText(getActivity(), "Display " + displayId + " removed.", Toast.LENGTH_LONG).show();
+                    try {
+                        cancelTimer();
+                        getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
+                        getUrl(playerURL, asset, playerProgress, isLivePlayer, "", railList);
+                    }catch (Exception e){
+
+                    }
+
+                    //  mDisplayListAdapter.updateContents();
+                }
+            };
+
 
     private void resumePlayer() {
         Log.d("PlayerPauseCalled", "OnResumeTrue");
@@ -3424,6 +3467,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
         this.baseActivity.unregisterReceiver(networkReceiver);
         this.baseActivity.unregisterReceiver(headsetRecicer);
+
+        try {
+            if (mDisplayListener!=null){
+                mDisplayManager.unregisterDisplayListener(mDisplayListener);
+            }
+        }catch (Exception ignored){
+
+        }
     }
 
 

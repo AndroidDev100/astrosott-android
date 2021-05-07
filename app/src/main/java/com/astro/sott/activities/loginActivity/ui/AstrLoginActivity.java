@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
@@ -136,6 +137,8 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                                     Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
                                     LoginManager.getInstance().logOut();
                                 }
+                            }else {
+                                Log.w("fb_login", "null" + "");
                             }
                         });
                         Bundle parameters = new Bundle();
@@ -148,13 +151,10 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     @Override
                     public void onCancel() {
                         // App code
-                        Log.w("fACEBBOK", "");
-
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        Log.w("fACEBBOK", exception + "");
                         // App code
                     }
                 });
