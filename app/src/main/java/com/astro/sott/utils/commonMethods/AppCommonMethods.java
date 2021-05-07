@@ -2513,6 +2513,20 @@ public class AppCommonMethods {
 
     }
 
+    public static String getPubDate(long timestamp) {
+        try {
+
+            Date date = new Date(timestamp * 1000L);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            simpleDateFormat.setTimeZone(TimeZone.getDefault());
+            String dateTimeValue = simpleDateFormat.format(date);
+            return dateTimeValue;
+        } catch (IndexOutOfBoundsException e) {
+        }
+        return "";
+
+    }
+
     public static String maskedEmail(Activity context) {
         String email = "";
         try {

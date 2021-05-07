@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
+import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
@@ -20,6 +21,7 @@ import com.conviva.sdk.ConvivaVideoAnalytics;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.playkit.Player;
+import com.kaltura.playkit.plugins.ads.AdEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +54,9 @@ public class ConvivaManager {
     private static final String MOBILE = "Mobile";
     private static final String LINEAR = "Linear";
     private static final String VOD = "VOD";
+    private static final String AUDIO_LANGUAGE = "audioLanguage";
+
+
     public static final String AD_ID = "c3.ad.id";
     public static final String AD_IS_SLATE = "c3.ad.isSlate";
     public static final String FIRST_AID_SYSTEM = "c3.ad.firstAdSystem";
@@ -59,6 +64,9 @@ public class ConvivaManager {
     public static final String DIRECTORS = "directors";
     public static final String DEVICE_ID = "deviceId";
     public static final String PRODUCT_ID = "productId";
+    public static final String PUB_DATE = "pubDate";
+
+
     public static final String STREAM_PROTOCOL = "streamProtocol";
     public static final String CONTENT_PLAYBACK_TYPE = "contentPlaybackType";
     public static final String MEDIA_FILE_FRAMEWORK = "c3.ad.mediaFileApiFramework";
@@ -148,6 +156,16 @@ public class ConvivaManager {
 
         }
 
+        if (railData.getStartDate() != null) {
+            contentInfo.put(PUB_DATE, AppCommonMethods.getPubDate(railData.getStartDate()));
+        } else {
+            contentInfo.put(PUB_DATE, "NA");
+        }
+        if (!AssetContent.getLanguageDataString(railData.getTags()).equalsIgnoreCase("")) {
+            contentInfo.put(AUDIO_LANGUAGE, AssetContent.getLanguageDataString(railData.getTags()));
+        } else {
+            contentInfo.put(AUDIO_LANGUAGE, "NA");
+        }
 
         contentInfo.put(PRODUCT_ID, "Astro-Sooka");
         contentInfo.put(STREAM_PROTOCOL, "DASH");
@@ -247,6 +265,32 @@ public class ConvivaManager {
         }
         contentInfo.put(ConvivaSdkConstants.PLAYER_NAME, "Sooka Android");
         ConvivaManager.getConvivaVideoAnalytics(context).reportPlaybackRequested(contentInfo);
+    }
+
+    public static void convivaAdsEvent(BaseActivity baseActivity, AdEvent.AdStartedEvent event) {
+        try {
+            AdEvent.AdStartedEvent adStartedEvent = event;
+            Map<String, Object> contentInfo = new HashMap<String, Object>();
+            contentInfo.put(ConvivaManager.AD_ID, adStartedEvent.adInfo.getAdId());
+            contentInfo.put(ConvivaManager.FIRST_AD_ID, adStartedEvent.adInfo.getAdId());
+            contentInfo.put(ConvivaSdkConstants.DURATION, adStartedEvent.adInfo.getAdDuration() + "");
+            contentInfo.put(ConvivaManager.FIRST_CREATIVE_ID, adStartedEvent.adInfo.getCreativeId());
+            contentInfo.put(ConvivaManager.AD_POSITION, adStartedEvent.adInfo.getAdPositionType());
+            contentInfo.put(ConvivaSdkConstants.ASSET_NAME, adStartedEvent.adInfo.getAdTitle());
+            contentInfo.put(ConvivaSdkConstants.STREAM_URL, "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=");
+            contentInfo.put(ConvivaManager.AD_SYSTEM, "DFP");
+            contentInfo.put(ConvivaManager.AD_IS_SLATE, false);
+            contentInfo.put(ConvivaManager.MEDIA_FILE_FRAMEWORK, "NA");
+            contentInfo.put(ConvivaManager.FIRST_AID_SYSTEM, "NA");
+            contentInfo.put(ConvivaManager.AD_TECHNOLOGY, "Client Side");
+            contentInfo.put(ConvivaManager.AD_STITCHER, "NA");
+            contentInfo.put(ConvivaSdkConstants.IS_LIVE, false);
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdLoaded(contentInfo);
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdStarted();
+            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
+        } catch (Exception e) {
+
+        }
     }
 
     public static void convivaPlayerPlayReportRequest() {
