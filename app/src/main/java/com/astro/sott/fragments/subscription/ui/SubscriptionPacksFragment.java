@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.R;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
@@ -26,7 +27,6 @@ import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.modelClasses.InApp.PackDetail;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
-import com.astro.sott.utils.billing.SkuDetails;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;

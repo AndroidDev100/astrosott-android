@@ -6,7 +6,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.activities.search.ui.ActivitySearch;
+import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.AppUpdateCallBack;
@@ -19,7 +24,9 @@ import com.astro.sott.fragments.video.ui.VideoFragment;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
 import com.astro.sott.utils.billing.AstroBillingProcessor;
 import com.astro.sott.utils.billing.BillingProcessor;
-import com.astro.sott.utils.billing.SkuDetails;
+
+import com.astro.sott.utils.billing.InAppProcessListener;
+import com.astro.sott.utils.billing.PurchaseType;
 import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.PrintLogging;
@@ -31,6 +38,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
@@ -65,9 +73,10 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 
+import java.util.List;
 import java.util.Objects;
 
-public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack, BillingProcessor.IBillingHandler, CardCLickedCallBack {
+public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack, InAppProcessListener, CardCLickedCallBack {
     private final String TAG = this.getClass().getSimpleName();
     private TextView toolbarTitle;
     private HomeFragment homeFragment;
@@ -630,70 +639,98 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void intializeBilling() {
 
-        String tempBase64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhiyDBLi/JpQLoxikmVXqxK8M3ZhJNfW2tAdjnGnr7vnDiYOiyk+NomNLqmnLfQwkC+TNWn50A5XmA8FEuZmuqOzKNRQHw2P1Spl27mcZsjXcCFwj2Vy+eso3pPLjG4DfqCmQN2jZo97TW0EhsROdkWflUMepy/d6sD7eNfncA1Z0ECEDuSuOANlMQLJk7Ci5PwUHKYnUAIwbq0fU9LP6O8Ejx5BK6o5K7rtTBttCbknTiZGLo6rB+8RcSB4Z0v3Di+QPyvxjIvfSQXlWhRdyxAs/EZ/F4Hdfn6TB7mLZkKZZwI0xzOObJp2BiesclMi1wHQsNSgQ8pnZ8T52aJczpQIDAQAB";
+        /*String tempBase64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhiyDBLi/JpQLoxikmVXqxK8M3ZhJNfW2tAdjnGnr7vnDiYOiyk+NomNLqmnLfQwkC+TNWn50A5XmA8FEuZmuqOzKNRQHw2P1Spl27mcZsjXcCFwj2Vy+eso3pPLjG4DfqCmQN2jZo97TW0EhsROdkWflUMepy/d6sD7eNfncA1Z0ECEDuSuOANlMQLJk7Ci5PwUHKYnUAIwbq0fU9LP6O8Ejx5BK6o5K7rtTBttCbknTiZGLo6rB+8RcSB4Z0v3Di+QPyvxjIvfSQXlWhRdyxAs/EZ/F4Hdfn6TB7mLZkKZZwI0xzOObJp2BiesclMi1wHQsNSgQ8pnZ8T52aJczpQIDAQAB";
         billingProcessor = new BillingProcessor(this, tempBase64, this);
         billingProcessor.initialize();
-        billingProcessor.loadOwnedPurchasesFromGoogle();
+        billingProcessor.loadOwnedPurchasesFromGoogle();*/
+
+        billingProcessor = new BillingProcessor(HomeActivity.this,this);
+        billingProcessor.initializeBillingProcessor();
     }
 
-    @Override
+   /* @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (!billingProcessor.handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
+    }*/
 
-    @Override
-    public void onProductPurchased(String productId, TransactionDetails details) {
-        if (details.purchaseInfo != null && details.purchaseInfo.purchaseData != null && details.purchaseInfo.purchaseData.purchaseToken != null) {
-            String orderId;
-            Log.w("billingProcessor_play", UserInfo.getInstance(this).getAccessToken() + "------" + details);
-            if (details.purchaseInfo.purchaseData.orderId != null) {
-                orderId = details.purchaseInfo.purchaseData.orderId;
-            } else {
-                orderId = "";
-            }
-            subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), productId, details.purchaseInfo.purchaseData.purchaseToken, orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
-                if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
-                    if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
-                        Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-
-                }
-            });
-        }
-
-    }
-
-    @Override
-    public void onPurchaseHistoryRestored() {
-
-    }
-
-    @Override
-    public void onBillingError(int errorCode, Throwable error) {
-        Log.w("billingProcessor_play", "error");
-
-    }
-
-    @Override
-    public void onBillingInitialized() {
-        Log.w("billingProcessor_play", "INTIALIZED");
-
-    }
 
     @Override
     public void onCardClicked(String productId, String serviceType) {
         if (serviceType.equalsIgnoreCase("ppv")) {
-            billingProcessor.purchase(this, productId, "DEVELOPER PAYLOAD HERE");
+            billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {
-            billingProcessor.subscribe(this, productId, "DEVELOPER PAYLOAD HERE");
+            billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
         }
     }
 
     public SkuDetails getSubscriptionDetail(String productId) {
-        return billingProcessor.getSubscriptionListingDetails(productId);
+        return billingProcessor.getLocalSubscriptionSkuDetail(HomeActivity.this,productId);
+    }
+
+
+    @Override
+    public void onBillingInitialized() {
+
+    }
+
+    @Override
+    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+            if (purchases.get(0).getPurchaseToken() != null) {
+                processPurchase(purchases);
+            }
+        }
+    }
+    private void processPurchase(List<Purchase> purchases) {
+        try {
+            for (Purchase purchase : purchases) {
+                if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                    handlePurchase(purchase);
+                } else if (purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
+                    //  PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
+                    // handle pending purchases, e.g. confirm with users about the pending
+                    // purchases, prompt them to complete it, etc.
+                    // TODO: 8/24/2020 handle this in the next release.
+                }
+            }
+        }catch (Exception ignored){
+
+        }
+
+    }
+
+    private void handlePurchase(Purchase purchase) {
+
+        String orderId;
+        Log.w("billingProcessor_play", UserInfo.getInstance(this).getAccessToken() + "------" + purchase);
+        if (purchase.getOrderId() != null) {
+            orderId = purchase.getOrderId();
+        } else {
+            orderId = "";
+        }
+        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+            if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
+                if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
+                    Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
+
+    @Override
+    public void onListOfSKUFetched(@Nullable List<SkuDetails> purchases) {
+
+    }
+
+    @Override
+    public void onBillingError(@Nullable BillingResult error) {
+
     }
 }

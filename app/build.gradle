@@ -250,7 +250,7 @@ dependencies {
     implementation project(':enveusdk')
 
 
-    implementation 'com.android.billingclient:billing:2.0.1'
+    implementation 'com.android.billingclient:billing:3.0.3'
 
 
     // optional
