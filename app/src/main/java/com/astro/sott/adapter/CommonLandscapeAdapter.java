@@ -174,21 +174,19 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 landscapeItemBinding.metas.billingImage.setVisibility(View.GONE);
                 setRecycler(landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(landscapeItemBinding.billingImage, singleItem.getObject().getTags());
-                AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory,itemsList.get(i),mContext);
+                AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory, itemsList.get(i), mContext);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
-                if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+                if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
-                    landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
-                }
-                else if (itemsList.get(i).getType()==MediaTypeConstant.getLinear(mContext)){
+                    landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) +" - " + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
+                } else if (itemsList.get(i).getType() == MediaTypeConstant.getLinear(mContext)) {
                     if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
-                        String liveEventTime=AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
+                        String liveEventTime = AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
                         landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
                         landscapeItemBinding.tvDescription.setText(liveEventTime);
                     }
 
-                }
-                else {
+                } else {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
                 }
@@ -229,21 +227,19 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 landscapeItemBinding.metas.billingImage.setVisibility(View.GONE);
                 setRecycler(landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(landscapeItemBinding.billingImage, singleItem.getObject().getTags());
-                AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory,itemsList.get(i),mContext);
+                AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory, itemsList.get(i), mContext);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
-                if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+                if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
-                    landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
-                }
-                else if (itemsList.get(i).getType()==MediaTypeConstant.getLinear(mContext)){
+                    landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) +" - " + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
+                } else if (itemsList.get(i).getType() == MediaTypeConstant.getLinear(mContext)) {
                     if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
-                        String liveEventTime=AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
+                        String liveEventTime = AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
                         landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
                         landscapeItemBinding.tvDescription.setText(liveEventTime);
                     }
 
-                }
-                else {
+                } else {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
                 }
@@ -282,19 +278,19 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 landscapeItemBinding.metas.billingImage.setVisibility(View.GONE);
                 setRecycler(landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
                 AppCommonMethods.setBillingUi(landscapeItemBinding.billingImage, singleItem.getObject().getTags());
-                AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory,itemsList.get(i),mContext);
+                AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory, itemsList.get(i), mContext);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
-                if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
+                if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
-                    landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
-                }else if (itemsList.get(i).getType()==MediaTypeConstant.getLinear(mContext)){
+                    landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + " - " + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
+                } else if (itemsList.get(i).getType() == MediaTypeConstant.getLinear(mContext)) {
                     if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
-                        String liveEventTime=AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
+                        String liveEventTime = AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
                         landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
                         landscapeItemBinding.tvDescription.setText(liveEventTime);
                     }
 
-                }else {
+                } else {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
                 }
