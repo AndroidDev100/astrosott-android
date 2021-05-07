@@ -3,5 +3,4 @@
     <solid android:color="@color/white"/> <!-- this one is ths color of the Rounded Button -->
     <corners
         android:radius="2dp"/>
-
 </shape>

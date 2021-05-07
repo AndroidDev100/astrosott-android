@@ -112,7 +112,6 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     private void loadDataFromModel(List<PackDetail> productsResponseMessage) {
         SubscriptionAdapter adapter = new SubscriptionAdapter(getActivity(), productsResponseMessage, productList);
         getBinding().recyclerView.setAdapter(adapter);
-
     }
 
     private void getProducts() {

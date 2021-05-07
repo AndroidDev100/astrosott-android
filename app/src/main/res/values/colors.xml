@@ -130,5 +130,12 @@
     <color name="pin_error_line_color">#f42d5b</color>
     <color name="ribben_text_color">#151024</color>
 
-
+    <color name="black_text_color">#262C40</color>
+    <color name="warm_black_color">#707070</color>
+    <array name="packages_colors">
+        <item>@color/yellow_orange</item>
+        <item>@color/thumb_color</item>
+        <item>@color/green</item>
+        <item>@color/aqua_marine</item>
+    </array>
 </resources>

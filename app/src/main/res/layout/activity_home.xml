@@ -35,7 +35,7 @@
                 app:tabGravity="fill"
                 app:tabIndicator="@color/transparentColor"
                 app:tabTextAppearance="@style/MineCustomTabTextAppearence"
-                app:tabTextColor="@color/grey"></com.google.android.material.tabs.TabLayout>
+                app:tabTextColor="@color/grey" />
 
             <View
                 android:id="@+id/indicator"
@@ -53,7 +53,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="50dp"
             android:visibility="visible"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"></androidx.viewpager2.widget.ViewPager2>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <LinearLayout
             android:id="@+id/main_layout"

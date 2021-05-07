@@ -83,7 +83,7 @@ public class SubscriptionLandingFragment extends BaseBindingFragment<FragmentSub
         getBinding().continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SubscriptionPacksFragment someFragment = new SubscriptionPacksFragment();
+                NewSubscriptionPacksFragment someFragment = new NewSubscriptionPacksFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("from", "more");
                 bundle.putSerializable("productList", productIdList);

@@ -21,6 +21,7 @@ import com.astro.sott.beanModel.subscriptionmodel.SubscriptionModel;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
+import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.utils.billing.BillingProcessor;
@@ -94,7 +95,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     private void setPackFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        SubscriptionPacksFragment subscriptionPacksFragment = new SubscriptionPacksFragment();
+        NewSubscriptionPacksFragment subscriptionPacksFragment = new NewSubscriptionPacksFragment();
         Bundle bundle = new Bundle();
         bundle.putString(AppLevelConstants.FROM_KEY, "detail");
         bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
@@ -171,6 +172,5 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         } else {
             billingProcessor.subscribe(this, productId, "DEVELOPER PAYLOAD HERE");
         }
-
     }
 }

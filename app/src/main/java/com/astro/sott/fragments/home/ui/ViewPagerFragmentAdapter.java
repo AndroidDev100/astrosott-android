@@ -35,7 +35,6 @@ public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
         }
         return new HomeFragment();
     }
-
     @Override
     public int getItemCount() {
         return Titles.length;
