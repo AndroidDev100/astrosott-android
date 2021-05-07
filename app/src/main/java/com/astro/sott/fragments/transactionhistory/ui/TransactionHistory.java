@@ -324,7 +324,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         getBinding().secondText.setText(getResources().getString(R.string.pending));
         getBinding().thirdText.setText(getResources().getString(R.string.failed));
         getBinding().backButton.setOnClickListener(v -> {
-
+            getActivity().onBackPressed();
         });
     }
 
