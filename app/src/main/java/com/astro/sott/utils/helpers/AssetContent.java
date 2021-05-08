@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
+import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.activities.subscription.manager.PaymentItemDetail;
 import com.astro.sott.activities.subscription.model.BillPaymentDetails;
@@ -16,6 +17,7 @@ import com.astro.sott.activities.subscription.model.BillPaymentModel;
 import com.astro.sott.baseModel.PrefrenceBean;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
 import com.astro.sott.modelClasses.dmsResponse.ParentalMapping;
+import com.astro.sott.modelClasses.dmsResponse.SubtitleLanguages;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
@@ -866,9 +868,10 @@ public class AssetContent {
     }
 
     public static String getLanguageDataString
-            (Map<String, MultilingualStringValueArray> map) {
+            (Map<String, MultilingualStringValueArray> map, Context context) {
 
         String language = "";
+        String lang = "";
         List<MultilingualStringValue> language_value = new ArrayList<>();
         MultilingualStringValueArray language_list = map.get(AppLevelConstants.KEY_LANGUAGE);
         if (language_list != null)
@@ -877,10 +880,16 @@ public class AssetContent {
 //            }
             language_value.addAll(language_list.getObjects());
         StringBuilder stringBuilder = new StringBuilder();
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        ArrayList<AudioLanguages> audioLanguageList = responseDmsModel.getAudioLanguageList();
+
         for (int i = 0; i <= language_value.size() - 1; i++) {
-
-            stringBuilder.append(language_value.get(i).getValue()).append(",");
-
+            lang = language_value.get(i).getValue();
+            for (int j = 0; j < audioLanguageList.size(); j++) {
+                if (lang.equalsIgnoreCase(audioLanguageList.get(j).getKey())) {
+                    stringBuilder.append(audioLanguageList.get(j).getValue()).append(",");
+                }
+            }
         }
 
         if (stringBuilder.length() > 0) {
@@ -939,9 +948,10 @@ public class AssetContent {
         return connection;
     }
 
-    public static String getSubTitleLanguageDataString(Map<String, MultilingualStringValueArray> map) {
+    public static String getSubTitleLanguageDataString(Map<String, MultilingualStringValueArray> map, Context context) {
 
         String language = "";
+        String lang = "";
         List<MultilingualStringValue> language_value = new ArrayList<>();
         MultilingualStringValueArray language_list = map.get(AppLevelConstants.KEY_SUBTITLE_LANGUAGE);
         if (language_list != null)
@@ -949,10 +959,16 @@ public class AssetContent {
 //                language_value.add(value);
 //            }
             language_value.addAll(language_list.getObjects());
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        ArrayList<SubtitleLanguages> subtitleLanguages = responseDmsModel.getSubtitleLanguageList();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i <= language_value.size() - 1; i++) {
-
-            stringBuilder.append(language_value.get(i).getValue()).append(",");
+            lang = language_value.get(i).getValue();
+            for (int j = 0; j < subtitleLanguages.size(); j++) {
+                if (lang.equalsIgnoreCase(subtitleLanguages.get(j).getKey())) {
+                    stringBuilder.append(subtitleLanguages.get(j).getValue()).append(",");
+                }
+            }
 
         }
 

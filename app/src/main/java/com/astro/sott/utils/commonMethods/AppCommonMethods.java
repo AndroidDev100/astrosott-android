@@ -2821,14 +2821,14 @@ public class AppCommonMethods {
         if (!AssetContent.getSubGenredataString(asset.getTags()).equalsIgnoreCase(""))
             stringBuilder.append("&subgenre%3D" + AssetContent.getSubGenredataString(asset.getTags()));
 
-        if (!AssetContent.getLanguageDataString(asset.getTags()).equalsIgnoreCase(""))
-            stringBuilder.append("&vlang%3D" + AssetContent.getLanguageDataString(asset.getTags()));
+        if (!AssetContent.getLanguageDataString(asset.getTags(), context).equalsIgnoreCase(""))
+            stringBuilder.append("&vlang%3D" + AssetContent.getLanguageDataString(asset.getTags(), context));
 
         if (!AssetContent.getProvider(asset.getTags()).equalsIgnoreCase(""))
             stringBuilder.append("&vpro%3D" + AssetContent.getProvider(asset.getTags()));
 
-        if (!AssetContent.getSubTitleLanguageDataString(asset.getTags()).equalsIgnoreCase(""))
-            stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags()));
+        if (!AssetContent.getSubTitleLanguageDataString(asset.getTags(), context).equalsIgnoreCase(""))
+            stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags(), context));
         stringBuilder.append("&lang%3D" + "English");
 
         return stringBuilder.toString();

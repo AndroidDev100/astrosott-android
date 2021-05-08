@@ -172,8 +172,8 @@ public class ConvivaManager {
         } else {
             contentInfo.put(PUB_DATE, "NA");
         }
-        if (!AssetContent.getLanguageDataString(railData.getTags()).equalsIgnoreCase("")) {
-            contentInfo.put(AUDIO_LANGUAGE, AssetContent.getLanguageDataString(railData.getTags()));
+        if (!AssetContent.getLanguageDataString(railData.getTags(),context).equalsIgnoreCase("")) {
+            contentInfo.put(AUDIO_LANGUAGE, AssetContent.getLanguageDataString(railData.getTags(),context));
         } else {
             contentInfo.put(AUDIO_LANGUAGE, "NA");
         }
