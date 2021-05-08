@@ -10,7 +10,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.PagerAdapter
 import com.astro.sott.R
-import com.astro.sott.databinding.Fragment1Binding
+import com.astro.sott.databinding.FragmentPackageBinding
 import com.astro.sott.modelClasses.InApp.PackDetail
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
 
@@ -24,7 +24,7 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(context)
-        val bannerBinding: Fragment1Binding = DataBindingUtil.bind<Fragment1Binding>(inflater.inflate(R.layout.fragment_1, container, false))!! //HomeViewPagerBannerBinding.bind(view);
+        val bannerBinding: FragmentPackageBinding = DataBindingUtil.bind<FragmentPackageBinding>(inflater.inflate(R.layout.fragment_package, container, false))!! //HomeViewPagerBannerBinding.bind(view);
         bannerBinding.executePendingBindings()
         val packageModel = packagesList[position].productsResponseMessageItem
         val skuModel = packagesList[position].skuDetails

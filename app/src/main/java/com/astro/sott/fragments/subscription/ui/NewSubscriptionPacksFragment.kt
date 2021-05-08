@@ -202,7 +202,6 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
     }
 
     // tab titles
-    private val titles = arrayOf("Entertainment", "Sports", "Single Sports-Pass")
     override fun inflateBindingLayout(inflater: LayoutInflater): FragmentNewSubscriptionPacksBinding? {
         return FragmentNewSubscriptionPacksBinding.inflate(inflater)
     }
