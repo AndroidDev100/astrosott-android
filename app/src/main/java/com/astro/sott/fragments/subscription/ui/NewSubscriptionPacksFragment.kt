@@ -158,8 +158,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
     private fun setViewPager(packagesList: List<PackDetail>) {
         val productList = arguments!!.getSerializable("productList") as java.util.ArrayList<String>
-Log.e("ProductList",Gson().toJson(productList))
-        binding.viewPager.adapter = SubscriptionPagerAdapter(activity!!, packagesList, productList,this)
+        binding.viewPager.adapter = SubscriptionPagerAdapter(activity!!, packagesList, productList, this)
         binding.viewPager.setPadding(SliderPotrait.dp2px(activity!!, 32f), 0, SliderPotrait.dp2px(activity!!, 32f), 0);
         binding.viewPager.clipChildren = false
         binding.viewPager.clipToPadding = false
@@ -170,8 +169,8 @@ Log.e("ProductList",Gson().toJson(productList))
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-            }
 
+            }
             override fun onPageSelected(position: Int) {
                 when (position) {
                     0 -> {
@@ -193,7 +192,9 @@ Log.e("ProductList",Gson().toJson(productList))
         })
         binding.tabs.setupWithViewPager(binding.viewPager);
         binding.terms.setOnClickListener(this)
-        binding.viewPager.currentItem = 0
+        binding.tabs.setSelectedTabIndicatorColor(resources.getColor(R.color.yellow_orange))
+        binding.tabs.setTabTextColors(resources.getColor(R.color.gray), resources.getColor(R.color.yellow_orange))
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
