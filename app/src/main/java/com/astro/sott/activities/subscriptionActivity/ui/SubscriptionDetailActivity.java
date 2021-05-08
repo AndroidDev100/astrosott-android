@@ -203,4 +203,5 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     }
 
+
 }
