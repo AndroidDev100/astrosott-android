@@ -1,7 +1,6 @@
 package com.astro.sott.fragments.subscription.adapter
 
 import android.content.Context
-import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +27,7 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
         val bannerBinding: Fragment1Binding = DataBindingUtil.bind<Fragment1Binding>(inflater.inflate(R.layout.fragment_1, container, false))!! //HomeViewPagerBannerBinding.bind(view);
         bannerBinding.executePendingBindings()
         val packageModel = packagesList[position].productsResponseMessageItem
+        val skuModel = packagesList[position].skuDetails
         if (packageModel.isFreemium != null && !packageModel.isFreemium!!) {
             bannerBinding.text.visibility = View.INVISIBLE
             bannerBinding.text.setPadding(0, 0, 0, 0)
@@ -53,17 +53,17 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
         bannerBinding.mainBackground.background = backgroundDrawable
         bannerBinding.packageTitle.text = packageModel.displayName
         bannerBinding.packageTitle.setTextColor(currentColor)
-        bannerBinding.packagePrice.text = packageModel.currencyCode + packageModel.retailPrice + "/" + packageModel.period?.replace("(s)", "")
-        bannerBinding.packageDescription.text = packageModel.productDescription
+        if (packageModel.duration == 1)
+            bannerBinding.packagePrice.text = skuModel.priceText + "/" + packageModel.period?.replace("(s)", "")
+        else
+            bannerBinding.packagePrice.text = skuModel.priceText + "/" + packageModel.duration + " " + packageModel.period?.replace("(s)", "")
+
+        bannerBinding.packageDescription.text = skuModel.description
 
         var buttonDrawable: Drawable = bannerBinding.btnChooseMe.background
         buttonDrawable = DrawableCompat.wrap(buttonDrawable)
         DrawableCompat.setTint(buttonDrawable, currentColor)
         bannerBinding.btnChooseMe.background = buttonDrawable
-
-//        var imageTop: Drawable = bannerBinding.maskbottom.drawable
-//        buttonDrawable = DrawableCompat.wrap(buttonDrawable)
-//        DrawableCompat.setTint(imageTop, currentColor)
         bannerBinding.masktop.setColorFilter(currentColor)
         bannerBinding.maskbottom.setColorFilter(currentColor)
 

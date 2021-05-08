@@ -29,6 +29,7 @@ import com.astro.sott.utils.helpers.ActivityLauncher
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
 import com.astro.sott.utils.userInfo.UserInfo
+import com.google.gson.Gson
 import com.google.gson.JsonArray
 
 private const val ARG_PARAM1 = "param1"
@@ -153,7 +154,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
     private fun setViewPager(packagesList: List<PackDetail>) {
         val productList = arguments!!.getSerializable("productList") as java.util.ArrayList<String>
-
+Log.e("ProductList",Gson().toJson(productList))
         binding.viewPager.adapter = SubscriptionPagerAdapter(activity!!, packagesList, productList,this)
         binding.viewPager.setPadding(SliderPotrait.dp2px(activity!!, 32f), 0, SliderPotrait.dp2px(activity!!, 32f), 0);
         binding.viewPager.clipChildren = false
