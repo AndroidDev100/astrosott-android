@@ -3688,6 +3688,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (PlayerRepository.getInstance() != null) {
                 PlayerRepository.getInstance().destroCallBacks();
             }
+            if (ConvivaManager.getConvivaAdAnalytics(baseActivity) != null) {
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
+                ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
+                ConvivaManager.removeConvivaAdsSession();
+            }
             ConvivaManager.convivaPlayerStoppedReportRequest();
             ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackEnded();
             ConvivaManager.removeConvivaSession();

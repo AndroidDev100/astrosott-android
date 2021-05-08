@@ -106,6 +106,8 @@ public interface AppLevelConstants {
     String PARENTAL_RATING = "ParentalRating";
     String ProviderContentTier = "ProviderContentTier";
     String KEEP_ADS = "KEEP_ADS";
+    String NO_ADS = "NO_ADS";
+
     String BILLING_ID = "BillingId";
 
     String KEY_SEASON_NUMBER = "SeasonNumber";
@@ -171,6 +173,8 @@ public interface AppLevelConstants {
     String KEY_PARENTREF_ID = "TrailerParentRefId";
     String KEY_VIDEO_RESOLUTION = "VideoResolution";
     String KEY_DIRECTOR = "Director";
+    String KEY_PRODUCER = "Producer";
+
     String PROVIDER = "Provider";
     String RIBBON = "Ribbon";
     String WATCHLIST_PARTNER_TYPE = "1";

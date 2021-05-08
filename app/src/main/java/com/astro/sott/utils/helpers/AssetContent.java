@@ -990,6 +990,30 @@ public class AssetContent {
         return connection;
     }
 
+    public static String getProducer(Map<String, MultilingualStringValueArray> map) {
+        String crew;
+        List<MultilingualStringValue> crew_value = new ArrayList<>();
+        MultilingualStringValueArray crew_list = map.get(AppLevelConstants.KEY_PRODUCER);
+        if (crew_list != null)
+//            for (MultilingualStringValue value : crew_list.getObjects()) {
+//                crew_value.add(value);
+//            }
+            crew_value.addAll(crew_list.getObjects());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= crew_value.size() - 1; i++) {
+            stringBuilder.append(crew_value.get(i).getValue()).append(", ");
+        }
+
+        if (stringBuilder.length() > 0) {
+            crew = stringBuilder.toString();
+            crew = crew.substring(0, crew.length() - 2);
+        } else {
+            crew = "";
+        }
+
+        return crew;
+    }
+
     public static String getDirector(Map<String, MultilingualStringValueArray> map) {
         String crew;
         List<MultilingualStringValue> crew_value = new ArrayList<>();

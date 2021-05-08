@@ -62,6 +62,8 @@ public class ConvivaManager {
     public static final String FIRST_AID_SYSTEM = "c3.ad.firstAdSystem";
     public static final String ACTORS = "actors";
     public static final String DIRECTORS = "directors";
+    public static final String PRODUCER = "producer";
+
     public static final String DEVICE_ID = "deviceId";
     public static final String PRODUCT_ID = "productId";
     public static final String PUB_DATE = "pubDate";
@@ -135,6 +137,11 @@ public class ConvivaManager {
             contentInfo.put(DIRECTORS, "NA");
         } else {
             contentInfo.put(DIRECTORS, AssetContent.getDirector(railData.getTags()));
+        }
+        if (AssetContent.getProducer(railData.getTags()).equalsIgnoreCase("")) {
+            contentInfo.put(PRODUCER, "NA");
+        } else {
+            contentInfo.put(PRODUCER, AssetContent.getProducer(railData.getTags()));
         }
         if (AssetContent.getParentalRating(railData.getTags()).equalsIgnoreCase("")) {
             contentInfo.put(RATING, "NA");
@@ -276,6 +283,7 @@ public class ConvivaManager {
             contentInfo.put(ConvivaSdkConstants.DURATION, adStartedEvent.adInfo.getAdDuration() + "");
             contentInfo.put(ConvivaManager.FIRST_CREATIVE_ID, adStartedEvent.adInfo.getCreativeId());
             contentInfo.put(ConvivaManager.AD_POSITION, adStartedEvent.adInfo.getAdPositionType());
+            contentInfo.put(ConvivaSdkConstants.PLAYBACK.BITRATE, adStartedEvent.adInfo.getMediaBitrate());
             contentInfo.put(ConvivaSdkConstants.ASSET_NAME, adStartedEvent.adInfo.getAdTitle());
             contentInfo.put(ConvivaSdkConstants.STREAM_URL, "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=");
             contentInfo.put(ConvivaManager.AD_SYSTEM, "DFP");
