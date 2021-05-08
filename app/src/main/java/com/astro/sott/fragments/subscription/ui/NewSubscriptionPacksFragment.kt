@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager
 import com.astro.sott.R
 import com.astro.sott.activities.home.HomeActivity
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity
+import com.astro.sott.activities.search.ui.ActivitySearch
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity
 import com.astro.sott.activities.webview.ui.WebViewActivity
 import com.astro.sott.baseModel.BaseBindingFragment
@@ -31,6 +32,7 @@ import com.astro.sott.utils.helpers.carousel.SliderPotrait
 import com.astro.sott.utils.userInfo.UserInfo
 import com.google.gson.Gson
 import com.google.gson.JsonArray
+import kotlinx.android.synthetic.main.app_toolbar.view.*
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -65,8 +67,10 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel::class.java)
         if (arguments!!.getSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY) != null)
             subscriptionIds = arguments!!.getSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY) as Array<String>
-
         getProducts()
+        binding.toolbar.search_icon.setOnClickListener {
+            ActivityLauncher(activity!!).searchActivity(activity!!, ActivitySearch::class.java)
+        }
     }
 
     override fun onAttach(context: Context) {
