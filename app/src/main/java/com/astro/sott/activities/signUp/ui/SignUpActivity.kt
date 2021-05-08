@@ -297,7 +297,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             }
         } else {
             activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
-            activitySinUpBinding?.errorPasssword?.text = getString(R.string.password_error)
+            activitySinUpBinding?.errorPasssword?.text = getString(R.string.valid_password)
 
         }
     }
