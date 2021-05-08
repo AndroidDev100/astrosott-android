@@ -61,10 +61,10 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
             if (checkActiveOrNot(packDetailList.get(position).getProductsResponseMessageItem().getSkuORQuickCode())) {
                 holder.binding.btnBuy.setText("SUBSCRIBED");
             } else {
-                holder.binding.btnBuy.setText("BUY @ " + packDetailList.get(position).getSkuDetails().currency + " " + packDetailList.get(position).getSkuDetails().priceValue);
+                holder.binding.btnBuy.setText("BUY @ " + packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + " " + packDetailList.get(position).getSkuDetails().getPrice());
             }
         } else {
-            holder.binding.btnBuy.setText("BUY @ " + packDetailList.get(position).getSkuDetails().currency + " " + packDetailList.get(position).getSkuDetails().priceValue);
+            holder.binding.btnBuy.setText("BUY @ " + packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + " " + packDetailList.get(position).getSkuDetails().getPrice());
 
         }
 
