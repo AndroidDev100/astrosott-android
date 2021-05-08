@@ -37,13 +37,13 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
         }
         bannerBinding.packagePriceOld.visibility = View.GONE
         bannerBinding.offer.visibility = View.GONE
-        if (position == 1) {
-            bannerBinding.text.visibility = View.VISIBLE
-            bannerBinding.text.setPadding(0, SliderPotrait.dp2px(context, 6f), 0, SliderPotrait.dp2px(context, 6f))
-            bannerBinding.packagePriceOld.visibility = View.VISIBLE
-            bannerBinding.packagePriceOld.paintFlags = bannerBinding.packagePriceOld.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-            bannerBinding.offer.visibility = View.VISIBLE
-        }
+//        if (position == 1) {
+//            bannerBinding.text.visibility = View.VISIBLE
+//            bannerBinding.text.setPadding(0, SliderPotrait.dp2px(context, 6f), 0, SliderPotrait.dp2px(context, 6f))
+//            bannerBinding.packagePriceOld.visibility = View.VISIBLE
+//            bannerBinding.packagePriceOld.paintFlags = bannerBinding.packagePriceOld.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+//            bannerBinding.offer.visibility = View.VISIBLE
+//        }
         val rainbow = context.resources.getIntArray(R.array.packages_colors)
         val currentColor = rainbow[position % rainbow.size]
 
