@@ -533,6 +533,7 @@ public class ActivityLauncher {
             return;
         }
         episodeClickTime = SystemClock.elapsedRealtime();
+
         String seriesId = AssetContent.getSeriesId(asset.getObject().getMetas());
         if (!seriesId.equalsIgnoreCase("")) {
             SeriesDataLayer.getSeries(activity, asset.getObject().getType(), seriesId).observe((LifecycleOwner) activity, asset1 -> {

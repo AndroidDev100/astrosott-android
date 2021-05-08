@@ -3326,7 +3326,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 @Override
                 public void onDisplayAdded(int displayId) {
                     Log.d(TAG, "Display " + displayId + " added.");
-                    Toast.makeText(getActivity(), "Display " + displayId + " added.", Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(getActivity(), "Display " + displayId + " added.", Toast.LENGTH_LONG).show();
                     isHdmiConnected = true;
                     if (runningPlayer!=null){
                         runningPlayer.stop();
@@ -3336,14 +3336,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 @Override
                 public void onDisplayChanged(int displayId) {
                     Log.d(TAG, "Display " + displayId + " changed.");
-                    Toast.makeText(getActivity(), "Display " + displayId + " changed.", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getActivity(), "Display " + displayId + " changed.", Toast.LENGTH_LONG).show();
                     // mDisplayListAdapter.updateContents();
                 }
                 @Override
                 public void onDisplayRemoved(int displayId) {
                     Log.d(TAG, "Display " + displayId + " removed.");
                     isHdmiConnected = false;
-                    Toast.makeText(getActivity(), "Display " + displayId + " removed.", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getActivity(), "Display " + displayId + " removed.", Toast.LENGTH_LONG).show();
                     try {
                         cancelTimer();
                         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
