@@ -730,7 +730,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     @Override
-    public void onBillingError(@Nullable BillingResult error) {
+    public void onBillingError(@Nullable BillingResult error ) {
 
     }
 }
