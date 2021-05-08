@@ -1,6 +1,8 @@
 package com.astro.sott.thirdParty.conViva;
 
 import android.content.Context;
+import android.telephony.TelephonyDisplayInfo;
+import android.telephony.TelephonyManager;
 
 import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
@@ -75,6 +77,8 @@ public class ConvivaManager {
     public static final String AD_POSITION = "c3.ad.position";
     public static final String FIRST_AD_ID = "c3.ad.firstAdId";
     public static final String FIRST_CREATIVE_ID = "c3.ad.firstCreativeId";
+    public static final String AD_CREATIVE_ID = "c3.ad.adCreativeId";
+
 
     public static final String CARRIER = "carrier";
     public static final String KALTURA_ID = "kalturaAssetId";
@@ -254,7 +258,15 @@ public class ConvivaManager {
 
         }
         contentInfo.put(UTM_URL, "NA");
-        contentInfo.put(CARRIER, "NA");
+        TelephonyManager telemamanger = (TelephonyManager)
+                context.getSystemService(Context.TELEPHONY_SERVICE);
+
+        String simOperatorName = telemamanger.getNetworkOperatorName();
+        if (!simOperatorName.equalsIgnoreCase("")) {
+            contentInfo.put(CARRIER, simOperatorName);
+        } else {
+            contentInfo.put(CARRIER, "NA");
+        }
         //
         contentInfo.put(CATEGORY_TYPE, AppCommonMethods.getAssetType(railData.getType(), context));
         contentInfo.put(APP_NAME, "Sooka Android");
@@ -281,9 +293,13 @@ public class ConvivaManager {
             contentInfo.put(ConvivaManager.AD_ID, adStartedEvent.adInfo.getAdId());
             contentInfo.put(ConvivaManager.FIRST_AD_ID, adStartedEvent.adInfo.getAdId());
             contentInfo.put(ConvivaSdkConstants.DURATION, adStartedEvent.adInfo.getAdDuration() + "");
+            contentInfo.put(ConvivaManager.AD_CREATIVE_ID, adStartedEvent.adInfo.getCreativeId());
             contentInfo.put(ConvivaManager.FIRST_CREATIVE_ID, adStartedEvent.adInfo.getCreativeId());
             contentInfo.put(ConvivaManager.AD_POSITION, adStartedEvent.adInfo.getAdPositionType());
-            contentInfo.put(ConvivaSdkConstants.PLAYBACK.BITRATE, adStartedEvent.adInfo.getMediaBitrate());
+            if (adStartedEvent.adInfo.getMediaBitrate() != 0) {
+                int bitRate = adStartedEvent.adInfo.getMediaBitrate() / 1000;
+                contentInfo.put(ConvivaSdkConstants.PLAYBACK.BITRATE, bitRate + "");
+            }
             contentInfo.put(ConvivaSdkConstants.ASSET_NAME, adStartedEvent.adInfo.getAdTitle());
             contentInfo.put(ConvivaSdkConstants.STREAM_URL, "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=");
             contentInfo.put(ConvivaManager.AD_SYSTEM, "DFP");
