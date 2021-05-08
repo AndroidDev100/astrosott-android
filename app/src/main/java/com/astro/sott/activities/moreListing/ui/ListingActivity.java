@@ -1,12 +1,15 @@
 package com.astro.sott.activities.moreListing.ui;
 
 import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -118,7 +121,7 @@ public class ListingActivity extends BaseBindingActivity<ListingActivityBinding>
         } else if (layout.equalsIgnoreCase(AppLevelConstants.TYPE4)) {
             commonSquareListingAdapter = new SquareListingAdapter(this, railList, layoutType);
             getBinding().listRecyclerview.setAdapter(commonSquareListingAdapter);
-        } else if (layout.equalsIgnoreCase(AppLevelConstants.TYPE5)) {
+        } else if (layout.equalsIgnoreCase(AppLevelConstants.TYPE5) || layout.equalsIgnoreCase("LDS")) {
             commonLandscapeListingAdapter = new CommonLandscapeListingAdapter(this, railList, layoutType);
             getBinding().listRecyclerview.setAdapter(commonLandscapeListingAdapter);
         } else {
@@ -140,7 +143,7 @@ public class ListingActivity extends BaseBindingActivity<ListingActivityBinding>
         try {
             //recreate();
             isNewIntent = true;
-            counter=1;
+            counter = 1;
             list.clear();
             isScrolling = false;
             callOnCreateInstances(intent);
@@ -163,7 +166,7 @@ public class ListingActivity extends BaseBindingActivity<ListingActivityBinding>
         if (intent != null) {
             layout = intent.getStringExtra(AppLevelConstants.LAYOUT_TYPE);
             assetCommonBean = intent.getExtras().getParcelable(AppLevelConstants.ASSET_COMMON_BEAN);
-            if(assetCommonBean == null){
+            if (assetCommonBean == null) {
                 return;
             }
             layoutType = assetCommonBean.getMoreAssetType();
@@ -173,7 +176,7 @@ public class ListingActivity extends BaseBindingActivity<ListingActivityBinding>
         } else {
             layout = getIntent().getStringExtra(AppLevelConstants.LAYOUT_TYPE);
             assetCommonBean = getIntent().getExtras().getParcelable(AppLevelConstants.ASSET_COMMON_BEAN);
-            if(assetCommonBean == null){
+            if (assetCommonBean == null) {
                 return;
             }
             layoutType = assetCommonBean.getMoreAssetType();
@@ -193,7 +196,7 @@ public class ListingActivity extends BaseBindingActivity<ListingActivityBinding>
     private void setRecyclerProperty() {
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         int spanCount, spacing;
-        if (layout.equalsIgnoreCase(AppLevelConstants.TYPE5) || layout.equalsIgnoreCase(AppLevelConstants.TYPE7)) {
+        if (layout.equalsIgnoreCase(AppLevelConstants.TYPE5) || layout.equalsIgnoreCase(AppLevelConstants.TYPE7) || layout.equalsIgnoreCase("LDS")) {
             if (tabletSize) {
                 spanCount = AppLevelConstants.SPAN_COUNT_LANDSCAPE_TAB;
                 Resources r = getResources();
@@ -279,7 +282,7 @@ public class ListingActivity extends BaseBindingActivity<ListingActivityBinding>
     }
 
     private void checkTypeOfList() {
-        if(assetCommonBean == null){
+        if (assetCommonBean == null) {
             return;
         }
         getBinding().progressBar.setVisibility(View.VISIBLE);
@@ -363,22 +366,29 @@ public class ListingActivity extends BaseBindingActivity<ListingActivityBinding>
                                     mIsLoading = true;
                                 }
                                 commonSquareListingAdapter.notifyDataSetChanged();
-                            } else {
+                            } else if (layout.equalsIgnoreCase(AppLevelConstants.TYPE5) || layout.equalsIgnoreCase("LDS")) {
                                 if (commonLandscapeListingAdapter.getItemCount() == railCommonData.get(0).getTotalCount()) {
                                     mIsLoading = false;
                                 } else {
                                     mIsLoading = true;
                                 }
                                 commonLandscapeListingAdapter.notifyDataSetChanged();
+                            } else {
+                                if (commonSquareListingAdapter.getItemCount() == railCommonData.get(0).getTotalCount()) {
+                                    mIsLoading = false;
+                                } else {
+                                    mIsLoading = true;
+                                }
+                                commonSquareListingAdapter.notifyDataSetChanged();
                             }
                             getBinding().listRecyclerview.scrollToPosition(mScrollY);
                         }
                     }
                 }
-            }else {
-              getBinding().listRecyclerview.setAdapter(null);
+            } else {
+                getBinding().listRecyclerview.setAdapter(null);
             }
-        }else {
+        } else {
             getBinding().listRecyclerview.setAdapter(null);
         }
     }

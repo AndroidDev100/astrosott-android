@@ -68,6 +68,7 @@ import com.astro.sott.repositories.liveChannel.LinearProgramDataLayer;
 import com.astro.sott.repositories.trailerFragment.TrailerHighlightsDataLayer;
 import com.astro.sott.repositories.webSeriesDescription.SeriesDataLayer;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.ProgramAsset;
@@ -282,6 +283,7 @@ public class ActivityLauncher {
                                    RailCommonData railCommonData,
                                    int layoutPosition, int layoutType, List<RailCommonData> railList,
                                    MediaTypeCallBack mediaTypeCallBack) {
+        new KsPreferenceKey(activity).setClassName(name);
         this.detailRailClick = mediaTypeCallBack;
         switch (name) {
             case AppLevelConstants.MOVIE_DESCRIPTION_ACTIVITY:
