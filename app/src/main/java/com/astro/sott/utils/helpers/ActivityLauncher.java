@@ -165,6 +165,12 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
+    public void privacy(Activity source) {
+        Intent intent = new Intent(source, WebViewActivity.class);
+        intent.putExtra(AppLevelConstants.WEBVIEW, "PRIVACY POLICIES");
+        activity.startActivity(intent);
+    }
+
     public void forgotPasswordActivity(Activity source, Class<ForgotPasswordActivity> destination) {
         Intent intent = new Intent(source, destination);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -744,7 +750,6 @@ public class ActivityLauncher {
         Intent intent = new Intent(source, destination);
         TaskStackBuilder.create(source).addNextIntentWithParentStack(intent).startActivities();
     }
-
 
 
     public void resultActivityBundle(Activity

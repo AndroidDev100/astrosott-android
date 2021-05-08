@@ -153,6 +153,9 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         activitySinUpBinding?.terms?.setOnClickListener {
             ActivityLauncher(this).termAndCondition(this)
         }
+        activitySinUpBinding?.privacy?.setOnClickListener {
+            ActivityLauncher(this).privacy(this)
+        }
         activitySinUpBinding?.google?.setOnClickListener {
             mGoogleSignInClient!!.signOut()
             val signInIntent = mGoogleSignInClient!!.signInIntent

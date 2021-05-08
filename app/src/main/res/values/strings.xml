@@ -561,7 +561,12 @@
     <string name="acount_mismatch">You can not link this account</string>
     <string name="live_home">LIVE TV</string>
     <string name="signup_login"><u>Log In</u></string>
-    <string name="terms_and_conditions">I agree to the <font color='#2cd8e5'> <u>Term and Conditions</u>.</font> </string>
+    <string name="terms_and_conditions">I agree to the </string>
+    <string name="terms"><u>Terms</u></string>
+    <string name="privacy"><u>Privacy</u></string>
+
+
+
     <string name="already_have_an_account">Already have an account? </string>
     <string name="password_rules">Password must be at least 8 characters, at least 1 <b></b> number, 1 lowercase letter and 1 uppercase letter.</string>
     <string name="verify">VERIFY</string>
