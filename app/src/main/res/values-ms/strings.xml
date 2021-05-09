@@ -605,6 +605,6 @@
     <string name="next_episode">Next Episode</string>
 
     <string name="logout_confirmation_message_new">Do you really want to logout?</string>
-    <string name="terms_packages"><![CDATA[All prices displayed are inclusive of 6% digital tax. Terms & Conditions apply.]]></string>
+    <string name="terms_packages">All prices displayed are inclusive of 6% digital tax. <font color='#2cd8e5'> <u>Terms &amp; Conditions</u></font> apply.</string>
     <string name="choose_me">Choose Me</string>
 </resources>

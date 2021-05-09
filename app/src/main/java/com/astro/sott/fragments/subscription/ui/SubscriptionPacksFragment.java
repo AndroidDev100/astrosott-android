@@ -1,6 +1,5 @@
 package com.astro.sott.fragments.subscription.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,9 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.astro.sott.R;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
@@ -214,7 +211,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
 
 
     @Override
-    public void onCardClicked(String productId, String serviceType) {
+    public void onCardClicked(String productId, String serviceType, String activePlan) {
 
     }
 }

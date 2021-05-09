@@ -12,12 +12,11 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.AppUpdateCallBack;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.fragments.home.ui.ViewPagerFragmentAdapter;
-import com.astro.sott.fragments.moreTab.ui.MoreFragment;
 import com.astro.sott.fragments.moreTab.ui.MoreNewFragment;
+import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.video.ui.VideoFragment;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
-import com.astro.sott.utils.billing.AstroBillingProcessor;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.SkuDetails;
 import com.astro.sott.utils.billing.TransactionDetails;
@@ -31,13 +30,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
@@ -47,7 +45,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,13 +56,13 @@ import com.astro.sott.fragments.livetv.ui.LiveTvFragment;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
+import com.google.gson.Gson;
 
-import java.util.Objects;
+import java.util.ArrayList;
 
 public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack, BillingProcessor.IBillingHandler, CardCLickedCallBack {
     private final String TAG = this.getClass().getSimpleName();
@@ -442,7 +439,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     // tab titles
-    private String[] titles = new String[]{"ALL","TV SHOWS", "MOVIES", "SPORTS"};
+    private String[] titles = new String[]{"ALL", "TV SHOWS", "MOVIES", "SPORTS"};
 
     private void initialFragment(HomeActivity homeActivity) {
         setViewPager();
@@ -647,7 +644,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     public void onProductPurchased(String productId, TransactionDetails details) {
         if (details.purchaseInfo != null && details.purchaseInfo.purchaseData != null && details.purchaseInfo.purchaseData.purchaseToken != null) {
             String orderId;
-            Log.w("billingProcessor_play", UserInfo.getInstance(this).getAccessToken() + "------" + details);
             if (details.purchaseInfo.purchaseData.orderId != null) {
                 orderId = details.purchaseInfo.purchaseData.orderId;
             } else {
@@ -657,14 +653,25 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
                     if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
                         Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                        refreshFragment();
                     }
+
                 } else {
                     Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-
                 }
             });
         }
 
+    }
+
+    private void refreshFragment() {
+        NewSubscriptionPacksFragment newSubscriptionFragment = (NewSubscriptionPacksFragment) getSupportFragmentManager().findFragmentByTag("SubscriptionFragment");
+        if (newSubscriptionFragment != null && newSubscriptionFragment.isAdded()) {
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.detach(newSubscriptionFragment);
+            fragmentTransaction.attach(newSubscriptionFragment);
+            fragmentTransaction.commit();
+        }
     }
 
     @Override
@@ -685,7 +692,10 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     @Override
-    public void onCardClicked(String productId, String serviceType) {
+    public void onCardClicked(String productId, String serviceType, String activePlan) {
+        ArrayList<String> activePlans = new ArrayList<>();
+        if (activePlan != null)
+            activePlans.add(activePlan);
         if (serviceType.equalsIgnoreCase("ppv")) {
             billingProcessor.purchase(this, productId, "DEVELOPER PAYLOAD HERE");
         } else {

@@ -1,28 +1,20 @@
 package com.astro.sott.activities.subscriptionActivity.ui;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
-import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
-import com.astro.sott.activities.subscription.adapter.PlanAdapter;
 import com.astro.sott.baseModel.BaseBindingActivity;
-import com.astro.sott.beanModel.subscriptionmodel.SubscriptionModel;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
-import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
-import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.SkuDetails;
@@ -30,9 +22,6 @@ import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.kaltura.client.types.Subscription;
-
-import java.util.Collections;
-import java.util.Comparator;
 
 public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubscriptionDetailBinding> implements BillingProcessor.IBillingHandler, CardCLickedCallBack {
     private BillingProcessor billingProcessor;
@@ -100,7 +89,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         bundle.putString(AppLevelConstants.FROM_KEY, "detail");
         bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
         subscriptionPacksFragment.setArguments(bundle);
-        fm.beginTransaction().replace(R.id.frameContent, subscriptionPacksFragment).commitNow();
+        fm.beginTransaction().replace(R.id.frameContent, subscriptionPacksFragment,"SubscriptionFragment").commitNow();
     }
 
     private void intializeBilling() {
@@ -165,7 +154,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     }
 
     @Override
-    public void onCardClicked(String productId, String serviceType) {
+    public void onCardClicked(String productId, String serviceType, String activePlan) {
         if (serviceType.equalsIgnoreCase("ppv")) {
           //  billingProcessor.consumePurchase(productId);
             billingProcessor.purchase(this, productId, "DEVELOPER PAYLOAD HERE");

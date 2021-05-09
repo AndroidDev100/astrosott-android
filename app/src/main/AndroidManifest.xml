@@ -45,7 +45,8 @@
         <activity android:name=".activities.detailConfirmation.DetailConfirmationActivity" />
         <activity
             android:name=".activities.subscriptionActivity.ui.SubscriptionDetailActivity"
-            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensorLandscape"/>
         <activity android:name=".activities.forgotPassword.ui.IsThisYouActivity" />
         <activity android:name=".activities.search.ui.SearchKeywordActivity" />
         <activity android:name=".activities.manageDevice.ui.ManageDeviceActivity" />

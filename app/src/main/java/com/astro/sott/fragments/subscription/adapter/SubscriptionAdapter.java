@@ -6,20 +6,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
-import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
-import com.astro.sott.activities.search.adapter.LanguageAdapter;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
-import com.astro.sott.databinding.LanguagePreferenceItemBinding;
-import com.astro.sott.databinding.SubcriptionPackageListItemBinding;
 import com.astro.sott.databinding.SubscriptionPackItemBinding;
-import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.modelClasses.InApp.PackDetail;
-import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.userInfo.UserInfo;
 
@@ -72,7 +65,7 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
         holder.binding.btnBuy.setOnClickListener(v -> {
             if (UserInfo.getInstance(fragment).isActive()) {
                 if (!holder.binding.btnBuy.getText().toString().equalsIgnoreCase("subscribed"))
-                    cardCLickedCallBack.onCardClicked(packDetailList.get(position).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(position).getProductsResponseMessageItem().getServiceType());
+                    cardCLickedCallBack.onCardClicked(packDetailList.get(position).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(position).getProductsResponseMessageItem().getServiceType(), null);
             } else {
                 new ActivityLauncher(fragment).astrLoginActivity(fragment, AstrLoginActivity.class, "");
             }

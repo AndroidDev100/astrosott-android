@@ -72,7 +72,21 @@ data class ProductsResponseMessageItem(
         val productDescription: String? = null,
 
         @field:SerializedName("frequency")
-        val frequency: String? = null
+        val frequency: String? = null,
+
+        @field:SerializedName("attributes")
+        val attributes: List<Attribute>? = null
+)
+
+data class Attribute(
+        @field:SerializedName("attributeLabel")
+        val attributeLabel: String? = null,
+        @field:SerializedName("attributeType")
+        val attributeType: String? = null,
+        @field:SerializedName("attributeValue")
+        val attributeValue: String? = null,
+        @field:SerializedName("attributeName")
+        val attributeName: String? = null
 )
 
 data class GetProductsResponseMessage(

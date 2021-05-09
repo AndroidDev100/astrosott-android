@@ -340,19 +340,10 @@ public class BillingProcessor extends BillingBase
 	{
 		return purchase(activity, productId, Constants.PRODUCT_TYPE_SUBSCRIPTION, developerPayload);
 	}
-
-	/***
-	 * Purchase a product
-	 *
-	 * @param activity the activity calling this method
-	 * @param productId the product id to purchase
-	 * @param extraParams A bundle object containing extra parameters to pass to
-	 *                          getBuyIntentExtraParams()
-	 * @see <a href="https://developer.android.com/google/play/billing/billing_reference.html#getBuyIntentExtraParams">extra
-	 * params documentation on developer.android.com</a>
-	 * @return {@code false} if the billing system is not initialized, {@code productId} is empty
-	 * or if an exception occurs. Will return {@code true} otherwise.
-	 */
+	public boolean subscribe(Activity activity,List<String>oldId, String productId, String developerPayload)
+	{
+		return purchase(activity,oldId, productId, Constants.PRODUCT_TYPE_SUBSCRIPTION, developerPayload);
+	}
 	public boolean purchase(Activity activity, String productId, String developerPayload, Bundle extraParams)
 	{
 		if (!isOneTimePurchaseWithExtraParamsSupported(extraParams))
