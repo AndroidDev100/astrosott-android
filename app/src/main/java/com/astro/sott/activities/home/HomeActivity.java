@@ -28,6 +28,7 @@ import com.astro.sott.utils.billing.BillingProcessor;
 
 import com.astro.sott.utils.billing.InAppProcessListener;
 import com.astro.sott.utils.billing.PurchaseType;
+import com.astro.sott.utils.billing.SKUsListListener;
 import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.PrintLogging;
@@ -735,9 +736,16 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     }
 
-    /*public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList) {
+    public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList, SKUsListListener callBacks) {
         if (billingProcessor!=null && billingProcessor.isReady()){
-            billingProcessor.getAllSkuDetails(subSkuList,productsSkuList);
+            billingProcessor.getAllSkuDetails(subSkuList,productsSkuList, new SKUsListListener() {
+                @Override
+                public void onListOfSKU(@Nullable List<SkuDetails> purchases) {
+                    Log.w("callbackCalled",purchases.size()+"");
+                    callBacks.onListOfSKU(purchases);
+                }
+            });
         }
-    }*/
+    }
+
 }
