@@ -497,7 +497,10 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 		}
 	}
 	List<SkuDetails> listOfllSkus;
-	public void getAllSkuDetails(List<String> subSkuList, List<String> productSkuList) {
+	SKUsListListener skUsListListener;
+	public void getAllSkuDetails(List<String> subSkuList, List<String> productSkuList,SKUsListListener callBack) {
+		Log.w("sizess",subSkuList.size()+"<------>"+productSkuList.size());
+		this.skUsListListener=callBack;
 		listOfllSkus=new ArrayList<>();
 		SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
 		params.setSkusList(subSkuList).setType(BillingClient.SkuType.SUBS);
@@ -507,12 +510,15 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 					public void onSkuDetailsResponse(BillingResult billingResult,
 													 List<SkuDetails> skuDetailsList) {
 						if (skuDetailsList != null && skuDetailsList.size() > 0) {
+							Log.w("debugLogic 1",skuDetailsList.size()+"");
 							for (SkuDetails skuDetails : skuDetailsList) {
 								Log.w("skuDetails", skuDetails.getPrice() + "-->>" + skuDetails.getPriceCurrencyCode());
 								listOfllSkus.add(skuDetails);
 							}
 							fetchAllProducts(productSkuList,listOfllSkus);
+							Log.w("debugLogic 2",skuDetailsList.size()+"");
 						}else {
+							Log.w("debugLogic 3",skuDetailsList.size()+"");
 							fetchAllProducts(productSkuList,listOfllSkus);
 						}
 					}
@@ -521,8 +527,9 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 	}
 
 	private void fetchAllProducts(List<String> productSkuList, List<SkuDetails> listOfllSkus) {
+		Log.w("sizess",productSkuList.size()+"<------>"+listOfllSkus.size());
 		SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
-		params.setSkusList(productSkuList).setType(BillingClient.SkuType.SUBS);
+		params.setSkusList(productSkuList).setType(BillingClient.SkuType.INAPP);
 		myBillingClient.querySkuDetailsAsync(params.build(),
 				new SkuDetailsResponseListener() {
 					@Override
@@ -532,10 +539,10 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 							for (SkuDetails skuDetails : skuDetailsList) {
 								Log.w("skuDetails", skuDetails.getPrice() + "-->>" + skuDetails.getPriceCurrencyCode());
 								listOfllSkus.add(skuDetails);
-								inAppProcessListener.onListOfSKUFetched(listOfllSkus);
 							}
+							skUsListListener.onListOfSKU(listOfllSkus);
 						}else {
-							inAppProcessListener.onListOfSKUFetched(listOfllSkus);
+							skUsListListener.onListOfSKU(listOfllSkus);
 						}
 					}
 				});
@@ -546,11 +553,14 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 	}
 
 	public SkuDetails getLocalSubscriptionSkuDetail(Activity context, String identifier) {
+		SkuDetails matchedSKUDetails=null;
 		try {
 			if (getListOfllSkus()!=null && getListOfllSkus().size()>0){
 				for (int i=0;i<getListOfllSkus().size();i++){
+					Log.w("printIdentifier",identifier+"   "+getListOfllSkus().get(i).getSku());
 					if (identifier.equalsIgnoreCase(getListOfllSkus().get(i).getSku())){
-						return getListOfllSkus().get(i);
+						matchedSKUDetails=getListOfllSkus().get(i);
+						break;
 					}
 				}
 			}
@@ -558,7 +568,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
 		}
 
-		return null;
+		return matchedSKUDetails;
 	}
 
 	public void getAllSkuSubscriptionDetails(List<String> subSkuList) {

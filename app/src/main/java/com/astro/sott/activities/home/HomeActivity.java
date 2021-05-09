@@ -19,6 +19,7 @@ import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.fragments.home.ui.ViewPagerFragmentAdapter;
 import com.astro.sott.fragments.moreTab.ui.MoreFragment;
 import com.astro.sott.fragments.moreTab.ui.MoreNewFragment;
+import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.video.ui.VideoFragment;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
@@ -726,11 +727,17 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     @Override
     public void onListOfSKUFetched(@Nullable List<SkuDetails> purchases) {
-
+       // SubscriptionPacksFragment.dataFeched(purchases);
     }
 
     @Override
     public void onBillingError(@Nullable BillingResult error ) {
 
     }
+
+    /*public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList) {
+        if (billingProcessor!=null && billingProcessor.isReady()){
+            billingProcessor.getAllSkuDetails(subSkuList,productsSkuList);
+        }
+    }*/
 }

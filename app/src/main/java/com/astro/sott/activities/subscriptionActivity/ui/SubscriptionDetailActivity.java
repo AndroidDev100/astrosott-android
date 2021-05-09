@@ -27,6 +27,7 @@ import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.InAppProcessListener;
 import com.astro.sott.utils.billing.PurchaseType;
+import com.astro.sott.utils.billing.SKUsListListener;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.kaltura.client.types.Subscription;
@@ -74,9 +75,10 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                             count++;
                         }
                     }
-                    setPackFragment();
+
                 }
             }
+            setPackFragment();
         });
 
 
@@ -115,7 +117,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     }
 
     public SkuDetails getPurchaseDetail(String productId) {
-        return billingProcessor.getProductSkuDetail(SubscriptionDetailActivity.this,productId);
+        return billingProcessor.getLocalSubscriptionSkuDetail(SubscriptionDetailActivity.this,productId);
     }
 
 
@@ -194,14 +196,25 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
 
     @Override
-    public void onListOfSKUFetched(@Nullable List<com.android.billingclient.api.SkuDetails> purchases) {
-
+    public void onListOfSKUFetched(@Nullable List<SkuDetails> purchases) {
+       // SubscriptionPacksFragment.dataFeched(purchases);
     }
 
     @Override
-    public void onBillingError(@Nullable BillingResult error) {
+    public void onBillingError(@Nullable BillingResult error ) {
 
     }
 
+    public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList, SKUsListListener callBacks) {
+        if (billingProcessor!=null && billingProcessor.isReady()){
+            billingProcessor.getAllSkuDetails(subSkuList,productsSkuList, new SKUsListListener() {
+                @Override
+                public void onListOfSKU(@Nullable List<SkuDetails> purchases) {
+                    Log.w("callbackCalled",purchases.size()+"");
+                    callBacks.onListOfSKU(purchases);
+                }
+            });
+        }
+    }
 
 }

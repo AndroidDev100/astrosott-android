@@ -40,6 +40,7 @@ import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.usermanagment.modelClasses.getDevice.AccountDeviceDetailsItem;
+import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
@@ -2880,4 +2881,37 @@ public class AppCommonMethods {
         }
         return typeIn.toString();
     }
+
+    public static List<String> getSubscriptionSKUs(List<ProductsResponseMessageItem> productsResponseMessage,Activity context) {
+        List<String> subSkuList = new ArrayList<>();
+
+        for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
+            if (responseMessageItem.getAppChannels() != null && responseMessageItem.getAppChannels().get(0) != null && responseMessageItem.getAppChannels().get(0).getAppChannel() != null && responseMessageItem.getAppChannels().get(0).getAppChannel().equalsIgnoreCase("Google Wallet") && responseMessageItem.getAppChannels().get(0).getAppID() != null) {
+                if (responseMessageItem.getServiceType().equalsIgnoreCase("ppv")) {
+
+                }else {
+                    Log.w("subscriptionSKUs-->>>", responseMessageItem.getAppChannels().get(0).getAppID() + "");
+                    subSkuList.add(responseMessageItem.getAppChannels().get(0).getAppID());
+                }
+            }
+        }
+        return subSkuList;
+    }
+
+    public static List<String> getProductSKUs(List<ProductsResponseMessageItem> productsResponseMessage,Activity context) {
+        List<String> subSkuList = new ArrayList<>();
+
+        for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
+            if (responseMessageItem.getAppChannels() != null && responseMessageItem.getAppChannels().get(0) != null && responseMessageItem.getAppChannels().get(0).getAppChannel() != null && responseMessageItem.getAppChannels().get(0).getAppChannel().equalsIgnoreCase("Google Wallet") && responseMessageItem.getAppChannels().get(0).getAppID() != null) {
+                if (responseMessageItem.getServiceType().equalsIgnoreCase("ppv")) {
+                    Log.w("subscriptionSKUs-->>>", responseMessageItem.getAppChannels().get(0).getAppID() + "");
+                    subSkuList.add(responseMessageItem.getAppChannels().get(0).getAppID());
+                }else {
+
+                }
+            }
+        }
+        return subSkuList;
+    }
+
 }

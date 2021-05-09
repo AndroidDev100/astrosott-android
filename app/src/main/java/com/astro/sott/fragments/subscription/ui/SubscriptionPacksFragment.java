@@ -27,6 +27,7 @@ import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.modelClasses.InApp.PackDetail;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
+import com.astro.sott.utils.billing.SKUsListListener;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -78,6 +79,8 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         fragment.setArguments(args);
         return fragment;
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -166,29 +169,49 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
 
     private void checkIfDetailAvailableOnPlaystore(List<ProductsResponseMessageItem> productsResponseMessage) {
         packDetailList = new ArrayList<>();
-        for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
-            if (responseMessageItem.getAppChannels() != null && responseMessageItem.getAppChannels().get(0) != null && responseMessageItem.getAppChannels().get(0).getAppChannel() != null && responseMessageItem.getAppChannels().get(0).getAppChannel().equalsIgnoreCase("Google Wallet") && responseMessageItem.getAppChannels().get(0).getAppID() != null) {
-                Log.w("avname", getActivity().getClass().getName() + "");
-                if (getActivity() instanceof HomeActivity) {
-                    skuDetails = ((HomeActivity) getActivity()).getSubscriptionDetail(responseMessageItem.getAppChannels().get(0).getAppID());
-                } else if (getActivity() instanceof SubscriptionDetailActivity) {
-                    if (responseMessageItem.getServiceType().equalsIgnoreCase("ppv")) {
-                        skuDetails = ((SubscriptionDetailActivity) getActivity()).getPurchaseDetail(responseMessageItem.getAppChannels().get(0).getAppID());
-                    } else {
-                        skuDetails = ((SubscriptionDetailActivity) getActivity()).getSubscriptionDetail(responseMessageItem.getAppChannels().get(0).getAppID());
+        List<String> subSkuList=AppCommonMethods.getSubscriptionSKUs(productsResponseMessage,getActivity());
+        List<String> productsSkuList=AppCommonMethods.getProductSKUs(productsResponseMessage,getActivity());
+        if (getActivity() instanceof SubscriptionDetailActivity) {
+            ((SubscriptionDetailActivity) getActivity()).onListOfSKUs(subSkuList,productsSkuList, new SKUsListListener() {
+                @Override
+                public void onListOfSKU(@Nullable List<SkuDetails> purchases) {
+                    Log.w("valuessAdded--->>",purchases.size()+"");
+                    Log.w("valuessAdded--->>",purchases.get(0).getDescription());
 
+                    for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
+                        if (responseMessageItem.getAppChannels() != null && responseMessageItem.getAppChannels().get(0) != null && responseMessageItem.getAppChannels().get(0).getAppChannel() != null && responseMessageItem.getAppChannels().get(0).getAppChannel().equalsIgnoreCase("Google Wallet") && responseMessageItem.getAppChannels().get(0).getAppID() != null) {
+                            Log.w("avname", getActivity().getClass().getName() + "");
+                            if (getActivity() instanceof HomeActivity) {
+                                skuDetails = ((HomeActivity) getActivity()).getSubscriptionDetail(responseMessageItem.getAppChannels().get(0).getAppID());
+                            } else if (getActivity() instanceof SubscriptionDetailActivity) {
+                                if (responseMessageItem.getServiceType().equalsIgnoreCase("ppv")) {
+                                    skuDetails = ((SubscriptionDetailActivity) getActivity()).getPurchaseDetail(responseMessageItem.getAppChannels().get(0).getAppID());
+                                } else {
+                                    skuDetails = ((SubscriptionDetailActivity) getActivity()).getSubscriptionDetail(responseMessageItem.getAppChannels().get(0).getAppID());
+
+                                }
+                            }
+                            if (skuDetails != null) {
+                                PackDetail packDetail = new PackDetail();
+                                packDetail.setSkuDetails(skuDetails);
+                                packDetail.setProductsResponseMessageItem(responseMessageItem);
+                                packDetailList.add(packDetail);
+                            }
+                        }
                     }
+
+                    if (packDetailList.size() > 0)
+                        loadDataFromModel(packDetailList);
+
                 }
-                if (skuDetails != null) {
-                    PackDetail packDetail = new PackDetail();
-                    packDetail.setSkuDetails(skuDetails);
-                    packDetail.setProductsResponseMessageItem(responseMessageItem);
-                    packDetailList.add(packDetail);
-                }
-            }
+            });
         }
-        if (packDetailList.size() > 0)
-            loadDataFromModel(packDetailList);
+
+    }
+
+    public static void dataFeched(List<SkuDetails> purchases) {
+
+
     }
 
     private void UIinitialization() {

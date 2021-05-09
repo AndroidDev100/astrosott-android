@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 
+import java.util.List;
+
 public abstract class BaseBindingActivity<B extends ViewDataBinding> extends BaseActivity {
 
     private B mBinding;
@@ -32,4 +34,5 @@ public abstract class BaseBindingActivity<B extends ViewDataBinding> extends Bas
     {
         return inflateBindingLayout(inflater);
     }
+
 }
