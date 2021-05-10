@@ -17,13 +17,12 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.AppUpdateCallBack;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.fragments.home.ui.ViewPagerFragmentAdapter;
-import com.astro.sott.fragments.moreTab.ui.MoreFragment;
 import com.astro.sott.fragments.moreTab.ui.MoreNewFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
+import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.video.ui.VideoFragment;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
-import com.astro.sott.utils.billing.AstroBillingProcessor;
 import com.astro.sott.utils.billing.BillingProcessor;
 
 import com.astro.sott.utils.billing.InAppProcessListener;
@@ -48,8 +47,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
@@ -59,7 +58,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,14 +69,15 @@ import com.astro.sott.fragments.livetv.ui.LiveTvFragment;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
+import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.ArrayList;
 
 public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack, InAppProcessListener, CardCLickedCallBack {
     private final String TAG = this.getClass().getSimpleName();
@@ -455,7 +454,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     // tab titles
-    private String[] titles = new String[]{"ALL","TV SHOWS", "MOVIES", "SPORTS"};
+    private String[] titles = new String[]{"ALL", "TV SHOWS", "MOVIES", "SPORTS"};
 
     private void initialFragment(HomeActivity homeActivity) {
         setViewPager();
@@ -648,7 +647,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         billingProcessor.initialize();
         billingProcessor.loadOwnedPurchasesFromGoogle();*/
 
-        billingProcessor = new BillingProcessor(HomeActivity.this,this);
+        billingProcessor = new BillingProcessor(HomeActivity.this, this);
         billingProcessor.initializeBillingProcessor();
     }
 
@@ -661,21 +660,21 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
 
     @Override
-    public void onCardClicked(String productId, String serviceType) {
+    public void onCardClicked(String productId, String serviceType, String active) {
         if (serviceType.equalsIgnoreCase("ppv")) {
             billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {
-            if (billingProcessor!=null && billingProcessor.isReady()){
+            if (billingProcessor != null && billingProcessor.isReady()) {
                 billingProcessor.queryPurchases(HomeActivity.this, new PurchaseDetailListener() {
                     @Override
                     public void response(Purchase purchaseObject) {
-                            if (purchaseObject!=null){
-                                if (purchaseObject.getSku()!=null && purchaseObject.getPurchaseToken()!=null){
-                                    billingProcessor.updatePurchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(),purchaseObject.getSku(),purchaseObject.getPurchaseToken());
-                                }
-                            }else {
-                                billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                        if (purchaseObject != null) {
+                            if (purchaseObject.getSku() != null && purchaseObject.getPurchaseToken() != null) {
+                                billingProcessor.updatePurchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
                             }
+                        } else {
+                            billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                        }
                     }
                 });
 
@@ -684,7 +683,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     public SkuDetails getSubscriptionDetail(String productId) {
-        return billingProcessor.getLocalSubscriptionSkuDetail(HomeActivity.this,productId);
+        return billingProcessor.getLocalSubscriptionSkuDetail(HomeActivity.this, productId);
     }
 
 
@@ -701,6 +700,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             }
         }
     }
+
     private void processPurchase(List<Purchase> purchases) {
         try {
             for (Purchase purchase : purchases) {
@@ -713,7 +713,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                     // TODO: 8/24/2020 handle this in the next release.
                 }
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
@@ -741,23 +741,33 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
 
+    private void refreshFragment() {
+        NewSubscriptionPacksFragment newSubscriptionFragment = (NewSubscriptionPacksFragment) getSupportFragmentManager().findFragmentByTag("SubscriptionFragment");
+        if (newSubscriptionFragment != null && newSubscriptionFragment.isAdded()) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.detach(newSubscriptionFragment);
+            fragmentTransaction.attach(newSubscriptionFragment);
+            fragmentTransaction.commit();
+        }
+    }
+
 
     @Override
     public void onListOfSKUFetched(@Nullable List<SkuDetails> purchases) {
-       // SubscriptionPacksFragment.dataFeched(purchases);
+        // SubscriptionPacksFragment.dataFeched(purchases);
     }
 
     @Override
-    public void onBillingError(@Nullable BillingResult error ) {
+    public void onBillingError(@Nullable BillingResult error) {
 
     }
 
     public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList, SKUsListListener callBacks) {
-        if (billingProcessor!=null && billingProcessor.isReady()){
-            billingProcessor.getAllSkuDetails(subSkuList,productsSkuList, new SKUsListListener() {
+        if (billingProcessor != null && billingProcessor.isReady()) {
+            billingProcessor.getAllSkuDetails(subSkuList, productsSkuList, new SKUsListListener() {
                 @Override
                 public void onListOfSKU(@Nullable List<SkuDetails> purchases) {
-                    Log.w("callbackCalled",purchases.size()+"");
+                    Log.w("callbackCalled", purchases.size() + "");
                     callBacks.onListOfSKU(purchases);
                 }
             });

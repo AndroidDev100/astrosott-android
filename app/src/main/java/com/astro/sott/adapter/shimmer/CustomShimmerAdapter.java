@@ -27,7 +27,6 @@ public class CustomShimmerAdapter extends RecyclerView.Adapter<RecyclerView.View
     private final Activity activity;
     private final ArrayList<SectionDataModel> dataList;
 
-
     public CustomShimmerAdapter(Activity activity, ArrayList<SectionDataModel> demoList, ArrayList<Slide> slides) {
         this.activity = activity;
         this.dataList = demoList;

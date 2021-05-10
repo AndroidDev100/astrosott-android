@@ -33,6 +33,7 @@ import com.astro.sott.utils.billing.SKUsListListener;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.kaltura.client.types.Subscription;
+
 import java.util.List;
 
 public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubscriptionDetailBinding> implements CardCLickedCallBack, InAppProcessListener {
@@ -110,33 +111,33 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         billingProcessor.initialize();
         billingProcessor.loadOwnedPurchasesFromGoogle();*/
 
-        billingProcessor = new BillingProcessor(SubscriptionDetailActivity.this,this);
+        billingProcessor = new BillingProcessor(SubscriptionDetailActivity.this, this);
         billingProcessor.initializeBillingProcessor();
     }
 
     public SkuDetails getSubscriptionDetail(String productId) {
-        return billingProcessor.getLocalSubscriptionSkuDetail(SubscriptionDetailActivity.this,productId);
+        return billingProcessor.getLocalSubscriptionSkuDetail(SubscriptionDetailActivity.this, productId);
     }
 
     public SkuDetails getPurchaseDetail(String productId) {
-        return billingProcessor.getLocalSubscriptionSkuDetail(SubscriptionDetailActivity.this,productId);
+        return billingProcessor.getLocalSubscriptionSkuDetail(SubscriptionDetailActivity.this, productId);
     }
 
 
     @Override
-    public void onCardClicked(String productId, String serviceType) {
+    public void onCardClicked(String productId, String serviceType, String active) {
         if (serviceType.equalsIgnoreCase("ppv")) {
             billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {
-            if (billingProcessor!=null && billingProcessor.isReady()){
+            if (billingProcessor != null && billingProcessor.isReady()) {
                 billingProcessor.queryPurchases(SubscriptionDetailActivity.this, new PurchaseDetailListener() {
                     @Override
                     public void response(Purchase purchaseObject) {
-                        if (purchaseObject!=null){
-                            if (purchaseObject.getSku()!=null && purchaseObject.getPurchaseToken()!=null){
-                                billingProcessor.updatePurchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(),purchaseObject.getSku(),purchaseObject.getPurchaseToken());
+                        if (purchaseObject != null) {
+                            if (purchaseObject.getSku() != null && purchaseObject.getPurchaseToken() != null) {
+                                billingProcessor.updatePurchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
                             }
-                        }else {
+                        } else {
                             billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
                         }
                     }
@@ -167,13 +168,13 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
                     handlePurchase(purchase);
                 } else if (purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
-                  //  PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
+                    //  PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
                     // handle pending purchases, e.g. confirm with users about the pending
                     // purchases, prompt them to complete it, etc.
                     // TODO: 8/24/2020 handle this in the next release.
                 }
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
@@ -209,20 +210,20 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     @Override
     public void onListOfSKUFetched(@Nullable List<SkuDetails> purchases) {
-       // SubscriptionPacksFragment.dataFeched(purchases);
+        // SubscriptionPacksFragment.dataFeched(purchases);
     }
 
     @Override
-    public void onBillingError(@Nullable BillingResult error ) {
+    public void onBillingError(@Nullable BillingResult error) {
 
     }
 
     public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList, SKUsListListener callBacks) {
-        if (billingProcessor!=null && billingProcessor.isReady()){
-            billingProcessor.getAllSkuDetails(subSkuList,productsSkuList, new SKUsListListener() {
+        if (billingProcessor != null && billingProcessor.isReady()) {
+            billingProcessor.getAllSkuDetails(subSkuList, productsSkuList, new SKUsListListener() {
                 @Override
                 public void onListOfSKU(@Nullable List<SkuDetails> purchases) {
-                    Log.w("callbackCalled",purchases.size()+"");
+                    Log.w("callbackCalled", purchases.size() + "");
                     callBacks.onListOfSKU(purchases);
                 }
             });

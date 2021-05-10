@@ -28,6 +28,7 @@ import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.fragments.manageSubscription.ui.ManageSubscriptionFragment;
+import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.transactionhistory.ui.TransactionHistory;
@@ -157,12 +158,12 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
                 if (getBinding().subscribe.getText().toString().equalsIgnoreCase("subscribe")) {
                     navBar.setVisibility(View.GONE);
-                    SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
+                    NewSubscriptionPacksFragment someFragment = new NewSubscriptionPacksFragment();
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("productList", new ArrayList<String>());
                     someFragment.setArguments(bundle);
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
+                    transaction.replace(R.id.content_frame, someFragment,"SubscriptionFragment"); // give your fragment container id in first parameter
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                     transaction.commit();
                 } else {
@@ -489,12 +490,8 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                         }
                     });
                 } else {
-
                     setUiForLogout();
-
                 }
-
-
             }
         });
     }
