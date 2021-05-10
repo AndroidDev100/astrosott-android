@@ -10,8 +10,8 @@ public class KsPreferenceKey {
 
     private static final String USER = "User";
     private static final String DEFAULT_ENTITLEMENT = "DefaultEntitlement";
-    private static final String ATBPAYMENTGATEWAYID ="ATBpaymentGatewayId";
-    public static final String  SUBSCRIPTION_OFFER = "SubscriptionOffer";
+    private static final String ATBPAYMENTGATEWAYID = "ATBpaymentGatewayId";
+    public static final String SUBSCRIPTION_OFFER = "SubscriptionOffer";
     private static final String DOWNLOAD_OVER_WIFI = "downloadOverWifi";
     private static final String AUDIO_LANGUAGE = "audio_language_astr";
     private static final String SUBTITLE_LANGUAGE = "subtitle_language_astr";
@@ -41,10 +41,9 @@ public class KsPreferenceKey {
     public static final String SUBTITLE_LANG_KEY = "SUBTITLE_LANG_KEY";
 
 
-
     private static KsPreferenceKey mInstance;
     private SharedPrefHelper session;
-    private static final String REMINDER_ID="reminder_id";
+    private static final String REMINDER_ID = "reminder_id";
     private static final String CATCHUP_ID = "catchup_id";
 
     public KsPreferenceKey(Context context) {
@@ -74,19 +73,32 @@ public class KsPreferenceKey {
     public void setHouseHoldId(String houseHoldId) {
         session.setString("household_id", houseHoldId);
     }
-    public String getSubtitleLanguage(){
+
+    public String getSubtitleLanguage() {
         return session.getString(SUBTITLE_LANGUAGE, "");
     }
+
     public void setSubtitleLanguage(String userType) {
         session.setString(SUBTITLE_LANGUAGE, userType);
     }
+
+    public String getClassName() {
+        return session.getString("class_name", "");
+    }
+
+    public void setClassName(String className) {
+        session.setString("class_name", className);
+    }
+
     public void setAudioLanguage(String userType) {
         session.setString(AUDIO_LANGUAGE, userType);
     }
-    public String getAudioLanguage(){
+
+    public String getAudioLanguage() {
         return session.getString(AUDIO_LANGUAGE, "");
     }
-    public String getUserType(){
+
+    public String getUserType() {
         return session.getString("userType", "");
     }
 
@@ -117,6 +129,7 @@ public class KsPreferenceKey {
     public void setQualityName(String qualityName) {
         session.setString("video_quality_name", qualityName);
     }
+
     public String getAppLangName() {
         return session.getString("app_lang", "en");
     }
@@ -168,6 +181,7 @@ public class KsPreferenceKey {
     public void setFCMToken(String s) {
         session.setString("fcmRefreshToken", s);
     }
+
     public boolean getDownloadOverWifi() {
         return session.getBoolean(DOWNLOAD_OVER_WIFI, true);
     }
@@ -243,12 +257,12 @@ public class KsPreferenceKey {
 
     public OTTUser getUser() {
 
-        try{
+        try {
             Gson gson = new Gson();
             String json = session.getString(USER, "");
 
             return gson.fromJson(json, OTTUser.class);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error : " + e.toString());
             return null;
         }
@@ -269,6 +283,7 @@ public class KsPreferenceKey {
     public void setDefaultEntitlement(String defaultEntitlement) {
         session.setString(DEFAULT_ENTITLEMENT, defaultEntitlement);
     }
+
     public String getATBpaymentGatewayId() {
         return session.getString(ATBPAYMENTGATEWAYID, "");
     }
@@ -277,6 +292,7 @@ public class KsPreferenceKey {
     public void setLowBitrateMaxLimit(String lowBitrateMaxLimit) {
         session.setString(LOW_BITRATE_MAX_LIMIT, lowBitrateMaxLimit);
     }
+
     public String getLowBitrateMaxLimit() {
         return session.getString(LOW_BITRATE_MAX_LIMIT, "");
     }
@@ -284,6 +300,7 @@ public class KsPreferenceKey {
     public void setMediumBitrateMaxLimit(String mediumBitrateMaxLimit) {
         session.setString(MEDIUM_BITRATE_MAX_LIMIT, mediumBitrateMaxLimit);
     }
+
     public String getMediumBitrateMaxLimit() {
         return session.getString(MEDIUM_BITRATE_MAX_LIMIT, "");
     }
@@ -291,6 +308,7 @@ public class KsPreferenceKey {
     public void setHighBitrateMaxLimit(String highBitrateMaxLimit) {
         session.setString(HIGH_BITRATE_MAX_LIMIT, highBitrateMaxLimit);
     }
+
     public String getHighBitrateMaxLimit() {
         return session.getString(HIGH_BITRATE_MAX_LIMIT, "");
     }
@@ -333,22 +351,20 @@ public class KsPreferenceKey {
 
 
     public void setReminderId(String id, boolean reminderValue) {
-        session.setBoolean(REMINDER_ID+id, reminderValue);
+        session.setBoolean(REMINDER_ID + id, reminderValue);
     }
 
-    public boolean getReminderId(String id)
-    {
-        return session.getBoolean(REMINDER_ID+id,false);
+    public boolean getReminderId(String id) {
+        return session.getBoolean(REMINDER_ID + id, false);
     }
 
 
     public void setLiveCatchUpId(String id, boolean catchUpValue) {
-        session.setBoolean(CATCHUP_ID+id, catchUpValue);
+        session.setBoolean(CATCHUP_ID + id, catchUpValue);
     }
 
-    public boolean getLiveCatchUpId(String id)
-    {
-        return session.getBoolean(CATCHUP_ID+id,false);
+    public boolean getLiveCatchUpId(String id) {
+        return session.getBoolean(CATCHUP_ID + id, false);
     }
 
     public void setNotificationResponse(String notificationResponse) {
@@ -362,7 +378,8 @@ public class KsPreferenceKey {
     public void setMsisdn(String finalMsisdn) {
         session.setString("MsisdnNumber", finalMsisdn);
     }
-    public String getMsisdn(){
+
+    public String getMsisdn() {
         return session.getString("MsisdnNumber", "");
     }
 
@@ -379,15 +396,17 @@ public class KsPreferenceKey {
         session.setBoolean("isUserRegistered", isUserRegistered);
 
     }
+
     public boolean getUserRegistered() {
-      return   session.getBoolean("isUserRegistered", false);
+        return session.getBoolean("isUserRegistered", false);
 
     }
 
     public void setUserSelectedRating(String userSelectedRating) {
         session.setString("userSelectedRating", userSelectedRating);
     }
-    public String getUserSelectedRating(){
+
+    public String getUserSelectedRating() {
         return session.getString("userSelectedRating", "");
     }
 

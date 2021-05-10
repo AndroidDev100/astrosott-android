@@ -311,7 +311,8 @@ public class PlayerRepository {
             videoTracks = tracksInfo.getVideoTracks();
         }
         if (tracksInfo.getAudioTracks().size() > 0) {
-            audioTracks = tracksInfo.getAudioTracks();
+            audioTracks = filterUnknown(tracksInfo.getAudioTracks());
+            //audioTracks = tracksInfo.getAudioTracks();
         }
         if (tracksInfo.getTextTracks().size() > 0) {
             textTracks = tracksInfo.getTextTracks();
@@ -321,6 +322,22 @@ public class PlayerRepository {
         audioTrackItems = buildAudioTrackItems(tracksInfo.getAudioTracks());
         Log.w("audioTrackItems", "aa  " + audioTrackItems.length);
         textTrackItems = buildTextTrackItems(tracksInfo.getTextTracks());
+    }
+
+    private List<AudioTrack> filterUnknown(List<AudioTrack> audioTracks) {
+        List<AudioTrack> audioTrack = new ArrayList<>();
+        for (int i = 0; i < audioTracks.size(); i++) {
+            Log.w("audioAndSubtitle", "t2");
+            AudioTrack audioTrackInfo = audioTracks.get(i);
+            if (audioTrackInfo.isAdaptive()) {
+                audioTrack.add(audioTrackInfo);
+            } else {
+                if (audioTrackInfo.getLanguage() != null && !audioTrackInfo.getLanguage().trim().equalsIgnoreCase("Unknown")) {
+                    audioTrack.add(audioTrackInfo);
+                }
+            }
+        }
+        return audioTrack;
     }
 
     private ArrayList<TrackItem> buildVideoTrackItems(List<VideoTrack> videoTracks, Context context) {
@@ -438,8 +455,11 @@ public class PlayerRepository {
                             //  arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
                         }
                     } else {
-                        Log.w("audioAndSubtitle", "t4");
-                        trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId(), audioTrackInfo.getLanguage());
+                        Log.w("audioAndSubtitle", audioTrackInfo.getLanguage());
+                        if (audioTrackInfo.getLanguage() != null && !audioTrackInfo.getLanguage().trim().equalsIgnoreCase("Unknown")) {
+                            trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId(), audioTrackInfo.getLanguage());
+                        }
+
                     }
 
 //                String label = audioTrackInfo.getLabel() != null ? audioTrackInfo.getLabel() : audioTrackInfo.getLanguage();
@@ -937,11 +957,11 @@ public class PlayerRepository {
             if (AppCommonMethods.isAdsEnable) {
                 if (!AssetContent.isAdsEnable(asset.getMetas())) {
                     getAdsContextApi(asset, playerMutableLiveData, mediaConfig);
-                }else {
-                    preparePlayer(playerPluginConfig,playerMutableLiveData,mediaConfig);
+                } else {
+                    preparePlayer(playerPluginConfig, playerMutableLiveData, mediaConfig);
                 }
-            }else {
-                preparePlayer(playerPluginConfig,playerMutableLiveData,mediaConfig);
+            } else {
+                preparePlayer(playerPluginConfig, playerMutableLiveData, mediaConfig);
 
             }
 

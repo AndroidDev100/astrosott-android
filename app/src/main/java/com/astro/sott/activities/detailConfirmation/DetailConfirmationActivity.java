@@ -43,6 +43,10 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
             new ActivityLauncher(this).termAndCondition(this);
 
         });
+        getBinding().privacy.setOnClickListener(v -> {
+            new ActivityLauncher(this).privacy(this);
+
+        });
         getBinding().backIcon.setOnClickListener(v -> {
             onBackPressed();
         });

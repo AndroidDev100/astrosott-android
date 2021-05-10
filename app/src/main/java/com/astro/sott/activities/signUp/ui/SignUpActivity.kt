@@ -153,6 +153,9 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         activitySinUpBinding?.terms?.setOnClickListener {
             ActivityLauncher(this).termAndCondition(this)
         }
+        activitySinUpBinding?.privacy?.setOnClickListener {
+            ActivityLauncher(this).privacy(this)
+        }
         activitySinUpBinding?.google?.setOnClickListener {
             mGoogleSignInClient!!.signOut()
             val signInIntent = mGoogleSignInClient!!.signInIntent
@@ -182,7 +185,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                         activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
                         activitySinUpBinding?.errorEmail?.text = getString(R.string.mobile_error)
                     }
-                } else if (true) {
+                } else if (emailPattern.containsMatchIn(email_mobile)) {
                     checkPassword("email", email_mobile, password)
                 } else {
 
@@ -297,7 +300,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             }
         } else {
             activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
-            activitySinUpBinding?.errorPasssword?.text = getString(R.string.password_error)
+            activitySinUpBinding?.errorPasssword?.text = getString(R.string.valid_password)
 
         }
     }

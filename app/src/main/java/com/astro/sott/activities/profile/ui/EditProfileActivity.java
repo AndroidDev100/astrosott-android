@@ -197,7 +197,6 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     getBinding().name.setText(getResources().getString(R.string.sooka_superstar));
 
                 }
-                getBinding().psw.setText("********");
                 getBinding().mobileNo.setText(AppCommonMethods.maskedMobile(EditProfileActivity.this));
             } catch (Exception ignored) {
 

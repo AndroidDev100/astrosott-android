@@ -15,11 +15,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
 import com.astro.sott.fragments.homenewtab.viewModel.HomeTabNewViewModel;
 import com.astro.sott.fragments.sports.viewModel.SportsViewModel;
 import com.astro.sott.fragments.video.viewModel.VideoViewModel;
 import com.astro.sott.repositories.homeTab.HomeFragmentRepository;
+import com.astro.sott.utils.HeroDiversion;
 import com.astro.sott.utils.helpers.ShimmerDataModel;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.R;
@@ -222,7 +224,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 
     private void callRailAPI(List<VIUChannel> list) {
         channelList = list;
-        if (viewModel!=null && getActivity()!=null && !getActivity().isFinishing()) {
+        if (viewModel != null && getActivity() != null && !getActivity().isFinishing()) {
             if (counter != channelList.size() && counter < channelList.size()) {
                 viewModel.getListLiveData(channelList.get(counter).getId(), dtChannelsList, counter, swipeToRefresh, loadedList).observe(getActivity(), new Observer<List<AssetCommonBean>>() {
                     @Override
@@ -425,7 +427,8 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 
     @Override
     public void heroItemClick(int position, RailCommonData railCommonData, AssetCommonBean commonData) {
-
+        HeroDiversion heroDiversion = new HeroDiversion(railCommonData, commonData, getActivity(), getActivity(), ViewModelProviders.of(this).get(SplashViewModel.class));
+        heroDiversion.heroClickRedirection();
     }
 
     @Override
@@ -457,11 +460,9 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
             screenID = String.valueOf(AppConstants.TAB_SECOND);
         } else if (viewModel instanceof SportsViewModel) {
             screenID = String.valueOf(AppConstants.TAB_THIRD);
-        }
-        else if (viewModel instanceof HomeTabNewViewModel) {
+        } else if (viewModel instanceof HomeTabNewViewModel) {
             screenID = String.valueOf(AppConstants.TAB_HOME_NEW_ID);
-        }
-        else {
+        } else {
             screenID = String.valueOf(AppConstants.TAB_FIRST);
         }
     }

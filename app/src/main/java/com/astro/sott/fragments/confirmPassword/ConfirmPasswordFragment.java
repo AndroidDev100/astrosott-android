@@ -153,7 +153,7 @@ public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirm
                 email_mobile = UserInfo.getInstance(getActivity()).getEmail();
             } else {
                 type = "mobile";
-                email_mobile = "8219233454";
+                email_mobile = UserInfo.getInstance(getActivity()).getMobileNumber();
             }
         }
         getBinding().progressBar.setVisibility(View.VISIBLE);

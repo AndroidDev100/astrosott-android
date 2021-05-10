@@ -35,17 +35,23 @@ public class ForceUpdateNetworkCall {
             SharedPrefHelper.getInstance(context).setInt("playstore_version", BuildConfig.VERSION_CODE);
             SharedPrefHelper.getInstance(context).setString("update_type", "force");
             ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-            if(responseDmsModel.getParams() != null){
-                if(responseDmsModel.getParams().getUpdatedVersion()!=null) {
+            if (responseDmsModel.getParams() != null) {
+                if (responseDmsModel.getParams().getUpdatedVersion() != null) {
                     appVersion = responseDmsModel.getParams().getUpdatedVersion();
-                    // String appVersion = "1.1";
+                  //  String appVersion = "21.3.1(09)";
                     appVersion = appVersion.trim();
                     if (!appVersion.equalsIgnoreCase("")) {
                         if (appVersion.contains(".")) {
                             appVersion = appVersion.replace(".", "");
+                            appVersion = appVersion.replace("(", "");
+                            appVersion = appVersion.replace(")", "");
+
                             if (!appVersion.equalsIgnoreCase("")) {
                                 updateVersion = Integer.parseInt(appVersion);
                                 String version = BuildConfig.VERSION_NAME.replace(".", "");
+                                version = version.replace("(", "");
+                                version =version.replace(")", "");
+
                                 appCVesion = Integer.parseInt(version);
                                 versionValidator.version(false, appCVesion, updateVersion);
                                 PrintLogging.printLog("", "versionPrinted" + appCVesion + " " + updateVersion);
@@ -58,10 +64,10 @@ public class ForceUpdateNetworkCall {
                     } else {
                         versionValidator.version(true, BuildConfig.VERSION_CODE, BuildConfig.VERSION_CODE);
                     }
-                }else {
+                } else {
                     versionValidator.version(true, BuildConfig.VERSION_CODE, BuildConfig.VERSION_CODE);
                 }
-            }else{
+            } else {
                 versionValidator.version(true, BuildConfig.VERSION_CODE, BuildConfig.VERSION_CODE);
             }
         }, 100);

@@ -101,7 +101,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         oldLang = new KsPreferenceKey(getActivity()).getAppLangName();
         navBar = getActivity().findViewById(R.id.navigation);
         modelCall();
-        checkForLoginLogout();
+      //  checkForLoginLogout();
         UIinitialization();
     }
 

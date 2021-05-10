@@ -1,3 +1,4 @@
+
 package com.astro.sott.activities.splash.ui;
 
 import android.content.Intent;
@@ -195,8 +196,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     pushToken();
 
                 } else {
-                    pushToken();
-                    //showUpdateDialog();
+                    //pushToken();
+                    showUpdateDialog();
                 }
 
             }
@@ -788,10 +789,10 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
             //  finish();
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
             new ActivityLauncher(SplashActivity.this).detailActivity(SplashActivity.this, MovieDescriptionActivity.class, asset, AppLevelConstants.Rail5);
-        } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getWebEpisode(SplashActivity.this)) {
+        } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getEpisode(SplashActivity.this)) {
             //finish();
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
-            new ActivityLauncher(SplashActivity.this).webDetailRedirection(railCommonData, AppLevelConstants.Rail5);
+            new ActivityLauncher(SplashActivity.this).webDetailRedirection(asset, AppLevelConstants.Rail5);
 
             // new ActivityLauncher(SplashActivity.this).webEpisodeActivity(SplashActivity.this, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getTrailer(SplashActivity.this)) {
@@ -860,9 +861,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                         if (BuildConfig.FLAVOR.equalsIgnoreCase("QA")) {
                             final String appPackageName = getPackageName();
                             try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.dialog.dialoggo&hl=en_IN" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
                             } catch (android.content.ActivityNotFoundException anfe) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.dialog.dialoggo&hl=en_IN" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
                             }
 
                         } else if (isDmsFailed) {
@@ -871,9 +872,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                         } else {
                             final String appPackageName = getPackageName();
                             try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.dialog.dialoggo&hl=en_IN" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
                             } catch (android.content.ActivityNotFoundException anfe) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.dialog.dialoggo&hl=en_IN" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
                             }
 
                         }

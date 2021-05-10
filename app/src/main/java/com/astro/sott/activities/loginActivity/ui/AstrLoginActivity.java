@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
@@ -65,6 +66,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private CallbackManager callbackManager;
     private String from;
     private boolean passwordVisibility = false;
+    private String passwordError = "";
     private String name = "";
     private final String MOBILE_REGEX = "^[0-9]*$";
     private final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -132,6 +134,8 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                                     Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
                                     LoginManager.getInstance().logOut();
                                 }
+                            } else {
+                                Log.w("fb_login", "null" + "");
                             }
                         });
                         Bundle parameters = new Bundle();
@@ -144,13 +148,10 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     @Override
                     public void onCancel() {
                         // App code
-                        Log.w("fACEBBOK", "");
-
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        Log.w("fACEBBOK", exception + "");
                         // App code
                     }
                 });
@@ -222,6 +223,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 if (checkPasswordValidation(password)) {
                     login(password);
                 } else {
+                    getBinding().passwordError.setText(passwordError);
                     getBinding().passwordError.setVisibility(View.VISIBLE);
                 }
             }
@@ -489,9 +491,13 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     }
 
     private boolean checkPasswordValidation(String password) {
-        if (password.matches(PASSWORD_REGEX)) {
+        if (password.equalsIgnoreCase("")) {
+            passwordError = getResources().getString(R.string.valid_password);
+            return false;
+        } else if (password.matches(PASSWORD_REGEX)) {
             return true;
         }
+        passwordError = getResources().getString(R.string.password_error);
         return false;
     }
 

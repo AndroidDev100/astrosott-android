@@ -2508,6 +2508,20 @@ public class AppCommonMethods {
 
     }
 
+    public static String getPubDate(long timestamp) {
+        try {
+
+            Date date = new Date(timestamp * 1000L);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            simpleDateFormat.setTimeZone(TimeZone.getDefault());
+            String dateTimeValue = simpleDateFormat.format(date);
+            return dateTimeValue;
+        } catch (IndexOutOfBoundsException e) {
+        }
+        return "";
+
+    }
+
     public static String maskedEmail(Activity context) {
         String email = "";
         try {
@@ -2802,14 +2816,14 @@ public class AppCommonMethods {
         if (!AssetContent.getSubGenredataString(asset.getTags()).equalsIgnoreCase(""))
             stringBuilder.append("&subgenre%3D" + AssetContent.getSubGenredataString(asset.getTags()));
 
-        if (!AssetContent.getLanguageDataString(asset.getTags()).equalsIgnoreCase(""))
-            stringBuilder.append("&vlang%3D" + AssetContent.getLanguageDataString(asset.getTags()));
+        if (!AssetContent.getLanguageDataString(asset.getTags(), context).equalsIgnoreCase(""))
+            stringBuilder.append("&vlang%3D" + AssetContent.getLanguageDataString(asset.getTags(), context));
 
         if (!AssetContent.getProvider(asset.getTags()).equalsIgnoreCase(""))
             stringBuilder.append("&vpro%3D" + AssetContent.getProvider(asset.getTags()));
 
-        if (!AssetContent.getSubTitleLanguageDataString(asset.getTags()).equalsIgnoreCase(""))
-            stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags()));
+        if (!AssetContent.getSubTitleLanguageDataString(asset.getTags(), context).equalsIgnoreCase(""))
+            stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags(), context));
         stringBuilder.append("&lang%3D" + "English");
 
         return stringBuilder.toString();

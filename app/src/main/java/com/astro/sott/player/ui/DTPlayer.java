@@ -11,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Insets;
+import android.hardware.display.DisplayManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -420,6 +422,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         baseActivity = (BaseActivity) context;
     }
 
+    DisplayManager mDisplayManager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -436,6 +440,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         receiver = new NetworkChangeReceiver();
         filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+
+        mDisplayManager = (DisplayManager) baseActivity.getSystemService(Context.DISPLAY_SERVICE);
 
     }
 
@@ -1807,28 +1813,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         player.addListener(this, AdEvent.started, event -> {
             isAdsRunning = true;
-            AdEvent.AdStartedEvent adStartedEvent = event;
-            Map<String, Object> contentInfo = new HashMap<String, Object>();
-            contentInfo.put(ConvivaManager.AD_ID, adStartedEvent.adInfo.getAdId());
-            contentInfo.put(ConvivaManager.FIRST_AD_ID, adStartedEvent.adInfo.getAdId());
-            contentInfo.put(ConvivaManager.FIRST_CREATIVE_ID, adStartedEvent.adInfo.getCreativeAdId());
-            contentInfo.put(ConvivaManager.AD_POSITION, adStartedEvent.adInfo.getAdPositionType());
-            contentInfo.put(ConvivaSdkConstants.ASSET_NAME, adStartedEvent.adInfo.getAdTitle());
-            contentInfo.put(ConvivaSdkConstants.STREAM_URL, "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=");
-            contentInfo.put(ConvivaManager.AD_SYSTEM, "DFP");
-            contentInfo.put(ConvivaManager.AD_IS_SLATE, false);
-            contentInfo.put(ConvivaManager.MEDIA_FILE_FRAMEWORK, "NA");
-            contentInfo.put(ConvivaManager.FIRST_AID_SYSTEM, "NA");
-            contentInfo.put(ConvivaManager.AD_TECHNOLOGY, "Client Side");
-            contentInfo.put(ConvivaManager.AD_STITCHER, "NA");
-            contentInfo.put(ConvivaSdkConstants.IS_LIVE, false);
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdLoaded(contentInfo);
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdStarted();
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
-
-
+            ConvivaManager.convivaAdsEvent(baseActivity, event);
             showAdsView();
-            Log.d(TAG, "AD_STARTED w/h - " + adStartedEvent.adInfo.getAdWidth() + "/" + adStartedEvent.adInfo.getAdHeight());
         });
 
         player.addListener(this, AdEvent.adBreakReady, event -> {
@@ -1846,7 +1832,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
 
         player.addListener(this, AdEvent.paused, event -> {
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PAUSED);
+            if (ConvivaManager.getConvivaAdAnalytics(baseActivity) != null)
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PAUSED);
 
             isAdPause = true;
             Log.d(TAG, "AD_PAUSED");
@@ -2391,11 +2378,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         } catch (Exception ex) {
 
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void UIControllers() {
@@ -3294,9 +3276,50 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             filter.addAction("com.dialog.dialoggo.Alarm.MyReceiver");
             getActivity().registerReceiver(myReceiver, filter);
 
+            mDisplayManager.registerDisplayListener(mDisplayListener, null);
+
         }
         resumePlayer();
     }
+
+    boolean isHdmiConnected = false;
+    private final DisplayManager.DisplayListener mDisplayListener =
+            new DisplayManager.DisplayListener() {
+                @Override
+                public void onDisplayAdded(int displayId) {
+                    Log.d(TAG, "Display " + displayId + " added.");
+                    //  Toast.makeText(getActivity(), "Display " + displayId + " added.", Toast.LENGTH_LONG).show();
+                    isHdmiConnected = true;
+                    if (runningPlayer != null) {
+                        runningPlayer.stop();
+                    }
+
+                }
+
+                @Override
+                public void onDisplayChanged(int displayId) {
+                    Log.d(TAG, "Display " + displayId + " changed.");
+                    // Toast.makeText(getActivity(), "Display " + displayId + " changed.", Toast.LENGTH_LONG).show();
+                    // mDisplayListAdapter.updateContents();
+                }
+
+                @Override
+                public void onDisplayRemoved(int displayId) {
+                    Log.d(TAG, "Display " + displayId + " removed.");
+                    isHdmiConnected = false;
+                    // Toast.makeText(getActivity(), "Display " + displayId + " removed.", Toast.LENGTH_LONG).show();
+                    try {
+                        cancelTimer();
+                        getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
+                        getUrl(playerURL, asset, playerProgress, isLivePlayer, "", railList);
+                    } catch (Exception e) {
+
+                    }
+
+                    //  mDisplayListAdapter.updateContents();
+                }
+            };
+
 
     private void resumePlayer() {
         Log.d("PlayerPauseCalled", "OnResumeTrue");
@@ -3408,6 +3431,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
         this.baseActivity.unregisterReceiver(networkReceiver);
         this.baseActivity.unregisterReceiver(headsetRecicer);
+
+        try {
+            if (mDisplayListener != null) {
+                mDisplayManager.unregisterDisplayListener(mDisplayListener);
+            }
+        } catch (Exception ignored) {
+
+        }
     }
 
 
@@ -3637,6 +3668,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         try {
             if (PlayerRepository.getInstance() != null) {
                 PlayerRepository.getInstance().destroCallBacks();
+            }
+            if (ConvivaManager.getConvivaAdAnalytics(baseActivity) != null) {
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
+                ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
+                ConvivaManager.removeConvivaAdsSession();
             }
             ConvivaManager.convivaPlayerStoppedReportRequest();
             ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackEnded();

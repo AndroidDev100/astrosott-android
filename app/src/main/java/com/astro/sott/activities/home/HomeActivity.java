@@ -22,6 +22,7 @@ import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.SkuDetails;
 import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.NavigationItem;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -171,6 +172,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void initFrameFragment() {
         setToolBarScroll(0);
+        NavigationItem.getInstance().setTab("Live TV");
         getBinding().appbar.setVisibility(View.VISIBLE);
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
@@ -436,6 +438,15 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+                if (position==0){
+                    NavigationItem.getInstance().setTab("All");
+                }else if (position==1){
+                    NavigationItem.getInstance().setTab("TV Shows");
+                }else if (position==2){
+                    NavigationItem.getInstance().setTab("Movies");
+                }else if (position==3){
+                    NavigationItem.getInstance().setTab("Sports");
+                }
             }
 
             @Override
@@ -504,6 +515,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void switchToLiveTvFragment() {
         setToolBarScroll(0);
+        NavigationItem.getInstance().setTab("Live TV");
         getBinding().appbar.setVisibility(View.VISIBLE);
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
