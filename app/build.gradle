@@ -99,6 +99,29 @@ android {
         }
         prod {
             dimension 'default'
+            versionCode 22
+            versionName "2.5"
+            applicationId "com.astro.sott"
+            buildConfigField "String", "KALTURA_BASE_URL", "\"https://rest-sgs1.ott.kaltura.com/api_v3/service/\""
+            buildConfigField "int", "KAVA_PARTNER_ID", "3089623"
+
+            buildConfigField "String", "KALTURA_API_VERSION", "\"5.8.0\""
+            buildConfigField "String", "KALTURA_APPLICATION_NAME", "\"com.kaltura.astro.mobile\""
+            buildConfigField "String", "KALTURA_CLIENT_VERSION", "\"0.0.1\""
+            buildConfigField "String", "KALTURA_PLATFORM", "\"android\""
+            buildConfigField "String", "KALTURA_PARTNER_ID", "\"3209\""
+
+            buildConfigField "String", "PHOEINIX_BASE_URL", "\"https://rest-sgs1.ott.kaltura.com/api_v3\""
+
+
+            buildConfigField "String", "KALTURA_TAG", "\"AstroQA\""
+            buildConfigField "String", "SMS_BASE_URL", "\"https://sus8scm21a.execute-api.ap-southeast-1.amazonaws.com/QA/\""
+            buildConfigField "String", "VERIFY_BASE_URL", "\" https://mo98wsla9h.execute-api.ap-southeast-1.amazonaws.com/QA/\""
+            buildConfigField "String", "TOKEN_BASE_URL", "\"https://ro840hb5x0.execute-api.ap-southeast-1.amazonaws.com/\""
+            buildConfigField "String", "AUTO_MSISDN_MOCK", "\"http://13.250.154.211/msisdn/fetch/\""
+            buildConfigField "String", "VERIFY_ACCOUNT_BASE_URL", "\"https://pqbjim2r2i.execute-api.ap-southeast-1.amazonaws.com/\""
+            buildConfigField "String", "GET_CONNECTION_DETAIL_BASE_URL", "\"https://bo18wc4nfl.execute-api.ap-southeast-1.amazonaws.com/\""
+           /* dimension 'default'
             versionCode 1008
             versionName "0.9"
             applicationId "com.astro.sott"
@@ -117,7 +140,7 @@ android {
             buildConfigField "String", "SMS_BASE_URL", "\"https://qpkkcgi038.execute-api.ap-southeast-1.amazonaws.com/prod/v4/\""
             buildConfigField "String", "VERIFY_BASE_URL", "\"https://qpkkcgi038.execute-api.ap-southeast-1.amazonaws.com/prod/v4/\""
             buildConfigField "String", "GET_CONNECTION_DETAIL_BASE_URL", "\" https://a7fl3pn9ha.execute-api.ap-southeast-1.amazonaws.com/\""
-            buildConfigField "String", "VERIFY_ACCOUNT_BASE_URL", "\" https://er9ptuvk75.execute-api.ap-southeast-1.amazonaws.com/\""
+            buildConfigField "String", "VERIFY_ACCOUNT_BASE_URL", "\" https://er9ptuvk75.execute-api.ap-southeast-1.amazonaws.com/\""*/
         }
 
     }

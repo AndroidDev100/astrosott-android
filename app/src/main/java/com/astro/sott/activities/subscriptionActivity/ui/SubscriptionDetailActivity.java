@@ -78,10 +78,9 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                             count++;
                         }
                     }
-
+                    setPackFragment();
                 }
             }
-            setPackFragment();
         });
 
 

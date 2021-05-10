@@ -45,7 +45,7 @@
         <activity
             android:name=".activities.subscriptionActivity.ui.SubscriptionDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="sensorLandscape"/>
+            android:screenOrientation="locked"/>
         <activity android:name=".activities.forgotPassword.ui.IsThisYouActivity" />
         <activity android:name=".activities.search.ui.SearchKeywordActivity" />
         <activity android:name=".activities.manageDevice.ui.ManageDeviceActivity" />

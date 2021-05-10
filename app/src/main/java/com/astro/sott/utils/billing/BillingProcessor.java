@@ -335,6 +335,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
 				final BillingFlowParams purchaseParams =
 						BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build();
+				//myBillingClient.launchPriceChangeConfirmationFlow();
 
 				executeServiceRequest(
 						() -> {

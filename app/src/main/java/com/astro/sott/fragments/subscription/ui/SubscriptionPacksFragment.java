@@ -175,8 +175,8 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
             ((SubscriptionDetailActivity) getActivity()).onListOfSKUs(subSkuList,productsSkuList, new SKUsListListener() {
                 @Override
                 public void onListOfSKU(@Nullable List<SkuDetails> purchases) {
-                    Log.w("valuessAdded--->>",purchases.size()+"");
-                    Log.w("valuessAdded--->>",purchases.get(0).getDescription());
+                   // Log.w("valuessAdded--->>",purchases.size()+"");
+                   // Log.w("valuessAdded--->>",purchases.get(0).getDescription());
 
                     for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
                         if (responseMessageItem.getAppChannels() != null && responseMessageItem.getAppChannels().get(0) != null && responseMessageItem.getAppChannels().get(0).getAppChannel() != null && responseMessageItem.getAppChannels().get(0).getAppChannel().equalsIgnoreCase("Google Wallet") && responseMessageItem.getAppChannels().get(0).getAppID() != null) {
