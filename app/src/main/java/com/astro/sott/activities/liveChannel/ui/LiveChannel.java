@@ -24,11 +24,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
+import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.R;
 import com.astro.sott.activities.liveChannel.adapter.LiveChannelPagerAdapter;
@@ -269,14 +272,22 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
+            if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
+                callProgressBar();
+                playerChecks(railData);
+            } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                if (UserInfo.getInstance(this).isActive()) {
+                    fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+                    if (!fileId.equalsIgnoreCase("")) {
+                        Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                        intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        startActivity(intent);
+                    }
+                } else {
+                    new ActivityLauncher(LiveChannel.this).astrLoginActivity(LiveChannel.this, AstrLoginActivity.class, "");
+                }
 
-            getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
-
-            });
-            callProgressBar();
-            if (programAsset != null)
-                programName = programAsset.getName();
-            playerChecks(railData);
+            }
         });
 
         getBinding().share.setOnClickListener(v -> {
@@ -287,14 +298,22 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
+            if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
+                callProgressBar();
+                playerChecks(railData);
+            } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                if (UserInfo.getInstance(this).isActive()) {
+                    fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+                    if (!fileId.equalsIgnoreCase("")) {
+                        Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                        intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        startActivity(intent);
+                    }
+                } else {
+                    new ActivityLauncher(LiveChannel.this).astrLoginActivity(LiveChannel.this, AstrLoginActivity.class, "");
+                }
 
-            getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
-
-            });
-            callProgressBar();
-            if (programAsset != null)
-                programName = programAsset.getName();
-            playerChecks(railData);
+            }
 
 
         });
