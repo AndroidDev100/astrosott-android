@@ -19,6 +19,7 @@ import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.R;
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
@@ -26,6 +27,7 @@ import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.InAppProcessListener;
+import com.astro.sott.utils.billing.PurchaseDetailListener;
 import com.astro.sott.utils.billing.PurchaseType;
 import com.astro.sott.utils.billing.SKUsListListener;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -124,14 +126,24 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     @Override
     public void onCardClicked(String productId, String serviceType) {
         if (serviceType.equalsIgnoreCase("ppv")) {
-          //  billingProcessor.consumePurchase(productId);
             billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
-          //  billingProcessor.purchase(this, productId, "DEVELOPER PAYLOAD HERE");
         } else {
-           // billingProcessor.subscribe(this, productId, "DEVELOPER PAYLOAD HERE");
-            billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
-        }
+            if (billingProcessor!=null && billingProcessor.isReady()){
+                billingProcessor.queryPurchases(SubscriptionDetailActivity.this, new PurchaseDetailListener() {
+                    @Override
+                    public void response(Purchase purchaseObject) {
+                        if (purchaseObject!=null){
+                            if (purchaseObject.getSku()!=null && purchaseObject.getPurchaseToken()!=null){
+                                billingProcessor.updatePurchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(),purchaseObject.getSku(),purchaseObject.getPurchaseToken());
+                            }
+                        }else {
+                            billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                        }
+                    }
+                });
 
+            }
+        }
     }
 
     @Override

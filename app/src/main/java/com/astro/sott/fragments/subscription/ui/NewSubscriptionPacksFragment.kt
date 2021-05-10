@@ -127,8 +127,8 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
     private fun checkIfDetailAvailableOnPlaystore(productsResponseMessage: List<ProductsResponseMessageItem?>?) {
        // packDetailList = java.util.ArrayList()
-        val subSkuList = AppCommonMethods.getSubscriptionSKUs(productsResponseMessage, activity)
-        val productsSkuList = AppCommonMethods.getProductSKUs(productsResponseMessage, activity)
+        val subSkuList = ArrayList<String>();//AppCommonMethods.getSubscriptionSKUs(productsResponseMessage, activity)
+        val productsSkuList = ArrayList<String>();//AppCommonMethods.getProductSKUs(productsResponseMessage, activity)
 
 
             (activity as HomeActivity?)!!.onListOfSKUs(subSkuList,productsSkuList, SKUsListListener {

@@ -27,8 +27,10 @@ import com.astro.sott.utils.billing.AstroBillingProcessor;
 import com.astro.sott.utils.billing.BillingProcessor;
 
 import com.astro.sott.utils.billing.InAppProcessListener;
+import com.astro.sott.utils.billing.PurchaseDetailListener;
 import com.astro.sott.utils.billing.PurchaseType;
 import com.astro.sott.utils.billing.SKUsListListener;
+import com.astro.sott.utils.billing.SkuDetailsListener;
 import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.PrintLogging;
@@ -663,7 +665,21 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         if (serviceType.equalsIgnoreCase("ppv")) {
             billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {
-            billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+            if (billingProcessor!=null && billingProcessor.isReady()){
+                billingProcessor.queryPurchases(HomeActivity.this, new PurchaseDetailListener() {
+                    @Override
+                    public void response(Purchase purchaseObject) {
+                            if (purchaseObject!=null){
+                                if (purchaseObject.getSku()!=null && purchaseObject.getPurchaseToken()!=null){
+                                    billingProcessor.updatePurchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(),purchaseObject.getSku(),purchaseObject.getPurchaseToken());
+                                }
+                            }else {
+                                billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                            }
+                    }
+                });
+
+            }
         }
     }
 

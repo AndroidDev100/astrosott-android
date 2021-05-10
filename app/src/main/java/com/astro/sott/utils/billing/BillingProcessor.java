@@ -43,8 +43,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.android.billingclient.api.BillingFlowParams.ProrationMode.DEFERRED;
 import static com.android.billingclient.api.BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE;
 import static com.android.billingclient.api.BillingFlowParams.ProrationMode.IMMEDIATE_WITHOUT_PRORATION;
+import static com.android.billingclient.api.BillingFlowParams.ProrationMode.IMMEDIATE_WITH_TIME_PRORATION;
 
 
 public class BillingProcessor implements PurchasesUpdatedListener {
@@ -330,19 +332,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 	public void initiatePurchaseFlow(@NonNull Activity activity, @NonNull SkuDetails skuDetails) {
 		if (skuDetails.getType().equals(BillingClient.SkuType.SUBS) && areSubscriptionsSupported()
 				|| skuDetails.getType().equals(BillingClient.SkuType.INAPP)) {
-			if (!purchasedSKU.equalsIgnoreCase("")){
-				BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
-						.setOldSku(purchasedSKU, purchasedToken)
-						.setReplaceSkusProrationMode(IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
-						.setSkuDetails(skuDetails)
-						.build();
 
-				executeServiceRequest(
-						() -> {
-							PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
-							myBillingClient.launchBillingFlow(activity, purchaseParams);
-						});
-			}else {
 				final BillingFlowParams purchaseParams =
 						BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build();
 
@@ -352,10 +342,26 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 							myBillingClient.launchBillingFlow(activity, purchaseParams);
 						});
 
-			}
-
 		}
 	}
+
+	public void initiateUpdatePurchaseFlow(@NonNull Activity activity, @NonNull SkuDetails skuDetails,String oldSKU,String oldPurchaseToken) {
+		if (skuDetails.getType().equals(BillingClient.SkuType.SUBS) && areSubscriptionsSupported()
+				|| skuDetails.getType().equals(BillingClient.SkuType.INAPP)) {
+				BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
+						.setOldSku(oldSKU, oldPurchaseToken)
+						.setReplaceSkusProrationMode(IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+						.setSkuDetails(skuDetails)
+						.build();
+
+				executeServiceRequest(
+						() -> {
+							PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
+							myBillingClient.launchBillingFlow(activity, purchaseParams);
+						});
+		}
+	}
+
 
 	private boolean areSubscriptionsSupported() {
 		final BillingResult billingResult =
@@ -384,6 +390,42 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 			}
 		}
 	}
+
+	public void updatePurchase(Activity activity, String sku, String developer_payload, String purchaseType,String oldSKU,String oldPurchaseToken) {
+		if (purchaseType.equalsIgnoreCase(PurchaseType.PRODUCT.name())){
+			if (myBillingClient!=null && myBillingClient.isReady()){
+				//getProductSkuDetails(activity,sku);
+			}
+		}else {
+			if (myBillingClient!=null && myBillingClient.isReady()){
+				getUpdateSubscriptionSkuDetails(activity,sku,oldSKU,oldPurchaseToken);
+			}
+		}
+	}
+
+	public void getUpdateSubscriptionSkuDetails(Activity activity, String sku,String oldSKU,String oldPurchaseToken) {
+		List<String> skuList = new ArrayList<>();
+		skuList.add(sku);
+		SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+		params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS);
+		myBillingClient.querySkuDetailsAsync(params.build(),
+				new SkuDetailsResponseListener() {
+					@Override
+					public void onSkuDetailsResponse(BillingResult billingResult,
+													 List<SkuDetails> skuDetailsList) {
+						if (skuDetailsList != null && skuDetailsList.size() > 0) {
+							for (SkuDetails skuDetails : skuDetailsList) {
+								Log.w("skuDetails", skuDetails.getPrice() + "-->>" + skuDetails.getPriceCurrencyCode());
+								if (skuDetails.getSku().equalsIgnoreCase(sku)){
+									initiateUpdatePurchaseFlow(activity,skuDetails,oldSKU,oldPurchaseToken);
+								}
+							}
+						}
+					}
+				});
+	}
+
+
 
 	public void getProductSkuDetails(Activity activity, String sku) {
 		List<String> skuList = new ArrayList<>();
@@ -600,11 +642,11 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 		}
 	}
 
-	String purchasedSKU="";
-	String purchasedToken="";
-	public void queryPurchases(Activity context) {
-		if (!UserInfo.getInstance(context).isActive()) {
+	PurchaseDetailListener callBack;
+	public void queryPurchases(Activity context,PurchaseDetailListener call) {
+		if (UserInfo.getInstance(context).isActive()) {
 			if (myBillingClient!=null){
+				callBack=call;
 				final Purchase.PurchasesResult purchasesResult =
 						myBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
 
@@ -613,8 +655,9 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 					purchases.addAll(purchasesResult.getPurchasesList());
 				}
 				if (purchases.size()>0){
-					purchasedSKU=purchases.get(0).getSku();
-					purchasedToken=purchases.get(0).getPurchaseToken();
+					callBack.response(purchases.get(0));
+				}else {
+					callBack.response(null);
 				}
 
 				//PurchaseHandler.getInstance().checkPurchaseHistory(purchases,myBillingClient);
