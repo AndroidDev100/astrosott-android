@@ -10,7 +10,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/grape_purple"
             tools:context=".activities.profile.ui.EditProfileActivity">
 
@@ -44,7 +44,7 @@
                     android:textAlignment="center"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sp"></TextView>
+                    android:textSize="@dimen/_14sp"/>
 
             </RelativeLayout>
 
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:theme="@style/progressBarBlue"
-                android:visibility="gone"></ProgressBar>
+                android:visibility="gone" />
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button"
@@ -135,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:drawableRight="@drawable/ic_edit_24px" />
+                        app:drawableRightCompat="@drawable/ic_edit_24px" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -174,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:drawableRight="@drawable/ic_edit_24px" />
+                        app:drawableRightCompat="@drawable/ic_edit_24px" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -215,7 +215,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:drawableRight="@drawable/ic_edit_24px" />
+                        app:drawableRightCompat="@drawable/ic_edit_24px" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -256,7 +256,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:drawableRight="@drawable/ic_edit_24px" />
+                        app:drawableRightCompat="@drawable/ic_edit_24px" />
                 </RelativeLayout>
 
                 <Button
@@ -306,12 +306,12 @@
                         android:layout_alignParentLeft="true"
                         android:layout_gravity="left"
                         android:layout_marginStart="@dimen/dimen16dp"
-                        android:drawableLeft="@drawable/fb_white_icon"
                         android:drawablePadding="@dimen/_8dp"
                         android:fontFamily="@font/heebo_regular"
                         android:text="@string/facebook"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_16sp" />
+                        android:textSize="@dimen/_16sp"
+                        app:drawableLeftCompat="@drawable/fb_white_icon" />
 
                     <TextView
                         android:id="@+id/link_fb"
@@ -341,12 +341,12 @@
                         android:layout_alignParentLeft="true"
                         android:layout_gravity="left"
                         android:layout_marginStart="@dimen/dimen16dp"
-                        android:drawableLeft="@drawable/google_white_icon"
                         android:drawablePadding="@dimen/_8dp"
                         android:fontFamily="@font/heebo_regular"
                         android:text="@string/google"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_16sp" />
+                        android:textSize="@dimen/_16sp"
+                        app:drawableLeftCompat="@drawable/google_white_icon" />
 
                     <TextView
                         android:id="@+id/link_google"
@@ -378,12 +378,12 @@
                         android:layout_alignParentLeft="true"
                         android:layout_gravity="left"
                         android:layout_marginStart="@dimen/dimen16dp"
-                        android:drawableLeft="@drawable/apple_white_icon"
                         android:drawablePadding="@dimen/_8dp"
                         android:fontFamily="@font/heebo_regular"
                         android:text="@string/apple"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_16sp" />
+                        android:textSize="@dimen/_16sp"
+                        app:drawableLeftCompat="@drawable/apple_white_icon" />
 
                     <TextView
                         android:id="@+id/link_apple"

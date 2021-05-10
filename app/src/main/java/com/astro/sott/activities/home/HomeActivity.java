@@ -67,6 +67,10 @@ import com.google.android.play.core.install.model.InstallStatus;
 
 import java.util.Objects;
 
+import static com.astro.sott.R.id.navigation_home;
+import static com.astro.sott.R.id.navigation_live_tv;
+import static com.astro.sott.R.id.navigation_more;
+
 public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack, BillingProcessor.IBillingHandler, CardCLickedCallBack {
     private final String TAG = this.getClass().getSimpleName();
     private TextView toolbarTitle;
@@ -92,10 +96,10 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()) {
-                case R.id.navigation_home:
+                case navigation_home:
                     switchToHomeFragment();
                     return true;
-                case R.id.navigation_live_tv:
+                case navigation_live_tv:
                     if (liveTvFragment == null) {
                         initFrameFragment();
                     } else {
@@ -134,7 +138,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //                    }
 //
 //                    return true;
-                case R.id.navigation_more:
+                case navigation_more:
                     if (moreNewFragment == null) {
                         setProfileFragment();
                     } else {
@@ -397,7 +401,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         if (fragmentType.equalsIgnoreCase("profile")) {
             setProfileFragment();
             UIinitialization();
-            navigation.setSelectedItemId(R.id.navigation_more);
+            navigation.setSelectedItemId(navigation_more);
             setViewPager();
         } else {
             initialFragment(this);
@@ -447,7 +451,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private void initialFragment(HomeActivity homeActivity) {
         setViewPager();
         UIinitialization();
-        navigation.setSelectedItemId(R.id.navigation_home);
+        navigation.setSelectedItemId(navigation_home);
 
     }
 
@@ -539,7 +543,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     public void setToHome() {
         if (navigation != null)
-            navigation.setSelectedItemId(R.id.navigation_home);
+            navigation.setSelectedItemId(navigation_home);
     }
 
     @Override

@@ -23,7 +23,6 @@ import com.astro.sott.databinding.FragmentDtvBinding;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
-import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.google.gson.Gson;
 

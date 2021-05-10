@@ -3,23 +3,19 @@ package com.astro.sott.thirdParty.conViva;
 import android.content.Context;
 
 import com.astro.sott.BuildConfig;
-import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
-import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
+
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
-import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.userInfo.UserInfo;
-import com.conviva.api.ConvivaConstants;
 import com.conviva.sdk.ConvivaAdAnalytics;
 import com.conviva.sdk.ConvivaAnalytics;
 import com.conviva.sdk.ConvivaSdkConstants;
 import com.conviva.sdk.ConvivaVideoAnalytics;
 import com.kaltura.client.types.Asset;
-import com.kaltura.client.types.DoubleValue;
-import com.kaltura.playkit.Player;
+
 
 import java.util.HashMap;
 import java.util.Map;

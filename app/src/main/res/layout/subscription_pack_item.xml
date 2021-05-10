@@ -2,7 +2,6 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/card_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,19 +19,18 @@
                 android:layout_height="match_parent">
 
 
-
                 <ImageView
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:background="@drawable/pack_bg_img"></ImageView>
+                    android:background="@drawable/pack_bg_img" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/gradient_pack_bg"></FrameLayout>
+                    android:background="@drawable/gradient_pack_bg" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

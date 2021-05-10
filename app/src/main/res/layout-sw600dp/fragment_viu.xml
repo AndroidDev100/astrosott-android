@@ -37,7 +37,7 @@
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:scaleType="fitXY"
-                    tools:targetApi="lollipop" />
+                    tools:targetApi="m" />
 
                 <ImageView
                     android:id="@+id/iv_iflix"
@@ -53,7 +53,7 @@
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:scaleType="fitXY"
-                    tools:targetApi="lollipop" />
+                    tools:targetApi="m" />
 
                 <ImageView
                     android:id="@+id/iv_zee"
@@ -69,7 +69,7 @@
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:scaleType="fitXY"
-                    tools:targetApi="lollipop" />
+                    tools:targetApi="m" />
 
                 <ImageView
                     android:id="@+id/iv_alt_balaji"
@@ -84,7 +84,7 @@
                     android:elevation="4dp"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
-                    tools:targetApi="lollipop" />
+                    tools:targetApi="m" />
 
                 <ImageView
                     android:id="@+id/iv_eros_now"
@@ -100,7 +100,7 @@
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:scaleType="fitXY"
-                    tools:targetApi="lollipop" />
+                    tools:targetApi="m" />
             </LinearLayout>
 
             <LinearLayout
@@ -124,7 +124,7 @@
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:scaleType="fitXY"
-                    tools:targetApi="lollipop" />
+                    tools:targetApi="m" />
 
                 <ImageView
                     android:id="@+id/iv_vandana"
@@ -140,7 +140,7 @@
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:scaleType="fitXY"
-                    tools:targetApi="lollipop" />
+                    tools:targetApi="m" />
 
                 <ImageView
                     android:id="@+id/iv_guru"
@@ -156,7 +156,7 @@
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:scaleType="fitXY"
-                    tools:targetApi="lollipop" />
+                    tools:targetApi="m" />
 
                 <ImageView
                     android:id="@+id/iv_hungama"
@@ -176,7 +176,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/iv_eros_now"
                     app:layout_constraintTop_toBottomOf="@+id/iv_papare"
-                    tools:targetApi="lollipop" />
+                    tools:targetApi="m" />
                 <ImageView
                     android:id="@+id/iv_music_safari"
                     android:layout_width="@dimen/viu_item_width"
@@ -195,7 +195,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/iv_zee"
                     app:layout_constraintTop_toBottomOf="@+id/iv_guru"
-                    tools:targetApi="lollipop" />
+                    tools:targetApi="m" />
 
             </LinearLayout>
 
@@ -219,7 +219,7 @@
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:scaleType="fitXY"
-                    tools:targetApi="lollipop" />
+                    tools:targetApi="m" />
 
                 <ImageView
                     android:id="@+id/iv_spectrum"

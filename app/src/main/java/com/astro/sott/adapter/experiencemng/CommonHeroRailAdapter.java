@@ -14,7 +14,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;

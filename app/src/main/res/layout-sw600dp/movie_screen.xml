@@ -182,14 +182,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:visibility="visible"
-                                    android:drawableTop="@drawable/ic_share_24_px"
                                     android:drawablePadding="7dp"
                                     android:fontFamily="@font/heebo_regular"
                                     android:gravity="center"
                                     android:text="@string/share"
                                     android:layout_marginEnd="@dimen/_15sdp"
                                     android:textColor="@color/grey"
-                                    android:textSize="@dimen/font_small" />
+                                    android:textSize="@dimen/font_small"
+                                    app:drawableTopCompat="@drawable/ic_share_24_px" />
 
                                 <TextView
                                     android:id="@+id/playlist"
@@ -198,7 +198,6 @@
 
                                     android:layout_weight="1"
                                     android:clickable="true"
-                                    android:drawableTop="@drawable/ic_file_download_24px"
                                     android:drawablePadding="5dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_regular"
@@ -206,7 +205,8 @@
                                     android:text="@string/download"
                                     android:textColor="@color/grey"
                                     android:textSize="@dimen/font_medium"
-                                    android:visibility="gone" />
+                                    android:visibility="gone"
+                                    app:drawableTopCompat="@drawable/ic_file_download_24px" />
 
 
 
@@ -248,7 +248,8 @@
                                         android:fontFamily="@font/heebo_regular"
                                         android:lineHeight="24sp"
                                         android:textColor="@color/yellow_orange"
-                                        android:textSize="@dimen/font_medium" />
+                                        android:textSize="@dimen/font_medium"
+                                        tools:targetApi="p" />
 
                                     <RelativeLayout
                                         android:layout_width="match_parent"
@@ -265,7 +266,8 @@
                                             android:lineHeight="24sp"
                                             android:maxLines="3"
                                             android:textColor="@color/title_color"
-                                            android:textSize="@dimen/font_medium_large" />
+                                            android:textSize="@dimen/font_medium_large"
+                                            tools:targetApi="p" />
 
                                         <FrameLayout
                                             android:id="@+id/shadow"
@@ -273,7 +275,7 @@
                                             android:layout_height="40dp"
                                             android:layout_below="@+id/description_text"
                                             android:layout_alignParentBottom="true"
-                                            android:background="@drawable/above_dark_shadow"></FrameLayout>
+                                            android:background="@drawable/above_dark_shadow" />
                                     </RelativeLayout>
 
                                     <com.astro.sott.utils.helpers.ExpandableCardLayout
@@ -424,7 +426,7 @@
                         <FrameLayout
                             android:id="@+id/rail_fragment"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"></FrameLayout>
+                            android:layout_height="match_parent" />
                         <!--<fragment
                             android:id="@+id/rail_fragment"
                             android:name="com.dialog.dialoggo.baseModel.RailBaseFragment"

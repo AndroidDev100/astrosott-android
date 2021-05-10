@@ -14,6 +14,9 @@ import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.R;
 import com.astro.sott.databinding.ActivityMyPlanBinding;
 
+import static com.astro.sott.R.id.tv_change_payment_method;
+import static com.astro.sott.R.id.tv_my_plan;
+
 public class SubscriptionAndMyPlanActivity extends BaseBindingActivity<ActivityMyPlanBinding> implements View.OnClickListener {
     @Override
     public ActivityMyPlanBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -48,11 +51,11 @@ public class SubscriptionAndMyPlanActivity extends BaseBindingActivity<ActivityM
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.tv_change_payment_method:
+            case tv_change_payment_method:
                 openChangePaymentMethodActivity();
                 break;
 
-            case R.id.tv_my_plan:
+            case tv_my_plan:
                 openMyPlansActivity();
         }
 

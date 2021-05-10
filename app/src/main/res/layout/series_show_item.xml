@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/ic_potrait_placeholder"
-                android:scaleType="fitXY"></ImageView>
+                android:scaleType="fitXY" />
 
             <include
                 android:id="@+id/metas"
@@ -30,7 +30,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="top|right"
-                android:visibility="visible"></include>
+                android:visibility="visible" />
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -42,7 +42,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/heebo_regular"
             android:maxLines="2"
-            android:textColor="@color/title_color"></TextView>
+            android:textColor="@color/title_color" />
 
 
     </RelativeLayout>

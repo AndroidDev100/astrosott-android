@@ -19,7 +19,7 @@
             android:text="Trailers"
             android:textColor="@color/white"
             android:textSize="@dimen/font_xlarge"
-            android:visibility="gone"></TextView>
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/trailer_recycler_view"
@@ -42,7 +42,7 @@
             android:text="Previews"
             android:textColor="@color/white"
             android:textSize="@dimen/font_xlarge"
-            android:visibility="gone"></TextView>
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/highLightREcycler"

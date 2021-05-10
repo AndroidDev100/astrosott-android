@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.adapter.RibbonAdapter;
-import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.modelClasses.dmsResponse.MediaTypes;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.utils.helpers.ActivityLauncher;

@@ -33,6 +33,9 @@ import com.kaltura.client.types.InboxMessage;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.astro.sott.R.id.tv_content_preferences;
+import static com.astro.sott.R.id.tv_notification_settings;
+
 public class TabletAppSettingsActivity extends BaseBindingActivity<AppSettingsBinding> implements View.OnClickListener, AlertDialogSingleButtonFragment.AlertDialogListener {
     private KsServices ksServices;
 
@@ -190,13 +193,13 @@ public class TabletAppSettingsActivity extends BaseBindingActivity<AppSettingsBi
 ////                startActivity(intentVideo);
 //
 //                break;
-            case R.id.tv_notification_settings:
+            case tv_notification_settings:
 
                 Intent intentNotification = new Intent(TabletAppSettingsActivity.this, NotificationSettingActivity.class);
                 startActivity(intentNotification);
 
                 break;
-            case R.id.tv_content_preferences:
+            case tv_content_preferences:
 
                 Intent intent = new Intent(TabletAppSettingsActivity.this, ContentPreferenceActivity.class);
                 startActivity(intent);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -8,7 +8,7 @@
         android:background="@color/grape_purple">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/grape_purple"
      >
 
@@ -30,7 +30,7 @@
                         android:layout_height="35dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="16dp"
-                        android:background="@drawable/sooka_landscape"></ImageView>
+                        android:background="@drawable/sooka_landscape" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -69,12 +69,12 @@
                         android:layout_below="@id/para"
                         android:layout_marginTop="@dimen/dimen24dp"
                         android:layout_marginEnd="@dimen/dimen16dp"
-                        android:drawableLeft="@drawable/ic_lock_open_24_px"
                         android:drawablePadding="@dimen/dimen16dp"
                         android:fontFamily="@font/heebo_regular"
                         android:text="@string/get_access_to_vip"
                         android:textColor="@color/title_color"
-                        android:textSize="@dimen/_16sp" />
+                        android:textSize="@dimen/_16sp"
+                        app:drawableLeftCompat="@drawable/ic_lock_open_24_px" />
 
                     <TextView
                         android:id="@+id/registered_devices"
@@ -83,13 +83,13 @@
                         android:layout_below="@id/get_access"
                         android:layout_marginTop="@dimen/dimen24dp"
                         android:layout_marginEnd="@dimen/dimen16dp"
-                        android:drawableLeft="@drawable/ic_phonelink_24_px"
                         android:drawablePadding="@dimen/dimen16dp"
                         android:fontFamily="@font/heebo_regular"
                         android:gravity="center"
                         android:text="@string/registered_devices"
                         android:textColor="@color/title_color"
-                        android:textSize="@dimen/_16sp" />
+                        android:textSize="@dimen/_16sp"
+                        app:drawableLeftCompat="@drawable/ic_phonelink_24_px" />
 
                     <TextView
                         android:id="@+id/concurrency"
@@ -98,12 +98,12 @@
                         android:layout_below="@id/registered_devices"
                         android:layout_marginTop="@dimen/dimen24dp"
                         android:layout_marginEnd="@dimen/dimen16dp"
-                        android:drawableLeft="@drawable/ic_play_concurrency_2472"
                         android:drawablePadding="@dimen/dimen16dp"
                         android:fontFamily="@font/heebo_regular"
                         android:text="@string/concurrency"
                         android:textColor="@color/title_color"
-                        android:textSize="@dimen/_16sp" />
+                        android:textSize="@dimen/_16sp"
+                        app:drawableLeftCompat="@drawable/ic_play_concurrency_2472" />
 
                     <TextView
                         android:id="@+id/noAds"
@@ -112,13 +112,13 @@
                         android:layout_below="@id/concurrency"
                         android:layout_marginTop="@dimen/dimen24dp"
                         android:layout_marginEnd="@dimen/dimen16dp"
-                        android:drawableLeft="@drawable/ic_no_ads"
                         android:drawablePadding="@dimen/dimen16dp"
                         android:fontFamily="@font/heebo_regular"
                         android:gravity="center"
                         android:text="@string/noAds"
                         android:textColor="@color/title_color"
-                        android:textSize="@dimen/_16sp" />
+                        android:textSize="@dimen/_16sp"
+                        app:drawableLeftCompat="@drawable/ic_no_ads" />
 
                 </RelativeLayout>
 

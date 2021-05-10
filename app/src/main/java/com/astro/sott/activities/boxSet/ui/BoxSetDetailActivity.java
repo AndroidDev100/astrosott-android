@@ -25,14 +25,11 @@ import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
-import com.astro.sott.baseModel.RailBaseFragment;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.databinding.BoxSetDetailBinding;
-import com.astro.sott.databinding.MovieScreenBinding;
-import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.fragments.detailRailFragment.ui.BoxSetDetailFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
@@ -48,7 +45,6 @@ import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.DialogHelper;
-import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.StringBuilderHolder;
@@ -62,14 +58,12 @@ import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MultilingualStringValue;
 import com.kaltura.client.types.MultilingualStringValueArray;
-import com.kaltura.client.types.PersonalList;
 import com.kaltura.client.types.StringValue;
 import com.kaltura.client.types.UserAssetRule;
 import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 

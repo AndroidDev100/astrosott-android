@@ -2,13 +2,11 @@ package com.astro.sott.fragments.manageSubscription.ui;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -17,8 +15,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseActivity;
-import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
-import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.google.android.material.textfield.TextInputLayout;
 

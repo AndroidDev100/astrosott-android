@@ -17,8 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            ></include>
+            android:layout_alignParentRight="true" />
 
 
         <androidx.cardview.widget.CardView

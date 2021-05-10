@@ -10,8 +10,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.R;
-import com.astro.sott.activities.audio.ui.AudioLanguageActivity;
-import com.astro.sott.adapter.playlist.MultiplePlaylistAdapter;
 import com.astro.sott.databinding.AudioLangItemBinding;
 import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;

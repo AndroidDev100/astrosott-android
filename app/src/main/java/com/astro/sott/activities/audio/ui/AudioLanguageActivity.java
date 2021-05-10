@@ -1,15 +1,12 @@
 package com.astro.sott.activities.audio.ui;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 
-import com.astro.sott.R;
 import com.astro.sott.activities.audio.adapter.AudioAdapter;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityAudioLanguageBinding;

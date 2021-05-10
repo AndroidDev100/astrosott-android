@@ -34,7 +34,7 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.webEpisodeDescription.WebEpisodeDetailActivity"></activity>
+        <activity android:name=".activities.webEpisodeDescription.WebEpisodeDetailActivity" />
         <activity android:name=".activities.moreListing.ui.CustomListingActivity" />
         <activity android:name=".activities.isThatYou.IsThatYouActivity" />
         <activity android:name=".activities.profile.ui.EditMobileActivity" />

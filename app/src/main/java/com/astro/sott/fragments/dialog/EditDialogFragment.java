@@ -21,7 +21,6 @@ import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
-import com.astro.sott.utils.helpers.CustomTextWatcher;
 
 public class EditDialogFragment extends DialogFragment implements TextView.OnEditorActionListener {
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:id="@+id/rl_connection"
@@ -17,12 +18,12 @@
             android:layout_marginLeft="@dimen/left_right_margin"
             android:layout_marginTop="@dimen/margin_top"
             android:layout_marginRight="@dimen/left_right_margin"
-            android:drawableTop="@drawable/ic_no_notification"
             android:drawablePadding="15dp"
             android:fontFamily="@font/roboto_regular"
             android:text="@string/notification_message"
             android:textColor="@color/white"
-             android:visibility="gone"/>
+             android:visibility="gone"
+            app:drawableTopCompat="@drawable/ic_no_notification" />
 
 
         <LinearLayout

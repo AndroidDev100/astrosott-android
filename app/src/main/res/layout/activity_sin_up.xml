@@ -24,7 +24,7 @@
                 android:padding="7dp"
                 android:background="@drawable/ic_back"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></ImageView>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                     android:background="@drawable/sooka"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"></ImageView>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/forgot_title"
@@ -54,7 +54,7 @@
                     android:textSize="18sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/logo"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/logo" />
 
                 <TextView
                     android:id="@+id/description"
@@ -66,7 +66,7 @@
                     android:textColor="@color/white"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/forgot_title"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/forgot_title" />
 
                 <LinearLayout
                     android:id="@+id/email"
@@ -111,7 +111,7 @@
                     android:textColor="@color/red_live"
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/email"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/email" />
 
                 <LinearLayout
                     android:id="@+id/password"
@@ -155,7 +155,7 @@
                         android:layout_gravity="center"
                         android:padding="4dp"
                         android:layout_marginRight="@dimen/dimen18dp"
-                        android:background="@drawable/ic_outline_visibility_off_light"></ImageView>
+                        android:background="@drawable/ic_outline_visibility_off_light" />
                 </LinearLayout>
 
                 <TextView
@@ -167,7 +167,7 @@
                     android:textColor="@color/radical_red"
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/password"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/password" />
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
@@ -178,7 +178,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"></ProgressBar>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/pasw_para"
@@ -193,7 +193,7 @@
                     android:textSize="@dimen/_12sp"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/password"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/password" />
 
 
                 <CheckBox
@@ -205,7 +205,7 @@
                     android:gravity="center"
                     app:layout_constraintLeft_toLeftOf="@id/password"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
-                    app:layout_goneMarginTop="35dp"></CheckBox>
+                    app:layout_goneMarginTop="35dp" />
 
                 <TextView
                     android:id="@+id/error_checkbox"
@@ -216,7 +216,7 @@
                     android:visibility="gone"
                     android:layout_marginLeft="@dimen/dimen26dp"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/checkbox"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/checkbox" />
 
                 <TextView
                     android:id="@+id/terms"
@@ -231,7 +231,7 @@
                     android:textSize="@dimen/_14sp"
                     app:layout_constraintLeft_toRightOf="@id/checkbox"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
-                    app:layout_goneMarginTop="39dp"></TextView>
+                    app:layout_goneMarginTop="39dp" />
 
                 <TextView
                     android:id="@+id/next_btn"
@@ -246,7 +246,7 @@
                     android:textSize="16sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/checkbox"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/checkbox" />
 
 
                 <TextView
@@ -264,7 +264,7 @@
                     android:textSize="16sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/next_btn"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/next_btn" />
 
                 <TextView
                     android:id="@+id/login_btn"
@@ -279,7 +279,7 @@
                     android:textColor="@color/aqua_marine"
                     android:textSize="16sp"
                     app:layout_constraintLeft_toRightOf="@+id/already_have_account"
-                    app:layout_constraintTop_toBottomOf="@id/next_btn"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/next_btn" />
 
 
                 <View
@@ -321,7 +321,7 @@
                     android:textSize="14sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/already_have_account"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/already_have_account" />
 
                 <Button
                     android:id="@+id/google"
@@ -338,7 +338,7 @@
                     android:textSize="@dimen/_14sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/or"></Button>
+                    app:layout_constraintTop_toBottomOf="@id/or" />
 
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/login_button"
@@ -364,13 +364,13 @@
                     android:drawablePadding="1dp"
                     android:paddingLeft="@dimen/dimen28dp"
                     android:paddingEnd="@dimen/dimen20dp"
-                    android:drawableLeft="@drawable/ic_fb_btn"
                     android:text="@string/sign_in_fb"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/google"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/google"
+                    app:drawableLeftCompat="@drawable/ic_fb_btn" />
 
                 <TextView
                     android:id="@+id/apple"
@@ -380,7 +380,6 @@
                     android:background="@color/white"
                     android:fontFamily="@font/heebo_medium"
                     android:gravity="center"
-                    android:drawableLeft="@drawable/ic_apple_btn"
                     android:text="@string/sign_in_apple"
                     android:textColor="@color/black"
                     android:drawablePadding="2dp"
@@ -390,7 +389,8 @@
                     android:textSize="@dimen/_14sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fb"></TextView>
+                    app:layout_constraintTop_toBottomOf="@id/fb"
+                    app:drawableLeftCompat="@drawable/ic_apple_btn" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

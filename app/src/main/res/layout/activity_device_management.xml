@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,13 +17,13 @@
                 android:layout_marginLeft="@dimen/left_right_margin"
                 android:layout_centerInParent="true"
                 android:visibility="gone"
-                android:drawableTop="@drawable/deviceicon"
                 android:layout_marginTop="@dimen/margin_top"
                 android:layout_marginRight="@dimen/left_right_margin"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
                 android:text="@string/no_device_found"
-                android:textColor="@color/darkGreyProfile" />
+                android:textColor="@color/darkGreyProfile"
+                app:drawableTopCompat="@drawable/deviceicon" />
 
 
 

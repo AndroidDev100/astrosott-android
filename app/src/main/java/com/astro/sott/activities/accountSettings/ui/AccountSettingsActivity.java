@@ -18,6 +18,10 @@ import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.AccountSettingsBinding;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 
+import static com.astro.sott.R.id.tv_dtv_account;
+import static com.astro.sott.R.id.tv_parental_control;
+import static com.astro.sott.R.id.tv_subscription;
+
 public class AccountSettingsActivity extends BaseBindingActivity<AccountSettingsBinding> implements View.OnClickListener {
     @Override
     public AccountSettingsBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -81,16 +85,16 @@ public class AccountSettingsActivity extends BaseBindingActivity<AccountSettings
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_parental_control:
+            case tv_parental_control:
                 parentalControlActivity();
                 break;
 
             //Performing click for DTV Account
-            case R.id.tv_dtv_account:
+            case tv_dtv_account:
                 dtvAccountActivity();
                 break;
 
-            case R.id.tv_subscription:
+            case tv_subscription:
                 openSubscriptionActivity();
                 break;
 

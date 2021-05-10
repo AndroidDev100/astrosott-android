@@ -31,7 +31,7 @@
     <string name="guest_user">Pengguna tetamu</string>
     <string name="manage_subscription">Manage Subscriptions</string>
     <string name="cancel_plan"><u>CANCEL</u></string>
-    <string name="change_plan"></string>
+    <string name="change_plan" />
     <string name="partner_billing">Bil Rakan Kongsi</string>
     <string name="subscribe_more">Langgan</string>
     <string name="manage_subscription_more">Urus Langganan</string>
@@ -72,7 +72,7 @@
 
     <string name="terms_and_conditions">saya setuju dengan<font color='#5bc3ff'> <u>Terma dan Syarat</u>.</font> </string>
     <string name="already_have_an_account">Sudah mempunyai akaun? <font color='#5bc3ff'> <u>log masuk</u></font></string>
-    <string name="password_rules">Kata laluan mestilah sekurang-kurangnya 8 aksara, sekurang-kurangnya 1<b></b> nombor, 1 huruf kecil dan 1 huruf besar.</string>
+    <string name="password_rules">Kata laluan mestilah sekurang-kurangnya 8 aksara, sekurang-kurangnya 1<b /> nombor, 1 huruf kecil dan 1 huruf besar.</string>
     <string name="verify">PENGESAHAN</string>
     <string name="verification_code">Kod pengesahan</string>
     <string name="verification_code_text">Masukkan Kod Pengesahan anda</string>
@@ -605,4 +605,77 @@
     <string name="next_episode">Next Episode</string>
 
     <string name="logout_confirmation_message_new">Do you really want to logout?</string>
+
+    <string name="shows">SHOWS</string>
+    <string name="remind_me">Remind Me</string>
+    <string name="subscribed_success">Subscribed Successfully</string>
+    <string name="login_successfull">Login Successful</string>
+    <string name="email_unavailable">Sorry, you cannot proceed without sharing contact info.</string>
+    <string name="live_event_msg">We know you are excited! Set a reminder and come back later when the event starts. See you!</string>
+    <string name="no_active_subs">Currently no Active Subscription</string>
+    <string name="sad_to_see">Sad to See You Go</string>
+    <string name="account_block">Account Locked</string>
+    <string name="update_plan_description">Kindly cancel current active subscription first. You may re-subscribe with a new git  method after current subscription ended.</string>
+    <string name="plan_with_different_payment">Update Plan with Different Payment\n Method not Allowed!</string>
+    <string name="cancel_plan_with_different_payment">Cancel Plan with Different Payment\n Method not Allowed!</string>
+    <string name="account_has_been_locked">Account has been locked due to maximum login attempts reached. Please use Forgot Password to unlock your account.</string>
+    <string name="cancel_description">But goodbyes are not forever. You can \n always re-subscribe again! \n Your current subscription is valid until</string>
+
+    <string name="series">Series</string>
+    <string name="box_set">Box Set</string>
+    <string name="registered_success">Start enjoying sooka App features as a registered user!</string>
+    <string name="oops_no">Opps ! No.</string>
+    <string name="make_Sure">Just Wanted to Make Sure \n You are You</string>
+    <string name="key_password">Please key in your password \n to update email.</string>
+    <string name="not_yet">NOT YET!</string>
+    <string name="sorry_have_to_go">Sorry, I have to go...</string>
+    <string name="show_is">Show is</string>
+    <string name="free_sooka">Free Sooka</string>
+    <string name="edit_Mobile">Edit Mobile Number</string>
+    <string name="set_Mobile">Set Mobile Number</string>
+    <string name="set_email">Set Email</string>
+    <string name="set_name">Set Name</string>
+    <string name="set_password">Set Password</string>
+    <string name="edit_name">Edit Name</string>
+    <string name="existing_name">Existing Name</string>
+    <string name="existing_mobile">Existing Mobile Number</string>
+    <string name="new_name">New Name</string>
+    <string name="new_password">New Password</string>
+    <string name="new_mobile">New Mobile number</string>
+    <string name="already_registered">You have already register</string>
+    <string name="verification_code_Send">Verification code had be sent to </string>
+    <string name="select_one">You need to make at least one selection first!</string>
+    <string name="link_success">Your account is linked</string>
+    <string name="unlink_success">Your account is unlinked</string>
+    <string name="acount_mismatch">You can not link this account</string>
+    <string name="signup_login"><u>Log In</u></string>
+    <string name="user_name">User Name</string>
+    <string name="sooka_superstar">Sooka Superstar</string>
+    <string name="detail_confrm">Details Confirmation</string>
+    <string name="please_confirm_detail">Please confirm your details below</string>
+    <string name="is_that_you">Is this you?</string>
+    <string name="registered_password">Please login with your registered password \n to continue.</string>
+    <string name="pending">PENDING</string>
+    <string name="failed">FAILED</string>
+    <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
+    <string name="privacy_polices">Privacy Policies</string>
+    <string name="onetime_pass_code_text"><![CDATA[One time passcode had been sent to ]]></string>
+    <string name="link"><u>Link</u></string>
+    <string name="unlink"><u>Unlink</u></string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
+    <string name="apple">Apple</string>
+    <string name="you_are_offline">You\'re offline</string>
+    <string name="no_internet_description_text">It seems like there is a problem with your internet connection. Please check your connection and try again!</string>
+    <string name="reload_app">Reload App</string>
+
+
+
+
+    <string name="facebook_app_id">712171319736837</string>
+    <string name="fb_login_protocol_scheme">fb712171319736837</string>
+    <string name="cleverTap_token">TEST-560-5aa</string>
+    <string name="cleverTap_ACCOUNT_ID">TEST-775-W65-ZZ6Z</string>
+    <string name="fcm_sender_id">id:929669716426</string>
+
 </resources>

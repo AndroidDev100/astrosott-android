@@ -10,13 +10,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.detailConfirmation.DetailConfirmationActivity;
-import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.isThatYou.IsThatYouActivity;
@@ -26,8 +24,6 @@ import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityAstrLoginBinding;
-import com.astro.sott.fragments.manageSubscription.ui.CancelDialogFragment;
-import com.astro.sott.fragments.manageSubscription.ui.ManageSubscriptionFragment;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;

@@ -1,7 +1,6 @@
 package com.astro.sott.activities.moreListing.ui;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.astro.sott.R;
-import com.astro.sott.activities.myList.MyListActivity;
 import com.astro.sott.activities.myList.viewModel.MyWatchlistViewModel;
 import com.astro.sott.adapter.experiencemng.CommonLandscapeListingAdapteNew;
 import com.astro.sott.baseModel.BaseBindingActivity;
@@ -27,11 +25,9 @@ import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
-import com.astro.sott.utils.helpers.ToolBarHandler;
-import com.kaltura.client.types.Asset;
+
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CustomListingActivity extends BaseBindingActivity<ActivityCustomListingBinding> implements DetailRailClick {
     private final ArrayList<RailCommonData> arrayList = new ArrayList<>();

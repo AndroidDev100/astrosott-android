@@ -1,8 +1,6 @@
 package com.astro.sott.activities.language.ui.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.astro.sott.R;
-import com.astro.sott.activities.home.HomeActivity;
-import com.astro.sott.callBacks.commonCallBacks.ItemClickListener;
 import com.astro.sott.callBacks.commonCallBacks.SettingExpendableItemClick;
-import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

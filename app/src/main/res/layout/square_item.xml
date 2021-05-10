@@ -90,8 +90,7 @@
             android:layout_gravity="top|right"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            ></include>
+            android:layout_alignParentRight="true" />
         <include
             android:id="@+id/exclusive_layout"
             layout="@layout/exclusive_item" />

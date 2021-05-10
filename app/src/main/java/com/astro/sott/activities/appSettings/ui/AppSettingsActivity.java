@@ -1,7 +1,6 @@
 package com.astro.sott.activities.appSettings.ui;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,16 +9,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-
-import com.astro.sott.activities.SelectAccount.UI.SelectDtvAccountActivity;
 import com.astro.sott.activities.audio.ui.AudioLanguageActivity;
-import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.language.ui.ChangeLanguageActivity;
 import com.astro.sott.activities.notificationSetting.ui.NotificationSettingActivity;
 import com.astro.sott.activities.subtitle.ui.SubtitleLanguageActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
-import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.BuildConfig;
@@ -27,7 +22,12 @@ import com.astro.sott.R;
 import com.astro.sott.activities.contentPreference.ui.ContentPreferenceActivity;
 import com.astro.sott.databinding.AppSettingsBinding;
 
-import java.util.Locale;
+import static com.astro.sott.R.id.audio_language;
+import static com.astro.sott.R.id.language;
+import static com.astro.sott.R.id.subtitle_language;
+import static com.astro.sott.R.id.tv_content_preferences;
+import static com.astro.sott.R.id.tv_notification_settings;
+
 
 public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding> implements View.OnClickListener {
     private String oldLang, newLang;
@@ -111,25 +111,25 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
 //              //  Intent intentVideo = new Intent(AppSettingsActivity.this, VideoQualityActivity.class);
 //             //   startActivity(intentVideo);
 //                break;
-            case R.id.tv_notification_settings:
+            case tv_notification_settings:
                 Intent intentNotification = new Intent(AppSettingsActivity.this, NotificationSettingActivity.class);
                 startActivity(intentNotification);
                 break;
-            case R.id.tv_content_preferences:
+            case tv_content_preferences:
                 Intent intent = new Intent(AppSettingsActivity.this, ContentPreferenceActivity.class);
                 startActivity(intent);
 
                 break;
 
-            case R.id.language:
+            case language:
                 Intent intent1 = new Intent(this, ChangeLanguageActivity.class);
                 startActivity(intent1);
                 break;
-            case R.id.audio_language:
+            case audio_language:
                 Intent audioIntent = new Intent(this, AudioLanguageActivity.class);
                 startActivity(audioIntent);
                 break;
-            case R.id.subtitle_language:
+            case subtitle_language:
                 Intent subtitleIntent = new Intent(this, SubtitleLanguageActivity.class);
                 startActivity(subtitleIntent);
                 break;

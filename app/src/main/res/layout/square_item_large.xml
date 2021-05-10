@@ -83,7 +83,6 @@
             tools:targetApi="lollipop" />
 
 
-
         <include
             android:id="@+id/metas"
             layout="@layout/metas_layout"
@@ -91,8 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_gravity="top|right"
-            ></include>
+            android:layout_gravity="top|right" />
 
         <include
             android:id="@+id/exclusive_layout"

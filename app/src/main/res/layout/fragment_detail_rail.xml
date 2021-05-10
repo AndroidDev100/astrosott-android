@@ -28,7 +28,7 @@
             app:tabIndicator="@color/transparentColor"
             app:tabSelectedTextColor="@color/white"
             app:tabTextAppearance="@style/MineCustomTabText"
-            app:tabTextColor="@color/grey"></com.google.android.material.tabs.TabLayout>
+            app:tabTextColor="@color/grey" />
 
         <View
             android:id="@+id/black_line"

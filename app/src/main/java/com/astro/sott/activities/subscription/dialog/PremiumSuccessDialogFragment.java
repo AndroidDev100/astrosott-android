@@ -13,6 +13,8 @@ import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentPremiumSuccessBinding;
 
+import static com.astro.sott.R.id.btn3;
+
 public class PremiumSuccessDialogFragment extends BaseBindingFragment<FragmentPremiumSuccessBinding> implements View.OnClickListener {
 
 
@@ -51,7 +53,7 @@ public class PremiumSuccessDialogFragment extends BaseBindingFragment<FragmentPr
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn3:
+            case btn3:
 //                new ActivityLauncher(getActivity()).singleChannelSubscriptionActivity(getActivity(), SingleLiveChannelSubscriptionActivity.class);
                 mListener.finishActivity();
                 break;

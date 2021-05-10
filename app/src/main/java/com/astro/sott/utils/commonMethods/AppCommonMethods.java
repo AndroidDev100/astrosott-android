@@ -1,7 +1,6 @@
 package com.astro.sott.utils.commonMethods;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.net.UrlQuerySanitizer;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -24,11 +22,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
 
 import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.home.HomeActivity;
-import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.search.constants.SearchFilterEnum;
 import com.astro.sott.baseModel.PrefrenceBean;
 import com.astro.sott.beanModel.VIUChannel;
@@ -82,7 +78,6 @@ import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.lang.reflect.Type;
-import java.net.URLEncoder;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;

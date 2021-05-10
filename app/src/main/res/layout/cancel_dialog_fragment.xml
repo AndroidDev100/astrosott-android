@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingRight="38dp"
@@ -20,7 +21,8 @@
         android:textSize="@dimen/font_xxlarge"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:targetApi="p" />
 
     <TextView
         android:id="@+id/description"
@@ -35,7 +37,8 @@
         android:textSize="@dimen/font_medium_large"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:targetApi="p" />
 
     <TextView
         android:id="@+id/date"
@@ -48,7 +51,8 @@
         android:textSize="@dimen/font_medium_large"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        tools:targetApi="p" />
 
 
     <TextView
@@ -65,7 +69,7 @@
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date"></TextView>
+        app:layout_constraintTop_toBottomOf="@id/date" />
 
 
     <TextView
@@ -82,7 +86,7 @@
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/not_yet"></TextView>
+        app:layout_constraintTop_toBottomOf="@id/not_yet" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

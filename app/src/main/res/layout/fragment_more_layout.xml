@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -10,7 +10,7 @@
         <LinearLayout
             android:id="@+id/ll_more"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/grape_purple"
             android:orientation="vertical">
 
@@ -43,7 +43,7 @@
                     android:textAlignment="center"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sp"></TextView>
+                    android:textSize="@dimen/_14sp" />
 
             </RelativeLayout>
 
@@ -103,7 +103,7 @@
                         android:maxLines="1"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
-                        android:textSize="24sp"></TextView>
+                        android:textSize="24sp" />
 
                     <TextView
                         android:id="@+id/tv_email"
@@ -114,7 +114,7 @@
                         android:textAllCaps="false"
                         android:ellipsize="end"
                         android:textColor="@color/white"
-                        android:textSize="13sp"></TextView>
+                        android:textSize="13sp" />
                 </LinearLayout>
 
                 <ImageView
@@ -164,7 +164,7 @@
                     android:text=""
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="@dimen/_16sp" />
 
                 <TextView
                     android:id="@+id/tv_subscribe_now"
@@ -177,7 +177,7 @@
                     android:padding="@dimen/_1sdp"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="13sp"></TextView>
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/productCategory"
@@ -193,7 +193,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    android:visibility="gone"></TextView>
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_renew_date"
@@ -207,7 +207,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    android:visibility="gone"></TextView>
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_billing"
@@ -220,7 +220,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    android:visibility="gone"></TextView>
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/subscribe"
@@ -268,14 +268,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_receipt_24px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/transac_history"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="@dimen/_16sp"
+                    app:drawableLeftCompat="@drawable/ic_receipt_24px" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -301,14 +301,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_language_24px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/lang_selection"
                     android:textAllCaps="false"
                     android:textColor="@color/light_blue_text_color"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="@dimen/_16sp"
+                    app:drawableLeftCompat="@drawable/ic_language_24px" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -335,14 +335,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_file_download_24px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/downloads"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="@dimen/_16sp"
+                    app:drawableLeftCompat="@drawable/ic_file_download_24px" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -368,14 +368,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_devices_24px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/mannage_device"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="@dimen/_16sp"
+                    app:drawableLeftCompat="@drawable/ic_devices_24px" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -402,14 +402,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_content_pref_24px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/content_pref"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="@dimen/_16sp"
+                    app:drawableLeftCompat="@drawable/ic_content_pref_24px" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -436,14 +436,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_local_offer_24px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/coupon_redem"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="@dimen/_16sp"
+                    app:drawableLeftCompat="@drawable/ic_local_offer_24px" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -469,14 +469,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_help_outline_24px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/help"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="@dimen/_16sp"
+                    app:drawableLeftCompat="@drawable/ic_help_outline_24px" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -502,14 +502,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_terms_conditions_24_px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/terms_conditions"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="@dimen/_16sp"
+                    app:drawableLeftCompat="@drawable/ic_terms_conditions_24_px" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -535,14 +535,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_privacy_polices_24_px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/privacy_polices"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="@dimen/_16sp"
+                    app:drawableLeftCompat="@drawable/ic_privacy_polices_24_px" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -569,14 +569,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_exit_to_app_24px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/logout"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="@dimen/_16sp"
+                    app:drawableLeftCompat="@drawable/ic_exit_to_app_24px" />
 
             </RelativeLayout>
 
@@ -592,7 +592,7 @@
                 android:padding="@dimen/_1sdp"
                 android:textAllCaps="false"
                 android:textColor="@color/grey"
-                android:textSize="@dimen/_16sp"></TextView>
+                android:textSize="@dimen/_16sp" />
 
             <RelativeLayout
                 android:id="@+id/rl_linked_accounts"
@@ -612,14 +612,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_add_black_24dp"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/linked_accounts"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="16sp"></TextView>
+                    android:textSize="16sp"
+                    app:drawableLeftCompat="@drawable/ic_add_black_24dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -647,14 +647,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_credit_card_24px"
                     android:drawablePadding="@dimen/_14sdp"
                     android:fontFamily="@font/heebo_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/manage_payments"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp"></TextView>
+                    android:textSize="@dimen/_16sp"
+                    app:drawableLeftCompat="@drawable/ic_credit_card_24px" />
 
                 <ImageView
                     android:layout_width="wrap_content"

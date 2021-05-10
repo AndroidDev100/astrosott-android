@@ -271,13 +271,13 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/share_margin_top"
                                         android:clickable="true"
-                                        android:drawableTop="@drawable/share"
                                         android:drawablePadding="7dp"
                                         android:fontFamily="@font/roboto_regular"
                                         android:text="@string/share"
                                         android:textColor="@color/white"
                                         android:textSize="@dimen/font_medium"
-                                        android:focusable="true" />
+                                        android:focusable="true"
+                                        app:drawableTopCompat="@drawable/share" />
 
                                     <TextView
                                         android:id="@+id/watchList"
@@ -286,13 +286,13 @@
                                         android:layout_marginStart="40dp"
                                         android:layout_marginTop="@dimen/share_margin_top"
                                         android:clickable="true"
-                                        android:drawableTop="@drawable/play_list"
                                         android:drawablePadding="7dp"
                                         android:fontFamily="@font/roboto_regular"
                                         android:text="@string/playlist"
                                         android:textColor="@color/white"
                                         android:textSize="@dimen/font_medium"
-                                        android:focusable="true" />
+                                        android:focusable="true"
+                                        app:drawableTopCompat="@drawable/play_list" />
                                 </LinearLayout>
 
 
@@ -311,13 +311,13 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/watchlist_margin_top"
                                         android:clickable="true"
-                                        android:drawableTop="@drawable/download_icon"
                                         android:drawablePadding="7dp"
                                         android:fontFamily="@font/roboto_regular"
                                         android:text="@string/download"
                                         android:textColor="@color/white"
                                         android:textSize="@dimen/font_medium"
-                                        android:focusable="true" />
+                                        android:focusable="true"
+                                        app:drawableTopCompat="@drawable/download_icon" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -336,9 +336,9 @@
                                         android:fontFamily="@font/roboto_regular"
                                         android:text="@string/trailer"
                                         android:textColor="@color/white"
-                                        android:drawableTop="@drawable/trailor_button"
                                         android:drawablePadding="7dp"
-                                        android:textSize="@dimen/font_medium" />
+                                        android:textSize="@dimen/font_medium"
+                                        app:drawableTopCompat="@drawable/trailor_button" />
                                 </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>

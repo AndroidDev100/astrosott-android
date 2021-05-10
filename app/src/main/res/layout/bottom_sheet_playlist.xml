@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/fragment_background_color"
     android:orientation="vertical"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -34,12 +34,12 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="25dp"
-            android:drawableStart="@drawable/ic_add_black_24dp"
             android:fontFamily="@font/roboto_regular"
             android:gravity="center_vertical"
             android:text="@string/new_playlist"
             android:textColor="@color/blue_brand_color"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            app:drawableStartCompat="@drawable/ic_add_black_24dp" />
 
     </LinearLayout>
 

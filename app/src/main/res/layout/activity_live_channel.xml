@@ -16,7 +16,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <include
@@ -107,7 +107,6 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/share_margin_top"
                     android:clickable="true"
-                    android:drawableTop="@drawable/ic_share_24_px"
                     android:drawablePadding="7dp"
                     android:focusable="true"
                     android:fontFamily="@font/heebo_regular"
@@ -115,7 +114,8 @@
                     android:text="@string/share"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/font_small"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    app:drawableTopCompat="@drawable/ic_share_24_px" />
 
                 <RelativeLayout
                     android:id="@+id/vip_button_live"
@@ -170,7 +170,7 @@
                             android:layout_height="36dp"
                             android:layout_gravity="center"
                             android:background="@drawable/ic_landscape_placeholder"
-                            android:scaleType="fitXY"></ImageView>
+                            android:scaleType="fitXY" />
 
                         <TextView
                             android:id="@+id/programTitle"
@@ -184,7 +184,8 @@
                             android:lineHeight="24sp"
                             android:maxLines="1"
                             android:textColor="@color/title_color"
-                            android:textSize="@dimen/font_xxlarge">
+                            android:textSize="@dimen/font_xxlarge"
+                            tools:targetApi="p">
 
                         </TextView>
                     </LinearLayout>
@@ -198,7 +199,8 @@
                         android:fontFamily="@font/heebo_regular"
                         android:lineHeight="24sp"
                         android:textColor="@color/yellow_orange"
-                        android:textSize="@dimen/font_medium"></TextView>
+                        android:textSize="@dimen/font_medium"
+                        tools:ignore="UnusedAttribute" />
 
                     <com.astro.sott.utils.helpers.ExpandableTextView
                         android:id="@+id/description_text"
@@ -210,7 +212,8 @@
                         android:fontFamily="@font/heebo_regular"
                         android:lineHeight="24sp"
                         android:textColor="@color/title_color"
-                        android:textSize="@dimen/font_medium_large" />
+                        android:textSize="@dimen/font_medium_large"
+                        tools:targetApi="p" />
                 </LinearLayout>
 
                 <RelativeLayout
