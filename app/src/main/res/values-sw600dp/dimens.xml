@@ -480,5 +480,6 @@
     <dimen name="list_lds_width">142dp</dimen>
     <dimen name="list_lds_height">80dp</dimen>
 
+    <dimen name="package_width">240dp</dimen>
     <dimen name="extraSpacingLDS">100dp</dimen>
 </resources>

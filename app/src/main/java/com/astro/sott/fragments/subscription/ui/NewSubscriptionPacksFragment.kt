@@ -3,13 +3,13 @@ package com.astro.sott.fragments.subscription.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.astro.sott.R
 import com.astro.sott.activities.home.HomeActivity
@@ -21,6 +21,7 @@ import com.astro.sott.baseModel.BaseBindingFragment
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack
 import com.astro.sott.databinding.FragmentNewSubscriptionPacksBinding
 import com.astro.sott.fragments.subscription.adapter.SubscriptionPagerAdapter
+import com.astro.sott.fragments.subscription.adapter.SubscriptionRecyclerViewAdapter
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel
 import com.astro.sott.modelClasses.InApp.PackDetail
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
@@ -35,7 +36,6 @@ import com.astro.sott.utils.helpers.ActivityLauncher
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
 import com.astro.sott.utils.userInfo.UserInfo
-import com.google.gson.Gson
 import com.google.gson.JsonArray
 import kotlinx.android.synthetic.main.app_toolbar.view.*
 
@@ -48,7 +48,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscriptionPacksBinding>(), View.OnClickListener, SubscriptionPagerAdapter.OnPackageChooseClickListener {
-    private lateinit var productList: java.util.ArrayList<String>
+    private var productList = ArrayList<String>()
     private lateinit var cardClickedCallback: CardCLickedCallBack
     private var indicatorWidth: Int = 0
     private lateinit var subscriptionViewModel: SubscriptionViewModel
@@ -103,6 +103,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                             getActiveSubscription()
                         } else {
                             AppCommonMethods.removeUserPrerences(activity)
+                            getProducts()
                         }
                     })
                 } else {
@@ -131,6 +132,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                             getLastSubscription()
                         } else {
                             AppCommonMethods.removeUserPrerences(activity)
+                            getProducts()
                         }
                     })
                 } else {
@@ -223,18 +225,28 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
     }
 
     private fun loadDataFromModel(productsResponseMessage: List<PackDetail>) {
-        setViewPager(productsResponseMessage);
+        if (resources.getBoolean(R.bool.isTablet)) {
+            setRecyclerview(productsResponseMessage)
+        } else {
+            setViewPager(productsResponseMessage);
+        }
+    }
+
+    private fun setRecyclerview(packagesList: List<PackDetail>) {
+        binding.packagesRecyclerView?.setHasFixedSize(true)
+        binding.packagesRecyclerView?.setItemViewCacheSize(20)
+        binding.packagesRecyclerView?.setLayoutManager(LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false))
+        binding.packagesRecyclerView?.adapter = SubscriptionRecyclerViewAdapter(activity!!, (packagesList as java.util.ArrayList<PackDetail>), productList, this)
     }
 
     private fun setViewPager(packagesList: List<PackDetail>) {
-        Log.e("PRODUCT_LIST", Gson().toJson(productList))
-        binding.viewPager.adapter = SubscriptionPagerAdapter(activity!!, packagesList, productList, this)
-        binding.viewPager.setPadding(SliderPotrait.dp2px(activity!!, 32f), 0, SliderPotrait.dp2px(activity!!, 32f), 0);
-        binding.viewPager.clipChildren = false
-        binding.viewPager.clipToPadding = false
-        binding.viewPager.pageMargin = SliderPotrait.dp2px(activity!!, 16f);
+        binding.viewPager?.adapter = SubscriptionPagerAdapter(activity!!, packagesList, productList, this)
+        binding.viewPager?.setPadding(SliderPotrait.dp2px(activity!!, 32f), 0, SliderPotrait.dp2px(activity!!, 32f), 0);
+        binding.viewPager?.clipChildren = false
+        binding.viewPager?.clipToPadding = false
+        binding.viewPager?.pageMargin = SliderPotrait.dp2px(activity!!, 16f);
         val rainbow = resources.getIntArray(R.array.packages_colors)
-        binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        binding.viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
             }
@@ -245,14 +257,14 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
             override fun onPageSelected(position: Int) {
                 val currentColor = rainbow[position % rainbow.size]
-                binding.tabs.setSelectedTabIndicatorColor(currentColor)
-                binding.tabs.setTabTextColors(resources.getColor(R.color.gray), currentColor)
+                binding.tabs?.setSelectedTabIndicatorColor(currentColor)
+                binding.tabs?.setTabTextColors(resources.getColor(R.color.gray), currentColor)
             }
         })
-        binding.tabs.setupWithViewPager(binding.viewPager);
+        binding.tabs?.setupWithViewPager(binding.viewPager);
         binding.terms.setOnClickListener(this)
-        binding.tabs.setSelectedTabIndicatorColor(resources.getColor(R.color.yellow_orange))
-        binding.tabs.setTabTextColors(resources.getColor(R.color.gray), resources.getColor(R.color.yellow_orange))
+        binding.tabs?.setSelectedTabIndicatorColor(resources.getColor(R.color.yellow_orange))
+        binding.tabs?.setTabTextColors(resources.getColor(R.color.gray), resources.getColor(R.color.yellow_orange))
 
     }
 
@@ -291,9 +303,5 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         } else {
             ActivityLauncher(activity!!).astrLoginActivity(activity!!, AstrLoginActivity::class.java, "")
         }
-    }
-
-    fun refreshPacks() {
-        Toast.makeText(activity!!, "Refresh", Toast.LENGTH_LONG).show()
     }
 }

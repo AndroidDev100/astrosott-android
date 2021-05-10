@@ -75,7 +75,36 @@ data class ProductsResponseMessageItem(
         val frequency: String? = null,
 
         @field:SerializedName("attributes")
-        val attributes: List<Attribute>? = null
+        val attributes: List<Attribute>? = null,
+        @field:SerializedName("promotions")
+        val promotions: List<Promotion>? = null
+)
+
+data class Promotion(
+        @field:SerializedName("isFreeTrail")
+        val isFreeTrail: Boolean? = null,
+        @field:SerializedName("promotionId")
+        val promotionId: String? = null,
+        @field:SerializedName("promotionName")
+        val promotionName: String? = null,
+        @field:SerializedName("promotionType")
+        val promotionType: String? = null,
+        @field:SerializedName("amount")
+        val amount: Double? = null,
+        @field:SerializedName("promotionalPrice")
+        val promotionalPrice: Double? = null,
+        @field:SerializedName("isVODPromotion")
+        val isVODPromotion: Boolean? = null,
+        @field:SerializedName("promoDescrip")
+        val promoDescrip: String? = null,
+        @field:SerializedName("promotionExpiry")
+        val promotionExpiry: Long? = null,
+        @field:SerializedName("promotionDuration")
+        val promotionDuration: Int? = null,
+        @field:SerializedName("promotionPeriod")
+        val promotionPeriod: String? = null,
+        @field:SerializedName("promoCpDescription")
+        val promoCpDescription: String? = null
 )
 
 data class Attribute(

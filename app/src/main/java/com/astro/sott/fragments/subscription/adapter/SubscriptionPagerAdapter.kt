@@ -41,7 +41,6 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
             bannerBinding.text.setPadding(0, SliderPotrait.dp2px(context, 6f), 0, SliderPotrait.dp2px(context, 6f))
         }
         bannerBinding.packagePriceOld.visibility = View.GONE
-        bannerBinding.offer.visibility = View.GONE
         val rainbow = context.resources.getIntArray(R.array.packages_colors)
         val currentColor = rainbow[position % rainbow.size]
 
@@ -52,23 +51,28 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
         bannerBinding.packageTitle.text = packageModel.displayName
         bannerBinding.packageTitle.setTextColor(currentColor)
         if (skuModel.haveIntroductoryPeriod) {
-            bannerBinding.text.visibility = View.VISIBLE
-            bannerBinding.text.setPadding(0, SliderPotrait.dp2px(context, 6f), 0, SliderPotrait.dp2px(context, 6f))
+            if (packageModel.promotions != null && packageModel.promotions?.size!! > 0) {
+                bannerBinding.text.visibility = View.VISIBLE
+                bannerBinding.text.setPadding(0, SliderPotrait.dp2px(context, 6f), 0, SliderPotrait.dp2px(context, 6f))
+                bannerBinding.text.text = packageModel.promotions!![0].promoDescrip
+                bannerBinding.offer.visibility = View.VISIBLE
+                bannerBinding.offer.text = packageModel.promotions!![0].promoCpDescription
+            }
             if (packageModel.duration == 1) {
-                bannerBinding.packagePrice.text = skuModel.introductoryPriceText + "/" + packageModel.period?.replace("(s)", "")
-                bannerBinding.packagePriceOld.text = skuModel.priceText + "/" + packageModel.period?.replace("(s)", "")
+                bannerBinding.packagePrice.text = skuModel.currency+" "+skuModel.introductoryPriceValue + "/" + packageModel.period?.replace("(s)", "")
+                bannerBinding.packagePriceOld.text = skuModel.currency+" "+skuModel.priceValue.toString() + "/" + packageModel.period?.replace("(s)", "")
             } else {
-                bannerBinding.packagePrice.text = skuModel.introductoryPriceText + "/" + packageModel.duration + " " + packageModel.period?.replace("(s)", "")
-                bannerBinding.packagePriceOld.text = skuModel.priceText + "/" + packageModel.duration + " " + packageModel.period?.replace("(s)", "")
+                bannerBinding.packagePrice.text = skuModel.currency+" "+skuModel.introductoryPriceValue + "/" + packageModel.duration + " " + packageModel.period?.replace("(s)", "")
+                bannerBinding.packagePriceOld.text = skuModel.currency+" "+skuModel.priceValue.toString() + "/" + packageModel.duration + " " + packageModel.period?.replace("(s)", "")
             }
             bannerBinding.packagePriceOld.visibility = View.VISIBLE
             bannerBinding.packagePriceOld.paintFlags = bannerBinding.packagePriceOld.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-//            bannerBinding.offer.visibility = View.VISIBLE
         } else {
+            bannerBinding.offer.visibility = View.GONE
             if (packageModel.duration == 1)
-                bannerBinding.packagePrice.text = skuModel.priceText + "/" + packageModel.period?.replace("(s)", "")
+                bannerBinding.packagePrice.text = skuModel.currency + " " + skuModel.priceValue + "/" + packageModel.period?.replace("(s)", "")
             else
-                bannerBinding.packagePrice.text = skuModel.priceText + "/" + packageModel.duration + " " + packageModel.period?.replace("(s)", "")
+                bannerBinding.packagePrice.text = skuModel.currency + " " + skuModel.priceValue + "/" + packageModel.duration + " " + packageModel.period?.replace("(s)", "")
         }
         bannerBinding.packageDescription.text = skuModel.description
 
