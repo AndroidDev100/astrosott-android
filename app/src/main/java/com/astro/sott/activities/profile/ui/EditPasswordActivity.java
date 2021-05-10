@@ -98,15 +98,15 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
         }));
     }
 
-    private String email_mobile = "",type="";
+    private String email_mobile = "", type = "";
 
     private void createOtp() {
         if (!UserInfo.getInstance(this).getUserName().equalsIgnoreCase("")) {
             type = "email";
-            email_mobile = UserInfo.getInstance(this).getUserName();
-        } else if (!UserInfo.getInstance(this).getAlternateUserName().equalsIgnoreCase("")) {
+            email_mobile = UserInfo.getInstance(this).getEmail();
+        } else if (!UserInfo.getInstance(this).getEmail().equalsIgnoreCase("")) {
             type = "mobile";
-            email_mobile = UserInfo.getInstance(this).getAlternateUserName();
+            email_mobile = UserInfo.getInstance(this).getMobileNumber();
         }
 
         astroLoginViewModel.createOtp(type, email_mobile).observe(this, evergentCommonResponse -> {
