@@ -108,8 +108,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen18dp"
-                    android:textColor="@color/red_live"
-                    android:visibility="gone"
+                    android:paddingRight="10dp"
+                    android:text="@string/mobile_suggestion"
+                    android:textColor="@color/heather"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/email" />
 
@@ -163,9 +164,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen18dp"
+                    android:paddingRight="20dp"
                     android:layout_marginRight="@dimen/dimen18dp"
-                    android:textColor="@color/radical_red"
-                    android:visibility="gone"
+                    android:text="@string/password_rules"
+                    android:textColor="@color/heather"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/password" />
 
