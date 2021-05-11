@@ -3,6 +3,7 @@ package com.astro.sott.fragments.subscription.adapter
 import android.app.Activity
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +51,8 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                 bannerBinding.mainBackground.background = backgroundDrawable
                 bannerBinding.packageTitle.text = packageModel.displayName
                 bannerBinding.packageTitle.setTextColor(currentColor)
-                if (skuModel != null && skuModel.introductoryPrice != null) {
+                Log.w("priceValues ada", skuModel!!.introductoryPrice + "<--->"+skuModel!!.price+"<----->")
+                if (skuModel != null && skuModel.introductoryPricePeriod != null) {
                     if (packageModel.promotions != null && packageModel.promotions?.size!! > 0) {
                         bannerBinding.text.visibility = View.VISIBLE
                         bannerBinding.text.setPadding(0, SliderPotrait.dp2px(activity, 6f), 0, SliderPotrait.dp2px(activity, 6f))
@@ -113,6 +115,7 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
             }
 
         } catch (e: ClassCastException) {
+            Log.w("priceValues", e.toString())
             e.printStackTrace()
         }
 
