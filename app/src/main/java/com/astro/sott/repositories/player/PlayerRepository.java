@@ -311,7 +311,7 @@ public class PlayerRepository {
             videoTracks = tracksInfo.getVideoTracks();
         }
         if (tracksInfo.getAudioTracks().size() > 0) {
-            audioTracks=filterUnknown(tracksInfo.getAudioTracks());
+            audioTracks = filterUnknown(tracksInfo.getAudioTracks());
             //audioTracks = tracksInfo.getAudioTracks();
         }
         if (tracksInfo.getTextTracks().size() > 0) {
@@ -331,8 +331,8 @@ public class PlayerRepository {
             AudioTrack audioTrackInfo = audioTracks.get(i);
             if (audioTrackInfo.isAdaptive()) {
                 audioTrack.add(audioTrackInfo);
-            }else {
-                if (audioTrackInfo.getLanguage()!=null && !audioTrackInfo.getLanguage().trim().equalsIgnoreCase("Unknown")){
+            } else {
+                if (audioTrackInfo.getLanguage() != null && !audioTrackInfo.getLanguage().trim().equalsIgnoreCase("Unknown")) {
                     audioTrack.add(audioTrackInfo);
                 }
             }
@@ -456,7 +456,7 @@ public class PlayerRepository {
                         }
                     } else {
                         Log.w("audioAndSubtitle", audioTrackInfo.getLanguage());
-                        if (audioTrackInfo.getLanguage()!=null && !audioTrackInfo.getLanguage().trim().equalsIgnoreCase("Unknown")){
+                        if (audioTrackInfo.getLanguage() != null && !audioTrackInfo.getLanguage().trim().equalsIgnoreCase("Unknown")) {
                             trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId(), audioTrackInfo.getLanguage());
                         }
 
@@ -957,11 +957,11 @@ public class PlayerRepository {
             if (AppCommonMethods.isAdsEnable) {
                 if (!AssetContent.isAdsEnable(asset.getMetas())) {
                     getAdsContextApi(asset, playerMutableLiveData, mediaConfig);
-                }else {
-                    preparePlayer(playerPluginConfig,playerMutableLiveData,mediaConfig);
+                } else {
+                    preparePlayer(playerPluginConfig, playerMutableLiveData, mediaConfig);
                 }
-            }else {
-                preparePlayer(playerPluginConfig,playerMutableLiveData,mediaConfig);
+            } else {
+                preparePlayer(playerPluginConfig, playerMutableLiveData, mediaConfig);
 
             }
 

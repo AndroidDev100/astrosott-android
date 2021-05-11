@@ -68,6 +68,7 @@ import com.astro.sott.repositories.liveChannel.LinearProgramDataLayer;
 import com.astro.sott.repositories.trailerFragment.TrailerHighlightsDataLayer;
 import com.astro.sott.repositories.webSeriesDescription.SeriesDataLayer;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.ProgramAsset;
@@ -162,6 +163,12 @@ public class ActivityLauncher {
     public void termAndCondition(Activity source) {
         Intent intent = new Intent(source, WebViewActivity.class);
         intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC);
+        activity.startActivity(intent);
+    }
+
+    public void privacy(Activity source) {
+        Intent intent = new Intent(source, WebViewActivity.class);
+        intent.putExtra(AppLevelConstants.WEBVIEW, "PRIVACY POLICIES");
         activity.startActivity(intent);
     }
 
@@ -276,6 +283,7 @@ public class ActivityLauncher {
                                    RailCommonData railCommonData,
                                    int layoutPosition, int layoutType, List<RailCommonData> railList,
                                    MediaTypeCallBack mediaTypeCallBack) {
+        new KsPreferenceKey(activity).setClassName(name);
         this.detailRailClick = mediaTypeCallBack;
         switch (name) {
             case AppLevelConstants.MOVIE_DESCRIPTION_ACTIVITY:
@@ -744,7 +752,6 @@ public class ActivityLauncher {
         Intent intent = new Intent(source, destination);
         TaskStackBuilder.create(source).addNextIntentWithParentStack(intent).startActivities();
     }
-
 
 
     public void resultActivityBundle(Activity

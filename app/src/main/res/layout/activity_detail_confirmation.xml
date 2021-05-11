@@ -165,17 +165,59 @@
 
 
             <TextView
-                android:id="@+id/terms"
+                android:id="@+id/agree"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="35dp"
                 android:fontFamily="@font/heebo_regular"
                 android:text="@string/terms_and_conditions"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintLeft_toRightOf="@id/checkbox"
+                app:layout_constraintTop_toBottomOf="@id/email"
+                app:layout_goneMarginTop="39dp"></TextView>
+            <TextView
+                android:id="@+id/terms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="35dp"
+                android:fontFamily="@font/heebo_regular"
+                android:text="@string/terms"
+                android:textAlignment="center"
+                android:textColor="@color/aqua_marine"
+                android:textSize="@dimen/_14sp"
+                app:layout_constraintLeft_toRightOf="@id/agree"
+                app:layout_constraintTop_toBottomOf="@id/email"
+                app:layout_goneMarginTop="39dp"></TextView>
+            <TextView
+                android:id="@+id/and"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="35dp"
+                android:fontFamily="@font/heebo_regular"
+                android:text="and"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sp"
+                app:layout_constraintLeft_toRightOf="@id/terms"
+                app:layout_constraintTop_toBottomOf="@id/email"
+                app:layout_goneMarginTop="39dp"></TextView>
+            <TextView
+                android:id="@+id/privacy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="35dp"
+                android:fontFamily="@font/heebo_regular"
+                android:text="@string/privacy"
+                android:textAlignment="center"
+                android:textColor="@color/aqua_marine"
+                android:textSize="@dimen/_14sp"
+                app:layout_constraintLeft_toRightOf="@id/and"
                 app:layout_constraintTop_toBottomOf="@id/email"
                 app:layout_goneMarginTop="39dp"></TextView>
 

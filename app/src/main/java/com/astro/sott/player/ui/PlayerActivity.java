@@ -39,6 +39,7 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
     private String assetURL, programName = "";
     private WindowFocusCallback windowFocusListner;
     private Boolean isLivePlayer = false;
+    private Boolean inPlayer = false;
 
     @Override
     public PlayerActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -91,7 +92,7 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
             programName = getIntent().getStringExtra(AppLevelConstants.PROGRAM_NAME);
             if (getIntent().getExtras() != null) {
                 railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
-                if ((List<RailCommonData>) getIntent().getExtras().getSerializable(AppLevelConstants.RAIL_LIST)!=null) {
+                if ((List<RailCommonData>) getIntent().getExtras().getSerializable(AppLevelConstants.RAIL_LIST) != null) {
                     railCommonDataList = (List<RailCommonData>) getIntent().getExtras().getSerializable(AppLevelConstants.RAIL_LIST);
                 }
                 if (railData != null) {
@@ -142,7 +143,7 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
                 fragment.getUrl(Constants.assetUrl, asset, railData.getProgress(), isLivePlayer, programName, railCommonDataList);
 
             } else {
-                fragment.getUrl(Constants.assetUrl, asset, railData.getProgress(), isLivePlayer, "",railCommonDataList);
+                fragment.getUrl(Constants.assetUrl, asset, railData.getProgress(), isLivePlayer, "", railCommonDataList);
 
             }
         });
@@ -191,7 +192,10 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
     @Override
     protected void onResume() {
         super.onResume();
-        ConvivaManager.convivaPlayerAppForegrounded(this);
+        if (inPlayer) {
+            ConvivaManager.convivaPlayerAppForegrounded(this);
+            isLivePlayer = true;
+        }
 
     }
 

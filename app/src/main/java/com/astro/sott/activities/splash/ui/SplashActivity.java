@@ -1,3 +1,4 @@
+
 package com.astro.sott.activities.splash.ui;
 
 import android.content.Intent;
@@ -195,8 +196,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     pushToken();
 
                 } else {
-                    pushToken();
-                    //showUpdateDialog();
+                    //pushToken();
+                    showUpdateDialog();
                 }
 
             }
@@ -860,9 +861,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                         if (BuildConfig.FLAVOR.equalsIgnoreCase("QA")) {
                             final String appPackageName = getPackageName();
                             try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.dialog.dialoggo&hl=en_IN" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
                             } catch (android.content.ActivityNotFoundException anfe) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.dialog.dialoggo&hl=en_IN" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
                             }
 
                         } else if (isDmsFailed) {
@@ -871,9 +872,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                         } else {
                             final String appPackageName = getPackageName();
                             try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.dialog.dialoggo&hl=en_IN" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
                             } catch (android.content.ActivityNotFoundException anfe) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.dialog.dialoggo&hl=en_IN" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
                             }
 
                         }

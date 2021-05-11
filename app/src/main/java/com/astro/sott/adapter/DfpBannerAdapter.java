@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.astro.sott.utils.helpers.NavigationItem;
 import com.astro.sott.utils.helpers.StringUtils;
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
@@ -88,9 +89,19 @@ public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.View
                     adContainer.addView(adView);
 
                     if (BuildConfig.FLAVOR.equalsIgnoreCase("QA")) {
-                        adRequest = new PublisherAdRequest.Builder().addTestDevice(deviceId).build();
+                        if (NavigationItem.getInstance().getTab() != null) {
+                            adRequest = new PublisherAdRequest.Builder().addCustomTargeting("pg", NavigationItem.getInstance().getTab())
+                                    .addTestDevice(deviceId).build();
+                        } else {
+                            adRequest = new PublisherAdRequest.Builder().addTestDevice(deviceId).build();
+                        }
                     } else {
-                        adRequest = new PublisherAdRequest.Builder().build();
+                        if (NavigationItem.getInstance().getTab() != null) {
+                            adRequest = new PublisherAdRequest.Builder().addCustomTargeting("pg", NavigationItem.getInstance().getTab())
+                                    .build();
+                        } else {
+                            adRequest = new PublisherAdRequest.Builder().addTestDevice(deviceId).build();
+                        }
                     }
                     adView.loadAd(adRequest);
 

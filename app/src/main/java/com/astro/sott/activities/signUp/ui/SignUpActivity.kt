@@ -153,6 +153,9 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         activitySinUpBinding?.terms?.setOnClickListener {
             ActivityLauncher(this).termAndCondition(this)
         }
+        activitySinUpBinding?.privacy?.setOnClickListener {
+            ActivityLauncher(this).privacy(this)
+        }
         activitySinUpBinding?.google?.setOnClickListener {
             mGoogleSignInClient!!.signOut()
             val signInIntent = mGoogleSignInClient!!.signInIntent
@@ -297,7 +300,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             }
         } else {
             activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
-            activitySinUpBinding?.errorPasssword?.text = getString(R.string.password_error)
+            activitySinUpBinding?.errorPasssword?.text = getString(R.string.valid_password)
 
         }
     }
