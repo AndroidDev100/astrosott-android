@@ -126,6 +126,7 @@ import com.kaltura.playkit.providers.MediaEntryProvider;
 import com.kaltura.playkit.providers.api.phoenix.APIDefines;
 import com.kaltura.playkit.providers.base.OnMediaLoadCompletion;
 import com.kaltura.playkit.providers.ott.PhoenixMediaProvider;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
@@ -165,6 +166,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     boolean hasPreRoll = false;
     boolean isPlayerEnded = false;
     boolean isAdPause = false;
+    private int totalEpisode = 0;
     boolean exitPlayer = false;
     boolean isPause = false;
     String startTimeStamp;
@@ -568,6 +570,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //            }
 //        });
         if (railList != null && railList.size() > 0) {
+            totalEpisode = railList.get(0).getTotalCount();
             List<Asset> assets = new ArrayList<>();
             RailCommonData railCommonData = new RailCommonData();
             for (int i = 0; i < railList.size(); i++) {
@@ -581,21 +584,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void sortListWithEPSD(List<Asset> episodesList) {
-
-//        Collections.sort(episodesList, new Comparator<Asset>() {
-//            @Override
-//            public int compare(Asset p1, Asset p2) {
-//                int seasonNumber = AssetContent.getSpecificSeason(p1.getMetas());
-//                int seasonNumber2 = AssetContent.getSpecificSeason(p2.getMetas());
-//
-//                int episodeNumber = AssetContent.getSpecificEpisode(p1.getMetas());
-//                int episodeNumber2 = AssetContent.getSpecificEpisode(p2.getMetas());
-//
-//                return new CompareToBuilder().append(seasonNumber, seasonNumber2).append(episodeNumber, episodeNumber2).toComparison();
-//            }
-//        });
-
-
         try {
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
@@ -636,6 +624,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if ((nextEpisodeCounter != -1) && episodesList.size() > nextEpisodeCounter) {
                     nextPlayingAsset = episodesList.get(nextEpisodeCounter);
                     hasNextEpisode = true;
+                } else {
+                    if (episodesList.size() < totalEpisode) {
+
+                    }
                 }
             }
 
@@ -1033,7 +1025,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             if (!isLivePlayer) {
 
-                if (isSeries && episodesList.size() > 0) {
+                if (isSeries && episodesList != null && episodesList.size() > 0) {
                     getBinding().nextEpisode.setVisibility(View.VISIBLE);
                 } else {
                     getBinding().nextEpisode.setVisibility(View.GONE);
@@ -1929,7 +1921,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             AdEvent.Error adError = event;
             //  checkFatalError();
             if (player != null) {
-
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdFailed(adError.error.errorType.name());
                 if (adError.error.errorType.name().toUpperCase().contains("QUIET_LOG_ERROR") || adError.error.errorType.name().toUpperCase().contains("VIDEO_PLAY_ERROR")) {
                     //  getBinding().lockIcon.setVisibility(View.VISIBLE);
                     if (lockEnable) {
