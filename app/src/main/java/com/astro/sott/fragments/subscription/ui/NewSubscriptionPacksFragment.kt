@@ -226,6 +226,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                             val packDetail = PackDetail()
                             packDetail.skuDetails = skuDetails
                             packDetail.productsResponseMessageItem = responseMessageItem
+                          //  Log.w("priceValues", skuDetails!!.introductoryPrice + "<--->"+skuDetails!!.price+"<----->")
                             packDetailList.add(packDetail)
                         }
                     }
