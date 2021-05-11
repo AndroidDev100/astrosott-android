@@ -738,6 +738,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
             }
         });
+
     }
 
 
