@@ -88,7 +88,7 @@ public class ConvivaManager {
     public static final String AD_STITCHER = "c3.ad.adStitcher";
     public static final String AD_SYSTEM = "c3.ad.system";
     public static final String AD_TECHNOLOGY = "c3.ad.technology";
-    public static final String UTM_URL = " c3.cm.utmTrackingUrl";
+    public static final String UTM_URL = "c3.cm.utmTrackingUrl";
 
 
     private static Context mcontext;
@@ -122,6 +122,10 @@ public class ConvivaManager {
         return convivaAdAnalytics;
     }
 
+    public static ConvivaAdAnalytics checkAdsInstanse(Context context) {
+        return convivaAdAnalytics;
+    }
+
     public static void setreportPlaybackRequested(Context context, Asset railData, String duraton, Boolean isLivePlayer, String streamUrl) {
         Map<String, Object> contentInfo = new HashMap<String, Object>();
 
@@ -130,8 +134,9 @@ public class ConvivaManager {
         contentInfo.put(ConvivaSdkConstants.IS_LIVE, isLivePlayer + "");
         contentInfo.put(AFFILIATE, "NA");
         contentInfo.put(ConvivaSdkConstants.FRAMEWORK_NAME, "Kaltura");
+        contentInfo.put(ConvivaSdkConstants.FRAMEWORK_VERSION, "4.13.3");
+
         contentInfo.put(ConvivaSdkConstants.DURATION, AppCommonMethods.getDurationFromUrl(railData));
-        contentInfo.put(ConvivaSdkConstants.FRAMEWORK_VERSION, "Kaltura 4.13.3");
         if (AssetContent.getActor(railData.getTags()).equalsIgnoreCase("")) {
             contentInfo.put(ACTORS, "NA");
         } else {
@@ -172,8 +177,8 @@ public class ConvivaManager {
         } else {
             contentInfo.put(PUB_DATE, "NA");
         }
-        if (!AssetContent.getLanguageDataString(railData.getTags(),context).equalsIgnoreCase("")) {
-            contentInfo.put(AUDIO_LANGUAGE, AssetContent.getLanguageDataString(railData.getTags(),context));
+        if (!AssetContent.getLanguageDataString(railData.getTags(), context).equalsIgnoreCase("")) {
+            contentInfo.put(AUDIO_LANGUAGE, AssetContent.getLanguageDataString(railData.getTags(), context));
         } else {
             contentInfo.put(AUDIO_LANGUAGE, "NA");
         }
@@ -294,6 +299,8 @@ public class ConvivaManager {
             contentInfo.put(ConvivaManager.FIRST_AD_ID, adStartedEvent.adInfo.getAdId());
             contentInfo.put(ConvivaSdkConstants.DURATION, adStartedEvent.adInfo.getAdDuration() + "");
             contentInfo.put(ConvivaManager.AD_CREATIVE_ID, adStartedEvent.adInfo.getCreativeId());
+            contentInfo.put(ConvivaSdkConstants.FRAMEWORK_NAME, "Kaltura IMA");
+            contentInfo.put(ConvivaSdkConstants.FRAMEWORK_VERSION, "4.13.3");
             contentInfo.put(ConvivaManager.FIRST_CREATIVE_ID, adStartedEvent.adInfo.getCreativeId());
             contentInfo.put(ConvivaManager.AD_POSITION, adStartedEvent.adInfo.getAdPositionType());
             if (adStartedEvent.adInfo.getMediaBitrate() != 0) {

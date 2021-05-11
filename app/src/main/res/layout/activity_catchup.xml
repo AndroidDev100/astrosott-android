@@ -319,14 +319,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/share_margin_top"
                             android:clickable="true"
-                            android:drawableTop="@drawable/share"
                             android:drawablePadding="7dp"
                             android:focusable="true"
                             android:layout_marginStart="17dp"
                             android:fontFamily="@font/roboto_regular"
                             android:text="@string/share"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/font_medium" />
+                            android:textSize="@dimen/font_medium"
+                            app:drawableTopCompat="@drawable/share" />
                     </LinearLayout>
 
                     <View

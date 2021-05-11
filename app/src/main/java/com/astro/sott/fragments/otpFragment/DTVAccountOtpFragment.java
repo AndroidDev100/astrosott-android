@@ -34,7 +34,6 @@ import com.astro.sott.R;
 import com.astro.sott.databinding.FragmentOtpBinding;
 import com.astro.sott.fragments.dialog.LoginAlertDialogSingleButtonFragment;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
-import com.astro.sott.utils.helpers.CustomTextWatcher;
 
 import java.lang.ref.WeakReference;
 

@@ -30,7 +30,7 @@
         android:letterSpacing="0.09"
         android:textAllCaps="true"
         android:textColor="@color/white"
-        android:textSize="@dimen/_14sp"></TextView>
+        android:textSize="@dimen/_14sp" />
 
     <ImageView
         android:id="@+id/download_button"

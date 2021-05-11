@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_70sdp"
             android:layout_below="@id/season"
-            android:visibility="gone"></ProgressBar>
+            android:visibility="gone" />
     </RelativeLayout>
 
 </layout>

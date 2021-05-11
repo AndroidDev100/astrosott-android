@@ -1,7 +1,6 @@
 package com.astro.sott.activities.forgotPassword.ui;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;

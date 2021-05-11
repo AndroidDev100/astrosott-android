@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.astro.sott.utils.helpers.ActivityLauncher;
-import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.R;

@@ -1,39 +1,21 @@
 package com.astro.sott;
 
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
 
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 import com.appsflyer.AppsFlyerConversionListener;
-import com.appsflyer.AppsFlyerLib;
-import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
-import com.astro.sott.usermanagment.EvergentBaseClient.EvergentBaseClient;
-import com.astro.sott.usermanagment.EvergentBaseClient.EvergentBaseConfiguration;
-import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
-import com.astro.sott.R;
-import com.astro.sott.utils.constants.AppConstants;
-import com.astro.sott.utils.helpers.UDID;
+
 import com.clevertap.android.sdk.ActivityLifecycleCallback;
-import com.clevertap.android.sdk.CTInboxListener;
-import com.clevertap.android.sdk.CleverTapAPI;
-import com.clevertap.android.sdk.CleverTapInstanceConfig;
-import com.enveu.BaseClient.BaseClient;
-import com.enveu.BaseClient.BaseConfiguration;
-import com.enveu.BaseClient.BaseDeviceType;
-import com.enveu.BaseClient.BaseGateway;
-import com.enveu.BaseClient.BasePlatform;
+
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.kaltura.playkit.player.PKHttpClientManager;
 
 import java.util.Map;
-
-import io.branch.referral.Branch;
-
 
 public class ApplicationMain extends MultiDexApplication {
 

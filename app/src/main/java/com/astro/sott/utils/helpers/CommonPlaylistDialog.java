@@ -3,11 +3,8 @@ package com.astro.sott.utils.helpers;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
-import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;

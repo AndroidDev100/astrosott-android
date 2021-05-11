@@ -30,6 +30,7 @@
             app:cardUseCompatPadding="true"
             app:layout_constraintDimensionRatio="H,1:1"
             >
+
             <include
                 android:id="@+id/metas"
                 layout="@layout/metas_layout"
@@ -38,7 +39,7 @@
                 android:layout_gravity="top|right"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"></include>
+                android:layout_alignParentRight="true" />
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/heroImage"
                 android:layout_width="match_parent"

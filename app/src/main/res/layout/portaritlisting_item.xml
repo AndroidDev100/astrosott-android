@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -50,7 +49,7 @@
 
             <include
                 android:id="@+id/media_type_layout"
-                layout="@layout/mediatype_item"></include>
+                layout="@layout/mediatype_item" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

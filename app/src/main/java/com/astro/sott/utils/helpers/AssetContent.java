@@ -2,7 +2,6 @@ package com.astro.sott.utils.helpers;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -27,7 +26,6 @@ import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.DoubleValue;
 import com.kaltura.client.types.ListResponse;
-import com.kaltura.client.types.LongValue;
 import com.kaltura.client.types.MultilingualStringValue;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.StringValue;
@@ -160,6 +158,9 @@ public class AssetContent {
         }
         if (doubleValue != null) {
             year = String.valueOf(doubleValue.getValue());
+            if (year.length() > 3) {
+                year.substring(0, 4);
+            }
         }
         return year;
     }

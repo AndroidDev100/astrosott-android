@@ -6,7 +6,6 @@ import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,7 +16,6 @@ import android.hardware.display.DisplayManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -27,7 +25,6 @@ import android.os.SystemClock;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -35,27 +32,22 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowInsets;
 import android.view.WindowManager;
-import android.view.WindowMetrics;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -63,25 +55,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
-import com.astro.sott.adapter.CatchupTvAdapter;
 import com.astro.sott.callBacks.DoubleClick;
 import com.astro.sott.callBacks.WindowFocusCallback;
-import com.astro.sott.callBacks.commonCallBacks.CatchupCallBack;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.callBacks.kalturaCallBacks.PlayBackContextCallBack;
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
-import com.astro.sott.fragments.nowPlaying.NowPlaying;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.RefreshKS;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
 import com.astro.sott.player.swipe.Swipe;
-import com.astro.sott.player.swipe.SwipeListener;
 import com.astro.sott.player.viewModel.DTPlayerViewModel;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
-import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
@@ -116,10 +103,8 @@ import com.astro.sott.utils.helpers.UDID;
 import com.conviva.sdk.ConvivaSdkConstants;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
-import com.kaltura.client.types.LiveAsset;
 import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.ProgramAsset;
@@ -130,8 +115,6 @@ import com.kaltura.netkit.connect.response.PrimitiveResult;
 import com.kaltura.netkit.utils.OnCompletion;
 import com.kaltura.netkit.utils.SessionProvider;
 import com.kaltura.playkit.PKMediaEntry;
-import com.kaltura.playkit.PKMediaFormat;
-import com.kaltura.playkit.PKMediaSource;
 import com.kaltura.playkit.Player;
 import com.kaltura.playkit.PlayerEvent;
 import com.kaltura.playkit.ads.AdController;
@@ -144,20 +127,17 @@ import com.kaltura.playkit.providers.api.phoenix.APIDefines;
 import com.kaltura.playkit.providers.base.OnMediaLoadCompletion;
 import com.kaltura.playkit.providers.ott.PhoenixMediaProvider;
 
-import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
+
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 import java.util.StringTokenizer;
 
 import static android.content.Context.POWER_SERVICE;
@@ -1658,7 +1638,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             showAdsView();
         });
         player.addListener(this, AdEvent.adBreakEnded, event -> {
-            //  ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
         });
 
         player.addListener(this, AdEvent.cuepointsChanged, event -> {
@@ -1685,9 +1664,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         });
         player.addListener(this, PlayerEvent.stopped, event -> {
-            ConvivaManager.convivaPlayerStoppedReportRequest();
+           /* ConvivaManager.convivaPlayerStoppedReportRequest();
             ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackEnded();
-            ConvivaManager.removeConvivaSession();
+            ConvivaManager.removeConvivaSession();*/
 
         });
 
@@ -1959,7 +1938,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             AdEvent.Error adError = event;
             //  checkFatalError();
             if (player != null) {
-
+                isAdsRunning=false;
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdFailed(adError.error.errorType.name());
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
+                ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
+                ConvivaManager.removeConvivaAdsSession();
                 if (adError.error.errorType.name().toUpperCase().contains("QUIET_LOG_ERROR") || adError.error.errorType.name().toUpperCase().contains("VIDEO_PLAY_ERROR")) {
                     //  getBinding().lockIcon.setVisibility(View.VISIBLE);
                     if (lockEnable) {
@@ -2569,6 +2552,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 return false;
             }
         });
+
 
         getBinding().forward.setOnClickListener(view -> {
             getBinding().pBar.setVisibility(View.VISIBLE);
@@ -3689,7 +3673,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (PlayerRepository.getInstance() != null) {
                 PlayerRepository.getInstance().destroCallBacks();
             }
-            if (ConvivaManager.getConvivaAdAnalytics(baseActivity) != null) {
+            if (isAdsRunning) {
                 ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
                 ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
                 ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();

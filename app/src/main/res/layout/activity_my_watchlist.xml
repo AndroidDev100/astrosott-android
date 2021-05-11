@@ -70,7 +70,7 @@
 
             <include
                 android:id="@+id/toolbar"
-                layout="@layout/toolbar_more_listing"></include>
+                layout="@layout/toolbar_more_listing" />
         </LinearLayout>
 
         <LinearLayout

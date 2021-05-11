@@ -18,7 +18,7 @@
             android:padding="7dp"
             android:background="@drawable/ic_back"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></ImageView>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></ProgressBar>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/logo"
@@ -47,7 +47,7 @@
                 android:background="@drawable/sooka"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></ImageView>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/forgot_title"
@@ -60,7 +60,8 @@
                 android:textSize="@dimen/_18sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/logo"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/logo" />
+
             <TextView
                 android:id="@+id/description_txt"
                 android:layout_width="match_parent"
@@ -75,7 +76,7 @@
                 android:textAlignment="center"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/forgot_title"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/forgot_title" />
 
 
             <TextView
@@ -89,7 +90,7 @@
                 android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/description_txt"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/description_txt" />
 
             <com.astro.sott.utils.helpers.pinview.PinView
                 android:id="@+id/pin"
@@ -168,7 +169,7 @@
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pin"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/pin" />
 
             <TextView
                 android:id="@+id/otp_valid"
@@ -183,7 +184,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/invalid_otp"
-                app:layout_goneMarginTop="10dp"></TextView>
+                app:layout_goneMarginTop="10dp" />
 
 
             <TextView
@@ -199,7 +200,7 @@
                 android:textSize="@dimen/_16sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/otp_valid"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/otp_valid" />
 
 
             <TextView
@@ -215,7 +216,7 @@
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/verify"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/verify" />
 
             <TextView
                 android:id="@+id/resend_otp"
@@ -230,7 +231,7 @@
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/otp_title"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/otp_title" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

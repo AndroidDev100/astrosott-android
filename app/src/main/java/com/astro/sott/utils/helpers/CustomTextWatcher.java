@@ -1,7 +1,6 @@
 package com.astro.sott.utils.helpers;
 
 import com.astro.sott.callBacks.TextWatcherCallBack;
-import com.google.android.material.textfield.TextInputLayout;
 
 import android.content.Context;
 import android.text.Editable;

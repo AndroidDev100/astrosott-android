@@ -73,16 +73,16 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/shimmer_color"></LinearLayout>
+                    android:background="@color/shimmer_color" />
 
                 <LinearLayout
                     android:layout_width="20dp"
-                    android:layout_height="match_parent"></LinearLayout>
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
-                    android:background="@color/shimmer_color"></LinearLayout>
+                    android:background="@color/shimmer_color" />
 
             </LinearLayout>
         </RelativeLayout>

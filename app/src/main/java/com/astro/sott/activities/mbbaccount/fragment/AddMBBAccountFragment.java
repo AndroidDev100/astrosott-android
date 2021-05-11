@@ -24,7 +24,6 @@ import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentAddMbbAccountBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
-import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.google.gson.Gson;
 

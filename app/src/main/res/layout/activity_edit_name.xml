@@ -39,7 +39,7 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_14sp"></TextView>
+                android:textSize="@dimen/_14sp" />
 
         </RelativeLayout>
 
@@ -132,6 +132,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:theme="@style/progressBarBlue"
-            android:visibility="gone"></ProgressBar>
+            android:visibility="gone" />
     </RelativeLayout>
 </layout>

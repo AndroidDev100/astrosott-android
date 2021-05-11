@@ -6,7 +6,7 @@
         android:layout_height="fill_parent" >
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/dp8"
         tools:context="com.astro.sott.com.astro.dialoggo.activities.subscription.fragment.PaymentSuccessFragment">
         <ImageView

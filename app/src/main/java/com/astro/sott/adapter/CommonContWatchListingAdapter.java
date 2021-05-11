@@ -15,7 +15,6 @@ import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.astro.sott.databinding.ContinuewatchinglistingItemBinding;
 import com.astro.sott.utils.helpers.ActivityLauncher;
-import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.Value;

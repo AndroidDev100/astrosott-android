@@ -1,7 +1,6 @@
 package com.astro.sott.activities.confirmPassword.ui;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
@@ -11,8 +10,7 @@ import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityConfirmPasswordBinding;
 import com.astro.sott.fragments.confirmPassword.ConfirmPasswordFragment;
-import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
-import com.astro.sott.utils.helpers.AppLevelConstants;
+
 
 public class ConfirmPasswordActivity extends BaseBindingActivity<ActivityConfirmPasswordBinding> {
     private String newEmail = "";

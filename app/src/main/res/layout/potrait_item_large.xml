@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@color/fragment_background_color"
         card_view:cardCornerRadius="9dp">
+
         <include
             android:id="@+id/metas"
             layout="@layout/metas_layout"
@@ -17,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:visibility="visible"></include>
+            android:visibility="visible" />
         <ImageView
             android:id="@+id/itemImage"
             android:layout_width="match_parent"

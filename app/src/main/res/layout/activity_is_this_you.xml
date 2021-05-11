@@ -3,11 +3,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grape_purple"
-       >
+        android:background="@color/grape_purple">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -18,7 +16,7 @@
             android:id="@+id/back_icon"
             app:layout_constraintLeft_toLeftOf="parent"
             android:background="@drawable/ic_back"
-            app:layout_constraintTop_toTopOf="parent"></ImageView>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -37,7 +35,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></ProgressBar>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/logo"
@@ -46,7 +44,7 @@
                 android:background="@drawable/sooka"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></ImageView>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/isthatYou_title"
@@ -59,7 +57,7 @@
                 android:textSize="@dimen/_18sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/logo"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/logo" />
 
             <TextView
                 android:id="@+id/description"
@@ -75,7 +73,7 @@
                 android:layout_marginRight="@dimen/margin46dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/isthatYou_title"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/isthatYou_title" />
 
             <LinearLayout
                 android:id="@+id/email"
@@ -146,6 +144,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/new_password" />
+
                 <ImageView
                     android:id="@+id/eye_icon"
                     android:layout_width="wrap_content"
@@ -155,7 +154,7 @@
                     android:layout_marginRight="@dimen/margin_18dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:background="@drawable/ic_outline_visibility_off_light"></ImageView>
+                    android:background="@drawable/ic_outline_visibility_off_light" />
 
             </LinearLayout>
 
@@ -168,7 +167,8 @@
                 android:textColor="@color/red_live"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/password"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/password" />
+
             <TextView
                 android:id="@+id/forgot_text"
                 android:layout_width="wrap_content"
@@ -184,7 +184,7 @@
                 android:textSize="@dimen/_16sp"
                 android:visibility="visible"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/password"></TextView>
+                app:layout_constraintTop_toBottomOf="@id/password" />
 
 
             <TextView
@@ -201,7 +201,7 @@
                 android:textSize="@dimen/_16sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/forgot_text"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/forgot_text" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

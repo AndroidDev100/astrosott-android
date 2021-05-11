@@ -1,7 +1,6 @@
 package com.astro.sott.fragments.detailRailFragment;
 
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -16,29 +15,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.astro.sott.R;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.databinding.FragmentDetailRailBinding;
 import com.astro.sott.fragments.detailRailFragment.adapter.DetailPagerAdapter;
 import com.astro.sott.fragments.trailerFragment.viewModel.TrailerFragmentViewModel;
-import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
-import com.astro.sott.utils.helpers.PrintLogging;
-import com.google.android.material.tabs.TabLayout;
 import com.kaltura.client.types.Asset;
-import com.kaltura.client.types.StringValue;
-import com.kaltura.client.types.Value;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
