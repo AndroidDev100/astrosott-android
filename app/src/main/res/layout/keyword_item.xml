@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.01"
                 android:lineSpacingExtra="8sp"
-                android:layout_marginLeft="@dimen/_11sdp"
+                android:layout_marginStart="@dimen/_11sdp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@{rowItem.keyWords}"
                 android:textColor="@color/white"

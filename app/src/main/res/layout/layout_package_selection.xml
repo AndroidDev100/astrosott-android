@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="@dimen/dimen20dp"
+                android:layout_marginStart="@dimen/dimen20dp"
                 android:layout_marginTop="@dimen/dimen15dp"
                 android:text="@string/select_plan"
                 android:textColor="@color/white"

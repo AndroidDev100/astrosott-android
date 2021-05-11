@@ -16,15 +16,15 @@
             android:id="@+id/tv_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/radio_selector"
+            android:layout_toEndOf="@+id/radio_selector"
             android:fontFamily="@font/roboto_medium"
             android:text="Add to my 110054664"
-            android:layout_marginLeft="16dp"
-            android:layout_alignParentLeft="true"
+            android:layout_marginStart="16dp"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:textColor="@color/sign_up_sub_title"
             android:textSize="18sp"
-            android:layout_toLeftOf="@+id/tv_change"/>
+            android:layout_toStartOf="@+id/tv_change"/>
 
 <!--        <TextView-->
 <!--            android:id="@+id/tv_change"-->

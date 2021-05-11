@@ -118,6 +118,26 @@ android {
             buildConfigField "String", "VERIFY_BASE_URL", "\"https://qpkkcgi038.execute-api.ap-southeast-1.amazonaws.com/prod/v4/\""
             buildConfigField "String", "GET_CONNECTION_DETAIL_BASE_URL", "\" https://a7fl3pn9ha.execute-api.ap-southeast-1.amazonaws.com/\""
             buildConfigField "String", "VERIFY_ACCOUNT_BASE_URL", "\" https://er9ptuvk75.execute-api.ap-southeast-1.amazonaws.com/\""
+            /* dimension 'default'
+               versionCode 1008
+               versionName "0.9"
+               applicationId "com.astro.sott"
+               buildConfigField "String", "KALTURA_BASE_URL", "\"https://rest-as.ott.kaltura.com/api_v3/service/\""
+               buildConfigField "int", "KAVA_PARTNER_ID", "2455471"
+               buildConfigField "String", "KALTURA_API_VERSION", "\"5.8.0\""
+               buildConfigField "String", "KALTURA_APPLICATION_NAME", "\"com.kaltura.astro.mobile\""
+               buildConfigField "String", "KALTURA_CLIENT_VERSION", "\"0.0.1\""
+               buildConfigField "String", "KALTURA_PLATFORM", "\"android\""
+               buildConfigField "String", "KALTURA_PARTNER_ID", "\"3209\""
+               buildConfigField "String", "KALTURA_TAG", "\"AstroProd\""
+
+               buildConfigField "String", "PHOEINIX_BASE_URL", "\"https://rest-sgs1.ott.kaltura.com/api_v3\""
+               buildConfigField "String", "TOKEN_BASE_URL", "\"https://ro840hb5x0.execute-api.ap-southeast-1.amazonaws.com/\""
+               buildConfigField "String", "AUTO_MSISDN_MOCK", "\"http://13.250.154.211/msisdn/fetch/\""
+               buildConfigField "String", "SMS_BASE_URL", "\"https://qpkkcgi038.execute-api.ap-southeast-1.amazonaws.com/prod/v4/\""
+               buildConfigField "String", "VERIFY_BASE_URL", "\"https://qpkkcgi038.execute-api.ap-southeast-1.amazonaws.com/prod/v4/\""
+               buildConfigField "String", "GET_CONNECTION_DETAIL_BASE_URL", "\" https://a7fl3pn9ha.execute-api.ap-southeast-1.amazonaws.com/\""
+               buildConfigField "String", "VERIFY_ACCOUNT_BASE_URL", "\" https://er9ptuvk75.execute-api.ap-southeast-1.amazonaws.com/\""*/
         }
 
     }
@@ -245,12 +265,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.4.0'
 
     // Add the Firebase SDK for Crashlytics.
-    implementation 'com.google.firebase:firebase-perf:19.0.8'
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
+    implementation 'com.google.firebase:firebase-perf:19.1.1'
+    implementation 'com.google.firebase:firebase-crashlytics:17.4.1'
     implementation project(':enveusdk')
 
 
-    implementation 'com.android.billingclient:billing:2.0.1'
+    implementation 'com.android.billingclient:billing:3.0.3'
 
 
     // optional

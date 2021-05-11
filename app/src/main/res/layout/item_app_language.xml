@@ -19,7 +19,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_16sp"
             android:fontFamily="@font/heebo_regular"
-            android:layout_marginLeft="@dimen/dimen16dp"
+            android:layout_marginStart="@dimen/dimen16dp"
              />
 
         <ImageView
@@ -28,9 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="gone"
-            android:layout_marginRight="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_20dp"
             android:background="@drawable/ic_check_circle_24px"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:contentDescription="TODO" />
     </RelativeLayout>
     </LinearLayout>

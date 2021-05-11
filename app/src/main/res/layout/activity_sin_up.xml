@@ -25,7 +25,7 @@
                 android:background="@drawable/ic_back"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/contentDescription" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="@string/contentDescription" />
 
                 <TextView
                     android:id="@+id/forgot_title"
@@ -110,8 +110,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen18dp"
-                    android:textColor="@color/red_live"
-                    android:visibility="gone"
+                    android:visibility="visible"
+                    android:layout_marginLeft="@dimen/dimen18dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/mobile_suggestion"
+                    android:textColor="@color/heather"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/email" />
 
@@ -158,7 +161,7 @@
                         android:padding="4dp"
                         android:layout_marginEnd="@dimen/dimen18dp"
                         android:background="@drawable/ic_outline_visibility_off_light"
-                        android:contentDescription="TODO" />
+                        android:contentDescription="@string/contentDescription" />
                 </LinearLayout>
 
                 <TextView
@@ -166,9 +169,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen18dp"
+                    android:paddingRight="20dp"
                     android:layout_marginRight="@dimen/dimen18dp"
-                    android:textColor="@color/radical_red"
-                    android:visibility="gone"
+                    android:text="@string/password_rules"
+                    android:textColor="@color/heather"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/password" />
 
@@ -214,7 +218,7 @@
                     android:id="@+id/error_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Please accept terms and conditions"
+                    android:text="@string/error_checkbox"
                     android:textColor="@color/red_live"
                     android:visibility="gone"
                     android:layout_marginStart="@dimen/dimen26dp"

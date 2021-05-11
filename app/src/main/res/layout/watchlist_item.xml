@@ -25,7 +25,7 @@
             android:id="@+id/searchItemImage"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/search_toolbar_padding_right"
+            android:layout_marginStart="@dimen/search_toolbar_padding_right"
             app:layout_constraintStart_toStartOf="parent">
 
             <FrameLayout
@@ -62,7 +62,7 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|left"
+                android:layout_gravity="top|start"
                 android:layout_marginTop="@dimen/search_item_margin_end"
                 android:ellipsize="end"
                 android:fontFamily="@font/heebo_regular"

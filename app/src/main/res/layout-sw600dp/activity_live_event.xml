@@ -111,7 +111,7 @@
                             android:layout_marginEnd="@dimen/dimen14dp"
                             android:layout_toStartOf="@id/play_text"
                             android:src="@drawable/ic_star_24_px"
-                            android:contentDescription="TODO" />
+                            android:contentDescription="@string/contentDescription" />
 
                         <TextView
                             android:id="@+id/play_text"
@@ -182,7 +182,7 @@
                             android:layout_gravity="center"
                             android:background="@drawable/ic_landscape_placeholder"
                             android:scaleType="fitXY"
-                            android:contentDescription="TODO" />
+                            android:contentDescription="@string/contentDescription" />
 
                         <TextView
                             android:id="@+id/programTitle"

@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -51,6 +54,10 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
     private var callbackManager: CallbackManager? = null
     private var passwordVisibility = false
     private var name: String = ""
+    private val passwordPattern = Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=\\S+$).{8,16}$")
+    private val mobilePattern = Regex("^[0-9]*$")
+    private val emailPattern = Regex("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
     private var mGoogleSignInClient: GoogleSignInClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,33 +87,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
     }
 
     private fun setWatcher() {
-        activitySinUpBinding?.mobileEmailEdt?.addTextChangedListener(CustomTextWatcher(this, object : TextWatcherCallBack {
-            override fun afterTextChanged(editable: Editable?) {
-            }
 
-            override fun beforeTextChanged(charSequence: CharSequence?, i: Int, i1: Int, i2: Int) {
-                activitySinUpBinding?.errorEmail?.visibility = View.GONE
-                activitySinUpBinding?.errorEmail?.text = ""
-            }
-
-            override fun onTextChanged(charSequence: CharSequence?, i: Int, i1: Int, i2: Int) {
-            }
-
-        }))
-
-        activitySinUpBinding?.passwordEdt?.addTextChangedListener(CustomTextWatcher(this, object : TextWatcherCallBack {
-            override fun afterTextChanged(editable: Editable?) {
-            }
-
-            override fun beforeTextChanged(charSequence: CharSequence?, i: Int, i1: Int, i2: Int) {
-                activitySinUpBinding?.errorPasssword?.visibility = View.GONE
-                activitySinUpBinding?.errorPasssword?.text = ""
-            }
-
-            override fun onTextChanged(charSequence: CharSequence?, i: Int, i1: Int, i2: Int) {
-            }
-
-        }))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -161,6 +142,27 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             val signInIntent = mGoogleSignInClient!!.signInIntent
             startActivityForResult(signInIntent, 4001)
         }
+
+        activitySinUpBinding?.passwordEdt?.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+            if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
+                var password = activitySinUpBinding?.passwordEdt?.text.toString()
+                if (!password.equals("", true)) {
+                    if (passwordPattern.containsMatchIn(password)) {
+                        activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.heather))
+                        activitySinUpBinding?.errorPasssword?.text = getString(R.string.password_rules)
+                    } else {
+                        activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
+                        activitySinUpBinding?.errorEmail?.text = resources.getString(R.string.mobile_suggestion)
+                        activitySinUpBinding?.errorPasssword?.text = getString(R.string.password_error)
+                    }
+                } else {
+                    activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
+                    activitySinUpBinding?.errorEmail?.text = resources.getString(R.string.mobile_suggestion)
+                    activitySinUpBinding?.errorPasssword?.text = getString(R.string.valid_password)
+                }
+            }
+            false
+        })
         activitySinUpBinding?.fb?.setOnClickListener(View.OnClickListener {
 
             activitySinUpBinding?.loginButton?.performClick()
@@ -172,18 +174,18 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             onBackPressed()
         })
         activitySinUpBinding?.nextBtn?.setOnClickListener {
-            val mobilePattern = Regex("^[0-9]*$")
-            val emailPattern = Regex("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
+
             var email_mobile = activitySinUpBinding?.mobileEmailEdt?.text.toString()
             if (!email_mobile.equals("", true)) {
                 var password = activitySinUpBinding?.passwordEdt?.text.toString()
                 if (mobilePattern.containsMatchIn(email_mobile)) {
                     if (email_mobile?.length == 10 || email_mobile?.length == 11) {
+
                         checkPassword("mobile", email_mobile, password)
                     } else {
                         activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
-                        activitySinUpBinding?.errorEmail?.text = getString(R.string.mobile_error)
+                        activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
+                        activitySinUpBinding?.errorEmail?.text = getString(R.string.email_mobile_error)
                     }
                 } else if (emailPattern.containsMatchIn(email_mobile)) {
                     checkPassword("email", email_mobile, password)
@@ -197,22 +199,40 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                     }
                     if (numeric) {
                         activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
-                        activitySinUpBinding?.errorEmail?.text = getString(R.string.mobile_error)
+                        activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
+                        activitySinUpBinding?.errorEmail?.text = getString(R.string.email_mobile_error)
 
                     } else {
                         activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
-                        activitySinUpBinding?.errorEmail?.text = getString(R.string.email_error)
+                        activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
+                        activitySinUpBinding?.errorEmail?.text = getString(R.string.email_mobile_error)
                     }
                 }
 
             } else {
                 activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
+                activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                 activitySinUpBinding?.errorEmail?.text = getString(R.string.email_mobile_error)
 
             }
 
         }
+        activitySinUpBinding?.passwordEdt?.setOnFocusChangeListener { v, hasFocus ->
+            var email_mobile = activitySinUpBinding?.mobileEmailEdt?.text.toString()
+            if (!email_mobile.equals("", true)) {
+                if (mobilePattern.containsMatchIn(email_mobile) || emailPattern.containsMatchIn(email_mobile)) {
+                    activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.heather))
+                    activitySinUpBinding?.errorEmail?.text = resources.getString(R.string.mobile_suggestion)
+                } else {
+                    activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
+                    activitySinUpBinding?.errorEmail?.text = resources.getString(R.string.email_mobile_error)
+                }
+            } else {
+                activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
+                activitySinUpBinding?.errorEmail?.text = resources.getString(R.string.email_mobile_error)
 
+            }
+        }
         activitySinUpBinding?.eyeIcon?.setOnClickListener(View.OnClickListener {
             if (passwordVisibility) {
                 activitySinUpBinding?.eyeIcon?.setBackgroundResource(R.drawable.ic_outline_visibility_off_light)
@@ -280,7 +300,8 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
     }
 
     private fun checkPassword(type: String, emailMobile: String, password: String) {
-        val passwordPattern = Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=\\S+$).{8,16}$")
+        activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.heather))
+        activitySinUpBinding?.errorEmail?.text = getString(R.string.mobile_suggestion)
         var password = activitySinUpBinding?.passwordEdt?.text.toString();
         if (!password.equals("", true)) {
             if (passwordPattern.containsMatchIn(password)) {

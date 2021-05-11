@@ -48,7 +48,7 @@
                         android:id="@+id/txtPackageTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dimen5dp"
+                        android:layout_marginStart="@dimen/dimen5dp"
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp15"
@@ -62,8 +62,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight=".6"
                         android:orientation="horizontal"
-                        android:layout_alignParentRight="true"
-                        android:gravity="right">
+                        android:layout_alignParentEnd="true"
+                        android:gravity="end">
 
                     <TextView
                         android:id="@+id/txtPackageCost"
@@ -73,7 +73,7 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/dp14"
                         android:layout_gravity="center"
-                        android:layout_marginRight="@dimen/dimen10dp"/>
+                        android:layout_marginEnd="@dimen/dimen10dp"/>
 
 
                     </LinearLayout>
@@ -120,7 +120,7 @@
                 android:id="@+id/imvSelectedPackage"
                 android:layout_width="@dimen/dimen25dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen8dp"
+                android:layout_marginStart="@dimen/dimen8dp"
                 android:layout_marginTop="@dimen/dimen40dp"
                 android:src="@drawable/ic_check"
                 android:visibility="gone"

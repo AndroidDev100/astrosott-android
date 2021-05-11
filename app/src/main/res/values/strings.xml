@@ -566,7 +566,6 @@
     <string name="privacy"><u>Privacy</u></string>
 
 
-
     <string name="already_have_an_account">Already have an account? </string>
     <string name="password_rules">Password must be at least 8 characters, at least 1 <b /> number, 1 lowercase letter and 1 uppercase letter.</string>
     <string name="verify">VERIFY</string>
@@ -641,7 +640,9 @@
     <string name="pending">PENDING</string>
     <string name="failed">FAILED</string>
 
-
+    <string name="mobile_suggestion">Mobile number without country code, spacing &amp; hyphen</string>
+    <string name="terms_packages"><![CDATA[All prices displayed are inclusive of 6% digital tax. Terms & Conditions apply.]]></string>
+    <string name="choose_me">Choose Me</string>
     <string name="manage_quality">High Quality</string>
     <string name="subtitle_audio">Subtitle | Audio</string>
     <string name="episode_">Episode</string>
@@ -659,7 +660,14 @@
     <string name="reload_app">Reload App</string>
 
     <string name="logout_confirmation_message_new">Are you sure that you want to logout now?</string>
+
+
     <string name="contentDescription">ContentDescription</string>
+    <string name="english">English</string>
+    <string name="bahasha">Bahasa Melayu</string>
+    <string name="malay">Malay</string>
+    <string name="confirm_psw_para">Confirm password does\'t match with password</string>
+    <string name="error_checkbox">Please accept terms and conditions</string>
 
 
 </resources>

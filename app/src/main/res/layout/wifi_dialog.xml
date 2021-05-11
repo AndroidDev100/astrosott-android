@@ -135,7 +135,7 @@
                     android:id="@+id/btn_update"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
                     android:paddingLeft="@dimen/_35sdp"

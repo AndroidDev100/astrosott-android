@@ -23,9 +23,9 @@
             android:layout_marginBottom="@dimen/_5sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|right"
+            android:layout_gravity="top|end"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentEnd="true" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_poster"
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_star_ribbon"
                 android:elevation="2dp"
-                android:layout_gravity="right|top"
+                android:layout_gravity="end|top"
                 android:visibility="gone"
                 android:contentDescription="TODO">
 
@@ -127,7 +127,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:text="sdasdsdasdsad"
                     android:maxLines="1"
                     android:visibility="gone"
@@ -143,7 +143,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:maxLines="1"
                     android:text="233444444"
                     android:visibility="gone"

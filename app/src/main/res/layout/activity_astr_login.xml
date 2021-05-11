@@ -123,14 +123,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
-                    android:textColor="@color/radical_red"
-                    android:visibility="gone"
+                    android:paddingRight="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/mobile_suggestion"
+                    android:textColor="@color/heather"
+                    android:visibility="visible"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/email" />
 
                 <LinearLayout
                     android:id="@+id/password"
-
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginLeft="18dp"
@@ -155,8 +157,8 @@
                         android:hint="@string/password"
                         android:importantForAutofill="no"
                         android:inputType="text|textPassword"
-                        android:maxLines="1"
                         android:maxLength="16"
+                        android:maxLines="1"
                         android:singleLine="true"
                         android:textColor="@color/white"
                         android:textColorHint="@color/grey"
@@ -175,6 +177,7 @@
                 <TextView
                     android:id="@+id/password_error"
                     android:layout_width="wrap_content"
+                    android:paddingRight="20dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen20dp"
                     android:text="@string/password_error"
@@ -202,8 +205,8 @@
 
                 <TextView
                     android:id="@+id/login_btn"
-                    android:layout_width="@dimen/dimen250dp"
-                    android:layout_height="45dp"
+                    android:layout_width="246dp"
+                    android:layout_height="49dp"
                     android:layout_marginTop="28dp"
                     android:background="@drawable/gradient_button"
                     android:fontFamily="@font/heebo_medium"
@@ -292,13 +295,13 @@
 
                 <com.google.android.gms.common.SignInButton
                     android:id="@+id/sign_in_button"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
                     android:layout_width="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/or"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/or" />
 
                 <Button
                     android:id="@+id/google"
@@ -321,14 +324,14 @@
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/login_button"
                     android:layout_width="@dimen/dimen250dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/google"
                     android:layout_height="40dp"
-                    android:visibility="gone"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
-                    android:layout_marginBottom="30dp" />
+                    android:layout_marginBottom="30dp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/google" />
 
                 <TextView
                     android:id="@+id/fb"
@@ -338,14 +341,14 @@
                     android:background="@drawable/facebook_button"
                     android:fontFamily="@font/heebo_medium"
                     android:gravity="center"
-                    android:textAlignment="center"
                     android:drawablePadding="1dp"
                     android:paddingStart="@dimen/dimen28dp"
                     android:paddingEnd="@dimen/dimen20dp"
-                    app:drawableLeftCompat="@drawable/ic_fb_btn"
                     android:text="@string/sign_in_fb"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sp"
+                    app:drawableLeftCompat="@drawable/ic_fb_btn"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/google" />
@@ -356,16 +359,16 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="@dimen/dimen16dp"
                     android:background="@drawable/apple_button"
+                    android:drawablePadding="2dp"
                     android:fontFamily="@font/heebo_medium"
                     android:gravity="center"
                     app:drawableLeftCompat="@drawable/ic_apple_btn"
-                    android:text="@string/sign_in_apple"
-                    android:textColor="@color/black"
-                    android:drawablePadding="2dp"
                     android:paddingStart="@dimen/dimen42dp"
                     android:paddingEnd="@dimen/dimen30dp"
-                    android:visibility="invisible"
+                    android:text="@string/sign_in_apple"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_14sp"
+                    android:visibility="invisible"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/fb" />

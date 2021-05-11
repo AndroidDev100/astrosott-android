@@ -14,10 +14,10 @@
             android:id="@+id/metas"
             layout="@layout/metas_layout"
             android:layout_width="match_parent"
-            android:layout_gravity="top|right"
+            android:layout_gravity="top|end"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentEnd="true" />
         <ImageView
             android:id="@+id/itemImage"
             android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:maxLines="1"
                     android:visibility="gone"
                     android:fontFamily="@font/heebo_regular"
@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:maxLines="1"
                     android:visibility="gone"
                     android:fontFamily="@font/heebo_regular"

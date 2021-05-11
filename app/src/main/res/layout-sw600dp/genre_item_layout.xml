@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout >
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                     android:textColor="@color/white"
                     android:singleLine="true"
                     android:layout_marginEnd="60dp"
-                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:text=""
                     android:textSize="@dimen/_14sp"/>
 
@@ -64,8 +64,8 @@
                         android:visibility="visible"
                         android:layout_marginTop="-3dp"
                         android:layout_marginBottom="-3dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="-25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="-25dp"
                         android:src="@drawable/placeholder_square"
                         android:layout_height="75dp">
 
@@ -78,7 +78,7 @@
                         android:rotation="180"
                         android:layout_marginTop="-3dp"
                         android:layout_marginBottom="-3dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:visibility="visible"
                         android:background="@drawable/half_circle_selector"
                         android:layout_height="wrap_content">
@@ -90,7 +90,7 @@
 
                             <ImageView
                                 android:rotation="180"
-                                android:layout_marginRight="5dp"
+                                android:layout_marginEnd="5dp"
                                 android:layout_width="20dp"
                                 android:background="@drawable/genre_list_check"
                                 android:layout_height="20dp"

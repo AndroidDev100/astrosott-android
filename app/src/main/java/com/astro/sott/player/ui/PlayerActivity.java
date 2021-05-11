@@ -40,6 +40,7 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
     private WindowFocusCallback windowFocusListner;
     private Boolean isLivePlayer = false;
     private Boolean inPlayer = false;
+    private Boolean backPressed = false;
 
     @Override
     public PlayerActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -150,6 +151,13 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        backPressed = true;
+
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Log.e("CONFIG", String.valueOf(newConfig.orientation));
@@ -202,7 +210,9 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
     @Override
     protected void onPause() {
         super.onPause();
-        ConvivaManager.convivaPlayerAppBackgrounded(this);
+        inPlayer = true;
+        if (!backPressed)
+            ConvivaManager.convivaPlayerAppBackgrounded(this);
 
     }
 

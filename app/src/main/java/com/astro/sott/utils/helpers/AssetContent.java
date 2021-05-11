@@ -158,6 +158,9 @@ public class AssetContent {
         }
         if (doubleValue != null) {
             year = String.valueOf(doubleValue.getValue());
+            if (year.length() > 3) {
+                year.substring(0, 4);
+            }
         }
         return year;
     }

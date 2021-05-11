@@ -126,7 +126,7 @@
                         android:id="@+id/star_icon"
                         android:layout_marginEnd="@dimen/dimen14dp"
                         android:layout_toStartOf="@id/play_text"
-                        android:contentDescription="TODO" />
+                        android:contentDescription="@string/contentDescription" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -182,7 +182,7 @@
                             android:background="@drawable/ic_landscape_placeholder"
                             android:layout_gravity="center"
                             android:scaleType="fitXY"
-                            android:contentDescription="TODO" />
+                            android:contentDescription="@string/contentDescription" />
 
                         <TextView
                             android:id="@+id/programTitle"

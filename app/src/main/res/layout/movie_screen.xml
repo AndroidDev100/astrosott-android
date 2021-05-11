@@ -185,7 +185,7 @@
                                     android:id="@+id/star_icon"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toLeftOf="@+id/play_text"
+                                    android:layout_toStartOf="@+id/play_text"
                                     android:layout_centerInParent="true"
                                     android:layout_marginEnd="@dimen/_8dp"
                                     android:visibility="gone"

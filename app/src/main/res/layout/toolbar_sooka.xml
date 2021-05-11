@@ -9,16 +9,16 @@
     <ImageView
         android:layout_width="110dp"
         android:layout_height="35dp"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:background="@drawable/sooka_landscape"
-        android:contentDescription="TODO" />
+        android:contentDescription="@string/contentDescription" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
         android:layout_marginEnd="@dimen/dimen16dp"
         android:src="@drawable/ic_search_24px"
