@@ -373,7 +373,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 				|| skuDetails.getType().equals(BillingClient.SkuType.INAPP)) {
 				BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
 						.setOldSku(oldSKU, oldPurchaseToken)
-						.setReplaceSkusProrationMode(IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+						.setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.DEFERRED)
 						.setSkuDetails(skuDetails)
 						.build();
 

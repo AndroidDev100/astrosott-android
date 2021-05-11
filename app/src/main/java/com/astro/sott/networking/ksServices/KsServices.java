@@ -4070,7 +4070,7 @@ public class KsServices {
                     for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
                         SubtitleLanguages levels = new SubtitleLanguages();
                         levels.setKey(entry.getKey());
-                        levels.setValue(entry.getValue().getAsString());
+                        levels.setValue(entry.getValue().getAsJsonArray());
                         subtitleLanguageList.add(levels);
                     }
 
@@ -4082,7 +4082,7 @@ public class KsServices {
                     for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
                         FilterValues levels = new FilterValues();
                         levels.setKey(entry.getKey());
-                        levels.setValue(entry.getValue().getAsString());
+                       // levels.setValue(entry.getValue().getAsJsonArray());
                         filterValuesList.add(levels);
                     }
 

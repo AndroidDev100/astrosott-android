@@ -966,7 +966,7 @@ public class AssetContent {
             lang = language_value.get(i).getValue();
             for (int j = 0; j < subtitleLanguages.size(); j++) {
                 if (lang.equalsIgnoreCase(subtitleLanguages.get(j).getKey())) {
-                    stringBuilder.append(subtitleLanguages.get(j).getValue()).append(",");
+                    stringBuilder.append(subtitleLanguages.get(j).getValue().get(0).toString()).append(",");
                 }
             }
 
