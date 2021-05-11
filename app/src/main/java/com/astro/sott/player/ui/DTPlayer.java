@@ -126,6 +126,7 @@ import com.kaltura.playkit.providers.MediaEntryProvider;
 import com.kaltura.playkit.providers.api.phoenix.APIDefines;
 import com.kaltura.playkit.providers.base.OnMediaLoadCompletion;
 import com.kaltura.playkit.providers.ott.PhoenixMediaProvider;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
@@ -1637,7 +1638,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             showAdsView();
         });
         player.addListener(this, AdEvent.adBreakEnded, event -> {
-            //  ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
         });
 
         player.addListener(this, AdEvent.cuepointsChanged, event -> {
@@ -1664,9 +1664,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         });
         player.addListener(this, PlayerEvent.stopped, event -> {
-            ConvivaManager.convivaPlayerStoppedReportRequest();
+           /* ConvivaManager.convivaPlayerStoppedReportRequest();
             ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackEnded();
-            ConvivaManager.removeConvivaSession();
+            ConvivaManager.removeConvivaSession();*/
 
         });
 
@@ -1938,7 +1938,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             AdEvent.Error adError = event;
             //  checkFatalError();
             if (player != null) {
-
+                isAdsRunning=false;
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdFailed(adError.error.errorType.name());
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
+                ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
+                ConvivaManager.removeConvivaAdsSession();
                 if (adError.error.errorType.name().toUpperCase().contains("QUIET_LOG_ERROR") || adError.error.errorType.name().toUpperCase().contains("VIDEO_PLAY_ERROR")) {
                     //  getBinding().lockIcon.setVisibility(View.VISIBLE);
                     if (lockEnable) {
@@ -3669,7 +3673,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (PlayerRepository.getInstance() != null) {
                 PlayerRepository.getInstance().destroCallBacks();
             }
-            if (ConvivaManager.getConvivaAdAnalytics(baseActivity) != null) {
+            if (isAdsRunning) {
                 ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
                 ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
                 ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
