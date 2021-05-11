@@ -673,15 +673,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         parentalCheck(asset);
                     } else {
                         getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
-//                        if (isProgramClicked) {
-//                            if (checkIsliveAsset) {
-//                                getUrl(AssetContent.getURL(asset), asset, playerProgress, true, catchupLiveProgName, railList);
-//                            } else {
-//                                getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, asset.getName(), railList);
-//                            }
-//                        } else {
-//                            getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
-//                        }
                     }
                 } else {
                     PrintLogging.printLog("", "elseValuePrint-->>" + assetRuleErrorCode + "  " + errorCode);

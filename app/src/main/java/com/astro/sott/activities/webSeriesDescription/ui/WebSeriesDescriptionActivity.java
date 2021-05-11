@@ -210,7 +210,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class,"");
+                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, "");
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), WebSeriesDescriptionActivity.this);
@@ -636,8 +636,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         });
     }
 
-    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<
-            RailCommonData> railList) {
+    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<RailCommonData> railList) {
 //        if (this.railList!=null){
 //            this.railList.clear();
 //        }
@@ -993,7 +992,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(),"");
+        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), "");
     }
 
     @Override
@@ -1133,7 +1132,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     public void onFinishDialog() {
         if (isPurchased) {
             isPurchased = false;
-            new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class,"");
+            new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, "");
 
         }
     }
@@ -1432,14 +1431,16 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         viewModel.getSpecificAsset(assetHistory.getAssetId() + "").observe(this, railAsset -> {
                             if (railAsset != null) {
                                 fromNextEpisode = true;
-                                if (checkSeries.equalsIgnoreCase(AppLevelConstants.OPEN)) {
+                                railList1.clear();
+                                railList1.addAll(railCommonData.get(0).getRailAssetList());
+                               /* if (checkSeries.equalsIgnoreCase(AppLevelConstants.OPEN)) {
                                     int episodeNumber = AssetContent.getSpecificEpisode(railAsset.getObject().getMetas());
                                     if (episodeNumber != 0)
                                         GetEpisodeListWithoutSeason();
                                 } else {
                                     int seasonNumber = AssetContent.getSpecificSeason(railAsset.getObject().getMetas());
                                     GetSeasonEpisode(seasonNumber, assetToPlay);
-                                }
+                                }*/
                                 assetToPlay = railAsset;
                                 checkForPlayButtonCondition();
 
