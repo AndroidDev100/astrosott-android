@@ -1,7 +1,7 @@
 package com.astro.sott.modelClasses.InApp;
 
+import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
-import com.astro.sott.utils.billing.SkuDetails;
 
 public class PackDetail {
    private SkuDetails skuDetails;

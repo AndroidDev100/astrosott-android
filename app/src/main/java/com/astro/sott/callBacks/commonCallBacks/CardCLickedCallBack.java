@@ -1,5 +1,5 @@
 package com.astro.sott.callBacks.commonCallBacks;
 
 public interface CardCLickedCallBack {
-    void onCardClicked(String productId,String serviceType);
+    void onCardClicked(String productId, String serviceType, String activePlan);
 }

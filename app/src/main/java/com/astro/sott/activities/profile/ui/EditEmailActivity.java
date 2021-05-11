@@ -29,7 +29,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 
-public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBinding> implements BillingProcessor.IBillingHandler, View.OnClickListener {
+public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBinding> implements  View.OnClickListener {
     private BillingProcessor billingProcessor;
     private AstroLoginViewModel astroLoginViewModel;
     private boolean alreadyEmail = false;
@@ -184,19 +184,19 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
 
     private void intializeBilling() {
 
-        String tempBase64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhiyDBLi/JpQLoxikmVXqxK8M3ZhJNfW2tAdjnGnr7vnDiYOiyk+NomNLqmnLfQwkC+TNWn50A5XmA8FEuZmuqOzKNRQHw2P1Spl27mcZsjXcCFwj2Vy+eso3pPLjG4DfqCmQN2jZo97TW0EhsROdkWflUMepy/d6sD7eNfncA1Z0ECEDuSuOANlMQLJk7Ci5PwUHKYnUAIwbq0fU9LP6O8Ejx5BK6o5K7rtTBttCbknTiZGLo6rB+8RcSB4Z0v3Di+QPyvxjIvfSQXlWhRdyxAs/EZ/F4Hdfn6TB7mLZkKZZwI0xzOObJp2BiesclMi1wHQsNSgQ8pnZ8T52aJczpQIDAQAB";
+       /* String tempBase64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhiyDBLi/JpQLoxikmVXqxK8M3ZhJNfW2tAdjnGnr7vnDiYOiyk+NomNLqmnLfQwkC+TNWn50A5XmA8FEuZmuqOzKNRQHw2P1Spl27mcZsjXcCFwj2Vy+eso3pPLjG4DfqCmQN2jZo97TW0EhsROdkWflUMepy/d6sD7eNfncA1Z0ECEDuSuOANlMQLJk7Ci5PwUHKYnUAIwbq0fU9LP6O8Ejx5BK6o5K7rtTBttCbknTiZGLo6rB+8RcSB4Z0v3Di+QPyvxjIvfSQXlWhRdyxAs/EZ/F4Hdfn6TB7mLZkKZZwI0xzOObJp2BiesclMi1wHQsNSgQ8pnZ8T52aJczpQIDAQAB";
         billingProcessor = new BillingProcessor(this, tempBase64, this);
         billingProcessor.initialize();
 
-        billingProcessor.loadOwnedPurchasesFromGoogle();
+        billingProcessor.loadOwnedPurchasesFromGoogle();*/
     }
 
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (!billingProcessor.handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
+    }*/
 
     /* @Override
      public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -221,29 +221,6 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             // updateUI(null);
         }
-    }
-
-    @Override
-    public void onProductPurchased(String productId, TransactionDetails details) {
-        Log.w("billingProcessor_play", UserInfo.getInstance(this).getAccessToken() + "");
-        Log.w("billingProcessor_play", "purchased" + productId + "  --- " + details);
-    }
-
-    @Override
-    public void onPurchaseHistoryRestored() {
-
-    }
-
-    @Override
-    public void onBillingError(int errorCode, Throwable error) {
-        Log.w("billingProcessor_play", "error");
-
-    }
-
-    @Override
-    public void onBillingInitialized() {
-        Log.w("billingProcessor_play", "intialized");
-
     }
 
     private void modelCall() {

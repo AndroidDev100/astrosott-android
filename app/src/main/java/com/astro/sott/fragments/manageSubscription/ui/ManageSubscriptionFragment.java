@@ -22,6 +22,7 @@ import com.astro.sott.callBacks.commonCallBacks.ChangePlanCallBack;
 import com.astro.sott.databinding.FragmentManageSubscriptionBinding;
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
 import com.astro.sott.fragments.manageSubscription.adapter.ManageSubscriptionAdapter;
+import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
@@ -43,8 +44,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     private ArrayList<String> productIdList;
     private String cancelId;
     private List<AccountServiceMessageItem> accountServiceMessage;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private List<AccountServiceMessageItem> freemiumFilterationList;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -120,14 +120,11 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
                     });
                 } else {
                     getLastSubscription();
-
                 }
-
             }
         });
     }
 
-    private List<AccountServiceMessageItem> freemiumFilterationList;
 
     private void checkForFreemium(List<AccountServiceMessageItem> accountServiceMessage) {
         freemiumFilterationList = new ArrayList<>();
@@ -203,12 +200,12 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     @Override
     public void onClick(String paymentType) {
         if (paymentType.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
-            SubscriptionLandingFragment someFragment = new SubscriptionLandingFragment();
+            NewSubscriptionPacksFragment someFragment = new NewSubscriptionPacksFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             Bundle bundle = new Bundle();
             bundle.putSerializable("productList", productIdList);
             someFragment.setArguments(bundle);
-            transaction.replace(R.id.content_frame, someFragment);
+            transaction.replace(R.id.content_frame, someFragment,"SubscriptionFragment");
             transaction.addToBackStack(null);
             transaction.commit();
         } else {
