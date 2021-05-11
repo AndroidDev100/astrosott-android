@@ -48,7 +48,8 @@
                     android:layout_width="@dimen/related_item_width"
                     android:layout_height="match_parent"
                     android:background="@drawable/ic_landscape_placeholder"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    android:contentDescription="TODO" />
 
             </androidx.cardview.widget.CardView>
 

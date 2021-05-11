@@ -52,6 +52,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/heebo_medium"
                 android:paddingEnd="5dp"
+                android:paddingStart="0dp"
                 android:text="@string/season_number"
                 android:textAlignment="center"
                 android:textAllCaps="true"
@@ -63,7 +64,8 @@
                 android:layout_height="24dp"
                 android:layout_gravity="end|center"
                 android:rotation="270"
-                android:src="@drawable/back_icon" />
+                android:src="@drawable/back_icon"
+                android:contentDescription="TODO" />
         </LinearLayout>
 
 

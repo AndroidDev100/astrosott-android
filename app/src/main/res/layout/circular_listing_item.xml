@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:filterTouchesWhenObscured="true"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
         android:orientation="vertical"
         android:visibility="visible">
 

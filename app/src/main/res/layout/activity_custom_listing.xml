@@ -75,7 +75,7 @@
                 android:id="@+id/recycler_view_more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/setting_rv_margin_left"
+                android:layout_marginStart="@dimen/setting_rv_margin_left"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:overScrollMode="never" />
 

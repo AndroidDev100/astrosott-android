@@ -29,7 +29,7 @@
         android:src="@drawable/ic_back"
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/_17sdp"
-        />
+        android:contentDescription="TODO" />
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -230,7 +230,7 @@
             android:id="@+id/download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:fontFamily="@font/heebo_medium"
             android:text="@string/downloadable"
             android:textColor="@color/white"
@@ -239,7 +239,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/switch_download"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView

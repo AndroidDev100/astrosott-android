@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,12 +12,13 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen16dp"
+            android:layout_marginStart="@dimen/dimen16dp"
             android:layout_marginTop="@dimen/dimen16dp"
             android:background="@drawable/ic_back"
             android:padding="@dimen/_6dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="TODO" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -46,7 +47,8 @@
                 android:background="@drawable/sooka"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="TODO" />
 
             <TextView
                 android:id="@+id/forgot_title"
@@ -149,8 +151,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginRight="18dp"
-                    android:background="@drawable/ic_outline_visibility_off_light" />
+                    android:layout_marginEnd="18dp"
+                    android:background="@drawable/ic_outline_visibility_off_light"
+                    android:contentDescription="TODO" />
             </LinearLayout>
 
             <TextView
@@ -158,7 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="18dp"
+                android:layout_marginEnd="18dp"
                 android:fontFamily="@font/heebo_regular"
                 android:gravity="center"
                 android:text="@string/forgt_psw"
@@ -173,7 +176,7 @@
                 android:id="@+id/error_passsword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen16dp"
+                android:layout_marginStart="@dimen/dimen16dp"
                 android:text="@string/password_error"
                 android:textColor="@color/red_live"
                 android:visibility="gone"

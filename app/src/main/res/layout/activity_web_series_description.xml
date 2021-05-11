@@ -194,11 +194,12 @@
                                     android:id="@+id/star_icon"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentStart="true"
                                     android:layout_centerInParent="true"
-                                    android:layout_toLeftOf="@+id/play_text"
+                                    android:layout_toStartOf="@+id/play_text"
                                     android:src="@drawable/ic_star_24_px"
-                                    android:visibility="gone" />
+                                    android:visibility="gone"
+                                    android:contentDescription="TODO" />
 
                                 <TextView
                                     android:id="@+id/play_text"
@@ -416,7 +417,8 @@
                                             android:fontFamily="@font/heebo_bold"
                                             android:maxLines="2"
                                             android:paddingTop="10dp"
-                                            android:paddingRight="20dp"
+                                            android:paddingEnd="20dp"
+                                            android:paddingStart="0dp"
                                             android:paddingBottom="10dp"
                                             android:text="@string/view_more"
                                             android:textAllCaps="true"

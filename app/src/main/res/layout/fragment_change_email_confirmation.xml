@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -82,8 +82,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="4dp"
-                android:layout_marginRight="@dimen/dimen18dp"
-                android:background="@drawable/ic_outline_visibility_off_light" />
+                android:layout_marginEnd="@dimen/dimen18dp"
+                android:background="@drawable/ic_outline_visibility_off_light"
+                android:contentDescription="TODO" />
         </LinearLayout>
                   <Button
                       android:layout_width="match_parent"

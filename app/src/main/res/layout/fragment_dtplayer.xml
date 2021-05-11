@@ -55,8 +55,8 @@
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
-                        android:layout_toLeftOf="@+id/iv_quality"
-                        android:layout_toRightOf="@id/iv_cancel"
+                        android:layout_toStartOf="@+id/iv_quality"
+                        android:layout_toEndOf="@id/iv_cancel"
                         android:fontFamily="@font/heebo_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
@@ -99,7 +99,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/share_margin_top"
-                        android:layout_marginRight="@dimen/dp10"
+                        android:layout_marginEnd="@dimen/dp10"
                         android:layout_toStartOf="@+id/live_txt"
                         android:clickable="true"
                         android:drawablePadding="7dp"
@@ -136,7 +136,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_centerInParent="true"
                         android:layout_marginStart="36dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginEnd="16dp"
                         android:clickable="true"
                         android:contentDescription="@string/cancel_icon"
                         android:focusable="true"
@@ -193,7 +193,7 @@
                     android:id="@+id/brightness_dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
                     android:visibility="gone">
 
@@ -206,7 +206,7 @@
                     android:id="@+id/volume_dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
                     android:visibility="gone">
 
@@ -261,7 +261,7 @@
                         android:layout_marginStart="@dimen/_3dp"
                         android:layout_marginTop="32.7dp"
                         android:layout_marginBottom="@dimen/_8sdp"
-                        android:layout_toRightOf="@+id/slash"
+                        android:layout_toEndOf="@+id/slash"
                         android:fontFamily="@font/heebo_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
@@ -295,7 +295,7 @@
                         android:layout_marginStart="@dimen/_3dp"
                         android:layout_marginTop="32.7dp"
                         android:layout_marginBottom="@dimen/_8sdp"
-                        android:layout_toRightOf="@+id/current_time"
+                        android:layout_toEndOf="@+id/current_time"
                         android:fontFamily="@font/heebo_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
@@ -334,7 +334,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginTop="32.7dp"
                     android:layout_marginEnd="@dimen/uploaded_image_height"
@@ -387,7 +387,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:layout_marginTop="@dimen/_2dp"
-                        android:layout_toLeftOf="@+id/next_episode"
+                        android:layout_toStartOf="@+id/next_episode"
                         android:layout_weight="1"
                         android:drawablePadding="@dimen/_6dp"
                         android:fontFamily="@font/heebo_regular"
@@ -726,7 +726,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="128dp"
             android:gravity="bottom">
 
@@ -735,7 +735,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen40dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="@dimen/dimen55dp"
+                android:layout_marginEnd="@dimen/dimen55dp"
                 android:background="@drawable/skip_intro_button"
                 android:fontFamily="@font/heebo_regular"
                 android:gravity="center"
@@ -754,7 +754,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="128dp"
             android:gravity="bottom">
 
@@ -763,7 +763,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen40dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="@dimen/dimen55dp"
+                android:layout_marginEnd="@dimen/dimen55dp"
                 android:background="@drawable/skip_intro_button"
                 android:fontFamily="@font/heebo_regular"
                 android:gravity="center"
@@ -782,7 +782,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="@dimen/_128dp"
             android:gravity="bottom">
 
@@ -791,7 +791,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen40dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="@dimen/dimen55dp"
+                android:layout_marginEnd="@dimen/dimen55dp"
                 android:background="@drawable/skip_intro_button"
                 android:fontFamily="@font/heebo_regular"
                 android:gravity="center"

@@ -51,7 +51,8 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sp"
                     android:paddingTop="@dimen/_2sdp"
-                    android:paddingLeft="@dimen/_3sdp"
+                    android:paddingStart="@dimen/_3sdp"
+                    android:paddingEnd="0dp"
                     />
 
                 <TextView
@@ -64,7 +65,8 @@
                     android:visibility="gone"
                     android:fontFamily="@font/heebo_regular"
                     android:textColor="@color/white"
-                    android:paddingLeft="@dimen/_3sdp"
+                    android:paddingStart="@dimen/_3sdp"
+                    android:paddingEnd="0dp"
                     android:paddingBottom="@dimen/_2sdp"
                     android:textSize="@dimen/_14sp" />
 

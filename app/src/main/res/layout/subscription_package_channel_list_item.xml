@@ -20,7 +20,9 @@
                 android:src="@drawable/splash_icon1"
                 android:paddingTop="@dimen/dimen5dp"
                 android:paddingStart="@dimen/dimen5dp"
-                android:paddingBottom="@dimen/dimen5dp"/>
+                android:paddingEnd="0dp"
+                android:paddingBottom="@dimen/dimen5dp"
+                android:contentDescription="TODO" />
 
         </LinearLayout>
         <LinearLayout
@@ -62,7 +64,9 @@
                 android:src="@drawable/delete_icon_dtv"
                 android:paddingTop="@dimen/dimen8dp"
                 android:paddingStart="@dimen/dimen5dp"
-                android:paddingBottom="@dimen/dimen8dp"/>
+                android:paddingEnd="0dp"
+                android:paddingBottom="@dimen/dimen8dp"
+                android:contentDescription="TODO" />
 
         </LinearLayout>
     </LinearLayout>

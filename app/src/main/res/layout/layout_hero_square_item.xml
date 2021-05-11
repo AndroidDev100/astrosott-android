@@ -49,7 +49,8 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="0dp"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:contentDescription="TODO" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -59,6 +60,7 @@
                 android:gravity="bottom"
                 android:visibility="gone"
                 android:paddingStart="5dp"
+                android:paddingEnd="0dp"
                 android:paddingBottom="5dp">
 
                 <TextView

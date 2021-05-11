@@ -15,8 +15,8 @@
             android:fontFamily="@font/heebo_regular"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
-            android:paddingRight="18dp"
-            android:paddingLeft="15dp"
+            android:paddingEnd="18dp"
+            android:paddingStart="15dp"
             android:textSize="@dimen/font_medium_large"
             android:text="Text"
             android:textColor="@color/white" />

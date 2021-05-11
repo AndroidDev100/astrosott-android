@@ -12,7 +12,8 @@
         android:layout_alignParentLeft="true"
         android:layout_centerInParent="true"
         android:layout_marginLeft="16dp"
-        android:background="@drawable/sooka_landscape" />
+        android:background="@drawable/sooka_landscape"
+        android:contentDescription="TODO" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -20,6 +21,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
         android:layout_marginEnd="@dimen/dimen16dp"
-        android:src="@drawable/ic_search_24px" />
+        android:src="@drawable/ic_search_24px"
+        android:contentDescription="TODO" />
 
 </RelativeLayout>

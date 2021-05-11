@@ -35,7 +35,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="30dp"
-                android:src="@drawable/paymentsuccess" />
+                android:src="@drawable/paymentsuccess"
+                android:contentDescription="TODO" />
 
             <LinearLayout
                 android:layout_width="@dimen/_350sdp"

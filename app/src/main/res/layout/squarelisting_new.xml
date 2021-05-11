@@ -45,7 +45,7 @@
                         android:layout_width="@dimen/_90sdp"
                         android:layout_height="@dimen/_90sdp"
                         android:background="@drawable/square1"
-                        android:contentDescription="TODO"
+                        android:contentDescription="@string/contentDescription"
                         android:scaleType="fitXY"
                          />
 
@@ -67,7 +67,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_30sdp"
                             android:gravity="left"
-                            android:paddingLeft="@dimen/_5sdp"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:paddingEnd="0dp"
                             android:paddingBottom="@dimen/_5sdp"
                             android:singleLine="true"
                             android:text="Gadis"

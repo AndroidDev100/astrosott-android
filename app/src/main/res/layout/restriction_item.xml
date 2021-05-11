@@ -20,7 +20,7 @@
             android:layout_height="65dp"
             android:layout_gravity="center"
             android:clickable="false"
-            />
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/restriction_level"
@@ -43,7 +43,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:paddingRight="12dp"
+        android:paddingEnd="12dp"
+        android:paddingStart="0dp"
         android:textSize="@dimen/font_medium"
         android:text=""
         android:layout_alignParentRight="true"

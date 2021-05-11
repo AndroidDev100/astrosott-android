@@ -300,8 +300,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="@dimen/search_toolbar_margin_top">
+                    android:paddingStart="16dp"
+                    android:paddingEnd="@dimen/search_toolbar_margin_top">
 
                     <LinearLayout
                         android:id="@+id/back_button"
@@ -330,8 +330,8 @@
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
                         android:layout_marginStart="8dp"
-                        android:layout_toRightOf="@+id/back_button"
-                        android:layout_toLeftOf="@+id/filter">
+                        android:layout_toEndOf="@+id/back_button"
+                        android:layout_toStartOf="@+id/filter">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -372,7 +372,8 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:background="@drawable/search_clear_icon"
-                                    android:layout_height="match_parent">
+                                    android:layout_height="match_parent"
+                                    android:contentDescription="TODO">
 
                                 </ImageView>
 
@@ -422,8 +423,9 @@
                         android:layout_marginEnd="10dp"
                         android:visibility="gone"
                         android:layout_marginTop="@dimen/_7sdp"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/ic_filter_24px"/>
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_filter_24px"
+                        android:contentDescription="@string/contentDescription" />
 
                 </RelativeLayout>
 

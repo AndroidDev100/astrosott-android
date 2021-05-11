@@ -29,8 +29,9 @@
                         android:layout_width="110dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="16dp"
-                        android:background="@drawable/sooka_landscape" />
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/sooka_landscape"
+                        android:contentDescription="TODO" />
                 </LinearLayout>
 
                 <RelativeLayout

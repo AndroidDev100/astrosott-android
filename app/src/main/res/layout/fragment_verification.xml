@@ -1,4 +1,5 @@
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -74,15 +75,16 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_phone_no"
             android:padding="@dimen/dimen16dp"
-            android:layout_marginLeft="@dimen/dimen270dp"
+            android:layout_marginStart="@dimen/dimen270dp"
             android:layout_marginTop="@dimen/dimen32dp"
-            android:layout_marginRight="@dimen/sign_up_title_margin_left">
+            android:layout_marginEnd="@dimen/sign_up_title_margin_left">
             <ImageView
                 android:id="@+id/imgNotieEye"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/notie_eye_selector"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:contentDescription="TODO" />
         </FrameLayout>
 
         <!--<View-->

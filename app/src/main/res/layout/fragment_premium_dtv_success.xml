@@ -18,7 +18,8 @@
             android:layout_height="@dimen/dimen50dp"
             android:layout_gravity="center"
             android:src="@drawable/premium_success"
-            android:layout_marginTop="@dimen/dimen20dp"/>
+            android:layout_marginTop="@dimen/dimen20dp"
+            android:contentDescription="TODO" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +48,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/dimen30dp"
             android:layout_marginEnd="@dimen/dimen20dp"
-            android:gravity="right">
+            android:gravity="end">
 
             <Button
                 android:id="@+id/btnOk"

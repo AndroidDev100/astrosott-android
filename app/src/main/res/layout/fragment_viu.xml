@@ -160,7 +160,7 @@
                 android:layout_width="@dimen/viu_item_width"
                 android:layout_height="@dimen/viu_item_height"
                 android:layout_marginTop="@dimen/viu_apps_margin"
-                android:layout_marginRight="@dimen/viu_apps_margin"
+                android:layout_marginEnd="@dimen/viu_apps_margin"
                 android:clickable="true"
                 android:elevation="4dp"
                 android:scaleType="fitXY"

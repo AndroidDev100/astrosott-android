@@ -145,7 +145,8 @@
                 android:layout_marginTop="@dimen/dimen40dp"
                 android:src="@drawable/ic_check"
                 android:visibility="gone"
-                android:layout_marginStart="-1dp"/>
+                android:layout_marginStart="-1dp"
+                android:contentDescription="TODO" />
         </FrameLayout>
 
     </LinearLayout>

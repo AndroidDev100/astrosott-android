@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/card_layout"
@@ -25,7 +26,8 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:background="@drawable/pack_bg_img" />
+                    android:background="@drawable/pack_bg_img"
+                    android:contentDescription="TODO" />
 
                 <FrameLayout
                     android:layout_width="match_parent"

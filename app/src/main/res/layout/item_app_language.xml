@@ -30,7 +30,8 @@
             android:visibility="gone"
             android:layout_marginRight="@dimen/margin_20dp"
             android:background="@drawable/ic_check_circle_24px"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:contentDescription="TODO" />
     </RelativeLayout>
     </LinearLayout>
 

@@ -290,6 +290,7 @@
             android:resource="@drawable/noti_icon" /> <!-- <meta-data -->
         <!-- android:name="com.google.firebase.messaging.default_notification_color" -->
         <!-- android:resource="@color/colorPrimary" /> -->
+        <!--suppress AndroidDomInspection -->
         <receiver
             android:name="io.branch.referral.InstallListener"
             android:exported="true"

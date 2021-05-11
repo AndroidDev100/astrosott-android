@@ -138,7 +138,7 @@
                                         android:id="@+id/star_icon"
                                         android:layout_marginEnd="@dimen/dimen14dp"
                                         android:layout_toStartOf="@id/play_text"
-                                        />
+                                        android:contentDescription="TODO" />
                                     <TextView
                                         android:id="@+id/play_text"
                                         android:layout_width="wrap_content"
@@ -189,7 +189,8 @@
 
                                     <ImageView
                                         android:layout_width="109dp"
-                                        android:layout_height="24dp">
+                                        android:layout_height="24dp"
+                                        android:contentDescription="TODO">
 
                                     </ImageView>
 
@@ -375,7 +376,8 @@
                                             android:fontFamily="@font/heebo_bold"
                                             android:maxLines="2"
                                             android:paddingTop="10dp"
-                                            android:paddingRight="20dp"
+                                            android:paddingEnd="20dp"
+                                            android:paddingStart="0dp"
                                             android:paddingBottom="10dp"
                                             android:text="@string/view_more"
                                             android:textAllCaps="true"

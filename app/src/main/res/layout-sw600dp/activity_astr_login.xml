@@ -18,12 +18,14 @@
                 android:id="@+id/back_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen16dp"
+                android:layout_marginStart="@dimen/dimen16dp"
                 android:layout_marginTop="@dimen/dimen16dp"
                 android:paddingEnd="7dp"
+                android:paddingStart="0dp"
                 android:background="@drawable/ic_back"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="TODO" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -54,7 +56,8 @@
                     android:background="@drawable/sooka"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="TODO" />
 
                 <TextView
                     android:id="@+id/forgot_title"
@@ -119,7 +122,7 @@
                     android:id="@+id/error_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="18dp"
+                    android:layout_marginStart="18dp"
                     android:textColor="@color/radical_red"
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -164,15 +167,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="18dp"
-                        android:background="@drawable/ic_outline_visibility_off_light" />
+                        android:layout_marginEnd="18dp"
+                        android:background="@drawable/ic_outline_visibility_off_light"
+                        android:contentDescription="@string/contentDescription" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/password_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen20dp"
+                    android:layout_marginStart="@dimen/dimen20dp"
                     android:text="@string/password_error"
                     android:textColor="@color/red_live"
                     android:visibility="gone"
@@ -185,7 +189,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="18dp"
+                    android:layout_marginEnd="18dp"
                     android:fontFamily="@font/heebo_regular"
                     android:gravity="center"
                     android:text="@string/forgt_psw"
@@ -218,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="48dp"
+                    android:layout_marginEnd="48dp"
                     android:fontFamily="@font/heebo_regular"
                     android:gravity="center"
                     android:text="@string/dont_have_account"
@@ -234,7 +238,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="18dp"
+                    android:layout_marginEnd="18dp"
                     android:fontFamily="@font/heebo_regular"
                     android:gravity="center"
                     android:padding="2dp"
@@ -250,7 +254,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginRight="18dp"
+                    android:layout_marginEnd="18dp"
                     android:fontFamily="@font/heebo_bold"
                     android:gravity="center"
                     android:paddingLeft="5dp"
@@ -307,7 +311,7 @@
                     android:text="@string/sign_in_google"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:drawableLeft="@drawable/ic_google_button"
+                    android:drawableStart="@drawable/ic_google_button"
                     android:textSize="@dimen/_14sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -336,7 +340,7 @@
                     android:gravity="center"
                     android:textAlignment="center"
                     android:drawablePadding="1dp"
-                    android:paddingLeft="@dimen/dimen28dp"
+                    android:paddingStart="@dimen/dimen28dp"
                     android:paddingEnd="@dimen/dimen20dp"
                     app:drawableLeftCompat="@drawable/ic_fb_btn"
                     android:text="@string/sign_in_fb"
@@ -358,7 +362,7 @@
                     android:text="@string/sign_in_apple"
                     android:textColor="@color/black"
                     android:drawablePadding="2dp"
-                    android:paddingLeft="@dimen/dimen42dp"
+                    android:paddingStart="@dimen/dimen42dp"
                     android:paddingEnd="@dimen/dimen30dp"
                     android:textSize="@dimen/_14sp"
                     app:layout_constraintLeft_toLeftOf="parent"

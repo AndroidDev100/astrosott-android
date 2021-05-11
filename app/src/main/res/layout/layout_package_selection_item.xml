@@ -123,7 +123,8 @@
                 android:layout_marginLeft="@dimen/dimen8dp"
                 android:layout_marginTop="@dimen/dimen40dp"
                 android:src="@drawable/ic_check"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:contentDescription="TODO" />
         </FrameLayout>
 
     </LinearLayout>
