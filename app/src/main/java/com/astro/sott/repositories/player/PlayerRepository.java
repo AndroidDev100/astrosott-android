@@ -321,7 +321,7 @@ public class PlayerRepository {
         trackItemsList = buildVideoTrackItems(tracksInfo.getVideoTracks(), context);
         audioTrackItems = buildAudioTrackItems(tracksInfo.getAudioTracks());
         Log.w("audioTrackItems", "aa  " + audioTrackItems.length);
-        textTrackItems = buildTextTrackItems(tracksInfo.getTextTracks());
+        textTrackItems = buildTextTrackItems(tracksInfo.getTextTracks(),context);
     }
 
     private List<AudioTrack> filterUnknown(List<AudioTrack> audioTracks) {
@@ -457,7 +457,8 @@ public class PlayerRepository {
                     } else {
                         Log.w("audioAndSubtitle", audioTrackInfo.getLanguage());
                         if (audioTrackInfo.getLanguage() != null && !audioTrackInfo.getLanguage().trim().equalsIgnoreCase("Unknown")) {
-                            trackItems[i] = new TrackItem(audioTrackInfo.getLanguage() + " ", audioTrackInfo.getUniqueId(), audioTrackInfo.getLanguage());
+                            String name = AppCommonMethods.getAudioLanguageName(audioTrackInfo.getLanguage(),context);
+                            trackItems[i] = new TrackItem(name, audioTrackInfo.getUniqueId(), audioTrackInfo.getLanguage());
                         }
 
                     }
@@ -491,19 +492,27 @@ public class PlayerRepository {
         return streamLang.getDisplayLanguage(locale);
     }
 
-    private TrackItem[] buildTextTrackItems(List<TextTrack> textTracks) {
+    private TrackItem[] buildTextTrackItems(List<TextTrack> textTracks,Context context) {
         TrackItem[] trackItems = new TrackItem[textTracks.size()];
-        for (int i = 0; i < textTracks.size(); i++) {
-            if (i == 0) {
-                TextTrack textTrackInfo = textTracks.get(i);
-                String name = "none";
-                trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
-            } else {
-                TextTrack textTrackInfo = textTracks.get(i);
-                String name = textTrackInfo.getLabel();
-                trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
+        try {
+            for (int i = 0; i < textTracks.size(); i++) {
+                if (i == 0) {
+                    TextTrack textTrackInfo = textTracks.get(i);
+                    String name = "none";
+                    trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
+                } else {
+                    TextTrack textTrackInfo = textTracks.get(i);
+                    String name = AppCommonMethods.getSubtitleName(textTrackInfo.getLanguage(),context);
+                   // if (name!=null && name.equalsIgnoreCase("")){
+                        trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
+                   // }
+                }
             }
+        }catch (Exception e){
+
         }
+
+
         return trackItems;
     }
 

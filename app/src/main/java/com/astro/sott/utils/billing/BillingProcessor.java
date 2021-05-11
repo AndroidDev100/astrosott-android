@@ -380,7 +380,8 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 				executeServiceRequest(
 						() -> {
 							PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
-							myBillingClient.launchBillingFlow(activity, purchaseParams);
+							int responseCode=myBillingClient.launchBillingFlow(activity,purchaseParams).getResponseCode();
+							Log.w("responsCode-->>",responseCode+"");
 						});
 		}
 	}
