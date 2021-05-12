@@ -98,7 +98,7 @@ android {
 
         }
         prod {
-          /*  dimension 'default'
+            dimension 'default'
             versionCode 22
             versionName "2.5"
             applicationId "com.astro.sott"
@@ -120,8 +120,8 @@ android {
             buildConfigField "String", "TOKEN_BASE_URL", "\"https://ro840hb5x0.execute-api.ap-southeast-1.amazonaws.com/\""
             buildConfigField "String", "AUTO_MSISDN_MOCK", "\"http://13.250.154.211/msisdn/fetch/\""
             buildConfigField "String", "VERIFY_ACCOUNT_BASE_URL", "\"https://pqbjim2r2i.execute-api.ap-southeast-1.amazonaws.com/\""
-            buildConfigField "String", "GET_CONNECTION_DETAIL_BASE_URL", "\"https://bo18wc4nfl.execute-api.ap-southeast-1.amazonaws.com/\""*/
-            dimension 'default'
+            buildConfigField "String", "GET_CONNECTION_DETAIL_BASE_URL", "\"https://bo18wc4nfl.execute-api.ap-southeast-1.amazonaws.com/\""
+           /* dimension 'default'
             versionCode 1008
             versionName "0.9"
             applicationId "com.astro.sott"
@@ -140,7 +140,7 @@ android {
             buildConfigField "String", "SMS_BASE_URL", "\"https://qpkkcgi038.execute-api.ap-southeast-1.amazonaws.com/prod/v4/\""
             buildConfigField "String", "VERIFY_BASE_URL", "\"https://qpkkcgi038.execute-api.ap-southeast-1.amazonaws.com/prod/v4/\""
             buildConfigField "String", "GET_CONNECTION_DETAIL_BASE_URL", "\" https://a7fl3pn9ha.execute-api.ap-southeast-1.amazonaws.com/\""
-            buildConfigField "String", "VERIFY_ACCOUNT_BASE_URL", "\" https://er9ptuvk75.execute-api.ap-southeast-1.amazonaws.com/\""
+            buildConfigField "String", "VERIFY_ACCOUNT_BASE_URL", "\" https://er9ptuvk75.execute-api.ap-southeast-1.amazonaws.com/\""*/
         }
 
     }
@@ -273,7 +273,7 @@ dependencies {
     implementation project(':enveusdk')
 
 
-    implementation 'com.android.billingclient:billing:3.0.3'
+    implementation 'com.android.billingclient:billing:3.0.0'
 
 
     // optional

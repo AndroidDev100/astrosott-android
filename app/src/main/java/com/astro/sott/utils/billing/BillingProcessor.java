@@ -371,18 +371,68 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 	public void initiateUpdatePurchaseFlow(@NonNull Activity activity, @NonNull SkuDetails skuDetails,String oldSKU,String oldPurchaseToken) {
 		if (skuDetails.getType().equals(BillingClient.SkuType.SUBS) && areSubscriptionsSupported()
 				|| skuDetails.getType().equals(BillingClient.SkuType.INAPP)) {
-				BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
-						.setOldSku(oldSKU, oldPurchaseToken)
-						.setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.DEFERRED)
-						.setSkuDetails(skuDetails)
-						.build();
+			int oldPrice=0;
+			int newPrice=0;
+			String str = oldSkuDetails.getPrice().replaceAll("\\D+","");
+			Log.w("skuDetails", oldSkuDetails.getPrice() + "-->>" + str);
+			if (!str.contains(".")){
+				oldPrice=Integer.parseInt(str);
+			}
 
-				executeServiceRequest(
-						() -> {
-							PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
-							int responseCode=myBillingClient.launchBillingFlow(activity,purchaseParams).getResponseCode();
-							Log.w("responsCode-->>",responseCode+"");
-						});
+
+			String str2 = skuDetails.getPrice().replaceAll("\\D+","");
+			Log.w("skuDetails", skuDetails.getPrice() + "-->>" + str);
+			if (!str.contains(".")){
+				newPrice=Integer.parseInt(str2);
+			}
+
+
+			Log.w("priceValues",oldPrice+"  "+newPrice);
+
+			    if (oldSkuDetails!=null){
+			    	if (oldPrice>newPrice){
+						Log.w("priceValues","deffred");
+						BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
+								.setSkuDetails(skuDetails)
+								.setReplaceSkusProrationMode(DEFERRED)
+								.setOldSku(oldSKU, oldPurchaseToken)
+								.build();
+
+						executeServiceRequest(
+								() -> {
+
+									int responseCode=myBillingClient.launchBillingFlow(activity,purchaseParams).getResponseCode();
+
+								});
+					}else {
+						BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
+								.setOldSku(oldSKU, oldPurchaseToken)
+								.setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+								.setSkuDetails(skuDetails)
+								.build();
+
+						executeServiceRequest(
+								() -> {
+									PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
+									int responseCode=myBillingClient.launchBillingFlow(activity,purchaseParams).getResponseCode();
+									Log.w("responsCode-->>",responseCode+"");
+								});
+					}
+				}else {
+					BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
+							.setOldSku(oldSKU, oldPurchaseToken)
+							.setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+							.setSkuDetails(skuDetails)
+							.build();
+
+					executeServiceRequest(
+							() -> {
+								PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
+								int responseCode=myBillingClient.launchBillingFlow(activity,purchaseParams).getResponseCode();
+								Log.w("responsCode-->>",responseCode+"");
+							});
+				}
+
 		}
 	}
 
@@ -670,6 +720,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 	}
 
 	PurchaseDetailListener callBack;
+	SkuDetails oldSkuDetails=null;
 	public void queryPurchases(Activity context,PurchaseDetailListener call) {
 		if (UserInfo.getInstance(context).isActive()) {
 			if (myBillingClient!=null){
@@ -681,8 +732,30 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 				if (purchasesResult.getPurchasesList() != null) {
 					purchases.addAll(purchasesResult.getPurchasesList());
 				}
+
 				if (purchases.size()>0){
-					callBack.response(purchases.get(0));
+					List<String> skuList = new ArrayList<>();
+					skuList.add(purchases.get(0).getSku());
+					SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+					params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS);
+					myBillingClient.querySkuDetailsAsync(params.build(),
+							new SkuDetailsResponseListener() {
+								@Override
+								public void onSkuDetailsResponse(BillingResult billingResult,
+																 List<SkuDetails> skuDetailsList) {
+									if (skuDetailsList != null && skuDetailsList.size() > 0) {
+										for (SkuDetails skuDetails : skuDetailsList) {
+											Log.w("skuDetails", skuDetails.getPrice() + "-->>" + skuDetails.getPriceCurrencyCode());
+												//initiatePurchaseFlow(activity,skuDetails);
+											oldSkuDetails=skuDetails;
+											callBack.response(purchases.get(0));
+										}
+									}else {
+										callBack.response(null);
+									}
+								}
+							});
+
 				}else {
 					callBack.response(null);
 				}

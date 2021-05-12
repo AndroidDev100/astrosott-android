@@ -2943,7 +2943,7 @@ public class AppCommonMethods {
                     String valueKey=subtitleLanguages.get(i).getValue().get(j).getAsString();
                    // Log.w("tracking 4",valueKey+"");
                     if (label.equalsIgnoreCase(valueKey)){
-                        Log.w("subtitleKeys",valueKey);
+                        //Log.w("subtitleKeys",valueKey);
                         name=subtitleLanguages.get(i).getKey();
                         break;
                     }
@@ -2959,17 +2959,17 @@ public class AppCommonMethods {
     public static String getAudioLanguageName(String label,Context context) {
         String name="";
         try {
-            Log.w("tracking 1",label);
+            //Log.w("tracking 1",label);
             ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
             ArrayList<AudioLanguages> subtitleLanguages = responseDmsModel.getAudioLanguageList();
             for (int i=0;i<subtitleLanguages.size();i++) {
-                Log.w("tracking 2",subtitleLanguages.size()+"");
+                //Log.w("tracking 2",subtitleLanguages.size()+"");
 
-                    Log.w("tracking 3",subtitleLanguages.size()+"");
+                    //Log.w("tracking 3",subtitleLanguages.size()+"");
                     String valueKey=subtitleLanguages.get(i).getValue();
-                    Log.w("tracking 4",valueKey+"");
+                    //Log.w("tracking 4",valueKey+"");
                     if (label.equalsIgnoreCase(valueKey)){
-                        Log.w("subtitleKeys",valueKey);
+                        //Log.w("subtitleKeys",valueKey);
                         name=subtitleLanguages.get(i).getKey();
                         break;
                     }
