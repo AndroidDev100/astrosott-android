@@ -2,13 +2,21 @@ package com.astro.sott.player.viewModel;
 
 import android.app.Activity;
 import android.app.Application;
+
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+
 import android.content.Context;
+
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.astro.sott.activities.webEpisodeDescription.layers.EpisodesLayer;
+import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.player.adapter.TrackItem;
@@ -16,6 +24,9 @@ import com.astro.sott.repositories.dtv.DTVRepository;
 import com.astro.sott.repositories.liveChannel.LiveChannelRepository;
 import com.astro.sott.repositories.player.PlayerRepository;
 import com.astro.sott.repositories.splash.SplashRepository;
+import com.astro.sott.utils.TabsData;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.kaltura.client.types.Asset;
 import com.kaltura.playkit.PKMediaEntry;
 import com.kaltura.playkit.Player;
@@ -33,10 +44,56 @@ public class DTPlayerViewModel extends AndroidViewModel {
 
     }
 
-//    public LiveData<Player> initializePlayer(String url, Asset asset, String deviceid) {
+    //    public LiveData<Player> initializePlayer(String url, Asset asset, String deviceid) {
 //        return PlayerRepository.getInstance().initializePlayer(url, context,asset,deviceid);
 //    }
+    public LiveData<List<AssetCommonBean>> callEpisodes(Asset map, int assetType, int counter, int seasonCounter, int layoutType, String sortType) {
+        return EpisodesLayer.getInstance().getEpisodesListWithoutSeason(getApplication().getApplicationContext(), map, assetType, counter, seasonCounter, layoutType, sortType);
+    }
 
+    public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType, String sortType, LifecycleOwner owner) {
+        TabsData.getInstance().setSortType(sortType);
+        return checkHasEpisodeNumberForSeason(getApplication().getApplicationContext(), map, assetType, counter, seasonCounter, layoutType, sortType, owner, seriesNumberList);
+    }
+
+    public LiveData<List<AssetCommonBean>> callSeasonEpisodesBingeWatch(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType, String sortType) {
+        return EpisodesLayer.getInstance().getEpisodesListBingeWatch(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType, sortType);
+    }
+
+    private LiveData<List<AssetCommonBean>> checkHasEpisodeNumberForSeason(Context applicationContext, Asset map, int assetType, int counter, int seasonCounter, int layoutType, String sortType, LifecycleOwner owner, List<Integer> seriesNumberList) {
+        MutableLiveData<List<AssetCommonBean>> mutableLiveData = new MutableLiveData<>();
+        EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType, sortType).observe(owner, assetCommonBeans -> {
+            if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus()) {
+                if (assetCommonBeans.get(0).getRailAssetList() != null && assetCommonBeans.get(0).getRailAssetList().get(0) != null && assetCommonBeans.get(0).getRailAssetList().get(0).getObject() != null && assetCommonBeans.get(0).getRailAssetList().get(0).getObject().getMetas() != null) {
+                    int episodeValue = AppCommonMethods.getEpisodeNumber(assetCommonBeans.get(0).getRailAssetList().get(0).getObject().getMetas());
+                    if (episodeValue == -1) {
+                        callEpisodesWithTitleSortType(applicationContext, map, assetType, counter, seasonCounter, layoutType, AppLevelConstants.KEY_TITLE_SORT, mutableLiveData, owner, "season", seriesNumberList);
+                    } else {
+                        mutableLiveData.postValue(assetCommonBeans);
+                    }
+
+                } else {
+                    mutableLiveData.postValue(assetCommonBeans);
+
+                }
+            } else {
+                mutableLiveData.postValue(assetCommonBeans);
+
+            }
+        });
+        return mutableLiveData;
+
+    }
+
+
+    private void callEpisodesWithTitleSortType(Context applicationContext, Asset map, int assetType, int counter, int seasonCounter, int layoutType, String sortType, MutableLiveData<List<AssetCommonBean>> mutableLiveData, LifecycleOwner owner, String type, List<Integer> seriesNumberList) {
+        if (type.equalsIgnoreCase("season")) {
+            EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType, sortType).observe(owner, assetCommonBeans -> {
+                mutableLiveData.postValue(assetCommonBeans);
+            });
+        }
+
+    }
 
     public LiveData<String> playerCallback(int progress, Activity activity) {
         return PlayerRepository.getInstance().playerLoadedMetadata(progress, getApplication().getApplicationContext(), activity);
@@ -57,11 +114,11 @@ public class DTPlayerViewModel extends AndroidViewModel {
     }
 
     public LiveData<Boolean> changeTrack(String uniqueID) {
-        return PlayerRepository.getInstance().changeTrack(uniqueID,getApplication().getApplicationContext());
+        return PlayerRepository.getInstance().changeTrack(uniqueID, getApplication().getApplicationContext());
     }
 
     public LiveData<Boolean> changeInitialTrack(String uniqueID, TextView view) {
-        return PlayerRepository.getInstance().changeInitialTrack(uniqueID,getApplication().getApplicationContext(),view);
+        return PlayerRepository.getInstance().changeInitialTrack(uniqueID, getApplication().getApplicationContext(), view);
     }
 
     public LiveData<List<TextTrack>> loadCaptionWithPlayer() {
@@ -103,6 +160,7 @@ public class DTPlayerViewModel extends AndroidViewModel {
     public LiveData<TrackItem[]> getAudioTrackItems() {
         return PlayerRepository.getInstance().getAudioTrackItems();
     }
+
     public LiveData<Boolean> haveAudioTracks() {
         return PlayerRepository.getInstance().haveAudioTracks();
     }
@@ -147,8 +205,8 @@ public class DTPlayerViewModel extends AndroidViewModel {
 
 
     public LiveData<Player> startPlayerBookmarking(PKMediaEntry mediaEntry, String deviceid,
-                                                   Asset asset, int isPurchased,int assetPosition) {
-        return PlayerRepository.getInstance().startPlayerBookmarking(getApplication().getApplicationContext(), mediaEntry, deviceid, asset, isPurchased,assetPosition);
+                                                   Asset asset, int isPurchased, int assetPosition) {
+        return PlayerRepository.getInstance().startPlayerBookmarking(getApplication().getApplicationContext(), mediaEntry, deviceid, asset, isPurchased, assetPosition);
     }
 
     public LiveData<Boolean> getStateOfPlayer() {
@@ -191,7 +249,7 @@ public class DTPlayerViewModel extends AndroidViewModel {
 
 
     public LiveData<Boolean> seekToDuration() {
-       return PlayerRepository.getInstance().seekToDuration();
+        return PlayerRepository.getInstance().seekToDuration();
     }
 
     public LiveData<Boolean> seekToStart() {
@@ -199,7 +257,7 @@ public class DTPlayerViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<RailCommonData>> loadCatchupData(String externalId, String startTime, int type) {
-        return LiveChannelRepository.getInstance().loadCatchupData(getApplication().getApplicationContext(), externalId, startTime,type);
+        return LiveChannelRepository.getInstance().loadCatchupData(getApplication().getApplicationContext(), externalId, startTime, type);
     }
 
     public LiveData<List<RailCommonData>> liveCatchupData(String externalId) {
@@ -215,6 +273,6 @@ public class DTPlayerViewModel extends AndroidViewModel {
     }
 
     public LiveData<String> getHungamaUrl(String providerExternalContentId) {
-        return DTVRepository.getInstance().getHungamaUrl(getApplication().getApplicationContext(),providerExternalContentId);
+        return DTVRepository.getInstance().getHungamaUrl(getApplication().getApplicationContext(), providerExternalContentId);
     }
 }

@@ -171,6 +171,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private void getDatafromBack() {
         commonData = railData;
         asset = railData.getObject();
+        TabsData.getInstance().setSeriesAsset(asset);
         getBinding().setMovieAssestModel(asset);
         map = asset.getTags();
         yearMap = asset.getMetas();
@@ -815,8 +816,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         Intent intent = new Intent(WebSeriesDescriptionActivity.this, PlayerActivity.class);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
 
-      /*  if (fromNextEpisode) {*/
-            intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
+        /*  if (fromNextEpisode) {*/
+        intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
        /* } else {
             intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) ra);
         }*/
@@ -1427,6 +1428,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
             railList1.clear();
             railList1.addAll(railCommonData.get(0).getRailAssetList());
+            TabsData.getInstance().setSeriesType(checkSeries);
             if (TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
                 viewModel.getEpisodeToPlay(assetId).observe(this, assetHistory -> {
                     if (assetHistory != null && assetHistory.getAssetId() != null) {

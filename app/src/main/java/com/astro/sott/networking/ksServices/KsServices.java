@@ -1179,7 +1179,7 @@ public class KsServices {
         similarMovieCallBack = callBack;
         final CommonResponse commonResponse = new CommonResponse();
         try {
-            long idd = seasonCounter;
+            long idd = results.get(seasonCounter);
             // Log.w("idsssoftiles", "idsprints" + idd + "-->>");
             int iid = (int) idd;
             String one = "(and SeriesID='";
