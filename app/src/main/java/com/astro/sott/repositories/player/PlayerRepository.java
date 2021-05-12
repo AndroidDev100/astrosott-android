@@ -226,7 +226,8 @@ public class PlayerRepository {
                         //TrackItem[] trackItems = new TrackItem[tracks.getTextTracks().size()];
                         for (int i = 0; i < tracks.getTextTracks().size(); i++) {
                             TextTrack textTrackInfo = tracks.getTextTracks().get(i);
-                            String lang = textTrackInfo.getLanguage();
+                            //String lang = textTrackInfo.getLanguage();
+                            String lang =AppCommonMethods.getSubtitleName(textTrackInfo.getLanguage(),context);
                             Log.w("audioAndSubtitleSelect", lang + "  2" + new KsPreferenceKey(context).getSubTitleLangKey());
                             if (lang.equalsIgnoreCase(new KsPreferenceKey(context).getSubTitleLangKey())) {
                                 String uniqueId = textTrackInfo.getUniqueId();

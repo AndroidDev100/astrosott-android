@@ -137,7 +137,7 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
             }
         }else if (clickedFrom==3){
             if (subtitleLanguageList!=null && subtitleLanguageList.size()>0){
-                new KsPreferenceKey(LanguageSettingsActivity.this).setSubTitleLangKey(subtitleLanguageList.get(caption).getValue().get(0).toString());
+                new KsPreferenceKey(LanguageSettingsActivity.this).setSubTitleLangKey(subtitleLanguageList.get(caption).getKey().toString());
             }else {
                 new KsPreferenceKey(LanguageSettingsActivity.this).setSubTitleLangKey("");
             }
