@@ -3927,6 +3927,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder3 holder, final int position) {
             int index = 0;
+            try {
+
 
             if (captionList[position].isSelected()) {
                 index = position;
@@ -3952,7 +3954,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 notifyDataSetChanged();
             });
-            try {
 
                 Log.w("subtitleS", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey()+ "-----"+captionItemClick);
                 if (captionItemClick == 0) {
@@ -4006,6 +4007,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder2 holder, final int position) {
             int index = 0;
+            try {
             if (tracks[position] != null) {
                 holder.audioTracks.setText(tracks[position].getTrackName());
 
@@ -4031,7 +4033,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 });
 
-                try {
+
                     Log.w("colorChange", tracks[position].getTrackDescription() + "" + new KsPreferenceKey(baseActivity).getAudioLangKey());
                     if (audioItemClick == 0) {
                         // Log.w("colorChange 2",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
@@ -4060,9 +4062,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             holder.audioTracks.setTextColor(getResources().getColor(R.color.heather));
                         }
                     }
-                } catch (Exception ignored) {
 
-                }
+            }
+            } catch (Exception ignored) {
+
             }
 
 
