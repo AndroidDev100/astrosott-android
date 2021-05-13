@@ -54,6 +54,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.activities.loginActivity.LoginActivity;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.callBacks.DoubleClick;
 import com.astro.sott.callBacks.WindowFocusCallback;
@@ -940,14 +941,26 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void checkEntitleMent(final Asset asset) {
-
-
         try {
-
             String fileId = AppCommonMethods.getFileIdOfAssest(asset);
-
             if (getActivity() != null) {
-                new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey, errorCode1, message) -> {
+                new EntitlementCheck().checkAssetPurchaseStatus(getActivity(), fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+                    playerChecksCompleted = true;
+                    if (apiStatus) {
+                        if (purchasedStatus) {
+                            this.errorCode = AppLevelConstants.NO_ERROR;
+                        } else {
+                            if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                                this.errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
+                            } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
+                                this.errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
+                            }
+                        }
+                    } else {
+
+                    }
+                });
+              /*  new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey, errorCode1, message) -> {
                     if (status) {
                         playerChecksCompleted = true;
                         if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
@@ -978,6 +991,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     }
 //                                    playerChecksCompleted = true;
                 });
+           */
             }
         } catch (Exception e) {
 
