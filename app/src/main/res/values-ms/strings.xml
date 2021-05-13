@@ -681,4 +681,14 @@
 
     <string name="terms_packages">All prices displayed are inclusive of 6% digital tax. <font color='#2cd8e5'> <u>Terms &amp; Conditions</u></font> apply.</string>
     <string name="choose_me">Choose Me</string>
+    <string name="valid_password">Please enter valid password</string>
+    <string name="terms"><u>Terms</u></string>
+    <string name="privacy"><u>Privacy</u></string>
+    <string name="mobile_suggestion">Mobile number without country code, spacing &amp; hyphen</string>
+    <string name="english">English</string>
+    <string name="bahasha">Bahasa Melayu</string>
+    <string name="malay">Malay</string>
+    <string name="confirm_psw_para">Confirm password does\'t match with password</string>
+    <string name="error_checkbox">Please accept terms and conditions</string>
+
 </resources>

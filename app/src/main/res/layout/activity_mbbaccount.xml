@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
-        android:id="@+id/rl_connection"
+        android:id="@+id/rl_connection1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/fragment_background_color"
@@ -87,7 +87,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/add_mbb_account"
                 android:textColor="@color/white"
-                android:textSize="@dimen/account_setting_margin_left" />
+                android:textSize="@dimen/_18sp" />
 
         </LinearLayout>
 

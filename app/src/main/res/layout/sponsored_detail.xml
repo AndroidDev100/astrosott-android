@@ -122,7 +122,7 @@
 
                                 <TextView
                                     android:id="@+id/shareWith"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/share_margin_top"
                                     android:layout_weight="1"
@@ -150,7 +150,7 @@
 
                                 <TextView
                                     android:id="@+id/play_text"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/share_margin_top"
                                     android:layout_weight="1"

@@ -91,7 +91,7 @@
                 android:layout_height="@dimen/_54dp">
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="1.9"
                     android:background="@null"
                     android:id="@+id/email_id"
@@ -124,7 +124,7 @@
                 android:orientation="horizontal"
                 android:layout_height="@dimen/_54dp">
                 <EditText
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/dimen18dp"
                     android:layout_marginRight="@dimen/dimen18dp"

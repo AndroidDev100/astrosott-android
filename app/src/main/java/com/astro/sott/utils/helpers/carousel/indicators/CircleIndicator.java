@@ -1,5 +1,6 @@
 package com.astro.sott.utils.helpers.carousel.indicators;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import androidx.core.content.res.ResourcesCompat;
@@ -14,6 +15,7 @@ public class CircleIndicator extends IndicatorShape {
         super(context);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public CircleIndicator(Context context, int indicatorSize, boolean mustAnimateChanges) {
         super(context, indicatorSize, mustAnimateChanges);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

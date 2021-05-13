@@ -13,7 +13,7 @@
         android:layout_marginEnd="10dp"
         android:contentDescription="TODO" />
     <TextView
-        android:textSize="13dp"
+        android:textSize="@dimen/_13sp"
         android:textColor="@color/black"
         android:text="Testing"
         android:id="@+id/title"
@@ -25,7 +25,7 @@
         android:layout_toEndOf="@id/image"
         />
     <TextView
-        android:textSize="10dp"
+        android:textSize="@dimen/_10sp"
         android:textColor="@color/cast_and_crew_title"
         android:text="Testing is awecome"
         android:id="@+id/text"

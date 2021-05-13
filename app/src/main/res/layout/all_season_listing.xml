@@ -12,7 +12,6 @@
         android:layout_gravity="center_horizontal"
         android:text=""
         android:fontFamily="@font/heebo_medium"
-        android:layout_centerVertical="true"
         android:textColor="@color/white"
         android:textSize="@dimen/font_large" />
 </LinearLayout>

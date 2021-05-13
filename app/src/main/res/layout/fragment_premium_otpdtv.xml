@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparentColor"
     android:windowSoftInputMode="adjustPan"
     android:filterTouchesWhenObscured="true"
     tools:context="com.astro.sott.activities.subscription.fragment.PremiumOTPDtvFragment">

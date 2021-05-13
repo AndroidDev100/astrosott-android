@@ -45,7 +45,7 @@
                 android:layout_gravity="center"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18dp" />
+                android:textSize="@dimen/_18sp" />
             <TextView
                 android:id="@+id/txtDtvAccount"
                 android:layout_width="match_parent"

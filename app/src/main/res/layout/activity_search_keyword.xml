@@ -9,8 +9,7 @@
     android:background="@color/blue_bg"
     >
 
-    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.core.widget.NestedScrollView xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/blue_bg"
@@ -27,7 +26,6 @@
         android:id="@+id/back_icon"
         android:layout_marginStart="@dimen/_14sdp"
         android:src="@drawable/ic_back"
-        android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/_17sdp"
         android:contentDescription="@string/contentDescription" />
 <TextView
@@ -39,9 +37,7 @@
     android:textSize="@dimen/_16sp"
     android:id="@+id/sort_by"
     android:layout_marginStart="@dimen/_14sdp"
-    android:layout_marginTop="@dimen/_14sdp"
-    android:layout_below="@+id/back_icon"
-    />
+    android:layout_marginTop="@dimen/_14sdp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +45,6 @@
         android:id="@+id/ll1"
         android:layout_marginStart="@dimen/_14sdp"
         android:layout_marginEnd="@dimen/_14sdp"
-        android:layout_below="@+id/sort_by"
         android:layout_marginTop="@dimen/_6sdp"
         android:orientation="horizontal">
 <TextView
@@ -101,9 +96,7 @@
         android:textSize="@dimen/_16sp"
         android:id="@+id/content_type"
         android:layout_marginStart="@dimen/_14sdp"
-        android:layout_marginTop="@dimen/_22sdp"
-        android:layout_below="@+id/ll1"
-        />
+        android:layout_marginTop="@dimen/_22sdp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -111,7 +104,6 @@
         android:id="@+id/ll2"
         android:layout_marginStart="@dimen/_14sdp"
         android:layout_marginEnd="@dimen/_14sdp"
-        android:layout_below="@+id/content_type"
         android:layout_marginTop="@dimen/_6sdp"
         android:orientation="horizontal">
         <TextView
@@ -163,9 +155,7 @@
         android:textSize="@dimen/_16sp"
         android:id="@+id/free_paid"
         android:layout_marginStart="@dimen/_14sdp"
-        android:layout_marginTop="@dimen/_22sdp"
-        android:layout_below="@+id/ll2"
-        />
+        android:layout_marginTop="@dimen/_22sdp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -173,7 +163,6 @@
         android:id="@+id/ll3"
         android:layout_marginStart="@dimen/_14sdp"
         android:layout_marginEnd="@dimen/_14sdp"
-        android:layout_below="@+id/free_paid"
         android:layout_marginTop="@dimen/_6sdp"
         android:orientation="horizontal">
         <TextView
@@ -223,8 +212,7 @@
         android:visibility="gone"
         android:layout_marginStart="@dimen/_14sdp"
         android:layout_marginEnd="@dimen/_14sdp"
-        android:layout_marginTop="@dimen/_22sdp"
-        android:layout_below="@+id/ll3">
+        android:layout_marginTop="@dimen/_22sdp">
 
         <TextView
             android:id="@+id/download"
@@ -249,7 +237,6 @@
         android:layout_marginStart="@dimen/_14sdp"
         android:layout_marginEnd="@dimen/_14sdp"
         android:layout_marginTop="@dimen/_20sdp"
-        android:layout_below="@+id/rl1"
         android:layout_marginBottom="@dimen/_74sdp">
 
     </androidx.recyclerview.widget.RecyclerView>

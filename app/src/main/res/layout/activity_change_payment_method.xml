@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
-        android:id="@+id/rl_connection"
+        android:id="@+id/rl_connection1"
         android:layout_width="match_parent"
         android:filterTouchesWhenObscured="true"
         android:layout_height="match_parent"

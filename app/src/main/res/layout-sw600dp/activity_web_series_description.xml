@@ -154,7 +154,6 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/share_margin_top"
-                                        android:layout_weight="1"
                                         android:drawablePadding="7dp"
                                         android:focusable="true"
                                         android:layout_centerInParent="true"

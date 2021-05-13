@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="@dimen/creator_name_size" />
+                android:textSize="@dimen/_18sp" />
 
         </LinearLayout>
 
@@ -51,7 +51,6 @@
                 android:id="@+id/ivPlayVideo"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:background="@drawable/play_icon"
                 android:visibility="gone"
@@ -63,7 +62,6 @@
             android:id="@+id/progressBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:background="@null"
             android:minHeight="0dp"
             android:paddingStart="0dp"

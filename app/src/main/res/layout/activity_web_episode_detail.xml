@@ -201,7 +201,6 @@
                                     android:layout_centerInParent="true"
                                     android:layout_gravity="center"
                                     android:layout_marginTop="@dimen/share_margin_top"
-                                    android:layout_weight="1"
                                     android:drawablePadding="7dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/heebo_medium"

@@ -87,7 +87,7 @@
                     <EditText
                         android:id="@+id/mobile_email_edt"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="0dp"
                         android:layout_marginStart="@dimen/margin_18dp"
                         android:layout_marginEnd="@dimen/dimen18dp"
                         android:layout_weight="1.9"
@@ -131,7 +131,7 @@
 
                     <EditText
                         android:id="@+id/password_edt"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/dimen18dp"
                         android:layout_marginRight="@dimen/dimen18dp"

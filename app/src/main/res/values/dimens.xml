@@ -620,5 +620,6 @@
     <dimen name="dimen125dp">125dp</dimen>
     <dimen name="_246dp">246dp</dimen>
     <dimen name="package_width">300dp</dimen>
+    <dimen name="_13sp">13sp</dimen>
 
 </resources>

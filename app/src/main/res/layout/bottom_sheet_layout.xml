@@ -5,7 +5,6 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:background="@color/fragment_background_color">
-
     <TextView
         android:id="@+id/quality"
         android:layout_width="match_parent"
@@ -18,7 +17,6 @@
         android:textColor="@color/white"
         android:textSize="15sp"
         android:gravity="center_vertical"/>
-
     <TextView
         android:id="@+id/caption"
         android:layout_width="match_parent"
@@ -32,7 +30,6 @@
         android:gravity="center_vertical"
         android:layout_marginRight="25dp"
         android:visibility="gone"/>
-
     <TextView
         android:id="@+id/audio"
         android:layout_width="match_parent"
@@ -46,7 +43,6 @@
         android:gravity="center_vertical"
         android:layout_marginRight="25dp"
         android:visibility="gone"/>
-
     <TextView
         android:id="@+id/cancel"
         android:layout_width="match_parent"
@@ -59,6 +55,4 @@
         android:gravity="center_vertical"
         android:layout_marginRight="25dp"
         android:textSize="15sp" />
-
-
 </LinearLayout>

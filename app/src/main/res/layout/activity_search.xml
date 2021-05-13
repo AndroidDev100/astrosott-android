@@ -339,7 +339,7 @@
 
                             <EditText
                                 android:id="@+id/search_text"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="@dimen/search_toolbar_padding_right"
                                 android:background="@null"

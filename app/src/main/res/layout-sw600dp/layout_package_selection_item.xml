@@ -48,7 +48,6 @@
                         android:id="@+id/txtPackageTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp18"
@@ -63,7 +62,6 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:layout_weight=".6"
-                        android:layout_alignParentEnd="true"
                         android:gravity="end">
                     <TextView
                         android:id="@+id/txtPackageCost"

@@ -76,8 +76,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:text=""
                 android:textColor="@color/search_edit_text_color"
-                android:textSize="@dimen/sp12"
-                android:layout_below="@id/txtTitle"/>
+                android:textSize="@dimen/sp12" />
         </LinearLayout>
     </RelativeLayout>
 

@@ -97,7 +97,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingTop="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_5sdp">
+                android:paddingBottom="@dimen/_5sdp"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="0dp"

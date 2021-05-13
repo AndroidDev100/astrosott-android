@@ -13,7 +13,6 @@ import com.astro.sott.activities.parentalControl.ui.ParentalControl;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.R;
 import com.astro.sott.activities.mbbaccount.ui.MBBAccountActivity;
-import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionAndMyPlanActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.AccountSettingsBinding;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
@@ -95,7 +94,7 @@ public class AccountSettingsActivity extends BaseBindingActivity<AccountSettings
                 break;
 
             case tv_subscription:
-                openSubscriptionActivity();
+//                openSubscriptionActivity();
                 break;
 
 //            case R.id.tv_mbb_account:
@@ -104,9 +103,9 @@ public class AccountSettingsActivity extends BaseBindingActivity<AccountSettings
         }
     }
 
-    private void openSubscriptionActivity() {
-        new ActivityLauncher(AccountSettingsActivity.this).planActivity(AccountSettingsActivity.this, SubscriptionAndMyPlanActivity.class);
-    }
+//    private void openSubscriptionActivity() {
+//        new ActivityLauncher(AccountSettingsActivity.this).planActivity(AccountSettingsActivity.this, SubscriptionAndMyPlanActivity.class);
+//    }
 
 
 }

@@ -43,7 +43,6 @@ import com.astro.sott.activities.moreListing.ui.DetailListingActivity;
 import com.astro.sott.activities.moreListing.ui.ListingActivity;
 import com.astro.sott.activities.moreListing.ui.ListingActivityNew;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
-import com.astro.sott.activities.myPlans.ui.MyPlansActivity;
 import com.astro.sott.activities.myplaylist.ui.MultiplePlaylistActivity;
 import com.astro.sott.activities.notification.ui.NotificationActivity;
 import com.astro.sott.activities.parentalControl.ui.ViewingRestrictionActivity;
@@ -56,7 +55,6 @@ import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.activities.sponsored.ui.SponsoredDetailActivity;
 import com.astro.sott.activities.subscription.ui.SingleLiveChannelSubscriptionActivity;
 import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
-import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionAndMyPlanActivity;
 import com.astro.sott.activities.webEpisodeDescription.WebEpisodeDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
@@ -268,10 +266,10 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
-    public void planActivity(Activity source, Class<SubscriptionAndMyPlanActivity> destination) {
-        Intent intent = new Intent(source, destination);
-        activity.startActivity(intent);
-    }
+//    public void planActivity(Activity source, Class<SubscriptionAndMyPlanActivity> destination) {
+//        Intent intent = new Intent(source, destination);
+//        activity.startActivity(intent);
+//    }
 
     public void catchUpActivity(Activity source, Class<CatchupActivity> destination, RailCommonData commonData) {
         Intent intent = new Intent(source, destination);
@@ -831,11 +829,11 @@ public class ActivityLauncher {
     }
 
 
-    public void myPlan(Activity activity, Class<MyPlansActivity> plansActivityClass) {
-
-        Intent intent = new Intent(activity, plansActivityClass);
-        activity.startActivity(intent);
-    }
+//    public void myPlan(Activity activity, Class<MyPlansActivity> plansActivityClass) {
+//
+//        Intent intent = new Intent(activity, plansActivityClass);
+//        activity.startActivity(intent);
+//    }
 
     public void playlistActivity(FragmentActivity
                                          source, Class<MyPlaylist> destination, String partnerId, String personalListName) {

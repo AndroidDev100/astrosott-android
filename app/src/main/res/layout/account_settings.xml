@@ -120,7 +120,6 @@
             android:textColor="@color/more_item_title"
             android:textSize="@dimen/font_medium_large"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/switch_push"
             app:layout_constraintTop_toBottomOf="@id/tv_parental_control"
             />
 

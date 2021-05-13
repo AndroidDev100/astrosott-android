@@ -90,7 +90,6 @@
                         android:layout_height="match_parent"
                         android:layout_weight=".6"
                         android:orientation="horizontal"
-                        android:layout_alignParentEnd="true"
                         android:gravity="end">
 
 
@@ -100,7 +99,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_bold"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/dp14"
+                            android:textSize="@dimen/_14sp"
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/dimen10dp"/>
 
