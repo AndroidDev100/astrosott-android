@@ -10,11 +10,14 @@ import java.util.List;
 public class TabsData {
 
     private static TabsData tabsData;
-    private List<Asset> trailerData,movieShows,seriesShows;
+    private List<Asset> trailerData, movieShows, seriesShows;
     private List<Asset> highlightsData;
     private String sortType;
+    private String seriesType;
+    private int selectedSeason;
     private List<RailCommonData> youMayAlsoLikeData;
     private List<AssetCommonBean> openSeriesData;
+    private Asset seriesAsset;
     private List<AssetCommonBean> closedSeriesData;
 
     private List<Integer> seasonList;
@@ -25,6 +28,23 @@ public class TabsData {
             tabsData = new TabsData();
         }
         return tabsData;
+    }
+
+
+    public Asset getSeriesAsset() {
+        return seriesAsset;
+    }
+
+    public void setSeriesType(String seriesType) {
+        this.seriesType = seriesType;
+    }
+
+    public String getSeriesType() {
+        return seriesType;
+    }
+
+    public void setSeriesAsset(Asset seriesAsset) {
+        this.seriesAsset = seriesAsset;
     }
 
     public void setSeriesShows(List<Asset> seriesShows) {
@@ -45,6 +65,14 @@ public class TabsData {
 
     public List<Integer> getSeasonList() {
         return seasonList;
+    }
+
+    public int getSelectedSeason() {
+        return selectedSeason;
+    }
+
+    public void setSelectedSeason(int selectedSeason) {
+        this.selectedSeason = selectedSeason;
     }
 
     public List<Asset> getMovieShows() {

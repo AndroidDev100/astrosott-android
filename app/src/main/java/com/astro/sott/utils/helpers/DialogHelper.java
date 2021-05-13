@@ -24,6 +24,7 @@ import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.chaos.view.PinView;
 import com.astro.sott.R;
 import com.astro.sott.activities.subscription.ui.SingleLiveChannelSubscriptionActivity;
@@ -58,12 +59,15 @@ public class DialogHelper {
         BaseActivity baseActivity = (BaseActivity) context;
         FragmentManager fm = baseActivity.getSupportFragmentManager();
 
-        boolean status = KsPreferenceKey.getInstance(context).getUserActive();
+        boolean status = UserInfo.getInstance(baseActivity).isActive();
         if (status) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
             builder.setTitle(context.getResources().getString(R.string.dialog)).setMessage(context.getResources().getString(R.string.purchase_dialouge_for_logged_in))
                     .setCancelable(true)
-                    .setPositiveButton(context.getResources().getString(R.string.ok), (dialog, id) -> dialog.cancel());
+                    .setPositiveButton(context.getResources().getString(R.string.ok), (dialog, id) -> {
+                        baseActivity.onBackPressed();
+                        dialog.cancel();
+                    });
 
             AlertDialog alert = builder.create();
             alert.show();

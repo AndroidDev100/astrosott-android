@@ -309,7 +309,6 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 getBinding().seasonText.setText(closedSeriesData.get(0).getTitle());
 
                 seriesNumberList = TabsData.getInstance().getSeasonList();
-                _mClickListener.onFirstEpisodeData(TabsData.getInstance().getClosedSeriesData(), AppLevelConstants.CLOSE);
                 setClosedUIComponets(TabsData.getInstance().getClosedSeriesData());
             } else {
                 getOpenSeriesData();
@@ -465,6 +464,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     }
 
     private void callSeasonEpisodes(List<Integer> seriesNumberList) {
+        TabsData.getInstance().setSelectedSeason(seasonCounter);
         getBinding().progressBar.setVisibility(View.VISIBLE);
         getBinding().loadMoreTxt.setText(getActivity().getResources().getString(R.string.loading));
         viewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
@@ -650,33 +650,35 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     private void setCLosedSeriesAdapter(List<RailCommonData> finalEpisodeList) {
         checkExpiry(list);
         adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this, this);
-        if (getActivity()!=null && !getActivity().isFinishing()){
+        if (getActivity() != null && !getActivity().isFinishing()) {
             getActivity().runOnUiThread(() -> {
-            getBinding().recyclerView.setAdapter(adapter);
+                getBinding().recyclerView.setAdapter(adapter);
 
-            int count = adapter.getItemCount();
-            if (count >= totalCount) {
-                getBinding().loadMoreButton.setVisibility(View.GONE);
-            } else {
-                getBinding().loadMoreButton.setVisibility(View.VISIBLE);
-            }
-        });
+                int count = adapter.getItemCount();
+                if (count >= totalCount) {
+                    getBinding().loadMoreButton.setVisibility(View.GONE);
+                } else {
+                    getBinding().loadMoreButton.setVisibility(View.VISIBLE);
+                }
+            });
         }
     }
 
     private void setOpenSeriesAdapter(List<RailCommonData> finalEpisodeList) {
         adapter = new EpisodeAdapter(getActivity(), finalEpisodeList, getArguments().getInt(AppConstants.EPISODE_NUMBER), this, this);
-        if (getActivity()!=null && !getActivity().isFinishing()){
+        if (getActivity() != null && !getActivity().isFinishing()) {
             getActivity().runOnUiThread(() -> {
-            getBinding().recyclerView.setAdapter(adapter);
-            if (seriesType.equalsIgnoreCase("open")) {
-                if (totalPages > 1)
-                    getBinding().season.setEnabled(true);
-            }
-        });
-    }
+                getBinding().recyclerView.setAdapter(adapter);
+                if (seriesType.equalsIgnoreCase("open")) {
+                    if (totalPages > 1)
+                        getBinding().season.setEnabled(true);
+                }
+            });
+        }
 
     }
+
+    private List<AssetCommonBean> closeAssetList;
 
     private void setClosedUIComponets(List<AssetCommonBean> assetCommonBeans) {
         try {
@@ -685,6 +687,11 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             for (int i = 0; i < loadedList.size(); i++) {
                 list.add(i, loadedList.get(i));
             }
+            closeAssetList = new ArrayList<>();
+            AssetCommonBean assetCommonBean = new AssetCommonBean();
+            assetCommonBean.setRailAssetList(loadedList);
+            closeAssetList.add(assetCommonBean);
+            _mClickListener.onFirstEpisodeData(closeAssetList, AppLevelConstants.CLOSE);
             getListofFileId(loadedList);
             totalCount = assetCommonBeans.get(0).getTotalCount();
             if (UserInfo.getInstance(getActivity()).isActive()) {
