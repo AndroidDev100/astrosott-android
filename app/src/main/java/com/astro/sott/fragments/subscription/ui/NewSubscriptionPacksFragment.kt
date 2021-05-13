@@ -86,7 +86,6 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
     override fun onAttach(context: Context) {
         super.onAttach(context)
         cardClickedCallback = context as CardCLickedCallBack
-        getActiveSubscription()
     }
 
     private fun getActiveSubscription() {
@@ -126,6 +125,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                     accountServiceMessage.add(evergentCommonResponse.response.getLastSubscriptionsResponseMessage!!.accountServiceMessage!!)
                     getProducts()
                 } else {
+                    getProducts()
 //                    binding.nodataLayout.setVisibility(View.VISIBLE)
                 }
             } else {
@@ -139,6 +139,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                         }
                     })
                 } else {
+                    getProducts()
 //                    binding.nodataLayout.setVisibility(View.VISIBLE)
                 }
             }

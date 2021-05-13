@@ -601,9 +601,9 @@ class EvergentServices {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
-        if (from.equals("profile", true)) {
-            json.addProperty("returnLiveEvents", "F")
-        }
+        /*if (from.equals("profile", true)) {*/
+        json.addProperty("returnLiveEvents", "F")
+        /*  }*/
         createUserJson.add("GetActiveSubscriptionsRequestMessage", json)
 
 
@@ -896,6 +896,7 @@ class EvergentServices {
         json.addProperty("dmaID", "001");
         json.addProperty("returnAppChannels", "T");
         json.addProperty("returnLiveEvents", "F");
+        json.addProperty("returnPromotions", "T");
         json.addProperty("returnAttributes", "T");
 //        json.addProperty("offerType", "Existing Customer");
         json.addProperty("salesChannel", "Web");
