@@ -3,11 +3,13 @@
     <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
+
     <style name="MyMaterialThemeSplash" parent="MyMaterialTheme.Splash">
         <item name="android:windowBackground">@android:color/black</item>
 
 
     </style>
+
     <style name="PinWidget.PinView" parent="Widget.AppCompat.EditText">
         <item name="android:background">@null</item>
         <item name="android:minHeight">0dp</item>
@@ -15,7 +17,8 @@
         <item name="android:maxLines">1</item>
         <item name="android:layoutDirection">ltr</item>
     </style>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:scaleType">fitXY</item>
         <item name="colorPrimary">@color/grape_purple</item>
 
@@ -26,12 +29,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/fragment_background_color</item>
         <item name="colorAccent">@color/colorPrimaryDark</item>
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowEnableSplitTouch">false</item>
         <item name="android:splitMotionEvents">false</item>
         <item name="otp">@color/line_colors</item>
     </style>
+
     <style name="MyMaterialTheme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -40,6 +44,7 @@
         <item name="android:windowEnableSplitTouch">false</item>
         <item name="android:splitMotionEvents">false</item>
     </style>
+
     <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:colorBackground">@color/alert_dialog_background</item>
         <item name="android:textColorPrimary">@color/white</item>
@@ -110,12 +115,14 @@
 
 
     </style>
+
     <style name="MineCustomTabTextAppearence" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="textAllCaps">true</item>
         <item name="fontFamily">@font/heebo_medium</item>
 
     </style>
+
     <style name="MineCustomBottomNavText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">12sp</item>
         <item name="textAllCaps">true</item>
@@ -157,12 +164,12 @@
         <item name="colorControlActivated">@color/white</item>
     </style>
 
-<!--    <style name="MySeekBar" parent="@style/Widget.AppCompat.SeekBar">-->
-<!--&lt;!&ndash;        <item name="android:thumb">@drawable/sq_seekbar_clipped</item>&ndash;&gt;-->
-<!--        <item name="colorControlNormal">@color/thumb_color</item>-->
-<!--        <item name="android:progressDrawable">@drawable/sq_seekbar_clipped</item>-->
-<!--&lt;!&ndash;        <item name="android:thumb">@null</item>&ndash;&gt;-->
-<!--    </style>-->
+    <!--    <style name="MySeekBar" parent="@style/Widget.AppCompat.SeekBar">-->
+    <!--&lt;!&ndash;        <item name="android:thumb">@drawable/sq_seekbar_clipped</item>&ndash;&gt;-->
+    <!--        <item name="colorControlNormal">@color/thumb_color</item>-->
+    <!--        <item name="android:progressDrawable">@drawable/sq_seekbar_clipped</item>-->
+    <!--&lt;!&ndash;        <item name="android:thumb">@null</item>&ndash;&gt;-->
+    <!--    </style>-->
 
     <style name="MySeekBar" parent="@style/Widget.AppCompat.SeekBar">
         <item name="colorAccent">@color/thumb_color</item>
@@ -170,8 +177,8 @@
         <item name="colorControlNormal">@color/white</item>
     </style>
 
-    <style name="splashtheme"  parent="Theme.AppCompat.NoActionBar">
-<!--        <item name="android:windowBackground">@drawable/splash_background</item>-->
+    <style name="splashtheme" parent="Theme.AppCompat.NoActionBar">
+        <!--        <item name="android:windowBackground">@drawable/splash_background</item>-->
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:gravity">center</item>
