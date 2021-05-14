@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,7 +80,6 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         fragment.setArguments(args);
         return fragment;
     }
-
 
 
     @Override
@@ -169,14 +169,14 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
 
     private void checkIfDetailAvailableOnPlaystore(List<ProductsResponseMessageItem> productsResponseMessage) {
         packDetailList = new ArrayList<>();
-        List<String> subSkuList=AppCommonMethods.getSubscriptionSKUs(productsResponseMessage,getActivity());
-        List<String> productsSkuList=AppCommonMethods.getProductSKUs(productsResponseMessage,getActivity());
+        List<String> subSkuList = AppCommonMethods.getSubscriptionSKUs(productsResponseMessage, getActivity());
+        List<String> productsSkuList = AppCommonMethods.getProductSKUs(productsResponseMessage, getActivity());
         if (getActivity() instanceof SubscriptionDetailActivity) {
-            ((SubscriptionDetailActivity) getActivity()).onListOfSKUs(subSkuList,productsSkuList, new SKUsListListener() {
+            ((SubscriptionDetailActivity) getActivity()).onListOfSKUs(subSkuList, productsSkuList, new SKUsListListener() {
                 @Override
                 public void onListOfSKU(@Nullable List<SkuDetails> purchases) {
-                   // Log.w("valuessAdded--->>",purchases.size()+"");
-                   // Log.w("valuessAdded--->>",purchases.get(0).getDescription());
+                    // Log.w("valuessAdded--->>",purchases.size()+"");
+                    // Log.w("valuessAdded--->>",purchases.get(0).getDescription());
 
                     for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
                         if (responseMessageItem.getAppChannels() != null && responseMessageItem.getAppChannels().get(0) != null && responseMessageItem.getAppChannels().get(0).getAppChannel() != null && responseMessageItem.getAppChannels().get(0).getAppChannel().equalsIgnoreCase("Google Wallet") && responseMessageItem.getAppChannels().get(0).getAppID() != null) {
@@ -224,6 +224,16 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         getBinding().recyclerView.hasFixedSize();
         getBinding().recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
 
+        getBinding().learnMore.setOnClickListener(v -> {
+            NewSubscriptionPacksFragment someFragment = new NewSubscriptionPacksFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("productList", new ArrayList<String>());
+            someFragment.setArguments(bundle);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_frame, someFragment, "SubscriptionNewFragment"); // give your fragment container id in first parameter
+            transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+            transaction.commit();
+        });
         getBinding().closeIcon.setOnClickListener(v -> {
             if (getActivity() != null)
                 getActivity().onBackPressed();
@@ -237,7 +247,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
 
 
     @Override
-    public void onCardClicked(String productId, String serviceType,String a) {
+    public void onCardClicked(String productId, String serviceType, String a) {
 
     }
 }

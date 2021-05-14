@@ -396,7 +396,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                         Log.w("priceValues", "deffred");
                         BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
                                 .setSkuDetails(skuDetails)
-                                .setReplaceSkusProrationMode(DEFERRED)
+                                .setReplaceSkusProrationMode(IMMEDIATE_WITHOUT_PRORATION)
                                 .setOldSku(oldSKU, oldPurchaseToken)
                                 .build();
 
