@@ -4066,7 +4066,7 @@ public class KsServices {
                     responseDmsModel.setAudioLanguageList(audioLanguageList);
                     Log.w("SubtitleLanguage", responseDmsModel.getAudioLanguageList().get(0).getKey());
 
-                  /*  ArrayList<SubtitleLanguages> subtitleLanguageList = new ArrayList<>();
+                    ArrayList<SubtitleLanguages> subtitleLanguageList = new ArrayList<>();
                     for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
                         SubtitleLanguages levels = new SubtitleLanguages();
                         levels.setKey(entry.getKey());
@@ -4087,11 +4087,11 @@ public class KsServices {
                     }
 
                     responseDmsModel.setFilterValuesList(filterValuesList);
-                    Log.w("searchValues->>", new Gson().toJson(filterValuesList));*/
+                    Log.w("searchValues->>", new Gson().toJson(filterValuesList));
 
                     ArrayList<ParentalRatingLevels> parentalRatingLevels = new ArrayList<>();
 
-                    for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getParentalRatingLevels().entrySet()) {
+                 /*   for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getParentalRatingLevels().entrySet()) {
                         ParentalRatingLevels levels = new ParentalRatingLevels();
                         levels.setKey(entry.getKey());
                         levels.setValue(entry.getValue().getAsInt());
@@ -4100,7 +4100,7 @@ public class KsServices {
                     }
                     responseDmsModel.setParentalRatingLevels(parentalRatingLevels);
                     Log.d("ParentalLevel", new Gson().toJson(parentalRatingLevels));
-
+*/
 
                /* ArrayList<ParentalLevels> parentalLevels = new ArrayList<>();
                 ArrayList<ParentalDescription> descriptions = new ArrayList<>();
