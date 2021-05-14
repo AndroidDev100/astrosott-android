@@ -18,7 +18,7 @@ import com.astro.sott.modelClasses.InApp.PackDetail
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
 
 
-class SubscriptionPagerAdapter(private var context: Context, private val packagesList: List<PackDetail>, private val productList: ArrayList<String>, private val onPackageChooseClickListener: OnPackageChooseClickListener) : PagerAdapter() {
+class SubscriptionPagerAdapter(private var context: Context, private val packagesList: List<PackDetail>, private val productList: ArrayList<String>,private val pendingList: ArrayList<String>, private val onPackageChooseClickListener: OnPackageChooseClickListener) : PagerAdapter() {
 
     private var activePlan: String? = null
 
@@ -107,6 +107,17 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
             bannerBinding.btnChooseMe.text = "Choose Me"
         }
 
+        if (packageModel.skuORQuickCode != null && pendingList.isNotEmpty()) {
+            if (checkPending(packageModel.skuORQuickCode!!)) {
+                bannerBinding.btnChooseMe.visibility=View.GONE
+            } else {
+                bannerBinding.btnChooseMe.visibility=View.VISIBLE
+            }
+        } else {
+            bannerBinding.btnChooseMe.visibility=View.VISIBLE
+        }
+
+
         val adapter: ArrayAdapter<String> = BulletsAdapter(context, my_array, currentColor)
         bannerBinding.bulletsList.adapter = adapter
         bannerBinding.btnChooseMe.setOnClickListener(object : View.OnClickListener {
@@ -123,6 +134,14 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
     private fun checkActiveOrNot(skuORQuickCode: String): Boolean {
         var matched = false
         for (productId in productList) {
+            matched = productId.equals(skuORQuickCode, true)
+        }
+        return matched
+    }
+
+    private fun checkPending(skuORQuickCode: String): Boolean {
+        var matched = false
+        for (productId in pendingList) {
             matched = productId.equals(skuORQuickCode, true)
         }
         return matched
