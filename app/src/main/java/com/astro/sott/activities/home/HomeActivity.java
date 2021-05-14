@@ -682,10 +682,10 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                     public void response(Purchase purchaseObject) {
                         if (purchaseObject != null) {
                             if (purchaseObject.getSku() != null && purchaseObject.getPurchaseToken() != null) {
-                                billingProcessor.updatePurchase(HomeActivity.this, "com.astro.sott.autorenew_vipsport.5290", "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
+                                billingProcessor.updatePurchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
                             }
                         } else {
-                            billingProcessor.purchase(HomeActivity.this, "com.astro.sott.autorenew_annualy.12090", "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                            billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
                         }
                     }
                 });

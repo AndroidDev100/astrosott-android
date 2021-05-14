@@ -31,8 +31,6 @@ import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem
-import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse
-import com.astro.sott.utils.billing.SKUsListListener
 import com.astro.sott.utils.billing.SKUsListListener
 import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.helpers.ActivityLauncher
