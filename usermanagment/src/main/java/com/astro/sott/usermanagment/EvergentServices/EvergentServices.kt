@@ -845,7 +845,7 @@ class EvergentServices {
         json.addProperty("returnPromotions", "T");
         json.addProperty("returnLiveEvents", "F");
         json.addProperty("returnAttributes", "T");
-//        json.addProperty("offerType", "Existing Customer");
+       json.addProperty("offerType", "Existing Customer");
         json.addProperty("salesChannel", "Web");
         appChannelJson.addProperty("appChannel", "Google Wallet")
         json.add("appChannels", appChannelJson)
@@ -898,7 +898,7 @@ class EvergentServices {
         json.addProperty("returnLiveEvents", "F");
         json.addProperty("returnPromotions", "T");
         json.addProperty("returnAttributes", "T");
-//        json.addProperty("offerType", "Existing Customer");
+       json.addProperty("offerType", "Existing Customer");
         json.addProperty("salesChannel", "Web");
         appChannelJson.addProperty("appChannel", "Google Wallet")
         json.add("appChannels", appChannelJson)

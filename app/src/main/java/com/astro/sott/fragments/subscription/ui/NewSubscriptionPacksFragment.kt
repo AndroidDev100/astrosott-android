@@ -33,6 +33,7 @@ import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveRes
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse
 import com.astro.sott.utils.billing.SKUsListListener
+import com.astro.sott.utils.billing.SKUsListListener
 import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.helpers.ActivityLauncher
 import com.astro.sott.utils.helpers.AppLevelConstants
@@ -51,6 +52,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscriptionPacksBinding>(), View.OnClickListener, SubscriptionPagerAdapter.OnPackageChooseClickListener {
     private var productList = ArrayList<String>()
+    private var pendingList = ArrayList<String>()
     private lateinit var cardClickedCallback: CardCLickedCallBack
     private var indicatorWidth: Int = 0
     private lateinit var subscriptionViewModel: SubscriptionViewModel
@@ -95,7 +97,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                     getListofActivePacks(evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage)
                     getProducts()
                 } else {
-                    getLastSubscription()
+                    getProducts()
                 }
             } else {
                 if (evergentCommonResponse.errorCode.equals("eV2124", ignoreCase = true) || evergentCommonResponse.errorCode == "111111111") {
@@ -108,42 +110,12 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                         }
                     })
                 } else {
-                    getLastSubscription()
+                    getProducts()
                 }
             }
         })
     }
 
-    private fun getLastSubscription() {
-        binding.includeProgressbar.progressBar.visibility = View.VISIBLE
-        subscriptionViewModel.getLastSubscription(UserInfo.getInstance(activity).accessToken).observe(this, Observer { evergentCommonResponse: EvergentCommonResponse<LastSubscriptionResponse> ->
-            binding.includeProgressbar.progressBar.visibility = View.GONE
-            if (evergentCommonResponse.isStatus) {
-                if (evergentCommonResponse.response.getLastSubscriptionsResponseMessage != null && evergentCommonResponse.response.getLastSubscriptionsResponseMessage!!.accountServiceMessage != null) {
-                    accountServiceMessage = java.util.ArrayList<AccountServiceMessageItem>()
-                    accountServiceMessage.add(evergentCommonResponse.response.getLastSubscriptionsResponseMessage!!.accountServiceMessage!!)
-                    getProducts()
-                } else {
-                    getProducts()
-//                    binding.nodataLayout.setVisibility(View.VISIBLE)
-                }
-            } else {
-                if (evergentCommonResponse.errorCode.equals("eV2124", ignoreCase = true) || evergentCommonResponse.errorCode == "111111111") {
-                    EvergentRefreshToken.refreshToken(activity, UserInfo.getInstance(activity).refreshToken).observe(this, Observer { evergentCommonResponse1: EvergentCommonResponse<*>? ->
-                        if (evergentCommonResponse.isStatus) {
-                            getLastSubscription()
-                        } else {
-                            AppCommonMethods.removeUserPrerences(activity)
-                            getProducts()
-                        }
-                    })
-                } else {
-                    getProducts()
-//                    binding.nodataLayout.setVisibility(View.VISIBLE)
-                }
-            }
-        })
-    }
 
     private fun getListofActivePacks(accountServiceMessage: List<AccountServiceMessageItem?>?) {
         productList = java.util.ArrayList<String>()
@@ -151,6 +123,10 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
             if (accountServiceMessageItem!!.status.equals("ACTIVE", ignoreCase = true) && !accountServiceMessageItem.isFreemium!!) {
                 if (accountServiceMessageItem.serviceID != null) {
                     productList.add(accountServiceMessageItem.serviceID!!)
+                }
+            } else if (accountServiceMessageItem!!.status.equals("PENDING ACTIVE", ignoreCase = true) && !accountServiceMessageItem.isFreemium!!) {
+                if (accountServiceMessageItem.serviceID != null) {
+                    pendingList.add(accountServiceMessageItem.serviceID!!)
                 }
             }
         }
@@ -281,7 +257,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
     }
 
     private fun setViewPager(packagesList: List<PackDetail>) {
-        binding.viewPager?.adapter = SubscriptionPagerAdapter(activity!!, packagesList, productList, this)
+        binding.viewPager?.adapter = SubscriptionPagerAdapter(activity!!, packagesList, productList, pendingList, this)
         binding.viewPager?.setPadding(SliderPotrait.dp2px(activity!!, 32f), 0, SliderPotrait.dp2px(activity!!, 32f), 0);
         binding.viewPager?.clipChildren = false
         binding.viewPager?.clipToPadding = false
