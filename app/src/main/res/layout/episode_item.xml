@@ -34,7 +34,7 @@
                     android:layout_height="88dp"
                     android:background="@drawable/ic_landscape_placeholder"
                     android:scaleType="fitXY"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="@string/contentDescription" />
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:background="@drawable/ic_lock"
-                    android:contentDescription="TODO">
+                    android:contentDescription="@string/contentDescription">
 
                 </ImageView>
 
@@ -136,7 +136,7 @@
                 android:rotation="270"
                 android:src="@drawable/ic_baseline_arrow_back"
                 android:visibility="gone"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/contentDescription" />
 
 
             <!--            </LinearLayout>-->

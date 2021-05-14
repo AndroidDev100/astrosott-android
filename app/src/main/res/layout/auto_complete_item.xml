@@ -18,7 +18,7 @@
             android:paddingEnd="18dp"
             android:paddingStart="15dp"
             android:textSize="@dimen/font_medium_large"
-            android:text="Text"
+            android:text="@string/text"
             android:textColor="@color/white" />
 
         <View

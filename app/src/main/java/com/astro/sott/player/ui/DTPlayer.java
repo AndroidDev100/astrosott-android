@@ -3646,9 +3646,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             case R.id.quality:
                 chooseVideoquality();
                 break;
-            case R.id.caption:
-                addCaptionToPlayer();
-                break;
+//            case R.id.caption:
+//                addCaptionToPlayer();
+//                break;
             case R.id.audio: {
                 addAudioToPlayer();
                 callHandler();

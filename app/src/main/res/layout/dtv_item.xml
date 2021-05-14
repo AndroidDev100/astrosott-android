@@ -56,7 +56,7 @@
             android:layout_marginTop="20dp"
             android:padding="10dp"
             android:background="@drawable/delete_icon_dtv"
-            android:contentDescription="TODO" />
+            android:contentDescription="@string/contentDescription" />
 
     </RelativeLayout>
 </layout>

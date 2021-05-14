@@ -3,22 +3,13 @@
     <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
-    <style name="MyMaterialThemeSplash" parent="MyMaterialTheme.Splash">
-        <item name="android:windowBackground">@android:color/black</item>
 
-
-    </style>
     <style name="PinWidget.PinView" parent="Widget.AppCompat.EditText">
         <item name="android:background">@null</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:maxLines">1</item>
         <item name="android:layoutDirection">ltr</item>
-    </style>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
-        <item name="android:scaleType">fitXY</item>
-        <item name="colorPrimary">@color/grape_purple</item>
-
     </style>
     <!-- Base application theme. -->
     <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
@@ -32,29 +23,13 @@
         <item name="android:splitMotionEvents">false</item>
         <item name="otp">@color/line_colors</item>
     </style>
-    <style name="MyMaterialTheme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/black</item>
-        <item name="colorAccent">@color/colorPrimaryDark</item>
-        <item name="android:windowEnableSplitTouch">false</item>
-        <item name="android:splitMotionEvents">false</item>
-    </style>
+
     <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:colorBackground">@color/alert_dialog_background</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
 
     <style name="Theme.AppCompat.Transparent.NoActionBar" parent="MyMaterialTheme.Base">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:windowFullscreen">true</item>
-
-    </style>
-
-    <style name="Theme.AppCompat.Transparent.NoActionBarDtv" parent="MyMaterialTheme.Base">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
@@ -90,11 +65,6 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
-    <style name="SwitchCompatStyle">
-        <item name="thumbTint">@color/white</item>
-        <item name="trackTint">@color/colorPrimary</item>
-    </style>
-
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:textColor">@color/white</item>
@@ -112,12 +82,6 @@
     </style>
     <style name="MineCustomTabTextAppearence" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
-        <item name="textAllCaps">true</item>
-        <item name="fontFamily">@font/heebo_medium</item>
-
-    </style>
-    <style name="MineCustomBottomNavText" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">12sp</item>
         <item name="textAllCaps">true</item>
         <item name="fontFamily">@font/heebo_medium</item>
 
@@ -164,12 +128,6 @@
 <!--&lt;!&ndash;        <item name="android:thumb">@null</item>&ndash;&gt;-->
 <!--    </style>-->
 
-    <style name="MySeekBar" parent="@style/Widget.AppCompat.SeekBar">
-        <item name="colorAccent">@color/thumb_color</item>
-        <item name="colorControlActivated">@color/primary_blue</item>
-        <item name="colorControlNormal">@color/white</item>
-    </style>
-
     <style name="splashtheme"  parent="Theme.AppCompat.NoActionBar">
 <!--        <item name="android:windowBackground">@drawable/splash_background</item>-->
         <item name="android:windowNoTitle">true</item>
@@ -196,22 +154,7 @@
     <!--<item name="colorAccent">@color/colorPrimary</item>-->
     <!--&lt;!&ndash;</style>&ndash;&gt; and then set in button's android:theme="@style/PrimaryFlatButton"-->
 
-    <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
-    </style>
-
-    <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
-        <item name="behavior_peekHeight">@dimen/dimen500dp</item>
-    </style>
-
-    <style name="MyTransparent" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
-<!--    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">-->
+    <!--    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">-->
 <!--        <item name="tabBackground">@drawable/tab_background</item>-->
 <!--        <item name="tabTextColor">#ffffff</item>-->
 <!--        <item name="tabIndicatorColor">#00D4CE</item>-->

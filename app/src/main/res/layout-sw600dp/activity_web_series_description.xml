@@ -148,7 +148,7 @@
                                         android:layout_toStartOf="@+id/play_text"
                                         android:layout_marginEnd="@dimen/_8dp"
                                         android:src="@drawable/ic_star_24_px"
-                                        android:contentDescription="TODO" />
+                                        android:contentDescription="@string/contentDescription" />
                                     <TextView
                                         android:id="@+id/play_text"
                                         android:layout_width="wrap_content"

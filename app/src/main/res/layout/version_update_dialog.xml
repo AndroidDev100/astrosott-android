@@ -24,7 +24,6 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/title_icon"
                     android:layout_width="75dp"
                     android:layout_height="15dp"
                     android:contentDescription="@string/title_icon" />
@@ -76,7 +75,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/suggetion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -111,7 +109,6 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/positive_txt"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -132,7 +129,6 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/negative_txt"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"

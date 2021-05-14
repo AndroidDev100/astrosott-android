@@ -3,8 +3,6 @@
     <string name="app_name">sooka</string>
 
     <string name="title_home">Rumah</string>
-    <string name="live_tv">Siaran langsung TV</string>
-    <string name="title_video">Video</string>
     <string name="device_management">Pengurusan peranti</string>
     <string name="app_settings">Tetapan aplikasi</string>
     <string name="content_preferences">Pilihan kandungan</string>
@@ -20,13 +18,11 @@
     <string name="email_error">Please enter a valid email address</string>
     <string name="email_mobile_error">Please enter a valid email address or  mobile number</string>
 
-    <string name="live_viu_tab">DI BAWAH Aplikasi</string>
     <string name="title_more">LAGI</string>
     <string name="mobile_error">Please enter a valid mobile number</string>
 
     <string name="password_error">Password doesn\'t match password complexity rules - minimum 8 characters, at least 1 number, lowercase letter and uppercase letter.</string>
 
-    <string name="version_more">Versi1.045b</string>
     <string name="siginup_more">Log masuk / Daftar</string>
     <string name="guest_user">Pengguna tetamu</string>
     <string name="manage_subscription">Manage Subscriptions</string>
@@ -34,7 +30,6 @@
     <string name="change_plan" />
     <string name="partner_billing">Bil Rakan Kongsi</string>
     <string name="subscribe_more">Langgan</string>
-    <string name="manage_subscription_more">Urus Langganan</string>
     <string name="renew_date">Diperbaharui pada 22/2/21</string>
     <string name="transac_history">sejarah transaksi</string>
     <string name="lang_selection">Pemilihan Bahasa</string>
@@ -127,9 +122,6 @@
     //
 
 
-    <string name="no_internet_title">You are offline. Check your internet connection</string>
-    <string name="no_internet">Your network seems too slow to reach \n our server</string>
-
     <string name="save_video_to">Save video to...</string>
     <string name="new_playlist">NEW PLAYLIST</string>
     <string name="done">Done</string>
@@ -140,27 +132,17 @@
     <string name="low">Low (180p)</string>
     <string name="season">Season </string>
     <string name="clips">Clips </string>
-    <string name="follow"><b>Follow </b></string>
-    <string name="following">Following</string>
-    <string name="Email">Email</string>
-    <string name="sms">SMS</string>
     <string name="push">Push</string>
 
     <string name="create_playlist_name_title">Create a playlist name</string>
-    <string name="epg_data_not_available">There is no EPG available for selected date</string>
     <string name="epg_information_not_available">Sorry, program information is currently unavailable.</string>
     <string name="logged_out_message">You are logged out from the application, as your device is deleted. \n Please login again</string>
 
     // followlis
-    <string name="removed_from_followlist">You have unfollowed this drama</string>
-    <string name="removed_from_creator_followlist">You have unfollowed user successfully</string>
-    <string name="removed_from_creator_follow">You have unfollowed</string>
-    <string name="successfully">successfully</string>
     <string name="added_to_followlist">You are now following this drama</string>
     //
     <string name="already_added_in_follow">You are already following this drama</string>
 
-    <string name="already_remove_follow">You are not following this drama</string>
     //player strings
     <string name="no_video_available">Oops! Seems like there\'s no video quality available</string>
 
@@ -170,8 +152,6 @@
     <string name="FOR_PURCHASE_SUBSCRIPTION_ONLY">SUBSCRIPTION_PURCHASED</string>
     <string name="FOR_PURCHASED">FOR_PURCHASE_SUBSCRIPTION_ONLY</string>
     <string name="FREE">FREE</string>
-    <string name="now_playing">Now Playing</string>
-    <string name="more_like_this"> MORE LIKE THIS </string>
 
     <string name="episode_title">Episodes</string>
 
@@ -184,14 +164,12 @@
     <string name="deviceconfirmation">5 Devices already added !</string>
     <string name="notification_message">No new notifications</string>
     <string name="remove_watchlist_item">Do you want to remove this video from your playlist?</string>
-    <string name="search_dialog">Search Astro</string>
     <string name="geo_location_dialouge">Uh-no! Looks like you are not in Malaysia at the moment. You may still browse around to checkout our contents. Come back soon to enjoy your favourite shows and movies!</string>
     <string name="purchase_dialouge">Please login to view this content.</string>
     <string name="live_tag">LIVE</string>
     <string name="you_may_like">You may also like</string>
     <string name="similar_movie">Similar Movies</string>
     <string name="watchlist"><b>Watchlist </b></string>
-    <string name="playlist">Playlist</string>
 
     <string name="download">Download</string>
 
@@ -232,37 +210,25 @@
     <string name="yes">Yes</string>
     <string name="ok">OK</string>
     <string name="no">No</string>
-    <string name="exit">Exit</string>
     <string name="retry">Retry</string>
     <string name="something_went_wrong">Oops, something went wrong. Please try again later</string>
     <string name="something_went_wrong_try_again">Oops, something went wrong. Please try again later</string>
     <string name="subscribe">Package Details</string>
 
-    <string name="no_feeds_available">No feeds available.</string>
     <string name="no_catchup_available">Sorry, Catch Up feature is not available for this channel.</string>
     <string name="force_update">Update</string>
-    <string name="catchup_message">Catch up programmes will be avaiable soon</string>
     //error messages
     <string name="movie">Movie</string>
-    <string name="video">Video</string>
-    <string name="episode">Episode</string>
 
-    <string name="short_video">Video</string>
-    <string name="short_film">Short Films</string>
     <string name="already_added_in_watchlist">is already added in your playlist</string>
-    <string name="already_remove_watchlist">is not present in your playlist</string>
     <string name="start">Start  </string>
     <string name="end">End </string>
-    <string name="home">Home</string>
     <string name="sample_text_here">SAMPLE TEXT IS HERE</string>
     <string name="video_quality">Video quality</string>
     <string name="subtitle">Subtitle</string>
     <string name="audio">Audio</string>
     <string name="cancel">Cancel</string>
     <string name="no_epg_available">Sorry, the programme guide is not available for this date.</string>
-    <string name="play">Play</string>
-    <string name="oops_not_connected">Oops! You\'re not connected</string>
-    <string name="wake_up_your_connection">Wake Up Your Connection!</string>
     <string name="try_again">TRY AGAIN</string>
     <string name="please_update_your_app">Please update your app!</string>
     <string name="kindly_input_correct_pwd">Kindly input a correct password.</string>
@@ -273,11 +239,7 @@
     <string name="ugc_video_item_clicked">UGC VideoItemClicked</string>
     <string name="version">Version</string>
     <string name="no_data">No results found.</string>
-    <string name="prod">prod</string>
-    <string name="episode_no">Episode </string>
-    <string name="episodes">Episodes</string>
     <string name="suffix_api_v3">/api_v3/</string>
-    <string name="trailer">Play Trailer</string>
     <string name="notification_settings">Notification settings</string>
 
     <string name="sign_up">Sign Up</string>
@@ -288,7 +250,6 @@
     <string name="already_user">Already a SOTT user ? </string>
 
     <string name="resend_text">Resend PIN</string>
-    <string name="phone_number">Phone Number</string>
     <string name="hint_number">7XX XXXXXX</string>
     <string name="pin">PIN</string>
     <string name="continue_text">CONTINUE</string>
@@ -296,9 +257,7 @@
     <string name="notifications">Notifications</string>
     <string name="dtv_account">Dialog TV Account</string>
     <string name="mbb_account">Mobile Account</string>
-    <string name="hbb_account">Home Broadband Account</string>
     <string name="phone_no">Phone number</string>
-    <string name="restore_purchases">Restore Purchases</string>
     <string name="account_settings">Account settings</string>
     <string name="select_genre">Select genre as per your interest for best result you can select multiple choices of interest (max 5)</string>
     <string name="update_preferences">Update</string>
@@ -313,7 +272,6 @@
     <string name="loading">Loading</string>
     <string name="subscription_dialouge_for_logged_in">Get your susbcription now</string>
     <string name="purchase_dialouge_for_logged_in">Sorry, you cant view this video. Do you want to subscribe now?</string>
-    <string name="text_error">Error</string>
     <string name="pls_enter_device_name">Please enter device name.</string>
     <string name="pls_enter_title">Please give a name for the playlist</string>
 
@@ -330,80 +288,50 @@
     <string name="new_version">New Version Available</string>
     <string name="pin_required">PIN cannot be blank</string>
     <string name="incorrect_pin">Incorrect PIN. Try again</string>
-    <string name="no_content_available">No Content Available</string>
 
 
     <string name="error_sms_failure">Sorry verification PIN cannot be sent right now. Please try again later</string>
-    <string name="error_verification_failure">Invalid OTP</string>
     <string name="default_password">123456</string>
     <string name="update_app_msg">We have a new version available. Kindly update to enjoy Dialog.</string>
     <string name="error_code_user_not_exist">2000</string>
     <string name="error_code_user_not_exist_">1011</string>
-    <string name="already_unfollow">You have already unfollowing this series</string>
-    <string name="splash_logo">Splash Logo</string>
     <string name="banner_image">Banner Image</string>
     <string name="home_icon">Home Icon</string>
-    <string name="search_icon">Search icon</string>
     <string name="notification_icon">Notification Icon</string>
     <string name="more_icon">More Icon</string>
-    <string name="more_arrow">More Arrow</string>
     <string name="ios_icon">iOS Icon</string>
     <string name="delete_icon">Delete Icon</string>
     <string name="channel_logo">Channel Logo</string>
-    <string name="asset_image">Asset Image</string>
     <string name="ff_icon">FF Icon</string>
     <string name="rw_icon">RW Icon</string>
     <string name="play_icon">Play Icon</string>
-    <string name="replay_icon">Replay Icon</string>
     <string name="quality_icon">Quality Icon</string>
     <string name="cancel_icon">Cancel Icon</string>
     <string name="fullscreen_icon">FullScreen Icon</string>
     <string name="player_icon">Player Icon</string>
-    <string name="partner_icon">Partner Icon</string>
     <string name="item_image">Item Image</string>
     <string name="info_icon">Info Icon</string>
-    <string name="demo_grid_icon">Demo Grid Icon</string>
     <string name="landscape_image">Landscape Image</string>
-    <string name="play_button">Play Button</string>
-    <string name="quality">Quality</string>
     <string name="player_image">Player Image</string>
-    <string name="cancel_button">Cancel Button</string>
     <string name="no_connection_image">No Connection Image</string>
-    <string name="tick_icon">Tick Icon</string>
-    <string name="todo">TODO</string>
     <string name="potrait_item_image">Portrait Item Image</string>
     <string name="slide_image">Slide Image</string>
     <string name="live_text">LIVE</string>
     <string name="back_icon">Back Icon</string>
-    <string name="comedy">Comedy</string>
     <string name="shimmer_placeholder">Shimmer Placeholder</string>
     <string name="square_placeholder">Square Placeholder</string>
     <string name="close_icon">Close Icon</string>
     <string name="title_icon">Title Icon</string>
-    <string name="viu_image">SOTT image</string>
-    <string name="share_icon">Share Icon</string>
     <string name="bullet_symbol">\u2022</string>
-    <string name="device_icon">Device Icon</string>
     <string name="no_data_found">No Results Found</string>
-    <string name="invalid_pin">Invalid Pin</string>
-    <string name="error_no_sub_categories">No Subcategories Exist</string>
     <string name="playlist_name_restriction">Playlist name should be less than 20 characters</string>
     <string name="success_login_user">You have signed in successfully</string>
     <string name="success_register_user">You have registered successfully</string>
     <string name="title_video_quality">Select Video Quality</string>
-    <string name="title_audio_track">Select Audio Language</string>
-    <string name="title_caption">Select Subtitle</string>
 
     <string name="no_media_file">No media file available.</string>
     <string name="play_check_message">Looks like you have an unstable network at the moment, please try again when network stabilizes.</string>
-    <string name="yay">Yay, </string>
-    <string name="movie_text">Movie</string>
-    <string name="video_text">video</string>
-    <string name="episode_text">Episode</string>
 
-    <string name="short_video_text">Video</string>
-    <string name="short_film_text">short film</string>
-    <string name="ok_text">OK,</string>
     <string name="signing_you_up">Signing you up</string>
     <string name="loggin_you_in">Logging you in</string>
     <string name="asset_not_found">Asset not found</string>
@@ -413,11 +341,9 @@
     <string name="change_pin">Change pin</string>
     <string name="dtv_text">Dialog TV</string>
     <string name="mbb_text">Mobile</string>
-    <string name="hbb_text">Home Broadband</string>
     <string name="subscription">Subscription</string>
     <string name="change_payment_method">Change Payment Method</string>
     <string name="payment_method_">Payment Method</string>
-    <string name="my_plans">My Plans</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="validate_pin">Validate Pin</string>
@@ -442,26 +368,17 @@
     <string name="restart">RESTART APP</string>
     <string name="update_has_downloaded">An update has just been downloaded.</string>
 
-    <string name="play_icon_content_discription">Press for reminder</string>
-
     <string name="reminder">Reminder Added</string>
-    <string name="reminder_exist">Reminder already exists</string>
     <string name="set_reminder">Reminder</string>
     <string name="greaterdatemessage">Cannot set reminder for this program. This program is alreay live.</string>
     <string name="remove_alarm">Are you sure you want to remove this reminder?</string>
-    <string name="set_alarm">Are you sure you want to set reminder?</string>
-    <string name="set_catchup_reminder">This program is not yet available. Do you want to set reminder?</string>
 
     <!--DTV Account-->
     <string name="add_dtv_account">Tap to add your DTV account</string>
     <string name="add_mbb_account">Tap to add your MBB account</string>
-    <string name="add_hbb_account">Tap to add your HBB account</string>
     <string name="dtv_account_number">Add DTV account number</string>
     <string name="mbb_account_number">Add Mobile account number</string>
-    <string name="hbb_account_number">Add HBB account number</string>
     <string name="account_number">Account Number</string>
-    <string name="enter_otp">Enter OTP</string>
-    <string name="otp_message">OTP is sent to your mobile number</string>
     <string name="ok_otp">OK</string>
     <string name="success">Success</string>
     <string name="dtv_number_added_successfully">DTV number added successfully</string>
@@ -470,36 +387,23 @@
     <string name="mbb_number_added_successfully">MOBILE number added successfully</string>
     <string name="mbb_number_changed_successfully">MOBILE number changed successfully</string>
     <string name="mbb_number_removed_successfully">MOBILE number removed successfully</string>
-    <string name="hbb_number_added_successfully">HBB number added successfully</string>
-    <string name="hbb_number_changed_successfully">HBB number changed successfully</string>
-    <string name="hbb_number_removed_successfully">HBB number removed successfully</string>
     <string name="change">Change</string>
     <string name="set">Set</string>
     <string name="confirm">Confirm</string>
     <string name="dtv_account_">DTV Account:</string>
     <string name="mbb_account_">Mobile Account:</string>
-    <string name="hbb_account_">HBB Account:</string>
     <string name="dtv_change_account_number">Are you sure want to change your\n DTV account number? This action\n connot be undone.</string>
     <string name="mbb_change_account_number">Are you sure want to change your\n MOBILE account number? This action\n connot be undone.</string>
-    <string name="hbb_change_account_number">Are you sure want to change your\n HBB account number? This action\n connot be undone.</string>
-    <string name="remove">REMOVE</string>
     <string name="CHANGE">CHANGE</string>
-    <string name="CONFIRM">CONFIRM</string>
     <string name="remove_dtv_number">Remove DTV Number</string>
     <string name="remove_mbb_number">Remove Mobile Number</string>
-    <string name="remove_hbb_number">Remove HBB Number</string>
     <string name="remove_dtv_number_message">Are you sure want to remove your\n DTV account number? This action\n cannot be undone.</string>
     <string name="remove_mbb_number_message">Are you sure want to remove your\n MOBILE account number? This action\n connot be undone.</string>
-    <string name="remove_hbb_number_message">Are you sure want to remove your\n HBB account number? This action\n connot be undone.</string>
     <string name="YES">YES</string>
-    <string name="error_dtv_failure">Oops, something went wrong. Please try again later</string>
     <string name="select_your_account">Select Your Account</string>
     <string name="dtv_channel_text">Add Your Dialog TV account to see more channels.</string>
     <string name="mbb_channel_text">Add Your Mobile account to see more channels.</string>
-    <string name="hbb_channel_text">Add Your Home Broadband account to see more channels.</string>
     <string name="dtv_account_not_added">Sorry, this channel is not available for viewing on this app.</string>
-    <string name="dtv_account_added_but_channel_not_availabele">Sorry, you may not be able to watch this channel due to the disconnection of your registered Dialog TV account or you may have not activated this channel on your registered account. Please check the status of your registered Dialog TV account at home and try again.</string>
-    <string name="restriction_text">All videos can be watched without a PIN</string>
     <string name="restricton_update">Viewing restrictions updated</string>
     <string name="All_parental_level">Watch TV shows and movies suƒitable for everyone.</string>
     <string name="Thirteen_plus_level">Watch TV shows and movies suitable for teens.</string>
@@ -509,7 +413,6 @@
     <string name="payment_request_successful_description">Enjoy the best videos without any data charges.</string>
     <string name="amount_paid">Amount Paid</string>
     <string name="payment_method">Payment method</string>
-    <string name="transaction_id">Transaction ID</string>
     <string name="view_all_channels"><u>Package Details</u></string>
     <string name="view_all_channels_live"><u>View all channels</u></string>
 
@@ -518,74 +421,35 @@
     <string name="bill_payments">Bill Payments</string>
     <string name="payments">Payments</string>
     <string name="select_plan">Select Plan</string>
-    <string name="plan_weekly">Weekly</string>
-    <string name="sign_in_with_different_account">Sign in with different account</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="all_channel">Package details</string>
     <string name="dialog_connection">Dialog Connection</string>
     <string name="payment_description">Lorem ipsum dolor sit amet, consectetur adipscing elitsed do eu smod tempor incididunt ut labore et dolore.</string>
     <string name="payment_method_title">Select Your payment method.</string>
-    <string name="plan_price"> 99</string>
-    <string name="per_month">per month</string>
-    <string name="unlimited_stream">Unlimited stream</string>
-    <string name="premium_support">Premium Support</string>
-    <string name="lorem_ipsum">Lorem Ipsum</string>
-    <string name="loren_ipsum_dummy">Loren Ipsum dummy</string>
-    <string name="do_you_want_to_buy">Do you want to buy?</string>
-    <string name="no_i_have_changed_my_mind">May be later</string>
-    <string name="buy_now">Buy Now</string>
     <string name="view_restriction">View Restrictions</string>
     <string name="viewing_restrictions">Viewing Restrictions</string>
     <string name="verifying">Verifying otp</string>
-    <string name="home_broad_band">Home Broadband</string>
-    <string name="mobile">Mobile</string>
-    <string name="dialog_tv">Dialog TV</string>
 
-    <string name="subscription_date">Subscription Date:</string>
     <string name="expiry_date">Expiry Date:</string>
     <string name="cancel_subscription">Cancel Subscription</string>
     <string name="active">Active</string>
-    <string name="you_have_no_subscription_plan">You have no subscription plan</string>
     <string name="sorry_content_cannot_be_played_now_error_xxx">Sorry content cannot be played now error xxx</string>
-    <string name="your_subscription_plan">Your Subscription Plan</string>
-    <string name="added_channel">Added Channels</string>
     <string name="select_your_desired_package">Select your desired package</string>
-    <string name="utv">UTV</string>
-    <string name="lkr_per_month">LKR 90 per month</string>
-    <string name="ada">ADA 24</string>
     <string name="no_more_data">No More data found.</string>
     <string name="plan_details"><u>Plan Details</u></string>
-    <string name="my_subscription_plan">My Subscription Plan</string>
     <string name="add_to_my">Add to my</string>
     <string name="package_detail">Package Details</string>
     <string name="live_package_detail">All channels</string>
     <string name="plan_details_bottom">Plan Details</string>
-    <string name="you_are">you are subscribed to</string>
-    <string name="and_you_have_left">and you have left</string>
-    <string name="validity">validity of your pack.</string>
-    <string name="subscription_cancel">Subscription Cancelled</string>
     <string name="payment_method_update">Payment method changed successfully</string>
     <string name="payment_method_not_found">There is no payment method available for now.</string>
-    <string name="payment_method_removed">Payment method removed successfully.</string>
-    <string name="taxes">(excluding tax)</string>
-    <string name="cancel_subscription_dislog">Do you really want to go?</string>
-    <string name="cancellation_text">You are going to miss the entertainment of Live TV and 1000+ videos.</string>
     <string name="non_dialog_user_message">Sorry! please purchase the pack using Dialog Number.</string>
     <string name="plan_details_error">Sorry , we could not process your request please try again later.</string>
-    <string name="no_active_plan">You do not have any active plan</string>
     <string name="insufficient_balance">Sorry! You do not have sufficient balance in your account to make this purchase. Please recharge your account  and try again</string>
-    <string name="including_taxes">(Prices</string>
-    <string name="txx1">excluding taxes)</string>
-    <string name="non_dialog_user_live_chamnel_message">To watch this channel, activate a daily pack for 5/- (+ tax) or a monthly pack for Rs.150/- (+ tax). Click to activate.</string>
     <string name="is_this_you">Is this you?</string>
     <string name="is_that_you_para">Please login with your registered password \n \u0020\u0020\u0020 to continue.</string>
     <string name="proceed">Proceed</string>
-    <string name="details_confirmation">Details Confirmation</string>
-    <string name="detail_config_para">Please confirm your details below</string>
-    <string name="i_agree">I agree to the </string>
-    <string name="privacy_terms">\u0020<u>Privacy &amp; Terms.</u></string>
     <string name="unlock_your_membership">Unlock Your Membership</string>
     <string name="unlock_your_membership_para">Lorem ipsum dolor sit amet, consetetur \n sadipscing elitr, sed diam nonumy eirmod \n tempor invidunt ut labore et dolore magna</string>
     <string name="get_access_to_vip"><![CDATA[Get access to VIP Sports + \n Entertainment (VOD & Live TV)]]></string>
@@ -601,7 +465,6 @@
     <string name="quick_search_text">QUICK SEARCH</string>
     <string name="manage_quality">High Quality</string>
     <string name="subtitle_audio">Subtitle | Audio</string>
-    <string name="episode_">Episode</string>
     <string name="next_episode">Next Episode</string>
 
     <string name="logout_confirmation_message_new">Do you really want to logout?</string>
@@ -621,8 +484,6 @@
     <string name="account_has_been_locked">Account has been locked due to maximum login attempts reached. Please use Forgot Password to unlock your account.</string>
     <string name="cancel_description">But goodbyes are not forever. You can \n always re-subscribe again! \n Your current subscription is valid until</string>
 
-    <string name="series">Series</string>
-    <string name="box_set">Box Set</string>
     <string name="registered_success">Start enjoying sooka App features as a registered user!</string>
     <string name="oops_no">Opps ! No.</string>
     <string name="make_Sure">Just Wanted to Make Sure \n You are You</string>
@@ -640,10 +501,8 @@
     <string name="existing_name">Existing Name</string>
     <string name="existing_mobile">Existing Mobile Number</string>
     <string name="new_name">New Name</string>
-    <string name="new_password">New Password</string>
     <string name="new_mobile">New Mobile number</string>
     <string name="already_registered">You have already register</string>
-    <string name="verification_code_Send">Verification code had be sent to </string>
     <string name="select_one">You need to make at least one selection first!</string>
     <string name="link_success">Your account is linked</string>
     <string name="unlink_success">Your account is unlinked</string>
@@ -680,7 +539,6 @@
     <string name="contentDescription">ContentDescription</string>
 
     <string name="terms_packages">All prices displayed are inclusive of 6% digital tax. <font color='#2cd8e5'> <u>Terms &amp; Conditions</u></font> apply.</string>
-    <string name="choose_me">Choose Me</string>
     <string name="valid_password">Please enter valid password</string>
     <string name="terms"><u>Terms</u></string>
     <string name="privacy"><u>Privacy</u></string>
@@ -690,5 +548,17 @@
     <string name="malay">Malay</string>
     <string name="confirm_psw_para">Confirm password does\'t match with password</string>
     <string name="error_checkbox">Please accept terms and conditions</string>
+    <string name="and">and</string>
+    <string name="pswd_asterik">********</string>
+    <string name="text">Text</string>
+    <string name="nextepisodein">Next episode in</string>
+    <string name="bullet_detail">First access to live events, sooka exclusives and originals</string>
+    <string name="now_playing">NowPlaying</string>
+    <string name="dashes">.........</string>
+    <string name="dashes_long">.........</string>
+    <string name="load_more">Load More</string>
+    <string name="watch_movie">Watch Movie</string>
+    <string name="wach_trailor">Watch Trailor</string>
+
 
 </resources>

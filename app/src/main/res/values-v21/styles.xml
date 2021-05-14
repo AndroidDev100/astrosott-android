@@ -20,12 +20,6 @@
     </style>
 
 
-    <style name="bottomNavigation" parent="Widget.Design.BottomNavigationView">
-        <item name="itemBackground">@color/colorPrimaryDark</item>
-
-        <item name="android:textSize">@dimen/bottom_navigation_text_sizes</item>
-    </style>
-
     <style name="SwitchTheme" parent="Theme.AppCompat.Light">
         <item name="android:colorControlActivated">#224ba3</item>
     </style>
@@ -34,10 +28,6 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
-    <style name="SwitchCompatStyle">
-        <item name="thumbTint">@color/white</item>
-        <item name="trackTint">@color/colorPrimary</item>
-    </style>
     <style name="Custom.Widget.CardView" parent="CardView">
         <item name="cardBackgroundColor">@color/transparentColor</item>
     </style>

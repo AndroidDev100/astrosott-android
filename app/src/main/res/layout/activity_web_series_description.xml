@@ -199,7 +199,7 @@
                                     android:layout_toStartOf="@+id/play_text"
                                     android:src="@drawable/ic_star_24_px"
                                     android:visibility="gone"
-                                    android:contentDescription="TODO" />
+                                    android:contentDescription="@string/contentDescription" />
 
                                 <TextView
                                     android:id="@+id/play_text"

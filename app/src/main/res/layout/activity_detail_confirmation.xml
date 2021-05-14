@@ -201,7 +201,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="35dp"
                 android:fontFamily="@font/heebo_regular"
-                android:text="and"
+                android:text="@string/and"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp"

@@ -55,7 +55,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/play_icon"
                 android:visibility="gone"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/contentDescription" />
 
         </FrameLayout>
 

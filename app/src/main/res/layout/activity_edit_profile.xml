@@ -243,7 +243,7 @@
                             android:fontFamily="@font/heebo_regular"
                             android:foregroundTint="@color/white"
                             android:hint="@string/password"
-                            android:text="********"
+                            android:text="@string/pswd_asterik"
                             android:maxLines="1"
                             android:textColor="@color/white"
                             android:textColorHint="@color/white"

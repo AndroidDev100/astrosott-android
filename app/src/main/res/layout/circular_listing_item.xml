@@ -62,7 +62,7 @@
                 android:gravity="center"
                 android:paddingBottom="@dimen/_5sdp"
                 android:singleLine="true"
-                android:text="........."
+                android:text="@string/dashes"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp" />
 
@@ -74,7 +74,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
                 android:paddingBottom="@dimen/_5sdp"
-                android:text="........."
+                android:text="@string/dashes"
                 android:textColor="@color/yellow_orange"
                 android:textSize="@dimen/_12sp" />
 

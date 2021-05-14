@@ -26,7 +26,7 @@
                     android:fontFamily="@font/roboto_regular"
                     android:paddingBottom="@dimen/_5sdp"
                     android:singleLine="true"
-                    android:text="..........."
+                    android:text="@string/dashes_long"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp" />
 
@@ -37,7 +37,7 @@
                     android:visibility="gone"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/dots_white"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="@string/contentDescription" />
 
 
             </LinearLayout>
@@ -50,7 +50,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/roboto_regular"
                 android:paddingBottom="@dimen/_5sdp"
-                android:text="........."
+                android:text="@string/dashes_long"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10sdp" />
 
