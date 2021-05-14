@@ -44,14 +44,14 @@ public class EpisodesLayer {
     private List<AssetCommonBean> assetCommonList;
 
     public LiveData<List<AssetCommonBean>> getEpisodesList(Context context, Asset asset,
-                                                           int assetType, int counter, List<Integer> seasonNumberList, int seasonCounter, int layoutType,String sortType) {
+                                                           int assetType, int counter, List<Integer> seasonNumberList, int seasonCounter, int layoutType, String sortType) {
         responseList = new ArrayList<>();
         assetCommonList = new ArrayList<>();
         final MutableLiveData<List<AssetCommonBean>> connection = new MutableLiveData<>();
         assetCommonBean = new AssetCommonBean();
         seriesId = asset.getExternalId();
         KsServices ksServices = new KsServices(context);
-        ksServices.callSeasonEpisodes(counter, seriesId, assetType, seasonNumberList, seasonCounter,sortType, (status, commonResponse) -> {
+        ksServices.callSeasonEpisodes(counter, seriesId, assetType, seasonNumberList, seasonCounter, sortType, (status, commonResponse) -> {
 
             if (status) {
                 assetCommonBean.setStatus(true);
@@ -67,14 +67,14 @@ public class EpisodesLayer {
     }
 
     public LiveData<List<AssetCommonBean>> getEpisodesListBingeWatch(Context context, Asset asset,
-                                                           int assetType, int counter, List<Integer> seasonNumberList, int seasonCounter, int layoutType,String sortType) {
+                                                                     int assetType, int counter, List<Integer> seasonNumberList, int seasonCounter, int layoutType, String sortType) {
         responseList = new ArrayList<>();
         assetCommonList = new ArrayList<>();
         final MutableLiveData<List<AssetCommonBean>> connection = new MutableLiveData<>();
         assetCommonBean = new AssetCommonBean();
         seriesId = asset.getExternalId();
         KsServices ksServices = new KsServices(context);
-        ksServices.callSeasonEpisodesForBingeWatch(counter, seriesId, assetType, seasonNumberList, seasonCounter,sortType, (status, commonResponse) -> {
+        ksServices.callSeasonEpisodesForBingeWatch(counter, seriesId, assetType, seasonNumberList, seasonCounter, sortType, (status, commonResponse) -> {
 
             if (status) {
                 assetCommonBean.setStatus(true);
@@ -113,7 +113,7 @@ public class EpisodesLayer {
         assetCommonBean = new AssetCommonBean();
         seriesId = asset.getExternalId();
         KsServices ksServices = new KsServices(context);
-        ksServices.callEpisodes(counter, seriesId, assetType,sortType, (status, commonResponse) -> {
+        ksServices.callEpisodes(counter, seriesId, assetType, sortType, (status, commonResponse) -> {
 
             if (status) {
                 assetCommonBean.setStatus(true);
@@ -217,7 +217,7 @@ public class EpisodesLayer {
                     railCommonData.setName(list.get(position).results.getObjects().get(j).getName());
                     railCommonData.setId(list.get(position).results.getObjects().get(j).getId());
                     railCommonData.setObject(list.get(position).results.getObjects().get(j));
-
+                    railCommonData.setTotalCount(list.get(position).results.getTotalCount());
                     List<AssetCommonImages> imagesList = new ArrayList<>();
                     for (int k = 0; k < list.get(position).results.getObjects().get(j).getImages().size(); k++) {
 

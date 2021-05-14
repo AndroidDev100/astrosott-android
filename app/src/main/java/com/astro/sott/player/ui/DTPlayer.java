@@ -54,6 +54,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.activities.loginActivity.LoginActivity;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.callBacks.DoubleClick;
 import com.astro.sott.callBacks.WindowFocusCallback;
@@ -69,6 +70,8 @@ import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
 import com.astro.sott.player.swipe.Swipe;
 import com.astro.sott.player.viewModel.DTPlayerViewModel;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
+import com.astro.sott.utils.TabsData;
+import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
@@ -166,6 +169,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     boolean hasPreRoll = false;
     boolean isPlayerEnded = false;
     boolean isAdPause = false;
+    private int totalEpisode = 0;
     boolean exitPlayer = false;
     boolean isPause = false;
     String startTimeStamp;
@@ -569,6 +573,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //            }
 //        });
         if (railList != null && railList.size() > 0) {
+            totalEpisode = railList.get(0).getTotalCount();
             List<Asset> assets = new ArrayList<>();
             RailCommonData railCommonData = new RailCommonData();
             for (int i = 0; i < railList.size(); i++) {
@@ -582,21 +587,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void sortListWithEPSD(List<Asset> episodesList) {
-
-//        Collections.sort(episodesList, new Comparator<Asset>() {
-//            @Override
-//            public int compare(Asset p1, Asset p2) {
-//                int seasonNumber = AssetContent.getSpecificSeason(p1.getMetas());
-//                int seasonNumber2 = AssetContent.getSpecificSeason(p2.getMetas());
-//
-//                int episodeNumber = AssetContent.getSpecificEpisode(p1.getMetas());
-//                int episodeNumber2 = AssetContent.getSpecificEpisode(p2.getMetas());
-//
-//                return new CompareToBuilder().append(seasonNumber, seasonNumber2).append(episodeNumber, episodeNumber2).toComparison();
-//            }
-//        });
-
-
         try {
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
@@ -612,8 +602,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     }
 
+    private int nextEpisodeCounter = -1;
+
     private void checkEpisode(List<Asset> episodesList) {
-        int nextEpisodeCounter = -1;
         boolean found = false;
         hasEpisodesList = true;
         if (episodesList.size() > 0) {
@@ -626,7 +617,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 if (asset.getId() == listEpisode) {
                     found = true;
-                    if ((i + 1) < episodesList.size())
+                    if ((i + 1) <= totalEpisode)
                         nextEpisodeCounter = i + 1;
                     break;
                 }
@@ -637,9 +628,107 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if ((nextEpisodeCounter != -1) && episodesList.size() > nextEpisodeCounter) {
                     nextPlayingAsset = episodesList.get(nextEpisodeCounter);
                     hasNextEpisode = true;
+                } else {
+                    if (episodesList.size() < totalEpisode) {
+                        if (TabsData.getInstance().getSeriesType().equalsIgnoreCase(AppLevelConstants.OPEN)) {
+                            GetEpisodeListWithoutSeason();
+                        } else if (TabsData.getInstance().getSeriesType().equalsIgnoreCase(AppLevelConstants.CLOSE)) {
+                            seasonCounter = TabsData.getInstance().getSelectedSeason();
+                            getSeasonEpisode(seasonCounter, "");
+                        }
+                    } else {
+                        if (TabsData.getInstance().getSeriesType().equalsIgnoreCase(AppLevelConstants.CLOSE)) {
+                            seasonCounter++;
+                            TabsData.getInstance().setSelectedSeason(seasonCounter);
+                            episodeCounter = 1;
+                            nextEpisodeCounter = 0;
+                            railList.clear();
+                            episodesList.clear();
+                            seriesNumberList = TabsData.getInstance().getSeasonList();
+                            if (seriesNumberList.size() > seasonCounter && seriesNumberList.get(seasonCounter) != null)
+                                getSeasonEpisode(seasonCounter, "nextSeason");
+
+                        }
+                    }
                 }
             }
 
+        }
+    }
+
+    private int episodeCounter = 2;
+    private int seasonCounter = 0;
+
+
+    private void GetEpisodeListWithoutSeason() {
+        if (TabsData.getInstance() != null && TabsData.getInstance().getSeriesAsset() != null) {
+            Asset seriesAsset = TabsData.getInstance().getSeriesAsset();
+
+            viewModel.callEpisodes(seriesAsset, seriesAsset.getType(), episodeCounter, 0, AppConstants.Rail5, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
+                if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus() && assetCommonBeans.get(0).getRailAssetList() != null && assetCommonBeans.get(0).getRailAssetList().size() > 0) {
+                    episodeCounter++;
+                    for (RailCommonData railCommonData : assetCommonBeans.get(0).getRailAssetList()) {
+                        if (railCommonData.getObject() != null) {
+                            railList.add(railCommonData);
+                            episodesList.add(railCommonData.getObject());
+                        }
+                    }
+                    if (nextEpisodeCounter != -1 && episodesList.get(nextEpisodeCounter) != null) {
+                        nextPlayingAsset = episodesList.get(nextEpisodeCounter);
+                        hasNextEpisode = true;
+                    }
+                } else {
+                }
+
+            });
+        }
+    }
+
+    private List<Integer> seriesNumberList;
+
+    private void getSeasonEpisode(int seasonNumber, String nextSeason) {
+
+        Asset seriesAsset = TabsData.getInstance().getSeriesAsset();
+        if (!nextSeason.equalsIgnoreCase("")) {
+            viewModel.callSeasonEpisodes(seriesAsset, seriesAsset.getType(), episodeCounter, TabsData.getInstance().getSeasonList(), seasonNumber, AppConstants.Rail5, TabsData.getInstance().getSortType(), this).observe(this, assetCommonBeans -> {
+                if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus() && assetCommonBeans.get(0).getRailAssetList() != null && assetCommonBeans.get(0).getRailAssetList().size() > 0) {
+                    episodeCounter++;
+                    totalEpisode = assetCommonBeans.get(0).getTotalCount();
+                    for (RailCommonData railCommonData : assetCommonBeans.get(0).getRailAssetList()) {
+                        if (railCommonData.getObject() != null) {
+                            railList.add(railCommonData);
+                            episodesList.add(railCommonData.getObject());
+                        }
+                    }
+                    if (nextEpisodeCounter != -1 && episodesList.get(nextEpisodeCounter) != null) {
+                        nextPlayingAsset = episodesList.get(nextEpisodeCounter);
+                        hasNextEpisode = true;
+                    }
+                } else {
+
+                }
+
+            });
+        } else {
+            viewModel.callSeasonEpisodesBingeWatch(seriesAsset, seriesAsset.getType(), episodeCounter, TabsData.getInstance().getSeasonList(), seasonNumber, AppConstants.Rail5, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
+                if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus() && assetCommonBeans.get(0).getRailAssetList() != null && assetCommonBeans.get(0).getRailAssetList().size() > 0) {
+                    episodeCounter++;
+                    totalEpisode = assetCommonBeans.get(0).getTotalCount();
+                    for (RailCommonData railCommonData : assetCommonBeans.get(0).getRailAssetList()) {
+                        if (railCommonData.getObject() != null) {
+                            railList.add(railCommonData);
+                            episodesList.add(railCommonData.getObject());
+                        }
+                    }
+                    if (nextEpisodeCounter != -1 && episodesList.get(nextEpisodeCounter) != null) {
+                        nextPlayingAsset = episodesList.get(nextEpisodeCounter);
+                        hasNextEpisode = true;
+                    }
+                } else {
+
+                }
+
+            });
         }
     }
 
@@ -674,15 +763,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         parentalCheck(asset);
                     } else {
                         getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
-//                        if (isProgramClicked) {
-//                            if (checkIsliveAsset) {
-//                                getUrl(AssetContent.getURL(asset), asset, playerProgress, true, catchupLiveProgName, railList);
-//                            } else {
-//                                getUrl(AssetContent.getURL(catchupAsset), catchupAsset, playerProgress, false, asset.getName(), railList);
-//                            }
-//                        } else {
-//                            getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
-//                        }
                     }
                 } else {
                     PrintLogging.printLog("", "elseValuePrint-->>" + assetRuleErrorCode + "  " + errorCode);
@@ -861,14 +941,26 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void checkEntitleMent(final Asset asset) {
-
-
         try {
-
             String fileId = AppCommonMethods.getFileIdOfAssest(asset);
-
             if (getActivity() != null) {
-                new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey, errorCode1, message) -> {
+                new EntitlementCheck().checkAssetPurchaseStatus(getActivity(), fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+                    playerChecksCompleted = true;
+                    if (apiStatus) {
+                        if (purchasedStatus) {
+                            this.errorCode = AppLevelConstants.NO_ERROR;
+                        } else {
+                            if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                                this.errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
+                            } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
+                                this.errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
+                            }
+                        }
+                    } else {
+
+                    }
+                });
+              /*  new EntitlementCheck().checkAssetType(getActivity(), fileId, (status, response, purchaseKey, errorCode1, message) -> {
                     if (status) {
                         playerChecksCompleted = true;
                         if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
@@ -899,6 +991,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     }
 //                                    playerChecksCompleted = true;
                 });
+           */
             }
         } catch (Exception e) {
 
@@ -1043,7 +1136,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             if (!isLivePlayer) {
 
-                if (isSeries && episodesList.size() > 0) {
+                if (isSeries && episodesList != null && episodesList.size() > 0) {
                     getBinding().nextEpisode.setVisibility(View.VISIBLE);
                 } else {
                     getBinding().nextEpisode.setVisibility(View.GONE);
@@ -1938,7 +2031,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             AdEvent.Error adError = event;
             //  checkFatalError();
             if (player != null) {
-                isAdsRunning=false;
+                isAdsRunning = false;
                 ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdFailed(adError.error.errorType.name());
                 ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
                 ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();

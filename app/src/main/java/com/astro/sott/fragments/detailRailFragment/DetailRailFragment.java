@@ -23,6 +23,7 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.databinding.FragmentDetailRailBinding;
 import com.astro.sott.fragments.detailRailFragment.adapter.DetailPagerAdapter;
 import com.astro.sott.fragments.trailerFragment.viewModel.TrailerFragmentViewModel;
+import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
@@ -135,6 +136,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     }
 
     private void getEpisode(List<Integer> seriesNumberList) {
+        TabsData.getInstance().setSelectedSeason(seasonCounter);
         trailerFragmentViewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, AppConstants.Rail5, AppLevelConstants.KEY_EPISODE_NUMBER, this).observe(this, assetCommonBeans -> {
             if (assetCommonBeans.get(0).getStatus()) {
                 trailerFragmentViewModel.setClosedSeriesData(assetCommonBeans);

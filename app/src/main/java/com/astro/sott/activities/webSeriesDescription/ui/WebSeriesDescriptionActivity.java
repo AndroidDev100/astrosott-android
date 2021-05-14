@@ -171,6 +171,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private void getDatafromBack() {
         commonData = railData;
         asset = railData.getObject();
+        TabsData.getInstance().setSeriesAsset(asset);
         getBinding().setMovieAssestModel(asset);
         map = asset.getTags();
         yearMap = asset.getMetas();
@@ -210,7 +211,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class,"");
+                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, "");
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), WebSeriesDescriptionActivity.this);
@@ -636,8 +637,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         });
     }
 
-    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<
-            RailCommonData> railList) {
+    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<RailCommonData> railList) {
 //        if (this.railList!=null){
 //            this.railList.clear();
 //        }
@@ -816,11 +816,11 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         Intent intent = new Intent(WebSeriesDescriptionActivity.this, PlayerActivity.class);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
 
-        if (fromNextEpisode) {
-            intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
-        } else {
-            intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList);
-        }
+        /*  if (fromNextEpisode) {*/
+        intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
+       /* } else {
+            intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) ra);
+        }*/
         startActivity(intent);
     }
 
@@ -993,7 +993,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(),"");
+        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), "");
     }
 
     @Override
@@ -1133,7 +1133,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     public void onFinishDialog() {
         if (isPurchased) {
             isPurchased = false;
-            new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class,"");
+            new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, "");
 
         }
     }
@@ -1426,20 +1426,25 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     @Override
     public void onFirstEpisodeData(List<AssetCommonBean> railCommonData, String checkSeries) {
         if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
+            railList1.clear();
+            railList1.addAll(railCommonData.get(0).getRailAssetList());
+            TabsData.getInstance().setSeriesType(checkSeries);
             if (TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
                 viewModel.getEpisodeToPlay(assetId).observe(this, assetHistory -> {
                     if (assetHistory != null && assetHistory.getAssetId() != null) {
                         viewModel.getSpecificAsset(assetHistory.getAssetId() + "").observe(this, railAsset -> {
                             if (railAsset != null) {
                                 fromNextEpisode = true;
-                                if (checkSeries.equalsIgnoreCase(AppLevelConstants.OPEN)) {
+                                /*railList1.clear();
+                                railList1.addAll(railCommonData.get(0).getRailAssetList());*/
+                               /* if (checkSeries.equalsIgnoreCase(AppLevelConstants.OPEN)) {
                                     int episodeNumber = AssetContent.getSpecificEpisode(railAsset.getObject().getMetas());
                                     if (episodeNumber != 0)
                                         GetEpisodeListWithoutSeason();
                                 } else {
                                     int seasonNumber = AssetContent.getSpecificSeason(railAsset.getObject().getMetas());
                                     GetSeasonEpisode(seasonNumber, assetToPlay);
-                                }
+                                }*/
                                 assetToPlay = railAsset;
                                 checkForPlayButtonCondition();
 
