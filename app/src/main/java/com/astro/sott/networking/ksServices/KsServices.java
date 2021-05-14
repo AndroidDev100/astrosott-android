@@ -4070,7 +4070,7 @@ public class KsServices {
                     for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
                         SubtitleLanguages levels = new SubtitleLanguages();
                         levels.setKey(entry.getKey());
-                        levels.setValue(entry.getValue().getAsString());
+                        levels.setValue(entry.getValue().getAsJsonArray());
                         subtitleLanguageList.add(levels);
                     }
 
@@ -4082,7 +4082,7 @@ public class KsServices {
                     for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
                         FilterValues levels = new FilterValues();
                         levels.setKey(entry.getKey());
-                        levels.setValue(entry.getValue().getAsString());
+                       // levels.setValue(entry.getValue().getAsJsonArray());
                         filterValuesList.add(levels);
                     }
 
@@ -4091,7 +4091,7 @@ public class KsServices {
 
                     ArrayList<ParentalRatingLevels> parentalRatingLevels = new ArrayList<>();
 
-                    for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getParentalRatingLevels().entrySet()) {
+                 /*   for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getParentalRatingLevels().entrySet()) {
                         ParentalRatingLevels levels = new ParentalRatingLevels();
                         levels.setKey(entry.getKey());
                         levels.setValue(entry.getValue().getAsInt());
@@ -4100,7 +4100,7 @@ public class KsServices {
                     }
                     responseDmsModel.setParentalRatingLevels(parentalRatingLevels);
                     Log.d("ParentalLevel", new Gson().toJson(parentalRatingLevels));
-
+*/
 
                /* ArrayList<ParentalLevels> parentalLevels = new ArrayList<>();
                 ArrayList<ParentalDescription> descriptions = new ArrayList<>();

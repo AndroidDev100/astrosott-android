@@ -32,7 +32,9 @@ import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.kalturaCallBacks.DMSCallBack;
+import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.modelClasses.dmsResponse.SubtitleLanguages;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.usermanagment.modelClasses.getDevice.AccountDeviceDetailsItem;
@@ -2921,6 +2923,57 @@ public class AppCommonMethods {
             }
         }
         return subSkuList;
+    }
+
+    public static String getSubtitleName(String label,Context context) {
+        String name="";
+        try {
+           // Log.w("tracking 1",label);
+            ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+            ArrayList<SubtitleLanguages> subtitleLanguages = responseDmsModel.getSubtitleLanguageList();
+            for (int i=0;i<subtitleLanguages.size();i++) {
+              //  Log.w("tracking 2",subtitleLanguages.size()+"");
+                for (int j=0;j<subtitleLanguages.get(i).getValue().size();j++) {
+                   // Log.w("tracking 3",subtitleLanguages.get(i).getValue().size()+"");
+                    String valueKey=subtitleLanguages.get(i).getValue().get(j).getAsString();
+                   // Log.w("tracking 4",valueKey+"");
+                    if (label.equalsIgnoreCase(valueKey)){
+                        //Log.w("subtitleKeys",valueKey);
+                        name=subtitleLanguages.get(i).getKey();
+                        break;
+                    }
+                }
+
+            }
+        }catch (Exception e){
+            Log.w("tracking 5",e.toString());
+        }
+        return name;
+    }
+
+    public static String getAudioLanguageName(String label,Context context) {
+        String name="";
+        try {
+            //Log.w("tracking 1",label);
+            ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+            ArrayList<AudioLanguages> subtitleLanguages = responseDmsModel.getAudioLanguageList();
+            for (int i=0;i<subtitleLanguages.size();i++) {
+                //Log.w("tracking 2",subtitleLanguages.size()+"");
+
+                    //Log.w("tracking 3",subtitleLanguages.size()+"");
+                    String valueKey=subtitleLanguages.get(i).getValue();
+                    //Log.w("tracking 4",valueKey+"");
+                    if (label.equalsIgnoreCase(valueKey)){
+                        //Log.w("subtitleKeys",valueKey);
+                        name=subtitleLanguages.get(i).getKey();
+                        break;
+                    }
+
+            }
+        }catch (Exception e){
+            Log.w("tracking 5",e.toString());
+        }
+        return name;
     }
 
 }

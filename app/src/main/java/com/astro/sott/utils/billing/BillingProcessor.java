@@ -370,56 +370,41 @@ public class BillingProcessor implements PurchasesUpdatedListener {
     }
 
     public void initiateUpdatePurchaseFlow(@NonNull Activity activity, @NonNull SkuDetails skuDetails, String oldSKU, String oldPurchaseToken) {
-        try {
-            if (skuDetails.getType().equals(BillingClient.SkuType.SUBS) && areSubscriptionsSupported()
-                    || skuDetails.getType().equals(BillingClient.SkuType.INAPP)) {
-                int oldPrice = 0;
-                int newPrice = 0;
-                String str = oldSkuDetails.getPrice().replaceAll("\\D+", "");
-                Log.w("skuDetails", oldSkuDetails.getPrice() + "-->>" + str);
-                if (!str.contains(".")) {
-                    oldPrice = Integer.parseInt(str);
-                }
+        if (skuDetails.getType().equals(BillingClient.SkuType.SUBS) && areSubscriptionsSupported()
+                || skuDetails.getType().equals(BillingClient.SkuType.INAPP)) {
+            int oldPrice = 0;
+            int newPrice = 0;
+            String str = oldSkuDetails.getPrice().replaceAll("\\D+", "");
+            Log.w("skuDetails", oldSkuDetails.getPrice() + "-->>" + str);
+            if (!str.contains(".")) {
+                oldPrice = Integer.parseInt(str);
+            }
 
 
-                String str2 = skuDetails.getPrice().replaceAll("\\D+", "");
-                Log.w("skuDetails", skuDetails.getPrice() + "-->>" + str);
-                if (!str.contains(".")) {
-                    newPrice = Integer.parseInt(str2);
-                }
+            String str2 = skuDetails.getPrice().replaceAll("\\D+", "");
+            Log.w("skuDetails", skuDetails.getPrice() + "-->>" + str);
+            if (!str.contains(".")) {
+                newPrice = Integer.parseInt(str2);
+            }
 
 
-                Log.w("priceValues", oldPrice + "  " + newPrice);
+            Log.w("priceValues", oldPrice + "  " + newPrice);
 
-                if (oldSkuDetails != null) {
-                    if (oldPrice > newPrice) {
-                        Log.w("priceValues", "deffred");
-                        BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
-                                .setSkuDetails(skuDetails)
-                                .setReplaceSkusProrationMode(IMMEDIATE_WITHOUT_PRORATION)
-                                .setOldSku(oldSKU, oldPurchaseToken)
-                                .build();
+            if (oldSkuDetails != null) {
+                if (oldPrice > newPrice) {
+                    Log.w("priceValues", "deffred");
+                    BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
+                            .setOldSku(oldSKU.trim(), oldPurchaseToken.trim())
+                            .setReplaceSkusProrationMode(DEFERRED)
+                            .setSkuDetails(skuDetails)
+                            .build();
 
-                        executeServiceRequest(
-                                () -> {
+                    executeServiceRequest(
+                            () -> {
 
-                                    int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
+                                int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
 
-                                });
-                    } else {
-                        BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
-                                .setOldSku(oldSKU, oldPurchaseToken)
-                                .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
-                                .setSkuDetails(skuDetails)
-                                .build();
-
-                        executeServiceRequest(
-                                () -> {
-                                    PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
-                                    int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
-                                    Log.w("responsCode-->>", responseCode + "");
-                                });
-                    }
+                            });
                 } else {
                     BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
                             .setOldSku(oldSKU, oldPurchaseToken)
@@ -434,21 +419,21 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                                 Log.w("responsCode-->>", responseCode + "");
                             });
                 }
+            } else {
+                BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
+                        .setOldSku(oldSKU, oldPurchaseToken)
+                        .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+                        .setSkuDetails(skuDetails)
+                        .build();
 
+                executeServiceRequest(
+                        () -> {
+                            PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
+                            int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
+                            Log.w("responsCode-->>", responseCode + "");
+                        });
             }
-        } catch (Exception ex) {
-            BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
-                    .setOldSku(oldSKU, oldPurchaseToken)
-                    .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
-                    .setSkuDetails(skuDetails)
-                    .build();
 
-            executeServiceRequest(
-                    () -> {
-                        PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
-                        int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
-                        Log.w("responsCode-->>", responseCode + "");
-                    });
         }
     }
 

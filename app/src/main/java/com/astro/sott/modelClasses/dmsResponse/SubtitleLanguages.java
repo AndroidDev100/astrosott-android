@@ -1,9 +1,11 @@
 package com.astro.sott.modelClasses.dmsResponse;
 
+import com.google.gson.JsonArray;
+
 public class SubtitleLanguages {
 
     String key;
-    String value;
+    JsonArray value;
 
     public void setKey(String key) {
         this.key = key;
@@ -13,11 +15,11 @@ public class SubtitleLanguages {
         return key;
     }
 
-    public void setValue(String value) {
+    public void setValue(JsonArray value) {
         this.value = value;
     }
 
-    public String getValue() {
+    public JsonArray getValue() {
         return value;
     }
 
