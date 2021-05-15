@@ -33,8 +33,10 @@ import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.modelClasses.appVersion.AppVersionStatus;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.usermanagment.EvergentBaseClient.EvergentBaseClient;
 import com.astro.sott.usermanagment.EvergentBaseClient.EvergentBaseConfiguration;
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -56,6 +58,7 @@ import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.UDID;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.enveu.BaseClient.BaseClient;
 import com.enveu.BaseClient.BaseConfiguration;
 import com.enveu.BaseClient.BaseDeviceType;
@@ -364,6 +367,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     private void pushToken() {
         setupBaseClient();
+        getActiveSubscription();
         token = SharedPrefHelper.getInstance(this).getString(AppLevelConstants.FCM_TOKEN, "");
         if (token == null || token.equals("")) {
             FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
@@ -447,6 +451,36 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
             });*/
         }
+    }
+
+    private String displayName = "";
+
+    private void getActiveSubscription() {
+
+        myViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), "").observe(this, evergentCommonResponse -> {
+            if (evergentCommonResponse.isStatus()) {
+                if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null) {
+                    if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
+                        for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
+                            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && !accountServiceMessageItem.isFreemium()) {
+                                if (accountServiceMessageItem.getDisplayName() != null)
+                                    displayName = accountServiceMessageItem.getDisplayName();
+                            }
+                        }
+                        if (!displayName.equalsIgnoreCase("")) {
+                            UserInfo.getInstance(this).setVip(true);
+                        } else {
+                            UserInfo.getInstance(this).setVip(false);
+                        }
+                    } else {
+                        UserInfo.getInstance(this).setVip(false);
+                    }
+                } else {
+                }
+            } else {
+
+            }
+        });
     }
 
     private void setupBaseClient() {

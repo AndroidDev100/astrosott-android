@@ -13,11 +13,14 @@ import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
+import com.astro.sott.baseModel.TabsBaseFragment;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.AppUpdateCallBack;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.fragments.home.ui.ViewPagerFragmentAdapter;
+import com.astro.sott.fragments.homenewtab.ui.HomeTabNew;
 import com.astro.sott.fragments.moreTab.ui.MoreNewFragment;
+import com.astro.sott.fragments.sports.ui.SportsFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
@@ -181,6 +184,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private void initFrameFragment() {
         setToolBarScroll(0);
         NavigationItem.getInstance().setTab("Live TV");
+        if (liveTvFragment != null)
+            liveTvFragment.refreshData();
         getBinding().appbar.setVisibility(View.VISIBLE);
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
@@ -420,10 +425,13 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     }
 
+    private ViewPagerFragmentAdapter viewPagerFragmentAdapter;
+
     private void setViewPager() {
         getBinding().viewPager.setUserInputEnabled(false);
         //getBinding().viewPager.setOffscreenPageLimit(2);
-        getBinding().viewPager.setAdapter(new ViewPagerFragmentAdapter(this, titles));
+        viewPagerFragmentAdapter = new ViewPagerFragmentAdapter(this, titles);
+        getBinding().viewPager.setAdapter(viewPagerFragmentAdapter);
         // attaching tab mediator
         new TabLayoutMediator(getBinding().tabs, getBinding().viewPager,
                 (tab, position) -> tab.setText(titles[position])).attach();
@@ -446,14 +454,26 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                if (position==0){
+                if (position == 0) {
                     NavigationItem.getInstance().setTab("All");
-                }else if (position==1){
+                    Fragment currentFragment = viewPagerFragmentAdapter.getFragment(position);
+                    if (currentFragment != null)
+                        ((HomeTabNew) currentFragment).refreshData();
+                } else if (position == 1) {
                     NavigationItem.getInstance().setTab("TV Shows");
-                }else if (position==2){
+                    Fragment currentFragment = viewPagerFragmentAdapter.getFragment(position);
+                    if (currentFragment != null)
+                        ((HomeFragment) currentFragment).refreshData();
+                } else if (position == 2) {
                     NavigationItem.getInstance().setTab("Movies");
-                }else if (position==3){
+                    Fragment currentFragment = viewPagerFragmentAdapter.getFragment(position);
+                    if (currentFragment != null)
+                        ((VideoFragment) currentFragment).refreshData();
+                } else if (position == 3) {
                     NavigationItem.getInstance().setTab("Sports");
+                    Fragment currentFragment = viewPagerFragmentAdapter.getFragment(position);
+                    if (currentFragment != null)
+                        ((SportsFragment) currentFragment).refreshData();
                 }
             }
 
@@ -506,6 +526,29 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().indicator.setVisibility(View.VISIBLE);
         getBinding().viewPager.setVisibility(View.VISIBLE);
 
+        int pos = getBinding().viewPager.getCurrentItem();
+
+        if (pos == 0) {
+            NavigationItem.getInstance().setTab("All");
+            Fragment currentFragment = viewPagerFragmentAdapter.getFragment(pos);
+            if (currentFragment != null)
+                ((HomeTabNew) currentFragment).refreshData();
+        } else if (pos == 1) {
+            NavigationItem.getInstance().setTab("TV Shows");
+            Fragment currentFragment = viewPagerFragmentAdapter.getFragment(pos);
+            if (currentFragment != null)
+                ((HomeFragment) currentFragment).refreshData();
+        } else if (pos == 2) {
+            NavigationItem.getInstance().setTab("Movies");
+            Fragment currentFragment = viewPagerFragmentAdapter.getFragment(pos);
+            if (currentFragment != null)
+                ((VideoFragment) currentFragment).refreshData();
+        } else if (pos == 3) {
+            NavigationItem.getInstance().setTab("Sports");
+            Fragment currentFragment = viewPagerFragmentAdapter.getFragment(pos);
+            if (currentFragment != null)
+                ((SportsFragment) currentFragment).refreshData();
+        }
         getBinding().tabs.post(new Runnable() {
             @Override
             public void run() {

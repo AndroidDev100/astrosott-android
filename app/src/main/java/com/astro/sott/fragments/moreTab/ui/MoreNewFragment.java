@@ -17,6 +17,7 @@ import android.view.View;
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
 import com.astro.sott.activities.forgotPassword.ui.IsThisYouActivity;
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
@@ -102,7 +103,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         oldLang = new KsPreferenceKey(getActivity()).getAppLangName();
         navBar = getActivity().findViewById(R.id.navigation);
         modelCall();
-      //  checkForLoginLogout();
+        //  checkForLoginLogout();
         UIinitialization();
     }
 
@@ -163,7 +164,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     bundle.putSerializable("productList", new ArrayList<String>());
                     someFragment.setArguments(bundle);
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.content_frame, someFragment,"SubscriptionFragment"); // give your fragment container id in first parameter
+                    transaction.replace(R.id.content_frame, someFragment, "SubscriptionFragment"); // give your fragment container id in first parameter
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                     transaction.commit();
                 } else {
@@ -390,7 +391,6 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         if (navBar.getVisibility() != View.VISIBLE) {
             navBar.setVisibility(View.VISIBLE);
         }
-
         checkForLoginLogout();
         updateLang();
         if (UserInfo.getInstance(getActivity()).isActive()) {
@@ -458,10 +458,10 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                             if (accountServiceMessageItem.getPaymentMethod() != null && !accountServiceMessageItem.getPaymentMethod().equalsIgnoreCase("")) {
                                 paymentMethod = accountServiceMessageItem.getPaymentMethod();
                             }
-
                         }
                     }
                     if (!displayName.equalsIgnoreCase("")) {
+                        UserInfo.getInstance(getActivity()).setVip(true);
                         getBinding().tvVIPUser.setText(displayName);
                         if (!isRenewal) {
                             getBinding().tvSubscribeNow.setVisibility(View.GONE);
@@ -548,6 +548,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().loginUi.setVisibility(View.GONE);
         LoginManager.getInstance().logOut();
         getBinding().edit.setVisibility(View.GONE);
+        new ActivityLauncher(getActivity()).homeScreen(getActivity(), HomeActivity.class);
 
     }
 }

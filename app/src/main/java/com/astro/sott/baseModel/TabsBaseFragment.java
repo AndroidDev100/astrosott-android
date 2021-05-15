@@ -38,6 +38,7 @@ import com.astro.sott.fragments.livetv.viewModel.LiveTvViewModel;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 
 import java.util.ArrayList;
@@ -449,6 +450,12 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 //        }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshData();
+    }
+
     private void setTabId() {
 
         if (viewModel instanceof HomeFragmentViewModel) {
@@ -464,6 +471,23 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
             screenID = String.valueOf(AppConstants.TAB_HOME_NEW_ID);
         } else {
             screenID = String.valueOf(AppConstants.TAB_FIRST);
+        }
+    }
+
+
+    public void refreshData() {
+        try {
+            if (UserInfo.getInstance(getActivity()).isActive()) {
+                for (int i = 0; i < loadedList.size(); i++) {
+                    if (loadedList.get(i).getTitle().equalsIgnoreCase(AppConstants.KEY_DFP_ADS)) {
+                        if (UserInfo.getInstance(getActivity()).isVip()) {
+                            loadedList.remove(i);
+                            adapter.notifyItemRemoved(i);
+                        }
+                    }
+                }
+            }
+        } catch (Exception ignored) {
         }
     }
 
