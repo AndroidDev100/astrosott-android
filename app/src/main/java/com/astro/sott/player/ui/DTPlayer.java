@@ -79,6 +79,7 @@ import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.Network;
 import com.astro.sott.utils.helpers.NetworkChangeReceiver;
 import com.astro.sott.utils.helpers.ToastHandler;
+import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.Alarm.MyReceiver;
 import com.astro.sott.BuildConfig;
@@ -511,7 +512,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().name.setText("\"" + asset.getName() + "\"");
             }
         } else if (isLivePlayer) {
-            getBinding().name.setText("\"" + programName + "\"");
+            getBinding().name.setText("\"" + Constants.channelName + "\"");
 
         } else {
             getBinding().name.setText("\"" + asset.getName() + "\"");
@@ -3388,21 +3389,21 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void isHDMI(DisplayManager mDisplayManager) {
-        Display display[]=mDisplayManager.getDisplays();
+        Display display[] = mDisplayManager.getDisplays();
         try {
-             if (display.length>0){
-            for (int i=0;i<display.length;i++){
-                Log.w("addedDisplays",display[i].getName());
-               // Toast.makeText(getActivity(), "Display " + display[i].getName() + " added.", Toast.LENGTH_LONG).show();
-                if (display[i].getName().contains("HDMI")){
-                    isHdmiConnected = true;
-                    if (runningPlayer!=null){
-                        runningPlayer.stop();
+            if (display.length > 0) {
+                for (int i = 0; i < display.length; i++) {
+                    Log.w("addedDisplays", display[i].getName());
+                    // Toast.makeText(getActivity(), "Display " + display[i].getName() + " added.", Toast.LENGTH_LONG).show();
+                    if (display[i].getName().contains("HDMI")) {
+                        isHdmiConnected = true;
+                        if (runningPlayer != null) {
+                            runningPlayer.stop();
+                        }
                     }
                 }
             }
-        }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -3412,8 +3413,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             new DisplayManager.DisplayListener() {
                 @Override
                 public void onDisplayAdded(int displayId) {
-                    Log.w("addedDisplays 4--",displayId+"");
-                     // Toast.makeText(getActivity(), "Display " + displayId + " added.", Toast.LENGTH_LONG).show();
+                    Log.w("addedDisplays 4--", displayId + "");
+                    // Toast.makeText(getActivity(), "Display " + displayId + " added.", Toast.LENGTH_LONG).show();
                     isHdmiConnected = true;
                     if (runningPlayer != null) {
                         runningPlayer.stop();
@@ -3423,16 +3424,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 @Override
                 public void onDisplayChanged(int displayId) {
-                    Log.w("addedDisplays 3--",displayId+"");
+                    Log.w("addedDisplays 3--", displayId + "");
                     // Toast.makeText(getActivity(), "Display " + displayId + " changed.", Toast.LENGTH_LONG).show();
                     // mDisplayListAdapter.updateContents();
                 }
 
                 @Override
                 public void onDisplayRemoved(int displayId) {
-                    Log.w("addedDisplays 2--",displayId+"");
+                    Log.w("addedDisplays 2--", displayId + "");
                     isHdmiConnected = false;
-                     Toast.makeText(getActivity(), "Display " + displayId + " removed.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Display " + displayId + " removed.", Toast.LENGTH_LONG).show();
                     try {
                         cancelTimer();
                         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
@@ -4035,37 +4036,37 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             try {
 
 
-            if (captionList[position].isSelected()) {
-                index = position;
-                //  holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
-                //  holder.tick.setBackgroundResource(R.drawable.tick);
-            } else {
-                // holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
-                // holder.tick.setBackgroundResource(0);
-                //viewHolder.notificationItemBinding.titleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            }
-            holder.playbackCaption.setText(captionList[position].getTrackName());
+                if (captionList[position].isSelected()) {
+                    index = position;
+                    //  holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
+                    //  holder.tick.setBackgroundResource(R.drawable.tick);
+                } else {
+                    // holder.playbackCaption.setTextColor(getResources().getColor(R.color.heather));
+                    // holder.tick.setBackgroundResource(0);
+                    //viewHolder.notificationItemBinding.titleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                }
+                holder.playbackCaption.setText(captionList[position].getTrackName());
 
-            finalInde = index;
-            holder.tracksCaption.setOnClickListener(view -> {
-                captionItemClick = 1;
-                captionList[finalInde].setSelected(false);
-                captionList[position].setSelected(true);
-                captionName = captionList[position].getTrackName();
-                viewModel.changeTextTrack(captionList[position].getUniqueId());
-                getBinding().audioDialog.setVisibility(View.GONE);
-                // dialogQuality.cancel();
-                hideSoftKeyButton();
+                finalInde = index;
+                holder.tracksCaption.setOnClickListener(view -> {
+                    captionItemClick = 1;
+                    captionList[finalInde].setSelected(false);
+                    captionList[position].setSelected(true);
+                    captionName = captionList[position].getTrackName();
+                    viewModel.changeTextTrack(captionList[position].getUniqueId());
+                    getBinding().audioDialog.setVisibility(View.GONE);
+                    // dialogQuality.cancel();
+                    hideSoftKeyButton();
 
-                notifyDataSetChanged();
-            });
+                    notifyDataSetChanged();
+                });
 
-                Log.w("subtitleS", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey()+ "-----"+captionItemClick);
+                Log.w("subtitleS", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey() + "-----" + captionItemClick);
                 if (captionItemClick == 0) {
-                    Log.w("subtitleS 2", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey()+ "-----"+captionItemClick);
+                    Log.w("subtitleS 2", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey() + "-----" + captionItemClick);
                     // Log.w("colorChange 2",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
                     if (new KsPreferenceKey(baseActivity).getSubtitleLanguageIndex() > -1 && !new KsPreferenceKey(baseActivity).getSubTitleLangKey().equalsIgnoreCase("")) {
-                        Log.w("subtitleS 3", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey()+ "-----"+captionItemClick);
+                        Log.w("subtitleS 3", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey() + "-----" + captionItemClick);
                         if (tracks[position].getTrackName().trim().equalsIgnoreCase(new KsPreferenceKey(baseActivity).getSubTitleLangKey().trim())) {
                             holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
                         } else {
@@ -4113,30 +4114,30 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         public void onBindViewHolder(@NonNull final ViewHolder2 holder, final int position) {
             int index = 0;
             try {
-            if (tracks[position] != null) {
-                holder.audioTracks.setText(tracks[position].getTrackName());
+                if (tracks[position] != null) {
+                    holder.audioTracks.setText(tracks[position].getTrackName());
 
-                if (tracks[position].isSelected()) {
-                    index = position;
-                    // holder.tick.setBackgroundResource(R.drawable.tick);
-                } else {
-                    //  holder.tick.setBackgroundResource(0);
-                    //viewHolder.notificationItemBinding.titleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                }
-                int finalIndex = index;
-                holder.audio.setOnClickListener(view -> {
-                    audioItemClick = 1;
-                    tracks[finalIndex].setSelected(false);
-                    tracks[position].setSelected(true);
-                    audioTrackName = tracks[position].getTrackName();
-                    //   holder.tick.setVisibility(View.VISIBLE);
-                    viewModel.changeAudioTrack(tracks[position].getUniqueId());
-                    //  dialogQuality.cancel();
-                    hideSoftKeyButton();
-                    notifyDataSetChanged();
+                    if (tracks[position].isSelected()) {
+                        index = position;
+                        // holder.tick.setBackgroundResource(R.drawable.tick);
+                    } else {
+                        //  holder.tick.setBackgroundResource(0);
+                        //viewHolder.notificationItemBinding.titleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    }
+                    int finalIndex = index;
+                    holder.audio.setOnClickListener(view -> {
+                        audioItemClick = 1;
+                        tracks[finalIndex].setSelected(false);
+                        tracks[position].setSelected(true);
+                        audioTrackName = tracks[position].getTrackName();
+                        //   holder.tick.setVisibility(View.VISIBLE);
+                        viewModel.changeAudioTrack(tracks[position].getUniqueId());
+                        //  dialogQuality.cancel();
+                        hideSoftKeyButton();
+                        notifyDataSetChanged();
 
 
-                });
+                    });
 
 
                     Log.w("colorChange", tracks[position].getTrackDescription() + "" + new KsPreferenceKey(baseActivity).getAudioLangKey());
@@ -4168,7 +4169,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         }
                     }
 
-            }
+                }
             } catch (Exception ignored) {
 
             }
