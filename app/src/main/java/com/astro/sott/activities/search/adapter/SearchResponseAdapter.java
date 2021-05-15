@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private final List<SearchModel> dataList;
     private final Activity activity;
     private String heading;
+    private long lastClickTime = 0;
 
     private int count;
 
@@ -71,11 +73,9 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (viewType == MediaTypeConstant.getLinear(activity)) {
             PrintLogging.printLog(this.getClass(), "", "checkSearchId" + viewType);
             return new LinearTypeViewHolder(binding);
-        }
-        else if (viewType == MediaTypeConstant.getProgram(activity)) {
+        } else if (viewType == MediaTypeConstant.getProgram(activity)) {
             return new ProgramTypeViewHolder(binding);
-        }
-        else {
+        } else {
             PrintLogging.printLog(this.getClass(), "", "checkSearchId" + viewType);
             return new EpisodeTypeViewHolder(binding);
         }
@@ -83,9 +83,9 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
 
-    private void setHeaderData(TextView textView, TextView headerSearchCount,int type, TextView all) {
+    private void setHeaderData(TextView textView, TextView headerSearchCount, int type, TextView all) {
         if (activity.getResources().getBoolean(R.bool.isTablet)) {
-           // textView.setTextColor(activity.getResources().getColor(R.color.primary_blue));
+            // textView.setTextColor(activity.getResources().getColor(R.color.primary_blue));
         }
         for (int i = 0; i < dataList.size(); i++) {
             if (dataList.get(i).getType() == type) {
@@ -102,13 +102,13 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         if (count == 1) {
             stringBuilder.append(heading);
-            stringBuilder2.append(" (" + count+" ");
-            stringBuilder2.append(activity.getResources().getString(R.string.result)+")");
+            stringBuilder2.append(" (" + count + " ");
+            stringBuilder2.append(activity.getResources().getString(R.string.result) + ")");
 
         } else {
             stringBuilder.append(heading);
-            stringBuilder2.append(" (" + count+" ");
-            stringBuilder2.append(activity.getResources().getString(R.string.results)+")");
+            stringBuilder2.append(" (" + count + " ");
+            stringBuilder2.append(activity.getResources().getString(R.string.results) + ")");
 
         }
 
@@ -119,61 +119,64 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             all.setVisibility(View.GONE);
 
 
-       // StringBuilderHolder.getInstance().clear();
-       // StringBuilderHolder.getInstance().append(activity.getResources().getString(R.string.show_all));
-       // StringBuilderHolder.getInstance().append(" ");
+        // StringBuilderHolder.getInstance().clear();
+        // StringBuilderHolder.getInstance().append(activity.getResources().getString(R.string.show_all));
+        // StringBuilderHolder.getInstance().append(" ");
 
-       //  all.setText(StringBuilderHolder.getInstance().getText());
+        //  all.setText(StringBuilderHolder.getInstance().getText());
     }
 
     @Override
     public void onItemClicked(final Asset itemValue, int position) {
         try {
-
-        if (itemValue != null && itemValue.getType() == MediaTypeConstant.getMovie(activity)) {
-            getRailCommonData(itemValue, activity.getResources().getString(R.string.movie));
-            if (railCommonData.getImages().size() == itemValue.getImages().size())
-                new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);
-        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getShortFilm(activity)) {
-            getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
-            if (railCommonData.getImages().size() == itemValue.getImages().size())
-                new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);
-        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getSeries(activity)) {
-            getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
-            if (railCommonData.getImages().size() == itemValue.getImages().size())
-                new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
-        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getEpisode(activity)) {
-            getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
-            if (railCommonData.getImages().size() == itemValue.getImages().size())
-                new ActivityLauncher(activity).webDetailRedirection(railCommonData, AppLevelConstants.Rail5);
-        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getCollection(activity)) {
-            getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
-            if (railCommonData.getImages().size() == itemValue.getImages().size())
-                new ActivityLauncher(activity).boxSetDetailActivity(activity,railCommonData, AppLevelConstants.Rail3);
-        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getLinear(activity)) {
-            getRailCommonData(itemValue, activity.getResources().getString(R.string.ugc_video_item_clicked));
-            if (railCommonData.getImages().size() == itemValue.getImages().size())
-                new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, railCommonData);
-        } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getProgram(activity)) {
-            new LiveChannelManager().getLiveProgram(activity, itemValue, asset -> {
-                if (asset.getStatus()) {
-                    if (asset.getLivePrograme()) {
-                        getProgramRailCommonData(asset.getCurrentProgram(), "liveChannelCall-->>" + asset.getStatus());
-                        new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, railCommonData);
-                    } else {
-                        getProgramRailCommonData(asset.getCurrentProgram(), "liveChannelCall-->>" + asset.getStatus() + "--" + asset.getProgramTime());
-                        if (asset.getProgramTime() == 1) {
-                            getProgramRailCommonData(asset.getCurrentProgram(), "Program VideoItemClicked");
-                           // new ActivityLauncher(activity).catchUpActivity(activity, CatchupActivity.class, railCommonData);
-                        } else {
-                           //   new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
+            if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                return;
+            }
+            lastClickTime = SystemClock.elapsedRealtime();
+            if (itemValue != null && itemValue.getType() == MediaTypeConstant.getMovie(activity)) {
+                getRailCommonData(itemValue, activity.getResources().getString(R.string.movie));
+                if (railCommonData.getImages().size() == itemValue.getImages().size())
+                    new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);
+            } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getShortFilm(activity)) {
+                getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
+                if (railCommonData.getImages().size() == itemValue.getImages().size())
+                    new ActivityLauncher(activity).detailActivity(activity, MovieDescriptionActivity.class, railCommonData, AppLevelConstants.Rail3);
+            } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getSeries(activity)) {
+                getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
+                if (railCommonData.getImages().size() == itemValue.getImages().size())
+                    new ActivityLauncher(activity).webSeriesActivity(activity, WebSeriesDescriptionActivity.class, railCommonData, AppLevelConstants.Rail5);
+            } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getEpisode(activity)) {
+                getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
+                if (railCommonData.getImages().size() == itemValue.getImages().size())
+                    new ActivityLauncher(activity).webDetailRedirection(railCommonData, AppLevelConstants.Rail5);
+            } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getCollection(activity)) {
+                getRailCommonData(itemValue, activity.getResources().getString(R.string.short_film_onitem_clicked));
+                if (railCommonData.getImages().size() == itemValue.getImages().size())
+                    new ActivityLauncher(activity).boxSetDetailActivity(activity, railCommonData, AppLevelConstants.Rail3);
+            } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getLinear(activity)) {
+                getRailCommonData(itemValue, activity.getResources().getString(R.string.ugc_video_item_clicked));
+                if (railCommonData.getImages().size() == itemValue.getImages().size())
+                    new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, railCommonData);
+            } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getProgram(activity)) {
+                new LiveChannelManager().getLiveProgram(activity, itemValue, asset -> {
+                    if (asset.getStatus()) {
+                        if (asset.getLivePrograme()) {
+                            getProgramRailCommonData(asset.getCurrentProgram(), "liveChannelCall-->>" + asset.getStatus());
                             new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, railCommonData);
+                        } else {
+                            getProgramRailCommonData(asset.getCurrentProgram(), "liveChannelCall-->>" + asset.getStatus() + "--" + asset.getProgramTime());
+                            if (asset.getProgramTime() == 1) {
+                                getProgramRailCommonData(asset.getCurrentProgram(), "Program VideoItemClicked");
+                                // new ActivityLauncher(activity).catchUpActivity(activity, CatchupActivity.class, railCommonData);
+                            } else {
+                                //   new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
+                                new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, railCommonData);
+                            }
                         }
                     }
-                }
-            });
-        }
-        }catch (Exception ignored){
+                });
+            }
+        } catch (Exception ignored) {
 
         }
     }
@@ -223,7 +226,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (viewHolder instanceof MovieTypeViewHolder) {
             try {
                 setRecyclerProperties(((MovieTypeViewHolder) viewHolder).binding.recyclerView);
-                setHeaderData(((MovieTypeViewHolder) viewHolder).binding.headerTitleSearch,((MovieTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getMovie(activity), ((MovieTypeViewHolder) viewHolder).binding.tvShowAll);
+                setHeaderData(((MovieTypeViewHolder) viewHolder).binding.headerTitleSearch, ((MovieTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getMovie(activity), ((MovieTypeViewHolder) viewHolder).binding.tvShowAll);
                 ((MovieTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
                 ((MovieTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));
             } catch (ClassCastException e) {
@@ -232,25 +235,25 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (viewHolder instanceof EpisodeTypeViewHolder) {
             setRecyclerProperties(((EpisodeTypeViewHolder) viewHolder).binding.recyclerView);
             ((EpisodeTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
-            setHeaderData(((EpisodeTypeViewHolder) viewHolder).binding.headerTitleSearch,((EpisodeTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getEpisode(activity), ((EpisodeTypeViewHolder) viewHolder).binding.tvShowAll);
+            setHeaderData(((EpisodeTypeViewHolder) viewHolder).binding.headerTitleSearch, ((EpisodeTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getEpisode(activity), ((EpisodeTypeViewHolder) viewHolder).binding.tvShowAll);
             ((EpisodeTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));
 
         } else if (viewHolder instanceof CollectionTypeViewHolder) {
             setRecyclerProperties(((CollectionTypeViewHolder) viewHolder).binding.recyclerView);
             ((CollectionTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
-            setHeaderData(((CollectionTypeViewHolder) viewHolder).binding.headerTitleSearch,((CollectionTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getCollection(activity), ((CollectionTypeViewHolder) viewHolder).binding.tvShowAll);
+            setHeaderData(((CollectionTypeViewHolder) viewHolder).binding.headerTitleSearch, ((CollectionTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getCollection(activity), ((CollectionTypeViewHolder) viewHolder).binding.tvShowAll);
             ((CollectionTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));
 
         } else if (viewHolder instanceof LinearTypeViewHolder) {
 
             setRecyclerProperties(((LinearTypeViewHolder) viewHolder).binding.recyclerView);
-            setHeaderData(((LinearTypeViewHolder) viewHolder).binding.headerTitleSearch,((LinearTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getLinear(activity), ((LinearTypeViewHolder) viewHolder).binding.tvShowAll);
+            setHeaderData(((LinearTypeViewHolder) viewHolder).binding.headerTitleSearch, ((LinearTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getLinear(activity), ((LinearTypeViewHolder) viewHolder).binding.tvShowAll);
 
             ((LinearTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
             ((LinearTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));
         } else if (viewHolder instanceof SeasonTypeViewHolder) {
             setRecyclerProperties(((SeasonTypeViewHolder) viewHolder).binding.recyclerView);
-            setHeaderData(((SeasonTypeViewHolder) viewHolder).binding.headerTitleSearch,((SeasonTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getShortFilm(activity), ((SeasonTypeViewHolder) viewHolder).binding.tvShowAll);
+            setHeaderData(((SeasonTypeViewHolder) viewHolder).binding.headerTitleSearch, ((SeasonTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getShortFilm(activity), ((SeasonTypeViewHolder) viewHolder).binding.tvShowAll);
 
             ((SeasonTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
             ((SeasonTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));
@@ -258,14 +261,14 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         } else if (viewHolder instanceof SeriesTypeViewHolder) {
             setRecyclerProperties(((SeriesTypeViewHolder) viewHolder).binding.recyclerView);
-            setHeaderData(((SeriesTypeViewHolder) viewHolder).binding.headerTitleSearch,((SeriesTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getSeries(activity), ((SeriesTypeViewHolder) viewHolder).binding.tvShowAll);
+            setHeaderData(((SeriesTypeViewHolder) viewHolder).binding.headerTitleSearch, ((SeriesTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getSeries(activity), ((SeriesTypeViewHolder) viewHolder).binding.tvShowAll);
 
             ((SeriesTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
             ((SeriesTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));
 
         } else if (viewHolder instanceof ProgramTypeViewHolder) {
             setRecyclerProperties(((ProgramTypeViewHolder) viewHolder).binding.recyclerView);
-            setHeaderData(((ProgramTypeViewHolder) viewHolder).binding.headerTitleSearch,((ProgramTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getProgram(activity), ((ProgramTypeViewHolder) viewHolder).binding.tvShowAll);
+            setHeaderData(((ProgramTypeViewHolder) viewHolder).binding.headerTitleSearch, ((ProgramTypeViewHolder) viewHolder).binding.headerSearchCount, MediaTypeConstant.getProgram(activity), ((ProgramTypeViewHolder) viewHolder).binding.tvShowAll);
 
             ((ProgramTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
             ((ProgramTypeViewHolder) viewHolder).binding.tvShowAll.setOnClickListener(view -> callResultActivity(dataList.get(position).getType()));
