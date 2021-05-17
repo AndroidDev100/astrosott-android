@@ -144,7 +144,7 @@
                 android:src="@drawable/ic_check"
                 android:visibility="gone"
                 android:layout_marginStart="-1dp"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/contentDescription" />
         </FrameLayout>
 
     </LinearLayout>

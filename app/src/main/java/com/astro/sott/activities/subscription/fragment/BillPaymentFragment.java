@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class BillPaymentFragment extends BaseBindingFragment<FragmentBillPaymentBinding> implements BillPaymentMethodCallBack, AlertDialogSingleButtonFragment.AlertDialogListener {
 
@@ -213,7 +214,7 @@ public class BillPaymentFragment extends BaseBindingFragment<FragmentBillPayment
             currency = AllChannelManager.getInstance().getCurrency();
             productId = AllChannelManager.getInstance().getProductId();
             Date systemDate = Calendar.getInstance().getTime();
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.getDefault());
             startTime = sdf.format(systemDate);
 
             viewModel.callPurchaseApi(paymentMethodId, productId, currency, price).observe(this, new Observer<PurchaseResponse>() {
@@ -249,7 +250,7 @@ public class BillPaymentFragment extends BaseBindingFragment<FragmentBillPayment
             isFirstTimePurchaseCall = false;
         }else {
             Date systemDate = Calendar.getInstance().getTime();
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss",Locale.getDefault());
             endTime = sdf.format(systemDate);
         }
         return endTime;

@@ -39,6 +39,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -1571,7 +1572,7 @@ public class AssetContent {
 
     public static long getTimeDifference(String startTime, String endTime) {
         long diffSeconds1 = 0;
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.getDefault());
 
         Date d1 = null;
         Date d2 = null;
@@ -1656,8 +1657,8 @@ public class AssetContent {
         if (playbackStart != null) {
             date = playbackStart.getValue();
             if (date != null && !date.equalsIgnoreCase("")) {
-                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                SimpleDateFormat outputFormat = new SimpleDateFormat("MMM dd");
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",Locale.getDefault());
+                SimpleDateFormat outputFormat = new SimpleDateFormat("MMM dd",Locale.getDefault());
                 inputFormat.setTimeZone(TimeZone.getDefault());
                 try {
                     inputDate = inputFormat.parse(date);
@@ -1686,7 +1687,7 @@ public class AssetContent {
 
                 Calendar calendar = Calendar.getInstance();
                 Date today = calendar.getTime();
-                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",Locale.getDefault());
                 inputFormat.setTimeZone(TimeZone.getDefault());
                 String currentTime = inputFormat.format(today);
                 try {

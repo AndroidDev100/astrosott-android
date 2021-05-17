@@ -1,5 +1,6 @@
 package com.astro.sott.utils.helpers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.widget.ImageView;
@@ -70,6 +71,7 @@ public class ImageHelper {
     }
 
 
+    @SuppressLint("CheckResult")
     public void loadImageToPotrait(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
@@ -77,6 +79,7 @@ public class ImageHelper {
 
 
     }
+    @SuppressLint("CheckResult")
     public void loadImageToLandscape(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
@@ -84,6 +87,7 @@ public class ImageHelper {
 
 
     }
+    @SuppressLint("CheckResult")
     public void loadImageToCarousal(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
@@ -92,6 +96,7 @@ public class ImageHelper {
 
     }
 
+    @SuppressLint("CheckResult")
     public void loadImageToPortraitListing(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
@@ -99,6 +104,7 @@ public class ImageHelper {
 
 
     }
+    @SuppressLint("CheckResult")
     public void loadImageToPortraitDetailListing(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
@@ -106,6 +112,7 @@ public class ImageHelper {
 
 
     }
+    @SuppressLint("CheckResult")
     public void loadImageTocontinueWatchingListing(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
@@ -113,6 +120,7 @@ public class ImageHelper {
 
 
     }
+    @SuppressLint("CheckResult")
     public void loadImageToLandscapeListingAdapter(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
@@ -121,6 +129,7 @@ public class ImageHelper {
 
     }
 
+    @SuppressLint("CheckResult")
     public void loadImageToLandscapeDetailListingAdapter(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
@@ -152,6 +161,7 @@ public class ImageHelper {
 
     }
 
+    @SuppressLint("CheckResult")
     public void loadImageOfGenre(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
@@ -160,6 +170,7 @@ public class ImageHelper {
 
     }
 
+    @SuppressLint("CheckResult")
     public void loadQuickSearchImage(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
@@ -169,6 +180,7 @@ public class ImageHelper {
     }
 
 
+    @SuppressLint("CheckResult")
     public void loadPlaceHolder(ImageView imageView, int placeholder_square) {
         requestOptions.placeholder(placeholder_square);
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).

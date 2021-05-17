@@ -19,7 +19,7 @@
             android:layout_height="65dp"
             android:layout_gravity="center"
             android:clickable="false"
-            android:contentDescription="TODO" />
+            android:contentDescription="@string/contentDescription" />
 
         <TextView
             android:id="@+id/restriction_level"

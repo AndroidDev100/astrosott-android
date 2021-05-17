@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -53,7 +54,8 @@
                     android:visibility="gone"
                     android:textAllCaps="false"
                     android:textColor="@color/aqua_marine"
-                    android:textSize="@dimen/_12sp" />
+                    android:textSize="@dimen/_12sp"
+                    tools:ignore="KeyboardInaccessibleWidget" />
 
 
             </LinearLayout>

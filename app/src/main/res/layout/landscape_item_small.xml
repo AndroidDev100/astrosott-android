@@ -106,7 +106,7 @@
                 android:elevation="2dp"
                 android:layout_gravity="end|top"
                 android:visibility="gone"
-                android:contentDescription="TODO">
+                android:contentDescription="@string/contentDescription">
 
             </ImageView>
 

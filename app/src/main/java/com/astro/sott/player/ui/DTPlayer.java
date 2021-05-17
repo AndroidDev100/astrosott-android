@@ -1,6 +1,7 @@
 package com.astro.sott.player.ui;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Dialog;
@@ -455,7 +456,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     public void onStart() {
         super.onStart();
         try {
-            Toast.makeText(getActivity(), "startcalled", Toast.LENGTH_LONG);
+            Toast.makeText(getActivity(), "startcalled", Toast.LENGTH_LONG).show();
             if (wakeLock != null) {
                 wakeLock.acquire();
             }
@@ -2477,6 +2478,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void UIControllers() {
 
         getBinding().seekBar.setProgress(0);
@@ -2633,6 +2635,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }));
 
         getBinding().rl1.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 try {
@@ -2645,7 +2648,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 return false;
             }
         });
-
+     
 
         getBinding().forward.setOnClickListener(view -> {
             getBinding().pBar.setVisibility(View.VISIBLE);
@@ -3496,6 +3499,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         Log.d("SeasonNumberIs", seasonNumber + "");
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setTouchFalse() {
         getBinding().rl1.setOnTouchListener((v, event) -> false);
         getBinding().rl.setOnTouchListener((v, event) -> false);
@@ -3733,6 +3737,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

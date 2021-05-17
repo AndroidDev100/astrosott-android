@@ -13,7 +13,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/imagePadding80dp"
             android:src="@drawable/payment"
-            android:contentDescription="TODO" />
+            android:contentDescription="@string/contentDescription" />
 
         <LinearLayout
             android:id="@+id/lnPaymentDescription"

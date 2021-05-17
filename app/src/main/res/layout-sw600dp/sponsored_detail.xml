@@ -138,7 +138,7 @@
                                         android:id="@+id/star_icon"
                                         android:layout_marginEnd="@dimen/dimen14dp"
                                         android:layout_toStartOf="@id/play_text"
-                                        android:contentDescription="TODO" />
+                                        android:contentDescription="@string/contentDescription" />
                                     <TextView
                                         android:id="@+id/play_text"
                                         android:layout_width="wrap_content"
@@ -189,7 +189,7 @@
                                     <ImageView
                                         android:layout_width="109dp"
                                         android:layout_height="24dp"
-                                        android:contentDescription="TODO">
+                                        android:contentDescription="@string/contentDescription">
 
                                     </ImageView>
 

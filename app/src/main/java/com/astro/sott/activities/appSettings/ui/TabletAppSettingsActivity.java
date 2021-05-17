@@ -1,6 +1,8 @@
 package com.astro.sott.activities.appSettings.ui;
 
 import androidx.lifecycle.ViewModelProviders;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -184,6 +186,7 @@ public class TabletAppSettingsActivity extends BaseBindingActivity<AppSettingsBi
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
 

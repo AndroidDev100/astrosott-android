@@ -285,7 +285,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     private String getCurrentTime(int i) {
         String output = "";
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy",Locale.getDefault());
             Calendar c = Calendar.getInstance();
             c.setTime(new Date()); // Now use today date.
             c.add(Calendar.DATE, i); // Adding 5 days

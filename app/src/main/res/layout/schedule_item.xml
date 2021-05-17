@@ -31,7 +31,7 @@
                     android:layout_height="90dp"
                     android:background="@drawable/ic_landscape_placeholder"
                     android:scaleType="fitXY"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="@string/contentDescription" />
 
                 <ImageView
                     android:id="@+id/play_icon"
@@ -40,7 +40,7 @@
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_green_play_buton"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="@string/contentDescription" />
 
             </RelativeLayout>
 
@@ -85,7 +85,7 @@
                         android:paddingRight="8dp"
                         android:text="jbnmjnm nmbvhxdfgvhbn"
                         android:textColor="@color/title_color"
-                        android:textSize="11sp" />
+                        android:textSize="@dimen/_12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -101,7 +101,7 @@
                         android:layout_marginStart="19dp"
                         android:background="@drawable/ic_share_white_24px"
                         android:visibility="visible"
-                        android:contentDescription="TODO">
+                        android:contentDescription="@string/contentDescription">
 
                     </ImageView>
 
@@ -111,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:background="@drawable/ic_notifications_24px"
-                        android:contentDescription="TODO">
+                        android:contentDescription="@string/contentDescription">
 
                     </ImageView>
 

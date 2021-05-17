@@ -180,7 +180,7 @@
                                     <ImageView
                                         android:layout_width="109dp"
                                         android:layout_height="24dp"
-                                        android:contentDescription="TODO">
+                                        android:contentDescription="@string/contentDescription">
 
                                     </ImageView>
 

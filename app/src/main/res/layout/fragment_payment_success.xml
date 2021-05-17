@@ -17,7 +17,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="@dimen/imageMargin60dp"
             android:src="@drawable/paymentsuccess"
-            android:contentDescription="TODO" />
+            android:contentDescription="@string/contentDescription" />
 
         <LinearLayout
             android:layout_width="match_parent"

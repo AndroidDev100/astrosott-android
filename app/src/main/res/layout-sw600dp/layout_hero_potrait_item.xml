@@ -45,7 +45,7 @@
                 android:layout_marginEnd="0dp"
                 android:background="@drawable/ic_potrait_placeholder"
                 android:scaleType="fitXY"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/contentDescription" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

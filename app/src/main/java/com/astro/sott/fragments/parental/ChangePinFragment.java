@@ -1,5 +1,6 @@
 package com.astro.sott.fragments.parental;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -44,6 +45,7 @@ public class ChangePinFragment extends BaseBindingFragment<FragmentChangePinBind
         getBinding().cancel.setOnClickListener(this);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

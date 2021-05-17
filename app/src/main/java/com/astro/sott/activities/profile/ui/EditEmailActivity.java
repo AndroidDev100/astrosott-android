@@ -3,6 +3,7 @@ package com.astro.sott.activities.profile.ui;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -117,6 +118,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
         }));
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

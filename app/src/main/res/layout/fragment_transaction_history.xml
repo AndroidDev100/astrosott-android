@@ -25,7 +25,7 @@
                 android:layout_marginStart="@dimen/_8dp"
                 android:padding="@dimen/_6dp"
                 android:src="@drawable/ic_back"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/contentDescription" />
 
             <TextView
                 android:id="@+id/title"
@@ -51,7 +51,7 @@
                 android:layout_margin="@dimen/_8sdp"
                 android:padding="@dimen/_6dp"
                 android:src="@drawable/ic_file_download_24px"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/contentDescription" />
         </RelativeLayout>
 
 
@@ -112,7 +112,7 @@
                     android:layout_marginStart="@dimen/dimen16dp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:background="@drawable/ic_baseline_keyboard_arrow_down_24"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="@string/contentDescription" />
             </LinearLayout>
 
             <View

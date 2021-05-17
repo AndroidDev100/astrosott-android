@@ -109,7 +109,7 @@
                         android:fontFamily="@font/heebo_regular"
                         android:hint="@string/email_id_mobileNo"
                         android:importantForAutofill="no"
-                        android:inputType="text|textNoSuggestions"
+                        android:inputType="text|textNoSuggestions|textEmailAddress"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:textColor="@color/white"

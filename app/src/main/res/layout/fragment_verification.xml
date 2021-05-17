@@ -1,4 +1,4 @@
-<layout >
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -8,7 +8,7 @@
         android:background="@color/fragment_background_color"
         android:clickable="true"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        >
+        tools:ignore="KeyboardInaccessibleWidget">
 
         <TextView
             android:id="@+id/sign_up_text"
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/notie_eye_selector"
                 android:visibility="gone"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/contentDescription" />
         </FrameLayout>
 
         <!--<View-->

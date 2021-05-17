@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/ic_landscape_placeholder"
                 android:scaleType="fitXY"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/contentDescription" />
 
 
             <ImageView
@@ -31,7 +31,7 @@
                 android:layout_height="@dimen/play_icon_height"
                 android:layout_gravity="center"
                 android:background="@drawable/play_icon"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/contentDescription" />
         </FrameLayout>
 
         <TextView

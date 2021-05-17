@@ -17,7 +17,7 @@
                 android:layout_height="@dimen/dimen80dp"
                 android:src="@drawable/wallet_logo"
                 android:scaleType="fitXY"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/contentDescription" />
         </LinearLayout>
 
 </layout>

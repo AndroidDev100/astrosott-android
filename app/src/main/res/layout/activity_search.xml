@@ -20,7 +20,8 @@
                 android:layout_height="wrap_content">
 
                 <include
-                    layout="@layout/search_toolbar" />
+                    layout="@layout/search_toolbar"
+                    tools:ignore="DuplicateIncludedIds" />
 
             </LinearLayout>
 

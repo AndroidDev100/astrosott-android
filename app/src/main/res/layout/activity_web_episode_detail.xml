@@ -191,7 +191,7 @@
                                     android:layout_marginEnd="@dimen/_8dp"
                                     android:visibility="gone"
                                     android:src="@drawable/ic_star_24_px"
-                                    android:contentDescription="TODO" />
+                                    android:contentDescription="@string/contentDescription" />
 
 
                                 <TextView

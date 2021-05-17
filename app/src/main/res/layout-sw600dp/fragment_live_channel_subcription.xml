@@ -32,7 +32,7 @@
                     android:layout_height="@dimen/height150dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/placeholder_square"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="@string/contentDescription" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

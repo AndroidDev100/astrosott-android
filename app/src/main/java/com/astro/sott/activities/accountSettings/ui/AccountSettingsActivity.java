@@ -1,5 +1,6 @@
 package com.astro.sott.activities.accountSettings.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -81,6 +82,7 @@ public class AccountSettingsActivity extends BaseBindingActivity<AccountSettings
         new ActivityLauncher(AccountSettingsActivity.this).mbbActivity(AccountSettingsActivity.this, MBBAccountActivity.class);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

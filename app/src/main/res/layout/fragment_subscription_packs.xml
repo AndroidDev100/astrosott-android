@@ -23,7 +23,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="16dp"
                 android:background="@drawable/sooka_landscape"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/contentDescription" />
         </LinearLayout>
 
         <ImageView
@@ -36,7 +36,7 @@
             android:layout_marginEnd="20dp"
             android:src="@drawable/ic_baseline_clear_24"
             android:visibility="gone"
-            android:contentDescription="TODO" />
+            android:contentDescription="@string/contentDescription" />
 
         <TextView
             android:id="@+id/vip_packs"

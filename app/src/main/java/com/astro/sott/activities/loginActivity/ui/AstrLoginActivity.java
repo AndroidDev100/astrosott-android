@@ -1,5 +1,6 @@
 package com.astro.sott.activities.loginActivity.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -593,6 +594,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         });
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

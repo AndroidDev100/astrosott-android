@@ -26,7 +26,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
             android:layout_marginEnd="@dimen/dimen16dp"
-            android:contentDescription="TODO">
+            android:contentDescription="@string/contentDescription">
 
         </ImageView>
 

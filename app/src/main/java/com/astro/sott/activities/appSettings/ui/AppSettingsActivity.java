@@ -1,5 +1,6 @@
 package com.astro.sott.activities.appSettings.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -103,6 +104,7 @@ public class AppSettingsActivity extends BaseBindingActivity<AppSettingsBinding>
         });
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
 

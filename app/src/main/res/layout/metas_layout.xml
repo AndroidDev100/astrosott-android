@@ -22,7 +22,7 @@
             android:background="@drawable/ic_star_ribbon"
             android:elevation="2dp"
             android:visibility="gone"
-            android:contentDescription="TODO">
+            android:contentDescription="@string/contentDescription">
 
         </ImageView>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,7 +44,8 @@
                     android:text="@string/show_all"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_8sdp" />
+                    android:textSize="@dimen/_8sdp"
+                    tools:ignore="KeyboardInaccessibleWidget" />
                 <!--<LinearLayout-->
                 <!--android:id="@+id/more_text"-->
                 <!--android:layout_width="wrap_content"-->

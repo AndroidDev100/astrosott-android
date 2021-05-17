@@ -197,7 +197,7 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa");
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa",Locale.getDefault());
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
@@ -335,7 +335,7 @@ public class AppCommonMethods {
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy",Locale.getDefault());
             sdf.setTimeZone(TimeZone.getDefault());
 
             Date currenTimeZone = (Date) calendar.getTime();
@@ -413,7 +413,7 @@ public class AppCommonMethods {
                 if (Integer.parseInt(progTimeMin) == 00) {
                     progTimeMin = "00";
                 }
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
                 Date date2 = simpleDateFormat.parse(progTimeHour + ":" + progTimeMin);
                 Date date1 = simpleDateFormat.parse(currTimeHour + ":" + currTimeMin);
 
@@ -459,7 +459,7 @@ public class AppCommonMethods {
                 }
 
             } else {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
                 Date date2 = simpleDateFormat.parse(progTimeHour + ":" + progTimeMin);
                 Date date1 = simpleDateFormat.parse(currTimeHour + ":" + currTimeMin);
 
@@ -1447,7 +1447,7 @@ public class AppCommonMethods {
             }
 
             Date date = new Date(_time * 1000L);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss",Locale.getDefault());
             dateTimeValue = simpleDateFormat.format(date);
 
 
@@ -1468,7 +1468,7 @@ public class AppCommonMethods {
             }
 
             Date date = new Date(_time * 1000L);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss",Locale.getDefault());
             dateTimeValue = simpleDateFormat.format(date);
 
 
@@ -1772,7 +1772,7 @@ public class AppCommonMethods {
 
         Calendar calendar = Calendar.getInstance();
         Date today = calendar.getTime();
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.getDefault());
         inputFormat.setTimeZone(TimeZone.getDefault());
         String currentTime = inputFormat.format(today);
         try {
@@ -1802,7 +1802,7 @@ public class AppCommonMethods {
 
         Calendar calendar = Calendar.getInstance();
         Date today = calendar.getTime();
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",Locale.getDefault());
         inputFormat.setTimeZone(TimeZone.getDefault());
         String currentTime = inputFormat.format(today);
         try {
@@ -2708,7 +2708,7 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa");
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa",Locale.getDefault());
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
@@ -2722,7 +2722,7 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa");
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa",Locale.getDefault());
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);

@@ -46,7 +46,8 @@
             android:layout_marginEnd="@dimen/dimen10dp"
             android:fontFamily="@font/roboto_light"
             android:layout_marginTop="@dimen/dimen40dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:autofillHints="" />
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -77,13 +78,14 @@
                 android:id="@+id/btnCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CANCEL"
+                android:text="@string/cancel"
                 android:textColor="@color/cancel_text"
                 android:textSize="@dimen/sp20"
                 android:gravity="start"
                 android:background="@color/transparentColor"
                 android:fontFamily="@font/roboto_bold"
-                android:layout_marginStart="@dimen/dimen10dp" />
+                android:layout_marginStart="@dimen/dimen10dp"
+                 />
             <Button
                 android:id="@+id/btnContinue"
                 android:layout_width="wrap_content"

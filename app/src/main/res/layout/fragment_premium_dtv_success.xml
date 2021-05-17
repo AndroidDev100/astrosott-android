@@ -18,7 +18,7 @@
             android:layout_gravity="center"
             android:src="@drawable/premium_success"
             android:layout_marginTop="@dimen/dimen20dp"
-            android:contentDescription="TODO" />
+            android:contentDescription="@string/contentDescription" />
 
         <TextView
             android:layout_width="wrap_content"

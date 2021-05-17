@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.SingleItemHolder> {
@@ -108,7 +109,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd/MM/YYYY");
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd/MM/yyyy", Locale.getDefault());
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
         } catch (Exception e) {
