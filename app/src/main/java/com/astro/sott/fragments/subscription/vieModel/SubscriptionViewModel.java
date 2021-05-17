@@ -38,8 +38,8 @@ public class SubscriptionViewModel extends AndroidViewModel {
         return MySubscriptionPlanRepository.getInstance().getProducts(getApplication());
     }
 
-    public LiveData<EvergentCommonResponse> getProductForLogin(String accessToken, JsonArray subscriptionId) {
-        return MySubscriptionPlanRepository.getInstance().getProductsForLogin(getApplication(), subscriptionId, accessToken);
+    public LiveData<EvergentCommonResponse> getProductForLogin(String accessToken, JsonArray subscriptionId,String from) {
+        return MySubscriptionPlanRepository.getInstance().getProductsForLogin(getApplication(), subscriptionId, accessToken,from);
     }
 
     public LiveData<EvergentCommonResponse> getPaymentV2(String acessToken) {

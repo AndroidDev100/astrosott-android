@@ -151,7 +151,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                 for (id in subscriptionIds!!) {
                     jsonArray.add(id)
                 }
-                subscriptionViewModel.getProductForLogin(UserInfo.getInstance(activity).accessToken, jsonArray).observe(this, androidx.lifecycle.Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
+                subscriptionViewModel.getProductForLogin(UserInfo.getInstance(activity).accessToken, jsonArray,"").observe(this, androidx.lifecycle.Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
                     binding.includeProgressbar.progressBar.setVisibility(View.GONE)
                     if (evergentCommonResponse.isStatus) {
                         if (evergentCommonResponse.getProductResponse != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage!!.productsResponseMessage != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage!!.productsResponseMessage!!.size > 0) {

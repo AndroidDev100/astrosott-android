@@ -206,6 +206,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                         startActivity(intent);
                     }
                 } else {

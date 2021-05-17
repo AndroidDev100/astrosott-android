@@ -41,6 +41,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private SubscriptionViewModel subscriptionViewModel;
 
     String fileId = "";
+    String from = "";
 
     @Override
     protected ActivitySubscriptionDetailBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -54,6 +55,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         if (getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY) != null)
             fileId = getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY);
 
+        if (getIntent().getStringExtra(AppLevelConstants.FROM_KEY) != null)
+            from = getIntent().getStringExtra(AppLevelConstants.FROM_KEY);
 
         modelCall();
         getSubscriptionActionList();
@@ -97,7 +100,12 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         FragmentManager fm = getSupportFragmentManager();
         SubscriptionPacksFragment subscriptionPacksFragment = new SubscriptionPacksFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(AppLevelConstants.FROM_KEY, "detail");
+        if (!from.equalsIgnoreCase("")){
+            bundle.putString(AppLevelConstants.FROM_KEY, from);
+
+        }else {
+            bundle.putString(AppLevelConstants.FROM_KEY, "detail");
+        }
         bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
         subscriptionPacksFragment.setArguments(bundle);
         fm.beginTransaction().replace(R.id.frameContent, subscriptionPacksFragment).commitNow();

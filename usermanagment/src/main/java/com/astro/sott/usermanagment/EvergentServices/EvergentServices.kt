@@ -845,7 +845,7 @@ class EvergentServices {
         json.addProperty("returnPromotions", "T");
         json.addProperty("returnLiveEvents", "F");
         json.addProperty("returnAttributes", "T");
-     //  json.addProperty("offerType", "Existing Customer");
+        json.addProperty("offerType", "Existing Customer");
         json.addProperty("salesChannel", "Web");
         appChannelJson.addProperty("appChannel", "Google Wallet")
         json.add("appChannels", appChannelJson)
@@ -887,7 +887,7 @@ class EvergentServices {
 
     }
 
-    fun getProductforLogin(subscriptionId: JsonArray, context: Context, accessToken: String, evergentRefreshToken: EvergentGetProductsCallBack) {
+    fun getProductforLogin(subscriptionId: JsonArray, context: Context, accessToken: String, from: String, evergentRefreshToken: EvergentGetProductsCallBack) {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
@@ -895,10 +895,12 @@ class EvergentServices {
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty("dmaID", "001");
         json.addProperty("returnAppChannels", "T");
-        json.addProperty("returnLiveEvents", "F");
+        if (!from.equals("Live Event", true)) {
+            json.addProperty("returnLiveEvents", "F");
+        }
         json.addProperty("returnPromotions", "T");
         json.addProperty("returnAttributes", "T");
-    //   json.addProperty("offerType", "Existing Customer");
+        json.addProperty("offerType", "Existing Customer");
         json.addProperty("salesChannel", "Web");
         appChannelJson.addProperty("appChannel", "Google Wallet")
         json.add("appChannels", appChannelJson)
