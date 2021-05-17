@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:filterTouchesWhenObscured="true"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
         android:orientation="vertical"
         android:visibility="visible">
 
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="@dimen/creator_name_size" />
+                android:textSize="@dimen/_18sp" />
 
         </LinearLayout>
 
@@ -62,7 +62,7 @@
                 android:gravity="center"
                 android:paddingBottom="@dimen/_5sdp"
                 android:singleLine="true"
-                android:text="........."
+                android:text="@string/dashes"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp" />
 
@@ -74,7 +74,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
                 android:paddingBottom="@dimen/_5sdp"
-                android:text="........."
+                android:text="@string/dashes"
                 android:textColor="@color/yellow_orange"
                 android:textSize="@dimen/_12sp" />
 

@@ -23,7 +23,7 @@
                 android:id="@+id/play_lay"
                 android:layout_width="155dp"
                 android:layout_height="88dp"
-                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:gravity="center_vertical">
@@ -33,7 +33,8 @@
                     android:layout_width="155dp"
                     android:layout_height="88dp"
                     android:background="@drawable/ic_landscape_placeholder"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    android:contentDescription="@string/contentDescription" />
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
@@ -60,7 +61,8 @@
                     android:layout_centerInParent="true"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    android:background="@drawable/ic_lock">
+                    android:background="@drawable/ic_lock"
+                    android:contentDescription="@string/contentDescription">
 
                 </ImageView>
 
@@ -69,11 +71,11 @@
 
             <LinearLayout
                 android:id="@+id/main_lay"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_weight="1"
                 android:orientation="vertical">
@@ -103,7 +105,7 @@
                     android:id="@+id/tvduration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top|left"
+                    android:layout_gravity="top|start"
                     android:layout_marginTop="4dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/heebo_regular"
@@ -133,7 +135,8 @@
                 android:background="@color/blue_bg"
                 android:rotation="270"
                 android:src="@drawable/ic_baseline_arrow_back"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:contentDescription="@string/contentDescription" />
 
 
             <!--            </LinearLayout>-->
@@ -145,9 +148,9 @@
             android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|left"
-            android:layout_marginLeft="@dimen/_1sdp"
-            android:layout_marginRight="@dimen/_12sdp"
+            android:layout_gravity="top|start"
+            android:layout_marginStart="@dimen/_1sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
             android:ellipsize="end"
             android:fontFamily="@font/heebo_regular"
             android:lineHeight="24sp"

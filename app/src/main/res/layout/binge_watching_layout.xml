@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:id="@+id/mainlayoutautoplay"
@@ -9,8 +10,7 @@
         android:filterTouchesWhenObscured="true"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,7 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                android:src="@color/blackColor" />
+                android:src="@color/blackColor"
+                android:contentDescription="@string/contentDescription" />
 
             <ImageButton
                 android:id="@+id/close"
@@ -35,7 +36,8 @@
                 android:padding="@dimen/auto_play_close_margin"
                 android:src="@drawable/close_icon"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="KeyboardInaccessibleWidget" />
 
 
             <ImageView
@@ -54,7 +56,7 @@
                 android:id="@+id/playNextEpisode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/next_episode_right_margin"
+                android:layout_marginEnd="@dimen/next_episode_right_margin"
                 android:layout_marginBottom="@dimen/next_episode_bottom_margin"
                 android:background="@drawable/skip_intro_button"
                 android:orientation="horizontal"
@@ -66,9 +68,10 @@
                     android:layout_width="@dimen/next_episode_play_height"
                     android:layout_height="@dimen/next_episode_play_width"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/auto_play_next_right_margin"
+                    android:layout_marginEnd="@dimen/auto_play_next_right_margin"
                     android:fontFamily="@font/roboto_regular"
-                    android:src="@drawable/play" />
+                    android:src="@drawable/play"
+                    android:contentDescription="@string/contentDescription" />
 
                 <TextView
                     android:id="@+id/upnext"
@@ -76,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
-                    android:text="Next episode in"
+                    android:text="@string/nextepisodein"
                     android:textAllCaps="true"
                     android:textColor="@color/pale_gray"
                     android:fontFamily="@font/heebo_regular"

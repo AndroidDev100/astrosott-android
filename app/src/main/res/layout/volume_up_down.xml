@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout >
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="160dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerInParent="true"
-        android:layout_centerVertical="true"
         android:layout_marginBottom="98dp">
 
 
@@ -14,28 +11,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/brightness"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="@dimen/_42dp"
-            android:src="@drawable/ic_volume_up" />
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="@dimen/_42dp"
+            android:src="@drawable/ic_volume_up"
+            android:contentDescription="@string/contentDescription" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/volume"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="@dimen/_42dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="@dimen/_42dp"
             android:src="@drawable/ic_volume_down"
-            />
+            android:contentDescription="@string/contentDescription" />
 
         <FrameLayout
 
             android:id="@+id/volume"
             android:layout_width="@dimen/dimen32dp"
             android:layout_height="100dp"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen40dp">
+            android:layout_marginEnd="@dimen/dimen40dp">
 
 
             <SeekBar

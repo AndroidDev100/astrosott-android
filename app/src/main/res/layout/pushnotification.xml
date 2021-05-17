@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout"
     android:layout_width="fill_parent"
     android:layout_height="75dp"
     android:padding="10dp"
@@ -9,10 +8,11 @@
         android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="10dp" />
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/contentDescription" />
     <TextView
-        android:textSize="13dp"
+        android:textSize="@dimen/_13sp"
         android:textColor="@color/black"
         android:text="Testing"
         android:id="@+id/title"
@@ -21,10 +21,10 @@
         android:fontFamily="@font/roboto_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/image"
+        android:layout_toEndOf="@id/image"
         />
     <TextView
-        android:textSize="10dp"
+        android:textSize="@dimen/_10sp"
         android:textColor="@color/cast_and_crew_title"
         android:text="Testing is awecome"
         android:id="@+id/text"
@@ -33,7 +33,7 @@
         android:fontFamily="@font/roboto_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/image"
+        android:layout_toEndOf="@id/image"
         android:layout_below="@id/title"
         />
 </RelativeLayout>

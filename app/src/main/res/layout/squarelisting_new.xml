@@ -19,8 +19,7 @@
         android:orientation="vertical">
 
 
-        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             card_view:cardBackgroundColor="@color/grape_purple"
@@ -45,7 +44,7 @@
                         android:layout_width="@dimen/_90sdp"
                         android:layout_height="@dimen/_90sdp"
                         android:background="@drawable/square1"
-                        android:contentDescription="TODO"
+                        android:contentDescription="@string/contentDescription"
                         android:scaleType="fitXY"
                          />
 
@@ -66,8 +65,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_30sdp"
-                            android:gravity="left"
-                            android:paddingLeft="@dimen/_5sdp"
+                            android:gravity="start"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:paddingEnd="0dp"
                             android:paddingBottom="@dimen/_5sdp"
                             android:singleLine="true"
                             android:text="Gadis"

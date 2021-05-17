@@ -12,7 +12,8 @@
             android:layout_height="@dimen/image200dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/imagePadding80dp"
-            android:src="@drawable/payment" />
+            android:src="@drawable/payment"
+            android:contentDescription="@string/contentDescription" />
 
         <LinearLayout
             android:id="@+id/lnPaymentDescription"

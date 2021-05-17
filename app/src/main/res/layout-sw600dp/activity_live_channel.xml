@@ -116,7 +116,7 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="15dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
                     android:background="@drawable/vip_gradient_button">
                     <ImageView
                         android:layout_width="wrap_content"
@@ -126,12 +126,11 @@
                         android:id="@+id/star_icon"
                         android:layout_marginEnd="@dimen/dimen14dp"
                         android:layout_toStartOf="@id/play_text"
-                        />
+                        android:contentDescription="@string/contentDescription" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:clickable="true"
                         android:focusable="true"
                         android:id="@+id/play_text"
@@ -181,14 +180,15 @@
                             android:layout_height="36dp"
                             android:background="@drawable/ic_landscape_placeholder"
                             android:layout_gravity="center"
-                            android:scaleType="fitXY" />
+                            android:scaleType="fitXY"
+                            android:contentDescription="@string/contentDescription" />
 
                         <TextView
                             android:id="@+id/programTitle"
                             android:layout_width="288dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
                             android:layout_weight="1"
                             android:ellipsize="end"
                             android:fontFamily="@font/heebo_medium"

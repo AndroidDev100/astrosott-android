@@ -14,7 +14,6 @@ import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.ItemClickListener;
 import com.astro.sott.databinding.LandscapeItemBinding;
-import com.astro.sott.databinding.WatchlistItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;

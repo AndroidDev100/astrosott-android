@@ -77,7 +77,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/sp15"
-                        android:layout_marginLeft="@dimen/dimen5dp"
+                        android:layout_marginStart="@dimen/dimen5dp"
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/white"
                         android:layout_weight="1.4"
@@ -90,8 +90,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight=".6"
                         android:orientation="horizontal"
-                        android:layout_alignParentRight="true"
-                        android:gravity="right">
+                        android:gravity="end">
 
 
                         <TextView
@@ -100,9 +99,9 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_bold"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/dp14"
+                            android:textSize="@dimen/_14sp"
                             android:layout_gravity="center"
-                            android:layout_marginRight="@dimen/dimen10dp"/>
+                            android:layout_marginEnd="@dimen/dimen10dp"/>
 
 
                     </LinearLayout>
@@ -151,7 +150,8 @@
                 android:layout_marginTop="@dimen/dimen40dp"
                 android:src="@drawable/ic_check"
                 android:visibility="gone"
-                android:layout_marginStart="-0.5dp"/>
+                android:layout_marginStart="-0.5dp"
+                android:contentDescription="@string/contentDescription" />
         </FrameLayout>
 
     </LinearLayout>

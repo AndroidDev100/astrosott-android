@@ -36,14 +36,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:maxLines="1"
                     android:visibility="visible"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:paddingTop="@dimen/_2sdp"
-                    android:paddingLeft="@dimen/_3sdp"
+                    android:paddingStart="@dimen/_3sdp"
+                    android:paddingEnd="0dp"
                     />
 
                 <TextView
@@ -51,12 +52,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:maxLines="1"
                     android:visibility="visible"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/white"
-                    android:paddingLeft="@dimen/_3sdp"
+                    android:paddingStart="@dimen/_3sdp"
+                    android:paddingEnd="0dp"
                     android:paddingBottom="@dimen/_2sdp"
                     android:textSize="@dimen/_9sdp" />
 
@@ -87,10 +89,10 @@
             android:id="@+id/metas"
             layout="@layout/metas_layout"
             android:layout_width="match_parent"
-            android:layout_gravity="top|right"
+            android:layout_gravity="top|end"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentEnd="true" />
         <include
             android:id="@+id/exclusive_layout"
             layout="@layout/exclusive_item" />

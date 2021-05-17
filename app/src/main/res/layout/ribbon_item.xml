@@ -4,7 +4,7 @@
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         app:cardCornerRadius="4dp">
 
         <TextView
@@ -22,7 +22,7 @@
             android:letterSpacing="0.09"
             android:lineSpacingExtra="6sp"
             android:textColor="@color/ribben_text_color"
-            android:textSize="10sp" />
+            android:textSize="@dimen/_10sp" />
 
     </androidx.cardview.widget.CardView>
 </layout>

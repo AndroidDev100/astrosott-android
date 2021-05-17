@@ -29,7 +29,8 @@
                     android:id="@+id/imvChannelLogo"
                     android:layout_width="@dimen/dimen100dp"
                     android:layout_height="@dimen/height150dp"
-                    android:src="@drawable/placeholder_square" />
+                    android:src="@drawable/placeholder_square"
+                    android:contentDescription="@string/contentDescription" />
             </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"

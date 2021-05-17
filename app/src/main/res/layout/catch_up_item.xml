@@ -43,7 +43,7 @@
                 android:gravity="center"
                 android:fontFamily="@font/roboto_regular"
                 android:textSize="@dimen/sp10"
-                android:text="NowPlaying"
+                android:text="@string/now_playing"
                 android:layout_marginStart="@dimen/dimen2dp"
                 android:layout_marginTop="@dimen/dimen2dp"
                 android:visibility="gone"/>
@@ -76,8 +76,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:text=""
                 android:textColor="@color/search_edit_text_color"
-                android:textSize="@dimen/sp12"
-                android:layout_below="@id/txtTitle"/>
+                android:textSize="@dimen/sp12" />
         </LinearLayout>
     </RelativeLayout>
 

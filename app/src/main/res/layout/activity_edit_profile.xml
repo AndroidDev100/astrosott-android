@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout >
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -24,11 +24,12 @@
                     android:id="@+id/back_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
                     android:layout_margin="@dimen/_7sdp"
                     android:padding="7dp"
-                    android:src="@drawable/ic_back" />
+                    android:src="@drawable/ic_back"
+                    android:contentDescription="@string/back_icon" />
 
                 <TextView
                     android:id="@+id/title"
@@ -133,7 +134,7 @@
                         android:id="@+id/editname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerInParent="true"
                         app:drawableRightCompat="@drawable/ic_edit_24px" />
                 </RelativeLayout>
@@ -172,7 +173,7 @@
                         android:id="@+id/editemail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerInParent="true"
                         app:drawableRightCompat="@drawable/ic_edit_24px" />
                 </RelativeLayout>
@@ -213,7 +214,7 @@
                         android:id="@+id/editMobileNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerInParent="true"
                         app:drawableRightCompat="@drawable/ic_edit_24px" />
                 </RelativeLayout>
@@ -242,7 +243,7 @@
                             android:fontFamily="@font/heebo_regular"
                             android:foregroundTint="@color/white"
                             android:hint="@string/password"
-                            android:text="********"
+                            android:text="@string/pswd_asterik"
                             android:maxLines="1"
                             android:textColor="@color/white"
                             android:textColorHint="@color/white"
@@ -254,7 +255,7 @@
                         android:id="@+id/editpassword"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerInParent="true"
                         app:drawableRightCompat="@drawable/ic_edit_24px" />
                 </RelativeLayout>
@@ -303,8 +304,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_gravity="left"
+                        android:layout_alignParentStart="true"
+                        android:layout_gravity="start"
                         android:layout_marginStart="@dimen/dimen16dp"
                         android:drawablePadding="@dimen/_8dp"
                         android:fontFamily="@font/heebo_regular"
@@ -317,7 +318,7 @@
                         android:id="@+id/link_fb"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_gravity="end"
                         android:layout_marginEnd="@dimen/dimen16dp"
                         android:fontFamily="@font/heebo_regular"
@@ -338,8 +339,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_gravity="left"
+                        android:layout_alignParentStart="true"
+                        android:layout_gravity="start"
                         android:layout_marginStart="@dimen/dimen16dp"
                         android:drawablePadding="@dimen/_8dp"
                         android:fontFamily="@font/heebo_regular"
@@ -352,7 +353,7 @@
                         android:id="@+id/link_google"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_gravity="end"
                         android:layout_marginEnd="@dimen/dimen16dp"
                         android:fontFamily="@font/heebo_regular"
@@ -375,8 +376,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_gravity="left"
+                        android:layout_alignParentStart="true"
+                        android:layout_gravity="start"
                         android:layout_marginStart="@dimen/dimen16dp"
                         android:drawablePadding="@dimen/_8dp"
                         android:fontFamily="@font/heebo_regular"
@@ -389,7 +390,7 @@
                         android:id="@+id/link_apple"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_gravity="end"
                         android:layout_marginEnd="@dimen/dimen16dp"
                         android:fontFamily="@font/heebo_regular"

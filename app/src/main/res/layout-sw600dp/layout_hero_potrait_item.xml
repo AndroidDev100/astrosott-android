@@ -32,10 +32,10 @@
                 layout="@layout/metas_layout"
                 android:layout_width="wrap_content"
                 android:visibility="visible"
-                android:layout_gravity="top|right"
+                android:layout_gravity="top|end"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentEnd="true" />
             <ImageView
                 android:id="@+id/heroImage"
                 android:layout_width="match_parent"
@@ -44,7 +44,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="0dp"
                 android:background="@drawable/ic_potrait_placeholder"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:contentDescription="@string/contentDescription" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -53,6 +54,7 @@
                 android:background="@drawable/above_shado"
                 android:gravity="bottom"
                 android:paddingStart="5dp"
+                android:paddingEnd="0dp"
                 android:paddingBottom="5dp"
                 android:visibility="gone">
 

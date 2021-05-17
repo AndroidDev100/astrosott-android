@@ -27,10 +27,9 @@
         >
 
         <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:background="@color/transparentColor"
@@ -48,7 +47,8 @@
                     android:layout_width="@dimen/related_item_width"
                     android:layout_height="match_parent"
                     android:background="@drawable/ic_landscape_placeholder"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    android:contentDescription="@string/contentDescription" />
 
             </androidx.cardview.widget.CardView>
 

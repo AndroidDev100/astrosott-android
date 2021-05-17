@@ -37,7 +37,8 @@
             android:src="@drawable/mobile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbar" />
+            app:layout_constraintTop_toBottomOf="@id/appbar"
+            android:contentDescription="@string/contentDescription" />
 
 
         <androidx.recyclerview.widget.RecyclerView

@@ -315,7 +315,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/search_header_text_size"
                                 android:clickable="true"
-                                android:layout_marginLeft="@dimen/dp10"
+                                android:layout_marginStart="@dimen/dp10"
                                 android:focusable="true"
                                 android:fontFamily="@font/roboto_regular"
                                 android:text="@string/set_reminder"

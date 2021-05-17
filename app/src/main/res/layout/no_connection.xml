@@ -5,18 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grape_purple">
-    <include layout="@layout/toolbar_sooka"
-        android:id="@+id/toolbar_layout"
-        android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="59dp" />
+<!--    <include layout="@layout/toolbar_sooka"-->
+<!--        android:id="@+id/toolbar_layout"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:visibility=""-->
+<!--        android:layout_height="59dp" />-->
     <RelativeLayout
         android:id="@+id/rl_connection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/grape_purple"
-        android:layout_below="@+id/toolbar_layout"
        >
 
         <ImageView

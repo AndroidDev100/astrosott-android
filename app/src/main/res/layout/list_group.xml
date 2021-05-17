@@ -12,7 +12,7 @@
         android:id="@+id/listTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen16dp"
+        android:layout_marginStart="@dimen/dimen16dp"
         android:textColor="@color/white"
         android:textSize="@dimen/_16sp"
         android:fontFamily="@font/heebo_regular"
@@ -23,10 +23,10 @@
             android:id="@+id/arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="@dimen/dimen16dp"
-            >
+            android:layout_marginEnd="@dimen/dimen16dp"
+            android:contentDescription="@string/contentDescription">
 
         </ImageView>
 

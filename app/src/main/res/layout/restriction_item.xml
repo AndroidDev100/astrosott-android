@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -20,7 +19,7 @@
             android:layout_height="65dp"
             android:layout_gravity="center"
             android:clickable="false"
-            />
+            android:contentDescription="@string/contentDescription" />
 
         <TextView
             android:id="@+id/restriction_level"
@@ -43,10 +42,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:paddingRight="12dp"
+        android:paddingEnd="12dp"
+        android:paddingStart="0dp"
         android:textSize="@dimen/font_medium"
         android:text=""
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:fontFamily="@font/roboto_regular"

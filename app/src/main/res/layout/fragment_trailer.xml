@@ -12,7 +12,7 @@
             android:id="@+id/trailerText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/heebo_regular"
             android:singleLine="true"
@@ -36,7 +36,7 @@
             android:id="@+id/highLightText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/heebo_regular"
             android:text="Previews"
@@ -65,8 +65,7 @@
                 android:id="@+id/include_progressbar"
                 layout="@layout/play_progress_bar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true" />
+                android:layout_height="match_parent" />
         </FrameLayout>
 
     </LinearLayout>

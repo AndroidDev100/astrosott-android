@@ -2,6 +2,8 @@ package com.astro.sott.activities.parentalControl.ui;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -101,6 +103,7 @@ public class ParentalControl extends BaseBindingActivity<ActivityParentalControl
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

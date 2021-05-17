@@ -292,13 +292,8 @@
     <string name="square_placeholder">Square Placeholder</string>
     <string name="close_icon">Close Icon</string>
     <string name="title_icon">Title Icon</string>
-    <string name="viu_image">sooka image</string>
-    <string name="share_icon">Share Icon</string>
     <string name="bullet_symbol">\u2022</string>
-    <string name="device_icon">Device Icon</string>
     <string name="no_data_found">No Results Found</string>
-    <string name="invalid_pin">Invalid Pin</string>
-    <string name="error_no_sub_categories">No Subcategories Exist</string>
     <string name="playlist_name_restriction">Playlist name should be less than 20 characters</string>
     <string name="success_login_user">You have signed in successfully</string>
     <string name="success_register_user">You have registered successfully</string>
@@ -660,6 +655,23 @@
     <string name="reload_app">Reload App</string>
 
     <string name="logout_confirmation_message_new">Are you sure that you want to logout now?</string>
+
+
+    <string name="contentDescription">ContentDescription</string>
+    <string name="english">English</string>
+    <string name="bahasha">Bahasa Melayu</string>
+    <string name="malay">Malay</string>
+    <string name="confirm_psw_para">Confirm password does\'t match with password</string>
+    <string name="error_checkbox">Please accept terms and conditions</string>
+    <string name="and">and</string>
+    <string name="pswd_asterik">********</string>
+    <string name="text">Text</string>
+    <string name="nextepisodein">Next episode in</string>
+    <string name="bullet_detail">First access to live events, sooka exclusives and originals</string>
+    <string name="dashes">.........</string>
+    <string name="dashes_long">.........</string>
+    <string name="load_more">Load More</string>
+    <string name="watch_movie">Watch Movie</string>
 
 
 </resources>

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparentColor"
     android:filterTouchesWhenObscured="true"
     tools:context="com.astro.sott.activities.subscription.fragment.PremiumDtvSuccessFragment">
 
@@ -18,7 +17,8 @@
             android:layout_height="@dimen/dimen50dp"
             android:layout_gravity="center"
             android:src="@drawable/premium_success"
-            android:layout_marginTop="@dimen/dimen20dp"/>
+            android:layout_marginTop="@dimen/dimen20dp"
+            android:contentDescription="@string/contentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/dimen30dp"
             android:layout_marginEnd="@dimen/dimen20dp"
-            android:gravity="right">
+            android:gravity="end">
 
             <Button
                 android:id="@+id/btnOk"

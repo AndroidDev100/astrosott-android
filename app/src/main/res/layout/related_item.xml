@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
-
+<layout >
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="@dimen/related_item_width"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
+        android:layout_marginStart="3dp"
         android:background="@color/transparentColor"
         android:orientation="vertical">
 
@@ -20,16 +20,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/ic_landscape_placeholder"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:contentDescription="@string/contentDescription" />
 
             <include
                 android:id="@+id/metas"
                 layout="@layout/metas_layout"
                 android:layout_width="match_parent"
-                android:layout_gravity="top|right"
+                android:layout_gravity="top|end"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:visibility="visible" />
         </androidx.cardview.widget.CardView>
 

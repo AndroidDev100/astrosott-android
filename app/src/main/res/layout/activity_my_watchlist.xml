@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:id="@+id/main_lay"
@@ -9,7 +10,7 @@
         android:background="@color/grape_purple"
         android:clipChildren="false">
 
-        <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+        <ProgressBar
             android:id="@+id/progress_bar"
             style="@style/Widget.AppCompat.ProgressBar"
             android:layout_width="wrap_content"
@@ -46,7 +47,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="@string/watchlist"
+                     />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -89,7 +91,7 @@
                     android:id="@+id/recycler_view_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/setting_rv_margin_left"
+                    android:layout_marginStart="@dimen/setting_rv_margin_left"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:overScrollMode="never" />
 

@@ -1,5 +1,6 @@
 package com.astro.sott.activities.subscription.dialog;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -50,6 +51,7 @@ public class PremiumSuccessDialogFragment extends BaseBindingFragment<FragmentPr
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

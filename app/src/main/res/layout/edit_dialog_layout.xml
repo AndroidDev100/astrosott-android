@@ -4,8 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/fragment_background_color">
-
+>
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"

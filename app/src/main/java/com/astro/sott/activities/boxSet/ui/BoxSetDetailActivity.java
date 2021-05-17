@@ -1,5 +1,6 @@
 package com.astro.sott.activities.boxSet.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -369,6 +370,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void checkEntitleMent(final RailCommonData railCommonData) {
         String fileId = "";
 

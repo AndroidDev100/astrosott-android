@@ -65,7 +65,7 @@ public class MyPlanAdapter extends RecyclerView.Adapter<MyPlanAdapter.SingleItem
              holder.itemBinding.activeIcon.setVisibility(View.VISIBLE);
              holder.itemBinding.btnCancel.setBackgroundResource(R.drawable.rounded_red_button);
              holder.itemBinding.btnCancel.setEnabled(true);
-             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy  HH:mm:ss");
+             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy  HH:mm:ss",Locale.getDefault());
              Date event_date = dateFormat.parse(time);
              Date current_date = new Date();
              long diff = event_date.getTime() - current_date.getTime();

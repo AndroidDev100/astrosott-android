@@ -87,13 +87,7 @@
             android:name=".activities.changePaymentMethod.ui.UpdatePaymentMethod"
             android:screenOrientation="locked" />
         <activity
-            android:name=".activities.myPlans.ui.MyPlansActivity"
-            android:screenOrientation="locked" />
-        <activity
             android:name=".activities.changePaymentMethod.ui.ChangePaymentMethodActivity"
-            android:screenOrientation="locked" />
-        <activity
-            android:name=".activities.subscriptionActivity.ui.SubscriptionAndMyPlanActivity"
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.subscription.ui.AddDTVAccountActivity"
@@ -292,6 +286,7 @@
             android:resource="@drawable/noti_icon" /> <!-- <meta-data -->
         <!-- android:name="com.google.firebase.messaging.default_notification_color" -->
         <!-- android:resource="@color/colorPrimary" /> -->
+        <!--suppress AndroidDomInspection -->
         <receiver
             android:name="io.branch.referral.InstallListener"
             android:exported="true"

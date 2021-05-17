@@ -6,10 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.astro.sott.activities.subscription.ui.AddDTVAccountActivity">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+
 
         <fragment
             android:id="@+id/containerFragment"
@@ -19,6 +16,6 @@
             android:fillViewport="false"
             app:defaultNavHost="false"
             app:navGraph="@navigation/nav_dtv_fragment"/>
-    </RelativeLayout>
+
 
 </RelativeLayout>

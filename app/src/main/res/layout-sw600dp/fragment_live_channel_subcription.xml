@@ -15,8 +15,8 @@
             android:orientation="horizontal"
             android:layout_alignParentTop="true"
             android:background="@color/colorPrimaryDark"
-            android:layout_marginLeft="@dimen/dimen18dp"
-            android:layout_marginRight="@dimen/dimen15dp"
+            android:layout_marginStart="@dimen/dimen18dp"
+            android:layout_marginEnd="@dimen/dimen15dp"
             android:layout_marginTop="@dimen/dimen10dp"
             android:weightSum="2">
 
@@ -31,7 +31,8 @@
                     android:layout_width="@dimen/portrait_image_width"
                     android:layout_height="@dimen/height150dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/placeholder_square"/>
+                    android:src="@drawable/placeholder_square"
+                    android:contentDescription="@string/contentDescription" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

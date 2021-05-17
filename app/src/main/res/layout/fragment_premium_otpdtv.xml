@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparentColor"
     android:windowSoftInputMode="adjustPan"
     android:filterTouchesWhenObscured="true"
     tools:context="com.astro.sott.activities.subscription.fragment.PremiumOTPDtvFragment">
@@ -66,7 +65,6 @@
             android:layout_marginTop="@dimen/dimen20dp"/>
 
         <TextView
-            android:id="@+id/txtCounter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=":"
@@ -83,18 +81,19 @@
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/dimen20dp"
             android:layout_marginEnd="@dimen/dimen10dp"
-            android:gravity="right">
+            android:gravity="end">
             <Button
                 android:id="@+id/btnCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CANCEL"
+                android:text="@string/cancel"
                 android:textColor="@color/cancel_text"
                 android:textSize="@dimen/sp20"
                 android:gravity="end"
                 android:background="@color/transparentColor"
                 android:fontFamily="@font/roboto_bold"
-                android:layout_marginStart="@dimen/dimen10dp" />
+                android:layout_marginStart="@dimen/dimen10dp"
+                tools:ignore="ButtonStyle" />
             <Button
                 android:id="@+id/btnOk"
                 android:layout_width="@dimen/dimen30dp"
@@ -106,7 +105,8 @@
                 android:background="@color/transparentColor"
                 android:fontFamily="@font/roboto_bold"
                 android:layout_marginEnd="@dimen/dimen10dp"
-                android:layout_marginStart="@dimen/dimen10dp" />
+                android:layout_marginStart="@dimen/dimen10dp"
+                tools:ignore="ButtonStyle" />
         </LinearLayout>
 
     </LinearLayout>
