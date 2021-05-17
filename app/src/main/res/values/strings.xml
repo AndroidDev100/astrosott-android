@@ -3,7 +3,7 @@
     <string name="title_home">HOME</string>
     <string name="live_tv">Live TV</string>
     <string name="title_video">Video</string>
-    <string name="live_viu_tab">SOTT Apps</string>
+    <string name="live_viu_tab">Sooka Apps</string>
     <string name="title_more">MORE</string>
 
     <string name="no_internet_title">You are offline. Check your internet connection</string>
@@ -13,11 +13,11 @@
     <string name="new_playlist">NEW PLAYLIST</string>
     <string name="done">Done</string>
     <string name="mobile_error">Please enter a valid mobile number</string>
-    <string name="email_mobile_error">Please enter a valid email address / mobile number.</string>
+    <string name="email_mobile_error">Please enter a valid email address or mobile number.</string>
     <string name="email_error">Please enter a valid email address</string>
     <string name="valid_password">Please enter valid password</string>
 
-    <string name="password_error">Password doesn\'t match password complexity rules - minimum 8 characters, at least 1 number, \n lowercase letter and uppercase letter.</string>
+    <string name="password_error">Password must be at least 8 characters, containing 1 number, \n 1 lowercase letter and 1 uppercase letter.</string>
     <string name="title">Title</string>
     <string name="high">High (720p)</string>
     <string name="medium">Medium (360p)</string>
@@ -37,7 +37,7 @@
 
     // followlis
     <string name="removed_from_followlist">You have unfollowed this drama</string>
-    <string name="removed_from_creator_followlist">You have unfollowed user successfully</string>
+    <string name="removed_from_creator_followlist">You have unfollowed this user successfully</string>
     <string name="removed_from_creator_follow">You have unfollowed</string>
     <string name="successfully">successfully</string>
     <string name="added_to_followlist">You are now following this drama</string>
@@ -133,7 +133,7 @@
     <string name="no_active_subs">Currently no Active Subscription</string>
     <string name="sad_to_see">Sad to See You Go</string>
     <string name="account_block">Account Locked</string>
-    <string name="update_plan_description">Kindly cancel current active subscription first. You may re-subscribe with a new git  method after current subscription ended.</string>
+    <string name="update_plan_description">Kindly cancel current active subscription first. You may re-subscribe with a new method after current subscription ended.</string>
     <string name="plan_with_different_payment">Update Plan with Different Payment\n Method not Allowed!</string>
     <string name="cancel_plan_with_different_payment">Cancel Plan with Different Payment\n Method not Allowed!</string>
     <string name="account_has_been_locked">Account has been locked due to maximum login attempts reached. Please use Forgot Password to unlock your account.</string>
@@ -148,7 +148,7 @@
     <string name="video">Video</string>
     <string name="episode">Episode</string>
     <string name="box_set">Box Set</string>
-    <string name="registered_success">Start enjoying sooka App features as a registered user!</string>
+    <string name="registered_success">You can start enjoying additional features on sooka as a registered user!</string>
 
     <string name="short_video">Video</string>
     <string name="short_film">Short Films</string>
@@ -227,7 +227,7 @@
     <string name="pls_enter_device_name">Please enter device name.</string>
     <string name="pls_enter_title">Please give a name for the playlist</string>
     <string name="make_Sure">Just Wanted to Make Sure \n You are You</string>
-    <string name="key_password">Please key in your password \n to update email.</string>
+    <string name="key_password">Please key in your password \n to update email address.</string>
     <string name="remove_notification">Are you sure you want to remove this notification?</string>
     <string name="update_device">Update Device</string>
     <string name="edit_device_name">Edit Device Name</string>
@@ -245,10 +245,10 @@
     <string name="login">Login</string>
     <string name="not_yet">NOT YET!</string>
     <string name="sorry_have_to_go">Sorry, I have to go...</string>
-    <string name="error_sms_failure">Sorry verification PIN cannot be sent right now. Please try again later</string>
-    <string name="error_verification_failure">Invalid OTP</string>
+    <string name="error_sms_failure">A verification PIN cannot be sent right now. Please try again later</string>
+    <string name="error_verification_failure">The verification code you entered is invalid</string>
     <string name="default_password">123456</string>
-    <string name="update_app_msg">We have a new version available. Kindly update to enjoy Sooka.</string>
+    <string name="update_app_msg">We have a new version available. Kindly update to continue enjoying sooka..</string>
     <string name="error_code_user_not_exist">2000</string>
     <string name="error_code_user_not_exist_">1011</string>
     <string name="already_unfollow">You have already unfollowing this series</string>
@@ -521,18 +521,18 @@
     <string name="mobile_no">Mobile Number</string>
     <string name="password">Password</string>
     <string name="update_profile">Update Profile</string>
-    <string name="edit_email">Edit Email</string>
+    <string name="edit_email">Edit Email Address</string>
     <string name="edit_Mobile">Edit Mobile Number</string>
     <string name="set_Mobile">Set Mobile Number</string>
 
 
-    <string name="set_email">Set Email</string>
+    <string name="set_email">Set Email Address</string>
     <string name="set_name">Set Name</string>
     <string name="set_password">Set Password</string>
     <string name="edit_name">Edit Name</string>
 
     <string name="existing_name">Existing Name</string>
-    <string name="existing_email">Existing Email</string>
+    <string name="existing_email">Existing Email Address</string>
     <string name="existing_mobile">Existing Mobile Number</string>
 
     <string name="new_name">New Name</string>
@@ -540,13 +540,13 @@
 
     <string name="new_mobile">New Mobile number</string>
 
-    <string name="new_email">New Email</string>
+    <string name="new_email">New Email Address</string>
     <string name="edit_password">Edit Password</string>
     <string name="existing_password">Existing Password</string>
     <string name="new_psw">New Password</string>
     <string name="Profile">Profile</string>
     <string name="subscibe_now">Subscribe now to remove ads</string>
-    <string name="already_registered">You have already register</string>
+    <string name="already_registered">You already have an account with this ID. Please log in instead.</string>
     <string name="verification_code_Send">Verification code had be sent to </string>
     <string name="select_one">You need to make at least one selection first!</string>
     <string name="profile_txt">PROFILE</string>
@@ -566,10 +566,10 @@
     <string name="verify">VERIFY</string>
     <string name="verification_code">Verification Code</string>
     <string name="verification_code_text">Please key in your Verification Code</string>
-    <string name="didnt_receive_otp">Didn\'t Receive the OTP?</string>
-    <string name="resend_otp"><u>Resend OTP?</u></string>
+    <string name="didnt_receive_otp">Didn\'t receive the verification code?</string>
+    <string name="resend_otp"><u>Send me another verification code</u></string>
     <string name="welcome_back">Welcome Back</string>
-    <string name="email_id_mobileNo">Email Id / Mobile Number</string>
+    <string name="email_id_mobileNo">Email Address or Mobile Number</string>
     <string name="user_name">User Name</string>
     <string name="forgt_psw"><u>Forgot Password?</u></string>
     <string name="sign_in_google">Sign In With Google</string>
@@ -577,8 +577,8 @@
     <string name="sign_in_apple">Sign In With Apple</string>
     <string name="next">NEXT</string>
     <string name="sooka_superstar">Sooka Superstar</string>
-    <string name="otp_valid_for">OTP valid for</string>
-    <string name="invalid_otp">Invalid OTP Entered</string>
+    <string name="otp_valid_for">The verification code is valid for</string>
+    <string name="invalid_otp">The verification code you entered is invalid</string>
     <string name="sign_up_text"><u>Sign Up</u></string>
     <string name="sign_in_with">or Sign In With</string>
     <string name="detail_confrm">Details Confirmation</string>
@@ -589,7 +589,7 @@
     <string name="registered_password">Please login with your registered password \n to continue.</string>
     <string name="confirm_psw">Confirm Password</string>
     <string name="update">UPDATE</string>
-    <string name="key_in_email_address">Please key in your registered email or\n mobile number</string>
+    <string name="key_in_email_address">Please key in your registered email address or\n mobile number</string>
     <string name="submit">SUBMIT</string>
     <string name="season_number">SEASON 1</string>
     <string name="search_astro">Search for title, genre, cast, etc.</string>
@@ -644,7 +644,7 @@
     <string name="next_episode">Next Episode</string>
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="privacy_polices">Privacy Policies</string>
-    <string name="onetime_pass_code_text"><![CDATA[One time passcode had been sent to ]]></string>
+    <string name="onetime_pass_code_text"><![CDATA[A verification code has been sent to ]]></string>
     <string name="link"><u>Link</u></string>
     <string name="unlink"><u>Unlink</u></string>
     <string name="facebook">Facebook</string>
