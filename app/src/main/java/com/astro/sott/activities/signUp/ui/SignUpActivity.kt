@@ -306,20 +306,23 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         if (!password.equals("", true)) {
             if (passwordPattern.containsMatchIn(password)) {
                 if (activitySinUpBinding?.checkbox!!.isChecked) {
+                    activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.warm_grey))
                     activitySinUpBinding?.errorCheckbox?.visibility = View.GONE
                     searchAccountv2(type, emailMobile, password)
 
                 } else {
                     activitySinUpBinding?.errorCheckbox?.visibility = View.VISIBLE
-
+                    activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.warm_grey))
                 }
                 //createUser(type, emailMobile, password)
             } else {
+                activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
                 activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
                 activitySinUpBinding?.errorPasssword?.text = getString(R.string.password_error)
 
             }
         } else {
+            activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
             activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
             activitySinUpBinding?.errorPasssword?.text = getString(R.string.valid_password)
 
