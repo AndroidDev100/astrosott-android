@@ -33,11 +33,11 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginTop="24dp"
+            android:contentDescription="@string/contentDescription"
             android:src="@drawable/mobile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbar"
-            android:contentDescription="@string/contentDescription" />
+            app:layout_constraintTop_toBottomOf="@id/appbar" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
@@ -45,9 +45,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:visibility="visible"
-            app:tabMode="fixed"
             app:layout_constraintTop_toBottomOf="@id/image"
-            app:tabBackground="@drawable/tab_packages_background" />
+            app:tabBackground="@drawable/tab_packages_background"
+            app:tabMode="fixed" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
@@ -62,18 +62,59 @@
             app:layout_constraintTop_toBottomOf="@id/tabs" />
 
         <TextView
-            android:id="@+id/terms"
+            android:id="@+id/descp1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/heebo_medium"
             android:gravity="center"
             android:paddingStart="48dp"
             android:paddingEnd="48dp"
-            android:text="@string/terms_packages"
+            android:text="@string/pack_desc"
+            android:textColor="@color/light_blue_text_color"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/descp2"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/descp2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/heebo_medium"
+            android:gravity="center"
+            android:text="@string/pack_desc1"
             android:textColor="@color/light_blue_text_color"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/terms"
+            />
+
+        <TextView
+            android:id="@+id/terms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/heebo_medium"
+            android:gravity="center"
+            android:paddingLeft="2dp"
+            android:text="@string/term_and_con"
+            android:textColor="@color/aqua_marine"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/descp4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/heebo_medium"
+            android:gravity="center"
+            android:layout_marginLeft="2dp"
+            android:text="@string/apply_text"
+            android:textColor="@color/light_blue_text_color"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/terms"
+             />
 
         <include
             android:id="@+id/include_progressbar"

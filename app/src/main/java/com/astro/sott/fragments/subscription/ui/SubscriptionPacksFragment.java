@@ -30,6 +30,7 @@ import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
 import com.astro.sott.utils.billing.SKUsListListener;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.gson.JsonArray;
@@ -127,7 +128,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
                 for (String id : subscriptionIds) {
                     jsonArray.add(id);
                 }
-                subscriptionViewModel.getProductForLogin(UserInfo.getInstance(getActivity()).getAccessToken(), jsonArray,from).observe(this, evergentCommonResponse -> {
+                subscriptionViewModel.getProductForLogin(UserInfo.getInstance(getActivity()).getAccessToken(), jsonArray, from).observe(this, evergentCommonResponse -> {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                     if (evergentCommonResponse.isStatus()) {
                         if (evergentCommonResponse.getGetProductResponse() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage().size() > 0) {
@@ -214,8 +215,8 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     }
 
     private void UIinitialization() {
-        if (from.equalsIgnoreCase("detail")||from.equalsIgnoreCase("Live Event")) {
-          //  getBinding().toolbar.setVisibility(View.GONE);
+        if (from.equalsIgnoreCase("detail") || from.equalsIgnoreCase("Live Event")) {
+            //  getBinding().toolbar.setVisibility(View.GONE);
             getBinding().closeIcon.setVisibility(View.VISIBLE);
         }
         getBinding().recyclerView.hasFixedSize();
@@ -236,6 +237,9 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         getBinding().closeIcon.setOnClickListener(v -> {
             if (getActivity() != null)
                 getActivity().onBackPressed();
+        });
+        getBinding().terms.setOnClickListener(v -> {
+            new ActivityLauncher(getActivity()).termAndCondition(getActivity());
         });
     }
 

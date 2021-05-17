@@ -79,7 +79,16 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         binding.toolbar.search_icon.setOnClickListener {
             ActivityLauncher(activity!!).searchActivity(activity!!, ActivitySearch::class.java)
         }
+        setClicks()
         getActiveSubscription()
+    }
+
+    private fun setClicks() {
+        binding.terms.setOnClickListener {
+            val intent = Intent(activity!!, WebViewActivity::class.java)
+            intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC)
+            startActivity(intent)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -151,7 +160,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                 for (id in subscriptionIds!!) {
                     jsonArray.add(id)
                 }
-                subscriptionViewModel.getProductForLogin(UserInfo.getInstance(activity).accessToken, jsonArray,"").observe(this, androidx.lifecycle.Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
+                subscriptionViewModel.getProductForLogin(UserInfo.getInstance(activity).accessToken, jsonArray, "").observe(this, androidx.lifecycle.Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
                     binding.includeProgressbar.progressBar.setVisibility(View.GONE)
                     if (evergentCommonResponse.isStatus) {
                         if (evergentCommonResponse.getProductResponse != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage!!.productsResponseMessage != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage!!.productsResponseMessage!!.size > 0) {
@@ -277,7 +286,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
             }
         })
         binding.tabs?.setupWithViewPager(binding.viewPager);
-        binding.terms.setOnClickListener(this)
+
         binding.tabs?.setSelectedTabIndicatorColor(resources.getColor(R.color.yellow_orange))
         binding.tabs?.setTabTextColors(resources.getColor(R.color.gray), resources.getColor(R.color.yellow_orange))
 
@@ -305,9 +314,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.terms -> {
-                val intent = Intent(activity!!, WebViewActivity::class.java)
-                intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC)
-                startActivity(intent)
+
             }
         }
     }

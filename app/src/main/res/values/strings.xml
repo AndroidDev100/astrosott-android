@@ -636,7 +636,11 @@
     <string name="failed">FAILED</string>
 
     <string name="mobile_suggestion">Mobile number without country code, spacing &amp; hyphen</string>
-    <string name="terms_packages"><![CDATA[All prices displayed are inclusive of 6% digital tax. Terms & Conditions apply.]]></string>
+    <string name="pack_desc">All prices displayed are inclusive of 6% </string>
+    <string name="pack_desc1">digital tax.</string>
+    <string name="apply_text">apply.</string>
+    <string name="term_and_con"><u>Terms &amp; Conditions</u></string>
+    <string name="terms_packages"><![CDATA[  ]]></string>
     <string name="choose_me">Choose Me</string>
     <string name="manage_quality">High Quality</string>
     <string name="subtitle_audio">Subtitle | Audio</string>

@@ -462,7 +462,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     public void onStart() {
         super.onStart();
         try {
-            Toast.makeText(getActivity(), "startcalled", Toast.LENGTH_LONG).show();
             if (wakeLock != null) {
                 wakeLock.acquire();
             }
@@ -2654,7 +2653,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 return false;
             }
         });
-     
+
 
         getBinding().forward.setOnClickListener(view -> {
             getBinding().pBar.setVisibility(View.VISIBLE);
@@ -3436,7 +3435,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 public void onDisplayRemoved(int displayId) {
                     Log.w("addedDisplays 2--", displayId + "");
                     isHdmiConnected = false;
-                    Toast.makeText(getActivity(), "Display " + displayId + " removed.", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getActivity(), "Display " + displayId + " removed.", Toast.LENGTH_LONG).show();
                     try {
                         cancelTimer();
                         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
