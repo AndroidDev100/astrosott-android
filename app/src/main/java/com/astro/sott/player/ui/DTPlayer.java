@@ -1551,7 +1551,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //
 //                            }
                         Log.w("audioAndSubtitle", trackItems + "   " + audioTracks.get(0).getLabel());
-                        if (audioTracks.get(0).getLanguage() != null) {
+                        if (trackItems[0].getTrackName() != null && !trackItems[0].getTrackName().equalsIgnoreCase("")) {
                             isAudioTracks = true;
                             audioList = trackItems.clone();
 //                            AudioAdapter audioAdapter = new AudioAdapter(trackItems);

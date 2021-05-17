@@ -227,7 +227,7 @@ public class PlayerRepository {
                         for (int i = 0; i < tracks.getTextTracks().size(); i++) {
                             TextTrack textTrackInfo = tracks.getTextTracks().get(i);
                             //String lang = textTrackInfo.getLanguage();
-                            String lang =AppCommonMethods.getSubtitleName(textTrackInfo.getLanguage(),context);
+                            String lang = AppCommonMethods.getSubtitleName(textTrackInfo.getLanguage(), context);
                             Log.w("audioAndSubtitleSelect", lang + "  2" + new KsPreferenceKey(context).getSubTitleLangKey());
                             if (lang.equalsIgnoreCase(new KsPreferenceKey(context).getSubTitleLangKey())) {
                                 String uniqueId = textTrackInfo.getUniqueId();
@@ -322,7 +322,7 @@ public class PlayerRepository {
         trackItemsList = buildVideoTrackItems(tracksInfo.getVideoTracks(), context);
         audioTrackItems = buildAudioTrackItems(tracksInfo.getAudioTracks());
         Log.w("audioTrackItems", "aa  " + audioTrackItems.length);
-        textTrackItems = buildTextTrackItems(tracksInfo.getTextTracks(),context);
+        textTrackItems = buildTextTrackItems(tracksInfo.getTextTracks(), context);
     }
 
     private List<AudioTrack> filterUnknown(List<AudioTrack> audioTracks) {
@@ -458,7 +458,7 @@ public class PlayerRepository {
                     } else {
                         Log.w("audioAndSubtitle", audioTrackInfo.getLanguage());
                         if (audioTrackInfo.getLanguage() != null && !audioTrackInfo.getLanguage().trim().equalsIgnoreCase("Unknown")) {
-                            String name = AppCommonMethods.getAudioLanguageName(audioTrackInfo.getLanguage(),context);
+                            String name = AppCommonMethods.getAudioLanguageName(audioTrackInfo.getLanguage(), context);
                             trackItems[i] = new TrackItem(name, audioTrackInfo.getUniqueId(), audioTrackInfo.getLanguage());
                         }
 
@@ -493,7 +493,7 @@ public class PlayerRepository {
         return streamLang.getDisplayLanguage(locale);
     }
 
-    private TrackItem[] buildTextTrackItems(List<TextTrack> textTracks,Context context) {
+    private TrackItem[] buildTextTrackItems(List<TextTrack> textTracks, Context context) {
         TrackItem[] trackItems = new TrackItem[textTracks.size()];
         try {
             for (int i = 0; i < textTracks.size(); i++) {
@@ -503,13 +503,13 @@ public class PlayerRepository {
                     trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
                 } else {
                     TextTrack textTrackInfo = textTracks.get(i);
-                    String name = AppCommonMethods.getSubtitleName(textTrackInfo.getLanguage(),context);
-                   // if (name!=null && name.equalsIgnoreCase("")){
-                        trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
-                   // }
+                    String name = AppCommonMethods.getSubtitleName(textTrackInfo.getLanguage(), context);
+                    // if (name!=null && name.equalsIgnoreCase("")){
+                    trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
+                    // }
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -796,6 +796,7 @@ public class PlayerRepository {
     public LiveData<TrackItem[]> getAudioTrackItems() {
         Log.w("audioTracks==>>", audioTrackItems.length + "  ");
         MutableLiveData<TrackItem[]> mutableLiveData = new MutableLiveData<>();
+        audioTrackItems = buildAudioTrackItems(audioTracks);
         mutableLiveData.postValue(audioTrackItems);
         return mutableLiveData;
     }
