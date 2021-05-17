@@ -1,7 +1,10 @@
 package com.astro.sott.fragments.subscription.adapter;
 
 import android.app.Activity;
+import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -50,21 +53,34 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
         if (packDetailList.get(position).getProductsResponseMessageItem().getRenewable() != null && packDetailList.get(position).getProductsResponseMessageItem().getRenewable()) {
             description.append(" recurring subscription");
         }
-        if (packDetailList.get(position).getProductsResponseMessageItem().getSkuORQuickCode() != null && productList != null) {
-            if (checkActiveOrNot(packDetailList.get(position).getProductsResponseMessageItem().getSkuORQuickCode())) {
-                holder.binding.btnBuy.setText("SUBSCRIBED");
-            } else {
-                holder.binding.btnBuy.setText("BUY @ " + packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + " " + packDetailList.get(position).getSkuDetails().getPrice());
+
+        if (packDetailList.get(position).getSkuDetails().getIntroductoryPricePeriod() != null && !packDetailList.get(position).getSkuDetails().getIntroductoryPricePeriod().equalsIgnoreCase("")) {
+            holder.binding.introductoryPrice.setText("BUY @ " + packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + " " + packDetailList.get(position).getSkuDetails().getIntroductoryPrice());
+            holder.binding.actualPrice.setText(packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + " " + packDetailList.get(position).getSkuDetails().getPrice());
+            holder.binding.actualPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.binding.actualPrice.setVisibility(View.VISIBLE);
+            if (packDetailList.get(position).getProductsResponseMessageItem().getPromotions() != null && packDetailList.get(position).getProductsResponseMessageItem().getPromotions().size() > 0 && packDetailList.get(position).getProductsResponseMessageItem().getPromotions().get(0) != null && packDetailList.get(position).getProductsResponseMessageItem().getPromotions().get(0).getPromoDescrip() != null) {
+                holder.binding.specialText.setText(packDetailList.get(position).getProductsResponseMessageItem().getPromotions().get(0).getPromoDescrip());
+                holder.binding.specialLay.setVisibility(View.VISIBLE);
             }
         } else {
-            holder.binding.btnBuy.setText("BUY @ " + packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + " " + packDetailList.get(position).getSkuDetails().getPrice());
+            holder.binding.actualPrice.setVisibility(View.GONE);
+            if (packDetailList.get(position).getProductsResponseMessageItem().getSkuORQuickCode() != null && productList != null) {
+                if (checkActiveOrNot(packDetailList.get(position).getProductsResponseMessageItem().getSkuORQuickCode())) {
+                    holder.binding.introductoryPrice.setText("SUBSCRIBED");
+                } else {
+                    holder.binding.introductoryPrice.setText("BUY @ " + packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + " " + packDetailList.get(position).getSkuDetails().getPrice());
+                }
+            } else {
+                holder.binding.introductoryPrice.setText("BUY @ " + packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + " " + packDetailList.get(position).getSkuDetails().getPrice());
 
+            }
         }
 
         holder.binding.packDescription.setText(description);
         holder.binding.btnBuy.setOnClickListener(v -> {
             if (UserInfo.getInstance(fragment).isActive()) {
-                if (!holder.binding.btnBuy.getText().toString().equalsIgnoreCase("subscribed"))
+                if (!holder.binding.actualPrice.getText().toString().equalsIgnoreCase("subscribed"))
                     cardCLickedCallBack.onCardClicked(packDetailList.get(position).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(position).getProductsResponseMessageItem().getServiceType(), null);
             } else {
                 new ActivityLauncher(fragment).astrLoginActivity(fragment, AstrLoginActivity.class, "");

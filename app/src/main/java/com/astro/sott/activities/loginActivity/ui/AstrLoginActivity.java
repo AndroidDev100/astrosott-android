@@ -307,7 +307,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //  getBinding().errorEmail.setVisibility(View.GONE);
+                getBinding().errorEmail.setVisibility(View.GONE);
             }
 
             @Override
@@ -324,7 +324,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //  getBinding().passwordError.setVisibility(View.GONE);
+                getBinding().passwordError.setVisibility(View.GONE);
             }
 
             @Override

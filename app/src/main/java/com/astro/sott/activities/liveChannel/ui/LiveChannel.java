@@ -65,6 +65,7 @@ import com.bumptech.glide.Glide;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MediaAsset;
+import com.kaltura.client.types.MultilingualStringValue;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.ProgramAsset;
 import com.kaltura.client.types.StringValue;
@@ -223,18 +224,31 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         ///"EEE, d MMM yyyy HH:mm:ss Z"
 
 
-        activityViewModel.getGenreLivedata(programAsset.getTags()).observe(this, new Observer<String>() {
+        activityViewModel.getSubGenreLivedata(programAsset.getTags()).observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
 
                 if (!TextUtils.isEmpty(s)) {
                     stringBuilder.append(s + " | ");
                 }
+                getChannelLanguage();
                 getParentalRating();
             }
         });
 
 
+    }
+
+    private void getChannelLanguage() {
+        String language = "";
+        MultilingualStringValue stringValue = null;
+        if (asset.getMetas() != null)
+            stringValue = (MultilingualStringValue) programAsset.getMetas().get(AppLevelConstants.KEY_LANGUAGE);
+        if (stringValue != null)
+            language = stringValue.getValue();
+
+        if (!language.equalsIgnoreCase(""))
+            stringBuilder.append(language + " | ");
     }
 
     private void getParentalRating() {

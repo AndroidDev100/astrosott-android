@@ -32,7 +32,9 @@ import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.kalturaCallBacks.DMSCallBack;
+import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.modelClasses.dmsResponse.SubtitleLanguages;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.usermanagment.modelClasses.getDevice.AccountDeviceDetailsItem;
@@ -146,9 +148,11 @@ public class AppCommonMethods {
 
     public static void removeUserPrerences(Context context) {
         UserInfo.getInstance(context).setUserName("");
+        UserInfo.getInstance(context).setVip(false);
         UserInfo.getInstance(context).setCpCustomerId("");
         UserInfo.getInstance(context).setLastName("");
         UserInfo.getInstance(context).setEmail("");
+        UserInfo.getInstance(context).setMobileNumber("");
         UserInfo.getInstance(context).setAlternateUserName("");
         UserInfo.getInstance(context).setAccessToken("");
         UserInfo.getInstance(context).setRefreshToken("");
@@ -2891,14 +2895,14 @@ public class AppCommonMethods {
         return typeIn.toString();
     }
 
-    public static List<String> getSubscriptionSKUs(List<ProductsResponseMessageItem> productsResponseMessage,Activity context) {
+    public static List<String> getSubscriptionSKUs(List<ProductsResponseMessageItem> productsResponseMessage, Activity context) {
         List<String> subSkuList = new ArrayList<>();
 
         for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
             if (responseMessageItem.getAppChannels() != null && responseMessageItem.getAppChannels().get(0) != null && responseMessageItem.getAppChannels().get(0).getAppChannel() != null && responseMessageItem.getAppChannels().get(0).getAppChannel().equalsIgnoreCase("Google Wallet") && responseMessageItem.getAppChannels().get(0).getAppID() != null) {
                 if (responseMessageItem.getServiceType().equalsIgnoreCase("ppv")) {
 
-                }else {
+                } else {
                     Log.w("subscriptionSKUs-->>>", responseMessageItem.getAppChannels().get(0).getAppID() + "");
                     subSkuList.add(responseMessageItem.getAppChannels().get(0).getAppID());
                 }
@@ -2907,7 +2911,7 @@ public class AppCommonMethods {
         return subSkuList;
     }
 
-    public static List<String> getProductSKUs(List<ProductsResponseMessageItem> productsResponseMessage,Activity context) {
+    public static List<String> getProductSKUs(List<ProductsResponseMessageItem> productsResponseMessage, Activity context) {
         List<String> subSkuList = new ArrayList<>();
 
         for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
@@ -2915,12 +2919,63 @@ public class AppCommonMethods {
                 if (responseMessageItem.getServiceType().equalsIgnoreCase("ppv")) {
                     Log.w("subscriptionSKUs-->>>", responseMessageItem.getAppChannels().get(0).getAppID() + "");
                     subSkuList.add(responseMessageItem.getAppChannels().get(0).getAppID());
-                }else {
+                } else {
 
                 }
             }
         }
         return subSkuList;
+    }
+
+    public static String getSubtitleName(String label, Context context) {
+        String name = "";
+        try {
+            // Log.w("tracking 1",label);
+            ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+            ArrayList<SubtitleLanguages> subtitleLanguages = responseDmsModel.getSubtitleLanguageList();
+            for (int i = 0; i < subtitleLanguages.size(); i++) {
+                //  Log.w("tracking 2",subtitleLanguages.size()+"");
+                for (int j = 0; j < subtitleLanguages.get(i).getValue().size(); j++) {
+                    // Log.w("tracking 3",subtitleLanguages.get(i).getValue().size()+"");
+                    String valueKey = subtitleLanguages.get(i).getValue().get(j).getAsString();
+                    // Log.w("tracking 4",valueKey+"");
+                    if (label.equalsIgnoreCase(valueKey)) {
+                        //Log.w("subtitleKeys",valueKey);
+                        name = subtitleLanguages.get(i).getKey();
+                        break;
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            Log.w("tracking 5", e.toString());
+        }
+        return name;
+    }
+
+    public static String getAudioLanguageName(String label, Context context) {
+        String name = "";
+        try {
+            //Log.w("tracking 1",label);
+            ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+            ArrayList<AudioLanguages> subtitleLanguages = responseDmsModel.getAudioLanguageList();
+            for (int i = 0; i < subtitleLanguages.size(); i++) {
+                //Log.w("tracking 2",subtitleLanguages.size()+"");
+
+                //Log.w("tracking 3",subtitleLanguages.size()+"");
+                String valueKey = subtitleLanguages.get(i).getValue();
+                //Log.w("tracking 4",valueKey+"");
+                if (label.equalsIgnoreCase(valueKey)) {
+                    //Log.w("subtitleKeys",valueKey);
+                    name = subtitleLanguages.get(i).getKey();
+                    break;
+                }
+
+            }
+        } catch (Exception e) {
+            Log.w("tracking 5", e.toString());
+        }
+        return name;
     }
 
 }

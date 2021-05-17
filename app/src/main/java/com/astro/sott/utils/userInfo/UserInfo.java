@@ -11,6 +11,7 @@ public class UserInfo {
     private String externalSessionToken;
     private boolean active;
 
+    private boolean isVip;
     private boolean fbLinked;
     private boolean googleLinked;
     private boolean passwordExists;
@@ -72,6 +73,13 @@ public class UserInfo {
 
     }
 
+    public boolean isVip() {
+        return session.getBoolean("isVIP", false);
+    }
+
+    public void setVip(boolean vip) {
+        session.setBoolean("isVIP", vip);
+    }
 
     public void setEmail(String email) {
         session.setString("AstroEmail", email);

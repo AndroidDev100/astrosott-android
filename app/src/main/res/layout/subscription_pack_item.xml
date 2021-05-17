@@ -7,12 +7,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <!-- TODO: Update blank fragment layout -->
+
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="165dp"
-            android:layout_marginStart="@dimen/dimen16dp"
+            android:layout_marginStart="@dimen/dimen12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/dimen12dp"
             android:layout_marginBottom="@dimen/dimen16dp"
-            android:layout_marginEnd="@dimen/dimen16dp"
             app:cardCornerRadius="@dimen/dimen8dp">
 
             <RelativeLayout
@@ -58,25 +61,68 @@
                         android:textColor="@color/title_color"
                         android:textSize="@dimen/_14sp" />
 
-                    <Button
+                    <LinearLayout
                         android:id="@+id/btnBuy"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/dimen48dp"
                         android:layout_gravity="bottom|end"
                         android:layout_marginTop="@dimen/dimen24dp"
-                        android:background="@drawable/gradient_svod"
-                        android:fontFamily="@font/heebo_medium"
-                        android:padding="@dimen/_10sdp"
-                        android:text="BUY @ RM XX.XX"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_16sp"
+                        android:background="@drawable/gradient_svod">
 
-                        />
+                        <Button
+                            android:id="@+id/introductory_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparentColor"
+                            android:fontFamily="@font/heebo_medium"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="10dp"
+                            android:paddingRight="3dp"
+                            android:paddingBottom="10dp"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_16sp"
+
+                            />
+
+                        <Button
+                            android:id="@+id/actualPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparentColor"
+                            android:fontFamily="@font/heebo_medium"
+                            android:paddingRight="10dp"
+                            android:textColor="@color/warm_black_color"
+                            android:textSize="@dimen/_14sp"
+                            android:visibility="gone"
+
+                            />
+                    </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
 
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/special_lay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/ribbon_color_new"
+            app:cardCornerRadius="4dp">
+
+            <TextView
+                android:id="@+id/special_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/ribbon_color_new"
+                android:fontFamily="@font/heebo_bold"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="@color/special_text">
+
+            </TextView>
+        </androidx.cardview.widget.CardView>
     </RelativeLayout>
 </layout>

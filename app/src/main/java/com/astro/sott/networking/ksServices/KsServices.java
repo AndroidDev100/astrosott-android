@@ -4070,7 +4070,7 @@ public class KsServices {
                     for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
                         SubtitleLanguages levels = new SubtitleLanguages();
                         levels.setKey(entry.getKey());
-                        levels.setValue(entry.getValue().getAsString());
+                        levels.setValue(entry.getValue().getAsJsonArray());
                         subtitleLanguageList.add(levels);
                     }
 
@@ -4082,7 +4082,7 @@ public class KsServices {
                     for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getSubtitleLanguages().entrySet()) {
                         FilterValues levels = new FilterValues();
                         levels.setKey(entry.getKey());
-                        levels.setValue(entry.getValue().getAsString());
+                        // levels.setValue(entry.getValue().getAsJsonArray());
                         filterValuesList.add(levels);
                     }
 
@@ -4091,7 +4091,7 @@ public class KsServices {
 
                     ArrayList<ParentalRatingLevels> parentalRatingLevels = new ArrayList<>();
 
-                    for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getParentalRatingLevels().entrySet()) {
+                 /*   for (Map.Entry<String, JsonElement> entry : responseDmsModel.getParams().getParentalRatingLevels().entrySet()) {
                         ParentalRatingLevels levels = new ParentalRatingLevels();
                         levels.setKey(entry.getKey());
                         levels.setValue(entry.getValue().getAsInt());
@@ -4100,7 +4100,7 @@ public class KsServices {
                     }
                     responseDmsModel.setParentalRatingLevels(parentalRatingLevels);
                     Log.d("ParentalLevel", new Gson().toJson(parentalRatingLevels));
-
+*/
 
                /* ArrayList<ParentalLevels> parentalLevels = new ArrayList<>();
                 ArrayList<ParentalDescription> descriptions = new ArrayList<>();
@@ -5555,11 +5555,12 @@ public class KsServices {
                 getTrending(responseList, list, counter);
             } else if (!StringUtils.isNullOrEmptyOrZero(list.get(counter).getDescription()) && list.get(counter).getDescription().toUpperCase().contains(AppConstants.KEY_DFP_ADS)) {
                 try {
-                    /*if (!new UserDefault(activity).isSubscribed()){
-                        homechannelCallBack.response(true, responseList, list);
-                    }else {
+                    if (UserInfo.getInstance(activity).isVip()) {
                         homechannelCallBack.response(false, null, null);
-                    }*/
+                    } else {
+                        homechannelCallBack.response(true, responseList, list);
+
+                    }
                 } catch (Exception e) {
                     PrintLogging.printLog("getRailData", "isDFP" + +channelID + "-->>" + list.get(counter).getDescription());
 
@@ -5665,12 +5666,12 @@ public class KsServices {
                 homechannelCallBack.response(false, responseList, list);
             } else if (!StringUtils.isNullOrEmptyOrZero(list.get(counter).getDescription()) && list.get(counter).getDescription().toUpperCase().contains(AppConstants.KEY_DFP_ADS)) {
                 try {
-                    /*if (!new UserDefault(activity).isSubscribed()){
-                        homechannelCallBack.response(true, responseList, list);
-                    }else {
+                    if (UserInfo.getInstance(activity).isVip()) {
                         homechannelCallBack.response(false, null, null);
-                    }*/
-                    homechannelCallBack.response(true, responseList, list);
+                    } else {
+                        homechannelCallBack.response(true, responseList, list);
+
+                    }
                 } catch (Exception e) {
                     PrintLogging.printLog("getRailData + KEY_PHONE", "isDFP" + +channelID + "-->>" + list.get(counter).getDescription());
 

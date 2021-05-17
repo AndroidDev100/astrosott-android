@@ -55,7 +55,13 @@ public class LiveChannelViewModel extends AndroidViewModel {
     public LiveData<String> getGenreLivedata(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getGenredata(map);
     }
+    public LiveData<String> getSubGenreLivedata(Map<String, MultilingualStringValueArray> map) {
+        return AssetContent.getSubGenredata(map);
+    }
+    public LiveData<String> getLanguageLiveData(Map<String, MultilingualStringValueArray> map) {
 
+        return AssetContent.getLanguageData(map);
+    }
     public LiveData<List<RailCommonData>> getEPGChannelsList(String externalId, String startDate, String endDate, int type, int counter) {
         return LiveChannelRepository.getInstance().loadChannelsData(getApplication().getApplicationContext(), externalId, startDate, endDate, type, counter);
     }

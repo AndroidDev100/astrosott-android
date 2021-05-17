@@ -9,7 +9,7 @@
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:windowDisablePreview">true</item>
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowIsFloating">false</item>
 
         <item name="android:windowEnableSplitTouch">false</item>
