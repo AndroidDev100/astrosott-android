@@ -82,7 +82,7 @@ public class SliderAdapter extends PagerAdapter {
 
             title_text.setText(items.get(position).getTitle());
 
-            if (items.get(position).getType() == MediaTypeConstant.getLinear(context)) {
+            if (items.get(position).getObjects().getType() == MediaTypeConstant.getLinear(context)) {
                 ImageHelper.getInstance(context).loadImageTo(sliderImage, items.get(position).getImageFromUrl(), R.drawable.ic_landscape_placeholder);
                 if (AssetContent.isLiveEvent(items.get(position).getObjects().getMetas())) {
                     String metas=AppCommonMethods.getMetas(items.get(position).getObjects(),3);
@@ -92,7 +92,7 @@ public class SliderAdapter extends PagerAdapter {
                     slider_text_des.setText(metas);
                 }
 
-            }else if (items.get(position).getType() == MediaTypeConstant.getProgram(context)){
+            }else if (items.get(position).getObjects().getType() == MediaTypeConstant.getProgram(context)){
                 String metas=AppCommonMethods.getMetas(items.get(position).getObjects(),4);
                 slider_text_des.setText(metas);
             }
