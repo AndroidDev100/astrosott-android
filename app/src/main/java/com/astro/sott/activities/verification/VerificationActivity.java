@@ -21,6 +21,7 @@ import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityVerificationBinding;
 import com.astro.sott.fragments.verification.Verification;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -36,6 +37,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "";
     private CountDownTimer countDownTimer;
     private List<SocialLoginTypesItem> socialLoginTypesItem;
+
     @Override
     protected ActivityVerificationBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
         return ActivityVerificationBinding.inflate(inflater);
@@ -300,9 +302,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 UserInfo.getInstance(this).setMobileNumber(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getMobileNumber());
                 UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
-                UserInfo.getInstance(this).setActive(true);
-                new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);
-                Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
+
 
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
@@ -322,5 +322,46 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
             }
         });
+    }
+
+    private String displayName = "";
+
+    private void getActiveSubscription() {
+        astroLoginViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), "").observe(this, evergentCommonResponse -> {
+            if (evergentCommonResponse.isStatus()) {
+                if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null) {
+                    if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
+                        for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
+                            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && !accountServiceMessageItem.isFreemium()) {
+                                if (accountServiceMessageItem.getDisplayName() != null)
+                                    displayName = accountServiceMessageItem.getDisplayName();
+                            }
+                        }
+                        if (!displayName.equalsIgnoreCase("")) {
+                            UserInfo.getInstance(this).setVip(true);
+                            setActive();
+                        } else {
+                            UserInfo.getInstance(this).setVip(false);
+                            setActive();
+                        }
+                    } else {
+                        UserInfo.getInstance(this).setVip(false);
+                        setActive();
+                    }
+                } else {
+                    UserInfo.getInstance(this).setVip(false);
+                    setActive();
+                }
+            } else {
+                UserInfo.getInstance(this).setVip(false);
+                setActive();
+            }
+        });
+    }
+
+    private void setActive() {
+        UserInfo.getInstance(this).setActive(true);
+        new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);
+        Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
     }
 }

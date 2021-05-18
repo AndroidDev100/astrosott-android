@@ -13,6 +13,7 @@ import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginView
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityDetailConfirmationBinding;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -103,10 +104,9 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
                 UserInfo.getInstance(this).setLastName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getLastName());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
-                UserInfo.getInstance(this).setActive(true);
-                Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
-                // setCleverTap();
-                new ActivityLauncher(DetailConfirmationActivity.this).homeScreen(DetailConfirmationActivity.this, HomeActivity.class);
+
+                getActiveSubscription();
+
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
                     EvergentRefreshToken.refreshToken(DetailConfirmationActivity.this, UserInfo.getInstance(DetailConfirmationActivity.this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
@@ -125,5 +125,45 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
 
             }
         });
+    }
+
+    private String displayName = "";
+
+    private void getActiveSubscription() {
+        astroLoginViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), "").observe(this, evergentCommonResponse -> {
+            if (evergentCommonResponse.isStatus()) {
+                if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null) {
+                    if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
+                        for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
+                            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && !accountServiceMessageItem.isFreemium()) {
+                                if (accountServiceMessageItem.getDisplayName() != null)
+                                    displayName = accountServiceMessageItem.getDisplayName();
+                            }
+                        }
+                        if (!displayName.equalsIgnoreCase("")) {
+                            UserInfo.getInstance(this).setVip(true);
+                            setActive();
+                        } else {
+                            UserInfo.getInstance(this).setVip(false);
+                            setActive();
+                        }
+                    } else {
+                        UserInfo.getInstance(this).setVip(false);
+                        setActive();
+                    }
+                } else {
+                    setActive();
+                }
+            } else {
+                setActive();
+            }
+        });
+    }
+
+    private void setActive() {
+        UserInfo.getInstance(this).setActive(true);
+        Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
+        new ActivityLauncher(DetailConfirmationActivity.this).homeScreen(DetailConfirmationActivity.this, HomeActivity.class);
+
     }
 }

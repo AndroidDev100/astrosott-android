@@ -22,6 +22,7 @@ import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityIsThatYouBinding;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -161,15 +162,54 @@ public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBind
         });
     }
 
+    private String displayName = "";
+
+    private void getActiveSubscription() {
+        astroLoginViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), "").observe(this, evergentCommonResponse -> {
+            if (evergentCommonResponse.isStatus()) {
+                if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null) {
+                    if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
+                        for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
+                            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && !accountServiceMessageItem.isFreemium()) {
+                                if (accountServiceMessageItem.getDisplayName() != null)
+                                    displayName = accountServiceMessageItem.getDisplayName();
+                            }
+                        }
+                        if (!displayName.equalsIgnoreCase("")) {
+                            UserInfo.getInstance(this).setVip(true);
+                            setActive();
+                        } else {
+                            UserInfo.getInstance(this).setVip(false);
+                            setActive();
+                        }
+                    } else {
+                        UserInfo.getInstance(this).setVip(false);
+                        setActive();
+                    }
+                } else {
+                    UserInfo.getInstance(this).setVip(false);
+                    setActive();
+                }
+            } else {
+                UserInfo.getInstance(this).setVip(false);
+                setActive();
+            }
+        });
+    }
+
+    private void setActive() {
+        UserInfo.getInstance(this).setActive(true);
+        new ActivityLauncher(IsThatYouActivity.this).profileScreenRedirection(IsThatYouActivity.this, HomeActivity.class);
+
+    }
+
     private void updateProfile(String name, String type) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String acessToken = UserInfo.getInstance(this).getAccessToken();
         astroLoginViewModel.updateProfile(type, name, acessToken).observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
-                UserInfo.getInstance(this).setActive(true);
-                new ActivityLauncher(IsThatYouActivity.this).profileScreenRedirection(IsThatYouActivity.this, HomeActivity.class);
-
+                getActiveSubscription();
             } else {
                 Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
 

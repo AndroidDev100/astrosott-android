@@ -30,6 +30,7 @@ import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityAstrLoginBinding;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -393,14 +394,8 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
-                UserInfo.getInstance(this).setActive(true);
-                Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
-                // setCleverTap();
-                if (from.equalsIgnoreCase("")) {
-                    onBackPressed();
-                } else {
-                    new ActivityLauncher(AstrLoginActivity.this).profileScreenRedirection(AstrLoginActivity.this, HomeActivity.class);
-                }
+                getActiveSubscription();
+
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
                     EvergentRefreshToken.refreshToken(AstrLoginActivity.this, UserInfo.getInstance(AstrLoginActivity.this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
@@ -418,6 +413,52 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
             }
         });
+    }
+
+    private String displayName = "";
+
+    private void getActiveSubscription() {
+        astroLoginViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), "").observe(this, evergentCommonResponse -> {
+            if (evergentCommonResponse.isStatus()) {
+                if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null) {
+                    if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
+                        for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
+                            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && !accountServiceMessageItem.isFreemium()) {
+                                if (accountServiceMessageItem.getDisplayName() != null)
+                                    displayName = accountServiceMessageItem.getDisplayName();
+                            }
+                        }
+                        if (!displayName.equalsIgnoreCase("")) {
+                            UserInfo.getInstance(this).setVip(true);
+                            setActive();
+                        } else {
+                            UserInfo.getInstance(this).setVip(false);
+                            setActive();
+                        }
+                    } else {
+                        UserInfo.getInstance(this).setVip(false);
+                        setActive();
+                    }
+                } else {
+                    UserInfo.getInstance(this).setVip(false);
+                    setActive();
+                }
+            } else {
+                UserInfo.getInstance(this).setVip(false);
+                setActive();
+            }
+        });
+    }
+
+    private void setActive() {
+        UserInfo.getInstance(this).setActive(true);
+        Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
+        // setCleverTap();
+        if (from.equalsIgnoreCase("")) {
+            onBackPressed();
+        } else {
+            new ActivityLauncher(AstrLoginActivity.this).profileScreenRedirection(AstrLoginActivity.this, HomeActivity.class);
+        }
     }
 
     private void setCleverTap() {

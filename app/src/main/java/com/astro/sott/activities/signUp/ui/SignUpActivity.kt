@@ -2,7 +2,6 @@ package com.astro.sott.activities.signUp.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.text.InputType
 import android.util.Log
 import android.view.KeyEvent
@@ -22,15 +21,14 @@ import com.astro.sott.activities.isThatYou.IsThatYouActivity
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel
 import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog
 import com.astro.sott.activities.verification.VerificationActivity
-import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem
 import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.helpers.ActivityLauncher
 import com.astro.sott.utils.helpers.AppLevelConstants
-import com.astro.sott.utils.helpers.CustomTextWatcher
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey
 import com.astro.sott.utils.userInfo.UserInfo
 import com.facebook.*
@@ -382,10 +380,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                 UserInfo.getInstance(this).mobileNumber = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.mobileNumber
 
                 UserInfo.getInstance(this).cpCustomerId = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.cpCustomerID
-                UserInfo.getInstance(this).isActive = true
-                Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT).show()
-                // setCleverTap();
-                ActivityLauncher(this@SignUpActivity).homeScreen(this, HomeActivity::class.java)
+                getActiveSubscription()
             } else {
                 if (evergentCommonResponse.errorCode.equals("eV2124", ignoreCase = true) || evergentCommonResponse.errorCode.equals("111111111", ignoreCase = true)) {
                     EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).refreshToken).observe(this, Observer { evergentCommonResponse1: EvergentCommonResponse<*>? ->
@@ -401,6 +396,48 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                 }
             }
         })
+    }
+
+    private var displayName = ""
+    private fun getActiveSubscription() {
+        astroLoginViewModel!!.getActiveSubscription(UserInfo.getInstance(this).accessToken, "").observe(this, Observer { evergentCommonResponse: EvergentCommonResponse<GetActiveResponse> ->
+            if (evergentCommonResponse.isStatus) {
+                if (evergentCommonResponse.response.getActiveSubscriptionsResponseMessage != null) {
+                    if (evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage != null && evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage!!.size > 0) {
+                        for (accountServiceMessageItem in evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage!!) {
+                            if (accountServiceMessageItem!!.status.equals("ACTIVE", ignoreCase = true) && !accountServiceMessageItem.isFreemium!!) {
+                                if (accountServiceMessageItem.displayName != null)
+                                    displayName = accountServiceMessageItem.displayName!!
+                            }
+                        }
+                        if (!displayName.equals("", ignoreCase = true)) {
+                            UserInfo.getInstance(this).isVip = true
+                            setActive()
+                        } else {
+                            UserInfo.getInstance(this).isVip = false
+                            setActive()
+                        }
+                    } else {
+                        UserInfo.getInstance(this).isVip = false
+                        setActive()
+                    }
+                } else {
+                    UserInfo.getInstance(this).isVip = false
+                    setActive()
+                }
+            } else {
+                UserInfo.getInstance(this).isVip = false
+                setActive()
+            }
+        })
+    }
+
+    private fun setActive() {
+        UserInfo.getInstance(this).isActive = true
+        Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT).show()
+        // setCleverTap();
+        ActivityLauncher(this@SignUpActivity).homeScreen(this, HomeActivity::class.java)
+
     }
 
     private fun searchAccountv2(type: String, emailMobile: String, password: String) {

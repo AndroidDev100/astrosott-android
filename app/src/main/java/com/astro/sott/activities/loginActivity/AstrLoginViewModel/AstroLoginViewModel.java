@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import com.astro.sott.repositories.loginRepository.AstrLoginRepository;
 import com.astro.sott.repositories.mysubscriptionplan.MySubscriptionPlanRepository;
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse;
 import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordResponse;
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.updateProfile.UpdateProfileResponse;
@@ -47,7 +48,9 @@ public class AstroLoginViewModel extends AndroidViewModel {
     public LiveData<EvergentCommonResponse> loginUser(String type, String emailMobile, String password) {
         return AstrLoginRepository.getInstance().loginUser(getApplication(), type, emailMobile, password);
     }
-
+    public LiveData<EvergentCommonResponse<GetActiveResponse>> getActiveSubscription(String acessToken, String profile) {
+        return MySubscriptionPlanRepository.getInstance().getActiveSubscription(getApplication(), acessToken, profile);
+    }
     public LiveData<EvergentCommonResponse> getContact(String acessToken) {
         return AstrLoginRepository.getInstance().getContact(getApplication(), acessToken);
     }

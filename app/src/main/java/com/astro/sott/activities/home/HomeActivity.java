@@ -185,8 +185,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private void initFrameFragment() {
         setToolBarScroll(0);
         NavigationItem.getInstance().setTab("Live TV");
-        if (liveTvFragment != null)
-            liveTvFragment.refreshData();
         getBinding().appbar.setVisibility(View.VISIBLE);
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
@@ -567,6 +565,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void switchToLiveTvFragment() {
         setToolBarScroll(0);
+        if (liveTvFragment != null)
+            liveTvFragment.refreshData();
         NavigationItem.getInstance().setTab("Live TV");
         getBinding().appbar.setVisibility(View.VISIBLE);
         getBinding().tabs.setVisibility(View.GONE);

@@ -83,7 +83,9 @@ import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import io.branch.referral.Branch;
 import io.branch.referral.BranchError;
@@ -329,6 +331,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     KsPreferenceKey.getInstance(this).setQualityPosition(0);
                 }
                 isDmsApiHit = true;
+                boolean _date = verifyDmsDate(SharedPrefHelper.getInstance(SplashActivity.this).getString("DMS_Date", "mDate"));
+                if (_date)
+                    getActiveSubscription();
                 versionStatus();
 
             } else {
@@ -342,6 +347,24 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
             }
         });
+    }
+
+    private boolean verifyDmsDate(String storedDate) {
+        boolean verifyDms;
+        if (storedDate == null || storedDate.equalsIgnoreCase(AppLevelConstants.MDATE)) {
+            return true;
+        }
+
+        String currentDate = getDateTimeStamp(System.currentTimeMillis());
+        String temp = getDateTimeStamp(Long.parseLong(storedDate));
+        verifyDms = !currentDate.equalsIgnoreCase(temp);
+
+        return verifyDms;
+    }
+
+    private String getDateTimeStamp(Long timeStamp) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        return formatter.format(timeStamp);
     }
 
     private void initDrm() {
@@ -367,7 +390,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     private void pushToken() {
         setupBaseClient();
-        getActiveSubscription();
         token = SharedPrefHelper.getInstance(this).getString(AppLevelConstants.FCM_TOKEN, "");
         if (token == null || token.equals("")) {
             FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
