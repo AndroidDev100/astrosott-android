@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 
 import com.astro.sott.baseModel.BaseBindingFragment;
+import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.databinding.FragmentShowBinding;
 import com.astro.sott.fragments.ShowFragment.adapter.SeriesShowAdapter;
 import com.astro.sott.fragments.ShowFragment.adapter.MovieShowsAdapter;
@@ -17,6 +18,7 @@ import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.helpers.SpacingItemDecoration;
 import com.kaltura.client.types.Asset;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,12 +71,21 @@ public class ShowFragment extends BaseBindingFragment<FragmentShowBinding> {
         getBinding().recyclerView.setLayoutManager(mLayoutManager);
     }
 
+    private List<RailCommonData> railCommonDataList;
+
     private void setUiComponent(List<Asset> shows, boolean isMovieShow) {
+        railCommonDataList = new ArrayList<>();
+        for (Asset asset : shows) {
+            RailCommonData railCommonData = new RailCommonData();
+            railCommonData.setObject(asset);
+            railCommonDataList.add(railCommonData);
+        }
+
         if (!isMovieShow) {
-            SeriesShowAdapter showAdapter = new SeriesShowAdapter(getActivity(), shows, isMovieShow);
+            SeriesShowAdapter showAdapter = new SeriesShowAdapter(getActivity(), railCommonDataList, isMovieShow);
             getBinding().recyclerView.setAdapter(showAdapter);
         } else {
-            MovieShowsAdapter seriesShowAdapter = new MovieShowsAdapter(getActivity(), shows);
+            MovieShowsAdapter seriesShowAdapter = new MovieShowsAdapter(getActivity(), railCommonDataList);
             getBinding().recyclerView.setAdapter(seriesShowAdapter);
         }
 

@@ -9,23 +9,29 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.R;
+import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
+import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.astro.sott.databinding.RelatedItemBinding;
+import com.astro.sott.utils.constants.AppConstants;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.ImageHelper;
+import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaImage;
 
 import java.util.List;
 
 public class SeriesShowAdapter extends RecyclerView.Adapter<SeriesShowAdapter.SingleItemViewHolder> {
-    private List<Asset> similarItemList;
+    private List<RailCommonData> similarItemList;
     private Activity mContext;
     private boolean isMovieShow;
     private DetailRailClick detailRailClick;
 
 
-    public SeriesShowAdapter(Activity context, List<Asset> loadedList, boolean isMovieShow) {
+    public SeriesShowAdapter(Activity context, List<RailCommonData> loadedList, boolean isMovieShow) {
         similarItemList = loadedList;
         this.isMovieShow = isMovieShow;
         mContext = context;
@@ -47,8 +53,8 @@ public class SeriesShowAdapter extends RecyclerView.Adapter<SeriesShowAdapter.Si
 
     @Override
     public void onBindViewHolder(@NonNull SingleItemViewHolder holder, int position) {
-        if (similarItemList.get(position).getMediaFiles() != null && similarItemList.get(position).getMediaFiles().size() > 0) {
-            List<MediaImage> media = similarItemList.get(position).getImages();
+        if (similarItemList.get(position).getObject().getMediaFiles() != null && similarItemList.get(position).getObject().getMediaFiles().size() > 0) {
+            List<MediaImage> media = similarItemList.get(position).getObject().getImages();
             for (MediaImage mediaFile : media) {
                 if (mediaFile.getRatio().equalsIgnoreCase("16x9")) {
                     String image_url = mediaFile.getUrl();
@@ -77,7 +83,16 @@ public class SeriesShowAdapter extends RecyclerView.Adapter<SeriesShowAdapter.Si
 
 
             landscapeItemBinding.cardView.setOnClickListener(v -> {
-
+                new ActivityLauncher(mContext).railClickCondition("", "", name, similarItemList.get(getLayoutPosition()), getLayoutPosition(), AppConstants.Rail5, similarItemList, new MediaTypeCallBack() {
+                    @Override
+                    public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
+                        if (NetworkConnectivity.isOnline(mContext)) {
+                            detailRailClick.detailItemClicked(_url, position, type, commonData);
+                        } else {
+                            ToastHandler.show(mContext.getResources().getString(R.string.no_internet_connection), mContext);
+                        }
+                    }
+                });
             });
 
         }

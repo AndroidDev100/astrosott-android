@@ -310,6 +310,8 @@ public class ActivityLauncher {
     private void boxSetScreenCheck(String name, RailCommonData railCommonData, int layoutPosition, int layoutType, MediaTypeCallBack detailRailClick) {
         if (railCommonData.getObject().getType() == MediaTypeConstant.getCollection(activity)) {
             detailRailClick.detailItemClicked(AssetContent.getTileVideoURL(railCommonData.getObject(), AssetContent.getVideoResol(railCommonData.getObject().getTags())), layoutPosition, 1, railCommonData);
+        } else {
+            mediaTypeCheck(railCommonData, layoutType);
         }
 
     }
