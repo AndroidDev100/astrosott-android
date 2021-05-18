@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout >
+<layout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -69,7 +69,7 @@
                         android:layout_marginTop="@dimen/dimen24dp"
                         android:background="@drawable/gradient_svod">
 
-                        <Button
+                        <TextView
                             android:id="@+id/introductory_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
 
                             />
 
-                        <Button
+                        <TextView
                             android:id="@+id/actualPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
