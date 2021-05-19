@@ -249,7 +249,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void createUser() {
-        astroLoginViewModel.createUser(loginType, emailMobile, password, "").observe(this, evergentCommonResponse -> {
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        astroLoginViewModel.createUser(loginType, emailMobile, password, "",tabletSize).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getAccessToken());
                 UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getRefreshToken());
@@ -272,7 +273,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void login(String loginType, String emailMobile, String password) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
-        astroLoginViewModel.loginUser(loginType, emailMobile, password).observe(this, evergentCommonResponse -> {
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        astroLoginViewModel.loginUser(loginType, emailMobile, password, tabletSize).observe(this, evergentCommonResponse -> {
 
             if (evergentCommonResponse.isStatus()) {
 

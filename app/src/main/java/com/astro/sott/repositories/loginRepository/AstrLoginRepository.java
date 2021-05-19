@@ -143,10 +143,10 @@ public class AstrLoginRepository {
     }
 
 
-    public LiveData<EvergentCommonResponse> createUser(Context context, String type, String emailMobile, String password, String name) {
+    public LiveData<EvergentCommonResponse> createUser(Context context, String type, String emailMobile, String password, String name, boolean isTablet) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().createUser(context, type, emailMobile, password,name, new EvergentCreateUserCallback() {
+        EvergentServices.Companion.getInstance().createUser(context, type, emailMobile, password,name,isTablet, new EvergentCreateUserCallback() {
 
 
             @Override
@@ -167,10 +167,10 @@ public class AstrLoginRepository {
         return mutableLiveData;
     }
 
-    public LiveData<EvergentCommonResponse> loginUser(Context context, String type, String emailMobile, String password) {
+    public LiveData<EvergentCommonResponse> loginUser(Context context, String type, String emailMobile, String password,boolean isTablet) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().loginUser(context, type, emailMobile, password, new EvergentLoginUserCallback() {
+        EvergentServices.Companion.getInstance().loginUser(context, type, emailMobile, password,isTablet, new EvergentLoginUserCallback() {
 
 
             @Override

@@ -352,7 +352,7 @@ class EvergentServices {
 
     }
 
-    fun createUser(context: Context, type: String, emailMobile: String, password: String, name: String, evergentCreateUserCallback: EvergentCreateUserCallback) {
+    fun createUser(context: Context, type: String, emailMobile: String, password: String, name: String, isTablet: Boolean, evergentCreateUserCallback: EvergentCreateUserCallback) {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
@@ -386,7 +386,11 @@ class EvergentServices {
 
         devicejson.addProperty("serialNo", getDeviceId(context.contentResolver))
         devicejson.addProperty("deviceName", Build.DEVICE)
-        devicejson.addProperty("deviceType", "Android")
+        if (isTablet) {
+            devicejson.addProperty("deviceType", "ANDROID_TABLET")
+        } else {
+            devicejson.addProperty("deviceType", "ANDROID")
+        }
         devicejson.addProperty("modelNo", Build.MODEL)
         devicejson.addProperty("os", "Android")
         json.add("deviceMessage", devicejson)
@@ -436,7 +440,7 @@ class EvergentServices {
     }
 
 
-    fun loginUser(context: Context, type: String, emailMobile: String, password: String, evergentCreateUserCallback: EvergentLoginUserCallback) {
+    fun loginUser(context: Context, type: String, emailMobile: String, password: String, isTablet: Boolean, evergentCreateUserCallback: EvergentLoginUserCallback) {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
@@ -459,7 +463,12 @@ class EvergentServices {
         }
         devicejson.addProperty("serialNo", getDeviceId(context.contentResolver))
         devicejson.addProperty("deviceName", Build.DEVICE)
-        devicejson.addProperty("deviceType", "Android")
+        if (isTablet) {
+            devicejson.addProperty("deviceType", "ANDROID_TABLET")
+        } else {
+            devicejson.addProperty("deviceType", "ANDROID")
+        }
+
         devicejson.addProperty("modelNo", Build.MODEL)
         devicejson.addProperty("os", "Android")
         json.add("deviceMessage", devicejson)
@@ -900,7 +909,7 @@ class EvergentServices {
         }
         json.addProperty("returnPromotions", "T");
         json.addProperty("returnAttributes", "T");
-       // json.addProperty("offerType", "Existing Customer");
+        // json.addProperty("offerType", "Existing Customer");
         json.addProperty("salesChannel", "Web");
         appChannelJson.addProperty("appChannel", "Google Wallet")
         json.add("appChannels", appChannelJson)

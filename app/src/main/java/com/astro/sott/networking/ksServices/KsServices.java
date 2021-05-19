@@ -1880,7 +1880,7 @@ public class KsServices {
         clientSetupKs();
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
 
-        EPGListKSQL = KSQL.forEPGListing(externalId, startDate, endDate);
+        EPGListKSQL = KSQL.forEPGRail(externalId, startDate, endDate);
         searchAssetFilter.setKSql(EPGListKSQL);
         searchAssetFilter.typeIn("0");
         searchAssetFilter.setOrderBy("START_DATE_ASC");

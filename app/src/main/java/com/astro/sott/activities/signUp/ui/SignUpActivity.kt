@@ -329,7 +329,9 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
 
     private fun login(type: String, emailMobile: String, password: String) {
         activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
-        astroLoginViewModel!!.loginUser(type, emailMobile, password).observe(this@SignUpActivity, Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
+        val tabletSize = resources.getBoolean(R.bool.isTablet)
+
+        astroLoginViewModel!!.loginUser(type, emailMobile, password, tabletSize).observe(this@SignUpActivity, Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
             if (evergentCommonResponse.isStatus) {
                 UserInfo.getInstance(this).accessToken = evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.accessToken
                 UserInfo.getInstance(this).refreshToken = evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.refreshToken

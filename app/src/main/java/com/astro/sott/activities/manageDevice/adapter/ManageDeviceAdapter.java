@@ -52,11 +52,11 @@ public class ManageDeviceAdapter extends RecyclerView.Adapter<ManageDeviceAdapte
             holder.manageDeviceItemBinding.deleteIcon.setVisibility(View.VISIBLE);
         }
         AppCommonMethods.getDeviceId(mContext.getContentResolver());
-        if (itemList.get(position).getDeviceType().equalsIgnoreCase("iPhone")) {
+        if (itemList.get(position).getDeviceType().equalsIgnoreCase("IOS")||itemList.get(position).getDeviceType().equalsIgnoreCase("IOS_TABLET")) {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_apple));
-        } else if (itemList.get(position).getDeviceType().equalsIgnoreCase("Android")) {
+        } else if (itemList.get(position).getDeviceType().equalsIgnoreCase("ANDROID")||itemList.get(position).getDeviceType().equalsIgnoreCase("ANDROID_TABLET")) {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_android_24px));
-        } else if (itemList.get(position).getDeviceType().equalsIgnoreCase("Web")) {
+        } else if (itemList.get(position).getDeviceType().equalsIgnoreCase("PC")) {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_laptop_24_px));
         } else {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_android_24px));

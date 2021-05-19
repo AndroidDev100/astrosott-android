@@ -338,7 +338,9 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
     private void login(String password) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
-        astroLoginViewModel.loginUser(type, email_mobile, password).observe(this, evergentCommonResponse -> {
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+
+        astroLoginViewModel.loginUser(type, email_mobile, password,tabletSize).observe(this, evergentCommonResponse -> {
 
             if (evergentCommonResponse.isStatus()) {
                 UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getAccessToken());

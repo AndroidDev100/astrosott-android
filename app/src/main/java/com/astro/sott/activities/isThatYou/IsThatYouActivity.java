@@ -100,7 +100,8 @@ public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBind
 
     private void login(String password) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
-        astroLoginViewModel.loginUser("email", emailMobile, password).observe(this, evergentCommonResponse -> {
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        astroLoginViewModel.loginUser("email", emailMobile, password, tabletSize).observe(this, evergentCommonResponse -> {
 
             if (evergentCommonResponse.isStatus()) {
                 UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getAccessToken());
