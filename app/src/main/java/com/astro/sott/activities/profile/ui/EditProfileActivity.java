@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfileBinding> {
@@ -41,6 +42,8 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     private CallbackManager callbackManager;
     private String email_mobile = "";
     private String type = "";
+    private static final String EMAIL = "email, public_profile";
+
     private List<SocialLoginTypesItem> socialLoginTypesItem;
     private GoogleSignInClient mGoogleSignInClient;
 
@@ -243,7 +246,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
 
     private void setFb() {
         callbackManager = CallbackManager.Factory.create();
-        //  LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL));
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL));
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override

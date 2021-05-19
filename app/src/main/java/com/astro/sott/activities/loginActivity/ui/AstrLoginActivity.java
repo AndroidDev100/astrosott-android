@@ -58,6 +58,7 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -108,7 +109,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
     private void setFb() {
         callbackManager = CallbackManager.Factory.create();
-        //  LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL));
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL));
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -340,7 +341,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         getBinding().progressBar.setVisibility(View.VISIBLE);
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
 
-        astroLoginViewModel.loginUser(type, email_mobile, password,tabletSize).observe(this, evergentCommonResponse -> {
+        astroLoginViewModel.loginUser(type, email_mobile, password, tabletSize).observe(this, evergentCommonResponse -> {
 
             if (evergentCommonResponse.isStatus()) {
                 UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getAccessToken());

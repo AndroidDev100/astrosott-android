@@ -3,64 +3,86 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:background="@color/grape_purple"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
+        <androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/ic_app_bar_bg"
-            android:fitsSystemWindows="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
-            <include
-                android:id="@+id/toolbar"
-                layout="@layout/app_toolbar"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/coordinatorLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:minHeight="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-        </com.google.android.material.appbar.AppBarLayout>
+                android:layout_height="match_parent"
+                android:background="@color/grape_purple"
+                android:fitsSystemWindows="false">
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="24dp"
-            android:contentDescription="@string/contentDescription"
-            android:src="@drawable/mobile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbar" />
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/ic_app_bar_bg"
+                    android:fitsSystemWindows="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/image"
-            app:tabBackground="@drawable/tab_packages_background"
-            app:tabMode="fixed" />
+                    <include
+                        android:id="@+id/toolbar"
+                        layout="@layout/app_toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:minHeight="?attr/actionBarSize"
+                        app:layout_scrollFlags="scroll|enterAlways"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="18dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@id/terms"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tabs" />
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="24dp"
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/mobile"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/appbar" />
 
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@id/image"
+                    app:tabBackground="@drawable/tab_packages_background"
+                    app:tabMode="fixed" />
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="27dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tabs" />
+
+
+
+                <include
+                    android:id="@+id/include_progressbar"
+                    layout="@layout/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
         <TextView
             android:id="@+id/descp1"
             android:layout_width="wrap_content"
@@ -85,8 +107,7 @@
             android:textColor="@color/light_blue_text_color"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/terms"
-            />
+            app:layout_constraintRight_toLeftOf="@id/terms" />
 
         <TextView
             android:id="@+id/terms"
@@ -106,25 +127,13 @@
             android:id="@+id/descp4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
             android:fontFamily="@font/heebo_medium"
             android:gravity="center"
-            android:layout_marginLeft="2dp"
             android:text="@string/apply_text"
             android:textColor="@color/light_blue_text_color"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/terms"
-             />
-
-        <include
-            android:id="@+id/include_progressbar"
-            layout="@layout/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintLeft_toRightOf="@id/terms" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -41,9 +41,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
+                android:contentDescription="@string/contentDescription"
                 android:src="@drawable/ic_mask_top"
-                app:tint="@color/red_live"
-                android:contentDescription="@string/contentDescription" />
+                app:tint="@color/red_live" />
 
             <ImageView
                 android:id="@+id/maskbottom"
@@ -51,9 +51,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
+                android:contentDescription="@string/contentDescription"
                 android:src="@drawable/ic_mask_bottom"
-                app:tint="@color/red_live"
-                android:contentDescription="@string/contentDescription" />
+                app:tint="@color/red_live" />
 
             <TextView
                 android:id="@+id/package_title"
@@ -137,6 +137,7 @@
                 android:layout_marginEnd="16dp"
                 android:divider="@null"
                 android:listSelector="@android:color/transparent"
+                android:nestedScrollingEnabled="true"
                 tools:listitem="@layout/bullet_list_item" />
 
             <Button
@@ -146,6 +147,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="16dp"
+                android:textColor="@color/title_color"
                 android:background="@drawable/plan_buttons"
                 android:fontFamily="@font/heebo_medium"
                 android:textSize="16sp" />

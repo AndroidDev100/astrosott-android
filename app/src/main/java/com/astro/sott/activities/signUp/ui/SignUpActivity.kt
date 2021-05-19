@@ -44,6 +44,7 @@ import com.google.android.gms.tasks.Task
 import org.json.JSONException
 import org.json.JSONObject
 import java.lang.Double.parseDouble
+import java.util.*
 
 class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListener {
     private var socialLoginTypesItem: List<SocialLoginTypesItem>? = null
@@ -52,6 +53,8 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
     private var callbackManager: CallbackManager? = null
     private var passwordVisibility = false
     private var name: String = ""
+    private val EMAIL = "email, public_profile"
+
     private val passwordPattern = Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=\\S+$).{8,16}$")
     private val mobilePattern = Regex("^[0-9]*$")
     private val emailPattern = Regex("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -250,6 +253,8 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
 
     private fun setFb() {
         callbackManager = CallbackManager.Factory.create()
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL))
+
         LoginManager.getInstance().registerCallback(callbackManager,
                 object : FacebookCallback<LoginResult> {
                     override fun onSuccess(loginResult: LoginResult) {
