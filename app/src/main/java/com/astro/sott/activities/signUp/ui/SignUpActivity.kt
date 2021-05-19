@@ -20,6 +20,7 @@ import com.astro.sott.activities.home.HomeActivity
 import com.astro.sott.activities.isThatYou.IsThatYouActivity
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel
 import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
@@ -253,7 +254,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
 
     private fun setFb() {
         callbackManager = CallbackManager.Factory.create()
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL))
+       activitySinUpBinding?.loginButton?.setReadPermissions(Arrays.asList(EMAIL))
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 object : FacebookCallback<LoginResult> {

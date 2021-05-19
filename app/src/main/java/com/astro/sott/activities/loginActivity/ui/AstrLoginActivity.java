@@ -109,7 +109,8 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
     private void setFb() {
         callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL));
+        getBinding().loginButton.setReadPermissions(Arrays.asList(EMAIL));
+        //  LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL));
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
