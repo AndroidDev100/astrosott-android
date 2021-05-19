@@ -59,7 +59,7 @@ public class ManageDeviceAdapter extends RecyclerView.Adapter<ManageDeviceAdapte
         } else if (itemList.get(position).getDeviceType().equalsIgnoreCase("PC")) {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_laptop_24_px));
         } else {
-            holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_android_24px));
+            holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_laptop_24_px));
         }
         holder.manageDeviceItemBinding.title.setText(itemList.get(position).getDeviceName() +" "+ itemList.get(position).getModelNo());
         holder.manageDeviceItemBinding.activeDate.setText("Last active " + getDate(itemList.get(position).getLastLoginTime()));
