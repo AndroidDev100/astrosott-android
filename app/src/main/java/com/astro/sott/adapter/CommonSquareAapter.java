@@ -137,7 +137,7 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             try {
                 setRecycler(squareItemBinding.metas.recyclerView, singleItem.getObject().getTags());
-                AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
                 AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
                 squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
@@ -182,7 +182,7 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             try {
                 setRecycler(squareItemBinding.metas.recyclerView, singleItem.getObject().getTags());
-                AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
                 AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
                 squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
@@ -227,7 +227,7 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             try {
                 setRecycler(squareItemBinding.metas.recyclerView, singleItem.getObject().getTags());
-                AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(squareItemBinding.metas.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
                 AppCommonMethods.handleTitleDesc(squareItemBinding.titleLayout,squareItemBinding.tvTitle,squareItemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
                 squareItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){

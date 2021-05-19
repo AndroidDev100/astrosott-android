@@ -426,6 +426,29 @@ public class AssetContent {
 
     }
 
+    public static boolean getBillingIdForSeries(Map<String, MultilingualStringValueArray> map) {
+        List<MultilingualStringValue> cast_value = new ArrayList<>();
+        MultilingualStringValueArray rating_list = map.get(AppLevelConstants.ProviderContentTier);
+        if (rating_list != null) {
+            cast_value.addAll(rating_list.getObjects());
+            if (cast_value.size() > 0 && cast_value.get(0).getValue() != null) {
+                String cast = cast_value.get(0).getValue().trim();
+                if (!cast.equalsIgnoreCase("")) {
+                    return true;
+
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+
+    }
+
     public static int getParentalRatingForChecks
             (Map<String, MultilingualStringValueArray> map, Context applicationContext) {
         String rating;

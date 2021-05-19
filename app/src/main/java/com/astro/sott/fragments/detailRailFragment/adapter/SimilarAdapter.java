@@ -1,7 +1,6 @@
 package com.astro.sott.fragments.detailRailFragment.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.R;
-import com.astro.sott.adapter.CommonLandscapeAdapter;
 import com.astro.sott.adapter.RibbonAdapter;
-import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.astro.sott.databinding.ExclusiveItemBinding;
-import com.astro.sott.databinding.LandscapeItemBinding;
 import com.astro.sott.databinding.RelatedItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
@@ -76,7 +72,7 @@ public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SingleIt
         }
         try {
             setRecycler(holder.landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
-            AppCommonMethods.setBillingUi(holder.landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags());
+            AppCommonMethods.setBillingUi(holder.landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
 
         } catch (Exception e) {
 

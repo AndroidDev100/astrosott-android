@@ -87,7 +87,7 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
         try {
             holder.potraitItemBinding.metas.billingImage.setVisibility(View.GONE);
             setRecycler(holder.potraitItemBinding.metas.recyclerView, singleItem.getObject().getTags());
-            AppCommonMethods.setBillingUi(holder.potraitItemBinding.billingImage, singleItem.getObject().getTags());
+            AppCommonMethods.setBillingUi(holder.potraitItemBinding.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
             AppCommonMethods.handleTitleDesc(holder.potraitItemBinding.mediaTypeLayout.metaLayout,holder.potraitItemBinding.mediaTypeLayout.lineOne,holder.potraitItemBinding.mediaTypeLayout.lineTwo,baseCategory,itemsList.get(i),mContext);
             holder.potraitItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
             if (itemsList.get(i).getType()== MediaTypeConstant.getProgram(mContext)){

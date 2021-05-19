@@ -197,7 +197,7 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         try {
             itemBinding.metas.billingImage.setVisibility(View.GONE);
             setRecycler(itemBinding.metas.recyclerView, singleItem.getObject().getTags());
-            AppCommonMethods.setBillingUi(itemBinding.billingImage, singleItem.getObject().getTags());
+            AppCommonMethods.setBillingUi(itemBinding.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
             AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
             itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
             if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
@@ -260,7 +260,7 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         try {
             itemBinding.metas.billingImage.setVisibility(View.GONE);
             setRecycler(itemBinding.metas.recyclerView, singleItem.getObject().getTags());
-            AppCommonMethods.setBillingUi(itemBinding.billingImage, singleItem.getObject().getTags());
+            AppCommonMethods.setBillingUi(itemBinding.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
 
             AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
             itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
@@ -323,7 +323,7 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         try {
             itemBinding.metas.billingImage.setVisibility(View.GONE);
             setRecycler(itemBinding.metas.recyclerView, singleItem.getObject().getTags());
-            AppCommonMethods.setBillingUi(itemBinding.billingImage, singleItem.getObject().getTags());
+            AppCommonMethods.setBillingUi(itemBinding.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
 
             AppCommonMethods.handleTitleDesc(itemBinding.titleLayout,itemBinding.tvTitle,itemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
             itemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());

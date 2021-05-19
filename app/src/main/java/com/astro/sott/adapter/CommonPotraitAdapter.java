@@ -140,7 +140,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             try {
                 setRecycler(potraitItemBinding.metas.recyclerView, singleItem.getObject().getTags());
-                AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
                 AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
                 potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 if (itemsList.get(i).getType()==MediaTypeConstant.getProgram(mContext)){
@@ -191,7 +191,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             try {
                 setRecycler(potraitItemBinding.metas.recyclerView, singleItem.getObject().getTags());
-                AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
                 AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
                 potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 //potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -234,7 +234,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             try {
                 setRecycler(potraitItemBinding.metas.recyclerView, singleItem.getObject().getTags());
-                AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(potraitItemBinding.metas.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
                 AppCommonMethods.handleTitleDesc(potraitItemBinding.titleLayout,potraitItemBinding.tvTitle,potraitItemBinding.tvDescription,baseCategory,itemsList.get(i),mContext);
                 potraitItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                // potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());

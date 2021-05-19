@@ -97,7 +97,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
             try {
                 holder.landscapeItemBinding.metas.billingImage.setVisibility(View.GONE);
                 setRecycler(holder.landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
-                AppCommonMethods.setBillingUi(holder.landscapeItemBinding.billingImage, singleItem.getObject().getTags());
+                AppCommonMethods.setBillingUi(holder.landscapeItemBinding.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
                 AppCommonMethods.handleTitleDesc(holder.landscapeItemBinding.mediaTypeLayout.metaLayout, holder.landscapeItemBinding.mediaTypeLayout.lineOne, holder.landscapeItemBinding.mediaTypeLayout.lineTwo, baseCategory, itemsList.get(i), mContext);
                 holder.landscapeItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
                 if (singleItem.getObject().getType() == MediaTypeConstant.getProgram(mContext)) {
