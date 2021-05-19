@@ -206,6 +206,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                         intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                         startActivity(intent);
                     }
@@ -653,6 +654,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
     Long liveEventStartDate;
     Long liveEventEndDate;
+    String liveEventDate;
 
     private void getEventDate(Map<String, Value> yearMap) {
         LongValue startValue = null, endValue = null;
@@ -665,6 +667,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             if (endValue != null) {
                 liveEventEndDate = endValue.getValue();
             }
+            liveEventDate = AppCommonMethods.getLiveEventStartDate(liveEventStartDate);
         }
     }
 

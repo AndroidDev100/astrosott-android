@@ -41,7 +41,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private SubscriptionViewModel subscriptionViewModel;
 
     String fileId = "";
-    String from = "";
+    String from = "", date = "";
 
     @Override
     protected ActivitySubscriptionDetailBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -57,6 +57,9 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
         if (getIntent().getStringExtra(AppLevelConstants.FROM_KEY) != null)
             from = getIntent().getStringExtra(AppLevelConstants.FROM_KEY);
+
+        if (getIntent().getStringExtra(AppLevelConstants.DATE) != null)
+            date = getIntent().getStringExtra(AppLevelConstants.DATE);
 
         modelCall();
         getSubscriptionActionList();
@@ -100,12 +103,13 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         FragmentManager fm = getSupportFragmentManager();
         SubscriptionPacksFragment subscriptionPacksFragment = new SubscriptionPacksFragment();
         Bundle bundle = new Bundle();
-        if (!from.equalsIgnoreCase("")){
+        if (!from.equalsIgnoreCase("")) {
             bundle.putString(AppLevelConstants.FROM_KEY, from);
 
-        }else {
+        } else {
             bundle.putString(AppLevelConstants.FROM_KEY, "detail");
         }
+        bundle.putString(AppLevelConstants.DATE, date);
         bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
         subscriptionPacksFragment.setArguments(bundle);
         fm.beginTransaction().replace(R.id.frameContent, subscriptionPacksFragment).commitNow();

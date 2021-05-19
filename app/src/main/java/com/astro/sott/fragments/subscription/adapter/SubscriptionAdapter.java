@@ -25,11 +25,13 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
     Activity fragment;
     private List<PackDetail> packDetailList;
     private CardCLickedCallBack cardCLickedCallBack;
+    private String eventStartDate;
     private List<String> productList;
 
-    public SubscriptionAdapter(Activity ctx, List<PackDetail> productsResponseMessage, List<String> productList) {
+    public SubscriptionAdapter(Activity ctx, List<PackDetail> productsResponseMessage, List<String> productList, String date) {
         this.fragment = ctx;
         packDetailList = productsResponseMessage;
+        eventStartDate = date;
         cardCLickedCallBack = (CardCLickedCallBack) ctx;
         this.productList = productList;
     }
@@ -47,11 +49,19 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
     public void onBindViewHolder(@NonNull SingleItemHolder holder, int position) {
         holder.binding.packName.setText(packDetailList.get(position).getProductsResponseMessageItem().getDisplayName());
         StringBuilder description = new StringBuilder();
-        if (packDetailList.get(position).getProductsResponseMessageItem().getDuration() != null && packDetailList.get(position).getProductsResponseMessageItem().getPeriod() != null) {
-            description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
-        }
+
         if (packDetailList.get(position).getProductsResponseMessageItem().getRenewable() != null && packDetailList.get(position).getProductsResponseMessageItem().getRenewable()) {
+            description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
             description.append(" recurring subscription");
+        }else {
+            if (packDetailList.get(position).getProductsResponseMessageItem().getDuration() != null && packDetailList.get(position).getProductsResponseMessageItem().getPeriod() != null) {
+                if (!eventStartDate.equalsIgnoreCase("")) {
+                    description.append("Event Time: " + eventStartDate);
+                } else {
+                    description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
+                }
+
+            }
         }
 
         if (packDetailList.get(position).getSkuDetails().getIntroductoryPricePeriod() != null && !packDetailList.get(position).getSkuDetails().getIntroductoryPricePeriod().equalsIgnoreCase("")) {
