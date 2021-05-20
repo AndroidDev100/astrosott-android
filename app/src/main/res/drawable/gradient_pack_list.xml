@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- this one is ths color of the Rounded Button -->
+    <gradient
+        android:angle="270"
+        android:endColor="#2d1347"
+        android:startColor="#7600d2" />
+</shape>

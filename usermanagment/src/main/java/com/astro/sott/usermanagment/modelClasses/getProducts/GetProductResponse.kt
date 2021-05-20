@@ -59,6 +59,9 @@ data class ProductsResponseMessageItem(
         @field:SerializedName("isFreemium")
         val isFreemium: Boolean? = null,
 
+        @field:SerializedName("uiDisplayText")
+        val uiDisplayText: String? = null,
+
         @field:SerializedName("retailPrice")
         val retailPrice: Double? = null,
 

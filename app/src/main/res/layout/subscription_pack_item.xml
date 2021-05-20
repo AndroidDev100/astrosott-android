@@ -50,7 +50,7 @@
                         android:fontFamily="@font/heebo_bold"
                         android:text="@string/vip_packs"
                         android:textColor="@color/title_color"
-                        android:textSize="@dimen/_16sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/pack_description"
@@ -59,7 +59,7 @@
                         android:layout_marginTop="@dimen/dimen8dp"
                         android:fontFamily="@font/heebo_regular"
                         android:textColor="@color/title_color"
-                        android:textSize="@dimen/_14sp" />
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:id="@+id/btnBuy"
@@ -67,7 +67,23 @@
                         android:layout_height="@dimen/dimen48dp"
                         android:layout_gravity="bottom|end"
                         android:layout_marginTop="@dimen/dimen24dp"
-                        android:background="@drawable/gradient_svod">
+                        android:background="@drawable/gradient_svod"
+                        android:gravity="center">
+
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparentColor"
+                            android:fontFamily="@font/heebo_medium"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="1dp"
+                            android:text="BUY @"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+
+                            />
 
                         <TextView
                             android:id="@+id/introductory_price"
@@ -75,12 +91,9 @@
                             android:layout_height="wrap_content"
                             android:background="@color/transparentColor"
                             android:fontFamily="@font/heebo_medium"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="10dp"
                             android:paddingRight="3dp"
-                            android:paddingBottom="10dp"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/_16sp"
+                            android:textSize="15sp"
 
                             />
 
@@ -90,9 +103,9 @@
                             android:layout_height="wrap_content"
                             android:background="@color/transparentColor"
                             android:fontFamily="@font/heebo_medium"
-                            android:paddingRight="10dp"
+                            android:paddingRight="5dp"
                             android:textColor="@color/warm_black_color"
-                            android:textSize="@dimen/_14sp"
+                            android:textSize="13sp"
                             android:visibility="gone"
 
                             />

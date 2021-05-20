@@ -53,7 +53,7 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
         if (packDetailList.get(position).getProductsResponseMessageItem().getRenewable() != null && packDetailList.get(position).getProductsResponseMessageItem().getRenewable()) {
             description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
             description.append(" recurring subscription");
-        }else {
+        } else {
             if (packDetailList.get(position).getProductsResponseMessageItem().getDuration() != null && packDetailList.get(position).getProductsResponseMessageItem().getPeriod() != null) {
                 if (!eventStartDate.equalsIgnoreCase("")) {
                     description.append("Event Time: " + eventStartDate);
@@ -65,8 +65,8 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
         }
 
         if (packDetailList.get(position).getSkuDetails().getIntroductoryPricePeriod() != null && !packDetailList.get(position).getSkuDetails().getIntroductoryPricePeriod().equalsIgnoreCase("")) {
-            holder.binding.introductoryPrice.setText("BUY @ " + packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + " " + packDetailList.get(position).getSkuDetails().getIntroductoryPrice());
-            holder.binding.actualPrice.setText(packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + " " + packDetailList.get(position).getSkuDetails().getPrice());
+            holder.binding.introductoryPrice.setText(packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + packDetailList.get(position).getSkuDetails().getIntroductoryPrice());
+            holder.binding.actualPrice.setText(packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + packDetailList.get(position).getSkuDetails().getPrice());
             holder.binding.actualPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             holder.binding.actualPrice.setVisibility(View.VISIBLE);
             if (packDetailList.get(position).getProductsResponseMessageItem().getPromotions() != null && packDetailList.get(position).getProductsResponseMessageItem().getPromotions().size() > 0 && packDetailList.get(position).getProductsResponseMessageItem().getPromotions().get(0) != null && packDetailList.get(position).getProductsResponseMessageItem().getPromotions().get(0).getPromoDescrip() != null) {
@@ -79,10 +79,10 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
                 if (checkActiveOrNot(packDetailList.get(position).getProductsResponseMessageItem().getSkuORQuickCode())) {
                     holder.binding.introductoryPrice.setText("SUBSCRIBED");
                 } else {
-                    holder.binding.introductoryPrice.setText("BUY @ " + packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + " " + packDetailList.get(position).getSkuDetails().getPrice());
+                    holder.binding.introductoryPrice.setText(packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + packDetailList.get(position).getSkuDetails().getPrice());
                 }
             } else {
-                holder.binding.introductoryPrice.setText("BUY @ " + packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + " " + packDetailList.get(position).getSkuDetails().getPrice());
+                holder.binding.introductoryPrice.setText(packDetailList.get(position).getSkuDetails().getPriceCurrencyCode() + packDetailList.get(position).getSkuDetails().getPrice());
 
             }
         }

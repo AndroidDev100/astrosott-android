@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:background="@color/grape_purple"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_pack_list">
 
-        <androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_pack_list">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/coordinatorLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/grape_purple"
-                android:fitsSystemWindows="false">
+                android:layout_height="match_parent">
 
                 <com.google.android.material.appbar.AppBarLayout
                     android:id="@+id/appbar"
@@ -55,21 +53,72 @@
                     android:layout_marginTop="24dp"
                     android:visibility="visible"
                     app:layout_constraintTop_toBottomOf="@id/image"
-                    app:tabBackground="@drawable/tab_packages_background"
+                    app:tabBackground="@color/transparentColor"
                     app:tabMode="fixed" />
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="550dp"
                     android:layout_marginTop="24dp"
-                    android:layout_marginBottom="27dp"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tabs" />
 
+                <TextView
+                    android:id="@+id/descp1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/heebo_medium"
+                    android:gravity="center"
+                    android:paddingStart="48dp"
+                    android:paddingEnd="48dp"
+                    android:text="@string/pack_desc"
+                    android:textColor="@color/light_blue_text_color"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/viewPager" />
 
+                <TextView
+                    android:id="@+id/descp2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/heebo_medium"
+                    android:gravity="center"
+                    android:text="@string/pack_desc1"
+                    android:textColor="@color/light_blue_text_color"
+                    android:textSize="16sp"
+                    app:layout_constraintRight_toLeftOf="@id/terms"
+                    app:layout_constraintTop_toBottomOf="@id/descp1" />
+
+                <TextView
+                    android:id="@+id/terms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/heebo_medium"
+                    android:gravity="center"
+                    android:paddingLeft="2dp"
+                    android:text="@string/term_and_con"
+                    android:textColor="@color/aqua_marine"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/descp1" />
+
+                <TextView
+                    android:id="@+id/descp4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:fontFamily="@font/heebo_medium"
+                    android:gravity="center"
+                    android:text="@string/apply_text"
+                    android:textColor="@color/light_blue_text_color"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toRightOf="@id/terms"
+                    app:layout_constraintTop_toBottomOf="@id/descp1" />
 
                 <include
                     android:id="@+id/include_progressbar"
@@ -83,57 +132,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
-        <TextView
-            android:id="@+id/descp1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/heebo_medium"
-            android:gravity="center"
-            android:paddingStart="48dp"
-            android:paddingEnd="48dp"
-            android:text="@string/pack_desc"
-            android:textColor="@color/light_blue_text_color"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@id/descp2"
-            app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/descp2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/heebo_medium"
-            android:gravity="center"
-            android:text="@string/pack_desc1"
-            android:textColor="@color/light_blue_text_color"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/terms" />
 
-        <TextView
-            android:id="@+id/terms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/heebo_medium"
-            android:gravity="center"
-            android:paddingLeft="2dp"
-            android:text="@string/term_and_con"
-            android:textColor="@color/aqua_marine"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/descp4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:fontFamily="@font/heebo_medium"
-            android:gravity="center"
-            android:text="@string/apply_text"
-            android:textColor="@color/light_blue_text_color"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/terms" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

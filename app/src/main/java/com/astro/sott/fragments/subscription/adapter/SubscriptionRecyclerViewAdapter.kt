@@ -51,7 +51,7 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                 bannerBinding.mainBackground.background = backgroundDrawable
                 bannerBinding.packageTitle.text = packageModel.displayName
                 bannerBinding.packageTitle.setTextColor(currentColor)
-                Log.w("priceValues ada", skuModel!!.introductoryPrice + "<--->"+skuModel!!.price+"<----->")
+                Log.w("priceValues ada", skuModel!!.introductoryPrice + "<--->" + skuModel!!.price + "<----->")
                 if (skuModel != null && skuModel.introductoryPricePeriod != null) {
                     if (packageModel.promotions != null && packageModel.promotions?.size!! > 0) {
                         bannerBinding.text.visibility = View.VISIBLE
@@ -86,10 +86,11 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                 bannerBinding.btnChooseMe.background = buttonDrawable
                 bannerBinding.masktop.setColorFilter(currentColor)
                 bannerBinding.maskbottom.setColorFilter(currentColor)
-
+                var attributeList = packageModel.attributes!!
+                Collections.sort(attributeList, Comparator { p1, p2 -> (p2.attributeLabel)?.toInt()?.minus((p1.attributeLabel)?.toInt()!!)!! })
                 val my_array = ArrayList<String>()
                 if (packageModel.attributes != null) {
-                    for (attribute in packageModel.attributes!!)
+                    for (attribute in attributeList)
                         my_array.add(attribute.attributeValue!!)
                 }
                 if (packageModel.skuORQuickCode != null && productList.isNotEmpty()) {
