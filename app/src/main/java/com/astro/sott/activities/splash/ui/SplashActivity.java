@@ -968,6 +968,15 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 //                |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 //        decorView.setSystemUiVisibility(uiOptions);
+
+        if (!isTaskRoot()) {
+            final Intent intent = getIntent();
+            final String intentAction = intent.getAction();
+            if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && intentAction != null && intentAction.equals(Intent.ACTION_MAIN)) {
+                finish();
+                return;
+            }
+        }
         Bundle bundle = getIntent().getExtras();
 
 

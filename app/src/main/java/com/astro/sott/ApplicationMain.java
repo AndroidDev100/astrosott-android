@@ -1,5 +1,7 @@
 package com.astro.sott;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -63,6 +65,7 @@ public class ApplicationMain extends MultiDexApplication {
         // Branch logging for debugging
         //Branch.enableLogging();
         //Branch.getAutoInstance(this, true);
+
 
         // Branch object initialization
         AsyncTask.execute(new Runnable() {

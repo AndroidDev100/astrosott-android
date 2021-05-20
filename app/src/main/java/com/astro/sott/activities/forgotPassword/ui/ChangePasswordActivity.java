@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +14,16 @@ import com.astro.sott.R;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
+import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityChangePasswordBinding;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.CustomTextWatcher;
 
 public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePasswordBinding> {
     private String token = "";
     private AstroLoginViewModel astroLoginViewModel;
+    private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
+
     private boolean passwordVisibilityNewPassword = false;
     private boolean passwordVisibilityConfirmPassword = false;
 
@@ -38,19 +43,29 @@ public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePa
     }
 
     private void setCLicks() {
+
+        setTextWather();
         getBinding().update.setOnClickListener(view -> {
             String newPassword = getBinding().newPasswordEdt.getText().toString();
             String confirmPassword = getBinding().confirmPasswordEdt.getText().toString();
             if (!confirmPassword.equals("")) {
-                if (confirmPassword.equals(newPassword)) {
-                    resetPassword();
+                if (confirmPassword.matches(PASSWORD_REGEX)) {
+                    if (confirmPassword.equals(newPassword)) {
+                        resetPassword();
+                    } else {
+                        getBinding().errorConfirmPasssword.setText("Confirm password does't match with password");
+                        getBinding().errorConfirmPasssword.setVisibility(View.VISIBLE);
+                    }
                 } else {
-                    getBinding().errorPasssword.setText("Confirm password does't match with password");
-                    getBinding().errorPasssword.setVisibility(View.VISIBLE);
+                    getBinding().errorConfirmPasssword.setVisibility(View.VISIBLE);
+                    getBinding().errorConfirmPasssword.setText(getResources().getString(R.string.password_error));
+                    checkPassword();
                 }
+
             } else {
-                getBinding().errorPasssword.setVisibility(View.VISIBLE);
-                getBinding().errorPasssword.setText("Please enter valid Password ");
+                getBinding().errorConfirmPasssword.setVisibility(View.VISIBLE);
+                getBinding().errorConfirmPasssword.setText(getResources().getString(R.string.valid_password));
+                checkPassword();
             }
         });
 
@@ -84,6 +99,58 @@ public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePa
         });
 
 
+    }
+
+    private void setTextWather() {
+        getBinding().newPasswordEdt.addTextChangedListener(new CustomTextWatcher(this, new TextWatcherCallBack() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                getBinding().errorPasssword.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        }));
+
+        getBinding().confirmPasswordEdt.addTextChangedListener(new CustomTextWatcher(this, new TextWatcherCallBack() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                getBinding().errorConfirmPasssword.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        }));
+    }
+
+    private void checkPassword() {
+        String newPassword = getBinding().newPasswordEdt.getText().toString();
+
+        if (!newPassword.equals("")) {
+            if (newPassword.matches(PASSWORD_REGEX)) {
+
+            } else {
+                getBinding().errorPasssword.setVisibility(View.VISIBLE);
+                getBinding().errorPasssword.setText(getResources().getString(R.string.password_error));
+            }
+        } else {
+            getBinding().errorPasssword.setVisibility(View.VISIBLE);
+            getBinding().errorPasssword.setText(getResources().getString(R.string.valid_password));
+        }
     }
 
     private void modelCall() {
