@@ -1207,29 +1207,25 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
                 } else {
                     if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
-                        if (xofferWindowValue) {
-                            runOnUiThread(() -> {
-                                getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
-                                getBinding().starIcon.setVisibility(View.VISIBLE);
-                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-
-
-                            });
-                        }
-                        this.vodType = EntitlementCheck.SVOD;
-
-                    } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
-                        if (xofferWindowValue) {
+                        runOnUiThread(() -> {
                             getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                            getBinding().playText.setText(getResources().getString(R.string.rent_movie));
+                            getBinding().playText.setText(getResources().getString(R.string.become_vip));
                             getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.GONE);
+                            getBinding().starIcon.setVisibility(View.VISIBLE);
                             getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
 
-                        }
+                        });
+                        this.vodType = EntitlementCheck.SVOD;
+
+                    } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
+                        getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                        getBinding().playText.setText(getResources().getString(R.string.rent_movie));
+                        getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                        getBinding().starIcon.setVisibility(View.GONE);
+                        getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
+
                         this.vodType = EntitlementCheck.TVOD;
 
 

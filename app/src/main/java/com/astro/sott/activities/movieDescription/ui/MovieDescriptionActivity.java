@@ -439,30 +439,26 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
                 } else {
                     if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
-                        if (xofferWindowValue) {
-                            runOnUiThread(() -> {
-                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                                getBinding().starIcon.setVisibility(View.VISIBLE);
-                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                        runOnUiThread(() -> {
+                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                            getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                            getBinding().starIcon.setVisibility(View.VISIBLE);
+                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
-                            });
-                        }
+                        });
                         this.vodType = EntitlementCheck.SVOD;
 
                     } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
-                        if (xofferWindowValue) {
-                            runOnUiThread(() -> {
-                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                                getBinding().starIcon.setVisibility(View.GONE);
-                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                        runOnUiThread(() -> {
+                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                            getBinding().playText.setText(getResources().getString(R.string.rent_movie));
+                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                            getBinding().starIcon.setVisibility(View.GONE);
+                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
 
-                            });
-                        }
+                        });
 
                         this.vodType = EntitlementCheck.TVOD;
 
@@ -965,7 +961,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     }
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(),"");
+        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), "");
     }
 
     @Override

@@ -372,33 +372,29 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
                 } else {
                     if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
-                        if (xofferWindowValue) {
-                            runOnUiThread(() -> {
-                                getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-                                getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+                        runOnUiThread(() -> {
+                            getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                            getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                            getBinding().vipButtonLive.setVisibility(View.VISIBLE);
 //                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                                getBinding().starIcon.setVisibility(View.VISIBLE);
-                            });
-                        }
+                            getBinding().starIcon.setVisibility(View.VISIBLE);
+                        });
                         this.vodType = EntitlementCheck.SVOD;
 
 
                     } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
-                        if (xofferWindowValue) {
-                            runOnUiThread(() -> {
+                        runOnUiThread(() -> {
 //                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                                getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                                getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+                            getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                            getBinding().playText.setText(getResources().getString(R.string.rent_movie));
+                            getBinding().vipButtonLive.setVisibility(View.VISIBLE);
 //                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                                getBinding().starIcon.setVisibility(View.GONE);
-                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                            getBinding().starIcon.setVisibility(View.GONE);
+                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
 
-                            });
-                        }
+                        });
 
                         this.vodType = EntitlementCheck.TVOD;
 
