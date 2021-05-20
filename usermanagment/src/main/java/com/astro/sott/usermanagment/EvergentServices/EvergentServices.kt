@@ -352,6 +352,49 @@ class EvergentServices {
 
     }
 
+
+    fun setPassword(token: String, context: Context, password: String, evergentResetPasswordCallBack: EvergentResetPasswordCallBack) {
+
+        var searchAccountJson = JsonObject()
+        var json = JsonObject()
+        json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        json.addProperty("contactPassword", password)
+        searchAccountJson.add("ResetPasswordRequestMessage", json)
+        val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
+        val call = apiInterface?.resetPassword(searchAccountJson)
+        call?.enqueue(object : Callback<ResetPasswordResponse?> {
+            override fun onFailure(call: Call<ResetPasswordResponse?>, t: Throwable) {
+                evergentResetPasswordCallBack.onFailure("Something Went Wrong", "")
+
+            }
+
+            override fun onResponse(call: Call<ResetPasswordResponse?>, response: Response<ResetPasswordResponse?>) {
+                if (response.body() != null && response.body()?.resetPasswordResponseMessage != null && response.body()?.resetPasswordResponseMessage?.responseCode != null) {
+
+                    if (response.body()?.resetPasswordResponseMessage?.responseCode.equals("1", true)) {
+                        evergentResetPasswordCallBack.onSuccess(response.body()!!);
+                    } else {
+                        if (response.body()?.resetPasswordResponseMessage?.failureMessage != null) {
+                            var errorModel = EvergentErrorHandling().getErrorMessage(response.body()?.resetPasswordResponseMessage?.failureMessage, context)
+                            evergentResetPasswordCallBack.onFailure(errorModel.errorMessage, errorModel.errorCode)
+
+                        } else {
+                            evergentResetPasswordCallBack.onFailure("Something Went Wrong", "")
+                        }
+                    }
+
+                } else {
+                    evergentResetPasswordCallBack.onFailure("Something Went Wrong", "")
+
+                }
+            }
+        }
+
+        )
+
+
+    }
+
     fun createUser(context: Context, type: String, emailMobile: String, password: String, name: String, isTablet: Boolean, evergentCreateUserCallback: EvergentCreateUserCallback) {
 
         var createUserJson = JsonObject()

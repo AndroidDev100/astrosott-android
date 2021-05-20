@@ -20,7 +20,6 @@ import com.astro.sott.activities.home.HomeActivity
 import com.astro.sott.activities.isThatYou.IsThatYouActivity
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel
 import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog
-import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
@@ -176,10 +175,9 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             onBackPressed()
         })
         activitySinUpBinding?.nextBtn?.setOnClickListener {
-
+            var password = activitySinUpBinding?.passwordEdt?.text.toString()
             var email_mobile = activitySinUpBinding?.mobileEmailEdt?.text.toString()
             if (!email_mobile.equals("", true)) {
-                var password = activitySinUpBinding?.passwordEdt?.text.toString()
                 if (mobilePattern.containsMatchIn(email_mobile)) {
                     if (email_mobile?.length == 10 || email_mobile?.length == 11) {
 
@@ -188,6 +186,8 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                         activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
                         activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                         activitySinUpBinding?.errorEmail?.text = getString(R.string.email_mobile_error)
+                        checkPasswordValidation(password)
+
                     }
                 } else if (emailPattern.containsMatchIn(email_mobile)) {
                     checkPassword("email", email_mobile, password)
@@ -203,11 +203,12 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                         activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
                         activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                         activitySinUpBinding?.errorEmail?.text = getString(R.string.email_mobile_error)
-
+                        checkPasswordValidation(password)
                     } else {
                         activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
                         activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                         activitySinUpBinding?.errorEmail?.text = getString(R.string.email_mobile_error)
+                        checkPasswordValidation(password)
                     }
                 }
 
@@ -215,6 +216,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                 activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
                 activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                 activitySinUpBinding?.errorEmail?.text = getString(R.string.email_mobile_error)
+                checkPasswordValidation(password)
 
             }
 
@@ -252,9 +254,27 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
 
     }
 
+    private fun checkPasswordValidation(password: String) {
+        if (!password.equals("", true)) {
+            if (passwordPattern.containsMatchIn(password)) {
+                activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.warm_grey))
+                activitySinUpBinding?.errorPasssword?.text = getString(R.string.password_error)
+            } else {
+                activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
+                activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
+                activitySinUpBinding?.errorPasssword?.text = getString(R.string.password_error)
+
+            }
+        } else {
+            activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
+            activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
+            activitySinUpBinding?.errorPasssword?.text = getString(R.string.valid_password)
+        }
+    }
+
     private fun setFb() {
         callbackManager = CallbackManager.Factory.create()
-       activitySinUpBinding?.loginButton?.setReadPermissions(Arrays.asList(EMAIL))
+        activitySinUpBinding?.loginButton?.setReadPermissions(Arrays.asList(EMAIL))
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 object : FacebookCallback<LoginResult> {

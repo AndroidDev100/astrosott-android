@@ -575,6 +575,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
     private boolean checkEmailVaildation() {
         email_mobile = getBinding().emailMobileEdt.getText().toString();
+        String password = getBinding().passwordEdt.getText().toString();
         if (!email_mobile.equalsIgnoreCase("")) {
             if (email_mobile.matches(MOBILE_REGEX)) {
 
@@ -589,6 +590,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
                     getBinding().errorEmail.setVisibility(View.VISIBLE);
                     getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
+                    passwordValidaton(password);
                     return false;
 
                 }
@@ -602,6 +604,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 getBinding().errorEmail.setVisibility(View.VISIBLE);
                 getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
                 getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
+                passwordValidaton(password);
                 return false;
 
             }
@@ -610,7 +613,20 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             getBinding().errorEmail.setVisibility(View.VISIBLE);
             getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
             getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
+            passwordValidaton(password);
             return false;
+
+        }
+    }
+
+    private void passwordValidaton(String password) {
+        if (checkPasswordValidation(password)) {
+            getBinding().passwordError.setTextColor(getResources().getColor(R.color.heather));
+            getBinding().passwordError.setText(getString(R.string.password_rules));
+        } else {
+            getBinding().passwordError.setTextColor(getResources().getColor(R.color.red_live));
+            getBinding().passwordError.setText(passwordError);
+            getBinding().passwordError.setVisibility(View.VISIBLE);
 
         }
     }
