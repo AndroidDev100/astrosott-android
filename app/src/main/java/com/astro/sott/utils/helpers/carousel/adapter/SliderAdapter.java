@@ -1,8 +1,10 @@
 package com.astro.sott.utils.helpers.carousel.adapter;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,27 +79,25 @@ public class SliderAdapter extends PagerAdapter {
             TextView slider_text_des = view.findViewById(R.id.slider_text_des);
 
 
-
-
-
             title_text.setText(items.get(position).getTitle());
 
             if (items.get(position).getObjects().getType() == MediaTypeConstant.getLinear(context)) {
                 ImageHelper.getInstance(context).loadImageTo(sliderImage, items.get(position).getImageFromUrl(), R.drawable.ic_landscape_placeholder);
                 if (AssetContent.isLiveEvent(items.get(position).getObjects().getMetas())) {
-                    String metas=AppCommonMethods.getMetas(items.get(position).getObjects(),3);
+                    String metas = AppCommonMethods.getMetas(items.get(position).getObjects(), 3);
                     slider_text_des.setText(metas);
-                }else {
-                    String metas=AppCommonMethods.getMetas(items.get(position).getObjects(),5);
+                } else {
+                    String metas = AppCommonMethods.getMetas(items.get(position).getObjects(), 5);
                     slider_text_des.setText(metas);
                 }
 
-            }else if (items.get(position).getObjects().getType() == MediaTypeConstant.getProgram(context)){
-                String metas=AppCommonMethods.getMetas(items.get(position).getObjects(),4);
+            } else if (items.get(position).getObjects().getType() == MediaTypeConstant.getProgram(context)) {
+                ImageHelper.getInstance(context).loadImageTo(sliderImage, items.get(position).getImageFromUrl(), R.drawable.ic_landscape_placeholder);
+
+                String metas = AppCommonMethods.getMetas(items.get(position).getObjects(), 4);
                 slider_text_des.setText(metas);
-            }
-            else {
-                String metas=AppCommonMethods.getMetas(items.get(position).getObjects(),2);
+            } else {
+                String metas = AppCommonMethods.getMetas(items.get(position).getObjects(), 2);
                 slider_text_des.setText(metas);
                 ImageHelper.getInstance(context).loadImageToCarousal(sliderImage, items.get(position).getImageFromUrl(), R.drawable.ic_landscape_placeholder);
             }
