@@ -75,10 +75,12 @@
                     android:layout_height="wrap_content" />
             </ScrollView>
 
+
+
             <RelativeLayout
+                android:id="@+id/lay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent">
@@ -95,6 +97,12 @@
                     android:background="@drawable/grey_above_shadow"
                     android:visibility="gone" />
             </RelativeLayout>
+            <FrameLayout
+                android:id="@+id/frame_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:visibility="visible" />
         </LinearLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

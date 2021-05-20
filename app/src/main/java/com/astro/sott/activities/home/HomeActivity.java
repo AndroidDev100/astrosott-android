@@ -171,7 +171,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.GONE);
         getBinding().appbar.setVisibility(View.GONE);
-        setMargins(0);
+        setMargins(0, 0);
         moreNewFragment = new MoreNewFragment();
         active = moreNewFragment;
         fragmentManager = getSupportFragmentManager();
@@ -192,7 +192,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().indicator.setVisibility(View.GONE);
         liveTvFragment = new LiveTvFragment();
-        setMargins(240);
+        setMargins(240, 80);
         active = liveTvFragment;
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "1").hide(liveTvFragment).commit();
@@ -210,10 +210,10 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         }
     }
 
-    private void setMargins(int marginTop) {
+    private void setMargins(int marginTop, int marginBottom) {
         try {
             CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layoutParams.setMargins(0, marginTop, 0, 0);
+            layoutParams.setMargins(0, marginTop, 0, marginBottom);
             findViewById(R.id.main_layout).setLayoutParams(layoutParams);
         } catch (Exception e) {
 
@@ -517,7 +517,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             active = homeFragment;
         }*/
         setToolBarScroll(1);
-        setMargins(150);
+        setMargins(150, 0);
         getBinding().appbar.setVisibility(View.VISIBLE);
         getBinding().mainLayout.setVisibility(View.GONE);
         getBinding().tabs.setVisibility(View.VISIBLE);
@@ -574,7 +574,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().indicator.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
-        setMargins(240);
+        setMargins(240, 80);
         fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commitAllowingStateLoss();
         checkSameClick();
         active = liveTvFragment;
@@ -595,7 +595,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().appbar.setVisibility(View.GONE);
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
-        setMargins(0);
+        setMargins(0, 0);
         getBinding().toolbar.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         // getBinding().appbar.setVisibility(View.GONE);
