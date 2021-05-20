@@ -52,7 +52,7 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                 bannerBinding.packageTitle.text = packageModel.displayName
                 bannerBinding.packageTitle.setTextColor(currentColor)
                 Log.w("priceValues ada", skuModel!!.introductoryPrice + "<--->" + skuModel!!.price + "<----->")
-                if (skuModel != null && skuModel.introductoryPricePeriod != null) {
+                if (skuModel != null && skuModel.introductoryPricePeriod != null && !skuModel.introductoryPricePeriod.equals("")) {
                     if (packageModel.promotions != null && packageModel.promotions?.size!! > 0) {
                         bannerBinding.text.visibility = View.VISIBLE
                         bannerBinding.text.setPadding(0, SliderPotrait.dp2px(activity, 6f), 0, SliderPotrait.dp2px(activity, 6f))
@@ -60,25 +60,19 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                         bannerBinding.offer.visibility = View.VISIBLE
                         bannerBinding.offer.text = packageModel.promotions!![0].promoCpDescription
                     }
-                    if (packageModel.duration == 1) {
-                        bannerBinding.packagePrice.text = skuModel.introductoryPrice + "/" + packageModel.period?.replace("(s)", "")
-                        bannerBinding.packagePriceOld.text = skuModel.price + "/" + packageModel.period?.replace("(s)", "")
-                    } else {
-                        bannerBinding.packagePrice.text = skuModel.introductoryPrice + "/" + packageModel.duration + " " + packageModel.period?.replace("(s)", "")
-                        bannerBinding.packagePriceOld.text = skuModel.price + "/" + packageModel.duration + " " + packageModel.period?.replace("(s)", "")
-                    }
+                    bannerBinding.currency.text = skuModel.priceCurrencyCode
+                    bannerBinding.packagePrice.text = skuModel.introductoryPrice + "/"
+                    bannerBinding.period.text = packageModel.duration.toString() + packageModel.period
+                    bannerBinding.packagePriceOld.text = skuModel.price.toString() + "/" + packageModel.duration + packageModel.period
                     bannerBinding.packagePriceOld.visibility = View.VISIBLE
                     bannerBinding.packagePriceOld.paintFlags = bannerBinding.packagePriceOld.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 } else {
                     bannerBinding.offer.visibility = View.GONE
-                    if (packageModel.retailPrice != null) {
-                        if (packageModel.duration == 1)
-                            bannerBinding.packagePrice.text = packageModel.retailPrice.toString() + " " + "/" + packageModel.period?.replace("(s)", "")
-                        else
-                            bannerBinding.packagePrice.text = packageModel.retailPrice.toString() + " " + "/" + packageModel.duration + " " + packageModel.period?.replace("(s)", "")
-                    }
+                    bannerBinding.currency.text = skuModel.priceCurrencyCode
+                    bannerBinding.packagePrice.text = skuModel.price + "/"
+                    bannerBinding.period.text = packageModel.duration.toString() + packageModel.period
                 }
-                bannerBinding.packageDescription.text = packageModel.productDescription
+                bannerBinding.packageDescription.text = packageModel.uiDisplayText
 
                 var buttonDrawable: Drawable = bannerBinding.btnChooseMe.background
                 buttonDrawable = DrawableCompat.wrap(buttonDrawable)
@@ -87,7 +81,7 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                 bannerBinding.masktop.setColorFilter(currentColor)
                 bannerBinding.maskbottom.setColorFilter(currentColor)
                 var attributeList = packageModel.attributes!!
-                Collections.sort(attributeList, Comparator { p1, p2 -> (p2.attributeLabel)?.toInt()?.minus((p1.attributeLabel)?.toInt()!!)!! })
+                Collections.reverse(attributeList)
                 val my_array = ArrayList<String>()
                 if (packageModel.attributes != null) {
                     for (attribute in attributeList)

@@ -3,85 +3,129 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/coordinatorLayout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grape_purple"
-        android:fitsSystemWindows="true">
+        android:background="@drawable/gradient_pack_list">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/ic_app_bar_bg"
-            android:fitsSystemWindows="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/ic_app_bar_bg"
+                android:fitsSystemWindows="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/app_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:minHeight="?attr/actionBarSize"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="24dp"
+                android:contentDescription="@string/contentDescription"
+                android:src="@drawable/mobile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appbar" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/packages_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="550dp"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:paddingStart="60dp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="60dp"
+                android:paddingBottom="@dimen/_5sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image"
+                tools:listitem="@layout/fragment_package" />
+
+            <TextView
+                android:id="@+id/descp1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/heebo_medium"
+                android:gravity="center"
+                android:paddingStart="48dp"
+                android:paddingEnd="48dp"
+                android:text="@string/pack_desc"
+                android:textColor="@color/light_blue_text_color"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/packages_recycler_view" />
+
+            <TextView
+                android:id="@+id/descp2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/heebo_medium"
+                android:gravity="center"
+                android:text="@string/pack_desc1"
+                android:textColor="@color/light_blue_text_color"
+                android:textSize="16sp"
+                app:layout_constraintRight_toLeftOf="@id/terms"
+                app:layout_constraintTop_toBottomOf="@id/descp1" />
+
+            <TextView
+                android:id="@+id/terms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/heebo_medium"
+                android:gravity="center"
+                android:paddingLeft="2dp"
+                android:text="@string/term_and_con"
+                android:textColor="@color/aqua_marine"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descp1" />
+
+            <TextView
+                android:id="@+id/descp4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:fontFamily="@font/heebo_medium"
+                android:gravity="center"
+                android:text="@string/apply_text"
+                android:textColor="@color/light_blue_text_color"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toRightOf="@id/terms"
+                app:layout_constraintTop_toBottomOf="@id/descp1" />
 
             <include
-                android:id="@+id/toolbar"
-                layout="@layout/app_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:minHeight="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/mobile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbar"
-            android:contentDescription="@string/contentDescription" />
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/packages_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:nestedScrollingEnabled="false"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingStart="60dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:paddingEnd="60dp"
-            android:paddingBottom="@dimen/_5sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image"
-            app:layout_constraintBottom_toTopOf="@id/terms"
-            tools:listitem="@layout/fragment_package" />
-
-        <TextView
-            android:id="@+id/terms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/heebo_medium"
-            android:gravity="center"
-            android:paddingStart="48dp"
-            android:paddingEnd="48dp"
-            android:text="@string/terms_packages"
-            android:textColor="@color/light_blue_text_color"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <include
-            android:id="@+id/include_progressbar"
-            layout="@layout/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:id="@+id/include_progressbar"
+                layout="@layout/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

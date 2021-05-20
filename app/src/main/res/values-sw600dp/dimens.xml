@@ -295,6 +295,6 @@
     <dimen name="portrait_listing_height">280dp</dimen>
     <dimen name="landscape_listing_height">120dp</dimen>
 
-    <dimen name="package_width">240dp</dimen>
+    <dimen name="package_width">350dp</dimen>
     <dimen name="extraSpacingLDS">100dp</dimen>
 </resources>

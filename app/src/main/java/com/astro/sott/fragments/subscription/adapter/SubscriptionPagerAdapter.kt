@@ -58,7 +58,7 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
             //Log.w("priceValues", skuModel!!.introductoryPrice + "<--->"+skuModel!!.price+"<----->"+packageModel.duration+"  "+skuModel.introductoryPricePeriod)
         }
 
-        if (skuModel.introductoryPricePeriod != null && !skuModel.introductoryPricePeriod.equals("")) {
+        if (skuModel.introductoryPricePeriod != null && !skuModel.introductoryPricePeriod.equals("",true)) {
             if (packageModel.promotions != null && packageModel.promotions?.size!! > 0) {
                 bannerBinding.text.visibility = View.VISIBLE
                 bannerBinding.text.setPadding(0, SliderPotrait.dp2px(context, 6f), 0, SliderPotrait.dp2px(context, 6f))
