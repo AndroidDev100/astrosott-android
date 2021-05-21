@@ -82,7 +82,7 @@ public class CommonLandscapeListingAdapter extends RecyclerView.Adapter<CommonLa
     }
 
     private void getLiveMark(int i, LandscapelistingItemBinding landscapeItemBinding) {
-        landscapeItemBinding.livenowLay.setVisibility(View.VISIBLE);
+        landscapeItemBinding.livenowLay.setVisibility(View.GONE);
     }
 
     private void getPremimumMark(int position, LandscapelistingItemBinding landscapeItemBinding) {
