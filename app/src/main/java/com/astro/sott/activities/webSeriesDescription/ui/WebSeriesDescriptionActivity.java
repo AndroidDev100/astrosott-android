@@ -24,7 +24,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
+import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.viewModel.WebSeriesDescriptionViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.VIUChannel;
@@ -157,10 +159,21 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
-
-            if (assetToPlay != null) {
+            if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
                 callProgressBar();
-                playerChecks(assetToPlay);
+                playerChecks(railData);
+            } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                if (UserInfo.getInstance(this).isActive()) {
+                    fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+                    if (!fileId.equalsIgnoreCase("")) {
+                        Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                        intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        startActivity(intent);
+                    }
+                } else {
+                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, "");
+                }
+
             }
 
         });

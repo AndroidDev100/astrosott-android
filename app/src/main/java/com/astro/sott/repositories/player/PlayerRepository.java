@@ -877,7 +877,7 @@ public class PlayerRepository {
                     break;
                 case READY:
                     booleanMutableLiveData.postValue(true);
-                    ConvivaManager.convivaPlayerPlayReportRequest();
+                   // ConvivaManager.convivaPlayerPlayReportRequest();
 
                     //  log.d("StateChange Ready");
                     //  mPlayerControlsView.setProgressBarVisibility(false);
