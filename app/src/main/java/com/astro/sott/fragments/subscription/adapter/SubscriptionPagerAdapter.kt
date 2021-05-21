@@ -15,6 +15,7 @@ import androidx.viewpager.widget.PagerAdapter
 import com.astro.sott.R
 import com.astro.sott.databinding.FragmentPackageBinding
 import com.astro.sott.modelClasses.InApp.PackDetail
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
 import java.lang.Exception
 import java.util.*
@@ -22,7 +23,7 @@ import kotlin.Comparator
 import kotlin.collections.ArrayList
 
 
-class SubscriptionPagerAdapter(private var context: Context, private val packagesList: List<PackDetail>, private val productList: ArrayList<String>, private val pendingList: ArrayList<String>, private val onPackageChooseClickListener: OnPackageChooseClickListener) : PagerAdapter() {
+class SubscriptionPagerAdapter(private var context: Context, private val packagesList: List<PackDetail>, private val productList: AccountServiceMessageItem, private val onPackageChooseClickListener: OnPackageChooseClickListener) : PagerAdapter() {
 
     private var activePlan: String? = null
 
@@ -58,7 +59,7 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
             //Log.w("priceValues", skuModel!!.introductoryPrice + "<--->"+skuModel!!.price+"<----->"+packageModel.duration+"  "+skuModel.introductoryPricePeriod)
         }
 
-        if (skuModel.introductoryPricePeriod != null && !skuModel.introductoryPricePeriod.equals("",true)) {
+        if (skuModel.introductoryPricePeriod != null && !skuModel.introductoryPricePeriod.equals("", true)) {
             if (packageModel.promotions != null && packageModel.promotions?.size!! > 0) {
                 bannerBinding.text.visibility = View.VISIBLE
                 bannerBinding.text.setPadding(0, SliderPotrait.dp2px(context, 6f), 0, SliderPotrait.dp2px(context, 6f))
@@ -94,7 +95,7 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
             for (attribute in attributeList)
                 my_array.add(attribute.attributeValue!!)
         }
-        if (packageModel.skuORQuickCode != null && productList.isNotEmpty()) {
+        if (packageModel.skuORQuickCode != null && productList != null) {
             if (checkActiveOrNot(packageModel.skuORQuickCode!!)) {
                 bannerBinding.btnChooseMe.background = context.resources.getDrawable(R.drawable.ic_btn)
                 bannerBinding.btnChooseMe.isEnabled = false
@@ -104,16 +105,6 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
             }
         } else {
             bannerBinding.btnChooseMe.text = "Choose Me"
-        }
-
-        if (packageModel.skuORQuickCode != null && pendingList.isNotEmpty()) {
-            if (checkPending(packageModel.skuORQuickCode!!)) {
-                bannerBinding.btnChooseMe.visibility = View.GONE
-            } else {
-                bannerBinding.btnChooseMe.visibility = View.VISIBLE
-            }
-        } else {
-            bannerBinding.btnChooseMe.visibility = View.VISIBLE
         }
 
 
@@ -132,19 +123,10 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
 
     private fun checkActiveOrNot(skuORQuickCode: String): Boolean {
         var matched = false
-        for (productId in productList) {
-            matched = productId.equals(skuORQuickCode, true)
-        }
+        matched = productList.serviceID.equals(skuORQuickCode, true)
         return matched
     }
 
-    private fun checkPending(skuORQuickCode: String): Boolean {
-        var matched = false
-        for (productId in pendingList) {
-            matched = productId.equals(skuORQuickCode, true)
-        }
-        return matched
-    }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View?)

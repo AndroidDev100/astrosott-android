@@ -125,15 +125,19 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
         });
     }
 
+    private AccountServiceMessageItem accountServiceItem;
+    private List<AccountServiceMessageItem> accountServiceMessageItemList;
 
     private void checkForFreemium(List<AccountServiceMessageItem> accountServiceMessage) {
         freemiumFilterationList = new ArrayList<>();
+        accountServiceMessageItemList = new ArrayList<>();
         for (AccountServiceMessageItem accountServiceMessageItem : accountServiceMessage) {
             if (!accountServiceMessageItem.isFreemium()) {
-                freemiumFilterationList.add(accountServiceMessageItem);
+                accountServiceItem = accountServiceMessageItem;
             }
         }
-        loadData(freemiumFilterationList);
+        accountServiceMessageItemList.add(accountServiceItem);
+        loadData(accountServiceMessageItemList);
     }
 
     private void getLastSubscription() {
@@ -205,7 +209,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
             Bundle bundle = new Bundle();
             bundle.putSerializable("productList", productIdList);
             someFragment.setArguments(bundle);
-            transaction.replace(R.id.content_frame, someFragment,"SubscriptionFragment");
+            transaction.replace(R.id.content_frame, someFragment, "SubscriptionFragment");
             transaction.addToBackStack(null);
             transaction.commit();
         } else {

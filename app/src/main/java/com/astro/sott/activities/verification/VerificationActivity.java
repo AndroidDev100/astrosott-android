@@ -250,7 +250,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void createUser() {
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
-        astroLoginViewModel.createUser(loginType, emailMobile, password, "",tabletSize).observe(this, evergentCommonResponse -> {
+        astroLoginViewModel.createUser(loginType, emailMobile, password, "", tabletSize).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getAccessToken());
                 UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getRefreshToken());
@@ -258,7 +258,6 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
                 getContact();
-                Toast.makeText(this, getResources().getString(R.string.registered_success), Toast.LENGTH_SHORT).show();
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
@@ -287,7 +286,6 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void getContact() {
         astroLoginViewModel.getContact(UserInfo.getInstance(this).getAccessToken()).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus() && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().size() > 0) {
                 UserInfo.getInstance(this).setFirstName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getFirstName());
@@ -305,8 +303,9 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
 
-
+                getActiveSubscription();
             } else {
+                getBinding().progressBar.setVisibility(View.GONE);
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
                     EvergentRefreshToken.refreshToken(VerificationActivity.this, UserInfo.getInstance(VerificationActivity.this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
                         if (evergentCommonResponse.isStatus()) {
@@ -330,11 +329,12 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void getActiveSubscription() {
         astroLoginViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), "").observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null) {
                     if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
                         for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
-                            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && !accountServiceMessageItem.isFreemium()) {
+                            if (!accountServiceMessageItem.isFreemium()) {
                                 if (accountServiceMessageItem.getDisplayName() != null)
                                     displayName = accountServiceMessageItem.getDisplayName();
                             }
@@ -364,6 +364,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     private void setActive() {
         UserInfo.getInstance(this).setActive(true);
         new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);
-        Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.registered_success), Toast.LENGTH_SHORT).show();
+
+        // Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
     }
 }
