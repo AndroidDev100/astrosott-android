@@ -189,7 +189,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                         checkPasswordValidation(password)
 
                     }
-                } else if (true) {
+                } else if (emailPattern.containsMatchIn(email_mobile)) {
                     checkPassword("email", email_mobile, password)
                 } else {
 
@@ -433,7 +433,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                 if (evergentCommonResponse.response.getActiveSubscriptionsResponseMessage != null) {
                     if (evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage != null && evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage!!.size > 0) {
                         for (accountServiceMessageItem in evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage!!) {
-                            if (!accountServiceMessageItem.isFreemium!!) {
+                            if (!accountServiceMessageItem?.isFreemium!!) {
                                 if (accountServiceMessageItem.displayName != null)
                                     displayName = accountServiceMessageItem.displayName!!
                             }
