@@ -6,10 +6,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.View;
 import android.view.Window;
@@ -23,11 +25,14 @@ import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
 import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
+import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.chaos.view.PinView;
 import com.astro.sott.R;
 import com.astro.sott.activities.subscription.ui.SingleLiveChannelSubscriptionActivity;
+
+import java.util.ArrayList;
 
 public class DialogHelper {
     private static ProgressDialog progressDialog;
@@ -62,9 +67,9 @@ public class DialogHelper {
         boolean status = UserInfo.getInstance(baseActivity).isActive();
         if (status) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
-            builder.setTitle(context.getResources().getString(R.string.dialog)).setMessage(context.getResources().getString(R.string.purchase_dialouge_for_logged_in))
+            builder.setTitle(context.getResources().getString(R.string.lock_Episode)).setMessage(context.getResources().getString(R.string.purchase_dialouge_for_logged_in))
                     .setCancelable(true)
-                    .setPositiveButton(context.getResources().getString(R.string.ok), (dialog, id) -> {
+                    .setPositiveButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
                         baseActivity.onBackPressed();
                         dialog.cancel();
                     });
@@ -152,7 +157,7 @@ public class DialogHelper {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
             builder.setTitle(context.getResources().getString(R.string.dialog)).setMessage(context.getResources().getString(R.string.dtv_account_not_added))
                     .setCancelable(true)
-                    .setPositiveButton(context.getResources().getString(R.string.ok), (dialog, id) ->
+                    .setPositiveButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) ->
                             dialog.cancel());
 
             AlertDialog alert = builder.create();
@@ -166,17 +171,23 @@ public class DialogHelper {
     }
 
     public static void showLoginDialog(Activity context) {
+        BaseActivity baseActivity = (BaseActivity) context;
         if (context != null && !context.isFinishing()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
-            builder.setTitle(context.getResources().getString(R.string.dialog)).setMessage(context.getResources().getString(R.string.purchase_dialouge))
+            builder.setTitle(context.getResources().getString(R.string.lock_Episode)).setMessage(context.getResources().getString(R.string.purchase_dialouge_for_logged_in))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.login), (dialog, id) -> {
                         //dialog.cancel();
-                        new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class, "");
 
+                        new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class, "");
+                        baseActivity.onBackPressed();
+                        dialog.cancel();
                         //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
                     })
-                    .setNegativeButton(context.getResources().getString(R.string.cancel), (dialog, id) -> dialog.cancel());
+                    .setNegativeButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                        baseActivity.onBackPressed();
+                        dialog.cancel();
+                    });
 
             AlertDialog alert = builder.create();
             alert.show();
