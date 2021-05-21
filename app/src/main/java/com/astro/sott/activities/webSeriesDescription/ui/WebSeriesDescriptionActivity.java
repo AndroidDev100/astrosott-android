@@ -161,10 +161,10 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             lastClickTime = SystemClock.elapsedRealtime();
             if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
                 callProgressBar();
-                playerChecks(railData);
+                playerChecks(assetToPlay);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
                 if (UserInfo.getInstance(this).isActive()) {
-                    fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+                    fileId = AppCommonMethods.getFileIdOfAssest(assetToPlay.getObject());
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
