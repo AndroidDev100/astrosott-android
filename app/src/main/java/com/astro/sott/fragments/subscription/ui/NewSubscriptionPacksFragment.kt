@@ -97,6 +97,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
     }
 
     private fun getActiveSubscription() {
+        activePlan = AccountServiceMessageItem()
         subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel::class.java)
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(activity).accessToken, "").observe(this, Observer { evergentCommonResponse: EvergentCommonResponse<GetActiveResponse> ->
             if (evergentCommonResponse.isStatus) {
@@ -123,17 +124,13 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         })
     }
 
-
+    private var activePlan: AccountServiceMessageItem? = null
     private fun getListofActivePacks(accountServiceMessage: List<AccountServiceMessageItem?>?) {
         productList = java.util.ArrayList<String>()
         for (accountServiceMessageItem in accountServiceMessage!!) {
-            if (accountServiceMessageItem!!.status.equals("ACTIVE", ignoreCase = true) && !accountServiceMessageItem.isFreemium!!) {
-                if (accountServiceMessageItem.serviceID != null) {
-                    productList.add(accountServiceMessageItem.serviceID!!)
-                }
-            } else if (accountServiceMessageItem!!.status.equals("PENDING ACTIVE", ignoreCase = true) && !accountServiceMessageItem.isFreemium!!) {
-                if (accountServiceMessageItem.serviceID != null) {
-                    pendingList.add(accountServiceMessageItem.serviceID!!)
+            if (!accountServiceMessageItem!!.isFreemium!!) {
+                if (accountServiceMessageItem?.serviceID != null) {
+                    activePlan = accountServiceMessageItem
                 }
             }
         }
@@ -264,7 +261,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
     }
 
     private fun setViewPager(packagesList: List<PackDetail>) {
-        binding.viewPager?.adapter = SubscriptionPagerAdapter(activity!!, packagesList, productList, pendingList, this)
+        binding.viewPager?.adapter = SubscriptionPagerAdapter(activity!!, packagesList, activePlan!!, this)
         binding.viewPager?.setPadding(SliderPotrait.dp2px(activity!!, 32f), 0, SliderPotrait.dp2px(activity!!, 32f), 0);
         binding.viewPager?.clipChildren = false
         binding.viewPager?.clipToPadding = false

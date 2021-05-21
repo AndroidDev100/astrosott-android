@@ -171,7 +171,7 @@ public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBind
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null) {
                     if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
                         for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
-                            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && !accountServiceMessageItem.isFreemium()) {
+                            if (!accountServiceMessageItem.isFreemium()) {
                                 if (accountServiceMessageItem.getDisplayName() != null)
                                     displayName = accountServiceMessageItem.getDisplayName();
                             }
