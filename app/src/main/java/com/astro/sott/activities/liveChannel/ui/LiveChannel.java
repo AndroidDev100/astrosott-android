@@ -247,7 +247,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         if (stringValue != null)
             language = stringValue.getValue();
 
-        if (!language.equalsIgnoreCase(""))
+        if (language!=null&&!language.equalsIgnoreCase(""))
             stringBuilder.append(language + " | ");
     }
 
