@@ -1,11 +1,14 @@
 package com.astro.sott.activities.moreListing.ui;
 
 import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
+
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import android.view.View;
 import com.astro.sott.activities.moreListing.viewModel.ContinueWatchingViewModel;
 import com.astro.sott.adapter.CommonContWatchListingAdapter;
 import com.astro.sott.baseModel.BaseBindingActivity;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -58,6 +62,7 @@ public class ContinueWatchingActivity extends BaseBindingActivity<ListingActivit
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+        FirebaseEventManager.getFirebaseInstance(ContinueWatchingActivity.this).trackScreenName(title + " Listing");
 
         tabletSize = getResources().getBoolean(R.bool.isTablet);
 

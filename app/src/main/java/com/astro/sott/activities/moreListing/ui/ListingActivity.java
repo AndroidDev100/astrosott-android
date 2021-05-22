@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.moreListing.adapter.PotraitListingAdapter;
 import com.astro.sott.activities.moreListing.adapter.SquareListingAdapter;
 import com.astro.sott.activities.moreListing.viewModel.ListingViewModel;
@@ -26,8 +27,10 @@ import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.databinding.ListingActivityBinding;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
+import com.astro.sott.utils.helpers.NavigationItem;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 
 import java.util.ArrayList;
@@ -184,6 +187,8 @@ public class ListingActivity extends BaseBindingActivity<ListingActivityBinding>
             long idAsset = assetCommonBean.getID();
             assetId = (int) idAsset;
         }
+        FirebaseEventManager.getFirebaseInstance(ListingActivity.this).trackScreenName(title+" Listing");
+
         setSupportActionBar(getBinding().toolbar.toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.astro.sott.utils.helpers.AssetContent;
+import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NavigationItem;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.kaltura.client.types.Asset;
@@ -43,7 +44,30 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, itemList); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
+            if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
+                bundle.putString("item_language", AssetContent.getChannelLanguage(asset));
+            } else {
+                bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
+            }
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void clickMyListButtonEvent(String itemList, Asset asset, Context context) {
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, itemList); //e.g TV Shows Top Slider
+            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
+            bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
+            if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
+                bundle.putString("item_language", AssetContent.getChannelLanguage(asset));
+            } else {
+                bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
+            }
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);

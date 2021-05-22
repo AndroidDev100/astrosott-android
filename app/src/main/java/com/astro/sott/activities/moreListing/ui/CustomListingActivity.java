@@ -21,6 +21,7 @@ import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.databinding.ActivityCustomListingBinding;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
@@ -69,6 +70,7 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
             if (assetCommonBean.getCustomDays() != null)
                 customDays = assetCommonBean.getCustomDays();
         }
+        FirebaseEventManager.getFirebaseInstance(CustomListingActivity.this).trackScreenName(title + " Listing");
         connectionObserver();
     }
 

@@ -1,13 +1,16 @@
 package com.astro.sott.activities.moreListing.ui;
 
 import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import android.view.View;
 import com.astro.sott.activities.moreListing.viewModel.ListingViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.VIUChannel;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.ToastHandler;
@@ -34,6 +38,7 @@ import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.enveu.Enum.ImageType;
 import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,14 +77,14 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
 
         list = new ArrayList<>();
         list.clear();
-       // SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
+        // SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
         Gson gson = new Gson();
         String json = gson.toJson(list);
-       // sharedPrefHelper.setString("SelectedPreferrence", json);
+        // sharedPrefHelper.setString("SelectedPreferrence", json);
 
 
         tabletSize = getResources().getBoolean(R.bool.isTablet);
-       // GAManager.getInstance().trackScreen(getResources().getString(R.string.more_rail_results));
+        // GAManager.getInstance().trackScreen(getResources().getString(R.string.more_rail_results));
         callOnCreateInstances(intent);
 
     }
@@ -115,7 +120,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
         if (NetworkConnectivity.isOnline(ListingActivityNew.this)) {
 
             handleProgressDialog();
-            viewModel.getLiveSearchedData(assetId, list, filterValue, counter, layout, isScrolling,pageSize).observe(this, railCommonData -> setLayoutType(railCommonData));
+            viewModel.getLiveSearchedData(assetId, list, filterValue, counter, layout, isScrolling, pageSize).observe(this, railCommonData -> setLayoutType(railCommonData));
         } else {
             ToastHandler.show(ListingActivityNew.this.getResources().getString(R.string.no_internet_connection), getApplicationContext());
         }
@@ -158,11 +163,11 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-              if (getBinding().progressBar.getVisibility()==View.VISIBLE){
-                  getBinding().progressBar.setVisibility(View.GONE);
-              }else {
-                  getBinding().progressBar.setVisibility(View.VISIBLE);
-              }
+                if (getBinding().progressBar.getVisibility() == View.VISIBLE) {
+                    getBinding().progressBar.setVisibility(View.GONE);
+                } else {
+                    getBinding().progressBar.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -173,23 +178,23 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
             PrintLogging.printLog("", "layoutType-->>" + layout);
             mIsLoading = true;
             if (layout.equalsIgnoreCase(ImageType.PR1.name())) {
-                commonPotraitListingAdapter = new CommonPotraitListingAdapter(this, railList, AppConstants.Rail3, assetCommonBean.getTitle(),category.getCategory());
+                commonPotraitListingAdapter = new CommonPotraitListingAdapter(this, railList, AppConstants.Rail3, assetCommonBean.getTitle(), category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonPotraitListingAdapter);
             } else if (layout.equalsIgnoreCase(ImageType.PR2.name())) {
-                commonPosterListingAdapter = new CommonPosterListingAdapter(this, railList, AppConstants.Rail3, assetCommonBean.getTitle(),category.getCategory());
+                commonPosterListingAdapter = new CommonPosterListingAdapter(this, railList, AppConstants.Rail3, assetCommonBean.getTitle(), category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonPosterListingAdapter);
             } else if (layout.equalsIgnoreCase(ImageType.SQR.name())) {
-                commonSquareListingAdapter = new CommonSquareListingAdapter(this, railList, AppConstants.Rail4, assetCommonBean.getTitle(),category.getCategory());
+                commonSquareListingAdapter = new CommonSquareListingAdapter(this, railList, AppConstants.Rail4, assetCommonBean.getTitle(), category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonSquareListingAdapter);
             } else if (layout.equalsIgnoreCase(ImageType.CIR.name())) {
                 Log.e("IMAGE", String.valueOf(railList.size()));
                 commonCircleAdapter = new CommonCircleListingAdapter(this, railList, AppConstants.Rail2, assetCommonBean.getTitle());
                 getBinding().listRecyclerview.setAdapter(commonCircleAdapter);
             } else if (layout.equalsIgnoreCase(ImageType.LDS.name())) {
-                commonLandscapeListingAdapter = new CommonLandscapeListingAdapteNew(this, railList, AppConstants.Rail7, assetCommonBean.getTitle(),category.getCategory());
+                commonLandscapeListingAdapter = new CommonLandscapeListingAdapteNew(this, railList, AppConstants.Rail7, assetCommonBean.getTitle(), category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonLandscapeListingAdapter);
             } else {
-                commonLandscapeListingAdapter = new CommonLandscapeListingAdapteNew(this, railList, AppConstants.Rail5, assetCommonBean.getTitle(),category.getCategory());
+                commonLandscapeListingAdapter = new CommonLandscapeListingAdapteNew(this, railList, AppConstants.Rail5, assetCommonBean.getTitle(), category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonLandscapeListingAdapter);
             }
 
@@ -208,7 +213,9 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
 
 
     }
+
     VIUChannel category;
+
     private void getIntentValue() {
         try {
             layout = getIntent().getExtras().getString("layouttype");
@@ -217,6 +224,8 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
             PrintLogging.printLog("", "morebuttontype----" + assetCommonBean.getMoreType());
 
             title = assetCommonBean.getTitle();
+            FirebaseEventManager.getFirebaseInstance(ListingActivityNew.this).trackScreenName(title + " Listing");
+
             long idAsset = assetCommonBean.getID();
             assetId = (int) idAsset;
             getBinding().toolbar.tvSearchResultHeader.setText(title + "");
@@ -232,9 +241,8 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
             this.isShowFilter = getIntent().getExtras().getBoolean("hasFilter");
             this.isSortable = category.isSortable();
             this.pageSize = category.getMorePageSize();
-            if(pageSize<=0)
-            {
-                pageSize=20;
+            if (pageSize <= 0) {
+                pageSize = 20;
             }
 
 
@@ -350,12 +358,11 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
 
             PrintLogging.printLog("", "moreClicked" + "---" + type + "");
             simmilarMovieListingCall();
-        }
-        else if (type == AppConstants.YOU_MAY_LIKE) {
+        } else if (type == AppConstants.YOU_MAY_LIKE) {
             hideToolbarViews();
             PrintLogging.printLog("", "moreClicked" + "---" + type + "");
             youMayAlsoLikeListing();
-        }else if (type == AppConstants.WEB_EPISODE) {
+        } else if (type == AppConstants.WEB_EPISODE) {
             hideToolbarViews();
             PrintLogging.printLog("", "moreClicked" + "---" + type + "");
             webEpisodeListing();
@@ -385,7 +392,6 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
             deepSearchcategoryListingCall();
         }
     }
-
 
 
     private void showToolbarView() {

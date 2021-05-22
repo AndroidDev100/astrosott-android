@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
@@ -40,9 +41,11 @@ import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.RefreshKS;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
+import com.astro.sott.utils.helpers.NavigationItem;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.R;
@@ -184,6 +187,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private void getDatafromBack() {
         commonData = railData;
         asset = railData.getObject();
+        if (asset.getName() != null)
+            FirebaseEventManager.getFirebaseInstance(WebSeriesDescriptionActivity.this).trackScreenName(asset.getName());
+
         TabsData.getInstance().setSeriesAsset(asset);
         getBinding().setMovieAssestModel(asset);
         map = asset.getTags();
