@@ -26,6 +26,7 @@ import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.video.ui.VideoFragment;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.billing.BillingProcessor;
 
 import com.astro.sott.utils.billing.InAppProcessListener;
@@ -165,7 +166,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     };
 
     private void setProfileFragment() {
-
+        FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Navigation", "PROFILE");
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
@@ -184,6 +185,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void initFrameFragment() {
         setToolBarScroll(0);
+        FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Navigation", "Live TV");
         NavigationItem.getInstance().setTab("Live TV");
         getBinding().appbar.setVisibility(View.VISIBLE);
         getBinding().tabs.setVisibility(View.GONE);
@@ -474,6 +476,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                     if (currentFragment != null)
                         ((SportsFragment) currentFragment).refreshData();
                 }
+                FirebaseEventManager.getFirebaseInstance(HomeActivity.this).trackScreenName(NavigationItem.getInstance().getTab());
+                FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Landing Page Navigation", NavigationItem.getInstance().getTab());
             }
 
             @Override
@@ -516,6 +520,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
             checkSameClick();
             active = homeFragment;
         }*/
+        FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Navigation", "Home");
         setToolBarScroll(1);
         setMargins(150, 0);
         getBinding().appbar.setVisibility(View.VISIBLE);
@@ -567,6 +572,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         setToolBarScroll(0);
         if (liveTvFragment != null)
             liveTvFragment.refreshData();
+        FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Navigation", "Live TV");
         NavigationItem.getInstance().setTab("Live TV");
         getBinding().appbar.setVisibility(View.VISIBLE);
         getBinding().tabs.setVisibility(View.GONE);
@@ -592,6 +598,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 //        active = moreFragment;
 //    }
     private void switchToNewMoreFragment() {
+        FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Navigation", "PROFILE");
         getBinding().appbar.setVisibility(View.GONE);
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);

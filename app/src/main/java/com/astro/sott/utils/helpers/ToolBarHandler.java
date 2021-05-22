@@ -19,9 +19,8 @@ import com.astro.sott.activities.moreListing.ui.ListingActivityNew;
 import com.astro.sott.activities.myList.MyListActivity;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.databinding.ActivityMyWatchlistBinding;
-import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
-import com.enveu.Enum.Layouts;
 import com.enveu.Enum.ListingLayoutType;
 import com.enveu.Enum.PredefinePlaylistType;
 
@@ -35,6 +34,7 @@ public class ToolBarHandler {
     }
 
     public void setMoreListener(LinearLayout more, final String type, final AssetCommonBean assetCommonBean) {
+
 
         /*more.setOnClickListener(view -> {
             AssetCommonBean assetCommonBean1 = new AssetCommonBean();
@@ -58,6 +58,8 @@ public class ToolBarHandler {
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (assetCommonBean.getTitle() != null)
+                    FirebaseEventManager.getFirebaseInstance(activity).navEvent(assetCommonBean.getTitle(), "See More");
                 if (data.getPredefPlaylistType() != null && !data.getPredefPlaylistType().equalsIgnoreCase("") && data.getPredefPlaylistType().equalsIgnoreCase(PredefinePlaylistType.MY_W.name())) {
                     new ActivityLauncher(activity).myListActivity(activity, MyListActivity.class, assetCommonBean);
                 } else {
@@ -123,7 +125,7 @@ public class ToolBarHandler {
 
     }
 
-    public void setMoreListener(TextView more, final String type, final AssetCommonBean assetCommonBean) {
+    public void setMoreListener(TextView more, final String type, final AssetCommonBean assetCommonBean, Activity activity) {
 
         /*more.setOnClickListener(view -> {
             AssetCommonBean assetCommonBean1 = new AssetCommonBean();
@@ -147,6 +149,9 @@ public class ToolBarHandler {
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (assetCommonBean.getTitle() != null)
+                    FirebaseEventManager.getFirebaseInstance(activity).navEvent(assetCommonBean.getTitle(), "See More");
+
                 if (data.getContentListinglayout() != null && !data.getContentListinglayout().equalsIgnoreCase("") && data.getContentListinglayout().equalsIgnoreCase(ListingLayoutType.LST.name())) {
                     try {
                         Log.e("getRailData", "LST");
@@ -160,7 +165,7 @@ public class ToolBarHandler {
                         assetCommonBean1.setMoreAssetType(assetCommonBean.getMoreAssetType());
                         assetCommonBean1.setMoreGenre(assetCommonBean.getMoreGenre());
                         assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
-                        new ActivityLauncher(activity).gridListing(activity, GridListingActivity.class, data.getContentImageType(), assetCommonBean1);
+                        new ActivityLauncher(ToolBarHandler.this.activity).gridListing(ToolBarHandler.this.activity, GridListingActivity.class, data.getContentImageType(), assetCommonBean1);
 
                     } catch (Exception e) {
 
@@ -180,7 +185,7 @@ public class ToolBarHandler {
                     assetCommonBean1.setMoreGenre(assetCommonBean.getMoreGenre());
                     assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
                     assetCommonBean1.setCategory(assetCommonBean.getRailDetail().getCategory());
-                    new ActivityLauncher(activity).listListing(activity, ListingActivityNew.class, data.getContentImageType(), assetCommonBean1);
+                    new ActivityLauncher(ToolBarHandler.this.activity).listListing(ToolBarHandler.this.activity, ListingActivityNew.class, data.getContentImageType(), assetCommonBean1);
 
 
                 } else {
@@ -236,12 +241,20 @@ public class ToolBarHandler {
 
     public void setContinueWatchingListener(LinearLayout moreText, final String type, final AssetCommonBean assetCommonBean) {
 
-        moreText.setOnClickListener(view -> new ActivityLauncher(activity).continueWatchingListing(activity, ContinueWatchingActivity.class, type, assetCommonBean));
+        moreText.setOnClickListener(view -> {
+            new ActivityLauncher(activity).continueWatchingListing(activity, ContinueWatchingActivity.class, type, assetCommonBean);
+        });
     }
 
     public void setContinueWatchingListener(TextView moreText, final String type, final AssetCommonBean assetCommonBean) {
+        moreText.setOnClickListener(view -> {
+            if (assetCommonBean.getTitle() != null)
+                FirebaseEventManager.getFirebaseInstance(activity).navEvent(assetCommonBean.getTitle(), "See More");
 
-        moreText.setOnClickListener(view -> new ActivityLauncher(activity).continueWatchingListing(activity, ContinueWatchingActivity.class, type, assetCommonBean));
+            new ActivityLauncher(activity).continueWatchingListing(activity, ContinueWatchingActivity.class, type, assetCommonBean);
+
+
+        });
     }
 
     public void setAction(View toolbar, final String currentActivity) {

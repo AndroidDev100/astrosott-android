@@ -14,9 +14,11 @@ import android.widget.TextView;
 
 import com.astro.sott.modelClasses.dmsResponse.MediaTypes;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
+import com.astro.sott.utils.helpers.NavigationItem;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.carousel.model.Slide;
 import com.astro.sott.R;
@@ -101,7 +103,10 @@ public class SliderAdapter extends PagerAdapter {
                 slider_text_des.setText(metas);
                 ImageHelper.getInstance(context).loadImageToCarousal(sliderImage, items.get(position).getImageFromUrl(), R.drawable.ic_landscape_placeholder);
             }
-            sliderImage.setOnClickListener(v -> itemClickListener.onItemClick(null, container.getRootView(), position, carouselPosition));
+            sliderImage.setOnClickListener(v -> {
+                FirebaseEventManager.getFirebaseInstance(context).viewItemEvent(NavigationItem.getInstance().getTab() + " Top Slider ", items.get(position).getObjects(), context);
+                itemClickListener.onItemClick(null, container.getRootView(), position, carouselPosition);
+            });
 
             container.addView(view);
             return view;

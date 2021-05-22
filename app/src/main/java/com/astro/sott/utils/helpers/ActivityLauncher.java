@@ -65,6 +65,7 @@ import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.astro.sott.repositories.liveChannel.LinearProgramDataLayer;
 import com.astro.sott.repositories.trailerFragment.TrailerHighlightsDataLayer;
 import com.astro.sott.repositories.webSeriesDescription.SeriesDataLayer;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
@@ -283,6 +284,8 @@ public class ActivityLauncher {
                                    MediaTypeCallBack mediaTypeCallBack) {
         new KsPreferenceKey(activity).setClassName(name);
         this.detailRailClick = mediaTypeCallBack;
+        if (railCommonData.getRailDetail() != null && railCommonData.getRailDetail().getName() != null)
+            FirebaseEventManager.getFirebaseInstance(activity).viewItemEvent(NavigationItem.getInstance().getTab()+"-" + railCommonData.getRailDetail().getName(), railCommonData.getObject(), activity);
         switch (name) {
             case AppLevelConstants.MOVIE_DESCRIPTION_ACTIVITY:
                 movieScreenCheck(name, railCommonData, layoutPosition, layoutType, detailRailClick);
