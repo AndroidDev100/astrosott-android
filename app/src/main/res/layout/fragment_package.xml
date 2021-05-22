@@ -74,6 +74,7 @@
                 android:layout_below="@id/package_title"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="14dp"
+                android:visibility="gone"
                 android:fontFamily="@font/heebo_medium"
                 android:textColor="@color/black_text_color"
                 android:textSize="14sp" />
@@ -82,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/package_title"
-                android:layout_marginStart="2dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/currency"
                 android:fontFamily="@font/heebo_medium"

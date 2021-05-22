@@ -79,7 +79,7 @@
                             android:fontFamily="@font/heebo_medium"
                             android:paddingLeft="5dp"
                             android:paddingRight="1dp"
-                            android:text="BUY @"
+                            android:text="BUY @ "
                             android:textColor="@color/white"
                             android:textSize="13sp"
 

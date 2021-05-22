@@ -158,23 +158,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 if (railCommonData.getImages().size() == itemValue.getImages().size())
                     new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, railCommonData);
             } else if (itemValue != null && itemValue.getType() == MediaTypeConstant.getProgram(activity)) {
-                new LiveChannelManager().getLiveProgram(activity, itemValue, asset -> {
-                    if (asset.getStatus()) {
-                        if (asset.getLivePrograme()) {
-                            getProgramRailCommonData(asset.getCurrentProgram(), "liveChannelCall-->>" + asset.getStatus());
-                            new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, railCommonData);
-                        } else {
-                            getProgramRailCommonData(asset.getCurrentProgram(), "liveChannelCall-->>" + asset.getStatus() + "--" + asset.getProgramTime());
-                            if (asset.getProgramTime() == 1) {
-                                getProgramRailCommonData(asset.getCurrentProgram(), "Program VideoItemClicked");
-                                // new ActivityLauncher(activity).catchUpActivity(activity, CatchupActivity.class, railCommonData);
-                            } else {
-                                //   new ActivityLauncher(activity).forwardeEPGActivity(activity, ForwardedEPGActivity.class, railCommonData);
-                                new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class, railCommonData);
-                            }
-                        }
-                    }
-                });
+                new ActivityLauncher(activity).checkCurrentProgram(itemValue);
             }
         } catch (Exception ignored) {
 
