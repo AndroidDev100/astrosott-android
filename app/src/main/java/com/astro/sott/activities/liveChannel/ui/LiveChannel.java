@@ -173,7 +173,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             setProgramMetas();
         if (railData != null) {
             getDataFromBack(railData);
-            Constants.channelName = railData.getName();
+            if (railData.getObject() != null)
+                Constants.channelName = railData.getObject().getName();
             setImages(railData, this, getBinding().channelLogo);
         }
     }
@@ -247,7 +248,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         if (stringValue != null)
             language = stringValue.getValue();
 
-        if (language!=null&&!language.equalsIgnoreCase(""))
+        if (language != null && !language.equalsIgnoreCase(""))
             stringBuilder.append(language + " | ");
     }
 
