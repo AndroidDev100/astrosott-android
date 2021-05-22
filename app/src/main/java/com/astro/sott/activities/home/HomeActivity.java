@@ -748,6 +748,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     }
 
+    private boolean isAddSubscriptionCalled = false;
+
     @Override
     public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
@@ -784,16 +786,20 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         } else {
             orderId = "";
         }
-        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
-            if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
-                if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
-                    Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+        if (!isAddSubscriptionCalled) {
+            isAddSubscriptionCalled = true;
+            subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+                isAddSubscriptionCalled = false;
+                if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
+                    if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
+                        Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
 
-            }
-        });
+                }
+            });
+        }
 
     }
 

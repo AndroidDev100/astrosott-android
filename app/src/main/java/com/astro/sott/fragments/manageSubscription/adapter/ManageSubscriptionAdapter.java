@@ -44,7 +44,7 @@ public class ManageSubscriptionAdapter extends RecyclerView.Adapter<ManageSubscr
     @Override
     public void onBindViewHolder(@NonNull SingleItem holder, int position) {
         holder.manageSubscriptionItemBinding.planName.setText(accountServiceMessageItems.get(position).getDisplayName());
-        holder.manageSubscriptionItemBinding.currency.setText(accountServiceMessageItems.get(position).getCurrencyCode() + " " + accountServiceMessageItems.get(position).getPlanPrice());
+        holder.manageSubscriptionItemBinding.currency.setText(accountServiceMessageItems.get(position).getCurrencyCode() + " " + accountServiceMessageItems.get(position).getPriceCharged());
         if (accountServiceMessageItems.get(position).getStatus().equalsIgnoreCase("ACTIVE")) {
             if (!accountServiceMessageItems.get(position).getPaymentMethod().equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
                 holder.manageSubscriptionItemBinding.cancel.setVisibility(View.GONE);

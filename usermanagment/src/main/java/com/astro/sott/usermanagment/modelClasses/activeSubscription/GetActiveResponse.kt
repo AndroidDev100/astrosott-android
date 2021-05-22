@@ -93,6 +93,9 @@ data class AccountServiceMessageItem(
         @field:SerializedName("duration")
         val duration: Int? = null,
 
+        @field:SerializedName("priceCharged")
+        val priceCharged: Double? = null,
+
         @field:SerializedName("validityPeriod")
         val validityPeriod: String? = null,
 

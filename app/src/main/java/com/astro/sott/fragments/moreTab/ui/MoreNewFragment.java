@@ -442,6 +442,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     Long validTill;
 
     private void getActiveSubscription() {
+        displayName = "";
         getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken(), "profile").observe(this, evergentCommonResponse -> {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
