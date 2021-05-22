@@ -515,7 +515,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         if (stringValue != null)
             language = stringValue.getValue();
 
-        if (!language.equalsIgnoreCase(""))
+        if (language != null && !language.equalsIgnoreCase(""))
             stringBuilder.append(language + " | ");
     }
 
