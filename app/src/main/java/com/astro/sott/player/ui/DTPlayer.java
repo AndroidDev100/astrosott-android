@@ -106,6 +106,7 @@ import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PhoneStateListenerHelper;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.UDID;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.conviva.sdk.ConvivaSdkConstants;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -1346,12 +1347,19 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             @Override
             public void getSessionToken(OnCompletion<PrimitiveResult> completion) {
+                String ks1 = "";
+                if (UserInfo.getInstance(baseActivity).isActive()) {
+                    ks1 = KsPreferenceKey.getInstance(baseActivity).getStartSessionKs();
 
-                String ks1 = KsPreferenceKey.getInstance(baseActivity).getStartSessionKs();
-                if (ks1.isEmpty()) {
+                    if (ks1.isEmpty()) {
+                        ks1 = KsPreferenceKey.getInstance(baseActivity).getAnonymousks();
+
+                    }
+                } else {
                     ks1 = KsPreferenceKey.getInstance(baseActivity).getAnonymousks();
 
                 }
+
                 if (completion != null) {
                     completion.onComplete(new PrimitiveResult(ks1));
                 }

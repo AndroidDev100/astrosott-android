@@ -158,6 +158,7 @@ public class AppCommonMethods {
         UserInfo.getInstance(context).setRefreshToken("");
         UserInfo.getInstance(context).setExternalSessionToken("");
         UserInfo.getInstance(context).setActive(false);
+        new KsPreferenceKey(context).setStartSessionKs("");
 
     }
 
