@@ -54,7 +54,8 @@
                     android:visibility="visible"
                     app:layout_constraintTop_toBottomOf="@id/image"
                     app:tabBackground="@color/transparentColor"
-                    app:tabMode="fixed" />
+                    app:tabMode="fixed"
+                    app:tabTextAppearance="@style/packTabTextAppearance" />
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager"
