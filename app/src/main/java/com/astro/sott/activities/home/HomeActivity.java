@@ -27,6 +27,7 @@ import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.video.ui.VideoFragment;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.billing.BillingProcessor;
 
 import com.astro.sott.utils.billing.InAppProcessListener;
@@ -56,6 +57,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -710,7 +712,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         billingProcessor.initialize();
         billingProcessor.loadOwnedPurchasesFromGoogle();*/
 
-        billingProcessor = new BillingProcessor(HomeActivity.this, this);
+        billingProcessor = new BillingProcessor(HomeActivity.this, HomeActivity.this);
         billingProcessor.initializeBillingProcessor();
     }
 
@@ -755,13 +757,18 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     }
 
-    private boolean isAddSubscriptionCalled = false;
+    private long lastClickTime = 0;
 
     @Override
     public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
             if (purchases.get(0).getPurchaseToken() != null) {
-                processPurchase(purchases);
+                if (SystemClock.elapsedRealtimeNanos() - lastClickTime < 5000) {
+                    return;
+                }
+                lastClickTime = SystemClock.elapsedRealtime();
+                if (!TabsData.getInstance().isDetail())
+                    processPurchase(purchases);
             }
         }
     }
@@ -793,20 +800,18 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         } else {
             orderId = "";
         }
-        if (!isAddSubscriptionCalled) {
-            isAddSubscriptionCalled = true;
-            subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
-                isAddSubscriptionCalled = false;
-                if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
-                    if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
-                        Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
 
+        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+            if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
+                if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
+                    Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
                 }
-            });
-        }
+            } else {
+                Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
 
     }
 

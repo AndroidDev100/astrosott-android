@@ -13,6 +13,7 @@ public class TabsData {
     private List<Asset> trailerData, movieShows, seriesShows;
     private List<Asset> highlightsData;
     private String sortType;
+    private boolean isDetail = false;
     private String seriesType;
     private int selectedSeason;
     private List<RailCommonData> youMayAlsoLikeData;
@@ -30,6 +31,14 @@ public class TabsData {
         return tabsData;
     }
 
+
+    public void setDetail(boolean detail) {
+        isDetail = detail;
+    }
+
+    public boolean isDetail() {
+        return isDetail;
+    }
 
     public Asset getSeriesAsset() {
         return seriesAsset;
