@@ -922,6 +922,21 @@ public class AssetContent {
         return connection;
     }
 
+    public static String getChannelLanguage(Asset asset) {
+
+        String language = "";
+        MultilingualStringValue stringValue = null;
+        if (asset.getMetas() != null)
+            stringValue = (MultilingualStringValue) asset.getMetas().get(AppLevelConstants.KEY_LANGUAGE);
+        if (stringValue != null)
+            language = stringValue.getValue();
+
+        if (language == null)
+            language = "";
+
+        return language;
+    }
+
     public static String getLanguageDataString
             (Map<String, MultilingualStringValueArray> map, Context context) {
 

@@ -65,6 +65,7 @@ import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.astro.sott.repositories.liveChannel.LinearProgramDataLayer;
 import com.astro.sott.repositories.trailerFragment.TrailerHighlightsDataLayer;
 import com.astro.sott.repositories.webSeriesDescription.SeriesDataLayer;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
@@ -283,6 +284,14 @@ public class ActivityLauncher {
                                    MediaTypeCallBack mediaTypeCallBack) {
         new KsPreferenceKey(activity).setClassName(name);
         this.detailRailClick = mediaTypeCallBack;
+        if (name.equalsIgnoreCase(AppLevelConstants.LISTING_ACTIVITY) || name.equalsIgnoreCase(AppLevelConstants.LISTING_ACTIVITY_NEW) || name.equalsIgnoreCase(AppLevelConstants.GRID_LISTING_ACTIVITY) || name.equalsIgnoreCase(AppLevelConstants.DETAIL_LISTING_ACTIVITY) || name.equalsIgnoreCase(AppLevelConstants.Continue_Watching_Activity) || name.equalsIgnoreCase(AppLevelConstants.CUSTOM_LISTING_ACTIVITY)) {
+            if (railName != null)
+                FirebaseEventManager.getFirebaseInstance(activity).viewItemEvent(railName + " Listing", railCommonData.getObject(), activity);
+
+        } else {
+            if (railCommonData.getRailDetail() != null && railCommonData.getRailDetail().getName() != null)
+                FirebaseEventManager.getFirebaseInstance(activity).viewItemEvent(NavigationItem.getInstance().getTab() + "-" + railCommonData.getRailDetail().getName(), railCommonData.getObject(), activity);
+        }
         switch (name) {
             case AppLevelConstants.MOVIE_DESCRIPTION_ACTIVITY:
                 movieScreenCheck(name, railCommonData, layoutPosition, layoutType, detailRailClick);

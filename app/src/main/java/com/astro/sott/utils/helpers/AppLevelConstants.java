@@ -35,6 +35,19 @@ public interface AppLevelConstants {
     String LAYOUT_TYPE = "layouttype";
     String ASSET_COMMON_BEAN = "assetCommonBean";
     String MOVIE_DESCRIPTION_ACTIVITY = "MovieDescriptionActivity";
+
+    String CUSTOM_LISTING_ACTIVITY="CustomListingActivity";
+    String LISTING_ACTIVITY="ListingActivity";
+    String LISTING_ACTIVITY_NEW="ListingActivityNew";
+    String Continue_Watching_Activity="ContinueWatchingActivity";
+    String GRID_LISTING_ACTIVITY="GridListingActivity";
+    String DETAIL_LISTING_ACTIVITY="DetailListingActivity";
+
+
+
+
+
+
     String WEB_EPISODE_DESCRIPTION_ACTIVITY = "WebEpisodeDescriptionActivity";
     String BOX_SET_DETAIL = "BoxSetDetailActivity";
     String LIVE_CHANNEL = "LiveChannel";

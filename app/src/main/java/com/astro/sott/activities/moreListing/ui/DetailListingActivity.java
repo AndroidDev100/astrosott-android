@@ -1,12 +1,15 @@
 package com.astro.sott.activities.moreListing.ui;
 
 import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -20,6 +23,7 @@ import com.astro.sott.adapter.LandscapeDetailListingAdapter;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
@@ -168,6 +172,8 @@ public class DetailListingActivity extends BaseBindingActivity<ListingActivityBi
             assetCommonBean = intent.getExtras().getParcelable(AppLevelConstants.ASSET_COMMON_BEAN);
             layoutType = assetCommonBean.getMoreAssetType();
             title = assetCommonBean.getTitle();
+            FirebaseEventManager.getFirebaseInstance(DetailListingActivity.this).trackScreenName(title + " Listing");
+
             long idAsset = assetCommonBean.getID();
             assetId = (int) idAsset;
         } else {

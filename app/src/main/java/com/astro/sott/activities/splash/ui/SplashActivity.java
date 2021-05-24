@@ -34,6 +34,7 @@ import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.modelClasses.appVersion.AppVersionStatus;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.EvergentBaseClient.EvergentBaseClient;
 import com.astro.sott.usermanagment.EvergentBaseClient.EvergentBaseConfiguration;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
@@ -160,6 +161,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     SharedPrefHelper.getInstance(getApplication()).setString("DMS_Date", "mDate");
                     SharedPrefHelper.getInstance(getApplication()).setBoolean("isFirstTime", true);
                 }
+
                 updateLanguage();
                 initDrm();
                 DMSCall();
@@ -977,6 +979,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 return;
             }
         }
+
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName("Splash Screen");
+
         Bundle bundle = getIntent().getExtras();
 
 
