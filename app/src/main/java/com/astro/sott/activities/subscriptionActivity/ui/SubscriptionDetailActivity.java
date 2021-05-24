@@ -61,6 +61,9 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         if (getIntent().getStringExtra(AppLevelConstants.DATE) != null)
             date = getIntent().getStringExtra(AppLevelConstants.DATE);
 
+        if (getIntent().getStringExtra(AppLevelConstants.DATE) != null)
+            date = getIntent().getStringExtra(AppLevelConstants.DATE);
+
         modelCall();
         getSubscriptionActionList();
     }
@@ -73,21 +76,26 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private int count = 0;
 
     private void getSubscriptionActionList() {
-
-        subscriptionViewModel.getSubscriptionPackageList(fileId).observe(this, subscriptionList -> {
-            if (subscriptionList != null) {
-                if (subscriptionList.size() > 0) {
-                    subscriptionIds = new String[subscriptionList.size()];
-                    for (Subscription subscription : subscriptionList) {
-                        if (subscription.getId() != null) {
-                            subscriptionIds[count] = subscription.getId();
-                            count++;
+        if (!from.equalsIgnoreCase("Live Event")) {
+            subscriptionViewModel.getSubscriptionPackageList(fileId).observe(this, subscriptionList -> {
+                if (subscriptionList != null) {
+                    if (subscriptionList.size() > 0) {
+                        subscriptionIds = new String[subscriptionList.size()];
+                        for (Subscription subscription : subscriptionList) {
+                            if (subscription.getId() != null) {
+                                subscriptionIds[count] = subscription.getId();
+                                count++;
+                            }
                         }
+                        setPackFragment();
                     }
-                    setPackFragment();
                 }
-            }
-        });
+            });
+        } else {
+            subscriptionIds = new String[1];
+            subscriptionIds[0] = fileId;
+            setPackFragment();
+        }
 
 
     }

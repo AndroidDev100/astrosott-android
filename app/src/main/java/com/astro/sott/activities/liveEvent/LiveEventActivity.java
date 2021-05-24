@@ -202,7 +202,21 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                 }
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
                 if (UserInfo.getInstance(this).isActive()) {
-                    fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+                    fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
+                    if (!fileId.equalsIgnoreCase("")) {
+                        Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                        intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                        intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
+                        startActivity(intent);
+                    }
+                } else {
+                    new ActivityLauncher(LiveEventActivity.this).astrLoginActivity(LiveEventActivity.this, AstrLoginActivity.class, "");
+                }
+
+            } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
+                if (UserInfo.getInstance(this).isActive()) {
+                    fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
@@ -388,13 +402,17 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                 if (apiStatus) {
                     if (purchasedStatus) {
                         runOnUiThread(() -> {
-                            getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                            if (AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate && liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong()) {
+                                getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+                            } else {
+                                getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.live_event_button));
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.heather));
+
+                            }
                             getBinding().playText.setText(getResources().getString(R.string.watch_now));
                             getBinding().playButton.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.GONE);
-                            getBinding().playText.setTextColor(getResources().getColor(R.color.black));
-
-
                         });
                         this.vodType = EntitlementCheck.FREE;
 
@@ -416,12 +434,10 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                             if (xofferWindowValue) {
                                 runOnUiThread(() -> {
                                     getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                    getBinding().playText.setText(getResources().getString(R.string.rent_movie));
+                                    getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                     getBinding().playButton.setVisibility(View.VISIBLE);
                                     getBinding().starIcon.setVisibility(View.GONE);
                                     getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-
-
                                 });
                             }
 
