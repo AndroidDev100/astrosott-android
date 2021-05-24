@@ -763,7 +763,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
             if (purchases.get(0).getPurchaseToken() != null) {
-                if (SystemClock.elapsedRealtimeNanos() - lastClickTime < 5000) {
+                if (SystemClock.elapsedRealtimeNanos() - lastClickTime < 8000) {
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
