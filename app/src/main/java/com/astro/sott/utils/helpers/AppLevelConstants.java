@@ -42,7 +42,7 @@ public interface AppLevelConstants {
     String WEB_SERIES_DESCCRIPTION_ACTIVITY = "WebSeriesDescriptionActivity";
     String OK = "OK";
     String SUCCESS = "SUCCESS";
-     String WEB_VIEW_HEADING = "WebViewHeading";
+    String WEB_VIEW_HEADING = "WebViewHeading";
     String WEB_VIEW_URL = "WebVieweURl";
     String DIALOG_TV = "Dialog TV";
     String BROAD_BAND_HBB = "Home Broadband";
@@ -161,6 +161,7 @@ public interface AppLevelConstants {
     String KEY_KEYWORD = "Keywords";
 
     String KEY_SUB_GENRE = "SubGenre";
+    String KEY_PACKAGE_ID = "PackageID";
 
 
     String KEY_MAINCAST = "Main Cast";

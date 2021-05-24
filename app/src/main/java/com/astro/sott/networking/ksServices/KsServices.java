@@ -3213,6 +3213,60 @@ public class KsServices {
 
     }
 
+    public void getLiveEventPurchaseStatus(final String fileId, ProductPriceCallBack callBack) {
+        clientSetupKs();
+
+        productPriceCallBack = callBack;
+
+        ProductPriceFilter productPriceFilter = new ProductPriceFilter();
+        productPriceFilter.setSubscriptionIdIn(fileId);
+
+        ProductPriceService.ListProductPriceBuilder builder = ProductPriceService.list(productPriceFilter).setCompletion(result -> {
+
+            if (result != null) {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null && result.results.getObjects().get(0).getPurchaseStatus() != null) {
+                            productPriceCallBack.getProductprice(true, result, result.results.getObjects().get(0).getPurchaseStatus().toString(), "", "");
+                        } else {
+                            productPriceCallBack.getProductprice(false, result, "", "", activity.getResources().getString(R.string.something_went_wrong));
+                        }
+                    }
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getAssetPurchaseStatus(fileId, callBack);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        productPriceCallBack.getProductprice(false, result, "", "", activity.getResources().getString(R.string.something_went_wrong));
+                                    }
+                                }
+                            });
+                        } else {
+                            productPriceCallBack.getProductprice(false, result, "", result.error.getCode(), result.error.getMessage());
+                        }
+                    } else {
+                        productPriceCallBack.getProductprice(false, result, "", "", activity.getResources().getString(R.string.something_went_wrong));
+                    }
+
+
+                }
+            } else {
+                productPriceCallBack.getProductprice(false, null, "", "", activity.getResources().getString(R.string.something_went_wrong));
+            }
+
+        });
+
+        getRequestQueue().queue(builder.build(client));
+
+
+    }
+
 
     public void getAssetListPurchaseStatus(final String fileId, ProductPriceCallBack callBack) {
         clientSetupKs();

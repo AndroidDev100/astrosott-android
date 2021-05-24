@@ -720,6 +720,33 @@ public class AssetContent {
         return connection;
     }
 
+    public static String getLiveEventPackageId
+            (Map<String, MultilingualStringValueArray> map) {
+        final MutableLiveData<String> connection = new MutableLiveData<>();
+        String packageId;
+        List<MultilingualStringValue> genre_values = new ArrayList<>();
+        MultilingualStringValueArray genre_list = map.get(AppLevelConstants.KEY_PACKAGE_ID);
+        if (genre_list != null)
+
+            genre_values.addAll(genre_list.getObjects());
+//            for (MultilingualStringValue value : genre_list.getObjects()) {
+//                genre_values.add(value);
+//            }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= genre_values.size() - 1; i++) {
+            stringBuilder.append(genre_values.get(i).getValue()).append(", ");
+        }
+
+        if (stringBuilder.length() > 0) {
+            packageId = stringBuilder.toString();
+            packageId = packageId.substring(0, packageId.length() - 2);
+
+        } else {
+            packageId = "";
+        }
+        return packageId;
+    }
+
 
     public static String getSubGenredataString(Map<String, MultilingualStringValueArray> map) {
         final MutableLiveData<String> connection = new MutableLiveData<>();
@@ -1680,8 +1707,8 @@ public class AssetContent {
         if (playbackStart != null) {
             date = playbackStart.getValue();
             if (date != null && !date.equalsIgnoreCase("")) {
-                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",Locale.getDefault());
-                SimpleDateFormat outputFormat = new SimpleDateFormat("MMM dd",Locale.getDefault());
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                SimpleDateFormat outputFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
                 inputFormat.setTimeZone(TimeZone.getDefault());
                 try {
                     inputDate = inputFormat.parse(date);
@@ -1710,7 +1737,7 @@ public class AssetContent {
 
                 Calendar calendar = Calendar.getInstance();
                 Date today = calendar.getTime();
-                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",Locale.getDefault());
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
                 inputFormat.setTimeZone(TimeZone.getDefault());
                 String currentTime = inputFormat.format(today);
                 try {

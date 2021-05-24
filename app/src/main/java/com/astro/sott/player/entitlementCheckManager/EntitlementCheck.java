@@ -58,6 +58,29 @@ public class EntitlementCheck {
     }
 
 
+    public void checkLiveEventPurchaseStatus(Context context, String fileId, ProductPriceStatusCallBack callBack) {
+        KsServices ksServices = new KsServices(context);
+
+        ksServices.getLiveEventPurchaseStatus(fileId, (status, response, purchaseKey, errorCode, message) -> {
+            if (status) {
+                if (purchaseKey.equalsIgnoreCase("for_purchase_subscription_only")) {
+                    callBack.getProductprice(true, false, SVOD, response.results.getObjects().get(0).getPurchaseStatus().toString(), "", "");
+                } else if (purchaseKey.equalsIgnoreCase("for_purchase")) {
+                    callBack.getProductprice(true, false, TVOD, response.results.getObjects().get(0).getPurchaseStatus().toString(), "", "");
+                } else if (purchaseKey.equalsIgnoreCase("subscription_purchased")) {
+                    callBack.getProductprice(true, true, SVOD, response.results.getObjects().get(0).getPurchaseStatus().toString(), "", "");
+                } else if (purchaseKey.equalsIgnoreCase("ppv_purchased")) {
+                    callBack.getProductprice(true, true, TVOD, response.results.getObjects().get(0).getPurchaseStatus().toString(), "", "");
+                } else {
+                    callBack.getProductprice(true, true, FREE, response.results.getObjects().get(0).getPurchaseStatus().toString(), "", "");
+                }
+            } else {
+                callBack.getProductprice(false, false, null, "", "", new ErrorCallBack().ErrorMessage(errorCode, message));
+            }
+        });
+    }
+
+
     public void checkAssetListPurchaseStatus(Context context, String fileId, ProductPriceCallBack callBack) {
         KsServices ksServices = new KsServices(context);
 
