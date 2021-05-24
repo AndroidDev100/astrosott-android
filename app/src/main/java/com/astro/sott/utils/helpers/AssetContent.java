@@ -892,6 +892,21 @@ public class AssetContent {
         return connection;
     }
 
+    public static String getChannelLanguage(Asset asset) {
+
+        String language = "";
+        MultilingualStringValue stringValue = null;
+        if (asset.getMetas() != null)
+            stringValue = (MultilingualStringValue) asset.getMetas().get(AppLevelConstants.KEY_LANGUAGE);
+        if (stringValue != null)
+            language = stringValue.getValue();
+
+        if (language == null)
+            language = "";
+
+        return language;
+    }
+
     public static String getLanguageDataString
             (Map<String, MultilingualStringValueArray> map, Context context) {
 
@@ -1680,8 +1695,8 @@ public class AssetContent {
         if (playbackStart != null) {
             date = playbackStart.getValue();
             if (date != null && !date.equalsIgnoreCase("")) {
-                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",Locale.getDefault());
-                SimpleDateFormat outputFormat = new SimpleDateFormat("MMM dd",Locale.getDefault());
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                SimpleDateFormat outputFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
                 inputFormat.setTimeZone(TimeZone.getDefault());
                 try {
                     inputDate = inputFormat.parse(date);
@@ -1710,7 +1725,7 @@ public class AssetContent {
 
                 Calendar calendar = Calendar.getInstance();
                 Date today = calendar.getTime();
-                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",Locale.getDefault());
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
                 inputFormat.setTimeZone(TimeZone.getDefault());
                 String currentTime = inputFormat.format(today);
                 try {

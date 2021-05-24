@@ -417,7 +417,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private void circleDataLogic(CircleHolder holder, List<AssetCommonBean> dataList, int position) {
 
-        new ToolBarHandler(activity).setMoreListener(((CircleHolder) holder).circularRecyclerItemBinding.moreText, AppConstants.TYPE2, dataList.get(position));
+        new ToolBarHandler(activity).setMoreListener(((CircleHolder) holder).circularRecyclerItemBinding.moreText, AppConstants.TYPE2, dataList.get(position), activity);
 
 
         ((CircleHolder) holder).circularRecyclerItemBinding.titleLayout.setVisibility(View.VISIBLE);
@@ -491,7 +491,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private void posterDataLogic(PosterHolder holder, List<AssetCommonBean> dataList, int position) {
         Log.w("ImageListSize-->>", dataList.get(position).getRailAssetList().get(0).getImages().size() + "");
         int totalCount = dataList.get(position).getTotalCount();
-        new ToolBarHandler(activity).setMoreListener(holder.itemBinding.moreText, AppConstants.TYPE3, dataList.get(position));
+        new ToolBarHandler(activity).setMoreListener(holder.itemBinding.moreText, AppConstants.TYPE3, dataList.get(position),activity);
 
 
         holder.itemBinding.titleLayout.setVisibility(View.VISIBLE);

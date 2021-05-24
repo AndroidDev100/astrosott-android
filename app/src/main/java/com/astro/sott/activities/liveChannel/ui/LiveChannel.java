@@ -243,7 +243,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private void getChannelLanguage() {
         String language = "";
         MultilingualStringValue stringValue = null;
-        if (asset.getMetas() != null)
+        if (programAsset.getMetas() != null)
             stringValue = (MultilingualStringValue) programAsset.getMetas().get(AppLevelConstants.KEY_LANGUAGE);
         if (stringValue != null)
             language = stringValue.getValue();

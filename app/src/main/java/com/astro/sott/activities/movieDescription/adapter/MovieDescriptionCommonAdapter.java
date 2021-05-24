@@ -35,7 +35,6 @@ import com.astro.sott.callBacks.kalturaCallBacks.DeleteFromFollowlistCallBack;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomLayoutManager;
-import com.astro.sott.utils.helpers.carousel.model.Slide;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.R;
 import com.astro.sott.activities.home.HomeActivity;
@@ -65,9 +64,7 @@ import com.astro.sott.utils.helpers.ToolBarHandler;
 import com.enveu.Enum.LandingPageType;
 import com.enveu.Enum.PDFTarget;
 import com.enveu.Enum.PredefinePlaylistType;
-import com.facebook.ads.AudienceNetworkAds;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.astro.sott.utils.constants.AppConstants.ADS_BANNER;
@@ -390,7 +387,7 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
     CommonCircleAdapter commonCircleAdapter;
     private void circleDataLogic(CircleHolder holder, List<AssetCommonBean> dataList, int position) {
 
-        new ToolBarHandler(activity).setMoreListener(((CircleHolder) holder).circularRecyclerItemBinding.moreText, AppConstants.TYPE2, dataList.get(position));
+        new ToolBarHandler(activity).setMoreListener(((CircleHolder) holder).circularRecyclerItemBinding.moreText, AppConstants.TYPE2, dataList.get(position), activity);
 
 
         ((CircleHolder) holder).circularRecyclerItemBinding.titleLayout.setVisibility(View.VISIBLE);
@@ -462,7 +459,7 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
     CommonPosterAdapter commonPosterAdapter;
     private void posterDataLogic(PosterHolder holder, List<AssetCommonBean> dataList, int position) {
         int totalCount = dataList.get(position).getTotalCount();
-        new ToolBarHandler(activity).setMoreListener(holder.itemBinding.moreText, AppConstants.TYPE3, dataList.get(position));
+        new ToolBarHandler(activity).setMoreListener(holder.itemBinding.moreText, AppConstants.TYPE3, dataList.get(position), activity);
 
 
         holder.itemBinding.titleLayout.setVisibility(View.VISIBLE);

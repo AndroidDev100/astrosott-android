@@ -28,6 +28,7 @@ import com.astro.sott.callBacks.RemoveItemClickListner;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.callBacks.commonCallBacks.ItemClickListener;
 import com.astro.sott.databinding.LandscapeListingActivityBinding;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
@@ -74,10 +75,8 @@ public class GridListingActivity extends BaseBindingActivity<LandscapeListingAct
         Log.e(this.getClass().getSimpleName(), "this");
 
 
-
-
-      //  new ToolBarHandler(this).landscapeSetAction(getBinding());
-      //  new ToolBarHandler(this).setActionListing(getBinding().toolbar, "potrait");
+        //  new ToolBarHandler(this).landscapeSetAction(getBinding());
+        //  new ToolBarHandler(this).setActionListing(getBinding().toolbar, "potrait");
 
         modelCall();
 
@@ -90,12 +89,11 @@ public class GridListingActivity extends BaseBindingActivity<LandscapeListingAct
     }
 
 
-
     private void deepSearchcategoryListingCall() {
         if (NetworkConnectivity.isOnline(GridListingActivity.this)) {
             handleProgressDialog();
             filterValue = "";
-            viewModel.getLiveSearchedData(assetId, list, filterValue, counter, layout, isScrolling,pageSize).observe(this, railCommonData -> setLayoutType(railCommonData));
+            viewModel.getLiveSearchedData(assetId, list, filterValue, counter, layout, isScrolling, pageSize).observe(this, railCommonData -> setLayoutType(railCommonData));
         } else {
             ToastHandler.show(GridListingActivity.this.getResources().getString(R.string.no_internet_connection), getApplicationContext());
         }
@@ -136,9 +134,9 @@ public class GridListingActivity extends BaseBindingActivity<LandscapeListingAct
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (getBinding().progressBar.getVisibility()==View.VISIBLE){
+                if (getBinding().progressBar.getVisibility() == View.VISIBLE) {
                     getBinding().progressBar.setVisibility(View.GONE);
-                }else {
+                } else {
                     getBinding().progressBar.setVisibility(View.VISIBLE);
                 }
             }
@@ -196,6 +194,7 @@ public class GridListingActivity extends BaseBindingActivity<LandscapeListingAct
         assetCommonBean = getIntent().getExtras().getParcelable("assetCommonBean");
         PrintLogging.printLog("", "morebuttontype----" + assetCommonBean.getMoreType());
         title = assetCommonBean.getTitle();
+        FirebaseEventManager.getFirebaseInstance(GridListingActivity.this).trackScreenName(title + " Listing");
         getBinding().toolbar.tvSearchResultHeader.setText(title + "");
         long idAsset = assetCommonBean.getID();
         assetId = (int) idAsset;
@@ -214,9 +213,8 @@ public class GridListingActivity extends BaseBindingActivity<LandscapeListingAct
             this.isShowFilter = getIntent().getExtras().getBoolean("hasFilter");
             this.isSortable = category.isSortable();
             this.pageSize = category.getMorePageSize();
-            if(pageSize<=0)
-            {
-                pageSize=20;
+            if (pageSize <= 0) {
+                pageSize = 20;
             }
 
 
@@ -296,12 +294,12 @@ public class GridListingActivity extends BaseBindingActivity<LandscapeListingAct
                                 // PrintLogging.printLog("","slidingValues"+getBinding().listRecyclerview.getAdapter().getItemCount()+" "+counter);
                                 int adapterSize = getBinding().listRecyclerview.getAdapter().getItemCount();
                                 PrintLogging.printLog("", "counterValues-->>" + counter);
-                                    mIsLoading = false;
-                                    counter++;
-                                    PrintLogging.printLog("", counter + "counterMoreLIsting");
-                                    isScrolling = true;
-                                    mScrollY += dy;
-                                    connectionObserver();
+                                mIsLoading = false;
+                                counter++;
+                                PrintLogging.printLog("", counter + "counterMoreLIsting");
+                                isScrolling = true;
+                                mScrollY += dy;
+                                connectionObserver();
                             }
                         }
                     }
@@ -335,15 +333,15 @@ public class GridListingActivity extends BaseBindingActivity<LandscapeListingAct
         } else if (type == AppConstants.YOU_MAY_LIKE) {
             hideToolbarViews();
             PrintLogging.printLog("", "moreClicked" + "---" + type + "");
-           // youMayAlsoLikeListing();
+            // youMayAlsoLikeListing();
         } else if (type == AppConstants.WEB_EPISODE) {
             hideToolbarViews();
             PrintLogging.printLog("", "moreClicked" + "---" + type + "");
-           // webEpisodeListing();
+            // webEpisodeListing();
         } else if (type == AppConstants.SPOTLIGHT_EPISODE) {
             hideToolbarViews();
             PrintLogging.printLog("", "moreClicked" + "---" + type + "");
-           // spotLightEpisodeListing();
+            // spotLightEpisodeListing();
         } else if (type == AppConstants.SIMILLAR_UGC_VIDEOS) {
             hideToolbarViews();
             PrintLogging.printLog("", "moreClicked" + "---" + type + "");
@@ -351,15 +349,15 @@ public class GridListingActivity extends BaseBindingActivity<LandscapeListingAct
         } else if (type == AppConstants.SIMILLAR_UGC_CREATOR) {
             hideToolbarViews();
             PrintLogging.printLog("", "moreClicked" + "---" + type + "");
-           // simillarUGCCreatorListing();
+            // simillarUGCCreatorListing();
         } else if (type == AppConstants.LIVE_CHANNEL_LIST) {
             hideToolbarViews();
             PrintLogging.printLog("", "moreClicked" + "---" + type + "");
-           // liveChannelListing();
+            // liveChannelListing();
         } else if (type == AppConstants.SIMILLAR_CHANNEL_LIST) {
             hideToolbarViews();
             PrintLogging.printLog("", "moreClicked" + "---" + type + "");
-          //  simillarChannelListing();
+            //  simillarChannelListing();
         } else {
             // categoryListingCall();
             showToolbarView();
@@ -470,7 +468,7 @@ public class GridListingActivity extends BaseBindingActivity<LandscapeListingAct
 
     private void categoryListingCall() {
         handleProgressDialog();
-       // viewModel.getLiveData(assetId, counter, layout, isScrolling).observe(this, railCommonData -> setLayoutType(railCommonData));
+        // viewModel.getLiveData(assetId, counter, layout, isScrolling).observe(this, railCommonData -> setLayoutType(railCommonData));
     }
 
     List<String> list;
@@ -478,7 +476,6 @@ public class GridListingActivity extends BaseBindingActivity<LandscapeListingAct
     @Override
     protected void onStart() {
         super.onStart();
-
 
 
     }
@@ -495,7 +492,6 @@ public class GridListingActivity extends BaseBindingActivity<LandscapeListingAct
         list.clear();
 
     }
-
 
 
     @Override
