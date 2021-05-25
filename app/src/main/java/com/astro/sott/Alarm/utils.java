@@ -9,7 +9,9 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+
 import androidx.core.app.NotificationCompat;
+
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -60,14 +62,14 @@ public class utils {
 
 
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.pushnotification);
-        contentView.setImageViewResource(R.id.image, R.mipmap.ic_launcher);
+        contentView.setImageViewResource(R.id.image, R.drawable.favorite_24_px);
         contentView.setTextViewText(R.id.title, name);
         contentView.setTextViewText(R.id.text, description);
 
 
         Log.d("OnConditionCall", "ViewGenerated");
         nb = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.favorite_24_px)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setContent(contentView);

@@ -617,8 +617,10 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     jsonObject.addProperty("assetid", Id);
 
                     if (screen_name != null) {
+
                         KsPreferenceKey.getInstance(this).setNotificationResponse(jsonObject + "");
                     }
+
                 }
 
 
@@ -710,9 +712,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                         Log.d("deepLink", "getDynamicLink: no link found");
                     }
                 } else {
-                    if (branchObject != null) {
-                        if (branchObject.has("assetId")) {
-                            redirectionCondition(branchObject);
+                    if (Id != null) {
+                        if (Id != 0) {
+                            callSpecficAssetApi(Id + "", "");
                         } else {
                             new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
                         }

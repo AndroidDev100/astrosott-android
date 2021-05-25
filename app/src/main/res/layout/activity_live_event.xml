@@ -101,7 +101,6 @@
                         android:clickable="true"
                         android:drawablePadding="5dp"
                         android:focusable="true"
-                        android:visibility="gone"
                         android:fontFamily="@font/heebo_regular"
                         android:gravity="center"
                         android:text="@string/remind_me"

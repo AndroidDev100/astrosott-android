@@ -1,6 +1,10 @@
 package com.astro.sott.activities.liveEvent;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +14,7 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.astro.sott.Alarm.MyReceiver;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
@@ -85,10 +90,12 @@ import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 
 public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener {
@@ -250,6 +257,73 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
 
         });
+
+    }
+
+    private AlarmManager alarmManager;
+    private int requestCode;
+    private PendingIntent pendingIntent;
+
+    private void setReminder() {
+
+        Random random = new Random();
+        requestCode = Integer.parseInt(String.format("%02d", random.nextInt(10000)));
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent myIntent;
+        long reminderDateTimeInMilliseconds = 000;
+
+        myIntent = new Intent(this, MyReceiver.class);
+        myIntent.putExtra("via", "LiveEventReminder");
+        myIntent.putExtra(AppLevelConstants.ID, Long.parseLong(asset.getId() + ""));
+        myIntent.putExtra(AppLevelConstants.Title, asset.getName());
+        myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+        myIntent.putExtra(AppLevelConstants.SCREEN_NAME, "LiveEvent");
+        myIntent.putExtra("requestcode", requestCode);
+        myIntent.setAction("com.astro.sott.MyIntent");
+        myIntent.setComponent(new ComponentName(getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
+
+//                    Random random = new Random();
+//                    int requestCode = Integer.parseInt(String.format("%02d", random.nextInt(10000)));
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+
+            Intent intent = new Intent();
+            intent.putExtra(AppLevelConstants.ID, Long.parseLong(asset.getId() + ""));
+            intent.putExtra(AppLevelConstants.Title, asset.getName());
+            intent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+            intent.putExtra(AppLevelConstants.SCREEN_NAME, "LiveEvent");
+            intent.putExtra("requestcode", requestCode);
+
+            intent.setComponent(new ComponentName(getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
+            intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+            pendingIntent = PendingIntent.getBroadcast(this, requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+        } else {
+
+            pendingIntent = PendingIntent.getBroadcast(this, requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
+        Calendar calendarToSchedule = Calendar.getInstance();
+        calendarToSchedule.setTimeInMillis(System.currentTimeMillis());
+        calendarToSchedule.clear();
+
+        //  calendarToSchedule.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(dd), 11, 18, 0);
+        calendarToSchedule.set(2021, 4, 25, 13, 50, 0);
+
+        reminderDateTimeInMilliseconds = calendarToSchedule.getTimeInMillis();
+
+        PrintLogging.printLog("", "valueIsform" + reminderDateTimeInMilliseconds);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+            alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(reminderDateTimeInMilliseconds, pendingIntent), pendingIntent);
+        } else {
+
+            alarmManager.set(AlarmManager.RTC_WAKEUP, reminderDateTimeInMilliseconds, pendingIntent);
+        }
+        Toast.makeText(this, "Reminder Added", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -678,6 +752,9 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             lastClickTime = SystemClock.elapsedRealtime();
             openShareDialouge();
 
+        });
+        getBinding().reminder.setOnClickListener(v -> {
+            setReminder();
         });
         // setRailFragment();
         setRailBaseFragment();
