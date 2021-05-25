@@ -14,11 +14,13 @@ import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
+import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceStatusCallBack;
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.conviva.sdk.ConvivaSdkConstants;
@@ -160,6 +162,10 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         getBinding().astroPlayButton.setVisibility(View.GONE);
         railData = commonRailData;
         asset = railData.getObject();
+
+        if (asset.getName() != null)
+            FirebaseEventManager.getFirebaseInstance(MovieDescriptionActivity.this).trackScreenName(asset.getName());
+
         layoutType = layout;
         assetId = asset.getId();
         name = asset.getName();
@@ -202,9 +208,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             }
             lastClickTime = SystemClock.elapsedRealtime();
             if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
+                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("watch", asset, this);
                 callProgressBar();
                 playerChecks(railData);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("trx_rent", asset, this);
                 if (UserInfo.getInstance(this).isActive()) {
                     fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
                     if (!fileId.equalsIgnoreCase("")) {
@@ -997,6 +1005,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
+            FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("add_mylist", asset, this);
             if (NetworkConnectivity.isOnline(getApplication())) {
                 if (UserInfo.getInstance(this).isActive()) {
                     if (isAdded) {

@@ -163,6 +163,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             }
             lastClickTime = SystemClock.elapsedRealtime();
             if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
+                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("watch", asset, this);
                 callProgressBar();
                 playerChecks(assetToPlay);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
