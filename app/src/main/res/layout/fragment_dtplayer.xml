@@ -227,6 +227,17 @@
 
 
                 </LinearLayout>
+                <ImageView
+                    android:id="@+id/image_preview"
+                    android:layout_width="150dp"
+                    android:layout_height="84dp"
+                    android:src="@drawable/transparent_scrubber"
+                    android:visibility="gone"
+                    android:contentDescription="@string/app_name"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="115dp"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"

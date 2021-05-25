@@ -50,6 +50,7 @@ public class AssetContent {
     private static DoubleValue baseIdValue;
     private static BooleanValue IsdvrEnabled;
     private static BooleanValue purchaseAllowed;
+    private static String stringValue;
 
     public static LiveData<String> getUrl(Asset asset, String videoResolution) {
         MutableLiveData<String> assetMutableLiveData = new MutableLiveData<>();
@@ -1898,6 +1899,23 @@ public class AssetContent {
             return introStart;
         }
 
+    }
+
+    public static String getMediaEntryId(Map<String, String> map) {
+
+
+        String entryId;
+        if (map != null) {
+            stringValue =  map.get(AppLevelConstants.KEY_ENTRY_ID);
+        }
+        if (stringValue != null) {
+            entryId = stringValue;
+
+        } else {
+            entryId = "";
+        }
+
+        return entryId;
     }
 
 }
