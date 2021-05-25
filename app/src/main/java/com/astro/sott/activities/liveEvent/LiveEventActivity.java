@@ -96,6 +96,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.StringTokenizer;
 
 
 public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener {
@@ -134,7 +135,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     private int assetRestrictionLevel;
     private boolean assetKey = false;
     private boolean isDtvAdded = false;
-
+    private String time = "", month = "", dd = "", year = "", hour = "", minute = "";
 
     @Override
     public ActivityLiveEventBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -310,7 +311,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         calendarToSchedule.clear();
 
         //  calendarToSchedule.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(dd), 11, 18, 0);
-        calendarToSchedule.set(2021, 4, 25, 13, 50, 0);
+        calendarToSchedule.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(dd), Integer.parseInt(hour), Integer.parseInt(minute), 0);
 
         reminderDateTimeInMilliseconds = calendarToSchedule.getTimeInMillis();
 
@@ -324,6 +325,33 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             alarmManager.set(AlarmManager.RTC_WAKEUP, reminderDateTimeInMilliseconds, pendingIntent);
         }
         Toast.makeText(this, "Reminder Added", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void splitStartTime(String startTime) {
+
+        StringTokenizer tokens = new StringTokenizer(startTime, " ");
+        String date = tokens.nextToken();// this will contain "Fruit"
+        time = tokens.nextToken();
+        splitDate(date);
+        splitMinute(time);
+
+    }
+
+    private void splitDate(String date) {
+        StringTokenizer tokens = new StringTokenizer(date, "-");
+        dd = tokens.nextToken();
+        month = tokens.nextToken();
+        if (Integer.parseInt(month) != 0) {
+            month = String.valueOf(Integer.parseInt(month) - 1);
+        }
+        year = tokens.nextToken();
+    }
+
+    private void splitMinute(String time) {
+        StringTokenizer tokens = new StringTokenizer(time, ":");
+        hour = tokens.nextToken();
+        minute = tokens.nextToken();
 
     }
 
@@ -836,6 +864,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             }
             liveEventDate = AppCommonMethods.getLiveEventStartDate(liveEventStartDate);
         }
+        splitStartTime(AppCommonMethods.getDateTimeFromtimeStampForReminder(liveEventStartDate));
     }
 
 

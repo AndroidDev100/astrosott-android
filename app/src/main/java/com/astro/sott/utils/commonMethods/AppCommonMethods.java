@@ -146,6 +146,22 @@ public class AppCommonMethods {
 
     }
 
+    public static String getDateTimeFromtimeStampForReminder(long timestamp) {
+        try {
+
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MINUTE,-5);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
     public static void removeUserPrerences(Context context) {
         UserInfo.getInstance(context).setUserName("");
         UserInfo.getInstance(context).setVip(false);
