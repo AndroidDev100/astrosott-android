@@ -276,7 +276,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 KsPreferenceKey.getInstance(activity).setAutoDuration(dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration() == null ? 0 : dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration());
                 KsPreferenceKey.getInstance(activity).setAutoRotation(dataList.get(position).getRailDetail().getCategory().getAutoRotate() == null ? true : dataList.get(position).getRailDetail().getCategory().getAutoRotate());
                 ((HeaderHolder) holder).headerRecyclerItemBinding.slider.addSlides(dataList.get(position).getSlides(), dataList.get(position).getWidgetType(), dataList.get(position).getRailDetail(), position, dataList.get(position).getRailDetail().getCategory().getAutoRotate() == null ? true : dataList.get(position).getRailDetail().getCategory().getAutoRotate(), dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration() == null ? 0 : dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration());
-                setHeaderAndMoreVisibility(((HeaderHolder) holder).headerRecyclerItemBinding.headerTitle, ((HeaderHolder) holder).headerRecyclerItemBinding.moreText, dataList.get(position));
+                setCrauselHeaderAndMoreVisibility(((HeaderHolder) holder).headerRecyclerItemBinding.headerTitle, ((HeaderHolder) holder).headerRecyclerItemBinding.moreText, dataList.get(position));
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -491,7 +491,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private void posterDataLogic(PosterHolder holder, List<AssetCommonBean> dataList, int position) {
         Log.w("ImageListSize-->>", dataList.get(position).getRailAssetList().get(0).getImages().size() + "");
         int totalCount = dataList.get(position).getTotalCount();
-        new ToolBarHandler(activity).setMoreListener(holder.itemBinding.moreText, AppConstants.TYPE3, dataList.get(position),activity);
+        new ToolBarHandler(activity).setMoreListener(holder.itemBinding.moreText, AppConstants.TYPE3, dataList.get(position), activity);
 
 
         holder.itemBinding.titleLayout.setVisibility(View.VISIBLE);
@@ -1029,6 +1029,21 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 moreTextView.setVisibility(View.VISIBLE);
             else
                 moreTextView.setVisibility(View.INVISIBLE);
+
+
+    }
+
+    public void setCrauselHeaderAndMoreVisibility(TextView header, TextView moreTextView, AssetCommonBean data) {
+        if (data.getRailDetail() != null)
+            if (data.getRailDetail().isShowHeader())
+                header.setVisibility(View.VISIBLE);
+            else
+                header.setVisibility(View.GONE);
+        if (data.getRailDetail() != null)
+            if (data.getRailDetail().isContentShowMoreButton())
+                moreTextView.setVisibility(View.VISIBLE);
+            else
+                moreTextView.setVisibility(View.GONE);
 
 
     }
