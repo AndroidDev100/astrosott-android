@@ -195,16 +195,25 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             }
             lastClickTime = SystemClock.elapsedRealtime();
             if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
-                if (AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate && liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong()) {
+                if (isPlayableOrNot()) {
                     playerChecks(railData);
                 } else {
                     ToastHandler.display(getResources().getString(R.string.live_event_msg), this);
                 }
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
                 if (UserInfo.getInstance(this).isActive()) {
-                    fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
+                    if (isPlayableOrNot()) {
+                        fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+                    } else {
+                        fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
+                    }
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                        if (isPlayableOrNot()) {
+                            intent.putExtra(AppLevelConstants.PLAYABLE, true);
+                        } else {
+                            intent.putExtra(AppLevelConstants.PLAYABLE, false);
+                        }
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                         intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
@@ -216,9 +225,18 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                 if (UserInfo.getInstance(this).isActive()) {
-                    fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
+                    if (isPlayableOrNot()) {
+                        fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+                    } else {
+                        fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
+                    }
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                        if (isPlayableOrNot()) {
+                            intent.putExtra(AppLevelConstants.PLAYABLE, true);
+                        } else {
+                            intent.putExtra(AppLevelConstants.PLAYABLE, false);
+                        }
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                         intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
@@ -235,6 +253,13 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
     }
 
+    private boolean isPlayableOrNot() {
+        if (AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate && liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     private void checkErrors() {
         if (playerChecksCompleted) {
@@ -394,64 +419,113 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
 
-
-        fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
-        if (!fileId.equalsIgnoreCase("")) {
-            new EntitlementCheck().checkLiveEventPurchaseStatus(LiveEventActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
-                this.errorCode = AppLevelConstants.NO_ERROR;
-                if (apiStatus) {
-                    if (purchasedStatus) {
-                        runOnUiThread(() -> {
-                            if (AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate && liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong()) {
+        if (isPlayableOrNot()) {
+            fileId = AppCommonMethods.getFileIdOfAssest(asset);
+            if (!fileId.equalsIgnoreCase("")) {
+                new EntitlementCheck().checkAssetPurchaseStatus(LiveEventActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+                    this.errorCode = AppLevelConstants.NO_ERROR;
+                    if (apiStatus) {
+                        if (purchasedStatus) {
+                            runOnUiThread(() -> {
                                 getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.black));
-                            } else {
-                                getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.live_event_button));
-                                getBinding().playText.setTextColor(getResources().getColor(R.color.heather));
+                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                getBinding().playButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                            });
+                            this.vodType = EntitlementCheck.FREE;
+
+                        } else {
+                            if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                                if (xofferWindowValue) {
+                                    runOnUiThread(() -> {
+                                        getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                        getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                                        getBinding().playButton.setVisibility(View.VISIBLE);
+                                        getBinding().starIcon.setVisibility(View.VISIBLE);
+                                        getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
+                                    });
+                                }
+                                this.vodType = EntitlementCheck.SVOD;
+
+                            } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
+                                if (xofferWindowValue) {
+                                    runOnUiThread(() -> {
+                                        getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                        getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                                        getBinding().playButton.setVisibility(View.VISIBLE);
+                                        getBinding().starIcon.setVisibility(View.GONE);
+                                        getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                                    });
+                                }
+
+                                this.vodType = EntitlementCheck.TVOD;
+
 
                             }
-                            getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                            getBinding().playButton.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.GONE);
-                        });
-                        this.vodType = EntitlementCheck.FREE;
+                        }
 
                     } else {
-                        if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
-                            if (xofferWindowValue) {
-                                runOnUiThread(() -> {
-                                    getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                    getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                    getBinding().playButton.setVisibility(View.VISIBLE);
-                                    getBinding().starIcon.setVisibility(View.VISIBLE);
-                                    getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
-                                });
-                            }
-                            this.vodType = EntitlementCheck.SVOD;
-
-                        } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
-                            if (xofferWindowValue) {
-                                runOnUiThread(() -> {
-                                    getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                    getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                    getBinding().playButton.setVisibility(View.VISIBLE);
-                                    getBinding().starIcon.setVisibility(View.GONE);
-                                    getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-                                });
-                            }
-
-                            this.vodType = EntitlementCheck.TVOD;
-
-
-                        }
                     }
+                });
+            }
+        } else {
+            fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
+            if (!fileId.equalsIgnoreCase("")) {
+                new EntitlementCheck().checkLiveEventPurchaseStatus(LiveEventActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+                    this.errorCode = AppLevelConstants.NO_ERROR;
+                    if (apiStatus) {
+                        if (purchasedStatus) {
+                            runOnUiThread(() -> {
 
-                } else {
+                                getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.live_event_button));
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.heather));
+                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                getBinding().playButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                            });
+                            this.vodType = EntitlementCheck.FREE;
 
-                }
-            });
+                        } else {
+                            if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                                if (xofferWindowValue) {
+                                    runOnUiThread(() -> {
+                                        getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                        getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                                        getBinding().playButton.setVisibility(View.VISIBLE);
+                                        getBinding().starIcon.setVisibility(View.VISIBLE);
+                                        getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
+                                    });
+                                }
+                                this.vodType = EntitlementCheck.SVOD;
+
+                            } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
+                                if (xofferWindowValue) {
+                                    runOnUiThread(() -> {
+                                        getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                        getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                                        getBinding().playButton.setVisibility(View.VISIBLE);
+                                        getBinding().starIcon.setVisibility(View.GONE);
+                                        getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                                    });
+                                }
+
+                                this.vodType = EntitlementCheck.TVOD;
+
+
+                            }
+                        }
+
+                    } else {
+
+                    }
+                });
+            }
         }
+
     }
 
     private void checkDevice(final RailCommonData railData) {
@@ -491,7 +565,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             getBinding().programTitle.setText(asset.getName());
             getBinding().descriptionText.setText(asset.getDescription());
             stringBuilder = new StringBuilder();
-            stringBuilder.append(viewModel.getStartDate(asset.getStartDate()) + " - " + AppCommonMethods.getEndTime(asset.getEndDate()) + " | ");
+            stringBuilder.append(viewModel.getStartDate(liveEventStartDate) + " - " + AppCommonMethods.getEndTime(liveEventEndDate) + " | ");
             getImage();
             getGenre();
             getXofferWindow();
@@ -718,10 +792,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
 
         if (!TextUtils.isEmpty(AssetContent.getParentalRating(map))) {
-
             StringBuilderHolder.getInstance().append(AssetContent.getParentalRating(map));
             StringBuilderHolder.getInstance().append(" | ");
-
         }
     }
 

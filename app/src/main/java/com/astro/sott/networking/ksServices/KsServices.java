@@ -205,6 +205,7 @@ import com.kaltura.client.types.PersonalList;
 import com.kaltura.client.types.PersonalListFilter;
 import com.kaltura.client.types.Pin;
 import com.kaltura.client.types.PlaybackContextOptions;
+import com.kaltura.client.types.ProductPrice;
 import com.kaltura.client.types.ProductPriceFilter;
 import com.kaltura.client.types.Purchase;
 import com.kaltura.client.types.RelatedFilter;
@@ -3227,7 +3228,11 @@ public class KsServices {
                 if (result.isSuccess()) {
                     if (result.results != null) {
                         if (result.results.getObjects() != null && result.results.getObjects().get(0).getPurchaseStatus() != null) {
-                            productPriceCallBack.getProductprice(true, result, result.results.getObjects().get(0).getPurchaseStatus().toString(), "", "");
+                            if (checkForPurchaseOrNot(result.results.getObjects())) {
+                                productPriceCallBack.getProductprice(true, result, "ppv_purchased", "", "");
+                            } else {
+                                productPriceCallBack.getProductprice(true, result, result.results.getObjects().get(0).getPurchaseStatus().toString(), "", "");
+                            }
                         } else {
                             productPriceCallBack.getProductprice(false, result, "", "", activity.getResources().getString(R.string.something_went_wrong));
                         }
@@ -3265,6 +3270,15 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
 
 
+    }
+
+    private boolean checkForPurchaseOrNot(List<ProductPrice> objects) {
+        for (ProductPrice productPrice : objects) {
+            if (productPrice.getPurchaseStatus().toString().equalsIgnoreCase("FOR_PURCHASE") || productPrice.getPurchaseStatus().toString().equalsIgnoreCase("for_purchase_subscription_only")) {
+                return false;
+            }
+        }
+        return true;
     }
 
 

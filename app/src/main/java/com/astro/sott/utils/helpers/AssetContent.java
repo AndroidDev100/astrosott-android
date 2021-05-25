@@ -729,13 +729,13 @@ public class AssetContent {
         if (genre_list != null)
             genre_values.addAll(genre_list.getObjects());
 
-        if (genre_values.size() > 0 && genre_values.get(0) != null && genre_values.get(0).getValue() != null) {
+       /* if (genre_values.size() > 0 && genre_values.get(0) != null && genre_values.get(0).getValue() != null) {
             packageId = genre_values.get(0).getValue();
-        }
+        }*/
 //            for (MultilingualStringValue value : genre_list.getObjects()) {
 //                genre_values.add(value);
 //            }
-       /* StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i <= genre_values.size() - 1; i++) {
             stringBuilder.append(genre_values.get(i).getValue()).append(", ");
         }
@@ -746,7 +746,7 @@ public class AssetContent {
 
         } else {
             packageId = "";
-        }*/
+        }
         return packageId;
     }
 
