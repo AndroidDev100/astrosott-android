@@ -57,10 +57,10 @@ public class FirebaseEventManager {
         }
     }
 
-    public void clickMyListButtonEvent(String itemList, Asset asset, Context context) {
+    public void clickButtonEvent(String eventName, Asset asset, Context context) {
         try {
             Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, itemList); //e.g TV Shows Top Slider
+            bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Content Action"); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
             if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
@@ -70,9 +70,17 @@ public class FirebaseEventManager {
             }
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
-            mFirebaseAnalytics.logEvent("add_mylist", bundle);
+            mFirebaseAnalytics.logEvent(eventName, bundle);
         } catch (Exception e) {
 
         }
+    }
+
+    public void packageEvent(String packageTitle, String price, String eventName) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Rental Subscription");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, packageTitle);
+        bundle.putString("item_price", price);
+        mFirebaseAnalytics.logEvent(eventName, bundle);
     }
 }

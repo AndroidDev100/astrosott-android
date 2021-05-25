@@ -725,7 +725,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
 
     @Override
-    public void onCardClicked(String productId, String serviceType, String active) {
+    public void onCardClicked(String productId, String serviceType, String active, String packname, String price) {
         if (serviceType.equalsIgnoreCase("ppv")) {
             billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {

@@ -112,7 +112,7 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
         bannerBinding.bulletsList.adapter = adapter
         bannerBinding.btnChooseMe.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                onPackageChooseClickListener.onPackageClicked(position, packagesList[position], activePlan)
+                onPackageChooseClickListener.onPackageClicked(position, packagesList[position], activePlan,packagesList[position].productsResponseMessageItem.displayName,skuModel.price)
             }
 
         })
@@ -141,6 +141,6 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
     }
 
     interface OnPackageChooseClickListener {
-        fun onPackageClicked(position: Int, packDetails: PackDetail, activePlan: String?)
+        fun onPackageClicked(position: Int, packDetails: PackDetail, activePlan: String?,planName: String?,price: String?)
     }
 }

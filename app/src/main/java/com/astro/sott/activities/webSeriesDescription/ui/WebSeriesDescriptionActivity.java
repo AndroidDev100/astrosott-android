@@ -166,6 +166,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 callProgressBar();
                 playerChecks(assetToPlay);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("trx_vip", asset, this);
                 if (UserInfo.getInstance(this).isActive()) {
                     fileId = AppCommonMethods.getFileIdOfAssest(assetToPlay.getObject());
                     if (!fileId.equalsIgnoreCase("")) {
@@ -222,7 +223,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
-            FirebaseEventManager.getFirebaseInstance(this).clickMyListButtonEvent("Content Action", asset, this);
+            FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("add_mylist", asset, this);
             if (NetworkConnectivity.isOnline(getApplication())) {
                 if (UserInfo.getInstance(this).isActive()) {
                     if (isAdded) {
