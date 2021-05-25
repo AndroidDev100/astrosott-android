@@ -43,6 +43,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private SubscriptionViewModel subscriptionViewModel;
 
     String fileId = "";
+    boolean isPlayable;
     String from = "", date = "";
 
     @Override
@@ -64,6 +65,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         if (getIntent().getStringExtra(AppLevelConstants.DATE) != null)
             date = getIntent().getStringExtra(AppLevelConstants.DATE);
 
+        isPlayable = getIntent().getBooleanExtra(AppLevelConstants.PLAYABLE, false);
+
         modelCall();
         getSubscriptionActionList();
     }
@@ -76,21 +79,43 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private int count = 0;
 
     private void getSubscriptionActionList() {
-
-        subscriptionViewModel.getSubscriptionPackageList(fileId).observe(this, subscriptionList -> {
-            if (subscriptionList != null) {
-                if (subscriptionList.size() > 0) {
-                    subscriptionIds = new String[subscriptionList.size()];
-                    for (Subscription subscription : subscriptionList) {
-                        if (subscription.getId() != null) {
-                            subscriptionIds[count] = subscription.getId();
-                            count++;
+        if (!from.equalsIgnoreCase("Live Event")) {
+            subscriptionViewModel.getSubscriptionPackageList(fileId).observe(this, subscriptionList -> {
+                if (subscriptionList != null) {
+                    if (subscriptionList.size() > 0) {
+                        subscriptionIds = new String[subscriptionList.size()];
+                        for (Subscription subscription : subscriptionList) {
+                            if (subscription.getId() != null) {
+                                subscriptionIds[count] = subscription.getId();
+                                count++;
+                            }
+                        }
+                        setPackFragment();
+                    }
+                }
+            });
+        } else {
+            if (isPlayable) {
+                subscriptionViewModel.getSubscriptionPackageList(fileId).observe(this, subscriptionList -> {
+                    if (subscriptionList != null) {
+                        if (subscriptionList.size() > 0) {
+                            subscriptionIds = new String[subscriptionList.size()];
+                            for (Subscription subscription : subscriptionList) {
+                                if (subscription.getId() != null) {
+                                    subscriptionIds[count] = subscription.getId();
+                                    count++;
+                                }
+                            }
+                            setPackFragment();
                         }
                     }
+                });
+            } else {
+                subscriptionIds = fileId.split(",");
+                if (subscriptionIds != null && subscriptionIds.length > 0)
                     setPackFragment();
-                }
             }
-        });
+        }
 
 
     }

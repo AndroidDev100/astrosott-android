@@ -205,6 +205,7 @@ import com.kaltura.client.types.PersonalList;
 import com.kaltura.client.types.PersonalListFilter;
 import com.kaltura.client.types.Pin;
 import com.kaltura.client.types.PlaybackContextOptions;
+import com.kaltura.client.types.ProductPrice;
 import com.kaltura.client.types.ProductPriceFilter;
 import com.kaltura.client.types.Purchase;
 import com.kaltura.client.types.RelatedFilter;
@@ -3211,6 +3212,73 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
 
 
+    }
+
+    public void getLiveEventPurchaseStatus(final String fileId, ProductPriceCallBack callBack) {
+        clientSetupKs();
+
+        productPriceCallBack = callBack;
+
+        ProductPriceFilter productPriceFilter = new ProductPriceFilter();
+        productPriceFilter.setSubscriptionIdIn(fileId);
+
+        ProductPriceService.ListProductPriceBuilder builder = ProductPriceService.list(productPriceFilter).setCompletion(result -> {
+
+            if (result != null) {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null && result.results.getObjects().get(0).getPurchaseStatus() != null) {
+                            if (checkForPurchaseOrNot(result.results.getObjects())) {
+                                productPriceCallBack.getProductprice(true, result, "ppv_purchased", "", "");
+                            } else {
+                                productPriceCallBack.getProductprice(true, result, result.results.getObjects().get(0).getPurchaseStatus().toString(), "", "");
+                            }
+                        } else {
+                            productPriceCallBack.getProductprice(false, result, "", "", activity.getResources().getString(R.string.something_went_wrong));
+                        }
+                    }
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getAssetPurchaseStatus(fileId, callBack);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        productPriceCallBack.getProductprice(false, result, "", "", activity.getResources().getString(R.string.something_went_wrong));
+                                    }
+                                }
+                            });
+                        } else {
+                            productPriceCallBack.getProductprice(false, result, "", result.error.getCode(), result.error.getMessage());
+                        }
+                    } else {
+                        productPriceCallBack.getProductprice(false, result, "", "", activity.getResources().getString(R.string.something_went_wrong));
+                    }
+
+
+                }
+            } else {
+                productPriceCallBack.getProductprice(false, null, "", "", activity.getResources().getString(R.string.something_went_wrong));
+            }
+
+        });
+
+        getRequestQueue().queue(builder.build(client));
+
+
+    }
+
+    private boolean checkForPurchaseOrNot(List<ProductPrice> objects) {
+        for (ProductPrice productPrice : objects) {
+            if (productPrice.getPurchaseStatus().toString().equalsIgnoreCase("FOR_PURCHASE") || productPrice.getPurchaseStatus().toString().equalsIgnoreCase("for_purchase_subscription_only")) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
