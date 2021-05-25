@@ -70,7 +70,7 @@ public class FirebaseEventManager {
             }
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
-            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+            mFirebaseAnalytics.logEvent("add_mylist", bundle);
         } catch (Exception e) {
 
         }

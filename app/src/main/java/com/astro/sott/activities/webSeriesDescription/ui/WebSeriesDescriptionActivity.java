@@ -222,6 +222,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
+            FirebaseEventManager.getFirebaseInstance(this).clickMyListButtonEvent("Content Action", asset, this);
             if (NetworkConnectivity.isOnline(getApplication())) {
                 if (UserInfo.getInstance(this).isActive()) {
                     if (isAdded) {
