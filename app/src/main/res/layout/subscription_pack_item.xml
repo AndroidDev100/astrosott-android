@@ -104,7 +104,7 @@
                             android:background="@color/transparentColor"
                             android:fontFamily="@font/heebo_medium"
                             android:paddingRight="5dp"
-                            android:textColor="@color/warm_black_color"
+                            android:textColor="@color/heather"
                             android:textSize="13sp"
                             android:visibility="gone"
 

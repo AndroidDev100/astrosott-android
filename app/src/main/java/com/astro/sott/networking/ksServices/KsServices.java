@@ -5620,7 +5620,7 @@ public class KsServices {
                     homechannelCallBack.response(false, null, null);
                 }
             } else if (list.get(counter).getDescription().contains(AppLevelConstants.TRENDING)) {
-                getTrending(responseList, list, counter);
+                getTrending(list, counter);
             } else if (!StringUtils.isNullOrEmptyOrZero(list.get(counter).getDescription()) && list.get(counter).getDescription().toUpperCase().contains(AppConstants.KEY_DFP_ADS)) {
                 try {
                     if (UserInfo.getInstance(activity).isVip()) {
@@ -5765,7 +5765,7 @@ public class KsServices {
                     homechannelCallBack.response(false, null, null);
                 }
             } else if (list.get(counter).getDescription().contains(AppLevelConstants.TRENDING)) {
-                getTrending(responseList, list, counter);
+                getTrending(list, counter);
             } else {
                 clientSetupKs();
                 PrintLogging.printLog("", "idsPrint" + +channelID + "-->>" + list.get(counter).getName() + "-->>" + list.get(counter).getDescription());
@@ -7887,7 +7887,7 @@ public class KsServices {
     }
 
 
-    public void getTrending(List<Response<ListResponse<Asset>>> responseList, List<VIUChannel> list, int counter) {
+    public void getTrending(List<VIUChannel> list, int counter) {
         clientSetupKs();
         SearchAssetFilter relatedFilter = new SearchAssetFilter();
         String kSql = "";
@@ -7924,7 +7924,7 @@ public class KsServices {
                         if (result.results.getObjects() != null) {
                             if (result.results.getObjects().size() > 0) {
                                 responseList.add(result);
-                                homechannelCallBack.response(true, null, list);
+                                homechannelCallBack.response(true, responseList, list);
                             } else {
                                 homechannelCallBack.response(false, null, null);
                             }
@@ -7944,7 +7944,7 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        getTrending(responseList, list, counter);
+                                        getTrending(list, counter);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         homechannelCallBack.response(false, null, null);
