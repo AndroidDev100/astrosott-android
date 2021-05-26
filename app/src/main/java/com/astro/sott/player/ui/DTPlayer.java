@@ -1,6 +1,8 @@
 package com.astro.sott.player.ui;
 
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -240,6 +242,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     HashMap<String, Bitmap> spritesHashMap = new HashMap<>();
     HashMap<String, Bitmap> previewImagesHashMap;
     private String scrubberUrl = "";
+    ObjectAnimator objectAnimator;
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1813,6 +1816,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().skipIntro.setVisibility(View.GONE);
                 getBinding().skipRecap.setVisibility(View.GONE);
                 getBinding().skipCredits.setVisibility(View.GONE);
+                getBinding().progressBar.setVisibility(View.GONE);
+                if (objectAnimator!=null) {
+                    objectAnimator.cancel();
+                    objectAnimator = null;
+                    getBinding().progressBar.setProgress(0);
+                }
             } catch (Exception ignored) {
 
             }
@@ -1894,8 +1903,21 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                         if (creditStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditEndTime) {
                             if (!isSkipCreditVisible) {
+                                getBinding().progressBar.setVisibility(View.VISIBLE);
+                                 objectAnimator = ObjectAnimator.ofInt(getBinding().progressBar, "progress", getBinding().progressBar.getProgress(), 100).setDuration(10000);
+                                objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                    @Override
+                                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                                        int progress = (int) valueAnimator.getAnimatedValue();
+                                        getBinding().progressBar.setProgress(progress);
+                                    }
+
+                                });
+                                objectAnimator.start();
+
                                 getBinding().skipCredits.setText(labelCredit);
                                 getBinding().skipCredits.setVisibility(View.VISIBLE);
+
                                 isSkipCreditVisible = true;
                                 isUserGeneratedCredit = false;
                                 hideSkipIntro();
@@ -2611,6 +2633,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (isPlayerStart) {
                     if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
                         getBinding().skipCredits.setVisibility(View.GONE);
+                        getBinding().progressBar.setVisibility(View.GONE);
+                        if (objectAnimator!=null) {
+                            objectAnimator.cancel();
+                            objectAnimator = null;
+                        }
+                        getBinding().progressBar.setProgress(0);
                     }
 
                     if (lockEnable) {
@@ -2660,6 +2688,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (isPlayerStart) {
                     if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
                         getBinding().skipCredits.setVisibility(View.GONE);
+                        getBinding().progressBar.setVisibility(View.GONE);
+                        if (objectAnimator!=null) {
+                            objectAnimator.cancel();
+                            objectAnimator = null;
+                        }
+                        getBinding().progressBar.setProgress(0);
                     }
                     if (lockEnable) {
 //                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
@@ -2713,6 +2747,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         getBinding().forward.setOnClickListener(view -> {
             getBinding().pBar.setVisibility(View.VISIBLE);
+            if (objectAnimator!=null) {
+                objectAnimator.cancel();
+                objectAnimator = null;
+                getBinding().progressBar.setProgress(0);
+            }
+
             final LiveData<Boolean> booleanLiveData = viewModel.seekPlayerForward();
             if (booleanLiveData == null || baseActivity == null) {
                 return;
@@ -2761,6 +2801,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().backward.setOnClickListener(view -> {
             getBinding().skipCredits.setText("");
             getBinding().skipCredits.setVisibility(View.GONE);
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (objectAnimator!=null) {
+                objectAnimator.cancel();
+                objectAnimator = null;
+            }
+            getBinding().progressBar.setProgress(0);
             isSkipCreditVisible = false;
             getBinding().pBar.setVisibility(View.VISIBLE);
 
@@ -2847,20 +2893,44 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (isUserGeneratedCredit) {
                     getBinding().skipCredits.setVisibility(View.GONE);
                     getBinding().nextEpisode.setVisibility(View.GONE);
+                    getBinding().progressBar.setVisibility(View.GONE);
+                    if (objectAnimator!=null) {
+                        objectAnimator.cancel();
+                        objectAnimator = null;
+                    }
+                    getBinding().progressBar.setProgress(0);
                     playNextEpisode();
                 } else {
                     if (creditEndTime < recapStartTime || creditEndTime < introStartTime) {
                         getBinding().skipCredits.setVisibility(View.GONE);
+                        getBinding().progressBar.setVisibility(View.GONE);
                         runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 10000);
+                        if (objectAnimator!=null) {
+                            objectAnimator.cancel();
+                            objectAnimator = null;
+                        }
+                        getBinding().progressBar.setProgress(0);
                     } else {
                         getBinding().nextEpisode.setVisibility(View.GONE);
                         getBinding().skipCredits.setVisibility(View.GONE);
+                        getBinding().progressBar.setVisibility(View.GONE);
+                        if (objectAnimator!=null) {
+                            objectAnimator.cancel();
+                            objectAnimator = null;
+                        }
+                        getBinding().progressBar.setProgress(0);
                         playNextEpisode();
                     }
                 }
             } else {
                 getBinding().skipCredits.setVisibility(View.GONE);
+                getBinding().progressBar.setVisibility(View.GONE);
                 runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 10000);
+                if (objectAnimator!=null) {
+                    objectAnimator.cancel();
+                    objectAnimator = null;
+                }
+                getBinding().progressBar.setProgress(0);
             }
 
 //            if (creditEndTime > playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
@@ -3368,8 +3438,19 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             } else {
                 if (!isSkipCreditVisible) {
                     isSkipCreditVisible = true;
+                    getBinding().progressBar.setVisibility(View.VISIBLE);
+                     objectAnimator = ObjectAnimator.ofInt(getBinding().progressBar, "progress", getBinding().progressBar.getProgress(), 100).setDuration(10000);
+                    objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                            int progress = (int) valueAnimator.getAnimatedValue();
+                            getBinding().progressBar.setProgress(progress);
+                        }
+                    });
+                    objectAnimator.start();
                     getBinding().skipCredits.setText(labelCredit);
                     getBinding().skipCredits.setVisibility(View.VISIBLE);
+
 
                     hideSkipIntro();
                 }
@@ -3384,14 +3465,22 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             public void run() {
                 getBinding().skipCredits.setText("");
                 getBinding().skipCredits.setVisibility(View.GONE);
+                getBinding().progressBar.setVisibility(View.GONE);
+                if (objectAnimator!=null) {
+                    objectAnimator.cancel();
+                    objectAnimator = null;
+                }
+                getBinding().progressBar.setProgress(0);
                 if (asset.getType() == MediaTypeConstant.getEpisode(getActivity())) {
                     if (isUserGeneratedCredit) {
                         getBinding().nextEpisode.setVisibility(View.GONE);
+                        getBinding().progressBar.setVisibility(View.GONE);
                         playNextEpisode();
                     } else {
                         if (creditEndTime < recapStartTime || creditEndTime < introStartTime) {
 
                         } else {
+                            getBinding().progressBar.setVisibility(View.GONE);
                             getBinding().nextEpisode.setVisibility(View.GONE);
                             playNextEpisode();
                         }
@@ -3427,6 +3516,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             getBinding().skipCredits.setText("");
             getBinding().skipCredits.setVisibility(View.GONE);
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (objectAnimator!=null) {
+                objectAnimator.cancel();
+                objectAnimator = null;
+            }
+            getBinding().progressBar.setProgress(0);
 
         }
 
