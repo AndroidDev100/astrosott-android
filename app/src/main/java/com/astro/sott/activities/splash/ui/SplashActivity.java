@@ -88,8 +88,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-import io.branch.referral.Branch;
-import io.branch.referral.BranchError;
 
 public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogSingleButtonFragment.AlertDialogListener {
 
@@ -556,32 +554,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     }
 
-    private Branch.BranchReferralInitListener branchReferralInitListener = new Branch.BranchReferralInitListener() {
-        @Override
-        public void onInitFinished(JSONObject linkProperties, BranchError error) {
-            // do stuff with deep link data (nav to page, display content, etc)
-            Log.d("asasasasasasa", new Gson().toJson(linkProperties));
-            if (error == null) {
-                if (linkProperties.has("assetId")) {
-                    try {
-                        branchObject = new JSONObject(linkProperties.toString());
-                    } catch (JSONException e) {
-
-                    }
-                    //  redirectionCondition(linkProperties);
-                } else {
-                    branchObject = null;
-//                    PrintLogging.printLog("", "c a");
-//                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                }
-            } else {
-                branchObject = null;
-                //DialogHelper.showAlertDialog(getApplicationContext(), getString(R.string.something_went_wrong_try_again), getString(R.string.ok), SplashActivity.this);
-            }
-
-
-        }
-    };
 //
 
     private void processIntent(Intent intent) {
