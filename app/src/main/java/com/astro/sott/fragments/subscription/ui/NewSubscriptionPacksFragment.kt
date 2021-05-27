@@ -181,6 +181,13 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        if (activity != null && activity is HomeActivity) {
+            (activity as HomeActivity?)!!.stopProcessor();
+        }
+    }
+
     private fun checkIfDetailAvailableOnPlaystore(productsResponseMessage: List<ProductsResponseMessageItem?>?) {
         // packDetailList = java.util.ArrayList()
         val subSkuList = /*ArrayList<String>();*/AppCommonMethods.getSubscriptionSKUs(productsResponseMessage, activity)

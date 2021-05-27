@@ -622,6 +622,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     @Override
     protected void onStart() {
         super.onStart();
+
+
 //        setToHome();
     }
 
@@ -723,6 +725,14 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         }
     }*/
 
+    public void stopProcessor() {
+        if (billingProcessor != null) {
+            if (billingProcessor.isReady()) {
+                billingProcessor.endConnection();
+            }
+        }
+        intializeBilling();
+    }
 
     @Override
     public void onCardClicked(String productId, String serviceType, String active) {
