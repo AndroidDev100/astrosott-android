@@ -5,6 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_layout"
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content">
         <!-- TODO: Update blank fragment layout -->
 
@@ -20,22 +21,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:background="@color/pack_bg_color"
                 android:layout_height="match_parent">
 
-
-                <ImageView
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/pack_bg_img"
-                    android:contentDescription="@string/contentDescription" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient_pack_bg" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
