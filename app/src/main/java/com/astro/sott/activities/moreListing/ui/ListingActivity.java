@@ -32,6 +32,7 @@ import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 import com.astro.sott.utils.helpers.NavigationItem;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class ListingActivity extends BaseBindingActivity<ListingActivityBinding>
     private SquareListingAdapter commonSquareListingAdapter;
     private CommonLandscapeListingAdapter commonLandscapeListingAdapter;
     private ListingViewModel viewModel;
+    private BaseCategory baseCategory;
     private AssetCommonBean assetCommonBean;
     private int mScrollY;
     private Intent intent = null;
@@ -125,7 +127,7 @@ public class ListingActivity extends BaseBindingActivity<ListingActivityBinding>
             commonSquareListingAdapter = new SquareListingAdapter(this, railList, layoutType);
             getBinding().listRecyclerview.setAdapter(commonSquareListingAdapter);
         } else if (layout.equalsIgnoreCase(AppLevelConstants.TYPE5) || layout.equalsIgnoreCase("LDS")) {
-            commonLandscapeListingAdapter = new CommonLandscapeListingAdapter(this, railList, layoutType);
+            commonLandscapeListingAdapter = new CommonLandscapeListingAdapter(this, railList, layoutType, baseCategory);
             getBinding().listRecyclerview.setAdapter(commonLandscapeListingAdapter);
         } else {
             commonSquareListingAdapter = new SquareListingAdapter(this, railList, layoutType);
@@ -187,7 +189,9 @@ public class ListingActivity extends BaseBindingActivity<ListingActivityBinding>
             long idAsset = assetCommonBean.getID();
             assetId = (int) idAsset;
         }
-        FirebaseEventManager.getFirebaseInstance(ListingActivity.this).trackScreenName(title+" Listing");
+        if (getIntent().getExtras().getParcelable("baseCategory") != null)
+            baseCategory = getIntent().getExtras().getParcelable("baseCategory");
+        FirebaseEventManager.getFirebaseInstance(ListingActivity.this).trackScreenName(title + " Listing");
 
         setSupportActionBar(getBinding().toolbar.toolbar);
         if (getSupportActionBar() != null) {

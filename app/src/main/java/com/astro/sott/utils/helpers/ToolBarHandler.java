@@ -214,7 +214,7 @@ public class ToolBarHandler {
         }
         lastClickTime = SystemClock.elapsedRealtime();
 
-        new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, type, assetCommonBean1);
+        new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, type, assetCommonBean1, assetCommonBean.getRailDetail().getCategory());
     }
 
     public void setDetailMoreListener(LinearLayout more, final String type, final AssetCommonBean assetCommonBean) {

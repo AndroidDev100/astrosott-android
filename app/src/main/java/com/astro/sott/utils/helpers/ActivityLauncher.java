@@ -68,6 +68,7 @@ import com.astro.sott.repositories.webSeriesDescription.SeriesDataLayer;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.ProgramAsset;
@@ -221,10 +222,11 @@ public class ActivityLauncher {
     }
 
 
-    public void portraitListing(Activity source, Class<ListingActivity> destination, String type, AssetCommonBean assetCommonBean) {
+    public void portraitListing(Activity source, Class<ListingActivity> destination, String type, AssetCommonBean assetCommonBean, BaseCategory category) {
         Intent intent = new Intent(source, destination);
         intent.putExtra(AppLevelConstants.LAYOUT_TYPE, type);
         intent.putExtra(AppLevelConstants.ASSET_COMMON_BEAN, assetCommonBean);
+        intent.putExtra("baseCategory", category);
         activity.startActivity(intent);
     }
 

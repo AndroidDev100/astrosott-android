@@ -1,9 +1,11 @@
 package com.astro.sott.adapter;
 
 import android.app.Activity;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.R;
@@ -21,6 +24,7 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.Value;
 
@@ -34,12 +38,14 @@ public class CommonLandscapeListingAdapter extends RecyclerView.Adapter<CommonLa
     private final List<RailCommonData> itemsList;
     private final Activity mContext;
     private long lastClickTime = 0;
+    private BaseCategory baseCategory;
     private DetailRailClick detailRailClick;
 
-    public CommonLandscapeListingAdapter(Activity context, List<RailCommonData> itemsList, int type) {
+    public CommonLandscapeListingAdapter(Activity context, List<RailCommonData> itemsList, int type, BaseCategory baseCategory) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
+        this.baseCategory = baseCategory;
         try {
             this.detailRailClick = ((DetailRailClick) context);
         } catch (ClassCastException e) {
@@ -71,11 +77,36 @@ public class CommonLandscapeListingAdapter extends RecyclerView.Adapter<CommonLa
                 ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageToPlaceholder(holder.landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.ic_landscape_placeholder, holder.landscapeItemBinding.itemImage), R.drawable.ic_landscape_placeholder);
 
             }
+
+            AppCommonMethods.handleTitleDesc(holder.landscapeItemBinding.titleLayout, holder.landscapeItemBinding.tvTitle, holder.landscapeItemBinding.tvDescription, baseCategory, itemsList.get(i), mContext);
+
             if (singleItem.getType() == MediaTypeConstant.getProgram(mContext))
                 getLiveMark(i, holder.landscapeItemBinding);
             else
                 getPremimumMark(i, holder.landscapeItemBinding);
 
+            holder.landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
+            if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
+                holder.landscapeItemBinding.titleLayout.setVisibility(View.VISIBLE);
+                holder.landscapeItemBinding.tvTitle.setVisibility(View.VISIBLE);
+                holder.landscapeItemBinding.tvDescription.setVisibility(View.VISIBLE);
+
+                holder.landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                holder.landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + " - " + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
+            } else if (itemsList.get(i).getType() == MediaTypeConstant.getLinear(mContext)) {
+                if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
+                    holder.landscapeItemBinding.titleLayout.setVisibility(View.VISIBLE);
+                    holder.landscapeItemBinding.tvTitle.setVisibility(View.VISIBLE);
+                    holder.landscapeItemBinding.tvDescription.setVisibility(View.VISIBLE);
+                    String liveEventTime = AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
+                    holder.landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
+                    holder.landscapeItemBinding.tvDescription.setText(liveEventTime);
+                }
+
+            } else {
+                holder.landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
+                holder.landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            }
         } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);
         }
@@ -124,7 +155,7 @@ public class CommonLandscapeListingAdapter extends RecyclerView.Adapter<CommonLa
             landscapeItemBinding = flightItemLayoutBinding;
             final String name = mContext.getClass().getSimpleName();
             try {
-                landscapeItemBinding.getRoot().setOnClickListener(view -> new ActivityLauncher(mContext).railClickCondition("","",name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType,itemsList, new MediaTypeCallBack() {
+                landscapeItemBinding.getRoot().setOnClickListener(view -> new ActivityLauncher(mContext).railClickCondition("", "", name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType, itemsList, new MediaTypeCallBack() {
                     @Override
                     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
                         if (NetworkConnectivity.isOnline(mContext)) {
