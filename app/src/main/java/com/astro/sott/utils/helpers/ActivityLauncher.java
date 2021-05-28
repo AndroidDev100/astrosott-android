@@ -707,10 +707,7 @@ public class ActivityLauncher {
 
                 });
             } else {
-                Intent intent = new Intent(source, LiveEventActivity.class);
-                intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
-                intent.putExtra("asset_ids", commonData.getObject().getId());
-                activity.startActivity(intent);
+                liveEventActivity(commonData, source);
             }
         } catch (Exception exception) {
             if (source != null && !source.isFinishing()) {
@@ -724,6 +721,13 @@ public class ActivityLauncher {
         }
 
         /* */
+    }
+
+    public void liveEventActivity(RailCommonData commonData, Activity source) {
+        Intent intent = new Intent(source, LiveEventActivity.class);
+        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
+        intent.putExtra("asset_ids", commonData.getObject().getId());
+        activity.startActivity(intent);
     }
 
     public void detailActivity(Activity

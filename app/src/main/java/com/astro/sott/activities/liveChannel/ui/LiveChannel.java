@@ -29,6 +29,7 @@ import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
+import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -80,11 +81,12 @@ import java.util.List;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TimeZone;
 
 
 public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding> implements DetailRailClick,
-        AlertDialogSingleButtonFragment.AlertDialogListener, LiveChannelActivityListener {
+        AlertDialogSingleButtonFragment.AlertDialogListener, LiveChannelActivityListener, AlertDialogFragment.AlertDialogListener {
 
     private static final String TAG = "LiveChannel";
     private RailCommonData railData;
@@ -377,7 +379,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                         getBinding().starIcon.setVisibility(View.GONE);
                         getBinding().playText.setTextColor(getResources().getColor(R.color.black));
 
-                        // getCridDetail();
+
                     });
                     this.vodType = EntitlementCheck.FREE;
 
@@ -390,6 +392,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                             getBinding().vipButtonLive.setVisibility(View.VISIBLE);
 //                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.VISIBLE);
+                            getCridDetail();
                         });
                         this.vodType = EntitlementCheck.SVOD;
 
@@ -459,14 +462,17 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         }
     }
 
+    private Asset cridAsset;
+
     private void checkCridEntitleMent(Asset asset1) {
+        cridAsset = asset1;
         String cridFileId = AppCommonMethods.getFileIdOfAssest(asset1);
         new EntitlementCheck().checkAssetPurchaseStatus(LiveChannel.this, cridFileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
             this.errorCode = AppLevelConstants.NO_ERROR;
             if (apiStatus) {
                 if (purchasedStatus) {
                     runOnUiThread(() -> {
-                        Toast.makeText(LiveChannel.this, "Free Crid", Toast.LENGTH_SHORT).show();
+                        showAlertDialog(asset1.getName(), "");
                     });
 
                 } else {
@@ -477,6 +483,13 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
             }
         });
+    }
+
+    private void showAlertDialog(String title, String msg) {
+        FragmentManager fm = getSupportFragmentManager();
+        AlertDialogFragment alertDialog = AlertDialogFragment.newInstance(title, getResources().getString(R.string.event_is_live), getResources().getString(R.string.go), getResources().getString(R.string.cancel));
+        alertDialog.setAlertDialogCallBack(this);
+        alertDialog.show(Objects.requireNonNull(fm), "fragment_alert");
     }
 
     private void getXofferWindow(Map<String, Value> metas) {
@@ -939,6 +952,9 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
     @Override
     public void onFinishDialog() {
+        RailCommonData railCommonData = new RailCommonData();
+        railCommonData.setObject(cridAsset);
+        new ActivityLauncher(this).liveEventActivity(railCommonData, this);
     }
 
 

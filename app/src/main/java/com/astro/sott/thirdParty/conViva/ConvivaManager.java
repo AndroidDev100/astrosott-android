@@ -141,13 +141,12 @@ public class ConvivaManager {
 
         Map<String, Object> contentInfo = new HashMap<String, Object>();
 
-        contentInfo.put(ConvivaSdkConstants.ASSET_NAME, (convivaAsset != null) ? convivaAsset.getName() : "NA");
+        contentInfo.put(ConvivaSdkConstants.ASSET_NAME, (convivaAsset != null && convivaAsset.getName() != null && !convivaAsset.getName().equalsIgnoreCase("")) ? convivaAsset.getName() : "NA");
         contentInfo.put(ConvivaSdkConstants.IS_LIVE, isLivePlayer + "");
         contentInfo.put(AFFILIATE, "NA");
         contentInfo.put(ConvivaSdkConstants.FRAMEWORK_NAME, "Kaltura");
         contentInfo.put(ConvivaSdkConstants.FRAMEWORK_VERSION, "4.13.3");
 
-        contentInfo.put(ConvivaSdkConstants.DURATION, (convivaAsset != null) ? AppCommonMethods.getDurationFromUrl(convivaAsset) : 0);
         if (convivaAsset != null && !AssetContent.getActor(convivaAsset.getTags()).equalsIgnoreCase("")) {
             contentInfo.put(ACTORS, AssetContent.getActor(convivaAsset.getTags()));
         } else {
@@ -222,7 +221,6 @@ public class ConvivaManager {
 
         if (isLivePlayer) {
             contentInfo.put(CONTENT_TYPE, LINEAR);
-            contentInfo.put(CHANNEL, Constants.channelName);
             contentInfo.put(CONTENT_PLAYBACK_TYPE, "LIVE");
             if (convivaAsset != null && !AppCommonMethods.getPlayerUrl(convivaAsset).equalsIgnoreCase("")) {
                 contentInfo.put(ConvivaSdkConstants.STREAM_URL, AppCommonMethods.getPlayerUrl(convivaAsset));
@@ -232,6 +230,16 @@ public class ConvivaManager {
             contentInfo.put(EPISODE_NAME, (convivaAsset != null) ? convivaAsset.getName() : "NA");
 
             try {
+                if (convivaAsset != null && convivaAsset.getStartDate() != null && convivaAsset.getEndDate() != null) {
+                    long duration = convivaAsset.getEndDate() - convivaAsset.getStartDate();
+                    contentInfo.put(ConvivaSdkConstants.DURATION, (duration > 0) ? duration : 0);
+                }
+                if (!AssetContent.getKeyworddata(convivaAsset.getTags()).equalsIgnoreCase("")) {
+                    contentInfo.put(CHANNEL, AssetContent.getKeyworddata(convivaAsset.getTags()));
+                } else {
+                    contentInfo.put(CHANNEL, "NA");
+
+                }
                 LiveAsset liveAsset = (LiveAsset) railData;
                 contentInfo.put(ASSET_ID, liveAsset.getExternalIds());
             } catch (Exception e) {
@@ -242,6 +250,8 @@ public class ConvivaManager {
             } else {
                 contentInfo.put(ConvivaSdkConstants.STREAM_URL, "NA");
             }
+            contentInfo.put(ConvivaSdkConstants.DURATION, (convivaAsset != null) ? AppCommonMethods.getDurationFromUrl(convivaAsset) : 0);
+
             contentInfo.put(CONTENT_PLAYBACK_TYPE, "VOD");
             if (!AssetContent.getProvider(convivaAsset.getTags()).equalsIgnoreCase("")) {
                 contentInfo.put(BRAND, AssetContent.getProvider(convivaAsset.getTags()));

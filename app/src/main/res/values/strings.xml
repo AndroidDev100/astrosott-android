@@ -124,8 +124,10 @@
     <string name="yes">Yes !</string>
     <string name="ok">OK</string>
     <string name="no">No</string>
+    <string name="go">GO</string>
     <string name="exit">Exit</string>
 
+    <string name="event_is_live">Event is live , if you want to Watch this Event Please Go</string>
     <string name="retry">Retry</string>
     <string name="something_went_wrong">Oops, something went wrong. Please try again later</string>
     <string name="something_went_wrong_try_again">Oops, something went wrong. Please try again later</string>
