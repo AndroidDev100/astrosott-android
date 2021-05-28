@@ -1645,7 +1645,7 @@ public class AppCommonMethods {
 
     public static void setBillingUi(ImageView imageView, Map<String, MultilingualStringValueArray> tags, Integer type, Activity mContext) {
         try {
-            if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext)) {
+            if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext) || type == MediaTypeConstant.getLinear(mContext)) {
                 if (AssetContent.getBillingIdForSeries(tags)) {
                     imageView.setVisibility(View.VISIBLE);
                 } else {

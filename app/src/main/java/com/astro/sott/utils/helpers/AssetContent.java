@@ -166,6 +166,18 @@ public class AssetContent {
         return year;
     }
 
+    public static String getProgramYear(Map<String, Value> metas) {
+        MultilingualStringValue stringValue = null;
+        String year = "";
+        if (metas != null) {
+            stringValue = (MultilingualStringValue) metas.get(AppLevelConstants.YEAR);
+        }
+        if (stringValue != null && stringValue.getValue() != null) {
+            year = stringValue.getValue();
+        }
+        return year;
+    }
+
     public static boolean isAdsEnable(Map<String, Value> metas) {
         BooleanValue adsValue = null;
         if (metas != null) {

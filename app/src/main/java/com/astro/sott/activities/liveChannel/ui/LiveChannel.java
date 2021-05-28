@@ -204,6 +204,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             ProgramAsset program = (ProgramAsset) programAsset;
             if (program.getCrid() != null)
                 cridId = program.getCrid();
+
             getBinding().programTitle.setText(programAsset.getName());
             getBinding().descriptionText.setText(programAsset.getDescription());
             stringBuilder = new StringBuilder();
@@ -332,6 +333,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
 
         });
+
         if (playbackControlValue)
             checkEntitleMent(railData);
 
@@ -362,7 +364,15 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     runOnUiThread(() -> {
                         getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                         getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                        getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+                        if (programAsset != null) {
+                            if (programAsset.getStartDate() <= AppCommonMethods.getCurrentTimeStampLong()) {
+                                getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+                            } else {
+                                getBinding().vipButtonLive.setVisibility(View.GONE);
+                            }
+                        } else {
+                            getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+                        }
 //                        getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                         getBinding().starIcon.setVisibility(View.GONE);
                         getBinding().playText.setTextColor(getResources().getColor(R.color.black));
@@ -632,6 +642,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         callProgressBar();
         Intent intent = new Intent(LiveChannel.this, PlayerActivity.class);
         intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
+        intent.putExtra("programAsset", programAsset);
         intent.putExtra("isLivePlayer", true);
         intent.putExtra(AppLevelConstants.PROGRAM_NAME, programName);
         startActivity(intent);

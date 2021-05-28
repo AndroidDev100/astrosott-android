@@ -41,6 +41,7 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
     private Boolean isLivePlayer = false;
     private Boolean inPlayer = false;
     private Boolean backPressed = false;
+    private Asset programAsset;
 
     @Override
     public PlayerActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -94,6 +95,11 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
             fragment.getBinding().ivCancel.setOnClickListener(view -> onBackPressed());
             isLivePlayer = getIntent().getBooleanExtra("isLivePlayer", false);
             programName = getIntent().getStringExtra(AppLevelConstants.PROGRAM_NAME);
+
+            if (getIntent().getExtras().getParcelable("programAsset") != null) {
+                programAsset = getIntent().getExtras().getParcelable("programAsset");
+            }
+
             if (getIntent().getExtras() != null) {
                 railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
                 if ((List<RailCommonData>) getIntent().getExtras().getSerializable(AppLevelConstants.RAIL_LIST) != null) {
@@ -144,10 +150,10 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
                 assetURL = "";
             }
             if (isLivePlayer) {
-                fragment.getUrl(Constants.assetUrl, asset, railData.getProgress(), isLivePlayer, programName, railCommonDataList);
+                fragment.getUrl(Constants.assetUrl, asset, railData.getProgress(), isLivePlayer, programName, railCommonDataList, programAsset);
 
             } else {
-                fragment.getUrl(Constants.assetUrl, asset, railData.getProgress(), isLivePlayer, "", railCommonDataList);
+                fragment.getUrl(Constants.assetUrl, asset, railData.getProgress(), isLivePlayer, "", railCommonDataList, programAsset);
 
             }
         });

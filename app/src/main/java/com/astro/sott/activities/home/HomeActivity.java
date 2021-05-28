@@ -57,6 +57,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -731,7 +732,13 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 billingProcessor.endConnection();
             }
         }
-        intializeBilling();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                intializeBilling();
+            }
+        }, 500);
+
     }
 
     @Override

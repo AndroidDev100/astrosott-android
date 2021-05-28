@@ -102,7 +102,7 @@ public class CatchupActivity extends BaseBindingActivity<ActivityCatchupBinding>
                         ImageHelper.getInstance(this).loadImageTo(getBinding().channelLogo,channelLogoUrl,R.drawable.square1);
                     }
 
-                    fragment.getUrl(" ", railCommonData.getObject(), railData.getProgress(), isLivePlayer,"", null);
+                    fragment.getUrl(" ", railCommonData.getObject(), railData.getProgress(), isLivePlayer,"", null,progAsset);
 
                 }
             });

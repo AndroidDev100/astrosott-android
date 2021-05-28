@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.callBacks.commonCallBacks.ChangePlanCallBack;
 import com.astro.sott.databinding.FragmentManageSubscriptionBinding;
@@ -97,6 +98,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
         });
     }
 
+
     private void getActiveSubscription() {
         getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken(), "").observe(this, evergentCommonResponse -> {
@@ -139,6 +141,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
         accountServiceMessageItemList.add(accountServiceItem);
         loadData(accountServiceMessageItemList);
     }
+
 
     private void getLastSubscription() {
         getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
@@ -268,4 +271,5 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
 
 
     }
+
 }

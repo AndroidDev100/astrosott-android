@@ -414,7 +414,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         isInternet = true;
         if (runningPlayer != null) {
             if (isLivePlayer) {
-                getUrl(playerURL, playerAsset, playerProgress, true, programName1, railList);
+                getUrl(playerURL, playerAsset, playerProgress, true, programName1, railList, programAsset);
             } else {
                 runningPlayer.play();
                 PrintLogging.printLog("replayOnConnect", "replayOnConnect");
@@ -489,18 +489,21 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
-    public void getUrl(String urlToplay, final Asset asset, int prog, Boolean isLivePlayer, String programName, List<RailCommonData> railCommonDataList) {
+    private Asset programAsset;
+
+    public void getUrl(String urlToplay, final Asset asset, int prog, Boolean isLivePlayer, String programName, List<RailCommonData> railCommonDataList, Asset programAsset) {
         hasNextEpisode = false;
         hasEpisodesList = false;
         isPlayerStart = false;
         playerAsset = asset;
         playerURL = urlToplay;
+        this.programAsset = programAsset;
         playerProgress = prog;
         programName1 = programName;
         this.asset = asset;
         if (railCommonDataList != null)
             this.railList = railCommonDataList;
-        setEventConvivaEvent(isLivePlayer);
+        setEventConvivaEvent(isLivePlayer, programAsset);
 
         isSeries = (asset.getType() == MediaTypeConstant.getEpisode(getActivity()));
         skipIntro();
@@ -540,7 +543,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     }
 
-    private void setEventConvivaEvent(Boolean isLivePlayer) {
+    private void setEventConvivaEvent(Boolean isLivePlayer, Asset programAsset) {
         String fileId = "";
         String duraton = AppCommonMethods.getDuration(asset);
         fileId = AppCommonMethods.getFileIdOfAssest(playerAsset);
@@ -548,11 +551,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             new KsServices(baseActivity).getPlaybackContext(playerAsset.getId() + "", fileId, new PlayBackContextCallBack() {
                 @Override
                 public void getUrl(String url) {
-                    ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, url);
+                    ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, url, programAsset);
                 }
             });
         } else {
-            ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, "");
+            ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, "", programAsset);
 
         }
     }
@@ -769,7 +772,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
                         parentalCheck(asset);
                     } else {
-                        getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
+                        getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList,programAsset);
                     }
                 } else {
                     PrintLogging.printLog("", "elseValuePrint-->>" + assetRuleErrorCode + "  " + errorCode);
@@ -808,7 +811,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     }
                 }
             } else {
-                getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, isLivePlayer, "", railList);
+                getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, isLivePlayer, "", railList,programAsset);
 //                if (isProgramClicked) {
 //                    if (checkIsliveAsset) {
 //                        getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, true, catchupLiveProgName, railList);
@@ -874,7 +877,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             @Override
                             public void run() {
 
-                                getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList);
+                                getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList,programAsset);
 //                                if (isProgramClicked) {
 //                                    if (checkIsliveAsset) {
 //                                        getUrl(AssetContent.getURL(asset), asset, playerProgress, true, catchupLiveProgName, railList);
@@ -3447,7 +3450,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     try {
                         cancelTimer();
                         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
-                        getUrl(playerURL, asset, playerProgress, isLivePlayer, "", railList);
+                        getUrl(playerURL, asset, playerProgress, isLivePlayer, "", railList,programAsset);
                     } catch (Exception e) {
 
                     }
@@ -3484,7 +3487,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             } else {
                 Log.d("PlayerPauseCalled", "else");
-                getUrl(playerURL, playerAsset, playerProgress, isLivePlayer, "", railList);
+                getUrl(playerURL, playerAsset, playerProgress, isLivePlayer, "", railList,programAsset);
                 if (adRunning) {
                     getBinding().rl1.setVisibility(View.GONE);
                     getBinding().listViewSettings.setVisibility(View.GONE);
