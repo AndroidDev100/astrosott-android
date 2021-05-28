@@ -1,7 +1,9 @@
 package com.astro.sott.player.ui;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.hardware.display.DisplayManager;
 import android.os.Bundle;
 import android.provider.Settings;
 
@@ -9,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import android.view.WindowManager;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.WindowFocusCallback;
+import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -67,7 +71,33 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        connectionObserver();
+        DisplayManager mDisplayManager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
+        if (mDisplayManager != null) {
+            isHDMI(mDisplayManager);
+        }
+    }
+
+    private void isHDMI(DisplayManager mDisplayManager) {
+        Display display[] = mDisplayManager.getDisplays();
+        try {
+            if (display.length > 1) {
+                getBinding().playerLayout.setVisibility(View.GONE);
+                AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance("Sooka", "No playback is allowed on external devices or screens!", "Ok");
+                alertDialog.setAlertDialogCallBack(new AlertDialogSingleButtonFragment.AlertDialogListener() {
+                    @Override
+                    public void onFinishDialog() {
+                        PlayerActivity.this.finish();
+                    }
+                });
+                alertDialog.setCancelable(false);
+
+                alertDialog.show(getSupportFragmentManager(), AppLevelConstants.TAG_FRAGMENT_ALERT);
+            } else {
+                connectionObserver();
+            }
+        } catch (Exception e) {
+            Log.e("DISPLAYS", e.getMessage());
+        }
     }
 
     private void connectionObserver() {
@@ -170,7 +200,6 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
             params2.width = ViewGroup.LayoutParams.MATCH_PARENT;
             params2.height = ViewGroup.LayoutParams.MATCH_PARENT;
             getBinding().playerLayout.requestLayout();
-
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             ViewGroup.LayoutParams params2 = getBinding().playerLayout.getLayoutParams();
             params2.width = 0;
@@ -184,10 +213,8 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
     private void checkAutoRotation() {
         if (android.provider.Settings.System.getInt(getApplicationContext().getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-
         } else {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
         }
     }
 

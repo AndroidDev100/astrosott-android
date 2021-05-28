@@ -1,19 +1,23 @@
 
 package com.astro.sott.activities.splash.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -89,7 +93,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogSingleButtonFragment.AlertDialogListener {
+public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogSingleButtonFragment.AlertDialogListener, DisplayManager.DisplayListener {
 
     private static final String TAG = "SplashActivity";
     String screenName = "";
@@ -127,6 +131,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         } else {
             connectionValidation(false);
         }
+
     }
 
     private String keyHash = "";
@@ -942,7 +947,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 //                |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 //        decorView.setSystemUiVisibility(uiOptions);
-
         if (!isTaskRoot()) {
             final Intent intent = getIntent();
             final String intentAction = intent.getAction();
@@ -1043,5 +1047,22 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         super.onResume();
         if (isDmsApiHit)
             versionStatus();
+    }
+
+    @Override
+    public void onDisplayAdded(int displayId) {
+        Log.e("DISPLAY", "ADDED");
+    }
+
+    @Override
+    public void onDisplayRemoved(int displayId) {
+        Log.e("DISPLAY", "REMOVED");
+
+    }
+
+    @Override
+    public void onDisplayChanged(int displayId) {
+        Log.e("DISPLAY", "CHANGED");
+
     }
 }
