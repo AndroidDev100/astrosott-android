@@ -1677,9 +1677,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             public void run() {
                 recapStartTime = AssetContent.getRecapStart(playerAsset.getMetas());
                 recapEndTime = AssetContent.getRecapEnd(playerAsset.getMetas());
-
                 Log.w("introValues", introStartTime + "  " + introEndTime + "  " + creditStartTime + "  " + creditEndTime + " " + recapStartTime + " " + recapEndTime);
-
             }
         }, 5000);
 

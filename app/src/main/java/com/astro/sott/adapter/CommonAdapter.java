@@ -435,23 +435,17 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                 }
             }, position, dataList.get(position).getTitle(), isContinueRail, dataList.get(position).getCategory());
-
-
         } else {
             commonCircleAdapter = new CommonCircleAdapter(activity, singleSectionItems, AppConstants.Rail2, dataList.get(position).getTitle(), dataList.get(position).getCategory());
         }
         // setRecyclerProperties(((CircleHolder) holder).circularRecyclerItemBinding.recyclerViewList1,false);
-        ((CircleHolder) holder).circularRecyclerItemBinding.recyclerViewList1.setAdapter(commonCircleAdapter);
+        holder.circularRecyclerItemBinding.recyclerViewList1.setAdapter(commonCircleAdapter);
         setHeaderAndMoreVisibility(holder.circularRecyclerItemBinding.headerTitle, holder.circularRecyclerItemBinding.moreText, dataList.get(position));
         //  if (dataList.get(position).getMoreType() == 8 || dataList.get(position).getMoreType() == 9 || dataList.get(position).getMoreType() == 10) {
         holder.circularRecyclerItemBinding.headerTitle.setVisibility(View.VISIBLE);
         int totalCount = dataList.get(position).getTotalCount();
         if (totalCount > 10)
             holder.circularRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
-
-        // }
-
-
     }
 
     private void removeAssetApi(Long assetID, List<RailCommonData> singleSectionItems, TabsContinueWatchingAdapter continueWatchingAdapter,
