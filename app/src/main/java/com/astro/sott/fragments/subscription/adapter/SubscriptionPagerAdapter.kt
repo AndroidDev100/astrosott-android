@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.PagerAdapter
@@ -17,9 +16,7 @@ import com.astro.sott.databinding.FragmentPackageBinding
 import com.astro.sott.modelClasses.InApp.PackDetail
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
-import java.lang.Exception
 import java.util.*
-import kotlin.Comparator
 import kotlin.collections.ArrayList
 
 
@@ -89,11 +86,13 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
         bannerBinding.masktop.setColorFilter(currentColor)
         bannerBinding.maskbottom.setColorFilter(currentColor)
         var attributeList = packageModel.attributes!!
-        Collections.reverse(attributeList)
+        //Collections.reverse(attributeList)
         val my_array = ArrayList<String>()
         if (packageModel.attributes != null) {
-            for (attribute in attributeList)
-                my_array.add(attribute.attributeValue!!)
+            for (attribute in attributeList) {
+                my_array.add(attribute.attributeValue.toString())
+            }
+
         }
         if (packageModel.skuORQuickCode != null && productList != null) {
             if (checkActiveOrNot(packageModel.skuORQuickCode!!)) {

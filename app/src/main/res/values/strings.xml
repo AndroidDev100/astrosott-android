@@ -3,7 +3,7 @@
     <string name="title_home">HOME</string>
     <string name="live_tv">Live TV</string>
     <string name="title_video">Video</string>
-    <string name="live_viu_tab">Sooka Apps</string>
+    <string name="live_viu_tab">sooka Apps</string>
     <string name="title_more">MORE</string>
 
     <string name="no_internet_title">You are offline. Check your internet connection</string>
@@ -69,7 +69,7 @@
     <string name="deviceconfirmation">5 Devices already added !</string>
     <string name="notification_message">No new notifications</string>
     <string name="remove_watchlist_item">Do you want to remove this video from your playlist?</string>
-    <string name="search_dialog">Search Sooka</string>
+    <string name="search_dialog">Search sooka</string>
     <string name="geo_location_dialouge">Uh-no! Looks like you are not in Malaysia at the moment. You may still browse around to checkout our contents. Come back soon to enjoy your favourite shows and movies!</string>
     <string name="purchase_dialouge">Please login to view this content.</string>
     <string name="live_tag">LIVE</string>
@@ -206,7 +206,7 @@
     <string name="continue_text">CONTINUE</string>
     <string name="continue_btn_txt">Continue</string>
     <string name="notifications">Notifications</string>
-    <string name="dtv_account">Sooka TV Account</string>
+    <string name="dtv_account">sooka TV Account</string>
     <string name="mbb_account">Mobile Account</string>
     <string name="hbb_account">Home Broadband Account</string>
     <string name="phone_no">Phone number</string>
@@ -240,7 +240,7 @@
     <string name="incorrect_phone_number">Incorrect mobile number. Try again</string>
     <string name="incorrect_account_number">Oh no, that can\'t be right. Lets recheck the account number</string>
     <string name="incorrect_mobile_number">Oh no, that can\'t be right. Lets recheck the mobile number</string>
-    <string name="dialog">Sooka</string>
+    <string name="dialog">sooka</string>
     <string name="lock_Episode">Lock Episodes</string>
     <string name="new_version">New Version Available</string>
     <string name="pin_required">PIN cannot be blank</string>
@@ -323,7 +323,7 @@
     <string name="parental_restriction">Parental restriction</string>
     <string name="parental_control">Parental control</string>
     <string name="change_pin">Change pin</string>
-    <string name="dtv_text">Sooka TV</string>
+    <string name="dtv_text">sooka TV</string>
     <string name="mbb_text">Mobile</string>
     <string name="hbb_text">Home Broadband</string>
     <string name="subscription">Subscription</string>
@@ -406,11 +406,11 @@
     <string name="YES">YES</string>
     <string name="error_dtv_failure">Oops, something went wrong. Please try again later</string>
     <string name="select_your_account">Select Your Account</string>
-    <string name="dtv_channel_text">Add Your Sooka TV account to see more channels.</string>
+    <string name="dtv_channel_text">Add Your sooka TV account to see more channels.</string>
     <string name="mbb_channel_text">Add Your Mobile account to see more channels.</string>
     <string name="hbb_channel_text">Add Your Home Broadband account to see more channels.</string>
     <string name="dtv_account_not_added">Sorry, this channel is not available for viewing on this app.</string>
-    <string name="dtv_account_added_but_channel_not_availabele">Sorry, you may not be able to watch this channel due to the disconnection of your registered Sooka TV account or you may have not activated this channel on your registered account. Please check the status of your registered Sooka TV account at home and try again.</string>
+    <string name="dtv_account_added_but_channel_not_availabele">Sorry, you may not be able to watch this channel due to the disconnection of your registered sooka TV account or you may have not activated this channel on your registered account. Please check the status of your registered sooka TV account at home and try again.</string>
     <string name="restriction_text">All videos can be watched without a PIN</string>
     <string name="restricton_update">Viewing restrictions updated</string>
     <string name="All_parental_level">Watch TV shows and movies suƒitable for everyone.</string>
@@ -436,7 +436,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="all_channel">Package details</string>
-    <string name="dialog_connection">Sooka Connection</string>
+    <string name="dialog_connection">sooka Connection</string>
     <string name="payment_description">Lorem ipsum dolor sit amet, consectetur adipscing elitsed do eu smod tempor incididunt ut labore et dolore.</string>
     <string name="payment_method_title">Select Your payment method.</string>
     <string name="plan_price"> 99</string>
@@ -453,7 +453,7 @@
     <string name="verifying">Verifying otp</string>
     <string name="home_broad_band">Home Broadband</string>
     <string name="mobile">Mobile</string>
-    <string name="dialog_tv">Sooka TV</string>
+    <string name="dialog_tv">sooka TV</string>
 
     <string name="subscription_date">Subscription Date:</string>
     <string name="expiry_date">Expiry Date:</string>
@@ -484,7 +484,7 @@
     <string name="taxes">(excluding tax)</string>
     <string name="cancel_subscription_dislog">Do you really want to go?</string>
     <string name="cancellation_text">You are going to miss the entertainment of Live TV and 1000+ videos.</string>
-    <string name="non_dialog_user_message">Sorry! please purchase the pack using Sooka Number.</string>
+    <string name="non_dialog_user_message">Sorry! please purchase the pack using sooka Number.</string>
     <string name="plan_details_error">Sorry , we could not process your request please try again later.</string>
     <string name="no_active_plan">You do not have any active plan</string>
     <string name="insufficient_balance">Sorry! You do not have sufficient balance in your account to make this purchase. Please recharge your account  and try again</string>
@@ -495,7 +495,7 @@
     <string name="version_more">Version1.045b</string>
     <string name="siginup_more">Sign In / Sign Up</string>
     <string name="guest_user">Guest user</string>
-    <string name="free_sooka">Free Sooka</string>
+    <string name="free_sooka">Free sooka</string>
     <string name="manage_subscription">Manage Subscriptions</string>
     <string name="partner_billing">Partner Billing</string>
     <string name="subscribe_more">Subscribe</string>
@@ -580,7 +580,7 @@
     <string name="sign_in_fb">Continue With Facebook</string>
     <string name="sign_in_apple">Sign In With Apple</string>
     <string name="next">NEXT</string>
-    <string name="sooka_superstar">Sooka Superstar</string>
+    <string name="sooka_superstar">sooka Superstar</string>
     <string name="otp_valid_for">The verification code is valid for</string>
     <string name="invalid_otp">The verification code you entered is invalid</string>
     <string name="sign_up_text"><u>Sign Up</u></string>
