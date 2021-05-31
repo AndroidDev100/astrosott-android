@@ -4036,7 +4036,7 @@ public class KsServices {
         call.enqueue(new Callback<PlaybackContextResponse>() {
             @Override
             public void onResponse(@NonNull Call<PlaybackContextResponse> call, @NonNull retrofit2.Response<PlaybackContextResponse> response) {
-                if (response != null && response.isSuccessful() && response.body() != null && response.body().getResult() != null && response.body().getResult().getSources() != null && response.body().getResult().getSources().get(0) != null && response.body().getResult().getSources().get(0).getUrl() != null) {
+                if (response != null && response.isSuccessful() && response.body() != null && response.body().getResult() != null && response.body().getResult().getSources() != null && response.body().getResult().getSources().size() > 0 && response.body().getResult().getSources().get(0) != null && response.body().getResult().getSources().get(0).getUrl() != null) {
                     playBackContextCallBack.getUrl(response.body().getResult().getSources().get(0).getUrl());
                 } else {
                     playBackContextCallBack.getUrl("");
