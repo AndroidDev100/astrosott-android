@@ -772,7 +772,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (KsPreferenceKey.getInstance(getActivity()).getUserActive()) {
                         parentalCheck(asset);
                     } else {
-                        getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList,programAsset);
+                        getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList, programAsset);
                     }
                 } else {
                     PrintLogging.printLog("", "elseValuePrint-->>" + assetRuleErrorCode + "  " + errorCode);
@@ -811,7 +811,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     }
                 }
             } else {
-                getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, isLivePlayer, "", railList,programAsset);
+                getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, isLivePlayer, "", railList, programAsset);
 //                if (isProgramClicked) {
 //                    if (checkIsliveAsset) {
 //                        getUrl(AssetContent.getURL(DTPlayer.asset), DTPlayer.asset, playerProgress, true, catchupLiveProgName, railList);
@@ -877,7 +877,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             @Override
                             public void run() {
 
-                                getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList,programAsset);
+                                getUrl(AssetContent.getURL(asset), asset, playerProgress, isLivePlayer, "", railList, programAsset);
 //                                if (isProgramClicked) {
 //                                    if (checkIsliveAsset) {
 //                                        getUrl(AssetContent.getURL(asset), asset, playerProgress, true, catchupLiveProgName, railList);
@@ -2319,8 +2319,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
         if (viewModel != null)
             viewModel.clearCallbacks();
-
-        baseActivity.onBackPressed();
+        if (baseActivity != null)
+            baseActivity.onBackPressed();
     }
 
     private void playBackError() {
@@ -3448,7 +3448,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     try {
                         cancelTimer();
                         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
-                        getUrl(playerURL, asset, playerProgress, isLivePlayer, "", railList,programAsset);
+                        getUrl(playerURL, asset, playerProgress, isLivePlayer, "", railList, programAsset);
                     } catch (Exception e) {
 
                     }
@@ -3485,7 +3485,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             } else {
                 Log.d("PlayerPauseCalled", "else");
-                getUrl(playerURL, playerAsset, playerProgress, isLivePlayer, "", railList,programAsset);
+                getUrl(playerURL, playerAsset, playerProgress, isLivePlayer, "", railList, programAsset);
                 if (adRunning) {
                     getBinding().rl1.setVisibility(View.GONE);
                     getBinding().listViewSettings.setVisibility(View.GONE);
