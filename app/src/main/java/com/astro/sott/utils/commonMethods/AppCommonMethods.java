@@ -1227,9 +1227,13 @@ public class AppCommonMethods {
     }
 
     public static ResponseDmsModel callpreference(Context context) {
-        Gson gson = new Gson();
-        String json = SharedPrefHelper.getInstance(context).getString("DMS_Response", "");
-        return gson.fromJson(json, ResponseDmsModel.class);
+        try {
+            Gson gson = new Gson();
+            String json = SharedPrefHelper.getInstance(context).getString("DMS_Response", "");
+            return gson.fromJson(json, ResponseDmsModel.class);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static void setContinueWatchingPreferences(List<AssetHistory> objects, Context activity) {

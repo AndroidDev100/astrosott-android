@@ -189,7 +189,7 @@ public class ListingActivity extends BaseBindingActivity<ListingActivityBinding>
             long idAsset = assetCommonBean.getID();
             assetId = (int) idAsset;
         }
-        if (getIntent().getExtras().getParcelable("baseCategory") != null)
+        if (getIntent().getExtras() != null && getIntent().getExtras().getParcelable("baseCategory") != null)
             baseCategory = getIntent().getExtras().getParcelable("baseCategory");
         FirebaseEventManager.getFirebaseInstance(ListingActivity.this).trackScreenName(title + " Listing");
 
