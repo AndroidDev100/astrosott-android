@@ -3,7 +3,6 @@ package com.astro.sott.fragments.subscription.adapter
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,11 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.PagerAdapter
 import com.astro.sott.R
+import com.astro.sott.activities.SelectAccount.SelectAccountModel.BillingAccountTypeModel
 import com.astro.sott.databinding.FragmentPackageBinding
 import com.astro.sott.modelClasses.InApp.PackDetail
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem
+import com.astro.sott.usermanagment.modelClasses.getProducts.Attribute
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
 import java.util.*
 import kotlin.collections.ArrayList
@@ -86,7 +87,11 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
         bannerBinding.masktop.setColorFilter(currentColor)
         bannerBinding.maskbottom.setColorFilter(currentColor)
         var attributeList = packageModel.attributes!!
-        //Collections.reverse(attributeList)
+        Collections.sort(attributeList, object : Comparator<Attribute?> {
+            override fun compare(o1: Attribute?, o2: Attribute?): Int {
+                return o1?.attributeLabel?.compareTo(o2?.attributeLabel!!)!!
+            }
+        })
         val my_array = ArrayList<String>()
         if (packageModel.attributes != null) {
             for (attribute in attributeList) {

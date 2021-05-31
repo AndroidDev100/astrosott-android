@@ -15,6 +15,7 @@ import com.astro.sott.R
 import com.astro.sott.databinding.FragmentPackageBinding
 import com.astro.sott.fragments.subscription.adapter.SubscriptionPagerAdapter.OnPackageChooseClickListener
 import com.astro.sott.modelClasses.InApp.PackDetail
+import com.astro.sott.usermanagment.modelClasses.getProducts.Attribute
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
 import java.util.*
 
@@ -81,7 +82,11 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                 bannerBinding.masktop.setColorFilter(currentColor)
                 bannerBinding.maskbottom.setColorFilter(currentColor)
                 var attributeList = packageModel.attributes!!
-                Collections.reverse(attributeList)
+                Collections.sort(attributeList, object : Comparator<Attribute?> {
+                    override fun compare(o1: Attribute?, o2: Attribute?): Int {
+                        return o1?.attributeLabel?.compareTo(o2?.attributeLabel!!)!!
+                    }
+                })
                 val my_array = ArrayList<String>()
                 if (packageModel.attributes != null) {
                     for (attribute in attributeList)
