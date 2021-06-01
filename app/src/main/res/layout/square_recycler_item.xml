@@ -32,7 +32,7 @@
                     android:fontFamily="@font/heebo_medium"
                     android:text="@string/you_may_like"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/dimen20sp" />
+                    android:textSize="@dimen/rail_title_size" />
 
                 <LinearLayout
                     android:id="@+id/more_text"

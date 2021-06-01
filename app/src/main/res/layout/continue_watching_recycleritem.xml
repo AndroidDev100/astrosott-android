@@ -32,7 +32,7 @@
                     android:fontFamily="@font/heebo_medium"
                     android:text="@string/title_creators"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/dimen20sp" />
+                    android:textSize="@dimen/rail_title_size" />
 
                 <TextView
                     android:id="@+id/more_text"

@@ -39,7 +39,7 @@
                     android:singleLine="true"
                     android:text="@string/title_creators"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp" />
+                    android:textSize="@dimen/rail_title_size" />
 
                 <TextView
                     android:id="@+id/more_text"

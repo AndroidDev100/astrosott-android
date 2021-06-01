@@ -15,7 +15,7 @@
     <dimen name="trailer_layout_image_width">280dp</dimen>
     <dimen name="trailer_layout_image_height">157dp</dimen>
     <dimen name="trailer_description_margin_right">16dp</dimen>
-
+    <dimen name="rail_title_size">16sp</dimen>
 
     <dimen name="indicator_size">5dp</dimen>
     <dimen name="play_icon_width">64dp</dimen>
@@ -56,7 +56,7 @@
     <dimen name="listing_Recycler_margin_left">0dp</dimen>
 
     <!--    <string name="watch_trailor">Watch Trailer</string>-->
-<!--    <string name="watch_movie">Watch Movie</string>-->
+    <!--    <string name="watch_movie">Watch Movie</string>-->
     <dimen name="expandable_text_margin_right">6dp</dimen>
     <dimen name="less_button_margin_top">5dp</dimen>
     <dimen name="view_height">1dp</dimen>
