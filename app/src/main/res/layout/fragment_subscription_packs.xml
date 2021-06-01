@@ -71,61 +71,74 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="70dp"
             android:layout_below="@+id/learn_more"
-            android:layout_marginTop="@dimen/_30sdp" />
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginBottom="70dp" />
 
-        <TextView
-            android:id="@+id/descp1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_above="@id/terms"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/heebo_medium"
-            android:gravity="center"
-            android:text="@string/pack_desc"
-            android:textColor="@color/light_blue_text_color"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/descp2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_toStartOf="@id/terms"
-            android:fontFamily="@font/heebo_medium"
-            android:layout_marginBottom="@dimen/dimen10dp"
-            android:gravity="center"
-            android:text="@string/pack_desc1"
-            android:textColor="@color/light_blue_text_color"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/terms"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:fontFamily="@font/heebo_medium"
-            android:layout_marginBottom="@dimen/dimen10dp"
-            android:paddingLeft="2dp"
             android:layout_alignParentBottom="true"
-            android:text="@string/term_and_con"
-            android:textColor="@color/aqua_marine"
-            android:textSize="16sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/descp4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="2dp"
-            android:layout_toEndOf="@id/terms"
-            android:layout_marginBottom="@dimen/dimen10dp"
-            android:fontFamily="@font/heebo_medium"
-            android:gravity="center"
-            android:text="@string/apply_text"
-            android:textColor="@color/light_blue_text_color"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/descp1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/terms"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/heebo_medium"
+                android:gravity="center"
+                android:text="@string/pack_desc"
+                android:textColor="@color/light_blue_text_color"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/descp2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/dimen10dp"
+                    android:layout_toStartOf="@id/terms"
+                    android:fontFamily="@font/heebo_medium"
+                    android:gravity="center"
+                    android:text="@string/pack_desc1"
+                    android:textColor="@color/light_blue_text_color"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/terms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="@dimen/dimen10dp"
+                    android:fontFamily="@font/heebo_medium"
+                    android:paddingLeft="2dp"
+                    android:text="@string/term_and_con"
+                    android:textColor="@color/aqua_marine"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/descp4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginBottom="@dimen/dimen10dp"
+                    android:layout_toEndOf="@id/terms"
+                    android:fontFamily="@font/heebo_medium"
+                    android:gravity="center"
+                    android:text="@string/apply_text"
+                    android:textColor="@color/light_blue_text_color"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
 </layout>

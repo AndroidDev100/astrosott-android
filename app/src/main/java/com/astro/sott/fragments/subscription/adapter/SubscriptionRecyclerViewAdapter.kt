@@ -90,7 +90,9 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                 val my_array = ArrayList<String>()
                 if (packageModel.attributes != null) {
                     for (attribute in attributeList)
-                        my_array.add(attribute.attributeValue!!)
+                        if (!attribute.attributeLabel.equals("ImageURL1", true)) {
+                            my_array.add(attribute.attributeValue!!)
+                        }
                 }
                 if (packageModel.skuORQuickCode != null && productList.isNotEmpty()) {
                     if (checkActiveOrNot(packageModel.skuORQuickCode!!)) {

@@ -1772,9 +1772,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         });
         player.addListener(this, PlayerEvent.stopped, event -> {
-           /* ConvivaManager.convivaPlayerStoppedReportRequest();
+            ConvivaManager.convivaPlayerStoppedReportRequest();
             ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackEnded();
-            ConvivaManager.removeConvivaSession();*/
+            ConvivaManager.removeConvivaSession();
 
         });
 

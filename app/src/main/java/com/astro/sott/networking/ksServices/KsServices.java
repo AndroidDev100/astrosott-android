@@ -8065,6 +8065,7 @@ public class KsServices {
         clientSetupKs();
         SearchAssetFilter relatedFilter = new SearchAssetFilter();
         relatedFilter.setTypeIn(String.valueOf(mediatype));
+        relatedFilter.orderBy(SortByEnum.NAME_ASC + "");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);

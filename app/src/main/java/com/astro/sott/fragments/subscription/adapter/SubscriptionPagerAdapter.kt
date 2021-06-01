@@ -95,7 +95,9 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
         val my_array = ArrayList<String>()
         if (packageModel.attributes != null) {
             for (attribute in attributeList) {
-                my_array.add(attribute.attributeValue.toString())
+                if (!attribute.attributeLabel.equals("ImageURL1", true)) {
+                    my_array.add(attribute.attributeValue.toString())
+                }
             }
 
         }

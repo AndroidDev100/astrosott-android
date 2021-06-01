@@ -949,11 +949,12 @@ class EvergentServices {
         json.addProperty("returnAppChannels", "T");
         if (!from.equals("Live Event", true)) {
             json.addProperty("returnLiveEvents", "F");
+            json.addProperty("offerType", "Existing Customer");
+            json.addProperty("salesChannel", "Web");
         }
         json.addProperty("returnPromotions", "T");
         json.addProperty("returnAttributes", "T");
-        json.addProperty("offerType", "Existing Customer");
-        json.addProperty("salesChannel", "Web");
+
         appChannelJson.addProperty("appChannel", "Google Wallet")
         json.add("appChannels", appChannelJson)
         json.add("ovpSKUs", subscriptionId)
