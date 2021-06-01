@@ -2051,9 +2051,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (player != null) {
                 isAdsRunning = false;
                 ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdFailed(adError.error.errorType.name());
-                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
+               /* ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
                 ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
-                ConvivaManager.removeConvivaAdsSession();
+                ConvivaManager.removeConvivaAdsSession();*/
                 if (adError.error.errorType.name().toUpperCase().contains("QUIET_LOG_ERROR") || adError.error.errorType.name().toUpperCase().contains("VIDEO_PLAY_ERROR")) {
                     //  getBinding().lockIcon.setVisibility(View.VISIBLE);
                     if (lockEnable) {
