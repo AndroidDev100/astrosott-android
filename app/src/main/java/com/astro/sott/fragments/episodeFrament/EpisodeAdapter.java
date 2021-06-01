@@ -129,15 +129,16 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
 
 
             }
+            viewHolder.watchlistItemBinding.lockIcon.setOnClickListener(v -> {
+                itemClickListener.moveToPlay(position, railList.get(position), 1, railList);
+            });
             if (singleItem.isEntitled()) {
                 viewHolder.watchlistItemBinding.lockIcon.setVisibility(View.VISIBLE);
                 viewHolder.watchlistItemBinding.episodeTransparent.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.watchlistItemBinding.lockIcon.setVisibility(View.GONE);
                 viewHolder.watchlistItemBinding.episodeTransparent.setVisibility(View.GONE);
-
             }
-
             if (value == episodeNumber) {
                 RailCommonData singleItems = railList.get(position);
                 if (singleItems.getExpended()) {
@@ -193,6 +194,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                 }
             });
             viewHolder.watchlistItemBinding.episodeTransparent.setOnClickListener(v -> {
+                itemClickListener.moveToPlay(position, railList.get(position), 1, railList);
             });
 
 

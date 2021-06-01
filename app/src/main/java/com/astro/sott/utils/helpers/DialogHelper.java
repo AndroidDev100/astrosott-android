@@ -77,9 +77,9 @@ public class DialogHelper {
             AlertDialog alert = builder.create();
             alert.show();
             Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-            bn.setTextColor(ContextCompat.getColor(context, R.color.white));
+            bn.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
             Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(context, R.color.primary_blue));
+            bp.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
         } else {
             showLoginDialog(context);
         }
@@ -177,12 +177,9 @@ public class DialogHelper {
             builder.setTitle(context.getResources().getString(R.string.lock_Episode)).setMessage(context.getResources().getString(R.string.purchase_dialouge_for_logged_in))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.login), (dialog, id) -> {
-                        //dialog.cancel();
-
                         new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class, "");
                         baseActivity.onBackPressed();
                         dialog.cancel();
-                        //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
                     })
                     .setNegativeButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
                         baseActivity.onBackPressed();
@@ -192,9 +189,9 @@ public class DialogHelper {
             AlertDialog alert = builder.create();
             alert.show();
             Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-            bn.setTextColor(ContextCompat.getColor(context, R.color.white));
+            bn.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
             Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(context, R.color.primary_blue));
+            bp.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
         }
     }
 

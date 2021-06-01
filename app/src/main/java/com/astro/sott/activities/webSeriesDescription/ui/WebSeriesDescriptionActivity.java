@@ -1,8 +1,12 @@
 package com.astro.sott.activities.webSeriesDescription.ui;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -21,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.astro.sott.activities.home.HomeActivity;
@@ -29,6 +34,7 @@ import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.viewModel.WebSeriesDescriptionViewModel;
+import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
@@ -660,11 +666,58 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 //        if (this.railList!=null){
 //            this.railList.clear();
 //        }
-        fromNextEpisode = false;
-        this.railList = railList;
+        if (type == 0) {
+            fromNextEpisode = false;
+            this.railList = railList;
+            callProgressBar();
+            playerChecks(railCommonData);
+        } else {
+            openDialougeForEntitleMent();
+        }
+    }
 
-        callProgressBar();
-        playerChecks(railCommonData);
+    public void openDialougeForEntitleMent() {
+        boolean status = UserInfo.getInstance(this).isActive();
+        if (status) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
+            builder.setTitle(getResources().getString(R.string.lock_Episode)).setMessage(getResources().getString(R.string.purchase_dialouge_for_logged_in))
+                    .setCancelable(true)
+                    .setPositiveButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                        dialog.cancel();
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+            Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+            bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
+            Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+            bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
+        } else {
+            showLoginDialog();
+        }
+    }
+
+    public void showLoginDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
+        builder.setTitle(getResources().getString(R.string.lock_Episode)).setMessage(getResources().getString(R.string.purchase_dialouge_for_logged_in))
+                .setCancelable(true)
+                .setPositiveButton(getResources().getString(R.string.login), (dialog, id) -> {
+                    //dialog.cancel();
+
+                    new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class, "");
+                    dialog.cancel();
+                    //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
+                })
+                .setNegativeButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                    dialog.cancel();
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+        Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
+        Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
     }
 
     public void episodeCallback(List<RailCommonData> railList) {
