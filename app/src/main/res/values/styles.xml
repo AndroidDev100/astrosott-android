@@ -139,6 +139,7 @@
 
     <style name="AppAlertTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColorPrimary">@color/white</item>
+        <item name="textAllCaps">false</item>
         <item name="android:background">@color/fragment_background_color</item>
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>

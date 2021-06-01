@@ -634,7 +634,7 @@
     <string name="Learn_more"><u>Learn More</u></string>
     <string name="make_sure">Just Wanted to Make Sure \n You are You</string>
     <string name="key_in_pswd">Please key in your password \n to update email.</string>
-    <string name="quick_search_text">QUICK SEARCH</string>
+    <string name="quick_search_text">Quick Search</string>
     <string name="successful">successful</string>
     <string name="pending">Pending</string>
     <string name="failed">Failed</string>
