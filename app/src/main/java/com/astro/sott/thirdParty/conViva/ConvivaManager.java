@@ -198,7 +198,7 @@ public class ConvivaManager {
             contentInfo.put(AUDIO_LANGUAGE, "NA");
         }
 
-        contentInfo.put(PRODUCT_ID, "Astro-Sooka");
+        contentInfo.put(PRODUCT_ID, "Astro sooka");
         contentInfo.put(STREAM_PROTOCOL, "DASH");
         contentInfo.put(KALTURA_ID, (convivaAsset != null) ? convivaAsset.getId() : "NA");
 
