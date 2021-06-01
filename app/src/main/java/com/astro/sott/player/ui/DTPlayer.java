@@ -176,6 +176,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private int totalEpisode = 0;
     boolean exitPlayer = false;
     boolean isPause = false;
+    private boolean isAdError = false;
     String startTimeStamp;
     String endTimeStamp;
     PendingIntent pendingIntent = null;
@@ -1488,8 +1489,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     break;
                 case BUFFERING:
                     Log.d("StateChange ", "Buffering");
-                    if (!isAdsRunning)
+                    if (!isAdsRunning) {
                         getBinding().pBar.setVisibility(View.VISIBLE);
+                    } else {
+                        ConvivaManager.convivaPlayerBufferReportRequest();
+                    }
                     // log.e("StateChange Buffering");
                     // mPlayerControlsView.setProgressBarVisibility(true);
                     // booleanMutableLiveData.postValue(false);
@@ -1772,9 +1776,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         });
         player.addListener(this, PlayerEvent.stopped, event -> {
-            ConvivaManager.convivaPlayerStoppedReportRequest();
-            ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackEnded();
-            ConvivaManager.removeConvivaSession();
+
 
         });
 
@@ -2050,10 +2052,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             //  checkFatalError();
             if (player != null) {
                 isAdsRunning = false;
-                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdFailed(adError.error.errorType.name());
-               /* ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
-                ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
-                ConvivaManager.removeConvivaAdsSession();*/
+                if (!isAdError) {
+                    isAdError = true;
+                    ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdFailed(adError.error.errorType.name());
+                    ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
+                    ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
+                    ConvivaManager.removeConvivaAdsSession();
+                }
                 if (adError.error.errorType.name().toUpperCase().contains("QUIET_LOG_ERROR") || adError.error.errorType.name().toUpperCase().contains("VIDEO_PLAY_ERROR")) {
                     //  getBinding().lockIcon.setVisibility(View.VISIBLE);
                     if (lockEnable) {
@@ -2864,7 +2869,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void playNextEpisode() {
         isLiveChannel = false;
-
+        ConvivaManager.convivaPlayerStoppedReportRequest();
+        ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackEnded();
+        ConvivaManager.removeConvivaSession();
         cancelTimer();
         if (hasNextEpisode) {
             if (runningPlayer != null) {
