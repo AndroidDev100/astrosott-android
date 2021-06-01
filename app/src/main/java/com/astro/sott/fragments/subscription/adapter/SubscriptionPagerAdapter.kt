@@ -62,8 +62,10 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
                 bannerBinding.text.visibility = View.VISIBLE
                 bannerBinding.text.setPadding(0, SliderPotrait.dp2px(context, 6f), 0, SliderPotrait.dp2px(context, 6f))
                 bannerBinding.text.text = packageModel.promotions!![0].promoDescrip
-                bannerBinding.offer.visibility = View.VISIBLE
-                bannerBinding.offer.text = packageModel.promotions!![0].promoCpDescription
+                if (packageModel.promotions!![0].promoCpDescription != null && !packageModel.promotions!![0].promoCpDescription.equals("", true)) {
+                    bannerBinding.offer.visibility = View.VISIBLE
+                    bannerBinding.offer.text = packageModel.promotions!![0].promoCpDescription
+                }
             }
             bannerBinding.currency.text = skuModel.priceCurrencyCode
             bannerBinding.packagePrice.text = skuModel.introductoryPrice + "/"
