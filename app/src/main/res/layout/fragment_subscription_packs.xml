@@ -78,7 +78,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="16dp"
             android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
@@ -91,26 +92,13 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/heebo_medium"
                 android:gravity="center"
-                android:text="@string/pack_desc"
-                android:textColor="@color/light_blue_text_color"
-                android:textSize="16sp" />
+                android:text="@string/detail_pack_desc"
+                android:textColor="@color/heather"
+                android:textSize="12sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/descp2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="@dimen/dimen10dp"
-                    android:layout_toStartOf="@id/terms"
-                    android:fontFamily="@font/heebo_medium"
-                    android:gravity="center"
-                    android:text="@string/pack_desc1"
-                    android:textColor="@color/light_blue_text_color"
-                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/terms"
@@ -123,7 +111,7 @@
                     android:paddingLeft="2dp"
                     android:text="@string/term_and_con"
                     android:textColor="@color/aqua_marine"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/descp4"
@@ -136,8 +124,8 @@
                     android:fontFamily="@font/heebo_medium"
                     android:gravity="center"
                     android:text="@string/apply_text"
-                    android:textColor="@color/light_blue_text_color"
-                    android:textSize="16sp" />
+                    android:textColor="@color/heather"
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

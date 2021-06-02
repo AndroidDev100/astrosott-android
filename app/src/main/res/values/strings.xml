@@ -645,6 +645,7 @@
     <string name="failed">Failed</string>
 
     <string name="mobile_suggestion">Mobile number without country code, spacing &amp; hyphen</string>
+    <string name="detail_pack_desc">All prices displayed are inclusive of 6% digital tax.</string>
     <string name="pack_desc">All prices displayed are inclusive of 6% </string>
     <string name="pack_desc1">digital tax.</string>
     <string name="apply_text">apply.</string>

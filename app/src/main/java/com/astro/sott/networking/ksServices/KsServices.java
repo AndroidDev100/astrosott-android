@@ -3275,10 +3275,12 @@ public class KsServices {
     private boolean checkForPurchaseOrNot(List<ProductPrice> objects) {
         for (ProductPrice productPrice : objects) {
             if (productPrice.getPurchaseStatus().toString().equalsIgnoreCase("FOR_PURCHASE") || productPrice.getPurchaseStatus().toString().equalsIgnoreCase("for_purchase_subscription_only")) {
-                return false;
+
+            } else {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
 
