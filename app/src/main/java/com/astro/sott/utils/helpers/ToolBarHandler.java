@@ -125,7 +125,7 @@ public class ToolBarHandler {
 
     }
 
-    public void setMoreListener(TextView more, final String type, final AssetCommonBean assetCommonBean, Activity activity) {
+    public void setMoreListener(ImageView more, final String type, final AssetCommonBean assetCommonBean, Activity activity) {
 
         /*more.setOnClickListener(view -> {
             AssetCommonBean assetCommonBean1 = new AssetCommonBean();
@@ -246,7 +246,7 @@ public class ToolBarHandler {
         });
     }
 
-    public void setContinueWatchingListener(TextView moreText, final String type, final AssetCommonBean assetCommonBean) {
+    public void setContinueWatchingListener(ImageView moreText, final String type, final AssetCommonBean assetCommonBean) {
         moreText.setOnClickListener(view -> {
             if (assetCommonBean.getTitle() != null)
                 FirebaseEventManager.getFirebaseInstance(activity).navEvent(assetCommonBean.getTitle(), "See More");

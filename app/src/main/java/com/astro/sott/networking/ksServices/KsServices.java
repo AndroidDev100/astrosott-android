@@ -4404,12 +4404,23 @@ public class KsServices {
     public void callContinueWatchingForListing(final ContinueWatchingCallBack homechannelCallBack) {
         clientSetupKs();
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
-        assetHistoryFilter.statusEqual("all");
-        assetHistoryFilter.daysLessThanOrEqual("30");
+        assetHistoryFilter.statusEqual(WatchStatus.PROGRESS.name());
+        assetHistoryFilter.daysLessThanOrEqual(AppCommonMethods.getAssetHistory(activity));
 
         FilterPager pagerFilter = new FilterPager();
         pagerFilter.setPageIndex(1);
         pagerFilter.setPageSize(100);
+
+        DetachedResponseProfile responseProfile = new DetachedResponseProfile();
+        DetachedResponseProfile relatedProfiles = new DetachedResponseProfile();
+
+        AssetHistorySuppressFilter assetHistorySuppressFilter = new AssetHistorySuppressFilter();
+        relatedProfiles.setFilter(assetHistorySuppressFilter);
+        relatedProfiles.setName("suppress");
+        List<DetachedResponseProfile> list = new ArrayList<>();
+        list.add(relatedProfiles);
+        responseProfile.setRelatedProfiles(list);
+
 
         AssetHistoryService.ListAssetHistoryBuilder builder = new AssetHistoryService.ListAssetHistoryBuilder(assetHistoryFilter, pagerFilter).setCompletion(new OnCompletion<Response<ListResponse<AssetHistory>>>() {
             @Override
@@ -4446,7 +4457,7 @@ public class KsServices {
                 }
             }
         });
-
+        builder.setResponseProfile(responseProfile);
         getRequestQueue().queue(builder.build(client));
     }
 
