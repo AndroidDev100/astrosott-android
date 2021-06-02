@@ -133,7 +133,11 @@ public class ConvivaManager {
     public static void setreportPlaybackRequested(Context context, Asset railData, String duraton, Boolean isLivePlayer, String streamUrl, Asset programAsset) {
         Asset convivaAsset;
         if (railData.getType() == MediaTypeConstant.getLinear(context)) {
-            convivaAsset = programAsset;
+            if (AssetContent.isLiveEvent(railData.getMetas()) && programAsset == null) {
+                convivaAsset = railData;
+            } else {
+                convivaAsset = programAsset;
+            }
         } else {
             convivaAsset = railData;
         }
@@ -234,14 +238,12 @@ public class ConvivaManager {
                     long duration = convivaAsset.getEndDate() - convivaAsset.getStartDate();
                     contentInfo.put(ConvivaSdkConstants.DURATION, (duration > 0) ? duration : 0);
                 }
-                if (!AssetContent.getKeyworddata(convivaAsset.getTags()).equalsIgnoreCase("")) {
-                    contentInfo.put(CHANNEL, AssetContent.getKeyworddata(convivaAsset.getTags()));
+                if (convivaAsset != null && convivaAsset.getName() != null) {
+                    contentInfo.put(CHANNEL, convivaAsset.getName());
                 } else {
                     contentInfo.put(CHANNEL, "NA");
-
                 }
-                LiveAsset liveAsset = (LiveAsset) railData;
-                contentInfo.put(ASSET_ID, liveAsset.getExternalIds());
+                contentInfo.put(ASSET_ID, convivaAsset.getExternalId());
             } catch (Exception e) {
             }
         } else {
@@ -258,12 +260,8 @@ public class ConvivaManager {
             } else {
                 contentInfo.put(BRAND, "NA");
             }
-            if (!AssetContent.getKeyworddata(convivaAsset.getTags()).equalsIgnoreCase("")) {
-                contentInfo.put(CHANNEL, AssetContent.getKeyworddata(convivaAsset.getTags()));
-            } else {
-                contentInfo.put(CHANNEL, "NA");
+            contentInfo.put(CHANNEL, "NA");
 
-            }
             if (convivaAsset.getType() == MediaTypeConstant.getSeries(context)) {
                 contentInfo.put(SERIES_NAME, convivaAsset.getName());
             }
