@@ -114,7 +114,7 @@
     <string name="on_Dialog">on sooka!</string>
     <string name="added_to_watchlist">added to your My List</string>
 
-    <string name="become_vip">Become A Vip</string>
+    <string name="become_vip">Become a Vip</string>
     <string name="rent_movie">Rent Movie For RM XX.XX</string>
     <string name="rooted_failure_msg">Tsk tsk tsk…you cannot run this app on jailbreak or rooted devices!</string>
     <string name="watch_now">Watch Now</string>
@@ -192,7 +192,6 @@
     <string name="audio_language">Audio Language</string>
     <string name="subtitle_language">Subtitle Language</string>
     <string name="play_over_wifi">Play over Wifi</string>
-    <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="verification">Verification</string>
     <string name="enter_phone">Enter your phone number</string>
@@ -575,7 +574,7 @@
     <string name="verification_code_text">Please key in your Verification Code</string>
     <string name="didnt_receive_otp">Didn\'t receive the verification code?</string>
     <string name="resend_otp"><u>Send me another verification code</u></string>
-    <string name="welcome_back">Welcome Back</string>
+    <string name="welcome_back">Let’s get started \n Already registered? Just log in below</string>
     <string name="email_id_mobileNo">Email Address or Mobile Number</string>
     <string name="user_name">User Name</string>
     <string name="forgt_psw"><u>Forgot Password?</u></string>
@@ -587,7 +586,10 @@
     <string name="otp_valid_for">The verification code is valid for</string>
     <string name="invalid_otp">The verification code you entered is invalid</string>
     <string name="sign_up_text"><u>Sign Up</u></string>
+    <string name="sign_up">Sign Up</string>
     <string name="sign_in_with">or Sign In With</string>
+    <string name="sign_up_with">or Sign Up With</string>
+
     <string name="detail_confrm">Details Confirmation</string>
     <string name="please_confirm_detail">Please confirm your details below</string>
     <string name="forget_psw">Forgot Password</string>

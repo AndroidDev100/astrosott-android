@@ -65,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/heebo_medium"
                     android:text="@string/welcome_back"
+                    android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:layout_constraintLeft_toLeftOf="parent"
