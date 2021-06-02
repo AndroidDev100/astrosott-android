@@ -67,9 +67,9 @@ public class DialogHelper {
         boolean status = UserInfo.getInstance(baseActivity).isActive();
         if (status) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
-            builder.setTitle(context.getResources().getString(R.string.lock_Episode)).setMessage(context.getResources().getString(R.string.purchase_dialouge_for_logged_in))
+            builder.setTitle(context.getResources().getString(R.string.subscribe_header)).setMessage(context.getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
-                    .setPositiveButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                    .setPositiveButton(context.getResources().getString(R.string.got_it), (dialog, id) -> {
                         baseActivity.onBackPressed();
                         dialog.cancel();
                     });

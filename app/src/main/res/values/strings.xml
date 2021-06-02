@@ -242,6 +242,9 @@
     <string name="incorrect_mobile_number">Oh no, that can\'t be right. Lets recheck the mobile number</string>
     <string name="dialog">sooka</string>
     <string name="lock_Episode">Lock Episodes</string>
+    <string name="got_it">Got it</string>
+    <string name="subscribe_header">Subscribe to unlock</string>
+    <string name="subscribe_description">Hit subscribe on the profile screen to unlock and enjoy premium content!</string>
     <string name="new_version">New Version Available</string>
     <string name="pin_required">Pin cannot be blank</string>
     <string name="incorrect_pin">Incorrect Pin. Try again</string>

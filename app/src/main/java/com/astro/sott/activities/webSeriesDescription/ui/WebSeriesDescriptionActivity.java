@@ -680,9 +680,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         boolean status = UserInfo.getInstance(this).isActive();
         if (status) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
-            builder.setTitle(getResources().getString(R.string.lock_Episode)).setMessage(getResources().getString(R.string.purchase_dialouge_for_logged_in))
+            builder.setTitle(getResources().getString(R.string.subscribe_header)).setMessage(getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
-                    .setPositiveButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                    .setPositiveButton(getResources().getString(R.string.got_it), (dialog, id) -> {
                         dialog.cancel();
                     });
 
