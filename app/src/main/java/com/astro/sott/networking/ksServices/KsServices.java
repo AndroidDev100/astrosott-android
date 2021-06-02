@@ -139,6 +139,7 @@ import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.EntityReferenceBy;
 import com.kaltura.client.enums.InboxMessageStatus;
+import com.kaltura.client.enums.MetaTagOrderBy;
 import com.kaltura.client.enums.PinType;
 import com.kaltura.client.enums.RuleLevel;
 import com.kaltura.client.enums.TransactionType;
@@ -210,6 +211,7 @@ import com.kaltura.client.types.ProductPriceFilter;
 import com.kaltura.client.types.Purchase;
 import com.kaltura.client.types.RelatedFilter;
 import com.kaltura.client.types.SearchAssetFilter;
+import com.kaltura.client.types.SearchAssetListFilter;
 import com.kaltura.client.types.SearchHistory;
 import com.kaltura.client.types.SearchHistoryFilter;
 import com.kaltura.client.types.StringValue;
@@ -8065,14 +8067,19 @@ public class KsServices {
         responseList = new ArrayList<Response<ListResponse<Asset>>>();
         homechannelCallBack = callBack;
         clientSetupKs();
-        SearchAssetFilter relatedFilter = new SearchAssetFilter();
-        relatedFilter.setTypeIn(String.valueOf(mediatype));
+        SearchAssetListFilter searchAssetListFilter = new SearchAssetListFilter();
+        searchAssetListFilter.setTypeIn(String.valueOf(mediatype));
+        DynamicOrderBy dynamicOrder = new DynamicOrderBy();
+        dynamicOrder.setName("Order");
+        dynamicOrder.setOrderBy(MetaTagOrderBy.META_ASC);
+        searchAssetListFilter.setDynamicOrderBy(dynamicOrder);
+
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
         filterPager.setPageSize(100);
 
-        AssetService.ListAssetBuilder builder = AssetService.list(relatedFilter, filterPager).setCompletion(result -> {
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetListFilter, filterPager).setCompletion(result -> {
             try {
                 if (result.isSuccess()) {
                     if (result.results != null) {
