@@ -29,7 +29,7 @@
             card_view:cardElevation="1dp"
             card_view:cardMaxElevation="1dp"
             android:clipChildren="false"
-            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_2sdp"
             card_view:cardPreventCornerOverlap="false"
             card_view:cardUseCompatPadding="true">
 
