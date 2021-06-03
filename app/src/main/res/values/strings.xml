@@ -114,7 +114,7 @@
     <string name="on_Dialog">on sooka!</string>
     <string name="added_to_watchlist">added to your My List</string>
 
-    <string name="become_vip">Become a Vip</string>
+    <string name="become_vip">Become a VIP</string>
     <string name="rent_movie">Rent Movie For RM XX.XX</string>
     <string name="rooted_failure_msg">Tsk tsk tsk…you cannot run this app on jailbreak or rooted devices!</string>
     <string name="watch_now">Watch Now</string>
@@ -560,7 +560,7 @@
     <string name="unlink_success">Your account is unlinked</string>
 
     <string name="acount_mismatch">You can not link this account</string>
-    <string name="live_home">Live Tv</string>
+    <string name="live_home">Live TV</string>
     <string name="signup_login"><u>Log In</u></string>
     <string name="terms_and_conditions">I agree to the </string>
     <string name="terms"><u>Terms</u></string>
@@ -633,8 +633,8 @@
     <string name="registered_devices">Entitled to 5 Registered Devices</string>
     <string name="concurrency">1 Playback Concurrency across devices</string>
     <string name="noAds">No Ads</string>
-    <string name="vip_packs">Vip Entertainment</string>
-    <string name="vip_pack">Vip Packs</string>
+    <string name="vip_packs">VIP Entertainment</string>
+    <string name="vip_pack">VIP Packs</string>
     <string name="choose_pack">Choose one of the packs you would like.</string>
     <string name="Learn_more"><u>Learn More</u></string>
     <string name="make_sure">Just Wanted to Make Sure \n You are You</string>

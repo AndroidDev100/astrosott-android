@@ -197,7 +197,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().indicator.setVisibility(View.GONE);
         liveTvFragment = new LiveTvFragment();
-        setMargins(240, 80);
+        setMargins(150, 110);
         active = liveTvFragment;
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "1").hide(liveTvFragment).commit();
@@ -491,7 +491,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     // tab titles
-    private String[] titles = new String[]{"All", "Tv Shows", "Movies", "Sports"};
+    private String[] titles = new String[]{"All", "TV Shows", "Movies", "Sports"};
 
     private void initialFragment(HomeActivity homeActivity) {
         setViewPager();
@@ -583,7 +583,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().indicator.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
-        setMargins(240, 80);
+        setMargins(150, 110);
         fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commitAllowingStateLoss();
         checkSameClick();
         active = liveTvFragment;

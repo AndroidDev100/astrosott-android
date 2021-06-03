@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparentColor"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:tabBackground="@color/transparentColor"
                 app:tabGravity="fill"
                 app:tabIndicator="@color/transparentColor"
