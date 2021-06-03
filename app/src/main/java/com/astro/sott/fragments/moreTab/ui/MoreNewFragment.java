@@ -422,7 +422,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
     public void setUiForLogout() {
         if (UserInfo.getInstance(getActivity()).isActive()) {
-            getBinding().tvVIPUser.setText(getResources().getString(R.string.free_sooka) + " User");
+            getBinding().tvVIPUser.setText(getResources().getString(R.string.become_vip));
         } else {
             getBinding().tvVIPUser.setText(getResources().getString(R.string.guest_user));
 

@@ -5,7 +5,6 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_layout"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content">
         <!-- TODO: Update blank fragment layout -->
 
@@ -25,21 +24,25 @@
                 android:layout_height="match_parent"
                 android:background="@color/pack_bg_color">
 
-                <ImageView
-                    android:id="@+id/pack_img"
-                    android:layout_width="110dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:contentDescription="@string/contentDescription"
-                    android:scaleType="fitXY" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient_pack_bg" />
+                    <ImageView
+                        android:id="@+id/pack_img"
+                        android:layout_width="110dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:contentDescription="@string/contentDescription"
+                        android:scaleType="fitXY" />
 
+                    <FrameLayout
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_pack_bg"></FrameLayout>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/title_lay"
