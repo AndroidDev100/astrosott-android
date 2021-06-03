@@ -31,7 +31,7 @@
             android:layout_marginStart="@dimen/dimen16dp"
             android:layout_marginTop="45dp"
             android:fontFamily="@font/heebo_medium"
-            android:text="@string/vip_pack"
+            android:text="@string/become_vip"
             android:textColor="@color/title_color"
             android:textSize="@dimen/txt24sp" />
 
@@ -56,7 +56,7 @@
             android:layout_marginTop="@dimen/dimen16dp"
             android:fontFamily="@font/heebo_regular"
             android:text="@string/Learn_more"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textColor="@color/aqua_marine"
             android:textSize="@dimen/_12sp" />
 

@@ -49,17 +49,20 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SingleItemHolder holder, int position) {
-        holder.binding.packName.setText(packDetailList.get(position).getProductsResponseMessageItem().getDisplayName());
         StringBuilder description = new StringBuilder();
 
         if (packDetailList.get(position).getProductsResponseMessageItem().getRenewable() != null && packDetailList.get(position).getProductsResponseMessageItem().getRenewable()) {
-            description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
-            description.append(" recurring subscription");
-        } else {
+            holder.binding.packName.setText(packDetailList.get(position).getProductsResponseMessageItem().getDisplayName());
             if (packDetailList.get(position).getProductsResponseMessageItem().getDuration() != null && packDetailList.get(position).getProductsResponseMessageItem().getPeriod() != null) {
-                if (!eventStartDate.equalsIgnoreCase("")) {
-                    description.append("Event Time: " + eventStartDate);
-                } else {
+                description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
+                description.append(" recurring subscription at:");
+            }
+        } else {
+            holder.binding.packName.setText("Buy a one-time-pass");
+            if (!eventStartDate.equalsIgnoreCase("")) {
+                description.append("Event Time: " + eventStartDate);
+            } else {
+                if (packDetailList.get(position).getProductsResponseMessageItem().getDuration() != null && packDetailList.get(position).getProductsResponseMessageItem().getPeriod() != null) {
                     description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
                 }
 
@@ -90,9 +93,11 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
         }
 
         String imageUrl = "";
-        for (Attribute attribute : packDetailList.get(position).getProductsResponseMessageItem().getAttributes()) {
-            if (attribute.getAttributeLabel().equalsIgnoreCase("ImageURL1")) {
-                imageUrl = attribute.getAttributeValue();
+        if (packDetailList.get(position) != null && packDetailList.get(position).getProductsResponseMessageItem() != null && packDetailList.get(position).getProductsResponseMessageItem().getAttributes() != null) {
+            for (Attribute attribute : packDetailList.get(position).getProductsResponseMessageItem().getAttributes()) {
+                if (attribute.getAttributeLabel().equalsIgnoreCase("ImageURL1")) {
+                    imageUrl = attribute.getAttributeValue();
+                }
             }
         }
         if (!imageUrl.equalsIgnoreCase("")) {
