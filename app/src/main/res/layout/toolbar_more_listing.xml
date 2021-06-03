@@ -35,7 +35,7 @@
             android:maxLines="1"
             android:gravity="center"
             android:layout_centerInParent="true"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:layout_centerHorizontal="true"
             android:singleLine="true"
             android:textColor="@color/white"

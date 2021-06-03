@@ -299,7 +299,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
         getBinding().rlPrivacy.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), WebViewActivity.class);
-            intent.putExtra(AppLevelConstants.WEBVIEW, "PRIVACY POLICIES");
+            intent.putExtra(AppLevelConstants.WEBVIEW, "Privacy Policies");
             startActivity(intent);
         });
 //

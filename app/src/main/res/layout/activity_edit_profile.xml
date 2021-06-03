@@ -43,7 +43,7 @@
                     android:letterSpacing="0.09"
                     android:text="@string/edit_profile"
                     android:textAlignment="center"
-                    android:textAllCaps="true"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sp"/>
 

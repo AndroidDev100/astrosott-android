@@ -35,7 +35,7 @@ class ManageDeviceActivity : AppCompatActivity(), DeviceDeleteCallBack {
         activityManageDeviceBinding?.include?.backButton?.setOnClickListener {
             onBackPressed()
         }
-        activityManageDeviceBinding?.include?.title?.text = "MANAGE DEVICES"
+        activityManageDeviceBinding?.include?.title?.text = "Manage Devices"
     }
 
     private fun setRecyclerProperties() {

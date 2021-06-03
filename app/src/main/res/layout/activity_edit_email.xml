@@ -127,7 +127,7 @@
                 android:background="@drawable/gradient_button"
                 android:fontFamily="@font/heebo_medium"
                 android:text="@string/update"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp" />
 
