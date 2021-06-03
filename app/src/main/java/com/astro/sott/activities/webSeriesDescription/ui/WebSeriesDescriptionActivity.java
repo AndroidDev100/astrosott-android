@@ -532,12 +532,13 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 callwatchlistApi();
                 if (isParentalLocked)
                     assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
-                if (!isEntitlementCheck) {
-                    checkEntitleMent(assetToPlay);
-                }
+
                 //  callwatchlistApi();
 
             }
+        }
+        if (!isEntitlementCheck) {
+            checkEntitleMent(assetToPlay);
         }
     }
 

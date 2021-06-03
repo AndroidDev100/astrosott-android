@@ -837,11 +837,12 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             if (NetworkConnectivity.isOnline(this)) {
                 titleName = name;
                 isActive = true;
-                checkEntitleMent(railData);
+
                 // getDataFromBack(railData, layoutType);
 
             }
         }
+        checkEntitleMent(railData);
     }
 
     @Override

@@ -977,11 +977,12 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 titleName = name;
                 isActive = true;
                 isWatchlistedOrNot();
-                checkEntitleMent(railData);
                 // getDataFromBack(railData, layoutType);
 
             }
         }
+        checkEntitleMent(railData);
+
     }
 
     @Override

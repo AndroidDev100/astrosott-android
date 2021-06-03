@@ -978,11 +978,12 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                 isActive = true;
                 isWatchlistedOrNot();
 
-                checkEntitleMent(railData);
+
                 // getDataFromBack(railData, layoutType);
 
             }
         }
+        checkEntitleMent(railData);
     }
 
     @Override
