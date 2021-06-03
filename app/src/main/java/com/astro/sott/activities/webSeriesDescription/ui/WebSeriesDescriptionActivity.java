@@ -537,9 +537,11 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
             }
         }
+
         if (!isEntitlementCheck) {
             checkEntitleMent(assetToPlay);
         }
+
     }
 
     private void modelCall() {
@@ -666,7 +668,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         });
     }
 
-    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<RailCommonData> railList) {
+    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<
+            RailCommonData> railList) {
 //        if (this.railList!=null){
 //            this.railList.clear();
 //        }
@@ -1266,58 +1269,60 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private boolean isEntitlementCheck = false;
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
-        isEntitlementCheck = true;
+
         String fileId = "";
-        if (railCommonData.getObject() != null)
+        if (railCommonData != null && railCommonData.getObject() != null) {
+            isEntitlementCheck = true;
             fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
-        new EntitlementCheck().checkAssetPurchaseStatus(WebSeriesDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
-            if (apiStatus) {
-                if (purchasedStatus) {
-                    runOnUiThread(() -> {
-                        if (playbackControlValue) {
-                            getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                            getBinding().playText.setText(getResources().getString(R.string.watch_now));
+            new EntitlementCheck().checkAssetPurchaseStatus(WebSeriesDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+                if (apiStatus) {
+                    if (purchasedStatus) {
+                        runOnUiThread(() -> {
+                            if (playbackControlValue) {
+                                getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+
+                            }
+
+                        });
+                        this.vodType = EntitlementCheck.FREE;
+
+                    } else {
+                        if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                            runOnUiThread(() -> {
+                                getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                                getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.VISIBLE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
+
+                            });
+                            this.vodType = EntitlementCheck.SVOD;
+
+                        } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
+                            getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                            getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                             getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.GONE);
-                            getBinding().playText.setTextColor(getResources().getColor(R.color.black));
-
-                        }
-
-                    });
-                    this.vodType = EntitlementCheck.FREE;
-
-                } else {
-                    if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
-                        runOnUiThread(() -> {
-                            getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                            getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                            getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.VISIBLE);
                             getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
 
-                        });
-                        this.vodType = EntitlementCheck.SVOD;
-
-                    } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
-                        getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                        getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                        getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
-                        getBinding().starIcon.setVisibility(View.GONE);
-                        getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                            this.vodType = EntitlementCheck.TVOD;
 
 
-                        this.vodType = EntitlementCheck.TVOD;
-
-
+                        }
                     }
+
+                } else {
+
                 }
-
-            } else {
-
-            }
-        });
-       /* new EntitlementCheck().checkAssetType(WebSeriesDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
+            });
+        }
+        /* new EntitlementCheck().checkAssetType(WebSeriesDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
             if (status) {
                 playerChecksCompleted = true;
                 if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
