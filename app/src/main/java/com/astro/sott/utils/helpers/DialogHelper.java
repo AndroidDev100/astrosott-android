@@ -65,9 +65,9 @@ public class DialogHelper {
         FragmentManager fm = baseActivity.getSupportFragmentManager();
 
         boolean status = UserInfo.getInstance(baseActivity).isActive();
-        if (status) {
+       /* if (status) {*/
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
-            builder.setTitle(context.getResources().getString(R.string.subscribe_header)).setMessage(context.getResources().getString(R.string.subscribe_description))
+            builder.setTitle(context.getResources().getString(R.string.become_vip)).setMessage(context.getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.got_it), (dialog, id) -> {
                         baseActivity.onBackPressed();
@@ -80,9 +80,9 @@ public class DialogHelper {
             bn.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
             Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
             bp.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
-        } else {
+        /*} else {
             showLoginDialog(context);
-        }
+        }*/
     }
 
     public static void openDialougeFornonDialog(final Activity context, boolean isLiveChannel) {

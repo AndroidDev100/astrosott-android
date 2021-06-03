@@ -424,7 +424,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         if (UserInfo.getInstance(getActivity()).isActive()) {
             getBinding().tvVIPUser.setText(getResources().getString(R.string.become_vip));
         } else {
-            getBinding().tvVIPUser.setText(getResources().getString(R.string.guest_user));
+            getBinding().tvVIPUser.setText(getResources().getString(R.string.become_vip));
 
         }
         getBinding().tvBilling.setVisibility(View.GONE);

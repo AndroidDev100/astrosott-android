@@ -678,23 +678,23 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     public void openDialougeForEntitleMent() {
         boolean status = UserInfo.getInstance(this).isActive();
-        if (status) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
-            builder.setTitle(getResources().getString(R.string.subscribe_header)).setMessage(getResources().getString(R.string.subscribe_description))
-                    .setCancelable(true)
-                    .setPositiveButton(getResources().getString(R.string.got_it), (dialog, id) -> {
-                        dialog.cancel();
-                    });
+        /*if (status) {*/
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
+        builder.setTitle(getResources().getString(R.string.become_vip)).setMessage(getResources().getString(R.string.subscribe_description))
+                .setCancelable(true)
+                .setPositiveButton(getResources().getString(R.string.got_it), (dialog, id) -> {
+                    dialog.cancel();
+                });
 
-            AlertDialog alert = builder.create();
-            alert.show();
-            Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-            bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
-            Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
-        } else {
+        AlertDialog alert = builder.create();
+        alert.show();
+        Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
+        Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
+       /* } else {
             showLoginDialog();
-        }
+        }*/
     }
 
     public void showLoginDialog() {
