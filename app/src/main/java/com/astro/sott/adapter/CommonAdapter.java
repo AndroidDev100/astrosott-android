@@ -643,13 +643,13 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 if (totalCount >= 20) {
                     new ToolBarHandler(activity).setContinueWatchingListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
                 } else {
-                    ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
+                 //   ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
                 }
             } else {
                 if (totalCount >= 10) {
                     new ToolBarHandler(activity).setContinueWatchingListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
                 } else {
-                    ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
+                 //   ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -657,7 +657,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (totalCount > 20) {
                 holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
             } else {
-                holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
+               // holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
 
             }
         }

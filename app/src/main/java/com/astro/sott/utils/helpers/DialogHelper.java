@@ -180,11 +180,11 @@ public class DialogHelper {
                         new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class, "");
                         baseActivity.onBackPressed();
                         dialog.cancel();
-                    })
-                    .setNegativeButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                    });
+                   /* .setNegativeButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
                         baseActivity.onBackPressed();
                         dialog.cancel();
-                    });
+                    });*/
 
             AlertDialog alert = builder.create();
             alert.show();

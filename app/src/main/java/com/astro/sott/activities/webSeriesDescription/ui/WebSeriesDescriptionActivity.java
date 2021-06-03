@@ -707,10 +707,10 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class, "");
                     dialog.cancel();
                     //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
-                })
-                .setNegativeButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                    dialog.cancel();
                 });
+              /*  .setNegativeButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                    dialog.cancel();
+                });*/
 
         AlertDialog alert = builder.create();
         alert.show();
