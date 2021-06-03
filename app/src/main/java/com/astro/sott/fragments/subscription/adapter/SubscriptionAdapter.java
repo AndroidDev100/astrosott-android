@@ -50,15 +50,14 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
     @Override
     public void onBindViewHolder(@NonNull SingleItemHolder holder, int position) {
         StringBuilder description = new StringBuilder();
+        holder.binding.packName.setText(packDetailList.get(position).getProductsResponseMessageItem().getDisplayName());
 
         if (packDetailList.get(position).getProductsResponseMessageItem().getRenewable() != null && packDetailList.get(position).getProductsResponseMessageItem().getRenewable()) {
-            holder.binding.packName.setText(packDetailList.get(position).getProductsResponseMessageItem().getDisplayName());
             if (packDetailList.get(position).getProductsResponseMessageItem().getDuration() != null && packDetailList.get(position).getProductsResponseMessageItem().getPeriod() != null) {
                 description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
                 description.append(" recurring subscription at:");
             }
         } else {
-            holder.binding.packName.setText("Buy a one-time-pass");
             if (!eventStartDate.equalsIgnoreCase("")) {
                 description.append("Event Time: " + eventStartDate);
             } else {
