@@ -16,7 +16,9 @@ import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.SubscriptionPackItemBinding;
 import com.astro.sott.modelClasses.InApp.PackDetail;
+import com.astro.sott.usermanagment.modelClasses.getProducts.Attribute;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.List;
@@ -87,6 +89,15 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
             }
         }
 
+        String imageUrl = "";
+        for (Attribute attribute : packDetailList.get(position).getProductsResponseMessageItem().getAttributes()) {
+            if (attribute.getAttributeLabel().equalsIgnoreCase("ImageURL1")) {
+                imageUrl = attribute.getAttributeValue();
+            }
+        }
+        if (!imageUrl.equalsIgnoreCase("")) {
+            ImageHelper.getInstance(fragment).loadImageTo(holder.binding.packImg, imageUrl);
+        }
         holder.binding.packDescription.setText(description);
         holder.binding.btnBuy.setOnClickListener(v -> {
             if (UserInfo.getInstance(fragment).isActive()) {
