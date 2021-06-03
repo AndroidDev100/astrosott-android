@@ -336,8 +336,6 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
         });
 
-        if (playbackControlValue)
-            checkEntitleMent(railData);
 
         callYouMaylAlsoLike();
 
@@ -364,22 +362,23 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             if (apiStatus) {
                 if (purchasedStatus) {
                     runOnUiThread(() -> {
-                        getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                        getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                        if (programAsset != null) {
-                            if (programAsset.getStartDate() <= AppCommonMethods.getCurrentTimeStampLong()) {
-                                getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+                        if (playbackControlValue) {
+                            getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                            getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                            if (programAsset != null) {
+                                if (programAsset.getStartDate() <= AppCommonMethods.getCurrentTimeStampLong()) {
+                                    getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+                                } else {
+                                    getBinding().vipButtonLive.setVisibility(View.GONE);
+                                }
                             } else {
-                                getBinding().vipButtonLive.setVisibility(View.GONE);
+                                getBinding().vipButtonLive.setVisibility(View.VISIBLE);
                             }
-                        } else {
-                            getBinding().vipButtonLive.setVisibility(View.VISIBLE);
-                        }
 //                        getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                        getBinding().starIcon.setVisibility(View.GONE);
-                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+                            getBinding().starIcon.setVisibility(View.GONE);
+                            getBinding().playText.setTextColor(getResources().getColor(R.color.black));
 
-
+                        }
                     });
                     this.vodType = EntitlementCheck.FREE;
 
@@ -692,6 +691,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
             }
         }
+        checkEntitleMent(railData);
     }
 
     private void validateParentalPin(RailCommonData railData) {
@@ -946,6 +946,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
         assetRuleErrorCode = AppLevelConstants.NO_ERROR;
         getDataFromBack(commonData);
+
+        checkEntitleMent(railData);
         getBinding().pager.disableScroll(true);
         getBinding().pager.setOffscreenPageLimit(0);
     }

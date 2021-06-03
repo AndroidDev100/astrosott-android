@@ -172,8 +172,6 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
         setPlayerFragment();
         getMediaType(asset, railData);
         callSpecificAsset(assetId);
-        if (playbackControlValue)
-            checkEntitleMent(railData);
 
 
     }
@@ -422,18 +420,18 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
 
 
         fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
-
         new EntitlementCheck().checkAssetPurchaseStatus(WebEpisodeDetailActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
             this.errorCode = AppLevelConstants.NO_ERROR;
             if (apiStatus) {
                 if (purchasedStatus) {
                     runOnUiThread(() -> {
-                        getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                        getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                        getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                        getBinding().starIcon.setVisibility(View.GONE);
-                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
-
+                        if (playbackControlValue) {
+                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                            getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                            getBinding().starIcon.setVisibility(View.GONE);
+                            getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+                        }
 
                     });
                     this.vodType = EntitlementCheck.FREE;
@@ -979,6 +977,8 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                 titleName = name;
                 isActive = true;
                 isWatchlistedOrNot();
+
+                checkEntitleMent(railData);
                 // getDataFromBack(railData, layoutType);
 
             }
@@ -1158,6 +1158,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
         getBinding().scrollView.scrollTo(0, 0);
         getDataFromBack(commonData, layoutType);
         isActive = UserInfo.getInstance(this).isActive();
+        checkEntitleMent(railData);
     }
 
 

@@ -532,6 +532,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 callwatchlistApi();
                 if (isParentalLocked)
                     assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
+                if (!isEntitlementCheck) {
+                    checkEntitleMent(assetToPlay);
+                }
                 //  callwatchlistApi();
 
             }
@@ -1259,7 +1262,10 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         }
     }
 
+    private boolean isEntitlementCheck = false;
+
     private void checkEntitleMent(final RailCommonData railCommonData) {
+        isEntitlementCheck = true;
         String fileId = "";
         if (railCommonData.getObject() != null)
             fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
@@ -1267,12 +1273,14 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             if (apiStatus) {
                 if (purchasedStatus) {
                     runOnUiThread(() -> {
-                        getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                        getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                        getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
-                        getBinding().starIcon.setVisibility(View.GONE);
-                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+                        if (playbackControlValue) {
+                            getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                            getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                            getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                            getBinding().starIcon.setVisibility(View.GONE);
+                            getBinding().playText.setTextColor(getResources().getColor(R.color.black));
 
+                        }
 
                     });
                     this.vodType = EntitlementCheck.FREE;
@@ -1581,8 +1589,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getPlayBackControl(metas);
             }
         }
-        if (playbackControlValue)
-            checkEntitleMent(assetToPlay);
+
+        checkEntitleMent(assetToPlay);
 
     }
 
@@ -1592,6 +1600,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         railData = commonData;
         getDatafromBack();
         assetToPlay = null;
+        isEntitlementCheck = false;
         getBinding().ivPlayIcon.setVisibility(View.GONE);
         isActive = UserInfo.getInstance(this).isActive();
     }

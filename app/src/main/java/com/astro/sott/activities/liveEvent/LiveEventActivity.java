@@ -171,8 +171,6 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         map = asset.getTags();
         setPlayerFragment();
         getMediaType(asset, railData);
-        if (playbackControlValue)
-            checkEntitleMent(railData);
 
 
     }
@@ -427,11 +425,13 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     if (apiStatus) {
                         if (purchasedStatus) {
                             runOnUiThread(() -> {
-                                getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                                getBinding().playText.setTextColor(getResources().getColor(R.color.black));
-                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                                getBinding().playButton.setVisibility(View.VISIBLE);
-                                getBinding().starIcon.setVisibility(View.GONE);
+                                if (playbackControlValue) {
+                                    getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                                    getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+                                    getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                    getBinding().playButton.setVisibility(View.VISIBLE);
+                                    getBinding().starIcon.setVisibility(View.GONE);
+                                }
                             });
                             this.vodType = EntitlementCheck.FREE;
 
@@ -455,7 +455,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                         getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                         getBinding().playButton.setVisibility(View.VISIBLE);
-                                        getBinding().starIcon.setVisibility(View.GONE);
+                                        getBinding().starIcon.setVisibility(View.VISIBLE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                     });
                                 }
@@ -479,12 +479,13 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     if (apiStatus) {
                         if (purchasedStatus) {
                             runOnUiThread(() -> {
-
-                                getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.live_event_button));
-                                getBinding().playText.setTextColor(getResources().getColor(R.color.heather));
-                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                                getBinding().playButton.setVisibility(View.VISIBLE);
-                                getBinding().starIcon.setVisibility(View.GONE);
+                                if (playbackControlValue) {
+                                    getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.live_event_button));
+                                    getBinding().playText.setTextColor(getResources().getColor(R.color.heather));
+                                    getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                    getBinding().playButton.setVisibility(View.VISIBLE);
+                                    getBinding().starIcon.setVisibility(View.GONE);
+                                }
                             });
                             this.vodType = EntitlementCheck.FREE;
 
@@ -508,7 +509,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                         getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                         getBinding().playButton.setVisibility(View.VISIBLE);
-                                        getBinding().starIcon.setVisibility(View.GONE);
+                                        getBinding().starIcon.setVisibility(View.VISIBLE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                     });
                                 }
@@ -836,6 +837,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             if (NetworkConnectivity.isOnline(this)) {
                 titleName = name;
                 isActive = true;
+                checkEntitleMent(railData);
                 // getDataFromBack(railData, layoutType);
 
             }
@@ -890,6 +892,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
         getDataFromBack(commonData, layoutType);
         isActive = UserInfo.getInstance(this).isActive();
+        checkEntitleMent(railData);
     }
 
 
