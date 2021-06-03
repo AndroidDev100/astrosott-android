@@ -165,6 +165,7 @@
                 android:layout_width="234dp"
                 android:layout_height="48dp"
                 android:layout_alignParentBottom="true"
+                android:textAllCaps="false"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="16dp"
                 android:textColor="@color/title_color"

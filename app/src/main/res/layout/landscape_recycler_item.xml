@@ -104,7 +104,7 @@
             android:layout_gravity="center_vertical"
             android:clipToPadding="false"
             android:orientation="horizontal"
-            android:paddingLeft="8dp"
+            android:paddingLeft="11dp"
             android:paddingRight="6dp"
             android:paddingBottom="5dp"
             app:shimmer_demo_angle="20"

@@ -1491,8 +1491,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     Log.d("StateChange ", "Buffering");
                     if (!isAdsRunning) {
                         getBinding().pBar.setVisibility(View.VISIBLE);
-                    } else {
                         ConvivaManager.convivaPlayerBufferReportRequest();
+                    } else {
+
                     }
                     // log.e("StateChange Buffering");
                     // mPlayerControlsView.setProgressBarVisibility(true);
