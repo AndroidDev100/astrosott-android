@@ -226,8 +226,8 @@ public class ConvivaManager {
         if (isLivePlayer) {
             contentInfo.put(CONTENT_TYPE, LINEAR);
             contentInfo.put(CONTENT_PLAYBACK_TYPE, "LIVE");
-            if (convivaAsset != null && !AppCommonMethods.getPlayerUrl(convivaAsset).equalsIgnoreCase("")) {
-                contentInfo.put(ConvivaSdkConstants.STREAM_URL, AppCommonMethods.getPlayerUrl(convivaAsset));
+            if (convivaAsset != null && !AppCommonMethods.getPlayerUrl(railData).equalsIgnoreCase("")) {
+                contentInfo.put(ConvivaSdkConstants.STREAM_URL, AppCommonMethods.getPlayerUrl(railData));
             } else {
                 contentInfo.put(ConvivaSdkConstants.STREAM_URL, "NA");
             }
