@@ -67,6 +67,7 @@
                 android:text="VIP Entertainment"
                 android:textColor="@color/yellow_orange"
                 android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/currency"
                 android:layout_width="wrap_content"
@@ -74,10 +75,11 @@
                 android:layout_below="@id/package_title"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="14dp"
-                android:visibility="gone"
                 android:fontFamily="@font/heebo_medium"
                 android:textColor="@color/black_text_color"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/package_price"
                 android:layout_width="wrap_content"
@@ -129,9 +131,9 @@
                 android:background="@drawable/package_offer_background"
                 android:fontFamily="@font/heebo_bold"
                 android:padding="8dp"
-                android:text="Subscribe before 11 June 2021 to enjoy  this promo price for up to 3 months."
                 android:textColor="@color/pale_gray"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/package_description"
@@ -155,6 +157,7 @@
                 android:layout_below="@id/package_description"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="10dp"
                 android:divider="@null"
                 android:listSelector="@android:color/transparent"
                 android:nestedScrollingEnabled="false"
@@ -165,12 +168,12 @@
                 android:layout_width="234dp"
                 android:layout_height="48dp"
                 android:layout_alignParentBottom="true"
-                android:textAllCaps="false"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="16dp"
-                android:textColor="@color/title_color"
                 android:background="@drawable/plan_buttons"
                 android:fontFamily="@font/heebo_medium"
+                android:textAllCaps="false"
+                android:textColor="@color/title_color"
                 android:textSize="16sp" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
