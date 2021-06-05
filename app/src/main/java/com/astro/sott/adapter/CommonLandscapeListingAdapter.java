@@ -67,7 +67,9 @@ public class CommonLandscapeListingAdapter extends RecyclerView.Adapter<CommonLa
     public void onBindViewHolder(@NonNull SingleItemRowHolder holder, int i) {
         RailCommonData singleItem = itemsList.get(i);
         holder.landscapeItemBinding.livenowLay.setVisibility(View.GONE);
+        holder.landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
         holder.landscapeItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
+
         try {
 
             if (singleItem.getImages().size() > 0) {
@@ -79,7 +81,8 @@ public class CommonLandscapeListingAdapter extends RecyclerView.Adapter<CommonLa
             }
 
             AppCommonMethods.handleTitleDesc(holder.landscapeItemBinding.titleLayout, holder.landscapeItemBinding.tvTitle, holder.landscapeItemBinding.tvDescription, baseCategory, itemsList.get(i), mContext);
-
+            holder.landscapeItemBinding.titleLayout.setVisibility(View.VISIBLE);
+            holder.landscapeItemBinding.tvTitle.setVisibility(View.VISIBLE);
             if (singleItem.getType() == MediaTypeConstant.getProgram(mContext))
                 getLiveMark(i, holder.landscapeItemBinding);
             else
