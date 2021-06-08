@@ -17,6 +17,7 @@ import com.astro.sott.R
 import com.astro.sott.activities.home.HomeActivity
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity
 import com.astro.sott.activities.search.ui.ActivitySearch
+import com.astro.sott.activities.subscriptionActivity.ui.ProfileSubscriptionActivity
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity
 import com.astro.sott.activities.webview.ui.WebViewActivity
 import com.astro.sott.baseModel.BaseBindingFragment
@@ -192,15 +193,15 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         // packDetailList = java.util.ArrayList()
         val subSkuList = /*ArrayList<String>();*/AppCommonMethods.getSubscriptionSKUs(productsResponseMessage, activity)
         val productsSkuList = ArrayList<String>();//AppCommonMethods.getProductSKUs(productsResponseMessage, activity)
-        if (activity is HomeActivity) {
-            (activity as HomeActivity?)!!.onListOfSKUs(subSkuList, productsSkuList, SKUsListListener {
+        if (activity is ProfileSubscriptionActivity) {
+            (activity as ProfileSubscriptionActivity?)!!.onListOfSKUs(subSkuList, productsSkuList, SKUsListListener {
                 packDetailList = ArrayList<PackDetail>()
                 if (productsResponseMessage != null) {
                     for (responseMessageItem in productsResponseMessage) {
                         if (responseMessageItem?.appChannels != null && responseMessageItem?.appChannels!![0] != null && responseMessageItem?.appChannels!![0]!!.appChannel != null && responseMessageItem?.appChannels!![0]!!.appChannel.equals("Google Wallet", ignoreCase = true) && responseMessageItem?.appChannels!![0]!!.appID != null) {
                             Log.w("avname", activity!!.javaClass.getName() + "")
-                            if (activity is HomeActivity) {
-                                skuDetails = (activity as HomeActivity?)!!.getSubscriptionDetail(responseMessageItem?.appChannels!![0]!!.appID)
+                            if (activity is ProfileSubscriptionActivity) {
+                                skuDetails = (activity as ProfileSubscriptionActivity?)!!.getSubscriptionDetail(responseMessageItem?.appChannels!![0]!!.appID)
                             } else if (activity is SubscriptionDetailActivity) {
                                 if (responseMessageItem.serviceType.equals("ppv", ignoreCase = true)) {
                                     skuDetails = (activity as SubscriptionDetailActivity?)!!.getPurchaseDetail(responseMessageItem?.appChannels!![0]!!.appID)
@@ -252,6 +253,11 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+       /* if(activity!=null)
+            activity?.onBackPressed()*/
+    }
     private fun loadDataFromModel(productsResponseMessage: List<PackDetail>) {
         if (resources.getBoolean(R.bool.isTablet)) {
             setRecyclerview(productsResponseMessage)

@@ -55,6 +55,7 @@ import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.activities.sponsored.ui.SponsoredDetailActivity;
 import com.astro.sott.activities.subscription.ui.SingleLiveChannelSubscriptionActivity;
 import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
+import com.astro.sott.activities.subscriptionActivity.ui.ProfileSubscriptionActivity;
 import com.astro.sott.activities.webEpisodeDescription.WebEpisodeDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
@@ -128,6 +129,12 @@ public class ActivityLauncher {
         Intent intent = new Intent(source, destination);
         intent.putExtra("assetCommonBean", data);
         intent.putExtra("baseCategory", data.getRailDetail());
+        activity.startActivity(intent);
+    }
+
+
+    public void profileSubscription() {
+        Intent intent = new Intent(activity, ProfileSubscriptionActivity.class);
         activity.startActivity(intent);
     }
 

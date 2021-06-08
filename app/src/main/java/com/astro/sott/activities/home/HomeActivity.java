@@ -259,7 +259,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         ApplicationUpdateManager.getInstance(getApplicationContext()).isUpdateAvailable();
 
         createViewModel();
-        intializeBilling();
+        //intializeBilling();
         setClicks();
 //        getIFAID();
 //        loadNativeAd();

@@ -65,12 +65,12 @@ public class DialogHelper {
         FragmentManager fm = baseActivity.getSupportFragmentManager();
 
         boolean status = UserInfo.getInstance(baseActivity).isActive();
-       /* if (status) {*/
+        if (status) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
             builder.setTitle(context.getResources().getString(R.string.become_vip)).setMessage(context.getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
-                    .setPositiveButton(context.getResources().getString(R.string.got_it), (dialog, id) -> {
-                        baseActivity.onBackPressed();
+                    .setPositiveButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                        new ActivityLauncher(baseActivity).profileSubscription();
                         dialog.cancel();
                     });
 
@@ -80,9 +80,9 @@ public class DialogHelper {
             bn.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
             Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
             bp.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
-        /*} else {
+        } else {
             showLoginDialog(context);
-        }*/
+        }
     }
 
     public static void openDialougeFornonDialog(final Activity context, boolean isLiveChannel) {
@@ -174,17 +174,17 @@ public class DialogHelper {
         BaseActivity baseActivity = (BaseActivity) context;
         if (context != null && !context.isFinishing()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
-            builder.setTitle(context.getResources().getString(R.string.lock_Episode)).setMessage(context.getResources().getString(R.string.purchase_dialouge_for_logged_in))
+            builder.setTitle(context.getResources().getString(R.string.become_vip)).setMessage(context.getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.login), (dialog, id) -> {
                         new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class, "");
                         baseActivity.onBackPressed();
                         dialog.cancel();
-                    });
-                   /* .setNegativeButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                        baseActivity.onBackPressed();
+                    })
+                    .setNegativeButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                        new ActivityLauncher(baseActivity).profileSubscription();
                         dialog.cancel();
-                    });*/
+                    });
 
             AlertDialog alert = builder.create();
             alert.show();

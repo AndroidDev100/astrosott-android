@@ -311,7 +311,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void setMetas() {
         getMovieYear();
-        setRailBaseFragment();
+      //  setRailBaseFragment();
     }
 
     private void getMovieYear() {
@@ -538,9 +538,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             }
         }
 
-        if (!isEntitlementCheck) {
-            checkEntitleMent(assetToPlay);
-        }
+        checkEntitleMent(assetToPlay);
+        setRailBaseFragment();
 
     }
 
@@ -685,28 +684,29 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     public void openDialougeForEntitleMent() {
         boolean status = UserInfo.getInstance(this).isActive();
-        /*if (status) {*/
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
-        builder.setTitle(getResources().getString(R.string.become_vip)).setMessage(getResources().getString(R.string.subscribe_description))
-                .setCancelable(true)
-                .setPositiveButton(getResources().getString(R.string.got_it), (dialog, id) -> {
-                    dialog.cancel();
-                });
+        if (status) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
+            builder.setTitle(getResources().getString(R.string.become_vip)).setMessage(getResources().getString(R.string.subscribe_description))
+                    .setCancelable(true)
+                    .setPositiveButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                        new ActivityLauncher(this).profileSubscription();
+                        dialog.cancel();
+                    });
 
-        AlertDialog alert = builder.create();
-        alert.show();
-        Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-        bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
-        Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-        bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
-       /* } else {
+            AlertDialog alert = builder.create();
+            alert.show();
+            Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+            bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
+            Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+            bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
+        } else {
             showLoginDialog();
-        }*/
+        }
     }
 
     public void showLoginDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
-        builder.setTitle(getResources().getString(R.string.lock_Episode)).setMessage(getResources().getString(R.string.purchase_dialouge_for_logged_in))
+        builder.setTitle(getResources().getString(R.string.become_vip)).setMessage(getResources().getString(R.string.subscribe_description))
                 .setCancelable(true)
                 .setPositiveButton(getResources().getString(R.string.login), (dialog, id) -> {
                     //dialog.cancel();
@@ -714,10 +714,12 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class, "");
                     dialog.cancel();
                     //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
-                });
-              /*  .setNegativeButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                    dialog.cancel();
-                });*/
+                })
+                .
+                        setNegativeButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                            new ActivityLauncher(this).profileSubscription();
+                            dialog.cancel();
+                        });
 
         AlertDialog alert = builder.create();
         alert.show();
