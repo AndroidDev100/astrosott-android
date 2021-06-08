@@ -55,6 +55,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
+            debuggable false
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -92,7 +93,6 @@ android {
             buildConfigField "String", "SMS_BASE_URL", "\"https://sus8scm21a.execute-api.ap-southeast-1.amazonaws.com/QA/\""
             buildConfigField "String", "VERIFY_BASE_URL", "\" https://mo98wsla9h.execute-api.ap-southeast-1.amazonaws.com/QA/\""
             buildConfigField "String", "TOKEN_BASE_URL", "\"https://ro840hb5x0.execute-api.ap-southeast-1.amazonaws.com/\""
-            buildConfigField "String", "AUTO_MSISDN_MOCK", "\"http://13.250.154.211/msisdn/fetch/\""
             buildConfigField "String", "VERIFY_ACCOUNT_BASE_URL", "\"https://pqbjim2r2i.execute-api.ap-southeast-1.amazonaws.com/\""
             buildConfigField "String", "GET_CONNECTION_DETAIL_BASE_URL", "\"https://bo18wc4nfl.execute-api.ap-southeast-1.amazonaws.com/\""
 
@@ -113,7 +113,6 @@ android {
 
             buildConfigField "String", "PHOEINIX_BASE_URL", "\"https://rest-sgs1.ott.kaltura.com/api_v3\""
             buildConfigField "String", "TOKEN_BASE_URL", "\"https://ro840hb5x0.execute-api.ap-southeast-1.amazonaws.com/\""
-            buildConfigField "String", "AUTO_MSISDN_MOCK", "\"http://13.250.154.211/msisdn/fetch/\""
             buildConfigField "String", "SMS_BASE_URL", "\"https://qpkkcgi038.execute-api.ap-southeast-1.amazonaws.com/prod/v4/\""
             buildConfigField "String", "VERIFY_BASE_URL", "\"https://qpkkcgi038.execute-api.ap-southeast-1.amazonaws.com/prod/v4/\""
             buildConfigField "String", "GET_CONNECTION_DETAIL_BASE_URL", "\" https://a7fl3pn9ha.execute-api.ap-southeast-1.amazonaws.com/\""

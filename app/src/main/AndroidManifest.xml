@@ -368,7 +368,7 @@
         <receiver
             android:name=".Alarm.MyReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.dialog.dialoggo.MyIntent" />
             </intent-filter>
