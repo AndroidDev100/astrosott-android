@@ -2041,8 +2041,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         player.addListener(this, AdEvent.adBufferEnd, event -> {
             AdEvent.AdBufferEnd adBufferEnd = event;
-            if (isAdsRunning)
-                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
+            if (isAdsRunning) {
+                try {
+                    ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
+                } catch (Exception ignored) {
+
+                }
+            }
             Log.d(TAG, "AD_events-->>" + "AD_BUFFER_END");
             showAdsView();
         });

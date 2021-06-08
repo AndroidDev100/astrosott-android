@@ -891,16 +891,22 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void startPlayer(RailCommonData railCommonData) {
-        callProgressBar();
-        Intent intent = new Intent(WebSeriesDescriptionActivity.this, PlayerActivity.class);
-        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
+        try {
 
-        /*  if (fromNextEpisode) {*/
-        intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
+
+            callProgressBar();
+            Intent intent = new Intent(WebSeriesDescriptionActivity.this, PlayerActivity.class);
+            intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
+
+            /*  if (fromNextEpisode) {*/
+            intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
        /* } else {
             intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) ra);
         }*/
-        startActivity(intent);
+            startActivity(intent);
+        } catch (Exception ignored) {
+
+        }
     }
 
     private void validateParentalPin(RailCommonData railCommonData) {
