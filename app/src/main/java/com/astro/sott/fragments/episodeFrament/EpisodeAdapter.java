@@ -134,9 +134,11 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
             });
             if (singleItem.isEntitled()) {
                 viewHolder.watchlistItemBinding.lockIcon.setVisibility(View.VISIBLE);
+                viewHolder.watchlistItemBinding.billingImage.setVisibility(View.VISIBLE);
                 viewHolder.watchlistItemBinding.episodeTransparent.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.watchlistItemBinding.lockIcon.setVisibility(View.GONE);
+                viewHolder.watchlistItemBinding.billingImage.setVisibility(View.GONE);
                 viewHolder.watchlistItemBinding.episodeTransparent.setVisibility(View.GONE);
             }
             if (value == episodeNumber) {
