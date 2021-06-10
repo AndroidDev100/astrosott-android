@@ -29,11 +29,13 @@ class NetworkSetup {
                     .build()
 
             if (retrofitApi == null) {
-                retrofitApi = Retrofit.Builder()
-                        .baseUrl(BaseConfiguration.instance.clients.getBaseUrl())
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .client(okHttpClient)
-                        .build()
+                if (BaseConfiguration.instance.clients != null) {
+                    retrofitApi = Retrofit.Builder()
+                            .baseUrl(BaseConfiguration.instance.clients?.getBaseUrl())
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .client(okHttpClient)
+                            .build()
+                }
             }
             return retrofitApi
         }
@@ -52,7 +54,7 @@ class NetworkSetup {
                 override fun intercept(chain: Interceptor.Chain): Response {
                     val original = chain.request()
                     // Request customization: add request headers
-                    val requestBuilder = BaseConfiguration.instance.clients.getOVPApiKey()?.let {
+                    val requestBuilder = BaseConfiguration.instance.clients?.getOVPApiKey()?.let {
                         original.newBuilder()
                                 .addHeader("x-api-key", it)
                     }
@@ -67,13 +69,14 @@ class NetworkSetup {
                     .addInterceptor(loggingInterceptor)
 
             val client = httpClient.build()
-
-            userMngmtRetrofit = Retrofit.Builder()
-                    .baseUrl(BaseConfiguration.instance.clients.getUserMngmntBaseUrl())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(client)
-                    .build()
+            if (BaseConfiguration.instance.clients != null) {
+                userMngmtRetrofit = Retrofit.Builder()
+                        .baseUrl(BaseConfiguration.instance.clients?.getUserMngmntBaseUrl())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                        .client(client)
+                        .build()
+            }
 
             return userMngmtRetrofit
         }
@@ -92,7 +95,8 @@ class NetworkSetup {
                 val original = chain.request()
 
                 // Request customization: add request headers
-                val requestBuilder = BaseConfiguration.instance.clients.getOVPApiKey()?.let {
+
+                val requestBuilder = BaseConfiguration.instance.clients?.getOVPApiKey()?.let {
                     original.newBuilder()
                             .addHeader("x-api-key", it)
                             .addHeader("x-auth", token)
@@ -110,14 +114,14 @@ class NetworkSetup {
                 .addInterceptor(loggingInterceptor)
 
         val client = httpClient.build()
-
-        subscriptionManagementRetrofit = Retrofit.Builder()
-                .baseUrl(BaseConfiguration.instance.clients.getUserMngmntBaseUrl())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(client)
-                .build()
-
+        if (BaseConfiguration.instance.clients != null) {
+            subscriptionManagementRetrofit = Retrofit.Builder()
+                    .baseUrl(BaseConfiguration.instance.clients?.getUserMngmntBaseUrl())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(client)
+                    .build()
+        }
         return subscriptionManagementRetrofit
     }
 }
