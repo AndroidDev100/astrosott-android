@@ -6509,7 +6509,7 @@ public class KsServices {
     }
 
     public void getMsisdn(AutoMsisdnCallback autoMsisdnCallback) {
-        String url = BuildConfig.AUTO_MSISDN_MOCK;
+        String url ="";
         ApiInterface endpoint = RequestConfig.getClient(url).create(ApiInterface.class);
         Call<OtpModel> call = endpoint.getMsisdn();
         call.enqueue(new Callback<OtpModel>() {

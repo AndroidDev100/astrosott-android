@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout >
+<layout>
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="@dimen/related_item_width"
@@ -8,43 +9,57 @@
         android:background="@color/transparentColor"
         android:orientation="vertical">
 
-
-        <androidx.cardview.widget.CardView
+        <RelativeLayout
             android:id="@+id/card_view"
             android:layout_width="@dimen/related_item_width"
-            android:layout_height="@dimen/related_item_height"
-            app:cardCornerRadius="9dp">
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/related_item_width"
+                android:layout_height="@dimen/related_item_height"
+                android:layout_marginTop="@dimen/_2sdp"
+                app:cardCornerRadius="9dp">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_landscape_placeholder"
+                    android:contentDescription="@string/contentDescription"
+                    android:scaleType="fitXY" />
+
+                <include
+                    android:id="@+id/metas"
+                    layout="@layout/metas_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="top|end"
+                    android:visibility="visible" />
+            </androidx.cardview.widget.CardView>
 
             <ImageView
-                android:id="@+id/image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/ic_landscape_placeholder"
-                android:scaleType="fitXY"
-                android:contentDescription="@string/contentDescription" />
-
-            <include
-                android:id="@+id/metas"
-                layout="@layout/metas_layout"
-                android:layout_width="match_parent"
-                android:layout_gravity="top|end"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:visibility="visible" />
-        </androidx.cardview.widget.CardView>
+                android:id="@+id/billing_image"
+                android:layout_width="32dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/vip_billing"
+                android:contentDescription="@string/contentDescription"
+                android:elevation="2dp"
+                android:visibility="gone"/>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/lanscape_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/card_view"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
-            android:layout_below="@id/card_view"
             android:fontFamily="@font/heebo_regular"
             android:maxLines="1"
             android:textColor="@color/white" />
-
 
 
     </RelativeLayout>

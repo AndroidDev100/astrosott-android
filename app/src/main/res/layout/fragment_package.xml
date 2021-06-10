@@ -63,6 +63,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/heebo_bold"
+                android:layout_centerHorizontal="true"
                 android:letterSpacing=".19"
                 android:text="VIP Entertainment"
                 android:textColor="@color/yellow_orange"

@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPosterListingAdapter.SingleItemRowHolder> {
+public class CommonPosterListingAdapter extends RecyclerView.Adapter<CommonPosterListingAdapter.SingleItemRowHolder> {
 
     private final List<RailCommonData> itemsList;
     private final Activity mContext;
@@ -45,13 +45,14 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
     ResponseDmsModel responseDmsModel;
     MediaTypes mediaTypes;
     BaseCategory baseCategory;
+
     public CommonPosterListingAdapter(Activity context,
                                       List<RailCommonData> itemsList, int type, String railName, BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.layoutType = type;
         strRailName = railName;
-        this.baseCategory=baseCat;
+        this.baseCategory = baseCat;
         try {
             this.detailRailClick = ((DetailRailClick) context);
             responseDmsModel = AppCommonMethods.callpreference(mContext);
@@ -63,22 +64,22 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
     }
 
     @Override
-    public  CommonPosterListingAdapter.SingleItemRowHolder onCreateViewHolder(ViewGroup parent, int i) {
+    public CommonPosterListingAdapter.SingleItemRowHolder onCreateViewHolder(ViewGroup parent, int i) {
         PosterlistingItemBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
                 R.layout.posterlisting_item, parent, false);
-        return new  CommonPosterListingAdapter.SingleItemRowHolder(binding);
+        return new CommonPosterListingAdapter.SingleItemRowHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder( CommonPosterListingAdapter.SingleItemRowHolder holder, int i) {
+    public void onBindViewHolder(CommonPosterListingAdapter.SingleItemRowHolder holder, int i) {
 
         RailCommonData singleItem = itemsList.get(i);
         try {
             if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 //holder.potraitItemBinding.setImage(assetCommonImages);
-                ImageHelper.getInstance(holder.potraitItemBinding.itemImage.getContext()).loadImageTo(holder.potraitItemBinding.itemImage, assetCommonImages.getImageUrl(),R.drawable.ic_potrait_placeholder);
+                ImageHelper.getInstance(holder.potraitItemBinding.itemImage.getContext()).loadImageTo(holder.potraitItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.ic_potrait_placeholder);
             }
         } catch (Exception ignored) {
 
@@ -88,25 +89,25 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
             holder.potraitItemBinding.metas.billingImage.setVisibility(View.GONE);
             setRecycler(holder.potraitItemBinding.metas.recyclerView, singleItem.getObject().getTags());
             AppCommonMethods.setBillingUi(holder.potraitItemBinding.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
-            AppCommonMethods.handleTitleDesc(holder.potraitItemBinding.mediaTypeLayout.metaLayout,holder.potraitItemBinding.mediaTypeLayout.lineOne,holder.potraitItemBinding.mediaTypeLayout.lineTwo,baseCategory,itemsList.get(i),mContext);
+            AppCommonMethods.handleTitleDesc(holder.potraitItemBinding.mediaTypeLayout.metaLayout, holder.potraitItemBinding.mediaTypeLayout.lineOne, holder.potraitItemBinding.mediaTypeLayout.lineTwo, baseCategory, itemsList.get(i), mContext);
             holder.potraitItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
-            if (itemsList.get(i).getType()== MediaTypeConstant.getProgram(mContext)){
+            if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
                 holder.potraitItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
-                holder.potraitItemBinding.mediaTypeLayout.lineTwo.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate())+"");
-            }else {
+                holder.potraitItemBinding.mediaTypeLayout.lineTwo.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + "");
+            } else {
                 holder.potraitItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                 holder.potraitItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
 
-           // holder.potraitItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
+        // holder.potraitItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
 
 
         //holder.potraitItemBinding.setTile(singleItem);
-       // mediaTypeCondition(i, holder.potraitItemBinding);
+        // mediaTypeCondition(i, holder.potraitItemBinding);
     }
 
     private void setRecycler(RecyclerView recyclerView, Map<String, MultilingualStringValueArray> tags) {
@@ -125,7 +126,7 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
             potraitItemBinding.mediaTypeLayout.metaLayout.setVisibility(View.GONE);
 
         } else if (Integer.parseInt(mediaTypes.getEpisode()) == itemsList.get(0).getType()
-               ) {
+        ) {
             potraitItemBinding.mediaTypeLayout.lineOne.setText("E" + 1 + " | " + itemsList.get(position).getName());
             potraitItemBinding.mediaTypeLayout.lineTwo.setVisibility(View.GONE);
             potraitItemBinding.exclusiveLayout.flExclusive.setVisibility(View.GONE);
@@ -136,7 +137,7 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
 
 
             episodeNumber(position, potraitItemBinding);
-        }  else if (Integer.parseInt(mediaTypes.getLinear()) == itemsList.get(0).getType()
+        } else if (Integer.parseInt(mediaTypes.getLinear()) == itemsList.get(0).getType()
                 || Integer.parseInt(mediaTypes.getTrailer()) == itemsList.get(0).getType()) {
             potraitItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
             potraitItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(position).getName());
@@ -203,10 +204,10 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter< CommonPost
             potraitItemBinding = potraitItemBind;
             final String name = mContext.getClass().getSimpleName();
             potraitItemBinding.getRoot().setOnClickListener(view -> {
-             //   GAManager.getInstance().setEvent(GAManager.BROWSING, GAManager.MORE_RESULT_CLICKED, GAManager.RAIL_NAVIGATION, GAManager.zero);
+                //   GAManager.getInstance().setEvent(GAManager.BROWSING, GAManager.MORE_RESULT_CLICKED, GAManager.RAIL_NAVIGATION, GAManager.zero);
 
                 try {
-                    new ActivityLauncher(mContext).railClickCondition(strMenuNavigationName, strRailName, name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType,itemsList, (_url, position, type, commonData) -> detailRailClick.detailItemClicked(_url, position, type, commonData));
+                    new ActivityLauncher(mContext).railClickCondition(strMenuNavigationName, strRailName, name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType, itemsList, (_url, position, type, commonData) -> detailRailClick.detailItemClicked(_url, position, type, commonData));
                 } catch (Exception ignored) {
 
                 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data />
 
@@ -20,52 +20,69 @@
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:id="@+id/play_lay"
                 android:layout_width="155dp"
-                android:layout_height="88dp"
-                android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:gravity="center_vertical">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/landscape_image"
+                <RelativeLayout
+                    android:id="@+id/play_lay"
                     android:layout_width="155dp"
                     android:layout_height="88dp"
-                    android:background="@drawable/ic_landscape_placeholder"
-                    android:scaleType="fitXY"
-                    android:contentDescription="@string/contentDescription" />
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
 
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_alignParentBottom="true"
-                    android:progressDrawable="@drawable/gradient_progess"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/landscape_image"
+                        android:layout_width="155dp"
+                        android:layout_height="88dp"
+                        android:background="@drawable/ic_landscape_placeholder"
+                        android:contentDescription="@string/contentDescription"
+                        android:scaleType="fitXY" />
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_alignParentBottom="true"
+                        android:progressDrawable="@drawable/gradient_progess"
+                        android:visibility="gone" />
+
+
+                    <FrameLayout
+                        android:id="@+id/episode_transparent"
+                        android:layout_width="155dp"
+                        android:layout_height="88dp"
+                        android:background="@color/episode_transparent"
+                        android:visibility="gone">
+
+                    </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/lock_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ic_lock"
+                        android:contentDescription="@string/contentDescription"
+                        android:visibility="gone">
+
+                    </ImageView>
+
+
+                </RelativeLayout>
+                <ImageView
+                    android:id="@+id/billing_image"
+                    android:layout_width="32dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/vip_billing"
+                    android:contentDescription="@string/contentDescription"
+                    android:elevation="2dp"
                     android:visibility="gone" />
-
-
-
-                <FrameLayout
-                    android:id="@+id/episode_transparent"
-                    android:layout_width="155dp"
-                    android:layout_height="88dp"
-                    android:background="@color/episode_transparent"
-                    android:visibility="gone">
-
-                </FrameLayout>
-                <ImageView
-                    android:id="@+id/lock_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:background="@drawable/ic_lock"
-                    android:contentDescription="@string/contentDescription">
-
-                </ImageView>
-
             </RelativeLayout>
 
 
@@ -133,10 +150,10 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="16dp"
                 android:background="@color/blue_bg"
+                android:contentDescription="@string/contentDescription"
                 android:rotation="270"
                 android:src="@drawable/ic_baseline_arrow_back"
-                android:visibility="gone"
-                android:contentDescription="@string/contentDescription" />
+                android:visibility="gone" />
 
 
             <!--            </LinearLayout>-->
