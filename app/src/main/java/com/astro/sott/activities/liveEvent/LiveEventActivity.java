@@ -442,7 +442,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                         getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                         getBinding().playButton.setVisibility(View.VISIBLE);
-                                        getBinding().starIcon.setVisibility(View.VISIBLE);
+                                        getBinding().starIcon.setVisibility(View.GONE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
                                     });
@@ -509,7 +509,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                         getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                         getBinding().playButton.setVisibility(View.VISIBLE);
-                                        getBinding().starIcon.setVisibility(View.VISIBLE);
+                                        getBinding().starIcon.setVisibility(View.GONE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                     });
                                 }

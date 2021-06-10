@@ -1302,7 +1302,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                 getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                 getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
-                                getBinding().starIcon.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
 

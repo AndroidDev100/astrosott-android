@@ -390,7 +390,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                             getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                             getBinding().vipButtonLive.setVisibility(View.VISIBLE);
 //                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.VISIBLE);
+                            getBinding().starIcon.setVisibility(View.GONE);
                             getCridDetail();
                         });
                         this.vodType = EntitlementCheck.SVOD;
