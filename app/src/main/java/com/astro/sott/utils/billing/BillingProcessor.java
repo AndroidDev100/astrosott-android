@@ -39,6 +39,9 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +80,9 @@ public class BillingProcessor implements PurchasesUpdatedListener {
         return intent;
     }
 
-    /** A reference to BillingClient */
+    /**
+     * A reference to BillingClient
+     */
     public void initializeBillingProcessor() {
         myBillingClient =
                 BillingClient.newBuilder(mActivity.get())
@@ -90,7 +95,9 @@ public class BillingProcessor implements PurchasesUpdatedListener {
         connectToPlayBillingService();
     }
 
-    /** Initiates Google Play Billing Service. */
+    /**
+     * Initiates Google Play Billing Service.
+     */
     private void connectToPlayBillingService() {
         PrintLogging.printLog(TAG, "connectToPlayBillingService");
         if (!myBillingClient.isReady()) {
@@ -157,8 +164,8 @@ public class BillingProcessor implements PurchasesUpdatedListener {
      *
      * @param billingResult to identify the states of Billing Client Responses.
      * @see <a
-     *     href="https://developer.android.com/google/play/billing/billing_reference.html">Google
-     *     Play InApp Purchase Response Types Guide</a>
+     * href="https://developer.android.com/google/play/billing/billing_reference.html">Google
+     * Play InApp Purchase Response Types Guide</a>
      */
     public static final String TAG = BillingProcessor.class.getName();
 
@@ -765,6 +772,37 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                 }
 
                 //PurchaseHandler.getInstance().checkPurchaseHistory(purchases,myBillingClient);
+            }
+        }
+
+    }
+
+    public void queryPurchases(Activity context) {
+        if (UserInfo.getInstance(context).isActive()) {
+            if (myBillingClient != null) {
+                final Purchase.PurchasesResult purchasesResult =
+                        myBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+
+                final List<Purchase> purchases = new ArrayList<>();
+                if (purchasesResult.getPurchasesList() != null) {
+                    purchases.addAll(purchasesResult.getPurchasesList());
+                }
+
+                if (purchases.size() > 0) {
+                    for (Purchase purchaseItem : purchases) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(purchaseItem.getOriginalJson());
+                            Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
+                            if (!isAcknowledged) {
+                                acknowledgeNonConsumablePurchasesAsync(purchaseItem);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                } else {
+                }
             }
         }
 
