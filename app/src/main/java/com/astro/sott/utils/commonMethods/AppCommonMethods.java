@@ -2321,9 +2321,9 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
+  /*      StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+        StringBuilderHolder.getInstance().append("'");*/
 
         StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);
@@ -2397,9 +2397,9 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
+      /*  StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+        StringBuilderHolder.getInstance().append("'");*/
 
         StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);
@@ -2473,9 +2473,9 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
+      /*  StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+        StringBuilderHolder.getInstance().append("'");*/
 
         StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);

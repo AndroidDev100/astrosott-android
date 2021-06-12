@@ -169,7 +169,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     };
 
     private void setProfileFragment() {
-        FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Navigation", "PROFILE");
+        FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Navigation", "Profile");
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
@@ -711,10 +711,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private void intializeBilling() {
         billingProcessor = new BillingProcessor(HomeActivity.this, HomeActivity.this);
         billingProcessor.initializeBillingProcessor();
-        new Handler().postDelayed(() -> {
-            billingProcessor.queryPurchases(this);
-        }, 4000);
-
         // stopProcessor();
     }
 
@@ -763,6 +759,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     @Override
     public void onBillingInitialized() {
+        billingProcessor.queryPurchases(this);
 
     }
 

@@ -671,7 +671,7 @@ public class AssetContent {
 
         if (stringBuilder.length() > 0) {
             genre = stringBuilder.toString();
-            genre = genre.substring(0, genre.length() - 2);
+            genre = genre.substring(0, genre.length() - 1);
 
         } else {
             genre = "";
@@ -781,7 +781,7 @@ public class AssetContent {
 
         if (stringBuilder.length() > 0) {
             genre = stringBuilder.toString();
-            genre = genre.substring(0, genre.length() - 2);
+            genre = genre.substring(0, genre.length() - 1);
 
         } else {
             genre = "";

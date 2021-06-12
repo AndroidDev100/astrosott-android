@@ -791,10 +791,11 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                 if (purchases.size() > 0) {
                     for (Purchase purchaseItem : purchases) {
                         try {
+
                             JSONObject jsonObject = new JSONObject(purchaseItem.getOriginalJson());
                             Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
                             if (!isAcknowledged) {
-                                acknowledgeNonConsumablePurchasesAsync(purchaseItem);
+                                acknowledgeNonConsumablePurchases(purchaseItem);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -806,6 +807,30 @@ public class BillingProcessor implements PurchasesUpdatedListener {
             }
         }
 
+    }
+
+
+
+    public void acknowledgeNonConsumablePurchases(Purchase purchase) {
+        final AcknowledgePurchaseParams params =
+                AcknowledgePurchaseParams.newBuilder()
+                        .setPurchaseToken(purchase.getPurchaseToken())
+                        .build();
+        final AcknowledgePurchaseResponseListener listener =
+                billingResult -> {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        PrintLogging.printLog(
+                                TAG,
+                                "onAcknowledgePurchaseResponse: "
+                                        + billingResult.getResponseCode());
+                    } else {
+                        PrintLogging.printLog(
+                                TAG,
+                                "onAcknowledgePurchaseResponse: "
+                                        + billingResult.getDebugMessage());
+                    }
+                };
+        executeServiceRequest(() -> myBillingClient.acknowledgePurchase(params, listener));
     }
 
     public BillingClient getMyBillingClient() {
