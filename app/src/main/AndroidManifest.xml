@@ -27,10 +27,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:resizeableActivity="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/MyMaterialTheme"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
@@ -46,7 +46,7 @@
         <activity
             android:name=".activities.subscriptionActivity.ui.SubscriptionDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="locked"/>
+            android:screenOrientation="locked" />
         <activity android:name=".activities.forgotPassword.ui.IsThisYouActivity" />
         <activity android:name=".activities.search.ui.SearchKeywordActivity" />
         <activity android:name=".activities.manageDevice.ui.ManageDeviceActivity" />
@@ -310,22 +310,26 @@
             </intent-filter>
         </service>
         -->
-        <service android:name=".thirdParty.fcm.SookaFirebaseMessagingService">
+        <!-- <service android:name=".thirdParty.fcm.SookaFirebaseMessagingService">
+             <intent-filter>
+                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+             </intent-filter>
+         </service>-->
+        <service android:name="com.clevertap.android.sdk.pushnotification.fcm.FcmMessageListenerService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <meta-data
             android:name="FCM_SENDER_ID"
             android:value="@string/fcm_sender_id" />
 
-        <service android:name=".thirdParty.fcm.SookaFirebaseInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-
+        <!-- <service android:name=".thirdParty.fcm.SookaFirebaseInstanceIdService">
+             <intent-filter>
+                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+             </intent-filter>
+         </service>
+ -->
         <activity
             android:name=".activities.appSettings.ui.AppSettingsActivity"
             android:screenOrientation="locked" />
