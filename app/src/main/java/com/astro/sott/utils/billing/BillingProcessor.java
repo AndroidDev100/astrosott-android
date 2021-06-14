@@ -362,9 +362,13 @@ public class BillingProcessor implements PurchasesUpdatedListener {
     public void initiatePurchaseFlow(@NonNull Activity activity, @NonNull SkuDetails skuDetails) {
         if (skuDetails.getType().equals(BillingClient.SkuType.SUBS) && areSubscriptionsSupported()
                 || skuDetails.getType().equals(BillingClient.SkuType.INAPP)) {
+            final BillingFlowParams purchaseParams;
+            if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase("")) {
+                purchaseParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId()).build();
+            } else {
+                purchaseParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build();
 
-            final BillingFlowParams purchaseParams =
-                    BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build();
+            }
             //myBillingClient.launchPriceChangeConfirmationFlow();
 
             executeServiceRequest(
@@ -400,11 +404,21 @@ public class BillingProcessor implements PurchasesUpdatedListener {
             if (oldSkuDetails != null) {
                 if (oldPrice > newPrice) {
                     Log.w("priceValues", "deffred");
-                    BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
-                            .setOldSku(oldSKU.trim(), oldPurchaseToken.trim())
-                            .setReplaceSkusProrationMode(DEFERRED)
-                            .setSkuDetails(skuDetails)
-                            .build();
+                    BillingFlowParams purchaseParams;
+                    if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase("")) {
+                        purchaseParams = BillingFlowParams.newBuilder()
+                                .setOldSku(oldSKU.trim(), oldPurchaseToken.trim())
+                                .setReplaceSkusProrationMode(DEFERRED)
+                                .setSkuDetails(skuDetails)
+                                .setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId())
+                                .build();
+                    } else {
+                        purchaseParams = BillingFlowParams.newBuilder()
+                                .setOldSku(oldSKU.trim(), oldPurchaseToken.trim())
+                                .setReplaceSkusProrationMode(DEFERRED)
+                                .setSkuDetails(skuDetails)
+                                .build();
+                    }
 
                     executeServiceRequest(
                             () -> {
@@ -413,11 +427,21 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
                             });
                 } else {
-                    BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
-                            .setOldSku(oldSKU, oldPurchaseToken)
-                            .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
-                            .setSkuDetails(skuDetails)
-                            .build();
+                    BillingFlowParams purchaseParams;
+                    if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase("")) {
+                        purchaseParams = BillingFlowParams.newBuilder()
+                                .setOldSku(oldSKU, oldPurchaseToken)
+                                .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+                                .setSkuDetails(skuDetails)
+                                .setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId())
+                                .build();
+                    } else {
+                        purchaseParams = BillingFlowParams.newBuilder()
+                                .setOldSku(oldSKU, oldPurchaseToken)
+                                .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+                                .setSkuDetails(skuDetails)
+                                .build();
+                    }
 
                     executeServiceRequest(
                             () -> {
@@ -427,11 +451,21 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                             });
                 }
             } else {
-                BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
-                        .setOldSku(oldSKU, oldPurchaseToken)
-                        .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
-                        .setSkuDetails(skuDetails)
-                        .build();
+                BillingFlowParams purchaseParams;
+                if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase("")) {
+                    purchaseParams = BillingFlowParams.newBuilder()
+                            .setOldSku(oldSKU, oldPurchaseToken)
+                            .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+                            .setSkuDetails(skuDetails)
+                            .setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId())
+                            .build();
+                } else {
+                    purchaseParams = BillingFlowParams.newBuilder()
+                            .setOldSku(oldSKU, oldPurchaseToken)
+                            .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+                            .setSkuDetails(skuDetails)
+                            .build();
+                }
 
                 executeServiceRequest(
                         () -> {
