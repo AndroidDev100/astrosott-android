@@ -119,7 +119,7 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                 bannerBinding.bulletsList.adapter = adapter
                 bannerBinding.btnChooseMe.setOnClickListener(object : View.OnClickListener {
                     override fun onClick(v: View?) {
-                        onPackageChooseClickListener.onPackageClicked(position, packagesList[position], activePlan)
+                        onPackageChooseClickListener.onPackageClicked(position, packagesList[position], activePlan,packagesList[position].productsResponseMessageItem.displayName,skuModel.price)
                     }
 
                 })

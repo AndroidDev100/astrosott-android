@@ -132,7 +132,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
     }
 
     @Override
-    public void onCardClicked(String productId, String serviceType, String activePlan) {
+    public void onCardClicked(String productId, String serviceType, String activePlan,String name,String price) {
         if (serviceType.equalsIgnoreCase("ppv")) {
             billingProcessor.purchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {

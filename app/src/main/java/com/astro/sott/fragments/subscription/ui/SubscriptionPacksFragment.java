@@ -244,7 +244,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
 
 
     @Override
-    public void onCardClicked(String productId, String serviceType, String a) {
+    public void onCardClicked(String productId, String serviceType, String a,String name,String price) {
 
     }
 }

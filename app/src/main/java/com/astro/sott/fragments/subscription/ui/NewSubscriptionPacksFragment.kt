@@ -346,9 +346,9 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         }
     }
 
-    override fun onPackageClicked(position: Int, packDetails: PackDetail, activePlan: String?) {
+    override fun onPackageClicked(position: Int, packDetails: PackDetail, activePlan: String?, planName: String?, price: String?) {
         if (UserInfo.getInstance(context).isActive) {
-            cardClickedCallback.onCardClicked(packDetails.skuDetails?.sku, packDetailList[position].productsResponseMessageItem.serviceType, activePlan)
+            cardClickedCallback.onCardClicked(packDetails.skuDetails?.sku, packDetailList[position].productsResponseMessageItem.serviceType, activePlan, planName, price)
         } else {
             ActivityLauncher(activity!!).astrLoginActivity(activity!!, AstrLoginActivity::class.java, "")
         }

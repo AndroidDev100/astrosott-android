@@ -26,6 +26,7 @@ import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.InAppProcessListener;
@@ -170,7 +171,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     }
 
     @Override
-    public void onCardClicked(String productId, String serviceType, String active) {
+    public void onCardClicked(String productId, String serviceType, String active, String planName, String price) {
         if (serviceType.equalsIgnoreCase("ppv")) {
             billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {
@@ -244,7 +245,11 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         } else {
             orderId = "";
         }
+        try {
+            //  FirebaseEventManager.getFirebaseInstance(this).packageEvent();
+        } catch (Exception e) {
 
+        }
         subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
             if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
