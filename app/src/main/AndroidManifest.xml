@@ -311,22 +311,26 @@
             </intent-filter>
         </service>
         -->
-        <service android:name=".thirdParty.fcm.SookaFirebaseMessagingService">
+        <!-- <service android:name=".thirdParty.fcm.SookaFirebaseMessagingService">
+             <intent-filter>
+                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+             </intent-filter>
+         </service>-->
+        <service android:name="com.clevertap.android.sdk.pushnotification.fcm.FcmMessageListenerService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <meta-data
             android:name="FCM_SENDER_ID"
             android:value="@string/fcm_sender_id" />
 
-        <service android:name=".thirdParty.fcm.SookaFirebaseInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-
+        <!-- <service android:name=".thirdParty.fcm.SookaFirebaseInstanceIdService">
+             <intent-filter>
+                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+             </intent-filter>
+         </service>
+ -->
         <activity
             android:name=".activities.appSettings.ui.AppSettingsActivity"
             android:screenOrientation="locked" />
