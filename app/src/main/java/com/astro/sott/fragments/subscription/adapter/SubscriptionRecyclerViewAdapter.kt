@@ -42,6 +42,13 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                     bannerBinding.text.visibility = View.VISIBLE
                     bannerBinding.text.setPadding(0, SliderPotrait.dp2px(activity, 6f), 0, SliderPotrait.dp2px(activity, 6f))
                 }
+                if (position == 1) {
+                    bannerBinding.btnChooseMe.setTextColor(activity.resources.getColor(R.color.title_color))
+                    bannerBinding.text.setTextColor(activity.resources.getColor(R.color.title_color))
+                }else{
+                    bannerBinding.btnChooseMe.setTextColor(activity.resources.getColor(R.color.black_text_color))
+                    bannerBinding.text.setTextColor(activity.resources.getColor(R.color.black_text_color))
+                }
                 bannerBinding.packagePriceOld.visibility = View.GONE
                 val rainbow = activity.resources.getIntArray(R.array.packages_colors)
                 val currentColor = rainbow[position % rainbow.size]
