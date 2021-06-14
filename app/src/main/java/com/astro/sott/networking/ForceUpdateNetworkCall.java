@@ -38,7 +38,7 @@ public class ForceUpdateNetworkCall {
             if (responseDmsModel.getParams() != null) {
                 if (responseDmsModel.getParams().getUpdatedVersion() != null) {
                     appVersion = responseDmsModel.getParams().getUpdatedVersion();
-                  //  String appVersion = "21.3.1(09)";
+                    //  String appVersion = "21.6.7(15)";
                     appVersion = appVersion.trim();
                     if (!appVersion.equalsIgnoreCase("")) {
                         if (appVersion.contains(".")) {
@@ -50,7 +50,7 @@ public class ForceUpdateNetworkCall {
                                 updateVersion = Integer.parseInt(appVersion);
                                 String version = BuildConfig.VERSION_NAME.replace(".", "");
                                 version = version.replace("(", "");
-                                version =version.replace(")", "");
+                                version = version.replace(")", "");
 
                                 appCVesion = Integer.parseInt(version);
                                 versionValidator.version(false, appCVesion, updateVersion);

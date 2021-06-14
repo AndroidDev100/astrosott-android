@@ -896,9 +896,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                         if (BuildConfig.FLAVOR.equalsIgnoreCase("QA")) {
                             final String appPackageName = getPackageName();
                             try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                             } catch (android.content.ActivityNotFoundException anfe) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                             }
 
                         } else if (isDmsFailed) {
@@ -907,9 +907,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                         } else {
                             final String appPackageName = getPackageName();
                             try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                             } catch (android.content.ActivityNotFoundException anfe) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                             }
 
                         }
@@ -923,7 +923,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //            Button bn = alert.getButton(android.content.DialogInterface.BUTTON_NEGATIVE);
 //            bn.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
             Button bp = alert.getButton(android.content.DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+            bp.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.aqua_marine));
 
         }
 
