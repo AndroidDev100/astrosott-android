@@ -374,7 +374,10 @@ public class ConvivaManager {
     }
 
     public static void convivaPlayerSetBitRate(long bitrate) {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.BITRATE, Integer.parseInt(bitrate + ""));
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.BITRATE, Integer.parseInt(bitrate + ""));
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaPlayerStoppedReportRequest() {

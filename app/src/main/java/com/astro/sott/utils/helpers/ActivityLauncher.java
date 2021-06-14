@@ -731,10 +731,13 @@ public class ActivityLauncher {
     }
 
     public void liveEventActivity(RailCommonData commonData, Activity source) {
-        Intent intent = new Intent(source, LiveEventActivity.class);
-        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
-        intent.putExtra("asset_ids", commonData.getObject().getId());
-        activity.startActivity(intent);
+        try {
+            Intent intent = new Intent(source, LiveEventActivity.class);
+            intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
+            intent.putExtra("asset_ids", commonData.getObject().getId());
+            activity.startActivity(intent);
+        } catch (Exception ignored) {
+        }
     }
 
     public void detailActivity(Activity
