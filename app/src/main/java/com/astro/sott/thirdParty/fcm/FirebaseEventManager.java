@@ -19,8 +19,12 @@ public class FirebaseEventManager {
     public static final String EDIT_PROFILE = "Edit Profile";
     public static final String EDIT_EMAIL = "Edit Email";
     public static final String EDIT_PASSWORD = "Edit Password";
-
-
+    public static final String APP_LANGUAGE = "App Language";
+    public static final String SUBTITLE_LANGUAGE = "Subtitle Language";
+    public static final String AUDIO_LANGUAGE = "Audio Language";
+    public static final String SIGN_UP = "Sign Up";
+    public static final String LOGIN = "Login";
+    public static final String MANAGE_SUBSCRIPTION = "Manage Subscription";
 
 
     public static final String MANAGE_DEVICES = " Manage Devices";
@@ -74,6 +78,14 @@ public class FirebaseEventManager {
         bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, itemList);
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, title);
         mFirebaseAnalytics.logEvent(eventName, bundle);
+    }
+
+    public void languageBtnEvent(String lang, String category) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, " Language Settings");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, category);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, lang);
+        mFirebaseAnalytics.logEvent(BTN_CLICK, bundle);
     }
 
     public void userLoginEvent(String customerId, String userType) {

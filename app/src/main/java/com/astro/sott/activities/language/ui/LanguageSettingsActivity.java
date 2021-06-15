@@ -134,12 +134,14 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
 
         } else if (clickedFrom == 2) {
             if (audioLanguageList != null && audioLanguageList.size() > 0) {
+                FirebaseEventManager.getFirebaseInstance(LanguageSettingsActivity.this).languageBtnEvent(audioLanguageList.get(caption).getValue(),FirebaseEventManager.AUDIO_LANGUAGE);
                 new KsPreferenceKey(LanguageSettingsActivity.this).setAudioLangKey(audioLanguageList.get(caption).getValue());
             } else {
                 new KsPreferenceKey(LanguageSettingsActivity.this).setAudioLangKey("");
             }
         } else if (clickedFrom == 3) {
             if (subtitleLanguageList != null && subtitleLanguageList.size() > 0) {
+                FirebaseEventManager.getFirebaseInstance(LanguageSettingsActivity.this).languageBtnEvent(subtitleLanguageList.get(caption).getKey(),FirebaseEventManager.SUBTITLE_LANGUAGE);
                 new KsPreferenceKey(LanguageSettingsActivity.this).setSubTitleLangKey(subtitleLanguageList.get(caption).getKey().toString());
             } else {
                 new KsPreferenceKey(LanguageSettingsActivity.this).setSubTitleLangKey("");

@@ -94,6 +94,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             from = getIntent().getStringExtra(AppLevelConstants.FROM_KEY);
         modelCall();
         setClicks();
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.LOGIN);
         setGoogleSignIn();
         updateWithToken(AccessToken.getCurrentAccessToken());
 
