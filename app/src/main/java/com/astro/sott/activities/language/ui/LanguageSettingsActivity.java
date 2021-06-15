@@ -24,6 +24,7 @@ import com.astro.sott.databinding.ActivityLanguageSettingsBinding;
 import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.modelClasses.dmsResponse.SubtitleLanguages;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 
@@ -47,6 +48,7 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         oldLang = new KsPreferenceKey(LanguageSettingsActivity.this).getAppLangName();
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.LANGUAGE_SETTINGS);
         setClicks();
         initData();
 
@@ -54,6 +56,7 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
 
     List<AudioLanguages> audioLanguageList;
     List<SubtitleLanguages> subtitleLanguageList;
+
     private void initData() {
         headerList = new ArrayList<>();
         audioList = new ArrayList<>();
@@ -66,7 +69,7 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
         headerList.add(getResources().getString(R.string.Audio_language));
         headerList.add(getResources().getString(R.string.Subtitle_language));
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(this);
-        audioLanguageList= responseDmsModel.getAudioLanguageList();
+        audioLanguageList = responseDmsModel.getAudioLanguageList();
         subtitleLanguageList = responseDmsModel.getSubtitleLanguageList();
 
         for (AudioLanguages audioLanguages : audioLanguageList) {
@@ -74,7 +77,7 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
                 audioList.add(audioLanguages.getKey());
         }
         appLanguageList.add("English");
-      //  appLanguageList.add("Malay");
+        //  appLanguageList.add("Malay");
 
         for (SubtitleLanguages subtitleLanguages : subtitleLanguageList) {
             if (subtitleLanguages.getKey() != null && !subtitleLanguages.getKey().equalsIgnoreCase(""))
@@ -124,21 +127,21 @@ public class LanguageSettingsActivity extends BaseBindingActivity<ActivityLangua
     }
 
     @Override
-    public void onClick(int caption,int clickedFrom) {
+    public void onClick(int caption, int clickedFrom) {
         updateLang();
         initData();
-        if (clickedFrom==1){
+        if (clickedFrom == 1) {
 
-        }else if (clickedFrom==2){
-            if (audioLanguageList!=null && audioLanguageList.size()>0){
+        } else if (clickedFrom == 2) {
+            if (audioLanguageList != null && audioLanguageList.size() > 0) {
                 new KsPreferenceKey(LanguageSettingsActivity.this).setAudioLangKey(audioLanguageList.get(caption).getValue());
-            }else {
+            } else {
                 new KsPreferenceKey(LanguageSettingsActivity.this).setAudioLangKey("");
             }
-        }else if (clickedFrom==3){
-            if (subtitleLanguageList!=null && subtitleLanguageList.size()>0){
+        } else if (clickedFrom == 3) {
+            if (subtitleLanguageList != null && subtitleLanguageList.size() > 0) {
                 new KsPreferenceKey(LanguageSettingsActivity.this).setSubTitleLangKey(subtitleLanguageList.get(caption).getKey().toString());
-            }else {
+            } else {
                 new KsPreferenceKey(LanguageSettingsActivity.this).setSubTitleLangKey("");
             }
         }

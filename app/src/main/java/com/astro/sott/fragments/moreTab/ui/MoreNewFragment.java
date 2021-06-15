@@ -35,6 +35,7 @@ import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.transactionhistory.ui.TransactionHistory;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -143,7 +144,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         });
 
         getBinding().loginSignupMore.setOnClickListener(view -> {
-
+            FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, "Sign Up/ Sign In", FirebaseEventManager.BTN_CLICK);
             new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "profile");
 
         });
@@ -157,7 +158,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.MANAGE_SUBSCRIBE, FirebaseEventManager.BTN_CLICK);
                 if (getBinding().subscribe.getText().toString().equalsIgnoreCase("subscribe")) {
                     navBar.setVisibility(View.GONE);
                     new ActivityLauncher(getActivity()).profileSubscription();
@@ -208,6 +209,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.LOGOUT, FirebaseEventManager.BTN_CLICK);
                 showAlertDialog(getResources().getString(R.string.logout), getResources().getString(R.string.logout_confirmation_message_new));
             }
         });
@@ -281,6 +283,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
         });
         getBinding().rlHelp.setOnClickListener(v -> {
+            FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.HELP, FirebaseEventManager.BTN_CLICK);
             Intent intent = new Intent(getActivity(), WebViewActivity.class);
             intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -385,6 +388,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         if (navBar.getVisibility() != View.VISIBLE) {
             navBar.setVisibility(View.VISIBLE);
         }
+        FirebaseEventManager.getFirebaseInstance(getActivity()).trackScreenName(FirebaseEventManager.PROFILE);
         checkForLoginLogout();
         updateLang();
         if (UserInfo.getInstance(getActivity()).isActive()) {
