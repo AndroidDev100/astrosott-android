@@ -1519,7 +1519,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (player != null) {
                     adsCallBackHandling(player);
                     getPlayerView(player);
-                    player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fill);
+                    player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fit);
                     getPlayerState();
                     new Handler().postDelayed(new Runnable() {
                         @Override

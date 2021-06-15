@@ -131,7 +131,7 @@ public class PlayerRepository {
         });
 
 
-        player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fill);
+        player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fit);
 
         player.addListener(this, PlayerEvent.Type.LOADED_METADATA, event -> {
             Constants.duration = stringForTime(player.getDuration());
