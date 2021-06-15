@@ -16,28 +16,36 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="@dimen/dimen12dp"
             android:layout_marginBottom="@dimen/dimen16dp"
+            android:paddingBottom="10dp"
             app:cardCornerRadius="@dimen/dimen8dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/pack_bg_color">
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true">
 
-                <ImageView
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/pack_bg_img"
-                    android:contentDescription="@string/contentDescription" />
+                    <ImageView
+                        android:id="@+id/pack_img"
+                        android:layout_width="110dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:contentDescription="@string/contentDescription"
+                        android:scaleType="fitXY" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient_pack_bg" />
+                    <FrameLayout
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_pack_bg"></FrameLayout>
+                </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/title_lay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dimen16dp"
@@ -48,6 +56,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/heebo_bold"
+                        android:gravity="center"
                         android:text="@string/vip_packs"
                         android:textColor="@color/title_color"
                         android:textSize="16sp" />
@@ -58,58 +67,66 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/dimen8dp"
                         android:fontFamily="@font/heebo_regular"
+                        android:gravity="center"
                         android:textColor="@color/title_color"
                         android:textSize="14sp" />
 
-                    <LinearLayout
-                        android:id="@+id/btnBuy"
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnBuy"
+                    android:layout_width="250dp"
+                    android:layout_height="@dimen/dimen48dp"
+                    android:layout_below="@id/title_lay"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/gradient_svod"
+                    android:gravity="center"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp">
+
+
+                    <TextView
+
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dimen48dp"
-                        android:layout_gravity="bottom|end"
-                        android:layout_marginTop="@dimen/dimen24dp"
-                        android:background="@drawable/gradient_svod"
-                        android:gravity="center">
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparentColor"
+                        android:fontFamily="@font/heebo_medium"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="1dp"
+                        android:text="BUY @ "
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:visibility="gone"
 
+                        />
 
-                        <TextView
+                    <TextView
+                        android:id="@+id/introductory_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparentColor"
+                        android:fontFamily="@font/heebo_medium"
+                        android:paddingRight="3dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
 
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@color/transparentColor"
-                            android:fontFamily="@font/heebo_medium"
-                            android:paddingLeft="5dp"
-                            android:paddingRight="1dp"
-                            android:text="BUY @ "
-                            android:textColor="@color/white"
-                            android:textSize="13sp"
+                        />
 
-                            />
+                    <TextView
+                        android:id="@+id/actualPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparentColor"
+                        android:fontFamily="@font/heebo_medium"
+                        android:paddingRight="5dp"
+                        android:textColor="@color/heather"
+                        android:textSize="13sp"
+                        android:visibility="gone"
 
-                        <TextView
-                            android:id="@+id/introductory_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@color/transparentColor"
-                            android:fontFamily="@font/heebo_medium"
-                            android:paddingRight="3dp"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-
-                            />
-
-                        <TextView
-                            android:id="@+id/actualPrice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@color/transparentColor"
-                            android:fontFamily="@font/heebo_medium"
-                            android:paddingRight="5dp"
-                            android:textColor="@color/warm_black_color"
-                            android:textSize="13sp"
-                            android:visibility="gone"
-
-                            />
-                    </LinearLayout>
+                        />
                 </LinearLayout>
             </RelativeLayout>
 

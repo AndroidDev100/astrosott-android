@@ -72,7 +72,7 @@ public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SingleIt
         }
         try {
             setRecycler(holder.landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
-            AppCommonMethods.setBillingUi(holder.landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
+            AppCommonMethods.setBillingUi(holder.landscapeItemBinding.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
 
         } catch (Exception e) {
 
@@ -133,7 +133,7 @@ public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SingleIt
                     @Override
                     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
                         if (NetworkConnectivity.isOnline(mContext)) {
-                             detailRailClick.detailItemClicked(_url, position, type, commonData);
+                            detailRailClick.detailItemClicked(_url, position, type, commonData);
                         } else {
                             ToastHandler.show(mContext.getResources().getString(R.string.no_internet_connection), mContext);
                         }

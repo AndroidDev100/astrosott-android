@@ -15,6 +15,7 @@ import com.astro.sott.R
 import com.astro.sott.databinding.FragmentPackageBinding
 import com.astro.sott.fragments.subscription.adapter.SubscriptionPagerAdapter.OnPackageChooseClickListener
 import com.astro.sott.modelClasses.InApp.PackDetail
+import com.astro.sott.usermanagment.modelClasses.getProducts.Attribute
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
 import java.util.*
 
@@ -41,6 +42,13 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                     bannerBinding.text.visibility = View.VISIBLE
                     bannerBinding.text.setPadding(0, SliderPotrait.dp2px(activity, 6f), 0, SliderPotrait.dp2px(activity, 6f))
                 }
+                if (position == 1) {
+                    bannerBinding.btnChooseMe.setTextColor(activity.resources.getColor(R.color.title_color))
+                    bannerBinding.text.setTextColor(activity.resources.getColor(R.color.title_color))
+                }else{
+                    bannerBinding.btnChooseMe.setTextColor(activity.resources.getColor(R.color.black_text_color))
+                    bannerBinding.text.setTextColor(activity.resources.getColor(R.color.black_text_color))
+                }
                 bannerBinding.packagePriceOld.visibility = View.GONE
                 val rainbow = activity.resources.getIntArray(R.array.packages_colors)
                 val currentColor = rainbow[position % rainbow.size]
@@ -57,8 +65,10 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                         bannerBinding.text.visibility = View.VISIBLE
                         bannerBinding.text.setPadding(0, SliderPotrait.dp2px(activity, 6f), 0, SliderPotrait.dp2px(activity, 6f))
                         bannerBinding.text.text = packageModel.promotions!![0].promoDescrip
-                        bannerBinding.offer.visibility = View.VISIBLE
-                        bannerBinding.offer.text = packageModel.promotions!![0].promoCpDescription
+                        if (packageModel.promotions!![0].promoCpDescription != null && !packageModel.promotions!![0].promoCpDescription.equals("", true)) {
+                            bannerBinding.offer.visibility = View.VISIBLE
+                            bannerBinding.offer.text = packageModel.promotions!![0].promoCpDescription
+                        }
                     }
                     bannerBinding.currency.text = skuModel.priceCurrencyCode
                     bannerBinding.packagePrice.text = skuModel.introductoryPrice + "/"
@@ -81,11 +91,17 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                 bannerBinding.masktop.setColorFilter(currentColor)
                 bannerBinding.maskbottom.setColorFilter(currentColor)
                 var attributeList = packageModel.attributes!!
-                Collections.reverse(attributeList)
+                Collections.sort(attributeList, object : Comparator<Attribute?> {
+                    override fun compare(o1: Attribute?, o2: Attribute?): Int {
+                        return o1?.attributeLabel?.compareTo(o2?.attributeLabel!!)!!
+                    }
+                })
                 val my_array = ArrayList<String>()
                 if (packageModel.attributes != null) {
                     for (attribute in attributeList)
-                        my_array.add(attribute.attributeValue!!)
+                        if (!attribute.attributeLabel.equals("ImageURL1", true)) {
+                            my_array.add(attribute.attributeValue!!)
+                        }
                 }
                 if (packageModel.skuORQuickCode != null && productList.isNotEmpty()) {
                     if (checkActiveOrNot(packageModel.skuORQuickCode!!)) {

@@ -67,19 +67,19 @@ public class DialogHelper {
         boolean status = UserInfo.getInstance(baseActivity).isActive();
         if (status) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
-            builder.setTitle(context.getResources().getString(R.string.lock_Episode)).setMessage(context.getResources().getString(R.string.purchase_dialouge_for_logged_in))
+            builder.setTitle(context.getResources().getString(R.string.become_vip)).setMessage(context.getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                        baseActivity.onBackPressed();
+                        new ActivityLauncher(baseActivity).profileSubscription();
                         dialog.cancel();
                     });
 
             AlertDialog alert = builder.create();
             alert.show();
             Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-            bn.setTextColor(ContextCompat.getColor(context, R.color.white));
+            bn.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
             Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(context, R.color.primary_blue));
+            bp.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
         } else {
             showLoginDialog(context);
         }
@@ -174,27 +174,24 @@ public class DialogHelper {
         BaseActivity baseActivity = (BaseActivity) context;
         if (context != null && !context.isFinishing()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
-            builder.setTitle(context.getResources().getString(R.string.lock_Episode)).setMessage(context.getResources().getString(R.string.purchase_dialouge_for_logged_in))
+            builder.setTitle(context.getResources().getString(R.string.become_vip)).setMessage(context.getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.login), (dialog, id) -> {
-                        //dialog.cancel();
-
                         new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class, "");
                         baseActivity.onBackPressed();
                         dialog.cancel();
-                        //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
                     })
                     .setNegativeButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                        baseActivity.onBackPressed();
+                        new ActivityLauncher(baseActivity).profileSubscription();
                         dialog.cancel();
                     });
 
             AlertDialog alert = builder.create();
             alert.show();
             Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-            bn.setTextColor(ContextCompat.getColor(context, R.color.white));
+            bn.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
             Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(context, R.color.primary_blue));
+            bp.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
         }
     }
 

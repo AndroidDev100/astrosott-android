@@ -152,7 +152,7 @@ public class HeroDiversion {
                     assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
                     PrintLogging.printLog("", "className--" + className);
                     // dont get confused with name as potrait its for grid
-                    new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, data.getContentImageType(), assetCommonBean1);
+                    new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, data.getContentImageType(), assetCommonBean1,assetCommonBean.getRailDetail().getCategory());
 
 
                 } else {
@@ -166,7 +166,7 @@ public class HeroDiversion {
                         assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
                         PrintLogging.printLog("", "className--" + className);
                         // dont get confused with name as potrait its for grid
-                        new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, data.getContentImageType(), assetCommonBean1);
+                        new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, data.getContentImageType(), assetCommonBean1,assetCommonBean.getRailDetail().getCategory());
 
                     } catch (Exception ignored) {
 

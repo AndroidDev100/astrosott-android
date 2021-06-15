@@ -290,7 +290,6 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     private void startPlayer() {
         try {
             callProgressBar();
-
             //  ConvivaManager.getConvivaAdAnalytics(this);
             Intent intent = new Intent(BoxSetDetailActivity.this, PlayerActivity.class);
             intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);

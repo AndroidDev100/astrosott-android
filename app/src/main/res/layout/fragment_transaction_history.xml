@@ -38,7 +38,7 @@
                 android:fontFamily="@font/heebo_medium"
                 android:letterSpacing="0.09"
                 android:text="@string/transaction_history"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp" />
 
@@ -100,7 +100,7 @@
                     android:fontFamily="@font/heebo_medium"
                     android:padding="12dp"
                     android:textAlignment="center"
-                    android:textAllCaps="true"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_16sp" />
 
@@ -132,7 +132,6 @@
                 android:fontFamily="@font/heebo_medium"
                 android:padding="@dimen/dimen12dp"
                 android:textAlignment="center"
-                android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp"
                 android:visibility="gone" />
@@ -145,7 +144,6 @@
                 android:fontFamily="@font/heebo_medium"
                 android:padding="@dimen/dimen12dp"
                 android:textAlignment="center"
-                android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp"
                 android:visibility="gone" />

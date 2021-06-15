@@ -177,8 +177,6 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         setPlayerFragment();
         getMediaType(asset, railData);
         callSpecificAsset(assetId);
-        if (playbackControlValue)
-            checkEntitleMent(railData);
 
 
     }
@@ -435,12 +433,13 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             if (apiStatus) {
                 if (purchasedStatus) {
                     runOnUiThread(() -> {
-                        getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                        getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                        getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                        getBinding().starIcon.setVisibility(View.GONE);
-                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
-
+                        if (playbackControlValue) {
+                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                            getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                            getBinding().starIcon.setVisibility(View.GONE);
+                            getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+                        }
 
                     });
                     this.vodType = EntitlementCheck.FREE;
@@ -451,7 +450,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                             getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                             getBinding().playText.setText(getResources().getString(R.string.become_vip));
                             getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.VISIBLE);
+                            getBinding().starIcon.setVisibility(View.GONE);
                             getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
                         });
@@ -990,6 +989,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
             }
         }
+        checkEntitleMent(railData);
+
     }
 
     @Override
@@ -1166,6 +1167,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         getBinding().scrollView.scrollTo(0, 0);
         getDataFromBack(commonData, layoutType);
         isActive = UserInfo.getInstance(this).isActive();
+        checkEntitleMent(railData);
     }
 
 

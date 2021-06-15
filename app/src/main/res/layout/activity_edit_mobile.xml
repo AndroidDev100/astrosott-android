@@ -38,7 +38,7 @@
                 android:letterSpacing="0.09"
                 android:text="@string/edit_email"
                 android:textAlignment="center"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp" />
 
@@ -128,7 +128,7 @@
                 android:background="@drawable/gradient_button"
                 android:fontFamily="@font/heebo_medium"
                 android:text="@string/update"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp" />
 

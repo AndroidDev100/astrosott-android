@@ -5,7 +5,7 @@
     <solid android:color="@color/blue" /> <!-- this one is ths color of the Rounded Button -->
     <gradient
         android:angle="360"
-        android:centerColor="#14161c"
-        android:endColor="#000a0a11"
-        android:startColor="#14161c" />
+        android:centerColor="#151024"
+        android:endColor="#002d1347"
+        android:startColor="#151024" />
 </shape>

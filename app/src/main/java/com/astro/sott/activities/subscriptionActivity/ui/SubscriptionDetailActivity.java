@@ -292,4 +292,13 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (billingProcessor != null) {
+            if (billingProcessor.isReady()) {
+                billingProcessor.endConnection();
+            }
+        }
+    }
 }

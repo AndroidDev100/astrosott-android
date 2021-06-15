@@ -1227,9 +1227,13 @@ public class AppCommonMethods {
     }
 
     public static ResponseDmsModel callpreference(Context context) {
-        Gson gson = new Gson();
-        String json = SharedPrefHelper.getInstance(context).getString("DMS_Response", "");
-        return gson.fromJson(json, ResponseDmsModel.class);
+        try {
+            Gson gson = new Gson();
+            String json = SharedPrefHelper.getInstance(context).getString("DMS_Response", "");
+            return gson.fromJson(json, ResponseDmsModel.class);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static void setContinueWatchingPreferences(List<AssetHistory> objects, Context activity) {
@@ -1645,7 +1649,7 @@ public class AppCommonMethods {
 
     public static void setBillingUi(ImageView imageView, Map<String, MultilingualStringValueArray> tags, Integer type, Activity mContext) {
         try {
-            if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext)) {
+            if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext) || type == MediaTypeConstant.getLinear(mContext)) {
                 if (AssetContent.getBillingIdForSeries(tags)) {
                     imageView.setVisibility(View.VISIBLE);
                 } else {
@@ -2317,9 +2321,9 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
+  /*      StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+        StringBuilderHolder.getInstance().append("'");*/
 
         StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);
@@ -2393,9 +2397,9 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
+      /*  StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+        StringBuilderHolder.getInstance().append("'");*/
 
         StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);
@@ -2469,9 +2473,9 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
+      /*  StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+        StringBuilderHolder.getInstance().append("'");*/
 
         StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);

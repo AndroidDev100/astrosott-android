@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -276,7 +277,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 KsPreferenceKey.getInstance(activity).setAutoDuration(dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration() == null ? 0 : dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration());
                 KsPreferenceKey.getInstance(activity).setAutoRotation(dataList.get(position).getRailDetail().getCategory().getAutoRotate() == null ? true : dataList.get(position).getRailDetail().getCategory().getAutoRotate());
                 ((HeaderHolder) holder).headerRecyclerItemBinding.slider.addSlides(dataList.get(position).getSlides(), dataList.get(position).getWidgetType(), dataList.get(position).getRailDetail(), position, dataList.get(position).getRailDetail().getCategory().getAutoRotate() == null ? true : dataList.get(position).getRailDetail().getCategory().getAutoRotate(), dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration() == null ? 0 : dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration());
-                setHeaderAndMoreVisibility(((HeaderHolder) holder).headerRecyclerItemBinding.headerTitle, ((HeaderHolder) holder).headerRecyclerItemBinding.moreText, dataList.get(position));
+                setCrauselHeaderAndMoreVisibility(((HeaderHolder) holder).headerRecyclerItemBinding.headerTitle, ((HeaderHolder) holder).headerRecyclerItemBinding.moreText, dataList.get(position));
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -435,23 +436,17 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                 }
             }, position, dataList.get(position).getTitle(), isContinueRail, dataList.get(position).getCategory());
-
-
         } else {
             commonCircleAdapter = new CommonCircleAdapter(activity, singleSectionItems, AppConstants.Rail2, dataList.get(position).getTitle(), dataList.get(position).getCategory());
         }
         // setRecyclerProperties(((CircleHolder) holder).circularRecyclerItemBinding.recyclerViewList1,false);
-        ((CircleHolder) holder).circularRecyclerItemBinding.recyclerViewList1.setAdapter(commonCircleAdapter);
+        holder.circularRecyclerItemBinding.recyclerViewList1.setAdapter(commonCircleAdapter);
         setHeaderAndMoreVisibility(holder.circularRecyclerItemBinding.headerTitle, holder.circularRecyclerItemBinding.moreText, dataList.get(position));
         //  if (dataList.get(position).getMoreType() == 8 || dataList.get(position).getMoreType() == 9 || dataList.get(position).getMoreType() == 10) {
         holder.circularRecyclerItemBinding.headerTitle.setVisibility(View.VISIBLE);
         int totalCount = dataList.get(position).getTotalCount();
         if (totalCount > 10)
             holder.circularRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
-
-        // }
-
-
     }
 
     private void removeAssetApi(Long assetID, List<RailCommonData> singleSectionItems, TabsContinueWatchingAdapter continueWatchingAdapter,
@@ -491,7 +486,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private void posterDataLogic(PosterHolder holder, List<AssetCommonBean> dataList, int position) {
         Log.w("ImageListSize-->>", dataList.get(position).getRailAssetList().get(0).getImages().size() + "");
         int totalCount = dataList.get(position).getTotalCount();
-        new ToolBarHandler(activity).setMoreListener(holder.itemBinding.moreText, AppConstants.TYPE3, dataList.get(position),activity);
+        new ToolBarHandler(activity).setMoreListener(holder.itemBinding.moreText, AppConstants.TYPE3, dataList.get(position), activity);
 
 
         holder.itemBinding.titleLayout.setVisibility(View.VISIBLE);
@@ -633,14 +628,13 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         //  setRecyclerProperties(((LandscapeHolder) holder).landscapeRecyclerItemBinding.recyclerViewList3, true);
         ((LandscapeHolder) holder).landscapeRecyclerItemBinding.recyclerViewList4.setAdapter(commonLandscapeAdapter);
         setHeaderAndMoreVisibility(holder.landscapeRecyclerItemBinding.headerTitle, holder.landscapeRecyclerItemBinding.moreText, dataList.get(position));
-        if (dataList.get(position).getMoreType() == LIVE_CHANNEL_LIST || dataList.get(position).getMoreType() == SIMILLAR_UGC_VIDEOS || dataList.get(position).getMoreType() == YOU_MAY_LIKE) {
+        if (dataList.get(position).getRailDetail() != null && dataList.get(position).getRailDetail().getDescription() != null && dataList.get(position).getRailDetail().getDescription().equalsIgnoreCase(AppLevelConstants.TRENDING) || dataList.get(position).getRailDetail().getDescription().equalsIgnoreCase(AppLevelConstants.PPV_RAIL) || dataList.get(position).getRailDetail().getDescription().equalsIgnoreCase(AppLevelConstants.LIVECHANNEL_RAIL) || dataList.get(position).getRailDetail().getDescription().equalsIgnoreCase(AppConstants.KEY_MY_WATCHLIST)) {
             holder.landscapeRecyclerItemBinding.headerTitle.setVisibility(View.VISIBLE);
-            if (dataList.get(position).getMoreType() == SIMILLAR_UGC_VIDEOS) {
-                if (totalCount > 5)
-                    holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
+
+            if (totalCount > 20) {
+                holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
             } else {
-                if (totalCount > 20)
-                    holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
+                holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.GONE);
             }
 
         } else if (isContinueRail) {
@@ -654,7 +648,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 if (totalCount >= 10) {
                     new ToolBarHandler(activity).setContinueWatchingListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
                 } else {
-                    ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
+                    //   ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -662,7 +656,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (totalCount > 20) {
                 holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
             } else {
-                holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
+                // holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
 
             }
         }
@@ -1018,7 +1012,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    public void setHeaderAndMoreVisibility(TextView header, TextView moreTextView, AssetCommonBean data) {
+    public void setHeaderAndMoreVisibility(TextView header, ImageView moreTextView, AssetCommonBean data) {
         if (data.getRailDetail() != null)
             if (data.getRailDetail().isShowHeader())
                 header.setVisibility(View.VISIBLE);
@@ -1029,6 +1023,21 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 moreTextView.setVisibility(View.VISIBLE);
             else
                 moreTextView.setVisibility(View.INVISIBLE);
+
+
+    }
+
+    public void setCrauselHeaderAndMoreVisibility(TextView header, ImageView moreTextView, AssetCommonBean data) {
+        if (data.getRailDetail() != null)
+            if (data.getRailDetail().isShowHeader())
+                header.setVisibility(View.VISIBLE);
+            else
+                header.setVisibility(View.GONE);
+        if (data.getRailDetail() != null)
+            if (data.getRailDetail().isContentShowMoreButton())
+                moreTextView.setVisibility(View.VISIBLE);
+            else
+                moreTextView.setVisibility(View.GONE);
 
 
     }

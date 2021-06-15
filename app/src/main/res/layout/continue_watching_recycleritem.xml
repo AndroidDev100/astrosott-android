@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,22 +32,32 @@
                     android:fontFamily="@font/heebo_medium"
                     android:text="@string/title_creators"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/dimen20sp" />
+                    android:textSize="@dimen/rail_title_size" />
 
-                <TextView
+
+                <ImageView
                     android:id="@+id/more_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:fontFamily="@font/heebo_regular"
-                    android:gravity="center"
-                    android:text="@string/show_all"
-                    android:textAllCaps="false"
-                    android:textColor="@color/aqua_marine"
-                    android:textSize="@dimen/_12sp"
-                    tools:ignore="KeyboardInaccessibleWidget" />
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
+
+                <!-- <TextView
+                     android:id="@+id/more_text"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center_vertical"
+                     android:background="?android:attr/selectableItemBackground"
+                     android:clickable="true"
+                     android:fontFamily="@font/heebo_regular"
+                     android:gravity="center"
+                     android:text="@string/show_all"
+                     android:textAllCaps="false"
+                     android:textColor="@color/aqua_marine"
+                     android:textSize="@dimen/_12sp"
+                     tools:ignore="KeyboardInaccessibleWidget" />-->
 
 
             </LinearLayout>
@@ -60,11 +70,11 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_9sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
+                android:baselineAligned="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingTop="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:baselineAligned="false">
+                android:paddingBottom="@dimen/_5sdp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -93,8 +103,8 @@
             android:nestedScrollingEnabled="false"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/_6sdp"
-            android:paddingRight="@dimen/_6sdp"
             android:paddingTop="@dimen/_5sdp"
+            android:paddingRight="@dimen/_6sdp"
             android:paddingBottom="@dimen/_5sdp"
             app:shimmer_demo_angle="20"
             app:shimmer_demo_layout="@layout/shimmer_square_item"

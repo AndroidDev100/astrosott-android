@@ -30,12 +30,12 @@ class RequestManager {
 
     fun categoryCall(screenId: String, enveuCallBacks: EnveuCallBacks) {
         val endPoint = NetworkSetup().client?.create<EnveuEndpoints>(EnveuEndpoints::class.java)
-        val call = endPoint?.categoryService(BaseConfiguration.instance.clients.getDeviceType().toString(), BaseConfiguration.instance.clients.getPlatform().toString()!!, BaseConfiguration.instance.clients.getApiKey().toString(), screenId)
+        val call = endPoint?.categoryService(BaseConfiguration.instance.clients?.getDeviceType().toString(), BaseConfiguration.instance.clients?.getPlatform().toString()!!, BaseConfiguration.instance.clients?.getApiKey().toString(), screenId)
         call?.enqueue(object : Callback<EnveuCategory> {
             override fun onResponse(call: Call<EnveuCategory>, response: Response<EnveuCategory>) {
 
                 try {
-                    val model = ModelGenerator.instance.setGateWay(BaseConfiguration.instance.clients.getGateway()).createModel(response)
+                    val model = ModelGenerator.instance.setGateWay(BaseConfiguration.instance.clients?.getGateway()).createModel(response)
                     enveuCallBacks.success(true, sortModelBasedOnDisplayOrder(model))
                 }catch (ignored : Exception){
                    // Log.e("Response", ignored.message)
@@ -45,7 +45,7 @@ class RequestManager {
 
             override fun onFailure(call: Call<EnveuCategory>, t: Throwable) {
                 t.message?.let { enveuCallBacks.failure(false, 0, it) }
-                val model = ModelGenerator.instance.setGateWay(BaseConfiguration.instance.clients.getGateway()).createModel(t)
+                val model = ModelGenerator.instance.setGateWay(BaseConfiguration.instance.clients?.getGateway()).createModel(t)
                 enveuCallBacks.success(false, model)
             }
         })

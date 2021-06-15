@@ -32,7 +32,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/heebo_medium"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/dimen20sp" />
+                    android:textSize="@dimen/rail_title_size" />
 
                 <LinearLayout
                     android:id="@+id/more_text"
@@ -41,15 +41,22 @@
                     android:layout_gravity="bottom"
                     android:orientation="vertical"
                     android:visibility="gone">
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:contentDescription="@string/contentDescription"
+                        android:src="@drawable/ic_keyboard_arrow_right_24px" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:fontFamily="@font/heebo_regular"
-                        android:text="@string/show_all"
-                        android:textColor="@color/aqua_marine"
-                        android:textSize="@dimen/_12sp" />
+                    <!-- <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="?attr/selectableItemBackgroundBorderless"
+                         android:fontFamily="@font/heebo_regular"
+                         android:text="@string/show_all"
+                         android:textColor="@color/aqua_marine"
+                         android:textSize="@dimen/_12sp" />-->
                 </LinearLayout>
 
             </LinearLayout>

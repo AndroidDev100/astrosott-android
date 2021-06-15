@@ -131,7 +131,7 @@ public class PlayerRepository {
         });
 
 
-        player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fill);
+        player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fit);
 
         player.addListener(this, PlayerEvent.Type.LOADED_METADATA, event -> {
             Constants.duration = stringForTime(player.getDuration());
@@ -881,7 +881,6 @@ public class PlayerRepository {
                     //  mPlayerControlsView.setProgressBarVisibility(false);
                     break;
                 case BUFFERING:
-                    ConvivaManager.convivaPlayerBufferReportRequest();
                     // log.e("StateChange Buffering");
                     // mPlayerControlsView.setProgressBarVisibility(true);
                     // booleanMutableLiveData.postValue(false);
@@ -1098,6 +1097,7 @@ public class PlayerRepository {
         if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAdTagURL() != null && responseDmsModel.getParams().getAdTagURL().getURL() != null) {
             imaVastTag = AppCommonMethods.getAdsUrl(responseDmsModel.getParams().getAdTagURL().getURL(), asset, context);
         }
+        //+responseDmsModel.getParams().getAdTagURL().getURL()
 
         //       String imaVastTag = "https://pubads.g.doubleclick.net/gampad/live/ads?sz=640x360&iu=%2F21633895671%2FQA%2FAndroid_Native_App%2FCOH&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=sample_ar%3Dskippablelinear%26Gender%3DU%26Age%3DNULL%26KidsPinEnabled%3DN%26AppVersion%3D0.1.58%26DeviceModel%3DAndroid%20SDK%20built%20for%20x86%26OptOut%3DFalse%26OSVersion%3D9%26PackageName%3Dcom.tv.v18.viola%26description_url%3Dhttps%253A%252F%252Fwww.voot.com%26first_time%3DFalse&cmsid=2467608&ppid=2fbdf28d-5bf9-4f43-b49e-19c4ca1f10f8&vid=0_o71549bv&ad_rule=1&correlator=246819";
         // String imaVastTag =  "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonlybumper&cmsid=496&vid=short_onecue&correlator=";

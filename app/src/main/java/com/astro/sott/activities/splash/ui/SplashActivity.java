@@ -1,19 +1,23 @@
 
 package com.astro.sott.activities.splash.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -88,10 +92,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-import io.branch.referral.Branch;
-import io.branch.referral.BranchError;
 
-public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogSingleButtonFragment.AlertDialogListener {
+public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogSingleButtonFragment.AlertDialogListener, DisplayManager.DisplayListener {
 
     private static final String TAG = "SplashActivity";
     String screenName = "";
@@ -129,6 +131,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         } else {
             connectionValidation(false);
         }
+
     }
 
     private String keyHash = "";
@@ -556,32 +559,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     }
 
-    private Branch.BranchReferralInitListener branchReferralInitListener = new Branch.BranchReferralInitListener() {
-        @Override
-        public void onInitFinished(JSONObject linkProperties, BranchError error) {
-            // do stuff with deep link data (nav to page, display content, etc)
-            Log.d("asasasasasasa", new Gson().toJson(linkProperties));
-            if (error == null) {
-                if (linkProperties.has("assetId")) {
-                    try {
-                        branchObject = new JSONObject(linkProperties.toString());
-                    } catch (JSONException e) {
-
-                    }
-                    //  redirectionCondition(linkProperties);
-                } else {
-                    branchObject = null;
-//                    PrintLogging.printLog("", "c a");
-//                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                }
-            } else {
-                branchObject = null;
-                //DialogHelper.showAlertDialog(getApplicationContext(), getString(R.string.something_went_wrong_try_again), getString(R.string.ok), SplashActivity.this);
-            }
-
-
-        }
-    };
 //
 
     private void processIntent(Intent intent) {
@@ -919,9 +896,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                         if (BuildConfig.FLAVOR.equalsIgnoreCase("QA")) {
                             final String appPackageName = getPackageName();
                             try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                             } catch (android.content.ActivityNotFoundException anfe) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                             }
 
                         } else if (isDmsFailed) {
@@ -930,9 +907,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                         } else {
                             final String appPackageName = getPackageName();
                             try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                             } catch (android.content.ActivityNotFoundException anfe) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                             }
 
                         }
@@ -946,7 +923,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //            Button bn = alert.getButton(android.content.DialogInterface.BUTTON_NEGATIVE);
 //            bn.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
             Button bp = alert.getButton(android.content.DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+            bp.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.aqua_marine));
 
         }
 
@@ -970,7 +947,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 //                |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 //        decorView.setSystemUiVisibility(uiOptions);
-
         if (!isTaskRoot()) {
             final Intent intent = getIntent();
             final String intentAction = intent.getAction();
@@ -1071,5 +1047,22 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         super.onResume();
         if (isDmsApiHit)
             versionStatus();
+    }
+
+    @Override
+    public void onDisplayAdded(int displayId) {
+        Log.e("DISPLAY", "ADDED");
+    }
+
+    @Override
+    public void onDisplayRemoved(int displayId) {
+        Log.e("DISPLAY", "REMOVED");
+
+    }
+
+    @Override
+    public void onDisplayChanged(int displayId) {
+        Log.e("DISPLAY", "CHANGED");
+
     }
 }

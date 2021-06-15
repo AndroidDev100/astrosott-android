@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,20 +120,18 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                 getBinding().swipeContainer.setRefreshing(false);
                 getBinding().myRecyclerView.setVisibility(View.GONE);
                 getBinding().noDataLayout.setVisibility(View.VISIBLE);
-                PrintLogging.printLog("", "in error");
             }
-
-
         });
     }
 
 
     private void UIinitialization() {
         swipeToRefresh();
-        getBinding().myRecyclerView.setHasFixedSize(true);
+        getBinding().myRecyclerView.setHasFixedSize(false);
         getBinding().myRecyclerView.setItemViewCacheSize(20);
-        // getBinding().myRecyclerView.setNestedScrollingEnabled(false);
-        getBinding().myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+         getBinding().myRecyclerView.setNestedScrollingEnabled(false);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
+        getBinding().myRecyclerView.setLayoutManager(llm);
         CustomShimmerAdapter adapter = new CustomShimmerAdapter(getActivity(), new ShimmerDataModel(getActivity()).getList(0), new ShimmerDataModel(getActivity()).getSlides());
         getBinding().myRecyclerView.setAdapter(adapter);
         getBinding().noData.retryTxt.setOnClickListener(view -> {
@@ -237,14 +236,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                             boolean status = false;
                             if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus())
                                 status = assetCommonBeans.get(0).getStatus();
-                            PrintLogging.printLog("", "sizeAsset" + assetCommonBeans.get(0).getStatus() + "");
-
-
-                            if (status == true) {
-                            /*if (swipeToRefresh == 2) {
-                                adapter = null;
-                                loadedList.clear();
-                            }*/
+                            if (status) {
                                 swipeToRefresh = 0;
                                 setUIComponets(assetCommonBeans);
                                 counter++;
@@ -252,8 +244,6 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                                 callRailAPI(channelList);
                                 getBinding().noDataLayout.setVisibility(View.GONE);
                                 getBinding().myRecyclerView.setVisibility(View.VISIBLE);
-                                //getBinding().transparentLayout.setVisibility(View.GONE);
-
                             } else {
                                 swipeToRefresh = 0;
                                 if (counter != channelList.size()) {
@@ -270,15 +260,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                                 }
                             }
 
-                        } else {
-                            // getBinding().myRecyclerView.setVisibility(View.GONE);
-                            // getBinding().noDataLayout.setVisibility(View.VISIBLE);
-                            // PrintLogging.printLog("","in error");
-
-                            // ToastHandler.show(getActivity().getResources().getString(R.string.no_feeds_available), ApplicationMain.getAppContext());
                         }
-
-
                     }
                 });
 
@@ -319,7 +301,12 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         try {
             if (adapter != null) {
                 loadedList.add(assetCommonBeans.get(0));
-                adapter.notifyItemChanged(counter);
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyItemChanged(counter);
+                    }
+                });
                 getBinding().myRecyclerView.scrollToPosition(mScrollY + 500);
             } else {
                 loadedList.add(assetCommonBeans.get(0));
@@ -337,11 +324,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                     adapter = new CommonAdapter(getActivity(), loadedList, loadedList.get(0).getSlides(), this, this, this);
                     getBinding().myRecyclerView.setAdapter(adapter);
                 }
-
-
             }
-
-
         } catch (Exception e) {
             Log.e("Exception", e.getMessage());
         }

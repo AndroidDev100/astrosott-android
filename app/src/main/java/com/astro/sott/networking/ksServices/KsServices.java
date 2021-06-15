@@ -139,6 +139,7 @@ import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.EntityReferenceBy;
 import com.kaltura.client.enums.InboxMessageStatus;
+import com.kaltura.client.enums.MetaTagOrderBy;
 import com.kaltura.client.enums.PinType;
 import com.kaltura.client.enums.RuleLevel;
 import com.kaltura.client.enums.TransactionType;
@@ -210,6 +211,7 @@ import com.kaltura.client.types.ProductPriceFilter;
 import com.kaltura.client.types.Purchase;
 import com.kaltura.client.types.RelatedFilter;
 import com.kaltura.client.types.SearchAssetFilter;
+import com.kaltura.client.types.SearchAssetListFilter;
 import com.kaltura.client.types.SearchHistory;
 import com.kaltura.client.types.SearchHistoryFilter;
 import com.kaltura.client.types.StringValue;
@@ -3275,10 +3277,12 @@ public class KsServices {
     private boolean checkForPurchaseOrNot(List<ProductPrice> objects) {
         for (ProductPrice productPrice : objects) {
             if (productPrice.getPurchaseStatus().toString().equalsIgnoreCase("FOR_PURCHASE") || productPrice.getPurchaseStatus().toString().equalsIgnoreCase("for_purchase_subscription_only")) {
-                return false;
+
+            } else {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
 
@@ -4036,7 +4040,7 @@ public class KsServices {
         call.enqueue(new Callback<PlaybackContextResponse>() {
             @Override
             public void onResponse(@NonNull Call<PlaybackContextResponse> call, @NonNull retrofit2.Response<PlaybackContextResponse> response) {
-                if (response != null && response.isSuccessful() && response.body() != null && response.body().getResult() != null && response.body().getResult().getSources() != null && response.body().getResult().getSources().get(0) != null && response.body().getResult().getSources().get(0).getUrl() != null) {
+                if (response != null && response.isSuccessful() && response.body() != null && response.body().getResult() != null && response.body().getResult().getSources() != null && response.body().getResult().getSources().size() > 0 && response.body().getResult().getSources().get(0) != null && response.body().getResult().getSources().get(0).getUrl() != null) {
                     playBackContextCallBack.getUrl(response.body().getResult().getSources().get(0).getUrl());
                 } else {
                     playBackContextCallBack.getUrl("");
@@ -4400,12 +4404,23 @@ public class KsServices {
     public void callContinueWatchingForListing(final ContinueWatchingCallBack homechannelCallBack) {
         clientSetupKs();
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
-        assetHistoryFilter.statusEqual("all");
-        assetHistoryFilter.daysLessThanOrEqual("30");
+        assetHistoryFilter.statusEqual(WatchStatus.PROGRESS.name());
+        assetHistoryFilter.daysLessThanOrEqual(AppCommonMethods.getAssetHistory(activity));
 
         FilterPager pagerFilter = new FilterPager();
         pagerFilter.setPageIndex(1);
         pagerFilter.setPageSize(100);
+
+        DetachedResponseProfile responseProfile = new DetachedResponseProfile();
+        DetachedResponseProfile relatedProfiles = new DetachedResponseProfile();
+
+        AssetHistorySuppressFilter assetHistorySuppressFilter = new AssetHistorySuppressFilter();
+        relatedProfiles.setFilter(assetHistorySuppressFilter);
+        relatedProfiles.setName("suppress");
+        List<DetachedResponseProfile> list = new ArrayList<>();
+        list.add(relatedProfiles);
+        responseProfile.setRelatedProfiles(list);
+
 
         AssetHistoryService.ListAssetHistoryBuilder builder = new AssetHistoryService.ListAssetHistoryBuilder(assetHistoryFilter, pagerFilter).setCompletion(new OnCompletion<Response<ListResponse<AssetHistory>>>() {
             @Override
@@ -4442,7 +4457,7 @@ public class KsServices {
                 }
             }
         });
-
+        builder.setResponseProfile(responseProfile);
         getRequestQueue().queue(builder.build(client));
     }
 
@@ -5620,7 +5635,7 @@ public class KsServices {
                     homechannelCallBack.response(false, null, null);
                 }
             } else if (list.get(counter).getDescription().contains(AppLevelConstants.TRENDING)) {
-                getTrending(responseList, list, counter);
+                getTrending(list, counter);
             } else if (!StringUtils.isNullOrEmptyOrZero(list.get(counter).getDescription()) && list.get(counter).getDescription().toUpperCase().contains(AppConstants.KEY_DFP_ADS)) {
                 try {
                     if (UserInfo.getInstance(activity).isVip()) {
@@ -5765,7 +5780,7 @@ public class KsServices {
                     homechannelCallBack.response(false, null, null);
                 }
             } else if (list.get(counter).getDescription().contains(AppLevelConstants.TRENDING)) {
-                getTrending(responseList, list, counter);
+                getTrending(list, counter);
             } else {
                 clientSetupKs();
                 PrintLogging.printLog("", "idsPrint" + +channelID + "-->>" + list.get(counter).getName() + "-->>" + list.get(counter).getDescription());
@@ -6494,7 +6509,7 @@ public class KsServices {
     }
 
     public void getMsisdn(AutoMsisdnCallback autoMsisdnCallback) {
-        String url = BuildConfig.AUTO_MSISDN_MOCK;
+        String url ="";
         ApiInterface endpoint = RequestConfig.getClient(url).create(ApiInterface.class);
         Call<OtpModel> call = endpoint.getMsisdn();
         call.enqueue(new Callback<OtpModel>() {
@@ -7887,7 +7902,7 @@ public class KsServices {
     }
 
 
-    public void getTrending(List<Response<ListResponse<Asset>>> responseList, List<VIUChannel> list, int counter) {
+    public void getTrending(List<VIUChannel> list, int counter) {
         clientSetupKs();
         SearchAssetFilter relatedFilter = new SearchAssetFilter();
         String kSql = "";
@@ -7924,7 +7939,7 @@ public class KsServices {
                         if (result.results.getObjects() != null) {
                             if (result.results.getObjects().size() > 0) {
                                 responseList.add(result);
-                                homechannelCallBack.response(true, null, list);
+                                homechannelCallBack.response(true, responseList, list);
                             } else {
                                 homechannelCallBack.response(false, null, null);
                             }
@@ -7944,7 +7959,7 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        getTrending(responseList, list, counter);
+                                        getTrending(list, counter);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         homechannelCallBack.response(false, null, null);
@@ -8063,14 +8078,19 @@ public class KsServices {
         responseList = new ArrayList<Response<ListResponse<Asset>>>();
         homechannelCallBack = callBack;
         clientSetupKs();
-        SearchAssetFilter relatedFilter = new SearchAssetFilter();
-        relatedFilter.setTypeIn(String.valueOf(mediatype));
+        SearchAssetListFilter searchAssetListFilter = new SearchAssetListFilter();
+        searchAssetListFilter.setTypeIn(String.valueOf(mediatype));
+        DynamicOrderBy dynamicOrder = new DynamicOrderBy();
+        dynamicOrder.setName("Order");
+        dynamicOrder.setOrderBy(MetaTagOrderBy.META_ASC);
+        searchAssetListFilter.setDynamicOrderBy(dynamicOrder);
+
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
         filterPager.setPageSize(100);
 
-        AssetService.ListAssetBuilder builder = AssetService.list(relatedFilter, filterPager).setCompletion(result -> {
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetListFilter, filterPager).setCompletion(result -> {
             try {
                 if (result.isSuccess()) {
                     if (result.results != null) {

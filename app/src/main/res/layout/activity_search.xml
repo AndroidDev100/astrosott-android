@@ -272,7 +272,6 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:text="@string/quick_search_text"
-                android:textAllCaps="true"
                 android:visibility="visible"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp"
