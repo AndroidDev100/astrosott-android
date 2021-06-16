@@ -101,6 +101,7 @@ public interface AppLevelConstants {
 
     //kaltura error codes
     String KS_EXPIRE = "500016";
+    String HOUSEHOLD_ERROR="1003";
     String ALREADY_FOLLOW_ERROR = "8013";
     String ALREADY_UNFOLLOW_ERROR = "8012";
     String LOGGED_OUT_ERROR_CODE = "1019";

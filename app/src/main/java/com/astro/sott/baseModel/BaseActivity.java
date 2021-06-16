@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
+import com.astro.sott.utils.ContextWrapper;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tabletSize = getResources().getBoolean(R.bool.isTablet);
+        ContextWrapper.getInstance().setActivity(this);
         if (tabletSize) {
             // do something
             checkAutoRotation();

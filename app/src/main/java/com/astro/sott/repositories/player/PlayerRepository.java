@@ -17,7 +17,9 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.astro.sott.callBacks.kalturaCallBacks.RefreshTokenCallBack;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.networking.refreshToken.RefreshKS;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
@@ -36,6 +38,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
+import com.kaltura.playkit.PKError;
 import com.kaltura.playkit.PKLog;
 import com.kaltura.playkit.PKMediaConfig;
 import com.kaltura.playkit.PKMediaEntry;
@@ -46,6 +49,7 @@ import com.kaltura.playkit.PlayerEvent;
 import com.kaltura.playkit.player.ABRSettings;
 import com.kaltura.playkit.player.AudioTrack;
 import com.kaltura.playkit.player.PKAspectRatioResizeMode;
+import com.kaltura.playkit.player.PKPlayerErrorType;
 import com.kaltura.playkit.player.PKTracks;
 import com.kaltura.playkit.player.TextTrack;
 import com.kaltura.playkit.player.VideoTrack;
@@ -122,12 +126,38 @@ public class PlayerRepository {
 
         player.addListener(this, PlayerEvent.error, event -> {
             PlayerEvent.Type error = ((PlayerEvent.Error) event).type;
-            if (event.error.isFatal()) {
-                //  player.pause();
+            try {
+                PKPlayerErrorType pkError = (PKPlayerErrorType) event.error.errorType;
+                 if (pkError.errorCode == 1003 || pkError.errorCode == 500016) {
+                new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                    @Override
+                    public void response(CommonResponse response) {
+                        if (player != null) {
+                            if (activity != null && !activity.isFinishing()) {
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        player.destroy();
+                                        destroCallBacks();
+                                        activity.onBackPressed();
+                                    }
+                                });
+                            }
+
+                        }
+
+                    }
+                });
+                 } else {
+                     if (event.error.isFatal()) {
+                         //  player.pause();
+                         playerMutableLiveData.postValue("");
+                     }
+                 }
+
+            } catch (Exception ignored) {
                 playerMutableLiveData.postValue("");
             }
-
-
         });
 
 

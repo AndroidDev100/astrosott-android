@@ -359,7 +359,7 @@ public class KsServices {
                         String errorCode = result.error.getCode();
                         // PrintLogging.printLog("","errorCodess-->>"+errorCode);
                         Log.e("errorCodessMyPlayList", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -587,7 +587,7 @@ public class KsServices {
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -689,7 +689,7 @@ public class KsServices {
                             if (result.error != null) {
                                 String errorCode = result.error.getCode();
                                 Log.e("KsExpireDeleteSeries", errorCode);
-                                if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                                if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                                     new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                         @Override
                                         public void response(CommonResponse response) {
@@ -737,7 +737,7 @@ public class KsServices {
                     if (result.error != null) {
 
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -785,7 +785,7 @@ public class KsServices {
                             if (result.error != null) {
                                 String errorCode = result.error.getCode();
                                 Log.e("KsExpireSeries", errorCode);
-                                if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                                if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                                     new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                         @Override
                                         public void response(CommonResponse response) {
@@ -852,7 +852,7 @@ public class KsServices {
                 if (result.error != null) {
 
                     String errorCode = result.error.getCode();
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -902,7 +902,7 @@ public class KsServices {
                 if (result.error != null) {
 
                     String errorCode = result.error.getCode();
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -954,7 +954,7 @@ public class KsServices {
                 if (result.error != null) {
 
                     String errorCode = result.error.getCode();
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -1147,7 +1147,7 @@ public class KsServices {
                     if (result.error != null) {
 
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -1234,7 +1234,7 @@ public class KsServices {
                     if (result.error != null) {
 
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -1321,7 +1321,7 @@ public class KsServices {
                     if (result.error != null) {
 
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -1477,7 +1477,7 @@ public class KsServices {
                     if (result.error != null) {
 
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -1553,7 +1553,7 @@ public class KsServices {
                     if (result.error != null) {
 
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -1593,7 +1593,7 @@ public class KsServices {
                 if (result.error != null) {
 
                     String errorCode = result.error.getCode();
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -1640,7 +1640,7 @@ public class KsServices {
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(response -> {
                                 if (response.getStatus()) {
                                     getNotification(callback);
@@ -1677,7 +1677,7 @@ public class KsServices {
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(response -> {
                                 if (response.getStatus()) {
                                     deleteHouseHoldDevice(udid, callBack);
@@ -1731,7 +1731,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
 
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -1790,7 +1790,7 @@ public class KsServices {
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -1846,7 +1846,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("KsExpireDeviceManage", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -1907,7 +1907,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("KsExpireDeviceManage", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -1971,7 +1971,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("KsExpireDeviceManage", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -2040,7 +2040,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("KsExpireDeviceManage", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -2097,7 +2097,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("KsExpireDeviceManage", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -2154,7 +2154,7 @@ public class KsServices {
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -2211,7 +2211,7 @@ public class KsServices {
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -2266,7 +2266,7 @@ public class KsServices {
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -2321,7 +2321,7 @@ public class KsServices {
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -2364,7 +2364,7 @@ public class KsServices {
                             if (result.error != null) {
                                 String errorCode = result.error.getCode();
                                 // PrintLogging.printLog("","errorCodess-->>"+errorCode);
-                                if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                                if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                                     new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                         @Override
                                         public void response(CommonResponse response) {
@@ -2613,7 +2613,7 @@ public class KsServices {
                     if (result.error != null) {
 
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -2811,7 +2811,7 @@ public class KsServices {
                                 String errorCode = result.error.getCode();
                                 // PrintLogging.printLog("","errorCodess-->>"+errorCode);
                                 Log.e("errorCodessMywatchList", errorCode);
-                                if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                                if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                                     new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                         @Override
                                         public void response(CommonResponse response) {
@@ -2884,7 +2884,7 @@ public class KsServices {
                                 String errorCode = result.error.getCode();
                                 // PrintLogging.printLog("","errorCodess-->>"+errorCode);
                                 Log.e("errorCodessMyPlayList", errorCode);
-                                if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                                if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                                     new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                         @Override
                                         public void response(CommonResponse response) {
@@ -2948,7 +2948,7 @@ public class KsServices {
                     if (result.error != null) {
 
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -3135,7 +3135,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         // PrintLogging.printLog("","errorCodess-->>"+errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -3184,7 +3184,7 @@ public class KsServices {
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -3242,7 +3242,7 @@ public class KsServices {
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -3308,7 +3308,7 @@ public class KsServices {
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -3418,7 +3418,7 @@ public class KsServices {
                         String errorCode = result.error.getCode();
                         // PrintLogging.printLog("","errorCodess-->>"+errorCode);
                         Log.e("ksExpireMoreResultAll", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -3468,7 +3468,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     // PrintLogging.printLog("","errorCodess-->>"+errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -3518,7 +3518,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     // PrintLogging.printLog("","errorCodess-->>"+errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -3568,7 +3568,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     // PrintLogging.printLog("","errorCodess-->>"+errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -3717,7 +3717,7 @@ public class KsServices {
                     searchResultCallBack.response(true, searchOutputModel, "noResultFound");
                 }
             } else {
-                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
+                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE)) || result.error.getCode().equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                     searchKeyword(context, keyToSearch, model, count, CallBack, searchKeyword, selectredGenre);
                 }
             }
@@ -3849,7 +3849,7 @@ public class KsServices {
                     searchResultCallBack.response(true, searchOutputModel, "noResultFound");
                 }
             } else {
-                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
+                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE)) || result.error.getCode().equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                     searchKeyword(context, keyToSearch, model, count, CallBack, searchKeyword, selectedGenre);
                 }
             }
@@ -3905,7 +3905,7 @@ public class KsServices {
                     searchResultCallBack.response(true, searchOutputModel, "noResultFound");
                 }
             } else {
-                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
+                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE)) || result.error.getCode().equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                     searchKeyword(context, keyToSearch, model, count, CallBack, keyToSearch, "");
                 }
             }
@@ -3950,7 +3950,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -4436,7 +4436,7 @@ public class KsServices {
 
                         String errorCode = result.error.getCode();
 
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -4498,7 +4498,7 @@ public class KsServices {
                     if (result.error != null) {
 
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -4577,7 +4577,7 @@ public class KsServices {
 
                         String errorCode = result.error.getCode();
                         Log.e("errorCodesscont", errorCode + "");
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -4649,7 +4649,7 @@ public class KsServices {
 
                     String errorCode = result.error.getCode();
                     Log.e("errorCodessAsset", errorCode + "");
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -4838,7 +4838,7 @@ public class KsServices {
                 if (result.error != null) {
 
                     String errorCode = result.error.getCode();
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -4887,7 +4887,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("ksExipreCheckUser", errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -4942,7 +4942,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("ksExipreGenre", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -4987,7 +4987,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("ksExipreStoreUser", errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -5024,7 +5024,7 @@ public class KsServices {
             } else {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(response -> {
                             if (response.getStatus()) {
                                 updateParentalControl(parentalStatus, userPrefrencesCallBack);
@@ -5072,7 +5072,7 @@ public class KsServices {
 
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -5119,7 +5119,7 @@ public class KsServices {
             } else {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -5167,7 +5167,7 @@ public class KsServices {
 
                         String errorCode = result.error.getCode();
 
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -5498,7 +5498,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -5686,7 +5686,7 @@ public class KsServices {
                             if (result.error != null) {
                                 String errorCode = result.error.getCode();
                                 PrintLogging.printLog("", "errorCodess-->>" + errorCode);
-                                if (errorCode.equalsIgnoreCase(AppConstants.KS_EXPIRE)) {
+                                if (errorCode.equalsIgnoreCase(AppConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                                     new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                         @Override
                                         public void response(CommonResponse response) {
@@ -5814,7 +5814,7 @@ public class KsServices {
                             if (result.error != null) {
                                 String errorCode = result.error.getCode();
                                 PrintLogging.printLog("", "errorCodess-->>" + errorCode);
-                                if (errorCode.equalsIgnoreCase(AppConstants.KS_EXPIRE)) {
+                                if (errorCode.equalsIgnoreCase(AppConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                                     new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                         @Override
                                         public void response(CommonResponse response) {
@@ -5871,7 +5871,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -5928,7 +5928,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -5979,7 +5979,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -6025,7 +6025,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -6074,7 +6074,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -6118,7 +6118,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -6306,7 +6306,7 @@ public class KsServices {
 
                     String errorCode = result.error.getCode();
                     Log.e("errorCodessSimiler", errorCode + "");
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -6403,7 +6403,7 @@ public class KsServices {
 
                     String errorCode = result.error.getCode();
                     Log.e("errorCodess cat", errorCode + "");
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -6460,7 +6460,7 @@ public class KsServices {
 
                     String errorCode = result.error.getCode();
                     Log.e("errorCodess", errorCode + "");
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -6509,7 +6509,7 @@ public class KsServices {
     }
 
     public void getMsisdn(AutoMsisdnCallback autoMsisdnCallback) {
-        String url ="";
+        String url = "";
         ApiInterface endpoint = RequestConfig.getClient(url).create(ApiInterface.class);
         Call<OtpModel> call = endpoint.getMsisdn();
         call.enqueue(new Callback<OtpModel>() {
@@ -6583,7 +6583,7 @@ public class KsServices {
 
                         String errorCode = result.error.getCode();
                         Log.e("errorCodess cat", errorCode + "");
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -6619,7 +6619,7 @@ public class KsServices {
             getFbKeyHash(activity, ksValue + token);
 
             startSessionClient(ksValue);
-            String udid = AppCommonMethods.callpreference(activity).getUdid();
+            String udid = UserInfo.getInstance(activity).getCpCustomerId() + "_" + AppCommonMethods.callpreference(activity).getUdid();
 
             int expiryDate = getTokenExpiryDate();
 
@@ -6684,7 +6684,7 @@ public class KsServices {
                     ottUserDetailsCallBack.onSuccess(userParentalDetails);
             } else {
                 if (result.error != null) {
-                    if (result.error.getCode().equals(AppLevelConstants.KS_EXPIRE)) {
+                    if (result.error.getCode().equals(AppLevelConstants.KS_EXPIRE) || result.error.getCode().equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         getOttUserDetails(ottUserDetailsCallBack);
                     } else {
                         ottUserDetailsCallBack.onFailure(result.error);
@@ -6704,7 +6704,7 @@ public class KsServices {
                     commonResponseCallBack.onSuccess();
                 } else {
                     if (result.error != null) {
-                        if (result.error.getCode().equals(AppLevelConstants.KS_EXPIRE)) {
+                        if (result.error.getCode().equals(AppLevelConstants.KS_EXPIRE) || result.error.getCode().equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             validatePin(pinText, commonResponseCallBack);
                         } else {
                             commonResponseCallBack.onFailure(result.error);
@@ -6732,7 +6732,7 @@ public class KsServices {
                 }
             } else {
                 if (result.error != null) {
-                    if (result.error.getCode().equals(AppLevelConstants.KS_EXPIRE)) {
+                    if (result.error.getCode().equals(AppLevelConstants.KS_EXPIRE) || result.error.getCode().equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         setPin(pinText, commonResponseCallBack);
                     } else {
                         commonResponseCallBack.onFailure(result.error);
@@ -6752,7 +6752,7 @@ public class KsServices {
                     commonResponseCallBack.onSuccess();
                 } else {
                     if (result.error != null) {
-                        if (result.error.getCode().equals(AppLevelConstants.KS_EXPIRE)) {
+                        if (result.error.getCode().equals(AppLevelConstants.KS_EXPIRE) || result.error.getCode().equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             enableParental(commonResponseCallBack);
                         } else {
                             commonResponseCallBack.onFailure(result.error);
@@ -6773,7 +6773,7 @@ public class KsServices {
                     commonResponseCallBack.onSuccess();
                 } else {
                     if (result.error != null) {
-                        if (result.error.getCode().equals(AppLevelConstants.KS_EXPIRE)) {
+                        if (result.error.getCode().equals(AppLevelConstants.KS_EXPIRE) || result.error.getCode().equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             enableParental(commonResponseCallBack);
                         } else {
                             commonResponseCallBack.onFailure(result.error);
@@ -6808,7 +6808,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("ksExipreStoreUser", errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -6857,7 +6857,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("ksExipreStoreUser", errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -6921,7 +6921,7 @@ public class KsServices {
 //                });
 
                 if (result.error != null) {
-                    if (result.error.getCode().equals(AppLevelConstants.KS_EXPIRE)) {
+                    if (result.error.getCode().equals(AppLevelConstants.KS_EXPIRE) || result.error.getCode().equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         callSpecificAsset(assetId, specificAssetCallBack);
                     } else {
                         specificAssetCallBack.getAsset(false, result.results);
@@ -7022,7 +7022,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("ksExipreCheckUser", errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -7072,7 +7072,7 @@ public class KsServices {
                         if (result.error != null) {
                             String errorCode = result.error.getCode();
                             Log.e("errorCodessName", errorCode);
-                            if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                            if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                                 new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                     @Override
                                     public void response(CommonResponse response) {
@@ -7127,7 +7127,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("errorCodessName", errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -7180,7 +7180,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -7227,7 +7227,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -7270,7 +7270,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -7308,7 +7308,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -7345,7 +7345,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("ksExipreCheckUser", errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -7381,7 +7381,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("ksExipreStoreUser", errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -7423,7 +7423,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("ksExipreStoreUser", errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -7485,7 +7485,7 @@ public class KsServices {
                 } else {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -7533,7 +7533,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("ksExipreCheckUser", errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -7574,7 +7574,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("ksExipreCheckUser", errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -7638,7 +7638,7 @@ public class KsServices {
                 if (result.error != null) {
                     String errorCode = result.error.getCode();
                     Log.e("ksExipreCheckUser", errorCode);
-                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                    if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                         new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                             @Override
                             public void response(CommonResponse response) {
@@ -7689,7 +7689,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("ksExipreCheckUser", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -7754,7 +7754,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("ksExipreCheckUser", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -7794,7 +7794,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("ksExipreCheckUser", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -7842,7 +7842,7 @@ public class KsServices {
                     if (result.error != null) {
                         String errorCode = result.error.getCode();
                         Log.e("errorCodessName", errorCode);
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -7954,7 +7954,7 @@ public class KsServices {
                     if (result.error != null) {
 
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -8037,7 +8037,7 @@ public class KsServices {
                     if (result.error != null) {
 
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -8115,7 +8115,7 @@ public class KsServices {
                     if (result.error != null) {
 
                         String errorCode = result.error.getCode();
-                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE))
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
                             new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
                                 @Override
                                 public void response(CommonResponse response) {
@@ -8203,7 +8203,7 @@ public class KsServices {
                     searchResultCallBack.response(true, searchOutputModel, "noResultFound");
                 }
             } else {
-                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
+                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE)) || result.error.getCode().equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
                     searchMovieKeyword(context, keyToSearch, model, count, CallBack);
                 }
             }
@@ -8296,7 +8296,7 @@ public class KsServices {
                     searchResultCallBack.response(true, searchOutputModel, "noResultFound");
                 }
             } else {
-                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE))) {
+                if ((result.error.getCode().equals(AppLevelConstants.KS_EXPIRE) || result.error.getCode().equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))) {
                     searchVodCollectionKeyword(context, keyToSearch, model, count, CallBack, searchKeyword, selectedGenre);
                 }
             }

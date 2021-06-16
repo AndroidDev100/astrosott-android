@@ -3,6 +3,10 @@ package com.astro.sott.networking.refreshToken;
 import android.content.Context;
 import android.util.Log;
 
+import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.utils.ContextWrapper;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.kalturaCallBacks.KsAnonymousLoginCallBack;
@@ -10,6 +14,8 @@ import com.astro.sott.callBacks.kalturaCallBacks.KsStartSessionCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.RefreshTokenCallBack;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.astro.sott.utils.userInfo.UserInfo;
+import com.kaltura.android.exoplayer2.C;
 import com.kaltura.client.types.LoginSession;
 import com.kaltura.client.types.SessionInfo;
 import com.kaltura.client.utils.response.base.Response;
@@ -32,7 +38,14 @@ public class RefreshKS {
             public void success(boolean success, Response<LoginSession> response) {
                 if (response.isSuccess()) {
                     if (response.results != null) {
-                        callStartSession(refreshTokenCallBack, commonResponse);
+                        if (UserInfo.getInstance(context).getCpCustomerId() != null && !UserInfo.getInstance(context).getCpCustomerId().equalsIgnoreCase("")) {
+                            callStartSession(refreshTokenCallBack, commonResponse);
+                        } else {
+                            AppCommonMethods.removeUserPrerences(context);
+                            if (ContextWrapper.getInstance().getActivity() != null)
+                                new ActivityLauncher(ContextWrapper.getInstance().getActivity()).homeScreen(ContextWrapper.getInstance().getActivity(), HomeActivity.class);
+
+                        }
                     } else {
                         commonResponse.setStatus(false);
                         if (response.error != null) {

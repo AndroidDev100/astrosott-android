@@ -61,11 +61,11 @@ public class UserInfo {
 
 
     public String getCpCustomerId() {
-        return cpCustomerId;
+        return session.getString("AstroCpCustomerId", "");
     }
 
     public void setCpCustomerId(String cpCustomerId) {
-        this.cpCustomerId = cpCustomerId;
+        session.setString("AstroCpCustomerId", cpCustomerId);
     }
 
     public String getEmail() {
