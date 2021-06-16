@@ -574,6 +574,11 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
+                try {
+                    FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
+                }catch (Exception e){
+
+                }
                 openShareDialouge();
             });
 

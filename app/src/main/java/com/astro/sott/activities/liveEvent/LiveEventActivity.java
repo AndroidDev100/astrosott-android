@@ -19,6 +19,7 @@ import com.astro.sott.databinding.ActivityLiveEventBinding;
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.SubMediaTypes;
@@ -163,6 +164,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         getBinding().playButton.setVisibility(View.GONE);
         railData = commonRailData;
         asset = railData.getObject();
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName(asset.getName());
+
         layoutType = layout;
         assetId = asset.getId();
         name = asset.getName();
@@ -194,12 +197,15 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             lastClickTime = SystemClock.elapsedRealtime();
             if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
                 if (isPlayableOrNot()) {
+                    FirebaseEventManager.getFirebaseInstance(this).liveButtonEvent(FirebaseEventManager.WATCH, asset, this, "");
                     playerChecks(railData);
                 } else {
                     ToastHandler.display(getResources().getString(R.string.live_event_msg), this);
                 }
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
                 if (UserInfo.getInstance(this).isActive()) {
+                    FirebaseEventManager.getFirebaseInstance(this).liveButtonEvent(FirebaseEventManager.TRX_VIP, asset, this, "");
+
                     if (isPlayableOrNot()) {
                         fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
                     } else {
@@ -223,6 +229,10 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                 if (UserInfo.getInstance(this).isActive()) {
+                    try {
+                        FirebaseEventManager.getFirebaseInstance(this).liveButtonEvent(FirebaseEventManager.TRX_VIP, asset, this, "");
+                    } catch (Exception e) {
+                    }
                     if (isPlayableOrNot()) {
                         fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
                     } else {
@@ -821,6 +831,11 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
 
     private void openShareDialouge() {
+        try {
+            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
+        }catch (Exception e) {
+
+        }
         AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), SubMediaTypes.LiveEvent.name());
     }
 

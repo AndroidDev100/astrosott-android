@@ -20,6 +20,7 @@ import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.conviva.sdk.ConvivaSdkConstants;
@@ -960,6 +961,11 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
     }
 
     private void openShareDialouge() {
+        try {
+            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
+        }catch (Exception e){
+
+        }
         AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), "");
     }
 

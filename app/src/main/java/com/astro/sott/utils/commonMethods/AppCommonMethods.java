@@ -211,6 +211,20 @@ public class AppCommonMethods {
         return "";
     }
 
+    public static String getFirebaseDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d", Locale.getDefault());
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
     public static int getEpisodeNumber(Map<String, Value> metas) {
         int episodeNumber = -1;
         try {

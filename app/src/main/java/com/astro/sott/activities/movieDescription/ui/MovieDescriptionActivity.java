@@ -687,6 +687,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
+            try {
+                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
+            }catch (Exception e){
+
+            }
             openShareDialouge();
 
         });
