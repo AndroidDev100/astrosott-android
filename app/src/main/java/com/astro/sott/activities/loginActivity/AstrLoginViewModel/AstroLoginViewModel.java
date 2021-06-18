@@ -41,6 +41,10 @@ public class AstroLoginViewModel extends AndroidViewModel {
         return AstrLoginRepository.getInstance().resetPassword(getApplication(), token, password);
     }
 
+    public LiveData<EvergentCommonResponse> setPassword(String token, String password) {
+        return AstrLoginRepository.getInstance().setPassword(getApplication(), token, password);
+    }
+
     public LiveData<EvergentCommonResponse> createUser(String type, String emailMobile, String password, String name,boolean isTablet) {
         return AstrLoginRepository.getInstance().createUser(getApplication(), type, emailMobile, password,name,isTablet);
     }

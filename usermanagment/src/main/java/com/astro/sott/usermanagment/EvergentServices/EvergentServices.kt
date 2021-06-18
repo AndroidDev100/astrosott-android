@@ -518,7 +518,7 @@ class EvergentServices {
 
 
     fun setPassword(
-        token: String,
+        accessToken: String,
         context: Context,
         password: String,
         evergentResetPasswordCallBack: EvergentResetPasswordCallBack
@@ -530,7 +530,7 @@ class EvergentServices {
         json.addProperty("contactPassword", password)
         searchAccountJson.add("ResetPasswordRequestMessage", json)
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
-        val call = apiInterface?.resetPassword(searchAccountJson)
+        val call = apiInterface?.setPassword("Bearer $accessToken",searchAccountJson)
         call?.enqueue(object : Callback<ResetPasswordResponse?> {
             override fun onFailure(call: Call<ResetPasswordResponse?>, t: Throwable) {
                 evergentResetPasswordCallBack.onFailure("Something Went Wrong", "")

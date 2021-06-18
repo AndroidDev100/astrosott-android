@@ -195,6 +195,9 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             }
 
             try {
+                if (UserInfo.getInstance(this).isPasswordExists()) {
+                    getBinding().psw.setText(getResources().getString(R.string.pswd_asterik));
+                }
                 String masked = AppCommonMethods.maskedEmail(EditProfileActivity.this);
                 getBinding().email.setText(masked);
                 if (!UserInfo.getInstance(this).getFirstName().equalsIgnoreCase("")) {

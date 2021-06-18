@@ -49,6 +49,9 @@ interface EvergentApiInterface {
     @POST("astro/resetPassword")
     fun resetPassword(@Body jsonObject: JsonObject?): Call<ResetPasswordResponse?>?
 
+    @POST("astro/resetPassword")
+    fun setPassword(@Header("Authorization") key: String,@Body jsonObject: JsonObject?): Call<ResetPasswordResponse?>?
+
     @POST("astro/createUser")
     fun createUser(@Body jsonObject: JsonObject?): Call<CreateUserResponse?>?
 
