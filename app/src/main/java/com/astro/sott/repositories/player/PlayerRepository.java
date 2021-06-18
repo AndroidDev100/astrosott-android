@@ -3,6 +3,7 @@ package com.astro.sott.repositories.player;
 import android.app.Activity;
 import android.app.AlertDialog;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -17,10 +18,14 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.callBacks.kalturaCallBacks.RefreshTokenCallBack;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.RefreshKS;
+import com.astro.sott.repositories.mysubscriptionplan.MySubscriptionPlanRepository;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.BuildConfig;
@@ -34,6 +39,7 @@ import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.shimmer.Constants;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.kaltura.client.types.Asset;
@@ -119,6 +125,38 @@ public class PlayerRepository {
         return (INSTANCE);
     }
 
+    private void logoutApi(Activity context) {
+        MySubscriptionPlanRepository.getInstance().logoutCredential(context, UserInfo.getInstance(context).getExternalSessionToken(), UserInfo.getInstance(context).getAccessToken());
+    }
+
+    public void openHouseHoldDialog(final Activity context) {
+        BaseActivity baseActivity = (BaseActivity) context;
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
+        builder.setTitle(context.getResources().getString(R.string.device_Removed)).setMessage(context.getResources().getString(R.string.device_removed_description))
+                .setCancelable(true)
+                .setPositiveButton(context.getResources().getString(R.string.continue_as_guest), (dialog, id) -> {
+                    logoutApi(context);
+                    AppCommonMethods.removeUserPrerences(baseActivity);
+                    new ActivityLauncher(context).homeScreen(context, HomeActivity.class);
+                    dialog.cancel();
+                })
+                .setNegativeButton(context.getResources().getString(R.string.login), (dialog, id) -> {
+                    logoutApi(context);
+                    AppCommonMethods.removeUserPrerences(baseActivity);
+                    UserInfo.getInstance(baseActivity).setHouseHoldError(true);
+                    new ActivityLauncher(context).homeScreen(context, HomeActivity.class);
+                    dialog.cancel();
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+        Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        bn.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
+        Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        bp.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
+
+    }
+
     public LiveData<String> playerLoadedMetadata(final int progress, final Context context, final Activity activity) {
         final MutableLiveData<String> playerMutableLiveData = new MutableLiveData<>();
         //PlayerListeners
@@ -128,32 +166,36 @@ public class PlayerRepository {
             PlayerEvent.Type error = ((PlayerEvent.Error) event).type;
             try {
                 PKPlayerErrorType pkError = (PKPlayerErrorType) event.error.errorType;
-                 if (pkError.errorCode == 1003 || pkError.errorCode == 500016) {
-                new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
-                    @Override
-                    public void response(CommonResponse response) {
-                        if (player != null) {
+                if (pkError.errorCode == 500016) {
+                    new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                        @Override
+                        public void response(CommonResponse response) {
                             if (activity != null && !activity.isFinishing()) {
                                 activity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        player.destroy();
-                                        destroCallBacks();
+                                        if (player != null) {
+                                            player.destroy();
+                                            destroCallBacks();
+                                        }
                                         activity.onBackPressed();
                                     }
                                 });
                             }
 
-                        }
 
+                        }
+                    });
+                } else if (pkError.errorCode == 1003 || pkError.errorCode == 1016 || pkError.errorCode == 1019) {
+                    if (activity != null && !activity.isFinishing()) {
+                        openHouseHoldDialog(activity);
                     }
-                });
-                 } else {
-                     if (event.error.isFatal()) {
-                         //  player.pause();
-                         playerMutableLiveData.postValue("");
-                     }
-                 }
+                } else {
+                    if (event.error.isFatal()) {
+                        //  player.pause();
+                        playerMutableLiveData.postValue("");
+                    }
+                }
 
             } catch (Exception ignored) {
                 playerMutableLiveData.postValue("");

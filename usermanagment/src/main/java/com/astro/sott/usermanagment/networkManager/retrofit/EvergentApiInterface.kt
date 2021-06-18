@@ -14,6 +14,7 @@ import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse
 import com.astro.sott.usermanagment.modelClasses.invoice.InvoiceResponse
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse
 import com.astro.sott.usermanagment.modelClasses.login.LoginResponse
+import com.astro.sott.usermanagment.modelClasses.logout.LogoutExternalResponse
 import com.astro.sott.usermanagment.modelClasses.refreshToken.RefreshTokenResponse
 import com.astro.sott.usermanagment.modelClasses.removeDevice.RemoveDeviceResponse
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse
@@ -50,6 +51,9 @@ interface EvergentApiInterface {
 
     @POST("astro/createUser")
     fun createUser(@Body jsonObject: JsonObject?): Call<CreateUserResponse?>?
+
+    @POST("astro/logOutUser")
+    fun logoutUser(@Header("Authorization") key: String,@Body jsonObject: JsonObject?): Call<LogoutExternalResponse?>?
 
     @POST("astro/getOAuthAccessTokenv2")
     fun login(@Body jsonObject: JsonObject?): Call<LoginResponse?>?

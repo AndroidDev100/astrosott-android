@@ -23,6 +23,7 @@ import com.astro.sott.usermanagment.modelClasses.getPaymentV2.PaymentV2Response;
 import com.astro.sott.usermanagment.modelClasses.getProducts.GetProductResponse;
 import com.astro.sott.usermanagment.modelClasses.invoice.InvoiceResponse;
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse;
+import com.astro.sott.usermanagment.modelClasses.logout.LogoutExternalResponse;
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.updateProfile.UpdateProfileResponse;
 import com.google.gson.JsonArray;
@@ -82,7 +83,7 @@ public class MySubscriptionPlanRepository {
     public LiveData<EvergentCommonResponse> getProductsForLogin(Context context, JsonArray subscriptionId, String accessToken, String from) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().getProductforLogin(subscriptionId, context, accessToken,from, new EvergentGetProductsCallBack() {
+        EvergentServices.Companion.getInstance().getProductforLogin(subscriptionId, context, accessToken, from, new EvergentGetProductsCallBack() {
 
 
             @Override
@@ -131,7 +132,7 @@ public class MySubscriptionPlanRepository {
     public LiveData<EvergentCommonResponse<GetActiveResponse>> getActiveSubscription(Context context, String acessToken, String from) {
         MutableLiveData<EvergentCommonResponse<GetActiveResponse>> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().getActiveSubscripton(context, acessToken,from, new EvergentResponseCallBack<GetActiveResponse>() {
+        EvergentServices.Companion.getInstance().getActiveSubscripton(context, acessToken, from, new EvergentResponseCallBack<GetActiveResponse>() {
 
 
             @Override
@@ -204,7 +205,7 @@ public class MySubscriptionPlanRepository {
     public LiveData<EvergentCommonResponse<CheckCredentialResponse>> checkCredential(Context context, String password, String emailMobile, String type) {
         MutableLiveData<EvergentCommonResponse<CheckCredentialResponse>> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().checkCredential(context, password, emailMobile,type, new EvergentResponseCallBack<CheckCredentialResponse>() {
+        EvergentServices.Companion.getInstance().checkCredential(context, password, emailMobile, type, new EvergentResponseCallBack<CheckCredentialResponse>() {
 
 
             @Override
@@ -217,6 +218,30 @@ public class MySubscriptionPlanRepository {
 
             @Override
             public void onSuccess(@NotNull CheckCredentialResponse getDevicesResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setResponse(getDevicesResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
+    public LiveData<EvergentCommonResponse<LogoutExternalResponse>> logoutCredential(Context context, String externalSession, String accessToken) {
+        MutableLiveData<EvergentCommonResponse<LogoutExternalResponse>> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().logoutUser(context, externalSession,accessToken, new EvergentResponseCallBack<LogoutExternalResponse>() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull LogoutExternalResponse getDevicesResponse) {
                 evergentCommonResponse.setStatus(true);
                 evergentCommonResponse.setResponse(getDevicesResponse);
                 mutableLiveData.postValue(evergentCommonResponse);

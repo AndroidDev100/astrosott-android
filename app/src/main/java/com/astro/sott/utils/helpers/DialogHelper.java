@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
 import com.astro.sott.baseModel.BaseActivity;
@@ -84,6 +85,9 @@ public class DialogHelper {
             showLoginDialog(context);
         }
     }
+
+
+
 
     public static void openDialougeFornonDialog(final Activity context, boolean isLiveChannel) {
         BaseActivity baseActivity = (BaseActivity) context;

@@ -22,8 +22,11 @@ import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.player.adapter.TrackItem;
 import com.astro.sott.repositories.dtv.DTVRepository;
 import com.astro.sott.repositories.liveChannel.LiveChannelRepository;
+import com.astro.sott.repositories.mysubscriptionplan.MySubscriptionPlanRepository;
 import com.astro.sott.repositories.player.PlayerRepository;
 import com.astro.sott.repositories.splash.SplashRepository;
+import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse;
+import com.astro.sott.usermanagment.modelClasses.logout.LogoutExternalResponse;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -55,7 +58,9 @@ public class DTPlayerViewModel extends AndroidViewModel {
         TabsData.getInstance().setSortType(sortType);
         return checkHasEpisodeNumberForSeason(getApplication().getApplicationContext(), map, assetType, counter, seasonCounter, layoutType, sortType, owner, seriesNumberList);
     }
-
+    public LiveData<EvergentCommonResponse<LogoutExternalResponse>> logoutUser(String accessToken, String externalSession) {
+        return MySubscriptionPlanRepository.getInstance().logoutCredential(getApplication(),externalSession,accessToken);
+    }
     public LiveData<List<AssetCommonBean>> callSeasonEpisodesBingeWatch(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType, String sortType) {
         return EpisodesLayer.getInstance().getEpisodesListBingeWatch(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType, sortType);
     }

@@ -17,6 +17,7 @@ import com.astro.sott.usermanagment.modelClasses.checkCredential.CheckCredential
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.invoice.InvoiceResponse;
 import com.astro.sott.usermanagment.modelClasses.lastSubscription.LastSubscriptionResponse;
+import com.astro.sott.usermanagment.modelClasses.logout.LogoutExternalResponse;
 import com.astro.sott.usermanagment.modelClasses.removeSubscription.RemoveSubscriptionResponse;
 import com.astro.sott.usermanagment.modelClasses.updateProfile.UpdateProfileResponse;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
@@ -68,6 +69,9 @@ public class SubscriptionViewModel extends AndroidViewModel {
 
     public LiveData<EvergentCommonResponse<CheckCredentialResponse>> checkCredential(String password, String emailMobile, String type) {
         return MySubscriptionPlanRepository.getInstance().checkCredential(getApplication(), password, emailMobile,type);
+    }
+    public LiveData<EvergentCommonResponse<LogoutExternalResponse>> logoutUser(String accessToken, String externalSession) {
+        return MySubscriptionPlanRepository.getInstance().logoutCredential(getApplication(),externalSession,accessToken);
     }
 
     public LiveData<EvergentCommonResponse<CreateOtpResponse>> createOtp(String type, String emailMobile) {

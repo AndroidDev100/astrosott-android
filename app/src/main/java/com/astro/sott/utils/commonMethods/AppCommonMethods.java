@@ -149,6 +149,7 @@ public class AppCommonMethods {
     public static void removeUserPrerences(Context context) {
         UserInfo.getInstance(context).setUserName("");
         UserInfo.getInstance(context).setVip(false);
+        UserInfo.getInstance(context).setHouseHoldError(false);
         UserInfo.getInstance(context).setCpCustomerId("");
         UserInfo.getInstance(context).setLastName("");
         UserInfo.getInstance(context).setEmail("");

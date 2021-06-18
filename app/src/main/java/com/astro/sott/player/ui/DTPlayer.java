@@ -4,6 +4,7 @@ package com.astro.sott.player.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -58,10 +59,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
+import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.DoubleClick;
 import com.astro.sott.callBacks.WindowFocusCallback;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.callBacks.kalturaCallBacks.PlayBackContextCallBack;
+import com.astro.sott.callBacks.kalturaCallBacks.RefreshTokenCallBack;
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
@@ -1273,8 +1276,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 baseActivity.runOnUiThread(() -> {
                     if (response != null) {
                         if (response.isSuccess()) {
-
-                            onMediaLoaded(response.getResponse());
+                             onMediaLoaded(response.getResponse());
                         } else {
                             ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackFailed(response.getError().toString());
                             /*handling 601 error code for session token expire*/
@@ -1285,7 +1287,29 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 //showDialog(response.getError().getMessage());
                                 if (baseActivity != null && !baseActivity.isFinishing()) {
                                     if (response.getError().getCode().equalsIgnoreCase(AppLevelConstants.KS_EXPIRE)) {
-                                        loggedOutMessage();
+                                        new RefreshKS(baseActivity).refreshKS(new RefreshTokenCallBack() {
+                                            @Override
+                                            public void response(CommonResponse response) {
+                                                if (baseActivity != null && !baseActivity.isFinishing()) {
+                                                    baseActivity.runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            if (runningPlayer != null) {
+                                                                runningPlayer.destroy();
+                                                                if (PlayerRepository.getInstance() != null) {
+                                                                    PlayerRepository.getInstance().destroCallBacks();
+                                                                }
+                                                            }
+                                                            baseActivity.onBackPressed();
+                                                        }
+                                                    });
+                                                }
+
+
+                                            }
+                                        });
+                                    } else if (response.getError().getCode().equalsIgnoreCase(AppLevelConstants.LOGGED_OUT_ERROR_CODE) || response.getError().getCode().equalsIgnoreCase(AppLevelConstants.DEVICE_EXIST_ERROR_CODE) || response.getError().getCode().equalsIgnoreCase(AppLevelConstants.DEVICE_NOT_IN_DOMAIN)) {
+                                        openHouseHoldDialog(baseActivity);
                                     } else {
                                         showDialog(new ErrorCallBack().ErrorMessage(response.getError().getCode(), response.getError().getMessage()));
                                     }
@@ -1301,6 +1325,41 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         startOttMediaLoadingProd(playLoadedEntry, asset);
     }
 
+    public  void openHouseHoldDialog(final Activity context) {
+        BaseActivity baseActivity = (BaseActivity) context;
+        FragmentManager fm = baseActivity.getSupportFragmentManager();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
+        builder.setTitle(context.getResources().getString(R.string.device_Removed)).setMessage(context.getResources().getString(R.string.device_removed_description))
+                .setCancelable(true)
+                .setPositiveButton(context.getResources().getString(R.string.continue_as_guest), (dialog, id) -> {
+                    logoutApi();
+                    AppCommonMethods.removeUserPrerences(baseActivity);
+                    new ActivityLauncher(context).homeScreen(context, HomeActivity.class);
+                    dialog.cancel();
+                })
+                .setNegativeButton(context.getResources().getString(R.string.login), (dialog, id) -> {
+                    logoutApi();
+                    AppCommonMethods.removeUserPrerences(baseActivity);
+                    UserInfo.getInstance(baseActivity).setHouseHoldError(true);
+                    new ActivityLauncher(context).homeScreen(context, HomeActivity.class);
+                    dialog.cancel();
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+        Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        bn.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
+        Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        bp.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
+
+    }
+
+    private  void logoutApi() {
+        viewModel.logoutUser(UserInfo.getInstance(getActivity()).getAccessToken(), UserInfo.getInstance(getActivity()).getExternalSessionToken()).observe(this, logoutExternalResponseEvergentCommonResponse -> {
+
+        });
+    }
 
     private void loggedOutMessage() {
         try {

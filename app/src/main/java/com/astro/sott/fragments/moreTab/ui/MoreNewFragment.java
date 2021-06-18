@@ -536,6 +536,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
     @Override
     public void onFinishDialog() {
+        logoutApi();
         AppCommonMethods.removeUserPrerences(getActivity());
         setUiForLogout();
         getBinding().rlLogout.setVisibility(View.GONE);
@@ -545,5 +546,11 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().edit.setVisibility(View.GONE);
         new ActivityLauncher(getActivity()).homeScreen(getActivity(), HomeActivity.class);
 
+    }
+
+    private void logoutApi() {
+        subscriptionViewModel.logoutUser(UserInfo.getInstance(getActivity()).getAccessToken(),UserInfo.getInstance(getActivity()).getExternalSessionToken()).observe(this, logoutExternalResponseEvergentCommonResponse -> {
+
+        });
     }
 }
