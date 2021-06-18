@@ -2522,7 +2522,7 @@ public class KsServices {
             AppToken token = new AppToken();
             token.expiry(String.valueOf(expiryDate)); // session expiry ks valid for 7 days
 
-            token.sessionDuration("604800");
+            token.sessionDuration("1814400");
             token.hashType("SHA256");
             AppTokenService.AddAppTokenBuilder builder = AppTokenService.add(token)
                     .setCompletion(result -> {
