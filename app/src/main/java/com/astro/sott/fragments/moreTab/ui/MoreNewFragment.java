@@ -24,6 +24,7 @@ import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
 import com.astro.sott.activities.profile.ui.ChangeEmailConfirmation;
 import com.astro.sott.activities.profile.ui.EditEmailActivity;
 import com.astro.sott.activities.profile.ui.EditProfileActivity;
+import com.astro.sott.activities.subscriptionActivity.ui.ProfileSubscriptionActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentMoreLayoutBinding;
@@ -159,14 +160,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
                 if (getBinding().subscribe.getText().toString().equalsIgnoreCase("subscribe")) {
                     navBar.setVisibility(View.GONE);
-                    NewSubscriptionPacksFragment someFragment = new NewSubscriptionPacksFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("productList", new ArrayList<String>());
-                    someFragment.setArguments(bundle);
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.content_frame, someFragment, "SubscriptionFragment"); // give your fragment container id in first parameter
-                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                    transaction.commit();
+                    new ActivityLauncher(getActivity()).profileSubscription();
                 } else {
                     navBar.setVisibility(View.GONE);
                     ManageSubscriptionFragment manageSubscriptionFragment = new ManageSubscriptionFragment();

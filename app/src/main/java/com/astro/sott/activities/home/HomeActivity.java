@@ -169,7 +169,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     };
 
     private void setProfileFragment() {
-        FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Navigation", "PROFILE");
+        FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Navigation", "Profile");
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
@@ -709,14 +709,9 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     };
 
     private void intializeBilling() {
-
-        /*String tempBase64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhiyDBLi/JpQLoxikmVXqxK8M3ZhJNfW2tAdjnGnr7vnDiYOiyk+NomNLqmnLfQwkC+TNWn50A5XmA8FEuZmuqOzKNRQHw2P1Spl27mcZsjXcCFwj2Vy+eso3pPLjG4DfqCmQN2jZo97TW0EhsROdkWflUMepy/d6sD7eNfncA1Z0ECEDuSuOANlMQLJk7Ci5PwUHKYnUAIwbq0fU9LP6O8Ejx5BK6o5K7rtTBttCbknTiZGLo6rB+8RcSB4Z0v3Di+QPyvxjIvfSQXlWhRdyxAs/EZ/F4Hdfn6TB7mLZkKZZwI0xzOObJp2BiesclMi1wHQsNSgQ8pnZ8T52aJczpQIDAQAB";
-        billingProcessor = new BillingProcessor(this, tempBase64, this);
-        billingProcessor.initialize();
-        billingProcessor.loadOwnedPurchasesFromGoogle();*/
-
         billingProcessor = new BillingProcessor(HomeActivity.this, HomeActivity.this);
         billingProcessor.initializeBillingProcessor();
+        // stopProcessor();
     }
 
    /* @Override
@@ -732,18 +727,11 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 billingProcessor.endConnection();
             }
         }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                intializeBilling();
-            }
-        }, 500);
-
     }
 
     @Override
-    public void onCardClicked(String productId, String serviceType, String active) {
-        if (serviceType.equalsIgnoreCase("ppv")) {
+    public void onCardClicked(String productId, String serviceType, String active,String name,String price) {
+       /* if (serviceType.equalsIgnoreCase("ppv")) {
             billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {
             if (billingProcessor != null && billingProcessor.isReady()) {
@@ -761,7 +749,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 });
 
             }
-        }
+        }*/
     }
 
     public SkuDetails getSubscriptionDetail(String productId) {
@@ -771,6 +759,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     @Override
     public void onBillingInitialized() {
+        billingProcessor.queryPurchases(this);
 
     }
 
@@ -778,7 +767,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     @Override
     public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
-        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+       /* if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
             if (purchases.get(0).getPurchaseToken() != null) {
                 if (SystemClock.elapsedRealtimeNanos() - lastClickTime < 8000) {
                     return;
@@ -787,7 +776,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 if (!TabsData.getInstance().isDetail())
                     processPurchase(purchases);
             }
-        }
+        }*/
     }
 
     private void processPurchase(List<Purchase> purchases) {

@@ -243,7 +243,7 @@
     <string name="lock_Episode">Lock Episodes</string>
     <string name="got_it">Got it</string>
     <string name="subscribe_header">Subscribe to unlock</string>
-    <string name="subscribe_description">Hit subscribe on the profile screen to unlock and enjoy premium titles!</string>
+    <string name="subscribe_description">Subscribing now to unlock and enjoy premium titles!</string>
     <string name="new_version">New Version Available</string>
     <string name="pin_required">Pin cannot be blank</string>
     <string name="incorrect_pin">Incorrect Pin. Try again</string>

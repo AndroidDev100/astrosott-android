@@ -29,6 +29,7 @@ import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 
@@ -207,14 +208,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     @Override
     public void onClick(String paymentType) {
         if (paymentType.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
-            NewSubscriptionPacksFragment someFragment = new NewSubscriptionPacksFragment();
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("productList", productIdList);
-            someFragment.setArguments(bundle);
-            transaction.replace(R.id.content_frame, someFragment, "SubscriptionFragment");
-            transaction.addToBackStack(null);
-            transaction.commit();
+            new ActivityLauncher(getActivity()).profileSubscription();
         } else {
             FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
             PlanNotUpdated planNotUpdated = PlanNotUpdated.newInstance(getActivity().getResources().getString(R.string.plan_with_different_payment), "");

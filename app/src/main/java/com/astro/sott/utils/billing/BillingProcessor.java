@@ -39,6 +39,9 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -806,6 +809,62 @@ public class BillingProcessor implements PurchasesUpdatedListener {
             }
         }
 
+    }
+
+    public void queryPurchases(Activity context) {
+        if (UserInfo.getInstance(context).isActive()) {
+            if (myBillingClient != null) {
+                final Purchase.PurchasesResult purchasesResult =
+                        myBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+
+                final List<Purchase> purchases = new ArrayList<>();
+                if (purchasesResult.getPurchasesList() != null) {
+                    purchases.addAll(purchasesResult.getPurchasesList());
+                }
+
+                if (purchases.size() > 0) {
+                    for (Purchase purchaseItem : purchases) {
+                        try {
+
+                            JSONObject jsonObject = new JSONObject(purchaseItem.getOriginalJson());
+                            Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
+                            if (!isAcknowledged) {
+                                acknowledgeNonConsumablePurchases(purchaseItem);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                } else {
+                }
+            }
+        }
+
+    }
+
+
+
+    public void acknowledgeNonConsumablePurchases(Purchase purchase) {
+        final AcknowledgePurchaseParams params =
+                AcknowledgePurchaseParams.newBuilder()
+                        .setPurchaseToken(purchase.getPurchaseToken())
+                        .build();
+        final AcknowledgePurchaseResponseListener listener =
+                billingResult -> {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        PrintLogging.printLog(
+                                TAG,
+                                "onAcknowledgePurchaseResponse: "
+                                        + billingResult.getResponseCode());
+                    } else {
+                        PrintLogging.printLog(
+                                TAG,
+                                "onAcknowledgePurchaseResponse: "
+                                        + billingResult.getDebugMessage());
+                    }
+                };
+        executeServiceRequest(() -> myBillingClient.acknowledgePurchase(params, listener));
     }
 
     public BillingClient getMyBillingClient() {

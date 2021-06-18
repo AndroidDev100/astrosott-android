@@ -1519,7 +1519,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (player != null) {
                     adsCallBackHandling(player);
                     getPlayerView(player);
-                    player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fill);
+                    player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fit);
                     getPlayerState();
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -1916,10 +1916,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         player.addListener(this, AdEvent.loaded, event -> {
             showAdsView();
             Map<String, Object> contentInfo = new HashMap<String, Object>();
-            contentInfo.put(ConvivaSdkConstants.POD_INDEX, event.adInfo.getPodIndex());
-            contentInfo.put(ConvivaSdkConstants.POD_DURATION, event.adInfo.getAdDuration());
-            ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakStarted(ConvivaSdkConstants.AdPlayer.CONTENT, ConvivaSdkConstants.AdType.CLIENT_SIDE, contentInfo);
-
+            try {
+                contentInfo.put(ConvivaSdkConstants.POD_INDEX, event.adInfo.getPodIndex());
+                contentInfo.put(ConvivaSdkConstants.POD_DURATION, event.adInfo.getAdDuration());
+                ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakStarted(ConvivaSdkConstants.AdPlayer.CONTENT, ConvivaSdkConstants.AdType.CLIENT_SIDE, contentInfo);
+            } catch (Exception ignored) {
+            }
         });
 
         player.addListener(this, AdEvent.started, event -> {
