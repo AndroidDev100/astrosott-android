@@ -27,6 +27,7 @@ import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -92,7 +93,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
         getBinding().planRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         modelCall();
         getActiveSubscription();
-
+        FirebaseEventManager.getFirebaseInstance(getActivity()).trackScreenName(FirebaseEventManager.MANAGE_SUBSCRIPTION);
 
         getBinding().toolbar.backButton.setOnClickListener(v -> {
             getActivity().onBackPressed();

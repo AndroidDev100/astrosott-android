@@ -32,6 +32,7 @@ import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActiv
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.R;
@@ -174,6 +175,11 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         if (programAsset != null)
             setProgramMetas();
         if (railData != null) {
+            if (programAsset != null) {
+                FirebaseEventManager.getFirebaseInstance(this).trackScreenName(railData.getObject().getName() + "-" + programAsset.getName());
+            } else {
+                FirebaseEventManager.getFirebaseInstance(this).trackScreenName(railData.getObject().getName());
+            }
             getDataFromBack(railData);
             if (railData.getObject() != null)
                 Constants.channelName = railData.getObject().getName();
@@ -292,9 +298,17 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             lastClickTime = SystemClock.elapsedRealtime();
             if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
                 callProgressBar();
+                try {
+                    FirebaseEventManager.getFirebaseInstance(this).liveButtonEvent(FirebaseEventManager.WATCH, programAsset, this, railData.getName());
+                } catch (Exception e) {
+                }
                 playerChecks(railData);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
                 if (UserInfo.getInstance(this).isActive()) {
+                    try {
+                        FirebaseEventManager.getFirebaseInstance(this).liveButtonEvent(FirebaseEventManager.TRX_VIP, asset, this, "");
+                    } catch (Exception e) {
+                    }
                     fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
@@ -309,6 +323,11 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         });
 
         getBinding().share.setOnClickListener(v -> {
+            try {
+                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
+            }catch (Exception e){
+
+            }
             AppCommonMethods.openShareDialog(this, programAsset, this, "");
         });
         getBinding().astroPlayButton.setOnClickListener(view -> {
@@ -420,32 +439,6 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             }
         });
 
-       /* new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
-            if (status) {
-                playerChecksCompleted = true;
-                if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
-                    errorCode = AppLevelConstants.NO_ERROR;
-                    railData = railCommonData;
-                } else if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASED))) {
-                    if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                        isDtvAccountAdded(railCommonData);
-                    } else {
-                        errorCode = AppLevelConstants.FOR_PURCHASED_ERROR;
-                    }
-                } else {
-                    if (KsPreferenceKey.getInstance(getApplicationContext()).getUserActive()) {
-                        isDtvAccountAdded(railCommonData);
-                    } else {
-                        errorCode = AppLevelConstants.USER_ACTIVE_ERROR;
-                    }
-                }
-            } else {
-                callProgressBar();
-                if (message != "")
-                    showDialog(message);
-            }
-        });
-*/
 
     }
 
@@ -768,76 +761,6 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         }
     }
 
-
-    //DynamicData Api Call to Check DtvAccount
-    private void isDtvAccountAdded(RailCommonData railCommonData) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                activityViewModel.getDtvAccountList().observe(LiveChannel.this, new Observer<String>() {
-                    @Override
-                    public void onChanged(String dtvAccount) {
-                        try {
-                            if (dtvAccount != null) {
-                                if (dtvAccount.equalsIgnoreCase("0")) {
-                                    isDtvAdded = false;
-                                    callProgressBar();
-                                    checkForSubscription(isDtvAdded, railCommonData);
-
-                                } else if (dtvAccount.equalsIgnoreCase("")) {
-                                    isDtvAdded = false;
-                                    callProgressBar();
-                                    checkForSubscription(isDtvAdded, railCommonData);
-                                } else {
-                                    isDtvAdded = true;
-                                    callProgressBar();
-                                    checkForSubscription(isDtvAdded, railCommonData);
-                                }
-
-                            } else {
-                                // Api Failure Error
-                                callProgressBar();
-                                showDialog(getString(R.string.something_went_wrong_try_again));
-                            }
-                        } catch (Exception e) {
-                            Log.e("ExceptionIs", e.toString());
-                        }
-                    }
-                });
-
-            }
-        });
-
-    }
-
-    private void checkForSubscription(boolean isDtvAdded, RailCommonData railCommonData) {
-        //***** Mobile + Non-Dialog + Non-DTV *************//
-        if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == false) {
-            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(LiveChannel.this, isLiveChannel));
-        }
-        //********** Mobile + Non-Dialog + DTV ******************//
-        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == true) {
-            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(LiveChannel.this, isLiveChannel));
-        }
-        //*********** Mobile + Dialog + Non-DTV *****************//
-        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == false) {
-            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), LiveChannel.this)) {
-                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(LiveChannel.this, true, isLiveChannel));
-            } else {
-                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(LiveChannel.this, false, isLiveChannel));
-            }
-        }
-        //************ Mobile + Dialog + DTV ********************//
-        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == true) {
-            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), LiveChannel.this)) {
-                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(LiveChannel.this, true, isLiveChannel));
-            } else {
-                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(LiveChannel.this, false, isLiveChannel));
-            }
-        } else {
-            showDialog(getString(R.string.something_went_wrong_try_again));
-        }
-    }
 
     private void showDialog(String message) {
         FragmentManager fm = getSupportFragmentManager();

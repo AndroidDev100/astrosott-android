@@ -10,7 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.language.ui.LanguageSettingsActivity;
 import com.astro.sott.callBacks.commonCallBacks.SettingExpendableItemClick;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 
@@ -75,36 +77,36 @@ public class AppLanguageAdapter extends BaseExpandableListAdapter {
                     imageView.setVisibility(View.VISIBLE);
                 }
             }
-        } else if (listPosition==1){
-            if (expandedListPosition ==  new KsPreferenceKey(context).getAudioLanguageIndex()) {
+        } else if (listPosition == 1) {
+            if (expandedListPosition == new KsPreferenceKey(context).getAudioLanguageIndex()) {
                 imageView.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 imageView.setVisibility(View.GONE);
             }
 
-        }else if (listPosition==2){
-            if (expandedListPosition ==  new KsPreferenceKey(context).getSubtitleLanguageIndex()) {
+        } else if (listPosition == 2) {
+            if (expandedListPosition == new KsPreferenceKey(context).getSubtitleLanguageIndex()) {
                 imageView.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 imageView.setVisibility(View.GONE);
             }
-        }else {
+        } else {
             imageView.setVisibility(View.GONE);
         }
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listPosition == 0) {
+                    FirebaseEventManager.getFirebaseInstance(context).languageBtnEvent("en", FirebaseEventManager.APP_LANGUAGE);
                    /* setAppLanguage(appLanguage);
                     itemClickListener.onClick(0,1);*/
 
-                }else if (listPosition==1){
+                } else if (listPosition == 1) {
                     setAudoLanguage(expandedListPosition);
-                    itemClickListener.onClick(expandedListPosition,2);
-                }
-                else if (listPosition==2){
+                    itemClickListener.onClick(expandedListPosition, 2);
+                } else if (listPosition == 2) {
                     setSubtitleLanguage(expandedListPosition);
-                    itemClickListener.onClick(expandedListPosition,3);
+                    itemClickListener.onClick(expandedListPosition, 3);
                 }
                 notifyDataSetChanged();
 

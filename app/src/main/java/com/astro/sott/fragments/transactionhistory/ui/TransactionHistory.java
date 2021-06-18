@@ -36,6 +36,7 @@ import com.astro.sott.databinding.FragmentTransactionHistoryBinding;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.transactionhistory.adapter.TransactionAdapter;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.OrderItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ToastHandler;
@@ -112,6 +113,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         super.onActivityCreated(savedInstanceState);
         modelCall();
         UIinitialization();
+        FirebaseEventManager.getFirebaseInstance(getActivity()).trackScreenName(FirebaseEventManager.TRANSACTION_HISTORY);
         setClicks();
         getPaymentV2();
         allowPermission();

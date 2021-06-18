@@ -23,6 +23,7 @@ import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem
@@ -66,6 +67,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         super.onCreate(savedInstanceState)
         activitySinUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sin_up)
         modelCall()
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.SIGN_UP)
         setClicks()
         setWatcher()
         updateWithToken(AccessToken.getCurrentAccessToken())

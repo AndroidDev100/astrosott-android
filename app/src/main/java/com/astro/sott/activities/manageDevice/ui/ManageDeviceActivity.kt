@@ -15,6 +15,7 @@ import com.astro.sott.activities.manageDevice.adapter.ManageDeviceAdapter
 import com.astro.sott.callBacks.DeviceDeleteCallBack
 import com.astro.sott.databinding.ActivityManageDeviceBinding
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager
 import com.astro.sott.usermanagment.modelClasses.getDevice.AccountDeviceDetailsItem
 import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.userInfo.UserInfo
@@ -26,6 +27,8 @@ class ManageDeviceActivity : AppCompatActivity(), DeviceDeleteCallBack {
         super.onCreate(savedInstanceState)
         activityManageDeviceBinding = DataBindingUtil.setContentView(this, R.layout.activity_manage_device)
         setToolbar()
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.MANAGE_DEVICES)
+
         setRecyclerProperties()
         modelCall()
         getDevices()

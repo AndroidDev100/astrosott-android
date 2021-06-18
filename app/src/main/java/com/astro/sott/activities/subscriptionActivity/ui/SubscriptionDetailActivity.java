@@ -170,8 +170,12 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         TabsData.getInstance().setDetail(false);
     }
 
+    private String planName = "", planPrice = "";
+
     @Override
     public void onCardClicked(String productId, String serviceType, String active, String planName, String price) {
+        this.planName = planName;
+        planPrice = price;
         if (serviceType.equalsIgnoreCase("ppv")) {
             billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {
@@ -254,6 +258,11 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
             if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
                     Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                    try {
+                        FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS);
+                    } catch (Exception e) {
+
+                    }
                     onBackPressed();
                 } else {
                     onBackPressed();
