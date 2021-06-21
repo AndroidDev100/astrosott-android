@@ -191,7 +191,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                         checkPasswordValidation(password)
 
                     }
-                } else if (emailPattern.containsMatchIn(email_mobile)) {
+                } else if (true) {
                     checkPassword("email", email_mobile, password)
                 } else {
 
@@ -464,8 +464,10 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
 
     private fun setActive() {
         UserInfo.getInstance(this).isActive = true
+        AppCommonMethods.setCleverTap(this)
+        FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).cpCustomerId, "")
+
         Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT).show()
-        // setCleverTap();
         ActivityLauncher(this@SignUpActivity).homeScreen(this, HomeActivity::class.java)
 
     }
