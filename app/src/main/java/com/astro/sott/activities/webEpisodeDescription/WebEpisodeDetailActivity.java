@@ -419,57 +419,59 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
 
+        try {
+            fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+            new EntitlementCheck().checkAssetPurchaseStatus(WebEpisodeDetailActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+                this.errorCode = AppLevelConstants.NO_ERROR;
+                if (apiStatus) {
+                    if (purchasedStatus) {
+                        runOnUiThread(() -> {
+                            if (playbackControlValue) {
+                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+                            }
 
-        fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
-        new EntitlementCheck().checkAssetPurchaseStatus(WebEpisodeDetailActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
-            this.errorCode = AppLevelConstants.NO_ERROR;
-            if (apiStatus) {
-                if (purchasedStatus) {
-                    runOnUiThread(() -> {
-                        if (playbackControlValue) {
-                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                            getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.GONE);
-                            getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+                        });
+                        this.vodType = EntitlementCheck.FREE;
+
+                    } else {
+                        if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                            runOnUiThread(() -> {
+                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
+                            });
+                            this.vodType = EntitlementCheck.SVOD;
+
+                        } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
+                            runOnUiThread(() -> {
+                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                getBinding().playText.setText(getResources().getString(R.string.rent_movie));
+                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
+
+                            });
                         }
 
-                    });
-                    this.vodType = EntitlementCheck.FREE;
-
-                } else {
-                    if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
-                        runOnUiThread(() -> {
-                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                            getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.GONE);
-                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-
-                        });
-                        this.vodType = EntitlementCheck.SVOD;
-
-                    } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
-                        runOnUiThread(() -> {
-                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                            getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.GONE);
-                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                        this.vodType = EntitlementCheck.TVOD;
 
 
-                        });
                     }
 
-                    this.vodType = EntitlementCheck.TVOD;
-
+                } else {
 
                 }
-
-            } else {
-
-            }
-        });
+            });
+        } catch (Exception e) {
+        }
 
        /* new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
             if (status) {
@@ -963,7 +965,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
     private void openShareDialouge() {
         try {
             FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), "");

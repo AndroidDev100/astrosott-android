@@ -41,6 +41,7 @@ import com.astro.sott.utils.helpers.carousel.SliderPotrait
 import com.astro.sott.utils.userInfo.UserInfo
 import com.google.gson.JsonArray
 import kotlinx.android.synthetic.main.app_toolbar.view.*
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -210,33 +211,36 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         val subSkuList = /*ArrayList<String>();*/AppCommonMethods.getSubscriptionSKUs(productsResponseMessage, activity)
         val productsSkuList = ArrayList<String>();//AppCommonMethods.getProductSKUs(productsResponseMessage, activity)
         if (activity is ProfileSubscriptionActivity) {
-            (activity as ProfileSubscriptionActivity?)!!.onListOfSKUs(subSkuList, productsSkuList, SKUsListListener {
-                packDetailList = ArrayList<PackDetail>()
-                if (productsResponseMessage != null) {
-                    for (responseMessageItem in productsResponseMessage) {
-                        if (responseMessageItem?.appChannels != null && responseMessageItem?.appChannels!![0] != null && responseMessageItem?.appChannels!![0]!!.appChannel != null && responseMessageItem?.appChannels!![0]!!.appChannel.equals("Google Wallet", ignoreCase = true) && responseMessageItem?.appChannels!![0]!!.appID != null) {
-                            Log.w("avname", activity!!.javaClass.getName() + "")
-                            if (activity is ProfileSubscriptionActivity) {
-                                skuDetails = (activity as ProfileSubscriptionActivity?)!!.getSubscriptionDetail(responseMessageItem?.appChannels!![0]!!.appID)
-                            } else if (activity is SubscriptionDetailActivity) {
-                                if (responseMessageItem.serviceType.equals("ppv", ignoreCase = true)) {
-                                    skuDetails = (activity as SubscriptionDetailActivity?)!!.getPurchaseDetail(responseMessageItem?.appChannels!![0]!!.appID)
-                                } else {
-                                    skuDetails = (activity as SubscriptionDetailActivity?)!!.getSubscriptionDetail(responseMessageItem?.appChannels!![0]!!.appID)
+            try {
+                (activity as ProfileSubscriptionActivity?)!!.onListOfSKUs(subSkuList, productsSkuList, SKUsListListener {
+                    packDetailList = ArrayList<PackDetail>()
+                    if (productsResponseMessage != null) {
+                        for (responseMessageItem in productsResponseMessage) {
+                            if (responseMessageItem?.appChannels != null && responseMessageItem?.appChannels!![0] != null && responseMessageItem?.appChannels!![0]!!.appChannel != null && responseMessageItem?.appChannels!![0]!!.appChannel.equals("Google Wallet", ignoreCase = true) && responseMessageItem?.appChannels!![0]!!.appID != null) {
+                                Log.w("avname", activity!!.javaClass.getName() + "")
+                                if (activity is ProfileSubscriptionActivity) {
+                                    skuDetails = (activity as ProfileSubscriptionActivity?)!!.getSubscriptionDetail(responseMessageItem?.appChannels!![0]!!.appID)
+                                } else if (activity is SubscriptionDetailActivity) {
+                                    if (responseMessageItem.serviceType.equals("ppv", ignoreCase = true)) {
+                                        skuDetails = (activity as SubscriptionDetailActivity?)!!.getPurchaseDetail(responseMessageItem?.appChannels!![0]!!.appID)
+                                    } else {
+                                        skuDetails = (activity as SubscriptionDetailActivity?)!!.getSubscriptionDetail(responseMessageItem?.appChannels!![0]!!.appID)
+                                    }
+                                }
+                                if (skuDetails != null) {
+                                    val packDetail = PackDetail()
+                                    packDetail.skuDetails = skuDetails
+                                    packDetail.productsResponseMessageItem = responseMessageItem
+                                    //  Log.w("priceValues", skuDetails!!.introductoryPrice + "<--->"+skuDetails!!.price+"<----->")
+                                    packDetailList.add(packDetail)
                                 }
                             }
-                            if (skuDetails != null) {
-                                val packDetail = PackDetail()
-                                packDetail.skuDetails = skuDetails
-                                packDetail.productsResponseMessageItem = responseMessageItem
-                                //  Log.w("priceValues", skuDetails!!.introductoryPrice + "<--->"+skuDetails!!.price+"<----->")
-                                packDetailList.add(packDetail)
-                            }
                         }
+                        if (packDetailList.size > 0) loadDataFromModel(packDetailList)
                     }
-                    if (packDetailList.size > 0) loadDataFromModel(packDetailList)
-                }
-            })
+                })
+            } catch (e: Exception) {
+            }
         } else if (activity is SubscriptionDetailActivity) {
             (activity as SubscriptionDetailActivity?)!!.onListOfSKUs(subSkuList, productsSkuList, SKUsListListener {
                 packDetailList = ArrayList<PackDetail>()
