@@ -17,6 +17,7 @@ import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivitySetPasswordBinding;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -114,6 +115,11 @@ public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPassword
         astroLoginViewModel.updateProfile(type, name, acessToken).observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
+                if (type.equalsIgnoreCase("email")) {
+                    AppCommonMethods.emailPushCleverTap(this, name);
+                } else {
+                    AppCommonMethods.mobilePushCleverTap(this, name);
+                }
                 new ActivityLauncher(this).profileActivity(this);
                 Toast.makeText(this, updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getMessage() + "", Toast.LENGTH_SHORT).show();
             } else {

@@ -167,6 +167,54 @@ public class AppCommonMethods {
 
     }
 
+    public static void namePushCleverTap(Activity context, String name) {
+
+        try {
+            CleverTapAPI clevertapDefaultInstance =
+                    CleverTapAPI.getDefaultInstance(context, UserInfo.getInstance(context).getCpCustomerId() + "_" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+            HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("Name", name);
+            profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
+            clevertapDefaultInstance.pushProfile(profileUpdate);
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+    public static void emailPushCleverTap(Activity context, String email) {
+
+        try {
+            CleverTapAPI clevertapDefaultInstance =
+                    CleverTapAPI.getDefaultInstance(context, UserInfo.getInstance(context).getCpCustomerId() + "_" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+            HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("Email", email);
+            profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
+            clevertapDefaultInstance.pushProfile(profileUpdate);
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+    public static void mobilePushCleverTap(Activity context, String phone) {
+
+        try {
+            CleverTapAPI clevertapDefaultInstance =
+                    CleverTapAPI.getDefaultInstance(context, UserInfo.getInstance(context).getCpCustomerId() + "_" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+            HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("Phone", phone);
+            profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
+            clevertapDefaultInstance.pushProfile(profileUpdate);
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
     public static void removeUserPrerences(Context context) {
         UserInfo.getInstance(context).setUserName("");
         UserInfo.getInstance(context).setVip(false);

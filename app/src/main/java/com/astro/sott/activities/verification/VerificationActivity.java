@@ -205,6 +205,12 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         astroLoginViewModel.updateProfile(type, name, acessToken).observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
+                if (type.equalsIgnoreCase("email")) {
+                    AppCommonMethods.emailPushCleverTap(this, name);
+                } else {
+                    AppCommonMethods.mobilePushCleverTap(this, name);
+
+                }
                 new ActivityLauncher(this).profileActivity(this);
                 Toast.makeText(this, updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getMessage() + "", Toast.LENGTH_SHORT).show();
             } else {
