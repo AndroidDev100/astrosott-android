@@ -1621,6 +1621,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         getBinding().scrollView.scrollTo(0, 0);
         railData = commonData;
         getDatafromBack();
+        setRailBaseFragment();
         assetToPlay = null;
         isEntitlementCheck = false;
         getBinding().ivPlayIcon.setVisibility(View.GONE);
