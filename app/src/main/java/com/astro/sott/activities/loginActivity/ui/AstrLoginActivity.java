@@ -459,7 +459,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private void setActive() {
         UserInfo.getInstance(this).setActive(true);
         Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
-        // setCleverTap();
+        AppCommonMethods.setCleverTap(this);
         if (UserInfo.getInstance(this).getCpCustomerId() != null && !UserInfo.getInstance(this).getCpCustomerId().equalsIgnoreCase(""))
             FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "");
         if (from.equalsIgnoreCase("")) {
@@ -469,32 +469,6 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         }
     }
 
-    private void setCleverTap() {
-
-        HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
-        profileUpdate.put("Name", UserInfo.getInstance(this).getFirstName());    // String
-        profileUpdate.put("Identity", UserInfo.getInstance(this).getCpCustomerId());      // String or number
-        profileUpdate.put("Email", UserInfo.getInstance(this).getEmail()); // Email address of the user
-        profileUpdate.put("Phone", "+14155551234");   // Phone (with the country code, starting with +)
-        profileUpdate.put("Gender", "M");             // Can be either M or F
-        profileUpdate.put("DOB", new Date());         // Date of Birth. Set the Date object to the appropriate value first
-
-// optional fields. controls whether the user will be sent email, push etc.
-        profileUpdate.put("MSG-email", false);        // Disable email notifications
-        profileUpdate.put("MSG-push", true);          // Enable push notifications
-        profileUpdate.put("MSG-sms", false);          // Disable SMS notifications
-        profileUpdate.put("MSG-whatsapp", true);      // Enable WhatsApp notifications
-
-        ArrayList<String> stuff = new ArrayList<String>();
-        stuff.add("bag");
-        stuff.add("shoes");
-        profileUpdate.put("MyStuff", stuff);                        //ArrayList of Strings
-
-        String[] otherStuff = {"Jeans", "Perfume"};
-        profileUpdate.put("MyStuff", otherStuff);                   //String Array
-
-
-        CleverTapAPI.getDefaultInstance(getApplicationContext()).onUserLogin(profileUpdate);
 
 
      /*   CleverTapAPI clevertapDefaultInstance =
@@ -537,8 +511,6 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
         clevertapDefaultInstance.onUserLogin(profileUpdate, "__horizon43503");*/
 
-
-    }
 
     private void searchAccountv2(String password) {
         getBinding().progressBar.setVisibility(View.VISIBLE);

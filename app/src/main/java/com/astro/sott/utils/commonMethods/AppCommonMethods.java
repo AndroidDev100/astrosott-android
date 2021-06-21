@@ -56,6 +56,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.astro.sott.R;
 import com.astro.sott.utils.constants.AppConstants;
+import com.clevertap.android.sdk.CleverTapAPI;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardType;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -94,6 +95,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -145,7 +147,22 @@ public class AppCommonMethods {
 
 
     }
+    public static void setCleverTap(Activity context) {
 
+        try {
+            HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("Name", UserInfo.getInstance(context).getFirstName());
+            profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
+            profileUpdate.put("Email", UserInfo.getInstance(context).getEmail());
+            profileUpdate.put("Phone", UserInfo.getInstance(context).getMobileNumber());
+            profileUpdate.put("App Language", "English");
+            CleverTapAPI.getDefaultInstance(context).onUserLogin(profileUpdate, UserInfo.getInstance(context).getCpCustomerId() + "_" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+        } catch (Exception e) {
+
+        }
+
+
+    }
     public static void removeUserPrerences(Context context) {
         UserInfo.getInstance(context).setUserName("");
         UserInfo.getInstance(context).setVip(false);
