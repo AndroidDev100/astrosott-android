@@ -591,6 +591,7 @@
     <string name="invalid_otp">The verification code you entered is invalid</string>
     <string name="sign_up_text"><u>Sign Up</u></string>
     <string name="sign_up">Sign Up</string>
+    <string name="sign_up_title">Sign-Up to Become a VIP or to \n enjoy more sooka features</string>
     <string name="sign_in_with">or Sign In With</string>
     <string name="sign_up_with">or Sign Up With</string>
 

@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
@@ -32,6 +33,7 @@ import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActiv
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
+import com.astro.sott.repositories.liveChannel.LinearProgramDataLayer;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
@@ -172,18 +174,10 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         if (getIntent().getExtras() != null)
             railData = getIntent().getExtras().getParcelable(AppLevelConstants.RAIL_DATA_OBJECT);
         programAsset = getIntent().getExtras().getParcelable(AppLevelConstants.PROGRAM_ASSET);
-        if (programAsset != null)
-            setProgramMetas();
+
         if (railData != null) {
-            if (programAsset != null) {
-                FirebaseEventManager.getFirebaseInstance(this).trackScreenName(railData.getObject().getName() + "-" + programAsset.getName());
-            } else {
-                FirebaseEventManager.getFirebaseInstance(this).trackScreenName(railData.getObject().getName());
-            }
             getDataFromBack(railData);
-            if (railData.getObject() != null)
-                Constants.channelName = railData.getObject().getName();
-            setImages(railData, this, getBinding().channelLogo);
+
         }
     }
 
@@ -216,7 +210,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             getBinding().programTitle.setText(programAsset.getName());
             getBinding().descriptionText.setText(programAsset.getDescription());
             stringBuilder = new StringBuilder();
-            stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + " - " + AppCommonMethods.getEndTime(programAsset.getEndDate()) + " | ");
+            stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + "-" + AppCommonMethods.getEndTime(programAsset.getEndDate()) + " | ");
             getImage();
             getGenre();
         } catch (Exception e) {
@@ -277,6 +271,9 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     }
 
     private void getDataFromBack(RailCommonData backRailData) {
+        railData = backRailData;
+        if (programAsset != null)
+            setProgramMetas();
         AllChannelManager.getInstance().setRailCommonData(backRailData);
         PrintLogging.printLog(this.getClass(), "", "programAssetId" + backRailData.getObject().getName());
         /*if (backRailData.getObject().getType() == MediaTypeConstant.getProgram(LiveChannel.this)) {
@@ -286,6 +283,14 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             viewPagerIntializtion();
 
         }*/
+        if (railData.getObject() != null)
+            Constants.channelName = railData.getObject().getName();
+        setImages(railData, this, getBinding().channelLogo);
+        if (programAsset != null) {
+            FirebaseEventManager.getFirebaseInstance(this).trackScreenName(railData.getObject().getName() + "-" + programAsset.getName());
+        } else {
+            FirebaseEventManager.getFirebaseInstance(this).trackScreenName(railData.getObject().getName());
+        }
         if (backRailData.getObject() != null && backRailData.getObject().getMetas() != null) {
             getPlayBackControl(backRailData.getObject().getMetas());
             getXofferWindow(backRailData.getObject().getMetas());
@@ -325,7 +330,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         getBinding().share.setOnClickListener(v -> {
             try {
                 FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
             AppCommonMethods.openShareDialog(this, programAsset, this, "");
@@ -867,12 +872,23 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
     @Override
     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
-        assetRuleErrorCode = AppLevelConstants.NO_ERROR;
-        getDataFromBack(commonData);
+        try {
+            MediaAsset mediaAsset = (MediaAsset) commonData.getObject();
+            String channelId = mediaAsset.getExternalIds();
+            LinearProgramDataLayer.getProgramFromLinear(this, channelId).observe((LifecycleOwner) this, programAsset -> {
+                if (programAsset != null) {
+                    this.programAsset = programAsset;
+                }
+                assetRuleErrorCode = AppLevelConstants.NO_ERROR;
+                getDataFromBack(commonData);
+                checkEntitleMent(commonData);
+                getBinding().pager.disableScroll(true);
+                getBinding().pager.setOffscreenPageLimit(0);
+            });
+        } catch (Exception ignored) {
 
-        checkEntitleMent(railData);
-        getBinding().pager.disableScroll(true);
-        getBinding().pager.setOffscreenPageLimit(0);
+        }
+
     }
 
     @Override

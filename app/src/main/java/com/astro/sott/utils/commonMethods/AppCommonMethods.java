@@ -2685,7 +2685,7 @@ public class AppCommonMethods {
             String liveEventStartTime = AppCommonMethods.getLiveEventStartDate(asset.getStartDate()) + "";
             String liveEventEndTime = AppCommonMethods.getLiveEventEndTime(asset.getEndDate()) + "";
             if (liveEventStartTime != null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime != null && !liveEventEndTime.equalsIgnoreCase("")) {
-                StringBuilderHolder.getInstance().append(liveEventStartTime + " - " + liveEventEndTime);
+                StringBuilderHolder.getInstance().append(liveEventStartTime + "-" + liveEventEndTime);
                 StringBuilderHolder.getInstance().append(" | ");
             }
         } else if (type == 5) {
@@ -2706,7 +2706,7 @@ public class AppCommonMethods {
             String liveEventStartTime = AppCommonMethods.getLiveEventStartDate(liveEventStartDate) + "";
             String liveEventEndTime = AppCommonMethods.getLiveEventEndTime(liveEventEndDate) + "";
             if (liveEventStartTime != null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime != null && !liveEventEndTime.equalsIgnoreCase("")) {
-                StringBuilderHolder.getInstance().append(liveEventStartTime + " - " + liveEventEndTime);
+                StringBuilderHolder.getInstance().append(liveEventStartTime + "-" + liveEventEndTime);
                 StringBuilderHolder.getInstance().append(" | ");
             }
         } else {
@@ -2809,7 +2809,7 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM hh:mm aaa", Locale.getDefault());
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);

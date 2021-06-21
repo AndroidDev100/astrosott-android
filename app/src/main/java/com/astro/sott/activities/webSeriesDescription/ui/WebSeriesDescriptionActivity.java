@@ -1624,6 +1624,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         assetToPlay = null;
         isEntitlementCheck = false;
         getBinding().ivPlayIcon.setVisibility(View.GONE);
+        setRailBaseFragment();
         isActive = UserInfo.getInstance(this).isActive();
     }
 }
