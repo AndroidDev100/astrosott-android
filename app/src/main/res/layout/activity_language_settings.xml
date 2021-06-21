@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:id="@+id/title"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textSize="@dimen/_14sp"
         android:layout_centerInParent="true"
         android:letterSpacing="0.09"

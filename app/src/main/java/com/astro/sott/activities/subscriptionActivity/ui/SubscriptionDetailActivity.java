@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,8 @@ import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.InAppProcessListener;
 import com.astro.sott.utils.billing.PurchaseDetailListener;
@@ -41,6 +44,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private SubscriptionViewModel subscriptionViewModel;
 
     String fileId = "";
+    boolean isPlayable;
     String from = "", date = "";
 
     @Override
@@ -51,6 +55,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TabsData.getInstance().setDetail(true);
         intializeBilling();
         if (getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY) != null)
             fileId = getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY);
@@ -60,6 +65,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
         if (getIntent().getStringExtra(AppLevelConstants.DATE) != null)
             date = getIntent().getStringExtra(AppLevelConstants.DATE);
+
+        isPlayable = getIntent().getBooleanExtra(AppLevelConstants.PLAYABLE, false);
 
         modelCall();
         getSubscriptionActionList();
@@ -73,21 +80,43 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private int count = 0;
 
     private void getSubscriptionActionList() {
-
-        subscriptionViewModel.getSubscriptionPackageList(fileId).observe(this, subscriptionList -> {
-            if (subscriptionList != null) {
-                if (subscriptionList.size() > 0) {
-                    subscriptionIds = new String[subscriptionList.size()];
-                    for (Subscription subscription : subscriptionList) {
-                        if (subscription.getId() != null) {
-                            subscriptionIds[count] = subscription.getId();
-                            count++;
+        if (!from.equalsIgnoreCase("Live Event")) {
+            subscriptionViewModel.getSubscriptionPackageList(fileId).observe(this, subscriptionList -> {
+                if (subscriptionList != null) {
+                    if (subscriptionList.size() > 0) {
+                        subscriptionIds = new String[subscriptionList.size()];
+                        for (Subscription subscription : subscriptionList) {
+                            if (subscription.getId() != null) {
+                                subscriptionIds[count] = subscription.getId();
+                                count++;
+                            }
+                        }
+                        setPackFragment();
+                    }
+                }
+            });
+        } else {
+            if (isPlayable) {
+                subscriptionViewModel.getSubscriptionPackageList(fileId).observe(this, subscriptionList -> {
+                    if (subscriptionList != null) {
+                        if (subscriptionList.size() > 0) {
+                            subscriptionIds = new String[subscriptionList.size()];
+                            for (Subscription subscription : subscriptionList) {
+                                if (subscription.getId() != null) {
+                                    subscriptionIds[count] = subscription.getId();
+                                    count++;
+                                }
+                            }
+                            setPackFragment();
                         }
                     }
+                });
+            } else {
+                subscriptionIds = fileId.split(",");
+                if (subscriptionIds != null && subscriptionIds.length > 0)
                     setPackFragment();
-                }
             }
-        });
+        }
 
 
     }
@@ -122,7 +151,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         billingProcessor.initialize();
         billingProcessor.loadOwnedPurchasesFromGoogle();*/
 
-        billingProcessor = new BillingProcessor(SubscriptionDetailActivity.this, this);
+        billingProcessor = new BillingProcessor(SubscriptionDetailActivity.this, SubscriptionDetailActivity.this);
         billingProcessor.initializeBillingProcessor();
     }
 
@@ -136,7 +165,17 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
 
     @Override
-    public void onCardClicked(String productId, String serviceType, String active) {
+    protected void onDestroy() {
+        super.onDestroy();
+        TabsData.getInstance().setDetail(false);
+    }
+
+    private String planName = "", planPrice = "";
+
+    @Override
+    public void onCardClicked(String productId, String serviceType, String active, String planName, String price) {
+        this.planName = planName;
+        planPrice = price;
         if (serviceType.equalsIgnoreCase("ppv")) {
             billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {
@@ -164,11 +203,19 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     }
 
+    private long lastClickTime = 0;
+
     @Override
     public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
             if (purchases.get(0).getPurchaseToken() != null) {
-                processPurchase(purchases);
+                Log.w("elapseTiming", SystemClock.elapsedRealtime() + "----" + lastClickTime);
+                if (SystemClock.elapsedRealtime() - lastClickTime < 7000) {
+                    return;
+                }
+                lastClickTime = SystemClock.elapsedRealtime();
+                if (TabsData.getInstance().isDetail())
+                    processPurchase(purchases);
             }
         }
     }
@@ -191,6 +238,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     }
 
+    private boolean isAddSubscriptionCalled = false;
+
     private void handlePurchase(Purchase purchase) {
 
         String orderId;
@@ -200,10 +249,20 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         } else {
             orderId = "";
         }
+        try {
+            //  FirebaseEventManager.getFirebaseInstance(this).packageEvent();
+        } catch (Exception e) {
+
+        }
         subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
             if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
                     Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                    try {
+                        FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS);
+                    } catch (Exception e) {
+
+                    }
                     onBackPressed();
                 } else {
                     onBackPressed();
@@ -216,6 +275,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
             }
         });
+
     }
 
 
@@ -241,4 +301,13 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (billingProcessor != null) {
+            if (billingProcessor.isReady()) {
+                billingProcessor.endConnection();
+            }
+        }
+    }
 }

@@ -322,6 +322,7 @@ public class AssetCommonBean implements Parcelable {
         dest.writeList(this.channelList);
         dest.writeList(this.dtChannelList);
         dest.writeParcelable(this.asset, flags);
+        dest.writeParcelable(this.category, flags);
         dest.writeInt(this.contestId);
     }
 
@@ -352,6 +353,8 @@ public class AssetCommonBean implements Parcelable {
         this.dtChannelList = new ArrayList<VIUChannel>();
         in.readList(this.dtChannelList, VIUChannel.class.getClassLoader());
         this.asset = in.readParcelable(Asset.class.getClassLoader());
+        this.category = in.readParcelable(Asset.class.getClassLoader());
+
         this.contestId = in.readInt();
 
     }

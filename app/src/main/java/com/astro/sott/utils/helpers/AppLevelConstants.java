@@ -36,16 +36,12 @@ public interface AppLevelConstants {
     String ASSET_COMMON_BEAN = "assetCommonBean";
     String MOVIE_DESCRIPTION_ACTIVITY = "MovieDescriptionActivity";
 
-    String CUSTOM_LISTING_ACTIVITY="CustomListingActivity";
-    String LISTING_ACTIVITY="ListingActivity";
-    String LISTING_ACTIVITY_NEW="ListingActivityNew";
-    String Continue_Watching_Activity="ContinueWatchingActivity";
-    String GRID_LISTING_ACTIVITY="GridListingActivity";
-    String DETAIL_LISTING_ACTIVITY="DetailListingActivity";
-
-
-
-
+    String CUSTOM_LISTING_ACTIVITY = "CustomListingActivity";
+    String LISTING_ACTIVITY = "ListingActivity";
+    String LISTING_ACTIVITY_NEW = "ListingActivityNew";
+    String Continue_Watching_Activity = "ContinueWatchingActivity";
+    String GRID_LISTING_ACTIVITY = "GridListingActivity";
+    String DETAIL_LISTING_ACTIVITY = "DetailListingActivity";
 
 
     String WEB_EPISODE_DESCRIPTION_ACTIVITY = "WebEpisodeDescriptionActivity";
@@ -55,7 +51,7 @@ public interface AppLevelConstants {
     String WEB_SERIES_DESCCRIPTION_ACTIVITY = "WebSeriesDescriptionActivity";
     String OK = "OK";
     String SUCCESS = "SUCCESS";
-     String WEB_VIEW_HEADING = "WebViewHeading";
+    String WEB_VIEW_HEADING = "WebViewHeading";
     String WEB_VIEW_URL = "WebVieweURl";
     String DIALOG_TV = "Dialog TV";
     String BROAD_BAND_HBB = "Home Broadband";
@@ -78,6 +74,7 @@ public interface AppLevelConstants {
 
     String TYPE_KEY = "type";
     String FILE_ID_KEY = "file_id";
+    String PLAYABLE = "playable";
     String OLD_PASSWORD_KEY = "oldPassword";
     String PASSWORD_KEY = "password";
     String SOCIAL_ID = "social_id";
@@ -104,6 +101,7 @@ public interface AppLevelConstants {
 
     //kaltura error codes
     String KS_EXPIRE = "500016";
+    String HOUSEHOLD_ERROR="1003";
     String ALREADY_FOLLOW_ERROR = "8013";
     String ALREADY_UNFOLLOW_ERROR = "8012";
     String LOGGED_OUT_ERROR_CODE = "1019";
@@ -174,6 +172,7 @@ public interface AppLevelConstants {
     String KEY_KEYWORD = "Keywords";
 
     String KEY_SUB_GENRE = "SubGenre";
+    String KEY_PACKAGE_ID = "PackageID";
 
 
     String KEY_MAINCAST = "Main Cast";

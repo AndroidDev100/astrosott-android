@@ -56,6 +56,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.astro.sott.R;
 import com.astro.sott.utils.constants.AppConstants;
+import com.clevertap.android.sdk.CleverTapAPI;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardType;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -94,6 +95,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -145,10 +147,26 @@ public class AppCommonMethods {
 
 
     }
+    public static void setCleverTap(Activity context) {
 
+        try {
+            HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("Name", UserInfo.getInstance(context).getFirstName());
+            profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
+            profileUpdate.put("Email", UserInfo.getInstance(context).getEmail());
+            profileUpdate.put("Phone", UserInfo.getInstance(context).getMobileNumber());
+            profileUpdate.put("App Language", "English");
+            CleverTapAPI.getDefaultInstance(context).onUserLogin(profileUpdate, UserInfo.getInstance(context).getCpCustomerId() + "_" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+        } catch (Exception e) {
+
+        }
+
+
+    }
     public static void removeUserPrerences(Context context) {
         UserInfo.getInstance(context).setUserName("");
         UserInfo.getInstance(context).setVip(false);
+        UserInfo.getInstance(context).setHouseHoldError(false);
         UserInfo.getInstance(context).setCpCustomerId("");
         UserInfo.getInstance(context).setLastName("");
         UserInfo.getInstance(context).setEmail("");
@@ -203,6 +221,20 @@ public class AppCommonMethods {
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa", Locale.getDefault());
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+    public static String getFirebaseDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d", Locale.getDefault());
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
@@ -1227,9 +1259,13 @@ public class AppCommonMethods {
     }
 
     public static ResponseDmsModel callpreference(Context context) {
-        Gson gson = new Gson();
-        String json = SharedPrefHelper.getInstance(context).getString("DMS_Response", "");
-        return gson.fromJson(json, ResponseDmsModel.class);
+        try {
+            Gson gson = new Gson();
+            String json = SharedPrefHelper.getInstance(context).getString("DMS_Response", "");
+            return gson.fromJson(json, ResponseDmsModel.class);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static void setContinueWatchingPreferences(List<AssetHistory> objects, Context activity) {
@@ -1645,7 +1681,7 @@ public class AppCommonMethods {
 
     public static void setBillingUi(ImageView imageView, Map<String, MultilingualStringValueArray> tags, Integer type, Activity mContext) {
         try {
-            if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext)) {
+            if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext) || type == MediaTypeConstant.getLinear(mContext)) {
                 if (AssetContent.getBillingIdForSeries(tags)) {
                     imageView.setVisibility(View.VISIBLE);
                 } else {
@@ -2317,9 +2353,9 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
+  /*      StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+        StringBuilderHolder.getInstance().append("'");*/
 
         StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);
@@ -2393,9 +2429,9 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
+      /*  StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+        StringBuilderHolder.getInstance().append("'");*/
 
         StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);
@@ -2469,9 +2505,9 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
+      /*  StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+        StringBuilderHolder.getInstance().append("'");*/
 
         StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);

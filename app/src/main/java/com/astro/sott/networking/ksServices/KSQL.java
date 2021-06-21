@@ -70,7 +70,7 @@ class KSQL {
 
     public static String forEPGListing(String externalId, String startDate, String endDate) {
         _one = "(and epg_channel_id='";
-        _tw0 = "' start_date>='";
+        _tw0 = "' end_date>='";
         _three = "' start_date<'";
         _four = "')";
         KSQL = _one + externalId + _tw0 + startDate + _three + endDate + _four;

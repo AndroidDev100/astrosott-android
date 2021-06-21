@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.astro.sott.callBacks.SpecificAssetCallBack;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
@@ -100,7 +101,12 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
             }
         });
         viewHolder.scheduleItemBinding.share.setOnClickListener(v -> {
-            AppCommonMethods.openShareDialog(context, data.get(i).getObject(), context,"");
+            try {
+                FirebaseEventManager.getFirebaseInstance(context).shareEvent(commonData.getObject());
+            } catch (Exception e) {
+
+            }
+            AppCommonMethods.openShareDialog(context, data.get(i).getObject(), context, "");
         });
 
 
@@ -111,7 +117,7 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
 
         Boolean enable = ((ProgramAsset) data.get(i).getObject()).getEnableCatchUp();
 
-        if(startTime>currentTime){
+        if (startTime > currentTime) {
             viewHolder.scheduleItemBinding.playIcon.setVisibility(View.GONE);
 
         }

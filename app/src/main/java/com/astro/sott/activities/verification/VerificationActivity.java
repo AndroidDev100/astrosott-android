@@ -363,6 +363,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void setActive() {
         UserInfo.getInstance(this).setActive(true);
+        AppCommonMethods.setCleverTap(this);
         new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);
         Toast.makeText(this, getResources().getString(R.string.registered_success), Toast.LENGTH_SHORT).show();
 

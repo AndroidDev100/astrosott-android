@@ -55,13 +55,16 @@ public class LiveChannelViewModel extends AndroidViewModel {
     public LiveData<String> getGenreLivedata(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getGenredata(map);
     }
+
     public LiveData<String> getSubGenreLivedata(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getSubGenredata(map);
     }
+
     public LiveData<String> getLanguageLiveData(Map<String, MultilingualStringValueArray> map) {
 
         return AssetContent.getLanguageData(map);
     }
+
     public LiveData<List<RailCommonData>> getEPGChannelsList(String externalId, String startDate, String endDate, int type, int counter) {
         return LiveChannelRepository.getInstance().loadChannelsData(getApplication().getApplicationContext(), externalId, startDate, endDate, type, counter);
     }
@@ -83,7 +86,7 @@ public class LiveChannelViewModel extends AndroidViewModel {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa",Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa", Locale.getDefault());
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
@@ -91,6 +94,8 @@ public class LiveChannelViewModel extends AndroidViewModel {
         }
         return "";
     }
+
+
 
     public void setYouMayAlsoLikeData(List<RailCommonData> trailerData) {
         TabsData.getInstance().setYouMayAlsoLikeData(trailerData);

@@ -167,6 +167,18 @@ public class AssetContent {
         return year;
     }
 
+    public static String getProgramYear(Map<String, Value> metas) {
+        MultilingualStringValue stringValue = null;
+        String year = "";
+        if (metas != null) {
+            stringValue = (MultilingualStringValue) metas.get(AppLevelConstants.YEAR);
+        }
+        if (stringValue != null && stringValue.getValue() != null) {
+            year = stringValue.getValue();
+        }
+        return year;
+    }
+
     public static boolean isAdsEnable(Map<String, Value> metas) {
         BooleanValue adsValue = null;
         if (metas != null) {
@@ -660,7 +672,7 @@ public class AssetContent {
 
         if (stringBuilder.length() > 0) {
             genre = stringBuilder.toString();
-            genre = genre.substring(0, genre.length() - 2);
+            genre = genre.substring(0, genre.length() - 1);
 
         } else {
             genre = "";
@@ -721,6 +733,36 @@ public class AssetContent {
         return connection;
     }
 
+    public static String getLiveEventPackageId
+            (Map<String, MultilingualStringValueArray> map) {
+        final MutableLiveData<String> connection = new MutableLiveData<>();
+        String packageId = "";
+        List<MultilingualStringValue> genre_values = new ArrayList<>();
+        MultilingualStringValueArray genre_list = map.get(AppLevelConstants.KEY_PACKAGE_ID);
+        if (genre_list != null)
+            genre_values.addAll(genre_list.getObjects());
+
+       /* if (genre_values.size() > 0 && genre_values.get(0) != null && genre_values.get(0).getValue() != null) {
+            packageId = genre_values.get(0).getValue();
+        }*/
+//            for (MultilingualStringValue value : genre_list.getObjects()) {
+//                genre_values.add(value);
+//            }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i <= genre_values.size() - 1; i++) {
+            stringBuilder.append(genre_values.get(i).getValue()).append(", ");
+        }
+
+        if (stringBuilder.length() > 0) {
+            packageId = stringBuilder.toString();
+            packageId = packageId.substring(0, packageId.length() - 2);
+
+        } else {
+            packageId = "";
+        }
+        return packageId;
+    }
+
 
     public static String getSubGenredataString(Map<String, MultilingualStringValueArray> map) {
         final MutableLiveData<String> connection = new MutableLiveData<>();
@@ -740,7 +782,7 @@ public class AssetContent {
 
         if (stringBuilder.length() > 0) {
             genre = stringBuilder.toString();
-            genre = genre.substring(0, genre.length() - 2);
+            genre = genre.substring(0, genre.length() - 1);
 
         } else {
             genre = "";

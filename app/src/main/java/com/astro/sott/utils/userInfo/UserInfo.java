@@ -11,6 +11,8 @@ public class UserInfo {
     private String externalSessionToken;
     private boolean active;
 
+    private boolean houseHoldError ;
+
     private boolean isVip;
     private boolean fbLinked;
     private boolean googleLinked;
@@ -34,6 +36,13 @@ public class UserInfo {
         session.setString("mobileNumber", mobileNumber);
     }
 
+    public boolean isHouseHoldError() {
+        return session.getBoolean("houseHoldError", false);
+    }
+
+    public void setHouseHoldError(boolean houseHoldError) {
+        session.setBoolean("houseHoldError", houseHoldError);
+    }
 
     public void setFbLinked(boolean fbLinked) {
         session.setBoolean("isFbLinked", fbLinked);
@@ -61,11 +70,11 @@ public class UserInfo {
 
 
     public String getCpCustomerId() {
-        return cpCustomerId;
+        return session.getString("AstroCpCustomerId", "");
     }
 
     public void setCpCustomerId(String cpCustomerId) {
-        this.cpCustomerId = cpCustomerId;
+        session.setString("AstroCpCustomerId", cpCustomerId);
     }
 
     public String getEmail() {

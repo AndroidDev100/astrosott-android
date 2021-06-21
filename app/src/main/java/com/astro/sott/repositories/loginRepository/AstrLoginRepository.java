@@ -143,6 +143,32 @@ public class AstrLoginRepository {
     }
 
 
+    public LiveData<EvergentCommonResponse> setPassword(Context context, String token, String password) {
+        MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().setPassword(token, context, password, new EvergentResetPasswordCallBack() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull ResetPasswordResponse resetPasswordResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setResetPasswordResponse(resetPasswordResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
+
     public LiveData<EvergentCommonResponse> createUser(Context context, String type, String emailMobile, String password, String name, boolean isTablet) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();

@@ -41,6 +41,7 @@ import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
 import com.astro.sott.player.houseHoldCheckManager.HouseHoldCheck;
 import com.astro.sott.player.ui.PlayerActivity;
 import com.astro.sott.repositories.player.PlayerRepository;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -129,6 +130,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     private void getDataFromBack(RailCommonData commonRailData, int layout) {
         railData = commonRailData;
         asset = railData.getObject();
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName(asset.getName());
         layoutType = layout;
         assetId = asset.getId();
         name = asset.getName();
@@ -290,7 +292,6 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     private void startPlayer() {
         try {
             callProgressBar();
-
             //  ConvivaManager.getConvivaAdAnalytics(this);
             Intent intent = new Intent(BoxSetDetailActivity.this, PlayerActivity.class);
             intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
@@ -879,6 +880,11 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     }
 
     private void openShareDialouge() {
+        try {
+            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
+        }catch (Exception e){
+
+        }
         AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), SubMediaTypes.BoxSet.name());
     }
 
@@ -915,13 +921,15 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
             lastClickTime = SystemClock.elapsedRealtime();
             if (NetworkConnectivity.isOnline(getApplication())) {
                 if (UserInfo.getInstance(this).isActive()) {
+                    FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent(FirebaseEventManager.ADD_MY_LIST, asset, this);
+
                     if (isAdded) {
                         deleteWatchlist();
                     } else {
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(BoxSetDetailActivity.this).astrLoginActivity(BoxSetDetailActivity.this, AstrLoginActivity.class,"");
+                    new ActivityLauncher(BoxSetDetailActivity.this).astrLoginActivity(BoxSetDetailActivity.this, AstrLoginActivity.class, "");
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), BoxSetDetailActivity.this);

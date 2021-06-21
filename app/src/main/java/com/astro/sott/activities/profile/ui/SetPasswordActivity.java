@@ -36,9 +36,9 @@ public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPassword
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         modelCall();
-        if (getIntent().getExtras().getString("newEmail") != null)
+        if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().getString("newEmail") != null)
             newEmail = getIntent().getExtras().getString("newEmail");
-        if (getIntent().getExtras().getString("newMobile") != null)
+        if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().getString("newMobile") != null)
             newMobile = getIntent().getExtras().getString("newMobile");
 
         token = UserInfo.getInstance(this).getAccessToken();

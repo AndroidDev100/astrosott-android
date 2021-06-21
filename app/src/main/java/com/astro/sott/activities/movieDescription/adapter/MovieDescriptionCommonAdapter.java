@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -966,7 +967,7 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
         }
     }
 
-    public void setHeaderAndMoreVisibility(TextView header, TextView moreTextView, AssetCommonBean data) {
+    public void setHeaderAndMoreVisibility(TextView header, ImageView moreTextView, AssetCommonBean data) {
         if (data.getRailDetail() != null)
             if (data.getRailDetail().isShowHeader())
                 header.setVisibility(View.VISIBLE);

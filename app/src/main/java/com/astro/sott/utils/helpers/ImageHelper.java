@@ -40,6 +40,13 @@ public class ImageHelper {
 
     }
 
+    public void loadImageTo(ImageView imageView, String imageUrl) {
+        GlideApp.with(context).setDefaultRequestOptions(requestOptions).load(imageUrl)
+                .thumbnail(0.6f)
+                .into(imageView);
+
+    }
+
 
     public void loadImageToNil(ImageView imageView, String imageUrl, int placeholder) {
         GlideApp.with(context).load(placeholder)
@@ -75,10 +82,11 @@ public class ImageHelper {
     public void loadImageToPotrait(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
-                load(imageUrl).override(1024,768).transition(DrawableTransitionOptions.withCrossFade(250)).thumbnail(0.6f).into(imageView);
+                load(imageUrl).override(1024, 768).transition(DrawableTransitionOptions.withCrossFade(250)).thumbnail(0.6f).into(imageView);
 
 
     }
+
     @SuppressLint("CheckResult")
     public void loadImageToLandscape(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
@@ -87,6 +95,7 @@ public class ImageHelper {
 
 
     }
+
     @SuppressLint("CheckResult")
     public void loadImageToCarousal(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
@@ -104,6 +113,7 @@ public class ImageHelper {
 
 
     }
+
     @SuppressLint("CheckResult")
     public void loadImageToPortraitDetailListing(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
@@ -112,6 +122,7 @@ public class ImageHelper {
 
 
     }
+
     @SuppressLint("CheckResult")
     public void loadImageTocontinueWatchingListing(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
@@ -120,6 +131,7 @@ public class ImageHelper {
 
 
     }
+
     @SuppressLint("CheckResult")
     public void loadImageToLandscapeListingAdapter(ImageView imageView, String imageUrl, int placeholder) {
         requestOptions.placeholder(placeholder);
@@ -137,6 +149,7 @@ public class ImageHelper {
 
 
     }
+
     public void loadImageToPlaceholder(ImageView imageView, Uri imageUrl, int placeholder) {
 
         GlideApp.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).

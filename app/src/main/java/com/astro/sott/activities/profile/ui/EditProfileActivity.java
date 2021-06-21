@@ -15,6 +15,7 @@ import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginView
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityEditProfileBinding;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -56,6 +57,8 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.EDIT_PROFILE);
+
         modelCall();
         setClicks();
         setFb();
@@ -192,6 +195,9 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             }
 
             try {
+                if (UserInfo.getInstance(this).isPasswordExists()) {
+                    getBinding().psw.setText(getResources().getString(R.string.pswd_asterik));
+                }
                 String masked = AppCommonMethods.maskedEmail(EditProfileActivity.this);
                 getBinding().email.setText(masked);
                 if (!UserInfo.getInstance(this).getFirstName().equalsIgnoreCase("")) {

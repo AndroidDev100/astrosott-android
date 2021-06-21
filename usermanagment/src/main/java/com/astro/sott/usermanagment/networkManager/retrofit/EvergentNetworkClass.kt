@@ -21,11 +21,13 @@ class EvergentNetworkClass {
                     .addInterceptor(loggingInterceptor) //.addNetworkInterceptor(networkInterceptor)
                     .build()
             if (retrofit == null) {
-                retrofit = Retrofit.Builder()
-                        .baseUrl(EvergentBaseConfiguration.instance.clients.getBaseUrl())
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .client(okHttpClient)
-                        .build()
+                if (EvergentBaseConfiguration.instance.clients != null) {
+                    retrofit = Retrofit.Builder()
+                            .baseUrl(EvergentBaseConfiguration.instance.clients?.getBaseUrl())
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .client(okHttpClient)
+                            .build()
+                }
             }
             return retrofit
         }

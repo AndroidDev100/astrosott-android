@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.search.adapter.AutoSearchAdapter;
@@ -39,11 +40,13 @@ import com.astro.sott.beanModel.commonBeanModel.SearchModel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.callBacks.commonCallBacks.DataLoadedOnFragment;
 import com.astro.sott.db.search.SearchedKeywords;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
+import com.astro.sott.utils.helpers.NavigationItem;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.R;
@@ -81,6 +84,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         super.onCreate(savedInstanceState);
         AppCommonMethods.resetFilter(ActivitySearch.this);
         modelCall();
+        FirebaseEventManager.getFirebaseInstance(ActivitySearch.this).trackScreenName(FirebaseEventManager.SEARCH);
         connectionObserver();
 
         getBinding().searchText.addTextChangedListener(new TextWatcher() {
@@ -338,6 +342,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                 lastClickTime = SystemClock.elapsedRealtime();
 
                 if (!searchHappen) {
+                    FirebaseEventManager.getFirebaseInstance(ActivitySearch.this).itemListEvent(FirebaseEventManager.SEARCH, FirebaseEventManager.FITLER, FirebaseEventManager.BTN_CLICK);
                     Intent intent = new Intent(ActivitySearch.this, SearchKeywordActivity.class);
                     startActivity(intent);
                 }
@@ -361,6 +366,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                         ToastHandler.show(getResources().getString(R.string.select_one), getApplicationContext());
                     } else {
                         if (!searchHappen) {
+                            FirebaseEventManager.getFirebaseInstance(ActivitySearch.this).itemListEvent(FirebaseEventManager.SEARCH_BY_GENRE, selectedGenreValues, FirebaseEventManager.VIEW_SEARCH_RESULT);
                             counter = 0;
                             laodMoreList.clear();
                             adapter = null;
@@ -379,6 +385,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                         String keyword = getBinding().searchText.getText().toString().trim();
                         if (!keyword.equalsIgnoreCase("")) {
                             if (!searchHappen) {
+                                FirebaseEventManager.getFirebaseInstance(ActivitySearch.this).itemListEvent(FirebaseEventManager.SEARCH_BY_KEYWORD, keyword, FirebaseEventManager.VIEW_SEARCH_RESULT);
                                 getBinding().llSearchResultLayout.setVisibility(View.GONE);
                                 counter = 0;
                                 laodMoreList.clear();
@@ -537,6 +544,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         if (NetworkConnectivity.isOnline(ActivitySearch.this)) {
             if (itemValue.getKeyWords().length() > 0) {
                 if (!searchHappen) {
+                    FirebaseEventManager.getFirebaseInstance(ActivitySearch.this).itemListEvent(FirebaseEventManager.SEARCH_BY_HISTORY, itemValue.getKeyWords(), FirebaseEventManager.VIEW_SEARCH_RESULT);
                     getBinding().searchText.setText(itemValue.getKeyWords());
                     counter = 0;
                     laodMoreList.clear();

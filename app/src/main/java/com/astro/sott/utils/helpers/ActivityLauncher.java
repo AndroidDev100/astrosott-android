@@ -55,6 +55,7 @@ import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.activities.sponsored.ui.SponsoredDetailActivity;
 import com.astro.sott.activities.subscription.ui.SingleLiveChannelSubscriptionActivity;
 import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
+import com.astro.sott.activities.subscriptionActivity.ui.ProfileSubscriptionActivity;
 import com.astro.sott.activities.webEpisodeDescription.WebEpisodeDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
@@ -68,6 +69,7 @@ import com.astro.sott.repositories.webSeriesDescription.SeriesDataLayer;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.ProgramAsset;
@@ -127,6 +129,12 @@ public class ActivityLauncher {
         Intent intent = new Intent(source, destination);
         intent.putExtra("assetCommonBean", data);
         intent.putExtra("baseCategory", data.getRailDetail());
+        activity.startActivity(intent);
+    }
+
+
+    public void profileSubscription() {
+        Intent intent = new Intent(activity, ProfileSubscriptionActivity.class);
         activity.startActivity(intent);
     }
 
@@ -221,10 +229,11 @@ public class ActivityLauncher {
     }
 
 
-    public void portraitListing(Activity source, Class<ListingActivity> destination, String type, AssetCommonBean assetCommonBean) {
+    public void portraitListing(Activity source, Class<ListingActivity> destination, String type, AssetCommonBean assetCommonBean, BaseCategory category) {
         Intent intent = new Intent(source, destination);
         intent.putExtra(AppLevelConstants.LAYOUT_TYPE, type);
         intent.putExtra(AppLevelConstants.ASSET_COMMON_BEAN, assetCommonBean);
+        intent.putExtra("baseCategory", category);
         activity.startActivity(intent);
     }
 
@@ -705,10 +714,7 @@ public class ActivityLauncher {
 
                 });
             } else {
-                Intent intent = new Intent(source, LiveEventActivity.class);
-                intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
-                intent.putExtra("asset_ids", commonData.getObject().getId());
-                activity.startActivity(intent);
+                liveEventActivity(commonData, source);
             }
         } catch (Exception exception) {
             if (source != null && !source.isFinishing()) {
@@ -722,6 +728,16 @@ public class ActivityLauncher {
         }
 
         /* */
+    }
+
+    public void liveEventActivity(RailCommonData commonData, Activity source) {
+        try {
+            Intent intent = new Intent(source, LiveEventActivity.class);
+            intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, commonData);
+            intent.putExtra("asset_ids", commonData.getObject().getId());
+            activity.startActivity(intent);
+        } catch (Exception ignored) {
+        }
     }
 
     public void detailActivity(Activity

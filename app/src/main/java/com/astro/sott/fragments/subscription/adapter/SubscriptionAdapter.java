@@ -16,7 +16,10 @@ import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.SubscriptionPackItemBinding;
 import com.astro.sott.modelClasses.InApp.PackDetail;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.usermanagment.modelClasses.getProducts.Attribute;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.List;
@@ -47,17 +50,19 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SingleItemHolder holder, int position) {
-        holder.binding.packName.setText(packDetailList.get(position).getProductsResponseMessageItem().getDisplayName());
         StringBuilder description = new StringBuilder();
+        holder.binding.packName.setText(packDetailList.get(position).getProductsResponseMessageItem().getDisplayName());
 
         if (packDetailList.get(position).getProductsResponseMessageItem().getRenewable() != null && packDetailList.get(position).getProductsResponseMessageItem().getRenewable()) {
-            description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
-            description.append(" recurring subscription");
-        } else {
             if (packDetailList.get(position).getProductsResponseMessageItem().getDuration() != null && packDetailList.get(position).getProductsResponseMessageItem().getPeriod() != null) {
-                if (!eventStartDate.equalsIgnoreCase("")) {
-                    description.append("Event Time: " + eventStartDate);
-                } else {
+                description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
+                description.append(" recurring subscription at:");
+            }
+        } else {
+            if (!eventStartDate.equalsIgnoreCase("")) {
+                description.append("Event Time: " + eventStartDate);
+            } else {
+                if (packDetailList.get(position).getProductsResponseMessageItem().getDuration() != null && packDetailList.get(position).getProductsResponseMessageItem().getPeriod() != null) {
                     description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
                 }
 
@@ -87,11 +92,27 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
             }
         }
 
+        String imageUrl = "";
+        if (packDetailList.get(position) != null && packDetailList.get(position).getProductsResponseMessageItem() != null && packDetailList.get(position).getProductsResponseMessageItem().getAttributes() != null) {
+            for (Attribute attribute : packDetailList.get(position).getProductsResponseMessageItem().getAttributes()) {
+                if (attribute.getAttributeLabel().equalsIgnoreCase("ImageURL1")) {
+                    imageUrl = attribute.getAttributeValue();
+                }
+            }
+        }
+        if (!imageUrl.equalsIgnoreCase("")) {
+            ImageHelper.getInstance(fragment).loadImageTo(holder.binding.packImg, imageUrl);
+        }
         holder.binding.packDescription.setText(description);
         holder.binding.btnBuy.setOnClickListener(v -> {
+            try {
+                FirebaseEventManager.getFirebaseInstance(fragment).packageEvent(packDetailList.get(position).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(position).getSkuDetails().getPrice(), "trx_select");
+            } catch (Exception e) {
+
+            }
             if (UserInfo.getInstance(fragment).isActive()) {
                 if (!holder.binding.actualPrice.getText().toString().equalsIgnoreCase("subscribed"))
-                    cardCLickedCallBack.onCardClicked(packDetailList.get(position).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(position).getProductsResponseMessageItem().getServiceType(), null);
+                    cardCLickedCallBack.onCardClicked(packDetailList.get(position).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(position).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(position).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(position).getSkuDetails().getPrice());
             } else {
                 new ActivityLauncher(fragment).astrLoginActivity(fragment, AstrLoginActivity.class, "");
             }

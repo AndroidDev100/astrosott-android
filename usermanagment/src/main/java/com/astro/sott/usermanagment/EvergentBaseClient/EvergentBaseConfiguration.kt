@@ -1,7 +1,7 @@
 package com.astro.sott.usermanagment.EvergentBaseClient
 
 class EvergentBaseConfiguration {
-    lateinit var clients: EvergentBaseClient
+    var clients: EvergentBaseClient? = null
 
     companion object {
         val instance = EvergentBaseConfiguration()

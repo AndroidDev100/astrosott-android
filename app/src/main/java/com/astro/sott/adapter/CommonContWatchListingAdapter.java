@@ -1,9 +1,13 @@
 package com.astro.sott.adapter;
 
 import android.app.Activity;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.os.SystemClock;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,9 +64,10 @@ public class CommonContWatchListingAdapter extends RecyclerView.Adapter<CommonCo
         try {
             AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
             // holder.landscapeItemBinding.setImage(assetCommonImages);
-
+            holder.landscapeItemBinding.titleLayout.setVisibility(View.VISIBLE);
+            holder.landscapeItemBinding.tvTitle.setVisibility(View.VISIBLE);
+            holder.landscapeItemBinding.tvTitle.setText(singleItem.getObject().getName());
             ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTocontinueWatchingListing(holder.landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.square1);
-            holder.landscapeItemBinding.progressBar.setProgress(singleItem.getPosition());
             getPremimumMark(i, holder.landscapeItemBinding);
         } catch (Exception e) {
 
@@ -115,7 +120,7 @@ public class CommonContWatchListingAdapter extends RecyclerView.Adapter<CommonCo
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
-                new ActivityLauncher(mContext).railClickCondition("","",name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType,itemsList, new MediaTypeCallBack() {
+                new ActivityLauncher(mContext).railClickCondition("", "", name, itemsList.get(getLayoutPosition()), getLayoutPosition(), layoutType, itemsList, new MediaTypeCallBack() {
                     @Override
                     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
 

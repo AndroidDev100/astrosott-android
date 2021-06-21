@@ -107,7 +107,7 @@
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/white"
                         android:textSize="@dimen/font_medium"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:drawableTopCompat="@drawable/share" />
 
 

@@ -35,7 +35,7 @@
             android:fontFamily="@font/heebo_medium"
             android:maxLines="1"
             android:singleLine="true"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="13sp" />
 

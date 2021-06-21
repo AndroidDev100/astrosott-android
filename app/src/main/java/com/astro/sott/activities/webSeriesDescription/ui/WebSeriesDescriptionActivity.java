@@ -1,8 +1,12 @@
 package com.astro.sott.activities.webSeriesDescription.ui;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -21,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.astro.sott.activities.home.HomeActivity;
@@ -29,6 +34,7 @@ import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.viewModel.WebSeriesDescriptionViewModel;
+import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
@@ -163,9 +169,11 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             }
             lastClickTime = SystemClock.elapsedRealtime();
             if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
+                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("watch", asset, this);
                 callProgressBar();
                 playerChecks(assetToPlay);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("trx_vip", asset, this);
                 if (UserInfo.getInstance(this).isActive()) {
                     fileId = AppCommonMethods.getFileIdOfAssest(assetToPlay.getObject());
                     if (!fileId.equalsIgnoreCase("")) {
@@ -222,6 +230,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
+            FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("add_mylist", asset, this);
             if (NetworkConnectivity.isOnline(getApplication())) {
                 if (UserInfo.getInstance(this).isActive()) {
                     if (isAdded) {
@@ -305,7 +314,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void setMetas() {
         getMovieYear();
-        setRailBaseFragment();
+      //  setRailBaseFragment();
     }
 
     private void getMovieYear() {
@@ -526,10 +535,15 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 callwatchlistApi();
                 if (isParentalLocked)
                     assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
+
                 //  callwatchlistApi();
 
             }
         }
+
+        checkEntitleMent(assetToPlay);
+        setRailBaseFragment();
+
     }
 
     private void modelCall() {
@@ -560,6 +574,11 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
+                try {
+                    FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
+                }catch (Exception e){
+
+                }
                 openShareDialouge();
             });
 
@@ -656,15 +675,66 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         });
     }
 
-    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<RailCommonData> railList) {
+    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<
+            RailCommonData> railList) {
 //        if (this.railList!=null){
 //            this.railList.clear();
 //        }
-        fromNextEpisode = false;
-        this.railList = railList;
+        if (type == 0) {
+            fromNextEpisode = false;
+            this.railList = railList;
+            callProgressBar();
+            playerChecks(railCommonData);
+        } else {
+            openDialougeForEntitleMent();
+        }
+    }
 
-        callProgressBar();
-        playerChecks(railCommonData);
+    public void openDialougeForEntitleMent() {
+        boolean status = UserInfo.getInstance(this).isActive();
+        if (status) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
+            builder.setTitle(getResources().getString(R.string.become_vip)).setMessage(getResources().getString(R.string.subscribe_description))
+                    .setCancelable(true)
+                    .setPositiveButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                        new ActivityLauncher(this).profileSubscription();
+                        dialog.cancel();
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+            Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+            bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
+            Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+            bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
+        } else {
+            showLoginDialog();
+        }
+    }
+
+    public void showLoginDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
+        builder.setTitle(getResources().getString(R.string.become_vip)).setMessage(getResources().getString(R.string.subscribe_description))
+                .setCancelable(true)
+                .setPositiveButton(getResources().getString(R.string.login), (dialog, id) -> {
+                    //dialog.cancel();
+
+                    new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class, "");
+                    dialog.cancel();
+                    //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
+                })
+                .
+                        setNegativeButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                            new ActivityLauncher(this).profileSubscription();
+                            dialog.cancel();
+                        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+        Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
+        Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
     }
 
     public void episodeCallback(List<RailCommonData> railList) {
@@ -831,16 +901,22 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void startPlayer(RailCommonData railCommonData) {
-        callProgressBar();
-        Intent intent = new Intent(WebSeriesDescriptionActivity.this, PlayerActivity.class);
-        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
+        try {
 
-        /*  if (fromNextEpisode) {*/
-        intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
+
+            callProgressBar();
+            Intent intent = new Intent(WebSeriesDescriptionActivity.this, PlayerActivity.class);
+            intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
+
+            /*  if (fromNextEpisode) {*/
+            intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
        /* } else {
             intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) ra);
         }*/
-        startActivity(intent);
+            startActivity(intent);
+        } catch (Exception ignored) {
+
+        }
     }
 
     private void validateParentalPin(RailCommonData railCommonData) {
@@ -1206,56 +1282,63 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         }
     }
 
+    private boolean isEntitlementCheck = false;
+
     private void checkEntitleMent(final RailCommonData railCommonData) {
+
         String fileId = "";
-        if (railCommonData.getObject() != null)
+        if (railCommonData != null && railCommonData.getObject() != null) {
+            isEntitlementCheck = true;
             fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
-        new EntitlementCheck().checkAssetPurchaseStatus(WebSeriesDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
-            if (apiStatus) {
-                if (purchasedStatus) {
-                    runOnUiThread(() -> {
-                        getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                        getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                        getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
-                        getBinding().starIcon.setVisibility(View.GONE);
-                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
-
-
-                    });
-                    this.vodType = EntitlementCheck.FREE;
-
-                } else {
-                    if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+            new EntitlementCheck().checkAssetPurchaseStatus(WebSeriesDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+                if (apiStatus) {
+                    if (purchasedStatus) {
                         runOnUiThread(() -> {
+                            if (playbackControlValue) {
+                                getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+
+                            }
+
+                        });
+                        this.vodType = EntitlementCheck.FREE;
+
+                    } else {
+                        if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                            runOnUiThread(() -> {
+                                getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                                getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+
+
+                            });
+                            this.vodType = EntitlementCheck.SVOD;
+
+                        } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                             getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                            getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                            getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                             getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.VISIBLE);
+                            getBinding().starIcon.setVisibility(View.GONE);
                             getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
 
-                        });
-                        this.vodType = EntitlementCheck.SVOD;
-
-                    } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
-                        getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                        getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                        getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
-                        getBinding().starIcon.setVisibility(View.GONE);
-                        getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                            this.vodType = EntitlementCheck.TVOD;
 
 
-                        this.vodType = EntitlementCheck.TVOD;
-
-
+                        }
                     }
+
+                } else {
+
                 }
-
-            } else {
-
-            }
-        });
-       /* new EntitlementCheck().checkAssetType(WebSeriesDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
+            });
+        }
+        /* new EntitlementCheck().checkAssetType(WebSeriesDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
             if (status) {
                 playerChecksCompleted = true;
                 if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
@@ -1528,8 +1611,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getPlayBackControl(metas);
             }
         }
-        if (playbackControlValue)
-            checkEntitleMent(assetToPlay);
+
+        checkEntitleMent(assetToPlay);
 
     }
 
@@ -1539,6 +1622,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         railData = commonData;
         getDatafromBack();
         assetToPlay = null;
+        isEntitlementCheck = false;
         getBinding().ivPlayIcon.setVisibility(View.GONE);
         isActive = UserInfo.getInstance(this).isActive();
     }

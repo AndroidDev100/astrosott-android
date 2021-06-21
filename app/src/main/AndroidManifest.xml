@@ -27,14 +27,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:resizeableActivity="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/MyMaterialTheme"
-        android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
+        <activity android:name=".activities.subscriptionActivity.ui.ProfileSubscriptionActivity"></activity>
         <activity android:name=".activities.webEpisodeDescription.WebEpisodeDetailActivity" />
         <activity android:name=".activities.moreListing.ui.CustomListingActivity" />
         <activity android:name=".activities.isThatYou.IsThatYouActivity" />
@@ -47,7 +47,7 @@
         <activity
             android:name=".activities.subscriptionActivity.ui.SubscriptionDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="locked"/>
+            android:screenOrientation="locked" />
         <activity android:name=".activities.forgotPassword.ui.IsThisYouActivity" />
         <activity android:name=".activities.search.ui.SearchKeywordActivity" />
         <activity android:name=".activities.manageDevice.ui.ManageDeviceActivity" />
@@ -287,7 +287,7 @@
             android:resource="@drawable/noti_icon" /> <!-- <meta-data -->
         <!-- android:name="com.google.firebase.messaging.default_notification_color" -->
         <!-- android:resource="@color/colorPrimary" /> -->
-        <!--suppress AndroidDomInspection -->
+        <!-- suppress AndroidDomInspection -->
         <receiver
             android:name="io.branch.referral.InstallListener"
             android:exported="true"
@@ -311,22 +311,26 @@
             </intent-filter>
         </service>
         -->
-        <service android:name=".thirdParty.fcm.SookaFirebaseMessagingService">
+        <!-- <service android:name=".thirdParty.fcm.SookaFirebaseMessagingService">
+             <intent-filter>
+                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+             </intent-filter>
+         </service>-->
+        <service android:name="com.clevertap.android.sdk.pushnotification.fcm.FcmMessageListenerService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <meta-data
             android:name="FCM_SENDER_ID"
             android:value="@string/fcm_sender_id" />
 
-        <service android:name=".thirdParty.fcm.SookaFirebaseInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-
+        <!-- <service android:name=".thirdParty.fcm.SookaFirebaseInstanceIdService">
+             <intent-filter>
+                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+             </intent-filter>
+         </service>
+ -->
         <activity
             android:name=".activities.appSettings.ui.AppSettingsActivity"
             android:screenOrientation="locked" />
@@ -369,7 +373,7 @@
         <receiver
             android:name=".Alarm.MyReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.dialog.dialoggo.MyIntent" />
             </intent-filter>
