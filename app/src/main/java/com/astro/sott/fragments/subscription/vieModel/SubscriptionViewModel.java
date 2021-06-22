@@ -64,7 +64,7 @@ public class SubscriptionViewModel extends AndroidViewModel {
     }
 
     public LiveData<EvergentCommonResponse<UpdateProfileResponse>> updateProfile(String type, String emailMobile, String accessToken) {
-        return MySubscriptionPlanRepository.getInstance().updateProfile(getApplication(), type, emailMobile, accessToken);
+        return MySubscriptionPlanRepository.getInstance().updateProfile(getApplication(), type, emailMobile, accessToken,"");
     }
 
     public LiveData<EvergentCommonResponse<CheckCredentialResponse>> checkCredential(String password, String emailMobile, String type) {

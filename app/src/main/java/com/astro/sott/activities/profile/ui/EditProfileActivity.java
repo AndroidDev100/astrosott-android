@@ -310,7 +310,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     private void updateProfile(String name, String type, boolean isLinking) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String acessToken = UserInfo.getInstance(this).getAccessToken();
-        astroLoginViewModel.updateProfile(type, name, acessToken).observe(this, updateProfileResponse -> {
+        astroLoginViewModel.updateProfile(type, name, acessToken,"").observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 if (type.equalsIgnoreCase("Facebook")) {

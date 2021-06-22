@@ -152,6 +152,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         if (!otp.equalsIgnoreCase("") && otp.length() == 6) {
             astroLoginViewModel.confirmOtp(loginType, emailMobile, otp).observe(this, evergentCommonResponse -> {
                 if (evergentCommonResponse.isStatus()) {
+                    token = evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getToken();
+
                     // Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
                     if (from.equalsIgnoreCase("signIn")) {
                         getBinding().progressBar.setVisibility(View.GONE);
@@ -196,13 +198,13 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void setPassword() {
         getBinding().progressBar.setVisibility(View.GONE);
-        new ActivityLauncher(this).setPasswordActivity(this);
+        new ActivityLauncher(this).setPasswordActivity(this,token);
     }
 
     private void updateProfile(String name, String type) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String acessToken = UserInfo.getInstance(this).getAccessToken();
-        astroLoginViewModel.updateProfile(type, name, acessToken).observe(this, updateProfileResponse -> {
+        astroLoginViewModel.updateProfile(type, name, acessToken,token).observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 if (type.equalsIgnoreCase("email")) {

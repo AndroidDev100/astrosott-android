@@ -177,10 +177,10 @@ public class MySubscriptionPlanRepository {
         return mutableLiveData;
     }
 
-    public LiveData<EvergentCommonResponse<UpdateProfileResponse>> updateProfile(Context context, String type, String emailMobile, String accessToken) {
+    public LiveData<EvergentCommonResponse<UpdateProfileResponse>> updateProfile(Context context, String type, String emailMobile, String accessToken,String token) {
         MutableLiveData<EvergentCommonResponse<UpdateProfileResponse>> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().updateProfile(context, type, emailMobile, accessToken, new EvergentResponseCallBack<UpdateProfileResponse>() {
+        EvergentServices.Companion.getInstance().updateProfile(context, type, emailMobile, accessToken,token, new EvergentResponseCallBack<UpdateProfileResponse>() {
 
 
             @Override

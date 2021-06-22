@@ -156,8 +156,9 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
-    public void setPasswordActivity(Activity source) {
+    public void setPasswordActivity(Activity source,String token) {
         Intent intent = new Intent(source, SetPasswordActivity.class);
+        intent.putExtra("token", token);
         activity.startActivity(intent);
     }
 
