@@ -247,6 +247,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     HashMap<String, Bitmap> previewImagesHashMap;
     private String scrubberUrl = "";
     ObjectAnimator objectAnimator;
+    private boolean isPlayerSurfaceClicked = false;
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -2714,6 +2715,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             objectAnimator.cancel();
                             objectAnimator = null;
                         }
+                        isPlayerSurfaceClicked = true;
                         getBinding().progressBar.setProgress(0);
                     }
 
@@ -2754,6 +2756,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 } else {
                     viewModel.changeVideoRatio();
                 }
+                playPauseControl();
 
             }
         }));
@@ -2770,6 +2773,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             objectAnimator = null;
                         }
                         getBinding().progressBar.setProgress(0);
+                        isPlayerSurfaceClicked = true;
                     }
                     if (lockEnable) {
 //                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
@@ -2802,6 +2806,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             @Override
             public void onDoubleClick(View view) {
                 viewModel.changeVideoRatio();
+                playPauseControl();
             }
         }));
 
@@ -3053,6 +3058,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void playNextEpisode() {
+        isPlayerSurfaceClicked = false;
         isLiveChannel = false;
         ConvivaManager.convivaPlayerStoppedReportRequest();
         ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackEnded();
@@ -3553,18 +3559,19 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (isUserGeneratedCredit) {
                         getBinding().nextEpisode.setVisibility(View.GONE);
                         getBinding().progressBar.setVisibility(View.GONE);
-                        playNextEpisode();
+                        //playNextEpisode();
                     } else {
                         if (creditEndTime < recapStartTime || creditEndTime < introStartTime) {
 
                         } else {
                             getBinding().progressBar.setVisibility(View.GONE);
                             getBinding().nextEpisode.setVisibility(View.GONE);
-                            playNextEpisode();
+//                            playNextEpisode();
                         }
                     }
                 }
-
+                if (!isPlayerSurfaceClicked)
+                playNextEpisode();
             }
         }, 10000);
     }
