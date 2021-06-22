@@ -152,14 +152,14 @@ public class AppCommonMethods {
 
         try {
             CleverTapAPI clevertapDefaultInstance =
-                    CleverTapAPI.getDefaultInstance(context, UserInfo.getInstance(context).getCpCustomerId() + "_" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+                    CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver()));
             HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
             profileUpdate.put("Name", UserInfo.getInstance(context).getFirstName());
             profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
             profileUpdate.put("Email", UserInfo.getInstance(context).getEmail());
             profileUpdate.put("Phone", UserInfo.getInstance(context).getMobileNumber());
             profileUpdate.put("App Language", "English");
-            clevertapDefaultInstance.onUserLogin(profileUpdate, UserInfo.getInstance(context).getCpCustomerId() + "_" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+            clevertapDefaultInstance.onUserLogin(profileUpdate,  AppCommonMethods.getDeviceId(context.getContentResolver()));
         } catch (Exception e) {
 
         }
@@ -171,7 +171,7 @@ public class AppCommonMethods {
 
         try {
             CleverTapAPI clevertapDefaultInstance =
-                    CleverTapAPI.getDefaultInstance(context, UserInfo.getInstance(context).getCpCustomerId() + "_" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+                    CleverTapAPI.getDefaultInstance(context,   AppCommonMethods.getDeviceId(context.getContentResolver()));
             HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
             profileUpdate.put("Name", name);
             profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
@@ -187,7 +187,7 @@ public class AppCommonMethods {
 
         try {
             CleverTapAPI clevertapDefaultInstance =
-                    CleverTapAPI.getDefaultInstance(context, UserInfo.getInstance(context).getCpCustomerId() + "_" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+                    CleverTapAPI.getDefaultInstance(context,  AppCommonMethods.getDeviceId(context.getContentResolver()));
             HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
             profileUpdate.put("Email", email);
             profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
@@ -203,7 +203,7 @@ public class AppCommonMethods {
 
         try {
             CleverTapAPI clevertapDefaultInstance =
-                    CleverTapAPI.getDefaultInstance(context, UserInfo.getInstance(context).getCpCustomerId() + "_" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+                    CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver()));
             HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
             profileUpdate.put("Phone", phone);
             profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
