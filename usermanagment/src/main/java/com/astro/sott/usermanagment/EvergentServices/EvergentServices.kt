@@ -322,7 +322,6 @@ class EvergentServices {
         if (type.equals("email", true)) {
             json.addProperty(EMAIL, emailMobile)
             json.addProperty("customerUsername", emailMobile)
-            json.addProperty("userToken", token)
 
 
         } else if (type.equals("name", true)) {
@@ -330,7 +329,6 @@ class EvergentServices {
         } else if (type.equals("mobile", true)) {
             json.addProperty(MOBILE_NUMBER, emailMobile)
             json.addProperty("alternateUserName", emailMobile)
-            json.addProperty("userToken", token)
 
         } else if (type.equals("Google", true) || type.equals("Facebook", true)) {
             json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
