@@ -2756,7 +2756,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 } else {
                     viewModel.changeVideoRatio();
                 }
-                playPauseControl();
+                //playPauseControl();
 
             }
         }));
@@ -2806,7 +2806,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             @Override
             public void onDoubleClick(View view) {
                 viewModel.changeVideoRatio();
-                playPauseControl();
+                //playPauseControl();
             }
         }));
 
@@ -3570,8 +3570,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         }
                     }
                 }
-                if (!isPlayerSurfaceClicked)
-                playNextEpisode();
+                if (!isPlayerSurfaceClicked) {
+                    playNextEpisode();
+                }else {
+                    getBinding().nextEpisode.setVisibility(View.VISIBLE);
+                }
             }
         }, 10000);
     }
