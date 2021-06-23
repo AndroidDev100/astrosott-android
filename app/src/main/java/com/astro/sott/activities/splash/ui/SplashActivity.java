@@ -206,8 +206,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     pushToken();
 
                 } else {
-                    pushToken();
-                    //showUpdateDialog();
+                    showUpdateDialog();
                 }
 
             }
