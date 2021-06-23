@@ -84,6 +84,7 @@ class ManageDeviceActivity : AppCompatActivity(), DeviceDeleteCallBack {
             if (it.isStatus) {
                 if (it.removeDeviceResponse.removeDevicesResponseMessage != null) {
                     Toast.makeText(this, it.removeDeviceResponse.removeDevicesResponseMessage?.message, Toast.LENGTH_SHORT).show()
+                    getDevices()
                 }
             } else {
                 Toast.makeText(this, it.errorMessage, Toast.LENGTH_SHORT).show()

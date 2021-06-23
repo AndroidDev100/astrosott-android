@@ -58,10 +58,10 @@ class EvergentServices {
 
 
     fun searchAccountv2(
-        context: Context,
-        type: String,
-        emailMobile: String,
-        searchAccountCallBack: EvergentSearchAccountCallBack
+            context: Context,
+            type: String,
+            emailMobile: String,
+            searchAccountCallBack: EvergentSearchAccountCallBack
     ) {
 
         var searchAccountJson = JsonObject()
@@ -85,26 +85,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<SearchAccountv2Response?>,
-                response: Response<SearchAccountv2Response?>
+                    call: Call<SearchAccountv2Response?>,
+                    response: Response<SearchAccountv2Response?>
             ) {
                 if (response.body() != null && response.body()?.searchAccountV2ResponseMessage != null && response.body()?.searchAccountV2ResponseMessage?.responseCode != null) {
 
                     if (response.body()?.searchAccountV2ResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         searchAccountCallBack.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.searchAccountV2ResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.searchAccountV2ResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.searchAccountV2ResponseMessage?.failureMessage,
+                                    context
                             )
                             searchAccountCallBack.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
                         } else {
                             searchAccountCallBack.onFailure("Something Went Wrong", "")
@@ -125,10 +125,10 @@ class EvergentServices {
 
 
     fun createOtp(
-        context: Context,
-        type: String,
-        emailMobile: String,
-        evergentCreateOtpCallBack: EvergentCreateOtpCallBack
+            context: Context,
+            type: String,
+            emailMobile: String,
+            evergentCreateOtpCallBack: EvergentCreateOtpCallBack
     ) {
 
         var searchAccountJson = JsonObject()
@@ -136,9 +136,9 @@ class EvergentServices {
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty("country", "MY")
         if (type.equals("email", true) || type.equals("Google", true) || type.equals(
-                "Facebook",
-                true
-            )
+                        "Facebook",
+                        true
+                )
         ) {
             json.addProperty(EMAIL, emailMobile)
 
@@ -156,8 +156,8 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<CreateOtpResponse?>,
-                response: Response<CreateOtpResponse?>
+                    call: Call<CreateOtpResponse?>,
+                    response: Response<CreateOtpResponse?>
             ) {
                 if (response.body() != null && response.body()?.createOTPResponseMessage != null && response.body()?.createOTPResponseMessage?.responseCode != null) {
 
@@ -166,12 +166,12 @@ class EvergentServices {
                     } else {
                         if (response.body()?.createOTPResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.createOTPResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.createOTPResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentCreateOtpCallBack.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
                         } else {
                             evergentCreateOtpCallBack.onFailure("Something Went Wrong", "")
@@ -192,17 +192,17 @@ class EvergentServices {
 
 
     fun logoutUser(
-        context: Context,
-        externalSession: String,
-        accessToken: String,
-        evergentUpdateProfileCallback: EvergentResponseCallBack<LogoutExternalResponse>
+            context: Context,
+            externalSession: String,
+            accessToken: String,
+            evergentUpdateProfileCallback: EvergentResponseCallBack<LogoutExternalResponse>
     ) {
         var updateProfileJson = JsonObject()
         var json = JsonObject()
         json.addProperty("externalSessionToken", externalSession)
         updateProfileJson.add("LogOutUserRequestMessage", json)
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
-        val call = apiInterface?.logoutUser("Bearer $accessToken",updateProfileJson)
+        val call = apiInterface?.logoutUser("Bearer $accessToken", updateProfileJson)
         call?.enqueue(object : Callback<LogoutExternalResponse?> {
             override fun onFailure(call: Call<LogoutExternalResponse?>, t: Throwable) {
                 evergentUpdateProfileCallback.onFailure("Something Went Wrong", "")
@@ -210,7 +210,7 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<LogoutExternalResponse?>, response: Response<LogoutExternalResponse?>
+                    call: Call<LogoutExternalResponse?>, response: Response<LogoutExternalResponse?>
             ) {
                 if (response.body() != null && response.body()?.logOutUserResponseMessage != null && response.body()?.logOutUserResponseMessage?.responseCode != null) {
                     if (response.body()?.logOutUserResponseMessage?.responseCode.equals("1", true)) {
@@ -218,12 +218,12 @@ class EvergentServices {
                     } else {
                         if (response.body()?.logOutUserResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.logOutUserResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.logOutUserResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentUpdateProfileCallback.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
                         } else {
                             evergentUpdateProfileCallback.onFailure("Something Went Wrong", "")
@@ -243,11 +243,11 @@ class EvergentServices {
     }
 
     fun checkCredential(
-        context: Context,
-        password: String,
-        emailMobile: String,
-        type: String,
-        evergentUpdateProfileCallback: EvergentResponseCallBack<CheckCredentialResponse>
+            context: Context,
+            password: String,
+            emailMobile: String,
+            type: String,
+            evergentUpdateProfileCallback: EvergentResponseCallBack<CheckCredentialResponse>
     ) {
 
         var updateProfileJson = JsonObject()
@@ -271,26 +271,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<CheckCredentialResponse?>,
-                response: Response<CheckCredentialResponse?>
+                    call: Call<CheckCredentialResponse?>,
+                    response: Response<CheckCredentialResponse?>
             ) {
                 if (response.body() != null && response.body()?.checkCredentialsResponseMessage != null && response.body()?.checkCredentialsResponseMessage?.responseCode != null) {
 
                     if (response.body()?.checkCredentialsResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentUpdateProfileCallback.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.checkCredentialsResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.checkCredentialsResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.checkCredentialsResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentUpdateProfileCallback.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
                         } else {
                             evergentUpdateProfileCallback.onFailure("Something Went Wrong", "")
@@ -310,11 +310,11 @@ class EvergentServices {
     }
 
     fun updateProfile(
-        context: Context,
-        type: String,
-        emailMobile: String,
-        acessToken: String,token:String,
-        evergentUpdateProfileCallback: EvergentResponseCallBack<UpdateProfileResponse>
+            context: Context,
+            type: String,
+            emailMobile: String,
+            acessToken: String, token: String,
+            evergentUpdateProfileCallback: EvergentResponseCallBack<UpdateProfileResponse>
     ) {
 
         var updateProfileJson = JsonObject()
@@ -347,26 +347,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<UpdateProfileResponse?>,
-                response: Response<UpdateProfileResponse?>
+                    call: Call<UpdateProfileResponse?>,
+                    response: Response<UpdateProfileResponse?>
             ) {
                 if (response.body() != null && response.body()?.updateProfileResponseMessage != null && response.body()?.updateProfileResponseMessage?.responseCode != null) {
 
                     if (response.body()?.updateProfileResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentUpdateProfileCallback.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.updateProfileResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.updateProfileResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.updateProfileResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentUpdateProfileCallback.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
                         } else {
                             evergentUpdateProfileCallback.onFailure("Something Went Wrong", "")
@@ -387,11 +387,11 @@ class EvergentServices {
 
 
     fun confirmOtp(
-        context: Context,
-        type: String,
-        emailMobile: String,
-        otp: String,
-        evergentConfirmOtpCallBack: EvergentConfirmOtpCallBack
+            context: Context,
+            type: String,
+            emailMobile: String,
+            otp: String,
+            evergentConfirmOtpCallBack: EvergentConfirmOtpCallBack
     ) {
 
         var searchAccountJson = JsonObject()
@@ -416,26 +416,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<ConfirmOtpResponse?>,
-                response: Response<ConfirmOtpResponse?>
+                    call: Call<ConfirmOtpResponse?>,
+                    response: Response<ConfirmOtpResponse?>
             ) {
                 if (response.body() != null && response.body()?.confirmOTPResponseMessage != null && response.body()?.confirmOTPResponseMessage?.responseCode != null) {
 
                     if (response.body()?.confirmOTPResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentConfirmOtpCallBack.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.confirmOTPResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.confirmOTPResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.confirmOTPResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentConfirmOtpCallBack.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
                         } else {
                             evergentConfirmOtpCallBack.onFailure("Something Went Wrong", "")
@@ -456,10 +456,10 @@ class EvergentServices {
 
 
     fun resetPassword(
-        token: String,
-        context: Context,
-        password: String,
-        evergentResetPasswordCallBack: EvergentResetPasswordCallBack
+            token: String,
+            context: Context,
+            password: String,
+            evergentResetPasswordCallBack: EvergentResetPasswordCallBack
     ) {
 
         var searchAccountJson = JsonObject()
@@ -477,26 +477,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<ResetPasswordResponse?>,
-                response: Response<ResetPasswordResponse?>
+                    call: Call<ResetPasswordResponse?>,
+                    response: Response<ResetPasswordResponse?>
             ) {
                 if (response.body() != null && response.body()?.resetPasswordResponseMessage != null && response.body()?.resetPasswordResponseMessage?.responseCode != null) {
 
                     if (response.body()?.resetPasswordResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentResetPasswordCallBack.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.resetPasswordResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.resetPasswordResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.resetPasswordResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentResetPasswordCallBack.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -518,10 +518,10 @@ class EvergentServices {
 
 
     fun setPassword(
-        accessToken: String,
-        context: Context,
-        password: String,
-        evergentResetPasswordCallBack: EvergentResetPasswordCallBack
+            accessToken: String,
+            context: Context,
+            password: String,
+            evergentResetPasswordCallBack: EvergentResetPasswordCallBack
     ) {
 
         var searchAccountJson = JsonObject()
@@ -530,7 +530,7 @@ class EvergentServices {
         json.addProperty("contactPassword", password)
         searchAccountJson.add("ResetPasswordRequestMessage", json)
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
-        val call = apiInterface?.setPassword("Bearer $accessToken",searchAccountJson)
+        val call = apiInterface?.setPassword("Bearer $accessToken", searchAccountJson)
         call?.enqueue(object : Callback<ResetPasswordResponse?> {
             override fun onFailure(call: Call<ResetPasswordResponse?>, t: Throwable) {
                 evergentResetPasswordCallBack.onFailure("Something Went Wrong", "")
@@ -538,26 +538,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<ResetPasswordResponse?>,
-                response: Response<ResetPasswordResponse?>
+                    call: Call<ResetPasswordResponse?>,
+                    response: Response<ResetPasswordResponse?>
             ) {
                 if (response.body() != null && response.body()?.resetPasswordResponseMessage != null && response.body()?.resetPasswordResponseMessage?.responseCode != null) {
 
                     if (response.body()?.resetPasswordResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentResetPasswordCallBack.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.resetPasswordResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.resetPasswordResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.resetPasswordResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentResetPasswordCallBack.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -578,13 +578,13 @@ class EvergentServices {
     }
 
     fun createUser(
-        context: Context,
-        type: String,
-        emailMobile: String,
-        password: String,
-        name: String,
-        isTablet: Boolean,
-        evergentCreateUserCallback: EvergentCreateUserCallback
+            context: Context,
+            type: String,
+            emailMobile: String,
+            password: String,
+            name: String,
+            isTablet: Boolean,
+            evergentCreateUserCallback: EvergentCreateUserCallback
     ) {
 
         var createUserJson = JsonObject()
@@ -646,26 +646,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<CreateUserResponse?>,
-                response: Response<CreateUserResponse?>
+                    call: Call<CreateUserResponse?>,
+                    response: Response<CreateUserResponse?>
             ) {
                 if (response.body() != null && response.body()?.createUserResponseMessage != null && response.body()?.createUserResponseMessage?.responseCode != null) {
 
                     if (response.body()?.createUserResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentCreateUserCallback.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.createUserResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.createUserResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.createUserResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentCreateUserCallback.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -687,12 +687,12 @@ class EvergentServices {
 
 
     fun loginUser(
-        context: Context,
-        type: String,
-        emailMobile: String,
-        password: String,
-        isTablet: Boolean,
-        evergentCreateUserCallback: EvergentLoginUserCallback
+            context: Context,
+            type: String,
+            emailMobile: String,
+            password: String,
+            isTablet: Boolean,
+            evergentCreateUserCallback: EvergentLoginUserCallback
     ) {
 
         var createUserJson = JsonObject()
@@ -737,26 +737,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<LoginResponse?>,
-                response: Response<LoginResponse?>
+                    call: Call<LoginResponse?>,
+                    response: Response<LoginResponse?>
             ) {
                 if (response.body() != null && response.body()?.getOAuthAccessTokenv2ResponseMessage != null && response.body()?.getOAuthAccessTokenv2ResponseMessage?.responseCode != null) {
 
                     if (response.body()?.getOAuthAccessTokenv2ResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentCreateUserCallback.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.getOAuthAccessTokenv2ResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.getOAuthAccessTokenv2ResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.getOAuthAccessTokenv2ResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentCreateUserCallback.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -778,15 +778,15 @@ class EvergentServices {
 
     fun getDeviceId(contentResolver: ContentResolver?): String? {
         return Settings.Secure.getString(
-            contentResolver,
-            Settings.Secure.ANDROID_ID
+                contentResolver,
+                Settings.Secure.ANDROID_ID
         )
     }
 
     fun getContact(
-        context: Context,
-        acessToken: String,
-        evergentCreateUserCallback: EvergentGetContactCallback
+            context: Context,
+            acessToken: String,
+            evergentCreateUserCallback: EvergentGetContactCallback
     ) {
 
         var createUserJson = JsonObject()
@@ -803,26 +803,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<GetContactResponse?>,
-                response: Response<GetContactResponse?>
+                    call: Call<GetContactResponse?>,
+                    response: Response<GetContactResponse?>
             ) {
                 if (response.body() != null && response.body()?.getContactResponseMessage != null && response.body()?.getContactResponseMessage?.responseCode != null) {
 
                     if (response.body()?.getContactResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentCreateUserCallback.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.getContactResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.getContactResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.getContactResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentCreateUserCallback.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -844,11 +844,11 @@ class EvergentServices {
 
 
     fun changePassword(
-        context: Context,
-        acessToken: String,
-        oldPassword: String,
-        newPassword: String,
-        evergentGetDeviceCallback: EvergentResponseCallBack<ChangePasswordResponse>
+            context: Context,
+            acessToken: String,
+            oldPassword: String,
+            newPassword: String,
+            evergentGetDeviceCallback: EvergentResponseCallBack<ChangePasswordResponse>
     ) {
 
         var createUserJson = JsonObject()
@@ -871,26 +871,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<ChangePasswordResponse?>,
-                response: Response<ChangePasswordResponse?>
+                    call: Call<ChangePasswordResponse?>,
+                    response: Response<ChangePasswordResponse?>
             ) {
                 if (response.body() != null && response.body()?.changePasswordResponseMessage != null && response.body()?.changePasswordResponseMessage?.responseCode != null) {
 
                     if (response.body()?.changePasswordResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentGetDeviceCallback.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.changePasswordResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.changePasswordResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.changePasswordResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentGetDeviceCallback.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -911,10 +911,10 @@ class EvergentServices {
     }
 
     fun getActiveSubscripton(
-        context: Context,
-        acessToken: String,
-        from: String,
-        evergentGetDeviceCallback: EvergentResponseCallBack<GetActiveResponse>
+            context: Context,
+            acessToken: String,
+            from: String,
+            evergentGetDeviceCallback: EvergentResponseCallBack<GetActiveResponse>
     ) {
 
         var createUserJson = JsonObject()
@@ -934,26 +934,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<GetActiveResponse?>,
-                response: Response<GetActiveResponse?>
+                    call: Call<GetActiveResponse?>,
+                    response: Response<GetActiveResponse?>
             ) {
                 if (response.body() != null && response.body()?.getActiveSubscriptionsResponseMessage != null && response.body()?.getActiveSubscriptionsResponseMessage?.responseCode != null) {
 
                     if (response.body()?.getActiveSubscriptionsResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentGetDeviceCallback.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.getActiveSubscriptionsResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.getActiveSubscriptionsResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.getActiveSubscriptionsResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentGetDeviceCallback.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -975,9 +975,9 @@ class EvergentServices {
 
 
     fun getLastSubscripton(
-        context: Context,
-        acessToken: String,
-        evergentGetDeviceCallback: EvergentResponseCallBack<LastSubscriptionResponse>
+            context: Context,
+            acessToken: String,
+            evergentGetDeviceCallback: EvergentResponseCallBack<LastSubscriptionResponse>
     ) {
 
         var createUserJson = JsonObject()
@@ -994,26 +994,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<LastSubscriptionResponse?>,
-                response: Response<LastSubscriptionResponse?>
+                    call: Call<LastSubscriptionResponse?>,
+                    response: Response<LastSubscriptionResponse?>
             ) {
                 if (response.body() != null && response.body()?.getLastSubscriptionsResponseMessage != null && response.body()?.getLastSubscriptionsResponseMessage?.responseCode != null) {
 
                     if (response.body()?.getLastSubscriptionsResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentGetDeviceCallback.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.getLastSubscriptionsResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.getLastSubscriptionsResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.getLastSubscriptionsResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentGetDeviceCallback.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -1034,12 +1034,12 @@ class EvergentServices {
     }
 
     fun addSubscription(
-        context: Context,
-        productId: String,
-        token: String,
-        acessToken: String,
-        orderId: String,
-        evergentGetDeviceCallback: EvergentResponseCallBack<AddSubscriptionResponse>
+            context: Context,
+            productId: String,
+            token: String,
+            acessToken: String,
+            orderId: String,
+            evergentGetDeviceCallback: EvergentResponseCallBack<AddSubscriptionResponse>
     ) {
 
         var purchaseTokenKJson = JsonObject()
@@ -1077,25 +1077,25 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<AddSubscriptionResponse?>,
-                response: Response<AddSubscriptionResponse?>
+                    call: Call<AddSubscriptionResponse?>,
+                    response: Response<AddSubscriptionResponse?>
             ) {
                 if (response.body() != null && response.body()?.addSubscriptionResponseMessage != null && response.body()?.addSubscriptionResponseMessage?.responseCode != null) {
                     if (response.body()?.addSubscriptionResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentGetDeviceCallback.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.addSubscriptionResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.addSubscriptionResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.addSubscriptionResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentGetDeviceCallback.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -1116,9 +1116,9 @@ class EvergentServices {
 
 
     fun getDevice(
-        context: Context,
-        acessToken: String,
-        evergentGetDeviceCallback: EvergentGetDeviceCallback
+            context: Context,
+            acessToken: String,
+            evergentGetDeviceCallback: EvergentGetDeviceCallback
     ) {
 
         var createUserJson = JsonObject()
@@ -1135,26 +1135,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<GetDevicesResponse?>,
-                response: Response<GetDevicesResponse?>
+                    call: Call<GetDevicesResponse?>,
+                    response: Response<GetDevicesResponse?>
             ) {
                 if (response.body() != null && response.body()?.getAccountDevicesResponseMessage != null && response.body()?.getAccountDevicesResponseMessage?.responseCode != null) {
 
                     if (response.body()?.getAccountDevicesResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentGetDeviceCallback.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.getAccountDevicesResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.getAccountDevicesResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.getAccountDevicesResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentGetDeviceCallback.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -1175,17 +1175,20 @@ class EvergentServices {
     }
 
     fun removeDevice(
-        context: Context,
-        acessToken: String,
-        serial: String,
-        evergentGetDeviceCallback: EvergentRemoveDevice
+            context: Context,
+            acessToken: String,
+            serial: String,
+            evergentGetDeviceCallback: EvergentRemoveDevice
     ) {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
+        var deviceJsonArray = JsonArray()
         var devicejson = JsonObject()
         devicejson.addProperty("serialNo", serial)
-        json.add("deviceMessage", devicejson)
+        json.addProperty("isExemptCurrentDevice", "false")
+        deviceJsonArray.add(devicejson)
+        json.add("deviceDetails", deviceJsonArray)
         createUserJson.add("RemoveDevicesRequestMessage", json)
 
 
@@ -1198,26 +1201,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<RemoveDeviceResponse?>,
-                response: Response<RemoveDeviceResponse?>
+                    call: Call<RemoveDeviceResponse?>,
+                    response: Response<RemoveDeviceResponse?>
             ) {
                 if (response.body() != null && response.body()?.removeDevicesResponseMessage != null && response.body()?.removeDevicesResponseMessage?.responseCode != null) {
 
                     if (response.body()?.removeDevicesResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentGetDeviceCallback.onSuccess(response.body()!!);
                     } else {
                         if (response.body()?.removeDevicesResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.removeDevicesResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.removeDevicesResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentGetDeviceCallback.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -1264,26 +1267,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<GetProductResponse?>,
-                response: Response<GetProductResponse?>
+                    call: Call<GetProductResponse?>,
+                    response: Response<GetProductResponse?>
             ) {
                 if (response.body() != null && response.body()?.getProductsResponseMessage != null && response.body()?.getProductsResponseMessage?.responseCode != null) {
 
                     if (response.body()?.getProductsResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentRefreshToken.onSuccess(response.body()!!)
                     } else {
                         if (response.body()?.getProductsResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.getProductsResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.getProductsResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentRefreshToken.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -1304,11 +1307,11 @@ class EvergentServices {
     }
 
     fun getProductforLogin(
-        subscriptionId: JsonArray,
-        context: Context,
-        accessToken: String,
-        from: String,
-        evergentRefreshToken: EvergentGetProductsCallBack
+            subscriptionId: JsonArray,
+            context: Context,
+            accessToken: String,
+            from: String,
+            evergentRefreshToken: EvergentGetProductsCallBack
     ) {
 
         var createUserJson = JsonObject()
@@ -1340,26 +1343,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<GetProductResponse?>,
-                response: Response<GetProductResponse?>
+                    call: Call<GetProductResponse?>,
+                    response: Response<GetProductResponse?>
             ) {
                 if (response.body() != null && response.body()?.getProductsResponseMessage != null && response.body()?.getProductsResponseMessage?.responseCode != null) {
 
                     if (response.body()?.getProductsResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentRefreshToken.onSuccess(response.body()!!)
                     } else {
                         if (response.body()?.getProductsResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.getProductsResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.getProductsResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentRefreshToken.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -1380,9 +1383,9 @@ class EvergentServices {
     }
 
     fun getPaymentV2(
-        context: Context,
-        acessToken: String,
-        evergentRefreshToken: EvergentPaymentV2Callback
+            context: Context,
+            acessToken: String,
+            evergentRefreshToken: EvergentPaymentV2Callback
     ) {
 
         var createUserJson = JsonObject()
@@ -1399,26 +1402,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<PaymentV2Response?>,
-                response: Response<PaymentV2Response?>
+                    call: Call<PaymentV2Response?>,
+                    response: Response<PaymentV2Response?>
             ) {
                 if (response.body() != null && response.body()?.getPaymentsV2ResponseMessage != null && response.body()?.getPaymentsV2ResponseMessage?.responseCode != null) {
 
                     if (response.body()?.getPaymentsV2ResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentRefreshToken.onSuccess(response.body()!!)
                     } else {
                         if (response.body()?.getPaymentsV2ResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.getPaymentsV2ResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.getPaymentsV2ResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentRefreshToken.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -1439,10 +1442,10 @@ class EvergentServices {
     }
 
     fun removeSubscription(
-        context: Context,
-        productId: String,
-        acessToken: String,
-        evergentRefreshToken: EvergentResponseCallBack<RemoveSubscriptionResponse>
+            context: Context,
+            productId: String,
+            acessToken: String,
+            evergentRefreshToken: EvergentResponseCallBack<RemoveSubscriptionResponse>
     ) {
 
         var createUserJson = JsonObject()
@@ -1461,26 +1464,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<RemoveSubscriptionResponse?>,
-                response: Response<RemoveSubscriptionResponse?>
+                    call: Call<RemoveSubscriptionResponse?>,
+                    response: Response<RemoveSubscriptionResponse?>
             ) {
                 if (response.body() != null && response.body()?.removeSubscriptionResponseMessage != null && response.body()?.removeSubscriptionResponseMessage?.responseCode != null) {
 
                     if (response.body()?.removeSubscriptionResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentRefreshToken.onSuccess(response.body()!!)
                     } else {
                         if (response.body()?.removeSubscriptionResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.removeSubscriptionResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.removeSubscriptionResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentRefreshToken.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -1502,10 +1505,10 @@ class EvergentServices {
 
 
     fun getInvoice(
-        context: Context,
-        transactionId: String,
-        acessToken: String,
-        evergentRefreshToken: EvergentResponseCallBack<InvoiceResponse>
+            context: Context,
+            transactionId: String,
+            acessToken: String,
+            evergentRefreshToken: EvergentResponseCallBack<InvoiceResponse>
     ) {
 
         var createUserJson = JsonObject()
@@ -1522,26 +1525,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<InvoiceResponse?>,
-                response: Response<InvoiceResponse?>
+                    call: Call<InvoiceResponse?>,
+                    response: Response<InvoiceResponse?>
             ) {
                 if (response.body() != null && response.body()?.getInvoicePDFResponseMessage != null && response.body()?.getInvoicePDFResponseMessage?.responseCode != null) {
 
                     if (response.body()?.getInvoicePDFResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentRefreshToken.onSuccess(response.body()!!)
                     } else {
                         if (response.body()?.getInvoicePDFResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.getInvoicePDFResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.getInvoicePDFResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentRefreshToken.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
@@ -1562,9 +1565,9 @@ class EvergentServices {
     }
 
     fun refreshToken(
-        context: Context,
-        refreshToken: String,
-        evergentRefreshToken: EvergentRefreshTokenCallBack
+            context: Context,
+            refreshToken: String,
+            evergentRefreshToken: EvergentRefreshTokenCallBack
     ) {
 
         var createUserJson = JsonObject()
@@ -1583,26 +1586,26 @@ class EvergentServices {
             }
 
             override fun onResponse(
-                call: Call<RefreshTokenResponse?>,
-                response: Response<RefreshTokenResponse?>
+                    call: Call<RefreshTokenResponse?>,
+                    response: Response<RefreshTokenResponse?>
             ) {
                 if (response.body() != null && response.body()?.refreshTokenResponseMessage != null && response.body()?.refreshTokenResponseMessage?.responseCode != null) {
 
                     if (response.body()?.refreshTokenResponseMessage?.responseCode.equals(
-                            "1",
-                            true
-                        )
+                                    "1",
+                                    true
+                            )
                     ) {
                         evergentRefreshToken.onSuccess(response.body()!!)
                     } else {
                         if (response.body()?.refreshTokenResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.refreshTokenResponseMessage?.failureMessage,
-                                context
+                                    response.body()?.refreshTokenResponseMessage?.failureMessage,
+                                    context
                             )
                             evergentRefreshToken.onFailure(
-                                errorModel.errorMessage,
-                                errorModel.errorCode
+                                    errorModel.errorMessage,
+                                    errorModel.errorCode
                             )
 
                         } else {
