@@ -103,6 +103,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AppCommonMethods {
     private static String progDuration;
@@ -159,7 +161,7 @@ public class AppCommonMethods {
             profileUpdate.put("Email", UserInfo.getInstance(context).getEmail());
             profileUpdate.put("Phone", UserInfo.getInstance(context).getMobileNumber());
             profileUpdate.put("App Language", "English");
-            clevertapDefaultInstance.onUserLogin(profileUpdate,  AppCommonMethods.getDeviceId(context.getContentResolver()));
+            clevertapDefaultInstance.onUserLogin(profileUpdate, AppCommonMethods.getDeviceId(context.getContentResolver()));
         } catch (Exception e) {
 
         }
@@ -171,7 +173,7 @@ public class AppCommonMethods {
 
         try {
             CleverTapAPI clevertapDefaultInstance =
-                    CleverTapAPI.getDefaultInstance(context,   AppCommonMethods.getDeviceId(context.getContentResolver()));
+                    CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver()));
             HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
             profileUpdate.put("Name", name);
             profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
@@ -187,7 +189,7 @@ public class AppCommonMethods {
 
         try {
             CleverTapAPI clevertapDefaultInstance =
-                    CleverTapAPI.getDefaultInstance(context,  AppCommonMethods.getDeviceId(context.getContentResolver()));
+                    CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver()));
             HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
             profileUpdate.put("Email", email);
             profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
@@ -2628,7 +2630,20 @@ public class AppCommonMethods {
         String email = "";
         try {
             String s = UserInfo.getInstance(context).getEmail();
-            email = s.replaceAll("(?<=.{1}).(?=[^@]*?.@)", "*");
+            String pattern = "([^@]+)@(.*)\\.(.*)";
+
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(s);
+            if (m.find()) {
+                StringBuilder sb = new StringBuilder("");
+                sb.append(m.group(1).charAt(0));
+                sb.append(m.group(1).substring(1));
+                sb.append("@");
+                sb.append(m.group(2).replaceAll(".", "*"));
+                sb.append(".").append(m.group(3));
+                email = sb.toString();
+            }
+
         } catch (Exception ignored) {
             email = "";
         }
