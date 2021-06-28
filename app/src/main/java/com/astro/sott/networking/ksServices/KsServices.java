@@ -4543,7 +4543,7 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
     }
 
-    private void callContinueWatchingAPI(final List<Response<ListResponse<Asset>>> responseList, final List<VIUChannel> channelList, final HomechannelCallBack homechannelCallBack) {
+    public void callContinueWatchingAPI(final List<Response<ListResponse<Asset>>> responseList, final List<VIUChannel> channelList, final HomechannelCallBack homechannelCallBack) {
 
         clientSetupKs();
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();

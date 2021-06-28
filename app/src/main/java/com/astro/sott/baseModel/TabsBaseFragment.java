@@ -52,6 +52,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     private boolean mIsLoading = true, isScrolling = false;
     private int counter = 0;
     private int swipeToRefresh = 0;
+    int updatedContinueWIndex = -1;
     private int count = 0;
     private List<VIUChannel> channelList;
     private List<VIUChannel> dtChannelsList;
@@ -129,7 +130,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         swipeToRefresh();
         getBinding().myRecyclerView.setHasFixedSize(false);
         getBinding().myRecyclerView.setItemViewCacheSize(20);
-         getBinding().myRecyclerView.setNestedScrollingEnabled(false);
+        getBinding().myRecyclerView.setNestedScrollingEnabled(false);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         getBinding().myRecyclerView.setLayoutManager(llm);
         CustomShimmerAdapter adapter = new CustomShimmerAdapter(getActivity(), new ShimmerDataModel(getActivity()).getList(0), new ShimmerDataModel(getActivity()).getSlides());
@@ -457,9 +458,57 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         }
     }
 
+    private int checkContinueWatching(List<AssetCommonBean> longList) {
+        int exists = 0;
+        for (int i = 0; i < longList.size(); i++) {
+            if (longList.get(i).getRailType() == AppConstants.Rail6) {
+                exists = 1;
+            }
+        }
+        return exists;
+    }
+
+    private int getContinueWatchInd() {
+        for (int i = 0; i < loadedList.size(); i++) {
+            int railType = loadedList.get(i).getRailType();
+            if (railType == AppConstants.Rail6) {
+                updatedContinueWIndex = i;
+            }
+        }
+        return updatedContinueWIndex;
+    }
 
     public void refreshData() {
         try {
+            Log.w("ContinueWatchingIndex", adapter.getContinueWatchInd() + "");
+            if (UserInfo.getInstance(getActivity()).isActive()) {
+                if (dtChannelsList != null) {
+                    if (adapter.getContinueWatchInd() != -1) {
+                        if (checkContinueWatching(loadedList) == 1) {
+                            new ContinueWatchingUpdate().updateCall(getActivity(), dtChannelsList, getContinueWatchInd(), 1, loadedList, (status, commonResponse) -> {
+                                if (status) {
+                                    PrintLogging.printLog("", "sizeOfOf  " + commonResponse.size() + " " + adapter.getContinueWatchInd());
+                                    if (adapter != null && getActivity() != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                PrintLogging.printLog("", "sizeinlist 3" + counterValueApiFail);
+                                                loadedList.remove(getContinueWatchInd());
+                                                loadedList.add(getContinueWatchInd(), commonResponse.get(0));
+                                                adapter.notifyItemChanged(getContinueWatchInd());
+                                            }
+                                        });
+
+
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+
             if (UserInfo.getInstance(getActivity()).isActive()) {
                 for (int i = 0; i < loadedList.size(); i++) {
                     if (loadedList.get(i).getTitle().equalsIgnoreCase(AppConstants.KEY_DFP_ADS)) {
@@ -470,7 +519,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                     }
                 }
             }
-            Log.w("ContinueWatchingIndex",adapter.getContinueWatchInd()+"");
+
 
         } catch (Exception ignored) {
         }
