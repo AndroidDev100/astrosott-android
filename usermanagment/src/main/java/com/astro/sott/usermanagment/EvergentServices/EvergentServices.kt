@@ -701,11 +701,11 @@ class EvergentServices {
         var accountAttributes = JsonArray();
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
 
-        if (type.equals("email", true)) {
+        if (type.equals("Email", true)) {
             json.addProperty("contactUserName", emailMobile)
             json.addProperty("contactPassword", password)
 
-        } else if (type.equals("mobile", true)) {
+        } else if (type.equals("Mobile", true)) {
             json.addProperty("alternateUserName", emailMobile)
             json.addProperty("contactPassword", password)
 

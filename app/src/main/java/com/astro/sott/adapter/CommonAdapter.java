@@ -716,7 +716,9 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     }
-
+    public int getContinueWatchInd() {
+        return cwIndex;
+    }
     @Override
     public int getItemCount() {
         return dataList.size();
@@ -828,7 +830,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         } else {
                             new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 1);
                         }*/
-                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class, "profile");
+                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class, "Profile");
 
                     } else {
                         int layoutType = AppCommonMethods.getRailTypeAccToMedia(activity, getLayoutPosition(), dataList, i);
@@ -965,7 +967,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         } else {
                             new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 1);
                         }*/
-                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class, "profile");
+                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class, "Profile");
 
                     } else {
                         int layoutType = AppCommonMethods.getRailTypeAccToMedia(activity, getLayoutPosition(), dataList, i);

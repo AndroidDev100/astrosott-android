@@ -41,6 +41,7 @@ import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
 import com.astro.sott.player.houseHoldCheckManager.HouseHoldCheck;
 import com.astro.sott.player.ui.PlayerActivity;
 import com.astro.sott.repositories.player.PlayerRepository;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -929,7 +930,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(BoxSetDetailActivity.this).astrLoginActivity(BoxSetDetailActivity.this, AstrLoginActivity.class, "");
+                    new ActivityLauncher(BoxSetDetailActivity.this).astrLoginActivity(BoxSetDetailActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), BoxSetDetailActivity.this);

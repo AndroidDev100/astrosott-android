@@ -470,6 +470,8 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                     }
                 }
             }
+            Log.w("ContinueWatchingIndex",adapter.getContinueWatchInd()+"");
+
         } catch (Exception ignored) {
         }
     }

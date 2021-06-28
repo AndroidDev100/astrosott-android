@@ -95,7 +95,7 @@ public class CommonLandscapeListingAdapter extends RecyclerView.Adapter<CommonLa
                 holder.landscapeItemBinding.tvDescription.setVisibility(View.VISIBLE);
 
                 holder.landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
-                holder.landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + " - " + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
+                holder.landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + "-" + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
             } else if (itemsList.get(i).getType() == MediaTypeConstant.getLinear(mContext)) {
                 if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
                     holder.landscapeItemBinding.titleLayout.setVisibility(View.VISIBLE);

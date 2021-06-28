@@ -34,6 +34,7 @@ import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.repositories.liveChannel.LinearProgramDataLayer;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
@@ -321,7 +322,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(LiveChannel.this).astrLoginActivity(LiveChannel.this, AstrLoginActivity.class, "");
+                    new ActivityLauncher(LiveChannel.this).astrLoginActivity(LiveChannel.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             }
@@ -352,7 +353,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(LiveChannel.this).astrLoginActivity(LiveChannel.this, AstrLoginActivity.class, "");
+                    new ActivityLauncher(LiveChannel.this).astrLoginActivity(LiveChannel.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             }

@@ -53,6 +53,7 @@ public class FirebaseEventManager {
     public static final String TXN_SUCCESS = "trx_success";
 
 
+
     public static final String VIEW_SEARCH_RESULT = "view_search_results";
 
 
@@ -198,7 +199,7 @@ public class FirebaseEventManager {
         }
     }
 
-    public void showTabEvent( Asset asset) {
+    public void showTabEvent(Asset asset) {
         try {
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Shows-" + asset.getName()); //e.g TV Shows Top Slider
@@ -213,7 +214,7 @@ public class FirebaseEventManager {
         }
     }
 
-    public void shareEvent( Asset asset) {
+    public void shareEvent(Asset asset) {
         try {
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Shows-" + asset.getName()); //e.g TV Shows Top Slider

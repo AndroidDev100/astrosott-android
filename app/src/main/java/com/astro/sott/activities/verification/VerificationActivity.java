@@ -21,6 +21,7 @@ import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityVerificationBinding;
 import com.astro.sott.fragments.verification.Verification;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
@@ -35,7 +36,7 @@ import java.util.List;
 
 public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> {
     private AstroLoginViewModel astroLoginViewModel;
-    private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "";
+    private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "", origin = "";
     private CountDownTimer countDownTimer;
     private List<SocialLoginTypesItem> socialLoginTypesItem;
 
@@ -198,13 +199,13 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void setPassword() {
         getBinding().progressBar.setVisibility(View.GONE);
-        new ActivityLauncher(this).setPasswordActivity(this,token);
+        new ActivityLauncher(this).setPasswordActivity(this, token);
     }
 
     private void updateProfile(String name, String type) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String acessToken = UserInfo.getInstance(this).getAccessToken();
-        astroLoginViewModel.updateProfile(type, name, acessToken,token).observe(this, updateProfileResponse -> {
+        astroLoginViewModel.updateProfile(type, name, acessToken, token).observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 if (type.equalsIgnoreCase("email")) {
@@ -267,7 +268,11 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
                 getContact();
-
+                try {
+                    origin = CleverTapManager.getInstance().getLoginOrigin();
+                    CleverTapManager.getInstance().setSignInEvent(this, origin, loginType);
+                } catch (Exception ex) {
+                }
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
 //                getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));

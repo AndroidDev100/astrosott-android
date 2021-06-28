@@ -28,6 +28,7 @@ import com.astro.sott.fragments.subscription.adapter.SubscriptionRecyclerViewAda
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel
 import com.astro.sott.modelClasses.InApp.PackDetail
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
@@ -354,7 +355,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         if (UserInfo.getInstance(context).isActive) {
             cardClickedCallback.onCardClicked(packDetails.skuDetails?.sku, packDetailList[position].productsResponseMessageItem.serviceType, activePlan, planName, price)
         } else {
-            ActivityLauncher(activity!!).astrLoginActivity(activity!!, AstrLoginActivity::class.java, "")
+            ActivityLauncher(activity!!).astrLoginActivity(activity!!, AstrLoginActivity::class.java, CleverTapManager.SUBSCRIPTION_PAGE)
         }
     }
 }

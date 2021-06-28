@@ -102,7 +102,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
                 holder.landscapeItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
                 if (singleItem.getObject().getType() == MediaTypeConstant.getProgram(mContext)) {
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
-                    holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + " - " + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
+                    holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + "-" + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
                 } else {
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());

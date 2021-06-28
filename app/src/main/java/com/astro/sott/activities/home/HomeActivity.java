@@ -26,6 +26,7 @@ import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.video.ui.VideoFragment;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.TabsData;
@@ -250,7 +251,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         oldLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
         if (UserInfo.getInstance(this).isHouseHoldError()){
             UserInfo.getInstance(this).setHouseHoldError(false);
-            new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class,"");
+            new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class, CleverTapManager.HOME);
         }
         setSupportActionBar((Toolbar) getBinding().toolbar);
         if (getIntent().getStringExtra("fragmentType") != null)

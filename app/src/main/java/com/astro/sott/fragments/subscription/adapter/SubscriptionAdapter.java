@@ -16,6 +16,7 @@ import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.SubscriptionPackItemBinding;
 import com.astro.sott.modelClasses.InApp.PackDetail;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.getProducts.Attribute;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -114,7 +115,7 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
                 if (!holder.binding.actualPrice.getText().toString().equalsIgnoreCase("subscribed"))
                     cardCLickedCallBack.onCardClicked(packDetailList.get(position).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(position).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(position).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(position).getSkuDetails().getPrice());
             } else {
-                new ActivityLauncher(fragment).astrLoginActivity(fragment, AstrLoginActivity.class, "");
+                new ActivityLauncher(fragment).astrLoginActivity(fragment, AstrLoginActivity.class, CleverTapManager.SUBSCRIPTION_PAGE);
             }
         });
 

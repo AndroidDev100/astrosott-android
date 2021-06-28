@@ -22,6 +22,7 @@ import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityIsThatYouBinding;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
@@ -207,12 +208,19 @@ public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBind
 
     }
 
+    private String from = "";
+
     private void updateProfile(String name, String type) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String acessToken = UserInfo.getInstance(this).getAccessToken();
-        astroLoginViewModel.updateProfile(type, name, acessToken,"").observe(this, updateProfileResponse -> {
+        astroLoginViewModel.updateProfile(type, name, acessToken, "").observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
+                try {
+                    from = CleverTapManager.getInstance().getLoginOrigin();
+                    CleverTapManager.getInstance().setSignInEvent(this, from, type);
+                } catch (Exception ex) {
+                }
                 getActiveSubscription();
             } else {
                 Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();

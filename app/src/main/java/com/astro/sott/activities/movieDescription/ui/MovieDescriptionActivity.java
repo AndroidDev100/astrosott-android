@@ -19,6 +19,7 @@ import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceStatusCallBack;
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -219,7 +220,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(MovieDescriptionActivity.this).astrLoginActivity(MovieDescriptionActivity.this, AstrLoginActivity.class, "");
+                    new ActivityLauncher(MovieDescriptionActivity.this).astrLoginActivity(MovieDescriptionActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             }
@@ -1020,7 +1021,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(MovieDescriptionActivity.this).astrLoginActivity(MovieDescriptionActivity.this, AstrLoginActivity.class, "");
+                    new ActivityLauncher(MovieDescriptionActivity.this).astrLoginActivity(MovieDescriptionActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), MovieDescriptionActivity.this);

@@ -27,6 +27,7 @@ import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.chaos.view.PinView;
@@ -85,8 +86,6 @@ public class DialogHelper {
             showLoginDialog(context);
         }
     }
-
-
 
 
     public static void openDialougeFornonDialog(final Activity context, boolean isLiveChannel) {
@@ -181,7 +180,7 @@ public class DialogHelper {
             builder.setTitle(context.getResources().getString(R.string.become_vip)).setMessage(context.getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.login), (dialog, id) -> {
-                        new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class, "");
+                        new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class, CleverTapManager.PLAYER_LOCK);
                         baseActivity.onBackPressed();
                         dialog.cancel();
                     })

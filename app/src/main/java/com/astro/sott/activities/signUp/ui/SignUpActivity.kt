@@ -23,6 +23,7 @@ import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
@@ -45,6 +46,7 @@ import com.google.android.gms.tasks.Task
 import org.json.JSONException
 import org.json.JSONObject
 import java.lang.Double.parseDouble
+import java.lang.Exception
 import java.util.*
 
 class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListener {
@@ -366,6 +368,10 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                 UserInfo.getInstance(this).externalSessionToken = evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.externalSessionToken
                 KsPreferenceKey.getInstance(this).startSessionKs = evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.externalSessionToken
                 getContact()
+                try {
+                    from = CleverTapManager.getInstance().loginOrigin
+                    CleverTapManager.getInstance().setSignInEvent(this, from, type)
+                }catch (ex:Exception){}
                 astroLoginViewModel!!.addToken(UserInfo.getInstance(this).externalSessionToken)
             } else {
                 activitySinUpBinding?.progressBar?.visibility = View.GONE
@@ -429,6 +435,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
     }
 
     private var displayName = ""
+    private var from = ""
     private fun getActiveSubscription() {
         astroLoginViewModel!!.getActiveSubscription(UserInfo.getInstance(this).accessToken, "").observe(this, Observer { evergentCommonResponse: EvergentCommonResponse<GetActiveResponse> ->
             if (evergentCommonResponse.isStatus) {
@@ -466,6 +473,8 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         UserInfo.getInstance(this).isActive = true
         AppCommonMethods.setCleverTap(this)
         FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).cpCustomerId, "")
+
+
 
         Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT).show()
         ActivityLauncher(this@SignUpActivity).homeScreen(this, HomeActivity::class.java)

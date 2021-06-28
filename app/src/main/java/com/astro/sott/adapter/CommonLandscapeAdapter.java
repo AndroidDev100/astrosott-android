@@ -282,7 +282,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
-                    landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + " - " + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
+                    landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + "-" + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
                 } else if (itemsList.get(i).getType() == MediaTypeConstant.getLinear(mContext)) {
                     if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
                         String liveEventTime = AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());

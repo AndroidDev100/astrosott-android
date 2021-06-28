@@ -35,6 +35,7 @@ import com.astro.sott.fragments.subscription.ui.SubscriptionLandingFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.transactionhistory.ui.TransactionHistory;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
@@ -145,7 +146,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
         getBinding().loginSignupMore.setOnClickListener(view -> {
             FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, "Sign Up/ Sign In", FirebaseEventManager.BTN_CLICK);
-            new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "profile");
+            new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "Profile");
 
         });
         getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +197,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                     transaction.commit();
                 } else {
-                    new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "profile");
+                    new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "Profile");
 
                 }
 //                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
@@ -276,7 +277,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 manageDeviceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(manageDeviceIntent);
             } else {
-                new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "profile");
+                new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "Profile");
 
             }
 
@@ -547,6 +548,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().loginSignupMore.setVisibility(View.VISIBLE);
         getBinding().loginUi.setVisibility(View.GONE);
         LoginManager.getInstance().logOut();
+        CleverTapManager.getInstance().setSignOutEvent(getActivity());
         getBinding().edit.setVisibility(View.GONE);
         new ActivityLauncher(getActivity()).homeScreen(getActivity(), HomeActivity.class);
 

@@ -2602,7 +2602,7 @@ public class AppCommonMethods {
         try {
 
             Date date = new Date(timestamp * 1000L);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa", Locale.US);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM hh:mm aaa", Locale.US);
             simpleDateFormat.setTimeZone(TimeZone.getDefault());
             String dateTimeValue = simpleDateFormat.format(date);
             return dateTimeValue;
