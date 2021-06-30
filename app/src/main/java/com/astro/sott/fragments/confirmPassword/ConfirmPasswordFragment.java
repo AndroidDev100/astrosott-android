@@ -141,18 +141,18 @@ public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirm
     private void checkCredential() {
         if (!newEmail.equalsIgnoreCase("")) {
             if (UserInfo.getInstance(getActivity()).getEmail().equalsIgnoreCase("")) {
-                type = "mobile";
+                type = "Mobile";
                 email_mobile = UserInfo.getInstance(getActivity()).getMobileNumber();
             } else {
-                type = "email";
+                type = "Email";
                 email_mobile = UserInfo.getInstance(getActivity()).getEmail();
             }
         } else {
             if (UserInfo.getInstance(getActivity()).getMobileNumber().equalsIgnoreCase("")) {
-                type = "email";
+                type = "Email";
                 email_mobile = UserInfo.getInstance(getActivity()).getEmail();
             } else {
-                type = "mobile";
+                type = "Mobile";
                 email_mobile = UserInfo.getInstance(getActivity()).getMobileNumber();
             }
         }
@@ -171,19 +171,21 @@ public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirm
 
     private void createOtp() {
         if (!newEmail.equalsIgnoreCase("")) {
-            type = "email";
-            if (!UserInfo.getInstance(getActivity()).getEmail().equalsIgnoreCase("")) {
+            type = "Email";
+            email=newEmail;
+            /*if (!UserInfo.getInstance(getActivity()).getEmail().equalsIgnoreCase("")) {
                 email = UserInfo.getInstance(getActivity()).getEmail();
             } else {
                 email = newEmail;
-            }
+            }*/
         } else {
-            type = "mobile";
-            if (!UserInfo.getInstance(getActivity()).getMobileNumber().equalsIgnoreCase("")) {
+            type = "Mobile";
+            email=newMobile;
+           /* if (!UserInfo.getInstance(getActivity()).getMobileNumber().equalsIgnoreCase("")) {
                 email = UserInfo.getInstance(getActivity()).getMobileNumber();
             } else {
                 email = newMobile;
-            }
+            }*/
         }
         subscriptionViewModel.createOtp(type, email).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);

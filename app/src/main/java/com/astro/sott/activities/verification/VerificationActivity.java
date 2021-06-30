@@ -63,6 +63,13 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             newMobile = getIntent().getExtras().getString("newMobile");
         password = getIntent().getExtras().getString(AppLevelConstants.PASSWORD_KEY);
         from = getIntent().getExtras().getString(AppLevelConstants.FROM_KEY);
+        if (from.equalsIgnoreCase(AppLevelConstants.CONFIRM_PASSWORD) || from.equalsIgnoreCase(AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD)) {
+            if (loginType.equalsIgnoreCase("Email")) {
+                emailMobile = newEmail;
+            } else if (loginType.equalsIgnoreCase("Mobile")) {
+                emailMobile = newMobile;
+            }
+        }
         if (emailMobile != null && !emailMobile.equalsIgnoreCase("")) {
             getBinding().descriptionTxt.setText(getResources().getString(R.string.onetime_pass_code_text) + "\n" + emailMobile);
         }
@@ -149,6 +156,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String otp = getBinding().pin.getText().toString();
         if (!otp.equalsIgnoreCase("") && otp.length() == 6) {
+
             astroLoginViewModel.confirmOtp(loginType, emailMobile, otp).observe(this, evergentCommonResponse -> {
                 if (evergentCommonResponse.isStatus()) {
                     // Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
