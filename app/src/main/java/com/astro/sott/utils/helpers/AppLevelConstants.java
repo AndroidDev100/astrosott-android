@@ -469,6 +469,7 @@ public interface AppLevelConstants {
     String FILTER_LANGUAGE_CONSTANT = "FilterLanguage='";
     String OPEN = "open";
     String CLOSE = "close";
+    String KEY_ENTRY_ID = "entryId";
 
 
 }
