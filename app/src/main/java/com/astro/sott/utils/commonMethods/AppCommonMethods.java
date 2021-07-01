@@ -61,6 +61,7 @@ import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardType;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
@@ -147,6 +148,12 @@ public class AppCommonMethods {
 
     public static void getLanguage() {
 
+
+    }
+
+    public static void setCrashlyticsUserId(Activity activity) {
+        if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase(""))
+            FirebaseCrashlytics.getInstance().setUserId(UserInfo.getInstance(activity).getCpCustomerId());
 
     }
 

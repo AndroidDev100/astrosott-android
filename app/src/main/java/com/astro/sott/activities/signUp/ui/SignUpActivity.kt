@@ -46,7 +46,6 @@ import com.google.android.gms.tasks.Task
 import org.json.JSONException
 import org.json.JSONObject
 import java.lang.Double.parseDouble
-import java.lang.Exception
 import java.util.*
 
 class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListener {
@@ -416,6 +415,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                 UserInfo.getInstance(this).mobileNumber = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.mobileNumber
 
                 UserInfo.getInstance(this).cpCustomerId = evergentCommonResponse.getContactResponse.getContactResponseMessage!!.cpCustomerID
+                AppCommonMethods.setCrashlyticsUserId(this)
                 getActiveSubscription()
             } else {
                 if (evergentCommonResponse.errorCode.equals("eV2124", ignoreCase = true) || evergentCommonResponse.errorCode.equals("111111111", ignoreCase = true)) {

@@ -466,6 +466,7 @@ class EvergentServices {
         var json = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
         json.addProperty("contactPassword", password)
+        json.addProperty("isExemptCurrentDevice",false)
         json.addProperty("userToken", token)
         searchAccountJson.add("ResetPasswordRequestMessage", json)
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)

@@ -939,6 +939,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

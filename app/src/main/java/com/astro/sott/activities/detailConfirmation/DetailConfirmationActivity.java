@@ -107,7 +107,7 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
                 UserInfo.getInstance(this).setLastName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getLastName());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
-
+                AppCommonMethods.setCrashlyticsUserId(this);
                 getActiveSubscription();
 
             } else {

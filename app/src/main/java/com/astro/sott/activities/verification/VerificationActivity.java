@@ -207,13 +207,13 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void setPassword() {
         getBinding().progressBar.setVisibility(View.GONE);
-        new ActivityLauncher(this).setPasswordActivity(this, token);
+        new ActivityLauncher(this).setPasswordActivity(this, token, newEmail, newMobile);
     }
 
     private void updateProfile(String name, String type) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String acessToken = UserInfo.getInstance(this).getAccessToken();
-        astroLoginViewModel.updateProfile(type, name, acessToken, token).observe(this, updateProfileResponse -> {
+        astroLoginViewModel.updateProfile(type, name, acessToken, "").observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 if (type.equalsIgnoreCase("email")) {
@@ -325,7 +325,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 UserInfo.getInstance(this).setMobileNumber(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getMobileNumber());
                 UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
-
+                AppCommonMethods.setCrashlyticsUserId(this);
                 getActiveSubscription();
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
