@@ -166,6 +166,7 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
     private void setActive() {
         FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "");
         UserInfo.getInstance(this).setActive(true);
+        UserInfo.getInstance(this).setSocialLogin(true);
         AppCommonMethods.setCleverTap(this);
         Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
         new ActivityLauncher(DetailConfirmationActivity.this).homeScreen(DetailConfirmationActivity.this, HomeActivity.class);

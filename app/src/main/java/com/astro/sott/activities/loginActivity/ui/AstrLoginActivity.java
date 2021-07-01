@@ -397,7 +397,9 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     socialLoginTypesItem = evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getSocialLoginTypes();
                     AppCommonMethods.checkSocailLinking(this, socialLoginTypesItem);
                 }
-
+                if (type.equalsIgnoreCase("Facebook") || type.equalsIgnoreCase("Google")) {
+                    UserInfo.getInstance(this).setSocialLogin(true);
+                }
                 UserInfo.getInstance(this).setMobileNumber(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getMobileNumber());
                 UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());

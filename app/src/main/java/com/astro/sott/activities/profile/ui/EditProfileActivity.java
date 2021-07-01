@@ -77,6 +77,11 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     }
 
     private void setClicks() {
+
+        if (UserInfo.getInstance(this).isSocialLogin()) {
+            getBinding().editemail.setVisibility(View.GONE);
+            getBinding().editMobileNo.setVisibility(View.GONE);
+        }
         if (UserInfo.getInstance(this).isFbLinked()) {
             getBinding().linkFb.setText(getResources().getString(R.string.unlink));
         } else {

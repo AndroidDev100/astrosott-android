@@ -11,7 +11,7 @@ public class UserInfo {
     private String externalSessionToken;
     private boolean active;
 
-    private boolean houseHoldError ;
+    private boolean houseHoldError;
 
     private boolean isVip;
     private boolean fbLinked;
@@ -42,6 +42,15 @@ public class UserInfo {
 
     public void setHouseHoldError(boolean houseHoldError) {
         session.setBoolean("houseHoldError", houseHoldError);
+    }
+
+    public void setSocialLogin(boolean socialLinked) {
+        session.setBoolean("isSocialLogin", socialLinked);
+    }
+
+
+    public boolean isSocialLogin() {
+        return session.getBoolean("isSocialLogin", false);
     }
 
     public void setFbLinked(boolean fbLinked) {

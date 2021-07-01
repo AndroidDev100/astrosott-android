@@ -232,6 +232,7 @@ public class AppCommonMethods {
         UserInfo.getInstance(context).setLastName("");
         UserInfo.getInstance(context).setEmail("");
         UserInfo.getInstance(context).setMobileNumber("");
+        UserInfo.getInstance(context).setSocialLogin(false);
         UserInfo.getInstance(context).setAlternateUserName("");
         UserInfo.getInstance(context).setAccessToken("");
         UserInfo.getInstance(context).setRefreshToken("");

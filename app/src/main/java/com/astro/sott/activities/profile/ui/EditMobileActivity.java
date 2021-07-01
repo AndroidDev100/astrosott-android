@@ -144,7 +144,7 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
                 }
             });
         } else {
-            astroLoginViewModel.createOtp("mobile",  mobile).observe(this, evergentCommonResponse -> {
+            astroLoginViewModel.createOtp("mobile", mobile).observe(this, evergentCommonResponse -> {
 
                 if (evergentCommonResponse.isStatus()) {
                     //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
