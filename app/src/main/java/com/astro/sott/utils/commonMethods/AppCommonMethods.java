@@ -282,7 +282,7 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mmaaa", Locale.US);
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
@@ -2610,7 +2610,7 @@ public class AppCommonMethods {
         try {
 
             Date date = new Date(timestamp * 1000L);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM hh:mm aaa", Locale.US);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM hh:mmaaa", Locale.US);
             simpleDateFormat.setTimeZone(TimeZone.getDefault());
             String dateTimeValue = simpleDateFormat.format(date);
             return dateTimeValue;
@@ -2831,8 +2831,8 @@ public class AppCommonMethods {
         try {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM hh:mm aaa", Locale.getDefault());
+            calendar.setTimeInMillis(timestamp * 1000L);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM hh:mmaaa", Locale.US);
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
@@ -2846,7 +2846,7 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mmaaa", Locale.US);
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
