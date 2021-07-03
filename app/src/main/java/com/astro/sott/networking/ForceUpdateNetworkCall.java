@@ -40,7 +40,7 @@ public class ForceUpdateNetworkCall {
             if (responseDmsModel.getParams() != null) {
                 if (responseDmsModel.getParams().getUpdatedVersion() != null) {
                     appVersion = responseDmsModel.getParams().getUpdatedVersion();
-                   String appVersion = "21.6.7";
+                  // String appVersion = "21.6.7";
                     appVersion = appVersion.trim();
                     if (!appVersion.equalsIgnoreCase("")) {
                         if (appVersion.contains(".")) {
