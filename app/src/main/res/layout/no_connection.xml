@@ -68,7 +68,6 @@
             android:layout_below="@+id/no_internet_description_text"
             android:fontFamily="@font/heebo_medium"
             android:text="@string/reload_app"
-            android:textAllCaps="true"
             android:gravity="center"
             android:layout_marginStart="@dimen/dimen55dp"
             android:layout_marginEnd="@dimen/dimen55dp"
