@@ -100,7 +100,7 @@ public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPassword
     private void resetPassword(String password) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         getBinding().errorPasssword.setVisibility(View.GONE);
-        astroLoginViewModel.resetPassword(accessToken, password).observe(this, evergentCommonResponse -> {
+        astroLoginViewModel.setPassword(accessToken, password).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (!newEmail.equalsIgnoreCase(""))
@@ -115,7 +115,7 @@ public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPassword
 
     private void updateProfile(String name, String type) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
-        astroLoginViewModel.updateProfile(type, name, accessToken, token).observe(this, updateProfileResponse -> {
+        astroLoginViewModel.updateProfile(type, name, accessToken, "").observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 if (type.equalsIgnoreCase("email")) {

@@ -1,6 +1,8 @@
 package com.astro.sott.player.ui;
 
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -13,11 +15,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapRegionDecoder;
 import android.graphics.Insets;
+import android.graphics.Rect;
 import android.hardware.display.DisplayManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -139,6 +146,12 @@ import com.kaltura.playkit.providers.ott.PhoenixMediaProvider;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -229,6 +242,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private boolean isSkipCreditVisible = false;
     private boolean isUserGeneratedCredit = false;
     private Handler handler1 = new Handler();
+    Bitmap myBitmap;
+    HashMap<String, Bitmap> spritesHashMap = new HashMap<>();
+    HashMap<String, Bitmap> previewImagesHashMap;
+    private String scrubberUrl = "";
+    ObjectAnimator objectAnimator;
+    private boolean isPlayerSurfaceClicked = false;
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -322,6 +341,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private boolean isDialogShowing = false, isAudioTracks = false, isCaption = false;
     private AudioManager mAudioManager;
     private Boolean isLivePlayer = false;
+
     private final BroadcastReceiver headsetRecicer = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -555,11 +575,17 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             new KsServices(baseActivity).getPlaybackContext(playerAsset.getId() + "", fileId, new PlayBackContextCallBack() {
                 @Override
                 public void getUrl(String url) {
-                    ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, url, programAsset);
+                    try {
+                        ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, url, programAsset);
+                    } catch (Exception ex) {
+                    }
                 }
             });
         } else {
-            ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, "", programAsset);
+            try {
+                ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, "", programAsset);
+            } catch (Exception ex) {
+            }
 
         }
     }
@@ -619,54 +645,57 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private int nextEpisodeCounter = -1;
 
     private void checkEpisode(List<Asset> episodesList) {
-        boolean found = false;
-        hasEpisodesList = true;
-        if (episodesList.size() > 0) {
-            for (int i = 0; i < episodesList.size(); i++) {
+        try {
+            boolean found = false;
+            hasEpisodesList = true;
+            if (episodesList.size() > 0) {
+                for (int i = 0; i < episodesList.size(); i++) {
 //                int listEpisode = AssetContent.getSpecificEpisode(episodesList.get(i).getMetas());
-                long listEpisode = episodesList.get(i).getId();
-                //  if (listSeason == seasonNumber) {
-                //   if(episodesList.get(i).getId()==asset.getId()){
+                    long listEpisode = episodesList.get(i).getId();
+                    //  if (listSeason == seasonNumber) {
+                    //   if(episodesList.get(i).getId()==asset.getId()){
 
 
-                if (asset.getId() == listEpisode) {
-                    found = true;
-                    if ((i + 1) <= totalEpisode)
-                        nextEpisodeCounter = i + 1;
-                    break;
+                    if (asset.getId() == listEpisode) {
+                        found = true;
+                        if ((i + 1) <= totalEpisode)
+                            nextEpisodeCounter = i + 1;
+                        break;
+                    }
+                    //  }
                 }
-                //  }
-            }
 
-            if (found) {
-                if ((nextEpisodeCounter != -1) && episodesList.size() > nextEpisodeCounter) {
-                    nextPlayingAsset = episodesList.get(nextEpisodeCounter);
-                    hasNextEpisode = true;
-                } else {
-                    if (episodesList.size() < totalEpisode) {
-                        if (TabsData.getInstance().getSeriesType().equalsIgnoreCase(AppLevelConstants.OPEN)) {
-                            GetEpisodeListWithoutSeason();
-                        } else if (TabsData.getInstance().getSeriesType().equalsIgnoreCase(AppLevelConstants.CLOSE)) {
-                            seasonCounter = TabsData.getInstance().getSelectedSeason();
-                            getSeasonEpisode(seasonCounter, "");
-                        }
+                if (found) {
+                    if ((nextEpisodeCounter != -1) && episodesList.size() > nextEpisodeCounter) {
+                        nextPlayingAsset = episodesList.get(nextEpisodeCounter);
+                        hasNextEpisode = true;
                     } else {
-                        if (TabsData.getInstance().getSeriesType().equalsIgnoreCase(AppLevelConstants.CLOSE)) {
-                            seasonCounter++;
-                            TabsData.getInstance().setSelectedSeason(seasonCounter);
-                            episodeCounter = 1;
-                            nextEpisodeCounter = 0;
-                            railList.clear();
-                            episodesList.clear();
-                            seriesNumberList = TabsData.getInstance().getSeasonList();
-                            if (seriesNumberList.size() > seasonCounter && seriesNumberList.get(seasonCounter) != null)
-                                getSeasonEpisode(seasonCounter, "nextSeason");
+                        if (episodesList.size() < totalEpisode) {
+                            if (TabsData.getInstance().getSeriesType().equalsIgnoreCase(AppLevelConstants.OPEN)) {
+                                GetEpisodeListWithoutSeason();
+                            } else if (TabsData.getInstance().getSeriesType().equalsIgnoreCase(AppLevelConstants.CLOSE)) {
+                                seasonCounter = TabsData.getInstance().getSelectedSeason();
+                                getSeasonEpisode(seasonCounter, "");
+                            }
+                        } else {
+                            if (TabsData.getInstance().getSeriesType().equalsIgnoreCase(AppLevelConstants.CLOSE)) {
+                                seasonCounter++;
+                                TabsData.getInstance().setSelectedSeason(seasonCounter);
+                                episodeCounter = 1;
+                                nextEpisodeCounter = 0;
+                                railList.clear();
+                                episodesList.clear();
+                                seriesNumberList = TabsData.getInstance().getSeasonList();
+                                if (seriesNumberList.size() > seasonCounter && seriesNumberList.get(seasonCounter) != null)
+                                    getSeasonEpisode(seasonCounter, "nextSeason");
 
+                            }
                         }
                     }
                 }
-            }
 
+            }
+        } catch (Exception ex) {
         }
     }
 
@@ -1276,9 +1305,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 baseActivity.runOnUiThread(() -> {
                     if (response != null) {
                         if (response.isSuccess()) {
-                             onMediaLoaded(response.getResponse());
+                            onMediaLoaded(response.getResponse());
                         } else {
-                            ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackFailed(response.getError().toString());
+                            try {
+                                ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackFailed(response.getError().toString());
+                            } catch (Exception ex) {
+                            }
                             /*handling 601 error code for session token expire*/
                             isError = true;
                             if (response.getError().getCode().equalsIgnoreCase("601")) {
@@ -1325,7 +1357,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         startOttMediaLoadingProd(playLoadedEntry, asset);
     }
 
-    public  void openHouseHoldDialog(final Activity context) {
+    public void openHouseHoldDialog(final Activity context) {
         BaseActivity baseActivity = (BaseActivity) context;
         FragmentManager fm = baseActivity.getSupportFragmentManager();
 
@@ -1355,7 +1387,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     }
 
-    private  void logoutApi() {
+    private void logoutApi() {
         viewModel.logoutUser(UserInfo.getInstance(getActivity()).getAccessToken(), UserInfo.getInstance(getActivity()).getExternalSessionToken()).observe(this, logoutExternalResponseEvergentCommonResponse -> {
 
         });
@@ -1521,6 +1553,37 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 startPlayer(mediaEntry);
             }
+
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+
+
+                    if (isLivePlayer) {
+                    } else {
+                        // Run whatever background code you want here.
+                        if (!isEnable) {
+                            if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
+
+                                String EntryId = AssetContent.getMediaEntryId(mediaEntry.getMetadata());
+                                if (EntryId != "") {
+                                    scrubberUrl = "https://cdnapi.kaltura.com" + "/p/3089623" + "/sp/308962300/thumbnail/entry_id/" + EntryId + "/width/150/vid_slices/100";
+                                    new ImageLoadTask(scrubberUrl, getBinding().imagePreview).execute();
+                                }
+                            } else {
+                                String EntryId = AssetContent.getMediaEntryId(mediaEntry.getMetadata());
+                                if (EntryId != "") {
+                                    scrubberUrl = "https://cdnapi.kaltura.com" + "/p/3089633" + "/sp/308963300/thumbnail/entry_id/" + EntryId + "/width/150/vid_slices/100";
+                                    new ImageLoadTask(scrubberUrl, getBinding().imagePreview).execute();
+                                }
+                            }
+                        }
+
+                    }
+                }
+            });
+
+
         } catch (Exception e) {
 
         }
@@ -1550,7 +1613,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     Log.d("StateChange ", "Buffering");
                     if (!isAdsRunning) {
                         getBinding().pBar.setVisibility(View.VISIBLE);
-                        ConvivaManager.convivaPlayerBufferReportRequest();
+                        try {
+                            ConvivaManager.convivaPlayerBufferReportRequest();
+                        } catch (Exception ex) {
+                        }
                     } else {
 
                     }
@@ -1830,6 +1896,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().skipIntro.setVisibility(View.GONE);
                 getBinding().skipRecap.setVisibility(View.GONE);
                 getBinding().skipCredits.setVisibility(View.GONE);
+                getBinding().progressBar.setVisibility(View.GONE);
+                if (objectAnimator != null) {
+                    objectAnimator.cancel();
+                    objectAnimator = null;
+                    getBinding().progressBar.setProgress(0);
+                }
             } catch (Exception ignored) {
 
             }
@@ -1841,8 +1913,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
 
         player.addListener(this, PlayerEvent.playbackInfoUpdated, event -> {
-            long bitRate = event.playbackInfo.getVideoBitrate() / 1000;
-            ConvivaManager.convivaPlayerSetBitRate(bitRate);
+            try {
+                long bitRate = event.playbackInfo.getVideoBitrate() / 1000;
+                ConvivaManager.convivaPlayerSetBitRate(bitRate);
+            } catch (Exception ex) {
+            }
 
         });
 
@@ -1853,7 +1928,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
         player.addListener(this, PlayerEvent.playing, event -> {
             if (player != null) {
-                ConvivaManager.convivaPlayerPlayReportRequest();
+                try {
+                    ConvivaManager.convivaPlayerPlayReportRequest();
+                } catch (Exception ex) {
+                }
                 AdController adController = player.getController(AdController.class);
                 if (adController != null) {
                     if (adController.isAdDisplayed()) {
@@ -1909,8 +1987,21 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                         if (creditStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > creditStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < creditEndTime) {
                             if (!isSkipCreditVisible) {
+                                getBinding().progressBar.setVisibility(View.VISIBLE);
+                                objectAnimator = ObjectAnimator.ofInt(getBinding().progressBar, "progress", getBinding().progressBar.getProgress(), 100).setDuration(10000);
+                                objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                    @Override
+                                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                                        int progress = (int) valueAnimator.getAnimatedValue();
+                                        getBinding().progressBar.setProgress(progress);
+                                    }
+
+                                });
+                                objectAnimator.start();
+
                                 getBinding().skipCredits.setText(labelCredit);
                                 getBinding().skipCredits.setVisibility(View.VISIBLE);
+
                                 isSkipCreditVisible = true;
                                 isUserGeneratedCredit = false;
                                 hideSkipIntro();
@@ -1985,46 +2076,64 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         player.addListener(this, AdEvent.started, event -> {
             isAdsRunning = true;
-            ConvivaManager.convivaAdsEvent(baseActivity, event);
+            try {
+                ConvivaManager.convivaAdsEvent(baseActivity, event);
+            } catch (Exception ex) {
+            }
             showAdsView();
         });
 
         player.addListener(this, AdEvent.adBreakReady, event -> {
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
+            try {
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
+            } catch (Exception ex) {
+            }
             Log.d(TAG, "PLay");
         });
 
 
         player.addListener(this, AdEvent.resumed, event -> {
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
-
+            try {
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
+            } catch (Exception ex) {
+            }
             adRunning = true;
             showAdsView();
             Log.d(TAG, "PLAY");
         });
 
         player.addListener(this, AdEvent.paused, event -> {
-            if (ConvivaManager.getConvivaAdAnalytics(baseActivity) != null)
-                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PAUSED);
-
+            try {
+                if (ConvivaManager.getConvivaAdAnalytics(baseActivity) != null)
+                    ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PAUSED);
+            } catch (Exception ex) {
+            }
             isAdPause = true;
             Log.d(TAG, "AD_PAUSED");
         });
         player.addListener(this, PlayerEvent.seeked, event -> {
-            ConvivaManager.convivaPlayerSeekStoppedReportRequest(baseActivity);
-
+            try {
+                ConvivaManager.convivaPlayerSeekStoppedReportRequest(baseActivity);
+            } catch (Exception ex) {
+            }
         });
 
         player.addListener(this, PlayerEvent.seeking, event -> {
-            ConvivaManager.convivaPlayerSeekStartedReportRequest(baseActivity);
+            try {
+                ConvivaManager.convivaPlayerSeekStartedReportRequest(baseActivity);
+            } catch (Exception ex) {
+            }
         });
         player.addListener(this, AdEvent.skipped, event -> {
             isAdsRunning = false;
             checkFatalError();
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
-            ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
-            ConvivaManager.removeConvivaAdsSession();
+            try {
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
+                ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
+                ConvivaManager.removeConvivaAdsSession();
+            } catch (Exception ex) {
+            }
             Log.d(TAG, "AD_SKIPPED");
         });
 
@@ -2039,12 +2148,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         player.addListener(this, AdEvent.completed, event -> {
             isAdsRunning = false;
             Log.d(TAG, "AD_COMPLETED");
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
-            ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
-            ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
-            ConvivaManager.removeConvivaAdsSession();
-
-
+            try {
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
+                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
+                ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
+                ConvivaManager.removeConvivaAdsSession();
+            } catch (Exception ex) {
+            }
             // ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
             if (isPlayerEnded && isWaitingBinge) {
                 allAdsCompleted = true;
@@ -2094,8 +2204,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         player.addListener(this, AdEvent.adBufferStart, event -> {
             AdEvent.AdBufferStart adBufferStartEvent = event;
-            if (isAdsRunning)
-                ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.BUFFERING);
+            if (isAdsRunning) {
+                try {
+                    ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.BUFFERING);
+                } catch (Exception ex) {
+                }
+            }
             Log.d(TAG, "AD_events-->>" + "AD_BUFFER_START");
             showAdsView();
         });
@@ -2121,10 +2235,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 isAdsRunning = false;
                 if (!isAdError) {
                     isAdError = true;
-                    ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdFailed(adError.error.errorType.name());
-                    ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
-                    ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
-                    ConvivaManager.removeConvivaAdsSession();
+                    try {
+                        ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdFailed(adError.error.errorType.name());
+                        ConvivaManager.getConvivaAdAnalytics(baseActivity).reportAdEnded();
+                        ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportAdBreakEnded();
+                        ConvivaManager.removeConvivaAdsSession();
+                    } catch (Exception ex) {
+                    }
                 }
                 if (adError.error.errorType.name().toUpperCase().contains("QUIET_LOG_ERROR") || adError.error.errorType.name().toUpperCase().contains("VIDEO_PLAY_ERROR")) {
                     //  getBinding().lockIcon.setVisibility(View.VISIBLE);
@@ -2417,7 +2534,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         if (!DialogHelper.isIsDialog()) {
             if (getActivity() != null && !getActivity().isFinishing()) {
                 if (NetworkConnectivity.isOnline(getActivity())) {
-                    ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackFailed("Playback Error");
+                    try {
+                        ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackFailed("Playback Error");
+                    } catch (Exception ex) {
+                    }
                     DialogHelper.playerAlertDialog(this.getActivity(), getString(R.string.play_back_error), getString(R.string.ok), new AlertDialogSingleButtonFragment.AlertDialogListener() {
                         @Override
                         public void onFinishDialog() {
@@ -2639,6 +2759,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (isPlayerStart) {
                     if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
                         getBinding().skipCredits.setVisibility(View.GONE);
+                        getBinding().progressBar.setVisibility(View.GONE);
+                        if (objectAnimator != null) {
+                            objectAnimator.cancel();
+                            objectAnimator = null;
+                        }
+                        isPlayerSurfaceClicked = true;
+                        getBinding().progressBar.setProgress(0);
                     }
 
                     if (lockEnable) {
@@ -2678,6 +2805,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 } else {
                     viewModel.changeVideoRatio();
                 }
+                //playPauseControl();
 
             }
         }));
@@ -2688,6 +2816,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (isPlayerStart) {
                     if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
                         getBinding().skipCredits.setVisibility(View.GONE);
+                        getBinding().progressBar.setVisibility(View.GONE);
+                        if (objectAnimator != null) {
+                            objectAnimator.cancel();
+                            objectAnimator = null;
+                        }
+                        getBinding().progressBar.setProgress(0);
+                        isPlayerSurfaceClicked = true;
                     }
                     if (lockEnable) {
 //                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
@@ -2720,6 +2855,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             @Override
             public void onDoubleClick(View view) {
                 viewModel.changeVideoRatio();
+                //playPauseControl();
             }
         }));
 
@@ -2741,6 +2877,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         getBinding().forward.setOnClickListener(view -> {
             getBinding().pBar.setVisibility(View.VISIBLE);
+            if (objectAnimator != null) {
+                objectAnimator.cancel();
+                objectAnimator = null;
+                getBinding().progressBar.setProgress(0);
+            }
+
             final LiveData<Boolean> booleanLiveData = viewModel.seekPlayerForward();
             if (booleanLiveData == null || baseActivity == null) {
                 return;
@@ -2789,6 +2931,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().backward.setOnClickListener(view -> {
             getBinding().skipCredits.setText("");
             getBinding().skipCredits.setVisibility(View.GONE);
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (objectAnimator != null) {
+                objectAnimator.cancel();
+                objectAnimator = null;
+            }
+            getBinding().progressBar.setProgress(0);
             isSkipCreditVisible = false;
             getBinding().pBar.setVisibility(View.VISIBLE);
 
@@ -2875,20 +3023,44 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (isUserGeneratedCredit) {
                     getBinding().skipCredits.setVisibility(View.GONE);
                     getBinding().nextEpisode.setVisibility(View.GONE);
+                    getBinding().progressBar.setVisibility(View.GONE);
+                    if (objectAnimator != null) {
+                        objectAnimator.cancel();
+                        objectAnimator = null;
+                    }
+                    getBinding().progressBar.setProgress(0);
                     playNextEpisode();
                 } else {
                     if (creditEndTime < recapStartTime || creditEndTime < introStartTime) {
                         getBinding().skipCredits.setVisibility(View.GONE);
+                        getBinding().progressBar.setVisibility(View.GONE);
                         runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 10000);
+                        if (objectAnimator != null) {
+                            objectAnimator.cancel();
+                            objectAnimator = null;
+                        }
+                        getBinding().progressBar.setProgress(0);
                     } else {
                         getBinding().nextEpisode.setVisibility(View.GONE);
                         getBinding().skipCredits.setVisibility(View.GONE);
+                        getBinding().progressBar.setVisibility(View.GONE);
+                        if (objectAnimator != null) {
+                            objectAnimator.cancel();
+                            objectAnimator = null;
+                        }
+                        getBinding().progressBar.setProgress(0);
                         playNextEpisode();
                     }
                 }
             } else {
                 getBinding().skipCredits.setVisibility(View.GONE);
+                getBinding().progressBar.setVisibility(View.GONE);
                 runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 10000);
+                if (objectAnimator != null) {
+                    objectAnimator.cancel();
+                    objectAnimator = null;
+                }
+                getBinding().progressBar.setProgress(0);
             }
 
 //            if (creditEndTime > playerTimeInSeconds(runningPlayer.getCurrentPosition())) {
@@ -2935,10 +3107,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void playNextEpisode() {
+        isPlayerSurfaceClicked = false;
         isLiveChannel = false;
-        ConvivaManager.convivaPlayerStoppedReportRequest();
-        ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackEnded();
-        ConvivaManager.removeConvivaSession();
+        try {
+            ConvivaManager.convivaPlayerStoppedReportRequest();
+            ConvivaManager.getConvivaVideoAnalytics(baseActivity).reportPlaybackEnded();
+            ConvivaManager.removeConvivaSession();
+        } catch (Exception ex) {
+        }
         cancelTimer();
         if (hasNextEpisode) {
             if (runningPlayer != null) {
@@ -3333,6 +3509,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
     }
 
+    int positionInPercentage = 0;
+
     @Override
     public void onProgressChanged(SeekBar seekbar, int progress,
                                   boolean fromTouch) {
@@ -3345,6 +3523,42 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         } else if (seekbar.getId() == R.id.seekBar2) {
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
         } else {
+
+            if (isLivePlayer) {
+            } else {
+                positionInPercentage = Math.round((seekbar.getProgress() * 100 / runningPlayer.getDuration()));
+
+
+                float leftMargin = seekbar.getWidth() * positionInPercentage / 100;
+
+
+//
+                if (leftMargin < (seekbar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
+                    //previewImage.translationX = leftMargin
+                    getBinding().imagePreview.setTranslationX(leftMargin);
+                }
+//
+//
+                try {
+
+                    if (fromTouch) {
+                        if (previewImagesHashMap != null) {
+                            Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
+                            if (bitmap != null) {
+                                getBinding().imagePreview.setVisibility(View.VISIBLE);
+                                getBinding().imagePreview.setImageBitmap(bitmap);
+                                getBinding().imagePreview.bringToFront();
+                            }
+                        } else {
+                            getBinding().imagePreview.setVisibility(View.VISIBLE);
+                            getBinding().imagePreview.bringToFront();
+                        }
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+
             viewModel.sendSeekBarProgress(seekbar.getProgress()).observe(this, s -> getBinding().currentTime.setText(s));
         }
 
@@ -3362,8 +3576,19 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             } else {
                 if (!isSkipCreditVisible) {
                     isSkipCreditVisible = true;
+                    getBinding().progressBar.setVisibility(View.VISIBLE);
+                    objectAnimator = ObjectAnimator.ofInt(getBinding().progressBar, "progress", getBinding().progressBar.getProgress(), 100).setDuration(10000);
+                    objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                            int progress = (int) valueAnimator.getAnimatedValue();
+                            getBinding().progressBar.setProgress(progress);
+                        }
+                    });
+                    objectAnimator.start();
                     getBinding().skipCredits.setText(labelCredit);
                     getBinding().skipCredits.setVisibility(View.VISIBLE);
+
 
                     hideSkipIntro();
                 }
@@ -3378,20 +3603,32 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             public void run() {
                 getBinding().skipCredits.setText("");
                 getBinding().skipCredits.setVisibility(View.GONE);
+                getBinding().progressBar.setVisibility(View.GONE);
+                if (objectAnimator != null) {
+                    objectAnimator.cancel();
+                    objectAnimator = null;
+                }
+                getBinding().progressBar.setProgress(0);
                 if (asset.getType() == MediaTypeConstant.getEpisode(getActivity())) {
                     if (isUserGeneratedCredit) {
                         getBinding().nextEpisode.setVisibility(View.GONE);
-                        playNextEpisode();
+                        getBinding().progressBar.setVisibility(View.GONE);
+                        //playNextEpisode();
                     } else {
                         if (creditEndTime < recapStartTime || creditEndTime < introStartTime) {
 
                         } else {
+                            getBinding().progressBar.setVisibility(View.GONE);
                             getBinding().nextEpisode.setVisibility(View.GONE);
-                            playNextEpisode();
+//                            playNextEpisode();
                         }
                     }
                 }
-
+                if (!isPlayerSurfaceClicked) {
+                    playNextEpisode();
+                } else {
+                    getBinding().nextEpisode.setVisibility(View.VISIBLE);
+                }
             }
         }, 10000);
     }
@@ -3421,6 +3658,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             getBinding().skipCredits.setText("");
             getBinding().skipCredits.setVisibility(View.GONE);
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (objectAnimator != null) {
+                objectAnimator.cancel();
+                objectAnimator = null;
+            }
+            getBinding().progressBar.setProgress(0);
 
         }
 
@@ -3435,6 +3678,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         } else if (seekBar.getId() == R.id.seekBar2) {
 
         } else {
+            getBinding().imagePreview.setVisibility(View.GONE);
             isSkipCreditVisible = false;
             getBinding().pBar.setVisibility(View.VISIBLE);
             viewModel.getPlayerView(seekBar);
@@ -4290,5 +4534,95 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
 
     }
+
+    public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
+
+        private String url;
+        private ImageView imageView;
+
+        public ImageLoadTask(String url, ImageView imageView) {
+            this.url = url;
+            this.imageView = imageView;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            try {
+                URL urlConnection = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) urlConnection
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+
+                myBitmap = BitmapFactory.decodeStream(input);
+                // spritesHashMap = framesFromImageStream(input,100);
+                return myBitmap;
+            } catch (Exception e) {
+                Log.d("gtgtgtgtgtgtgt", e.getMessage());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+            // getBinding().imagePreview.setVisibility(View.VISIBLE);
+            // imageView.setImageBitmap(result);
+            InputStream inputStream = convertBitmaptoInputStream(result);
+            try {
+                spritesHashMap = framesFromImageStream(inputStream, 100);
+
+            } catch (IOException e) {
+                Log.d("gtgtgtgtgtgtgt", e.getMessage());
+            }
+
+
+        }
+
+    }
+
+    private InputStream convertBitmaptoInputStream(Bitmap bitmap) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100 /*ignored for PNG*/, bos);
+        byte[] bitmapdata = bos.toByteArray();
+        ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
+        return bs;
+    }
+
+    private HashMap<String, Bitmap> framesFromImageStream(InputStream inputStream, int columns) throws IOException {
+        Log.d("gtgtgtgtgtgtgt", "Enter");
+        previewImagesHashMap = new HashMap<String, Bitmap>();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        BitmapRegionDecoder bitmapRegionDecoder = BitmapRegionDecoder.newInstance(inputStream, false);
+        int previewImageIndex = 0;
+
+//        previewImageWidth ?: 150, previewImageHeight ?: 84, slicesCount ?: 100,
+
+        for (int var7 = columns; previewImageIndex < var7; ++previewImageIndex) {
+            Rect cropRect = new Rect((previewImageIndex * 150), 0, (previewImageIndex * 150 + 150), 84);
+
+            Bitmap extractedImageBitmap;
+            try {
+                extractedImageBitmap = bitmapRegionDecoder.decodeRegion(cropRect, options);
+            } catch (IllegalArgumentException exc) {
+                Log.d("abcccc", "http://cdnapi.kaltura.com/p/2433871/sp/243387100/thumbnail/entry_id/0_o9m122mv/width/150/vid_slices/84");
+                if (previewImagesHashMap != null) {
+                    previewImagesHashMap.clear();
+                }
+
+                bitmapRegionDecoder.recycle();
+                return null;
+            }
+            //getBinding().imagePreview.setImageBitmap(extractedImageBitmap);
+            previewImagesHashMap.put(String.valueOf(previewImageIndex), extractedImageBitmap);
+            Log.d("frfrfrfrfrf", previewImageIndex + extractedImageBitmap.toString());
+        }
+
+        bitmapRegionDecoder.recycle();
+        return previewImagesHashMap;
+    }
+
 
 }

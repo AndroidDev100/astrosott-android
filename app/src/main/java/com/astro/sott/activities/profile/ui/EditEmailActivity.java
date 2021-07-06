@@ -146,7 +146,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
 
     private void createOtp(String email) {
         if (alreadyEmail) {
-            astroLoginViewModel.createOtp("email", UserInfo.getInstance(this).getEmail()).observe(this, evergentCommonResponse -> {
+            astroLoginViewModel.createOtp("email", email).observe(this, evergentCommonResponse -> {
 
                 if (evergentCommonResponse.isStatus()) {
                     //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();

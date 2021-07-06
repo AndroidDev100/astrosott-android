@@ -61,6 +61,7 @@ import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardType;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
@@ -150,6 +151,12 @@ public class AppCommonMethods {
 
     }
 
+    public static void setCrashlyticsUserId(Activity activity) {
+        if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase(""))
+            FirebaseCrashlytics.getInstance().setUserId(UserInfo.getInstance(activity).getCpCustomerId());
+
+    }
+
     public static void setCleverTap(Activity context) {
 
         try {
@@ -225,6 +232,7 @@ public class AppCommonMethods {
         UserInfo.getInstance(context).setLastName("");
         UserInfo.getInstance(context).setEmail("");
         UserInfo.getInstance(context).setMobileNumber("");
+        UserInfo.getInstance(context).setSocialLogin(false);
         UserInfo.getInstance(context).setAlternateUserName("");
         UserInfo.getInstance(context).setAccessToken("");
         UserInfo.getInstance(context).setRefreshToken("");
@@ -274,7 +282,7 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mmaaa", Locale.US);
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
@@ -2602,7 +2610,7 @@ public class AppCommonMethods {
         try {
 
             Date date = new Date(timestamp * 1000L);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM hh:mm aaa", Locale.US);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM hh:mmaaa", Locale.US);
             simpleDateFormat.setTimeZone(TimeZone.getDefault());
             String dateTimeValue = simpleDateFormat.format(date);
             return dateTimeValue;
@@ -2823,8 +2831,8 @@ public class AppCommonMethods {
         try {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM hh:mm aaa", Locale.getDefault());
+            calendar.setTimeInMillis(timestamp * 1000L);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM hh:mmaaa", Locale.US);
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
@@ -2838,7 +2846,7 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mmaaa", Locale.US);
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);

@@ -86,7 +86,7 @@ public class LiveChannelViewModel extends AndroidViewModel {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM hh:mm aaa", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM hh:mmaaa", Locale.US);
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);

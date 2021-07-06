@@ -15,7 +15,7 @@ data class OrderItem(
         val totalTaxCharged: Double? = null,
 
         @field:SerializedName("orderID")
-        val orderID: Int? = null,
+        val orderID: Double? = null,
 
         @field:SerializedName("totalPriceCharged")
         val totalPriceCharged: Double? = null,

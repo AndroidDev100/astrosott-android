@@ -54,11 +54,11 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
         return ActivityEditProfileBinding.inflate(inflater);
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.EDIT_PROFILE);
-
         modelCall();
         setClicks();
         setFb();
@@ -77,6 +77,13 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     }
 
     private void setClicks() {
+
+        if (!UserInfo.getInstance(this).isPasswordExists()) {
+            if (UserInfo.getInstance(this).isSocialLogin()) {
+                getBinding().editemail.setVisibility(View.GONE);
+                getBinding().editMobileNo.setVisibility(View.GONE);
+            }
+        }
         if (UserInfo.getInstance(this).isFbLinked()) {
             getBinding().linkFb.setText(getResources().getString(R.string.unlink));
         } else {
@@ -176,6 +183,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                 UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
+                AppCommonMethods.setCrashlyticsUserId(this);
                 UserInfo.getInstance(this).setActive(true);
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
@@ -310,7 +318,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     private void updateProfile(String name, String type, boolean isLinking) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String acessToken = UserInfo.getInstance(this).getAccessToken();
-        astroLoginViewModel.updateProfile(type, name, acessToken,"").observe(this, updateProfileResponse -> {
+        astroLoginViewModel.updateProfile(type, name, acessToken, "").observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 if (type.equalsIgnoreCase("Facebook")) {

@@ -65,6 +65,13 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             newMobile = getIntent().getExtras().getString("newMobile");
         password = getIntent().getExtras().getString(AppLevelConstants.PASSWORD_KEY);
         from = getIntent().getExtras().getString(AppLevelConstants.FROM_KEY);
+        if (from.equalsIgnoreCase(AppLevelConstants.CONFIRM_PASSWORD) || from.equalsIgnoreCase(AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD)) {
+            if (loginType.equalsIgnoreCase("Email")) {
+                emailMobile = newEmail;
+            } else if (loginType.equalsIgnoreCase("Mobile")) {
+                emailMobile = newMobile;
+            }
+        }
         if (emailMobile != null && !emailMobile.equalsIgnoreCase("")) {
             getBinding().descriptionTxt.setText(getResources().getString(R.string.onetime_pass_code_text) + "\n" + emailMobile);
         }
@@ -151,6 +158,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String otp = getBinding().pin.getText().toString();
         if (!otp.equalsIgnoreCase("") && otp.length() == 6) {
+
             astroLoginViewModel.confirmOtp(loginType, emailMobile, otp).observe(this, evergentCommonResponse -> {
                 if (evergentCommonResponse.isStatus()) {
                     token = evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getToken();
@@ -199,13 +207,13 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void setPassword() {
         getBinding().progressBar.setVisibility(View.GONE);
-        new ActivityLauncher(this).setPasswordActivity(this, token);
+        new ActivityLauncher(this).setPasswordActivity(this, token, newEmail, newMobile);
     }
 
     private void updateProfile(String name, String type) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String acessToken = UserInfo.getInstance(this).getAccessToken();
-        astroLoginViewModel.updateProfile(type, name, acessToken, token).observe(this, updateProfileResponse -> {
+        astroLoginViewModel.updateProfile(type, name, acessToken, "").observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 if (type.equalsIgnoreCase("email")) {
@@ -317,7 +325,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 UserInfo.getInstance(this).setMobileNumber(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getMobileNumber());
                 UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
-
+                AppCommonMethods.setCrashlyticsUserId(this);
                 getActiveSubscription();
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);

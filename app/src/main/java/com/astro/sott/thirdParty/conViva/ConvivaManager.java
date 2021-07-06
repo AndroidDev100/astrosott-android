@@ -362,15 +362,24 @@ public class ConvivaManager {
     }
 
     public static void convivaPlayerPlayReportRequest() {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
+        } catch (Exception ex) {
+        }
     }
 
     public static void convivaPlayerPauseReportRequest() {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PAUSED);
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PAUSED);
+        } catch (Exception ex) {
+        }
     }
 
     public static void convivaPlayerBufferReportRequest() {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.BUFFERING);
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.BUFFERING);
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaPlayerSetBitRate(long bitrate) {
@@ -381,46 +390,72 @@ public class ConvivaManager {
     }
 
     public static void convivaPlayerStoppedReportRequest() {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaPlayerSeekStartedReportRequest(Context context) {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.SEEK_STARTED, 0);
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.SEEK_STARTED, 0);
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaPlayerSeekStoppedReportRequest(Context context) {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.SEEK_ENDED, 0);
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.SEEK_ENDED, 0);
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaPlayerAppBackgrounded(Context context) {
-        ConvivaAnalytics.reportAppBackgrounded();
+        try {
+            ConvivaAnalytics.reportAppBackgrounded();
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaPlayerAppForegrounded(Context context) {
-        ConvivaAnalytics.reportAppForegrounded();
+        try {
+            ConvivaAnalytics.reportAppForegrounded();
+        } catch (Exception exception) {
+        }
     }
 
     public static void removeConvivaSession() {
-        if (ConvivaManager.getConvivaVideoAnalytics(mcontext) != null) {
-            ConvivaManager.getConvivaVideoAnalytics(mcontext).release();
-            convivaVideoAnalytics = null;
+        try {
+            if (ConvivaManager.getConvivaVideoAnalytics(mcontext) != null) {
+                ConvivaManager.getConvivaVideoAnalytics(mcontext).release();
+                convivaVideoAnalytics = null;
+            }
+        } catch (Exception exception) {
         }
-
     }
 
     public static void removeConvivaAdsSession() {
-        if (ConvivaManager.getConvivaAdAnalytics(mcontext) != null) {
-            ConvivaManager.getConvivaAdAnalytics(mcontext).release();
-            convivaAdAnalytics = null;
+        try {
+            if (ConvivaManager.getConvivaAdAnalytics(mcontext) != null) {
+                ConvivaManager.getConvivaAdAnalytics(mcontext).release();
+                convivaAdAnalytics = null;
+            }
+        } catch (Exception exception) {
         }
     }
 
     public static void convivaUserWaitStarted() {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackEvent(String.valueOf(ConvivaSdkConstants.Events.USER_WAIT_STARTED));
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackEvent(String.valueOf(ConvivaSdkConstants.Events.USER_WAIT_STARTED));
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaUserWaitStopped() {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackEvent(String.valueOf(ConvivaSdkConstants.Events.USER_WAIT_ENDED));
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackEvent(String.valueOf(ConvivaSdkConstants.Events.USER_WAIT_ENDED));
+        } catch (Exception exception) {
+        }
     }
 
 
