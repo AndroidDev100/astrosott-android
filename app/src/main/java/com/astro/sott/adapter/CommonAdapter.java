@@ -104,7 +104,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final ArrayList<Slide> slides;
     private long lastClickTime = 0;
     private int count = 0;
-    private int cwIndex = -1;
+    private int cwIndex = -1, myListIndex = -1;
     private DetailRailClick detailRailClick;
     RemoveAdsCallBack removeAdsCallBack;
     ContinueWatchingRemove continueWatchingRemove;
@@ -609,7 +609,9 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         List<RailCommonData> singleSectionItems = dataList.get(position).getRailAssetList();
 
-
+        if (dataList.get(position).getRailDetail().getDescription().equalsIgnoreCase(AppConstants.KEY_MY_WATCHLIST)) {
+            myListIndex = position;
+        }
         if (isContinueRail) {
             cwIndex = position;
             commonLandscapeAdapter = new CommonLandscapeAdapter(activity, singleSectionItems, AppConstants.Rail5, new ContinueWatchingRemove() {
@@ -716,9 +718,15 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     }
+
     public int getContinueWatchInd() {
         return cwIndex;
     }
+
+    public int getMyListIndex() {
+        return myListIndex;
+    }
+
     @Override
     public int getItemCount() {
         return dataList.size();

@@ -6185,6 +6185,46 @@ public class KsServices {
 
     }
 
+
+    public void getWatchlistRails(List<VIUChannel> list, AllWatchlistCallBack allWatchlist) {
+
+        boolean isLogin = UserInfo.getInstance(activity).isActive();
+        if (isLogin) {
+            clientSetupKs();
+            responseList = new ArrayList<>();
+            KsServices ksServices = new KsServices(activity);
+            ksServices.compareWatchlist(1, new WatchlistCallBack() {
+                @Override
+                public void getWatchlistDetail(Boolean status, String errorCode, Response<ListResponse<PersonalList>> result) {
+                    if (status) {
+                        ksServices.getWatchlist(getAssetId(result.results.getObjects()), new AllWatchlistCallBack() {
+                            @Override
+                            public void getAllWatchlistDetail(Boolean status, String errorCode, String message, List<Response<ListResponse<Asset>>> listResponseResponse) {
+                                if (status) {
+                                    PrintLogging.printLog("", "getAllWatchlistDetail" + listResponseResponse);
+                                    if (listResponseResponse != null && listResponseResponse.size() > 0) {
+                                        responseList.add(listResponseResponse.get(0));
+                                        allWatchlist.getAllWatchlistDetail(true, "", "", responseList);
+                                    } else {
+                                        allWatchlist.getAllWatchlistDetail(false, "", "", null);
+                                    }
+                                } else {
+                                    allWatchlist.getAllWatchlistDetail(false, "", "", null);
+                                }
+                            }
+                        });
+                    } else {
+                        allWatchlist.getAllWatchlistDetail(false, "", "", null);
+                    }
+                }
+            });
+        } else {
+            allWatchlist.getAllWatchlistDetail(false, "", "", null);
+        }
+
+
+    }
+
     private String getAssetId(List<PersonalList> personalLists) {
         int size = personalLists.size();
         String value = "";
