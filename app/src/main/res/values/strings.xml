@@ -167,7 +167,7 @@
     <string name="subtitle">Subtitle</string>
     <string name="audio">Audio</string>
     <string name="cancel">Cancel</string>
-    <string name="oops_no">Opps ! No.</string>
+    <string name="oops_no">Oops No.</string>
     <string name="no_epg_available">Sorry, the programme guide is not available for this date.</string>
     <string name="play">Play</string>
     <string name="oops_not_connected">Oops! You\'re not connected</string>
