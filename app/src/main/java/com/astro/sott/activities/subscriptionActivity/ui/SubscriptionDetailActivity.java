@@ -26,6 +26,7 @@ import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.billing.BillingProcessor;
@@ -170,13 +171,15 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         TabsData.getInstance().setDetail(false);
     }
 
-    private String planName = "", planPrice = "";
+    private String planName = "", planPrice = "", offerId = "", offerType = "";
 
     @Override
     public void onCardClicked(String productId, String serviceType, String active, String planName, String price) {
         this.planName = planName;
+        offerId = productId;
         planPrice = price;
         if (serviceType.equalsIgnoreCase("ppv")) {
+            offerType = "TVOD";
             billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {
             if (billingProcessor != null && billingProcessor.isReady()) {
@@ -185,9 +188,11 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     public void response(Purchase purchaseObject) {
                         if (purchaseObject != null) {
                             if (purchaseObject.getSku() != null && purchaseObject.getPurchaseToken() != null) {
+                                offerType = "SVOD";
                                 billingProcessor.updatePurchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
                             }
                         } else {
+                            offerType = "SVOD";
                             billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
                         }
                     }
@@ -259,6 +264,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
                     Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
                     try {
+                        CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Success", "Content Details Page");
                         FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS);
                     } catch (Exception e) {
 
@@ -270,6 +276,10 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 }
 
             } else {
+                try {
+                    CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failure", "Content Details Page");
+                } catch (Exception ex) {
+                }
                 Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 onBackPressed();
 

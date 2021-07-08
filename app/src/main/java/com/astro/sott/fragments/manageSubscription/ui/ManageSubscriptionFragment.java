@@ -209,7 +209,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
     @Override
     public void onClick(String paymentType) {
         if (paymentType.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
-            new ActivityLauncher(getActivity()).profileSubscription();
+            new ActivityLauncher(getActivity()).profileSubscription("Profile");
         } else {
             FragmentManager fm = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
             PlanNotUpdated planNotUpdated = PlanNotUpdated.newInstance(getActivity().getResources().getString(R.string.plan_with_different_payment), "");

@@ -882,6 +882,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
 
     private void openShareDialouge() {
         try {
+            CleverTapManager.getInstance().socialShare(this, asset, false);
             FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
         }catch (Exception e){
 

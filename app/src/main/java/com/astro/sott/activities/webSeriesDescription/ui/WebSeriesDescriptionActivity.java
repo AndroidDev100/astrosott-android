@@ -576,6 +576,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
                 try {
+                    CleverTapManager.getInstance().socialShare(this, asset, false);
                     FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
                 }catch (Exception e){
 
@@ -698,7 +699,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             builder.setTitle(getResources().getString(R.string.become_vip)).setMessage(getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                        new ActivityLauncher(this).profileSubscription();
+                        new ActivityLauncher(this).profileSubscription("Content Detail Page");
                         dialog.cancel();
                     });
 
@@ -726,7 +727,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 })
                 .
                         setNegativeButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                            new ActivityLauncher(this).profileSubscription();
+                            new ActivityLauncher(this).profileSubscription("Content Detail Page");
                             dialog.cancel();
                         });
 

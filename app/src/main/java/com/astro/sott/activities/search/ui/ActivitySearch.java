@@ -366,7 +366,9 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                         ToastHandler.show(getResources().getString(R.string.select_one), getApplicationContext());
                     } else {
                         if (!searchHappen) {
-                            FirebaseEventManager.getFirebaseInstance(ActivitySearch.this).itemListEvent(FirebaseEventManager.SEARCH_BY_GENRE, selectedGenreValues, FirebaseEventManager.VIEW_SEARCH_RESULT);
+                            String genre = selectedGenreValues;
+                            genre = genre.replace("FilterGenre=", "");
+                            FirebaseEventManager.getFirebaseInstance(ActivitySearch.this).itemListEvent(FirebaseEventManager.SEARCH_BY_GENRE, genre, FirebaseEventManager.VIEW_SEARCH_RESULT);
                             counter = 0;
                             laodMoreList.clear();
                             adapter = null;

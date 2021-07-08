@@ -72,7 +72,7 @@ public class DialogHelper {
             builder.setTitle(context.getResources().getString(R.string.become_vip)).setMessage(context.getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                        new ActivityLauncher(baseActivity).profileSubscription();
+                        new ActivityLauncher(baseActivity).profileSubscription("Player");
                         dialog.cancel();
                     });
 
@@ -185,7 +185,7 @@ public class DialogHelper {
                         dialog.cancel();
                     })
                     .setNegativeButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                        new ActivityLauncher(baseActivity).profileSubscription();
+                        new ActivityLauncher(baseActivity).profileSubscription("Player");
                         dialog.cancel();
                     });
 

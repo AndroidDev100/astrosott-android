@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -155,6 +156,15 @@ public class AppCommonMethods {
         if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase(""))
             FirebaseCrashlytics.getInstance().setUserId(UserInfo.getInstance(activity).getCpCustomerId());
 
+    }
+
+    public static String getCarrier(Context activity) {
+        String simOperatorName = "";
+        TelephonyManager telemamanger = (TelephonyManager)
+                activity.getSystemService(Context.TELEPHONY_SERVICE);
+
+        simOperatorName = telemamanger.getNetworkOperatorName();
+        return simOperatorName;
     }
 
     public static void setCleverTap(Activity context) {
@@ -1597,6 +1607,13 @@ public class AppCommonMethods {
             PrintLogging.printLog("Exception", "" + e);
         }
         return dateTimeValue;
+    }
+
+    public static String getCurrentDate() {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+        return formattedDate;
     }
 
     private static String checkDigit(int number) {

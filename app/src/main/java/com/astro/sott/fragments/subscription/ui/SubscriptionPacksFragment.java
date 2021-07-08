@@ -226,7 +226,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         getBinding().recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
 
         getBinding().learnMore.setOnClickListener(v -> {
-            new ActivityLauncher(getActivity()).profileSubscription();
+            new ActivityLauncher(getActivity()).profileSubscription("Content Detail Page");
         });
         getBinding().closeIcon.setOnClickListener(v -> {
             if (getActivity() != null)

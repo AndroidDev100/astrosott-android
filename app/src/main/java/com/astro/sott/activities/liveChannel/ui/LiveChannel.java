@@ -330,6 +330,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
         getBinding().share.setOnClickListener(v -> {
             try {
+                CleverTapManager.getInstance().socialShare(this, asset, true);
                 FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
             } catch (Exception e) {
 

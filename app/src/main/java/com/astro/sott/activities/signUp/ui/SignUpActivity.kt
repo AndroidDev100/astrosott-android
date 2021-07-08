@@ -207,7 +207,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                         checkPasswordValidation(password)
 
                     }
-                } else if (emailPattern.containsMatchIn(email_mobile)) {
+                } else if (true) {
                     checkPassword("email", email_mobile, password)
                 } else {
 
@@ -411,7 +411,11 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                         evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.externalSessionToken
                     KsPreferenceKey.getInstance(this).startSessionKs =
                         evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.externalSessionToken
-                    if (type.equals("Facebook", ignoreCase = true) || type.equals("Google", ignoreCase = true)) {
+                    if (type.equals("Facebook", ignoreCase = true) || type.equals(
+                            "Google",
+                            ignoreCase = true
+                        )
+                    ) {
                         UserInfo.getInstance(this).isSocialLogin = true
                     }
                     getContact()
@@ -576,7 +580,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         UserInfo.getInstance(this).isActive = true
         AppCommonMethods.setCleverTap(this)
         FirebaseEventManager.getFirebaseInstance(this)
-            .userLoginEvent(UserInfo.getInstance(this).cpCustomerId, "")
+            .userLoginEvent(UserInfo.getInstance(this).cpCustomerId, "", "")
 
 
 

@@ -385,7 +385,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void setActive() {
-        FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "");
+        FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "","Evergent");
         UserInfo.getInstance(this).setActive(true);
         AppCommonMethods.setCleverTap(this);
         new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);

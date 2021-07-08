@@ -98,9 +98,14 @@ public class FirebaseEventManager {
         mFirebaseAnalytics.logEvent(BTN_CLICK, bundle);
     }
 
-    public void userLoginEvent(String customerId, String userType) {
+    public void userLoginEvent(String customerId, String userType,String signupMethod) {
         Bundle bundle = new Bundle();
-        bundle.putString("sign_up_method", "Evergent");
+       /* if (signupMethod.equalsIgnoreCase("Facebook")||signupMethod.equalsIgnoreCase("Google")) {
+            bundle.putString("sign_up_method", signupMethod);
+        }else {*/
+            bundle.putString("sign_up_method", "Evergent");
+
+        /* }*/
         bundle.putString("user_id", customerId);
         bundle.putString("user_type", userType); // e.g VIP,  Registered User etc
         mFirebaseAnalytics.logEvent("login", bundle);
@@ -168,8 +173,8 @@ public class FirebaseEventManager {
             bundle.putString("item_language", AssetContent.getChannelLanguage(asset));
             if (!channelName.equalsIgnoreCase(""))
                 bundle.putString("item_channel”", channelName);
-            bundle.putString("item_date”", AppCommonMethods.getFirebaseDate(asset.getStartDate()));
-            bundle.putString("item_time”", AppCommonMethods.getEndTime(asset.getStartDate()) + "-" + AppCommonMethods.getEndTime(asset.getEndDate()));
+            bundle.putString("item_date", AppCommonMethods.getFirebaseDate(asset.getStartDate()));
+            bundle.putString("item_time", AppCommonMethods.getEndTime(asset.getStartDate()) + "-" + AppCommonMethods.getEndTime(asset.getEndDate()));
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
             mFirebaseAnalytics.logEvent(eventName, bundle);
@@ -217,7 +222,7 @@ public class FirebaseEventManager {
     public void shareEvent(Asset asset) {
         try {
             Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Shows-" + asset.getName()); //e.g TV Shows Top Slider
+            bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Content Action"); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
             bundle.putString("item_language", AssetContent.getChannelLanguage(asset));

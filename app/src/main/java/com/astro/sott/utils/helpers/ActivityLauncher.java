@@ -133,8 +133,9 @@ public class ActivityLauncher {
     }
 
 
-    public void profileSubscription() {
+    public void profileSubscription(String from) {
         Intent intent = new Intent(activity, ProfileSubscriptionActivity.class);
+        intent.putExtra("from", from);
         activity.startActivity(intent);
     }
 
@@ -159,8 +160,8 @@ public class ActivityLauncher {
     public void setPasswordActivity(Activity source, String token, String newEmail, String newMobile) {
         Intent intent = new Intent(source, SetPasswordActivity.class);
         intent.putExtra("token", token);
-        intent.putExtra("newEmail",newEmail);
-        intent.putExtra("newMobile",newMobile);
+        intent.putExtra("newEmail", newEmail);
+        intent.putExtra("newMobile", newMobile);
         intent.putExtra("token", token);
         activity.startActivity(intent);
     }
