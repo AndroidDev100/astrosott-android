@@ -28,6 +28,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
@@ -322,7 +323,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(LiveChannel.this).astrLoginActivity(LiveChannel.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
+                    new ActivityLauncher(LiveChannel.this).signupActivity(LiveChannel.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             }
@@ -354,7 +355,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(LiveChannel.this).astrLoginActivity(LiveChannel.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
+                    new ActivityLauncher(LiveChannel.this).signupActivity(LiveChannel.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             }

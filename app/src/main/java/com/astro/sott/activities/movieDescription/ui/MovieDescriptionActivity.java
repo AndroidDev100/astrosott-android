@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
@@ -220,7 +221,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(MovieDescriptionActivity.this).astrLoginActivity(MovieDescriptionActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
+                    new ActivityLauncher(MovieDescriptionActivity.this).signupActivity(MovieDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             }
@@ -1022,7 +1023,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(MovieDescriptionActivity.this).astrLoginActivity(MovieDescriptionActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
+                    new ActivityLauncher(MovieDescriptionActivity.this).signupActivity(MovieDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), MovieDescriptionActivity.this);

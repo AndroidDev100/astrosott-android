@@ -25,6 +25,7 @@ import com.astro.sott.R;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.beanModel.login.CommonResponse;
@@ -931,7 +932,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(BoxSetDetailActivity.this).astrLoginActivity(BoxSetDetailActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
+                    new ActivityLauncher(BoxSetDetailActivity.this).signupActivity(BoxSetDetailActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), BoxSetDetailActivity.this);

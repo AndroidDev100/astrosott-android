@@ -166,8 +166,9 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
-    public void signupActivity(Activity source, Class<SignUpActivity> destination) {
+    public void signupActivity(Activity source, Class<SignUpActivity> destination, String from) {
         Intent intent = new Intent(source, destination);
+        intent.putExtra(AppLevelConstants.FROM_KEY, from);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }

@@ -17,6 +17,7 @@ import com.astro.sott.R
 import com.astro.sott.activities.home.HomeActivity
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity
 import com.astro.sott.activities.search.ui.ActivitySearch
+import com.astro.sott.activities.signUp.ui.SignUpActivity
 import com.astro.sott.activities.subscriptionActivity.ui.ProfileSubscriptionActivity
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity
 import com.astro.sott.activities.webview.ui.WebViewActivity
@@ -477,9 +478,9 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                 price
             )
         } else {
-            ActivityLauncher(activity!!).astrLoginActivity(
+            ActivityLauncher(activity!!).signupActivity(
                 activity!!,
-                AstrLoginActivity::class.java,
+                SignUpActivity::class.java,
                 CleverTapManager.SUBSCRIPTION_PAGE
             )
         }

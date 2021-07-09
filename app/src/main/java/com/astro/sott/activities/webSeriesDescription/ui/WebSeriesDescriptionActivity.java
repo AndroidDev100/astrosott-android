@@ -32,6 +32,7 @@ import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.viewModel.WebSeriesDescriptionViewModel;
 import com.astro.sott.baseModel.BaseActivity;
@@ -183,7 +184,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
+                    new ActivityLauncher(WebSeriesDescriptionActivity.this).signupActivity(WebSeriesDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             }
@@ -240,7 +241,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
+                    new ActivityLauncher(WebSeriesDescriptionActivity.this).signupActivity(WebSeriesDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), WebSeriesDescriptionActivity.this);
@@ -721,7 +722,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 .setPositiveButton(getResources().getString(R.string.login), (dialog, id) -> {
                     //dialog.cancel();
 
-                    new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
+                    new ActivityLauncher(this).signupActivity(this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
                     dialog.cancel();
                     //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
                 })
@@ -1230,7 +1231,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     public void onFinishDialog() {
         if (isPurchased) {
             isPurchased = false;
-            new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
+            new ActivityLauncher(WebSeriesDescriptionActivity.this).signupActivity(WebSeriesDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
 
         }
     }

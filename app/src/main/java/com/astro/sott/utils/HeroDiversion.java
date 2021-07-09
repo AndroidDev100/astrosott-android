@@ -13,6 +13,7 @@ import com.astro.sott.activities.moreListing.ui.GridListingActivity;
 import com.astro.sott.activities.moreListing.ui.ListingActivity;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.search.ui.ActivitySearch;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
@@ -80,7 +81,7 @@ public class HeroDiversion {
                 if (category.getLandingPagetarget() != null) {
                     if (category.getLandingPagetarget().equals(PDFTarget.LGN.name())) {
                         //TODO Open login page
-                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class, "");
+                        new ActivityLauncher(activity).signupActivity(activity, SignUpActivity.class, "");
                     } else if (category.getLandingPagetarget().equals(PDFTarget.SRH.name())) {
 
                         //TODO Open search page
@@ -110,7 +111,7 @@ public class HeroDiversion {
                 // TODO Watchlist page
                 boolean isActive = UserInfo.getInstance(activity).isActive();
                 if (!isActive) {
-                    new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class, "");
+                    new ActivityLauncher(activity).signupActivity(activity, SignUpActivity.class, "");
                 } else {
                     //  new ActivityLauncher(activity).myWatchlist(activity, MyWatchlistActivity.class);
                 }

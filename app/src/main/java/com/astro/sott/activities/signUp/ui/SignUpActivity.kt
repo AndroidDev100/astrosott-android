@@ -70,6 +70,9 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         super.onCreate(savedInstanceState)
         activitySinUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sin_up)
         modelCall()
+        if (intent.getStringExtra(AppLevelConstants.FROM_KEY) != null)
+            from = intent.getStringExtra(AppLevelConstants.FROM_KEY)!!
+        CleverTapManager.getInstance().loginOrigin = from
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.SIGN_UP)
         setClicks()
         setWatcher()
@@ -420,7 +423,6 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                     }
                     getContact()
                     try {
-                        from = CleverTapManager.getInstance().loginOrigin
                         CleverTapManager.getInstance().setSignInEvent(this, from, type)
                     } catch (ex: Exception) {
                     }

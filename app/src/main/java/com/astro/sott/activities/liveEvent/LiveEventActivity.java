@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceStatusCallBack;
@@ -225,7 +226,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(LiveEventActivity.this).astrLoginActivity(LiveEventActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
+                    new ActivityLauncher(LiveEventActivity.this).signupActivity(LiveEventActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
@@ -252,7 +253,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(LiveEventActivity.this).astrLoginActivity(LiveEventActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
+                    new ActivityLauncher(LiveEventActivity.this).signupActivity(LiveEventActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             }

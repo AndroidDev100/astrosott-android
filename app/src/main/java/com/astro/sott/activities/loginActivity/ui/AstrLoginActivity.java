@@ -282,7 +282,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             //   resetPassword();
         });
         getBinding().signup.setOnClickListener(view -> {
-            new ActivityLauncher(this).signupActivity(this, SignUpActivity.class);
+            new ActivityLauncher(this).signupActivity(this, SignUpActivity.class,"");
 
         });
         setTextWatcher();

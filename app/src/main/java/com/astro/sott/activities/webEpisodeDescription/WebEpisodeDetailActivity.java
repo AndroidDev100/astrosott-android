@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceStatusCallBack;
@@ -214,7 +215,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(WebEpisodeDetailActivity.this).astrLoginActivity(WebEpisodeDetailActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
+                    new ActivityLauncher(WebEpisodeDetailActivity.this).signupActivity(WebEpisodeDetailActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             }
@@ -1017,7 +1018,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(WebEpisodeDetailActivity.this).astrLoginActivity(WebEpisodeDetailActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
+                    new ActivityLauncher(WebEpisodeDetailActivity.this).signupActivity(WebEpisodeDetailActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), WebEpisodeDetailActivity.this);
