@@ -1125,8 +1125,10 @@ public class PlayerRepository {
                 player.getSettings().setSecureSurface(true);
                 player.getSettings().setAdAutoPlayOnResume(true);
                 subscribePhoenixAnalyticsReportEvent();
-                player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
-
+                try {
+                    player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
+                } catch (Exception e) {
+                }
                 player.prepare(mediaConfig);
                 player.play();
 
