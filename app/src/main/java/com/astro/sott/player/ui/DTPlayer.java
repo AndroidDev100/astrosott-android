@@ -4569,8 +4569,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             super.onPostExecute(result);
             // getBinding().imagePreview.setVisibility(View.VISIBLE);
             // imageView.setImageBitmap(result);
-            InputStream inputStream = convertBitmaptoInputStream(result);
             try {
+                InputStream inputStream = convertBitmaptoInputStream(result);
                 spritesHashMap = framesFromImageStream(inputStream, 100);
 
             } catch (IOException e) {

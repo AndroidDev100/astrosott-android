@@ -354,7 +354,13 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
                 KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
                 getContact();
-                CleverTapManager.getInstance().setSignInEvent(this, from, type);
+                try {
+
+
+                    CleverTapManager.getInstance().setSignInEvent(this, from, type);
+                } catch (Exception exception) {
+
+                }
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
@@ -575,7 +581,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     return false;
 
                 }
-            } else if (true) {
+            } else if (email_mobile.matches(EMAIL_REGEX)) {
                 type = "Email";
                 getBinding().errorEmail.setTextColor(getResources().getColor(R.color.heather));
                 getBinding().errorEmail.setText(getResources().getString(R.string.mobile_suggestion));
