@@ -354,7 +354,13 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
                 KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
                 getContact();
-                CleverTapManager.getInstance().setSignInEvent(this, from, type);
+                try {
+
+
+                    CleverTapManager.getInstance().setSignInEvent(this, from, type);
+                } catch (Exception exception) {
+
+                }
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
