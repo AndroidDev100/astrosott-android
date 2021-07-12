@@ -282,7 +282,12 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             //   resetPassword();
         });
         getBinding().signup.setOnClickListener(view -> {
-            new ActivityLauncher(this).signupActivity(this, SignUpActivity.class,"");
+            Intent intent = new Intent(this, AstrLoginActivity.class);
+            intent.putExtra(AppLevelConstants.FROM_KEY, from);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+            // new ActivityLauncher(this).signupActivity(this, SignUpActivity.class, "");
 
         });
         setTextWatcher();
@@ -473,11 +478,11 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         AppCommonMethods.setCleverTap(this);
         if (UserInfo.getInstance(this).getCpCustomerId() != null && !UserInfo.getInstance(this).getCpCustomerId().equalsIgnoreCase(""))
             FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "", type);
-        if (from.equalsIgnoreCase("Profile")) {
+      /*  if (from.equalsIgnoreCase("Profile")) {
             new ActivityLauncher(AstrLoginActivity.this).profileScreenRedirection(AstrLoginActivity.this, HomeActivity.class);
-        } else {
+        } else {*/
             onBackPressed();
-        }
+        /*}*/
     }
 
 

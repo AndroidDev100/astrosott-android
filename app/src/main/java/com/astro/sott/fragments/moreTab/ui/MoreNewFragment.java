@@ -24,6 +24,7 @@ import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
 import com.astro.sott.activities.profile.ui.ChangeEmailConfirmation;
 import com.astro.sott.activities.profile.ui.EditEmailActivity;
 import com.astro.sott.activities.profile.ui.EditProfileActivity;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.ProfileSubscriptionActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
@@ -146,7 +147,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
         getBinding().loginSignupMore.setOnClickListener(view -> {
             FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, "Sign Up/ Sign In", FirebaseEventManager.BTN_CLICK);
-            new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "Profile");
+            new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
 
         });
         getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
@@ -197,7 +198,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                     transaction.commit();
                 } else {
-                    new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "Profile");
+                    new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
 
                 }
 //                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
@@ -277,7 +278,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 manageDeviceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(manageDeviceIntent);
             } else {
-                new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "Profile");
+                new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
 
             }
 

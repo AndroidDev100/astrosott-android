@@ -20,6 +20,7 @@ import com.astro.sott.activities.home.HomeActivity
 import com.astro.sott.activities.isThatYou.IsThatYouActivity
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel
 import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
@@ -185,11 +186,10 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             false
         })
         activitySinUpBinding?.fb?.setOnClickListener(View.OnClickListener {
-
             activitySinUpBinding?.loginButton?.performClick()
         })
         activitySinUpBinding?.loginBtn?.setOnClickListener(View.OnClickListener {
-            onBackPressed()
+            ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity::class.java, from)
         })
         activitySinUpBinding?.backIcon?.setOnClickListener(View.OnClickListener {
             onBackPressed()
@@ -210,7 +210,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                         checkPasswordValidation(password)
 
                     }
-                } else if (emailPattern.containsMatchIn(email_mobile)) {
+                } else if (true) {
                     checkPassword("email", email_mobile, password)
                 } else {
 
@@ -464,6 +464,11 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             })
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (UserInfo.getInstance(this).isActive)
+            onBackPressed()
+    }
 
     private fun getContact() {
         astroLoginViewModel!!.getContact(UserInfo.getInstance(this@SignUpActivity).accessToken)
@@ -584,11 +589,18 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         FirebaseEventManager.getFirebaseInstance(this)
             .userLoginEvent(UserInfo.getInstance(this).cpCustomerId, "", "")
 
-
-
         Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT)
             .show()
-        ActivityLauncher(this@SignUpActivity).homeScreen(this, HomeActivity::class.java)
+
+        if (from.equals("Profile", ignoreCase = true)) {
+            ActivityLauncher(this).profileScreenRedirection(
+                this,
+                HomeActivity::class.java
+            )
+        } else {
+            onBackPressed()
+        }
+        //   ActivityLauncher(this@SignUpActivity).homeScreen(this, HomeActivity::class.java)
 
     }
 
