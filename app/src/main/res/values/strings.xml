@@ -257,7 +257,7 @@
     <string name="error_sms_failure">A verification PIN cannot be sent right now. Please try again later</string>
     <string name="error_verification_failure">The verification code you entered is invalid</string>
     <string name="default_password">123456</string>
-    <string name="update_app_msg">We have a new version available. Kindly update to continue enjoying sooka..</string>
+    <string name="update_app_msg">We have a new version available. Kindly update to continue enjoying sooka.</string>
     <string name="error_code_user_not_exist">2000</string>
     <string name="error_code_user_not_exist_">1011</string>
     <string name="already_unfollow">You have already unfollowing this series</string>
@@ -669,7 +669,7 @@
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
     <string name="apple">Apple</string>
-    <string name="you_are_offline">You\'re offline</string>
+    <string name="you_are_offline">You are offline</string>
     <string name="no_internet_description_text">It seems like there is a problem with your internet connection. Please check your connection and try again!</string>
     <string name="reload_app">Reload App</string>
 
