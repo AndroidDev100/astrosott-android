@@ -52,7 +52,7 @@ public class FirebaseEventManager {
     public static final String WATCH = "watch";
     public static final String TXN_SUCCESS = "trx_success";
 
-
+    public boolean subscribeClicked = false;
 
     public static final String VIEW_SEARCH_RESULT = "view_search_results";
 
@@ -98,12 +98,12 @@ public class FirebaseEventManager {
         mFirebaseAnalytics.logEvent(BTN_CLICK, bundle);
     }
 
-    public void userLoginEvent(String customerId, String userType,String signupMethod) {
+    public void userLoginEvent(String customerId, String userType, String signupMethod) {
         Bundle bundle = new Bundle();
        /* if (signupMethod.equalsIgnoreCase("Facebook")||signupMethod.equalsIgnoreCase("Google")) {
             bundle.putString("sign_up_method", signupMethod);
         }else {*/
-            bundle.putString("sign_up_method", "Evergent");
+        bundle.putString("sign_up_method", "Evergent");
 
         /* }*/
         bundle.putString("user_id", customerId);

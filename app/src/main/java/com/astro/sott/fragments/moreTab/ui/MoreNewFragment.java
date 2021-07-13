@@ -162,8 +162,13 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             public void onClick(View v) {
                 FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.MANAGE_SUBSCRIBE, FirebaseEventManager.BTN_CLICK);
                 if (getBinding().subscribe.getText().toString().equalsIgnoreCase("subscribe")) {
-                    navBar.setVisibility(View.GONE);
-                    new ActivityLauncher(getActivity()).profileSubscription("Profile");
+                    if (UserInfo.getInstance(getActivity()).isActive()) {
+                        navBar.setVisibility(View.GONE);
+                        new ActivityLauncher(getActivity()).profileSubscription("Profile");
+                    } else {
+                        FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = true;
+                        new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
+                    }
                 } else {
                     navBar.setVisibility(View.GONE);
                     ManageSubscriptionFragment manageSubscriptionFragment = new ManageSubscriptionFragment();
@@ -476,9 +481,13 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                         getBinding().subscribe.setVisibility(View.VISIBLE);
                         getBinding().subscribe.setText(getResources().getString(R.string.manage_subscription));
                     } else {
+                        if (FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked)
+                            new ActivityLauncher(getActivity()).profileSubscription("Profile");
                         setUiForLogout();
                     }
                 } else {
+                    if (FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked)
+                        new ActivityLauncher(getActivity()).profileSubscription("Profile");
                     setUiForLogout();
                 }
             } else {
@@ -556,7 +565,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void logoutApi() {
-        subscriptionViewModel.logoutUser(UserInfo.getInstance(getActivity()).getAccessToken(),UserInfo.getInstance(getActivity()).getExternalSessionToken()).observe(this, logoutExternalResponseEvergentCommonResponse -> {
+        subscriptionViewModel.logoutUser(UserInfo.getInstance(getActivity()).getAccessToken(), UserInfo.getInstance(getActivity()).getExternalSessionToken()).observe(this, logoutExternalResponseEvergentCommonResponse -> {
 
         });
     }

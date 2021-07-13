@@ -52,6 +52,8 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
         super.onCreate(savedInstanceState);
         intializeBilling();
         modelCall();
+        FirebaseEventManager.getFirebaseInstance(this).subscribeClicked = false;
+
         from = getIntent().getStringExtra("from");
         setFragment();
     }
