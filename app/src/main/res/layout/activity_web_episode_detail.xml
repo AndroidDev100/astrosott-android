@@ -409,7 +409,7 @@
                                             android:fontFamily="@font/heebo_bold"
                                             android:maxLines="2"
                                             android:paddingStart="0dp"
-                                            android:paddingTop="10dp"
+                                            android:paddingTop="5dp"
                                             android:paddingEnd="20dp"
                                             android:paddingBottom="10dp"
                                             android:text="@string/view_more"
