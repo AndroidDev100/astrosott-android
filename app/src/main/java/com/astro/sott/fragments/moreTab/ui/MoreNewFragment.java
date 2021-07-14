@@ -146,6 +146,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         });
 
         getBinding().loginSignupMore.setOnClickListener(view -> {
+            FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
             FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, "Sign Up/ Sign In", FirebaseEventManager.BTN_CLICK);
             new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
 
@@ -203,6 +204,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                     transaction.commit();
                 } else {
+                    FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
                     new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
 
                 }
@@ -283,6 +285,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 manageDeviceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(manageDeviceIntent);
             } else {
+                FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
                 new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
 
             }

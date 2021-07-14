@@ -76,7 +76,7 @@ android {
             dimension 'default'
             versionCode 42
             versionName "21.7.1.2(09)"
-            applicationId "com.astro.stagingsott"
+            applicationId "com.astro.sott"
             buildConfigField "String", "KALTURA_BASE_URL", "\"https://api.sgs1.ott.kaltura.com/api_v3/service/\""
             buildConfigField "int", "KAVA_PARTNER_ID", "3089623"
 
