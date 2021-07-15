@@ -1566,13 +1566,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
 
                                 String EntryId = AssetContent.getMediaEntryId(mediaEntry.getMetadata());
-                                if (EntryId != "") {
+                                if (!EntryId.equalsIgnoreCase("")) {
                                     scrubberUrl = "https://cdnapi.kaltura.com" + "/p/3089623" + "/sp/308962300/thumbnail/entry_id/" + EntryId + "/width/150/vid_slices/100";
                                     new ImageLoadTask(scrubberUrl, getBinding().imagePreview).execute();
                                 }
                             } else {
                                 String EntryId = AssetContent.getMediaEntryId(mediaEntry.getMetadata());
-                                if (EntryId != "") {
+                                if (!EntryId.equalsIgnoreCase("")) {
                                     scrubberUrl = "https://cdnapi.kaltura.com" + "/p/3089633" + "/sp/308963300/thumbnail/entry_id/" + EntryId + "/width/150/vid_slices/100";
                                     new ImageLoadTask(scrubberUrl, getBinding().imagePreview).execute();
                                 }
@@ -4570,9 +4570,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             // getBinding().imagePreview.setVisibility(View.VISIBLE);
             // imageView.setImageBitmap(result);
             try {
-                InputStream inputStream = convertBitmaptoInputStream(result);
-                spritesHashMap = framesFromImageStream(inputStream, 100);
-
+                if (result != null) {
+                    InputStream inputStream = convertBitmaptoInputStream(result);
+                    spritesHashMap = framesFromImageStream(inputStream, 100);
+                }
             } catch (IOException e) {
                 Log.d("gtgtgtgtgtgtgt", e.getMessage());
             }

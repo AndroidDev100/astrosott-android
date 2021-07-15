@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
+import com.astro.sott.utils.PacksDateLayer;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.InAppProcessListener;
@@ -224,6 +226,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     } else {
                         getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                         if (haveSvod && haveTvod == false) {
+                            PacksDateLayer.getInstance().setPackDetailList(packDetailList);
                             Intent intent = new Intent(SubscriptionDetailActivity.this, ProfileSubscriptionActivity.class);
                             intent.putExtra("from", "Content Detail Page");
                             startActivity(intent);
@@ -363,7 +366,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                         CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Success", "Content Details Page");
                         FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS);
                     } catch (Exception e) {
-
+                        onBackPressed();
                     }
                     onBackPressed();
                 } else {
@@ -375,6 +378,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 try {
                     CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failure", "Content Details Page");
                 } catch (Exception ex) {
+                    onBackPressed();
                 }
                 Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 onBackPressed();

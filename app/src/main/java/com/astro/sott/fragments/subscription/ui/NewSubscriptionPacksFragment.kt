@@ -15,7 +15,6 @@ import androidx.viewpager.widget.ViewPager
 import com.android.billingclient.api.SkuDetails
 import com.astro.sott.R
 import com.astro.sott.activities.home.HomeActivity
-import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity
 import com.astro.sott.activities.search.ui.ActivitySearch
 import com.astro.sott.activities.signUp.ui.SignUpActivity
 import com.astro.sott.activities.subscriptionActivity.ui.ProfileSubscriptionActivity
@@ -33,17 +32,15 @@ import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager
 import com.astro.sott.usermanagment.modelClasses.EvergentCommonResponse
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.GetActiveResponse
-import com.astro.sott.usermanagment.modelClasses.getProducts.Attribute
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem
+import com.astro.sott.utils.PacksDateLayer
 import com.astro.sott.utils.billing.SKUsListListener
 import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.helpers.ActivityLauncher
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
 import com.astro.sott.utils.userInfo.UserInfo
-import com.google.gson.JsonArray
 import kotlinx.android.synthetic.main.app_toolbar.view.*
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -66,6 +63,8 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
     private lateinit var packDetailList: ArrayList<PackDetail>
     private var skuDetails: SkuDetails? = null
     private var accountServiceMessage = ArrayList<AccountServiceMessageItem>()
+    private var from = "Profile"
+
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -88,6 +87,9 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         binding.toolbar.search_icon.setOnClickListener {
             ActivityLauncher(activity!!).searchActivity(activity!!, ActivitySearch::class.java)
         }
+        if (arguments!!.getString("from", "") != null)
+            from = arguments!!.getString("from", "")
+
         setClicks()
         getActiveSubscription()
     }
@@ -188,56 +190,13 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         if (!UserInfo.getInstance(activity).isActive) {
             getProductsForLogout()
         } else {
-            if (subscriptionIds != null) {
-                val jsonArray = JsonArray()
-                for (id in subscriptionIds!!) {
-                    jsonArray.add(id)
+            if (from.equals("Content Detail Page", true)) {
+                if (PacksDateLayer.getInstance().packDetailList != null) {
+                    binding.includeProgressbar.progressBar.visibility= View.GONE
+                    loadDataFromModel(PacksDateLayer.getInstance().packDetailList)
+                }else{
+                    getProductsForLogout()
                 }
-                subscriptionViewModel.getProductForLogin(
-                    UserInfo.getInstance(activity).accessToken,
-                    jsonArray,
-                    ""
-                ).observe(
-                    this,
-                    androidx.lifecycle.Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
-                        binding.includeProgressbar.progressBar.setVisibility(View.GONE)
-                        if (evergentCommonResponse.isStatus) {
-                            if (evergentCommonResponse.getProductResponse != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage!!.productsResponseMessage != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage!!.productsResponseMessage!!.size > 0) {
-                                productListItem =
-                                    evergentCommonResponse.getProductResponse.getProductsResponseMessage!!.productsResponseMessage
-                                Collections.sort(
-                                    productListItem,
-                                    object : Comparator<ProductsResponseMessageItem?> {
-                                        override fun compare(
-                                            o1: ProductsResponseMessageItem?,
-                                            o2: ProductsResponseMessageItem?
-                                        ): Int {
-                                            return o1?.displayOrder?.compareTo(o2?.displayOrder!!)!!
-                                        }
-                                    })
-                                checkIfDetailAvailableOnPlaystore(productListItem)
-                            }
-                        } else {
-                            if (evergentCommonResponse.errorCode.equals(
-                                    "eV2124",
-                                    ignoreCase = true
-                                ) || evergentCommonResponse.errorCode == "111111111"
-                            ) {
-                                EvergentRefreshToken.refreshToken(
-                                    activity,
-                                    UserInfo.getInstance(activity).refreshToken
-                                ).observe(
-                                    this,
-                                    androidx.lifecycle.Observer { evergentCommonResponse1: EvergentCommonResponse<*>? ->
-                                        if (evergentCommonResponse.isStatus) {
-                                            getProducts()
-                                        } else {
-                                            AppCommonMethods.removeUserPrerences(activity)
-                                        }
-                                    })
-                            }
-                        }
-                    })
             } else {
                 getProductsForLogout()
             }

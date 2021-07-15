@@ -23,6 +23,7 @@ import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivityProfileSubscriptionBinding;
 import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
+import com.astro.sott.modelClasses.InApp.PackDetail;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.TabsData;
@@ -39,6 +40,7 @@ import java.util.List;
 public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityProfileSubscriptionBinding> implements CardCLickedCallBack, InAppProcessListener {
     private BillingProcessor billingProcessor;
     private SubscriptionViewModel subscriptionViewModel;
+
 
     @Override
     protected ActivityProfileSubscriptionBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -62,6 +64,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
         NewSubscriptionPacksFragment someFragment = new NewSubscriptionPacksFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("productList", new ArrayList<String>());
+        bundle.putString("from", from);
         someFragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frameContent, someFragment, "SubscriptionFragment"); // give your fragment container id in first parameter
