@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,6 +110,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+        Log.w("valuesB",baseCategory.getRailCardSize());
         if (baseCategory != null && baseCategory.getRailCardSize() != null) {
             if (baseCategory.getRailCardSize().equalsIgnoreCase(RailCardSize.NORMAL.name())) {
                 LandscapeItemBinding landscapeItemBinding = DataBindingUtil.inflate(
@@ -190,7 +192,12 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
                 }
-
+                if (singleItem.getProgress() > 0) {
+                    landscapeItemBinding.progressBar.setVisibility(View.VISIBLE);
+                    landscapeItemBinding.progressBar.setProgress(singleItem.getPosition());
+                } else {
+                    landscapeItemBinding.progressBar.setVisibility(View.GONE);
+                }
             } catch (Exception ignored) {
                 landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
             }
@@ -243,6 +250,13 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
                 }
+
+                if (singleItem.getProgress() > 0) {
+                    landscapeItemBinding.progressBar.setVisibility(View.VISIBLE);
+                    landscapeItemBinding.progressBar.setProgress(singleItem.getPosition());
+                } else {
+                    landscapeItemBinding.progressBar.setVisibility(View.GONE);
+                }
             } catch (Exception ignored) {
 
             }
@@ -293,6 +307,13 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 } else {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                }
+
+                if (singleItem.getProgress() > 0) {
+                    landscapeItemBinding.progressBar.setVisibility(View.VISIBLE);
+                    landscapeItemBinding.progressBar.setProgress(singleItem.getPosition());
+                } else {
+                    landscapeItemBinding.progressBar.setVisibility(View.GONE);
                 }
             } catch (Exception ignored) {
 
