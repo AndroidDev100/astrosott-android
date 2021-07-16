@@ -69,6 +69,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         super.onCreate(savedInstanceState);
         TabsData.getInstance().setDetail(true);
         intializeBilling();
+
         if (getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY) != null)
             fileId = getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY);
 
@@ -160,6 +161,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
         subscriptionPacksFragment.setArguments(bundle);
         fm.beginTransaction().replace(R.id.frameContent, subscriptionPacksFragment).commitNow();
+
     }
 
     private void getProducts() {

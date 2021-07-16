@@ -367,7 +367,7 @@
                                             android:ellipsize="end"
                                             android:fontFamily="@font/heebo_bold"
                                             android:maxLines="2"
-                                            android:paddingTop="10dp"
+                                            android:paddingTop="5dp"
                                             android:paddingEnd="20dp"
                                             android:paddingStart="0dp"
                                             android:paddingBottom="10dp"

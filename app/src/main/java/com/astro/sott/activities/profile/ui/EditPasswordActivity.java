@@ -127,10 +127,10 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
     private String email_mobile = "", type = "";
 
     private void createOtp() {
-        if (!UserInfo.getInstance(this).getUserName().equalsIgnoreCase("")) {
+        if (!UserInfo.getInstance(this).getEmail().equalsIgnoreCase("")) {
             type = "email";
             email_mobile = UserInfo.getInstance(this).getEmail();
-        } else if (!UserInfo.getInstance(this).getEmail().equalsIgnoreCase("")) {
+        } else if (!UserInfo.getInstance(this).getMobileNumber().equalsIgnoreCase("")) {
             type = "mobile";
             email_mobile = UserInfo.getInstance(this).getMobileNumber();
         }
