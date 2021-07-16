@@ -7,7 +7,7 @@
     <dimen name="font_medium_large">16sp</dimen>
     <dimen name="font_large">18sp</dimen>
     <dimen name="font_xlarge">20sp</dimen>
-    <dimen name="design_bottom_navigation_active_text_size" tools:override = "true" >12sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
     <dimen name="font_xxlarge">24sp</dimen>
     <dimen name="video_quality_seprate_line_margin">5dp</dimen>
     <dimen name="trailer_description_margin_top">10dp</dimen>
@@ -229,6 +229,8 @@
     <dimen name="blocked_fragment_height">255dp</dimen>
 
     <dimen name="fragment_width">330dp</dimen>
+    <dimen name="episode_dialog_fragment_width">400dp</dimen>
+
     <dimen name="fragment_height">336dp</dimen>
 
     //SIgn up Fragment
@@ -274,6 +276,8 @@
     <dimen name="dp1">1dp</dimen>
     <dimen name="updated_dialog_width">400dp</dimen>
     <dimen name="updated_dialog_height">300dp</dimen>
+    <dimen name="epiosode_dialog_fragment_height">240dp</dimen>
+
 
     <dimen name="playlist_dialog_fragment_height">280dp</dimen>
     <dimen name="auto_play_close_margin">18dp</dimen>

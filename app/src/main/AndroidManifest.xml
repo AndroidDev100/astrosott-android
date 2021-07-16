@@ -34,7 +34,9 @@
         android:theme="@style/MyMaterialTheme"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.subscriptionActivity.ui.ProfileSubscriptionActivity"></activity>
+        <activity
+            android:name=".activities.subscriptionActivity.ui.ProfileSubscriptionActivity"
+            android:screenOrientation="locked"></activity>
         <activity android:name=".activities.webEpisodeDescription.WebEpisodeDetailActivity" />
         <activity android:name=".activities.moreListing.ui.CustomListingActivity" />
         <activity android:name=".activities.isThatYou.IsThatYouActivity" />

@@ -26,6 +26,8 @@ public interface AppLevelConstants {
     String TITLE = "title";
     String MESSAGE = "message";
     String DATE = "date";
+    String FILE_ID= "file_id";
+
 
     String POSITIVE_BUTTON_TEXT = "positiveButtonText";
     String FORCE = "force";

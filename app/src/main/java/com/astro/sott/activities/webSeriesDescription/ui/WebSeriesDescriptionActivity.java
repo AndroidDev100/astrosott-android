@@ -1,5 +1,6 @@
 package com.astro.sott.activities.webSeriesDescription.ui;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -42,7 +43,10 @@ import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
+import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.fragments.episodeFrament.EpisodesFragment;
+import com.astro.sott.fragments.manageSubscription.ui.CancelDialogFragment;
+import com.astro.sott.fragments.manageSubscription.ui.ManageSubscriptionFragment;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.RefreshKS;
@@ -91,7 +95,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWebSeriesDescriptionBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, AlertDialogFragment.AlertDialogListener, MoreLikeThis, EpisodesFragment.FirstEpisodeCallback {
+public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWebSeriesDescriptionBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, AlertDialogFragment.AlertDialogListener, MoreLikeThis, EpisodesFragment.FirstEpisodeCallback, EpisodeDialogFragment.EditDialogListener {
     private final Handler mHandler = new Handler();
     private final List<AssetCommonBean> loadedList = new ArrayList<>();
     private Asset asset;
@@ -316,7 +320,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void setMetas() {
         getMovieYear();
-      //  setRailBaseFragment();
+        //  setRailBaseFragment();
     }
 
     private void getMovieYear() {
@@ -579,7 +583,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 try {
                     CleverTapManager.getInstance().socialShare(this, asset, false);
                     FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
                 openShareDialouge();
@@ -689,14 +693,14 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             callProgressBar();
             playerChecks(railCommonData);
         } else {
-            openDialougeForEntitleMent();
+            openDialougeForEntitleMent(railCommonData);
         }
     }
 
-    public void openDialougeForEntitleMent() {
-        boolean status = UserInfo.getInstance(this).isActive();
-        if (status) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
+    public void openDialougeForEntitleMent(RailCommonData railCommonData) {
+       /* boolean status = UserInfo.getInstance(this).isActive();
+        if (status) {*/
+           /* AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
             builder.setTitle(getResources().getString(R.string.become_vip)).setMessage(getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
@@ -709,10 +713,17 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
             bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
             Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
-        } else {
-            showLoginDialog();
+            bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));*/
+        if (railCommonData.getObject() != null) {
+            fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
+            FragmentManager fm = getSupportFragmentManager();
+            EpisodeDialogFragment cancelDialogFragment = EpisodeDialogFragment.newInstance("Detail Page", fileId);
+            cancelDialogFragment.setEditDialogCallBack(WebSeriesDescriptionActivity.this);
+            cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
         }
+        /*} else {
+            showLoginDialog();
+        }*/
     }
 
     public void showLoginDialog() {
@@ -1630,6 +1641,11 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         getBinding().ivPlayIcon.setVisibility(View.GONE);
         setRailBaseFragment();
         isActive = UserInfo.getInstance(this).isActive();
+    }
+
+    @Override
+    public void onFinishEditDialog() {
+
     }
 }
 
