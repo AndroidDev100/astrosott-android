@@ -55,8 +55,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                 holder.binding.orderName.setText(orderItems.get(position).getOrderProductInfo().get(0).getDisplayName());
             }
 
-            if (orderItems.get(position).getCurrencyCode() != null && orderItems.get(position).getTotalPriceCharged() != null) {
-                holder.binding.currency.setText(orderItems.get(position).getCurrencyCode() + " " + orderItems.get(position).getTotalPriceCharged());
+            if (orderItems.get(position).getCurrencyCode() != null && orderItems.get(position).getPaymentsInfo().get(0)!= null) {
+                holder.binding.currency.setText(orderItems.get(position).getCurrencyCode() + " " + orderItems.get(position).getPaymentsInfo().get(0).getAmount());
             } else {
                 holder.binding.currency.setText("");
             }
