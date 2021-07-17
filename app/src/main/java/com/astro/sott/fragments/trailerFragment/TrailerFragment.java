@@ -41,7 +41,6 @@ import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
 import com.astro.sott.player.houseHoldCheckManager.HouseHoldCheck;
 import com.astro.sott.player.ui.PlayerActivity;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
-import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
@@ -133,7 +132,7 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
 
 
     private void setTrailerUiComponents() {
-        getBinding().trailerText.setVisibility(View.VISIBLE);
+//        getBinding().trailerText.setVisibility(View.VISIBLE);
         getBinding().trailerRecyclerView.setVisibility(View.VISIBLE);
         getBinding().trailerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         trailerAdapter = new TrailerAdapter(getActivity(), trailerData, this);
@@ -141,7 +140,7 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     }
 
     private void setHighLightUiComponents() {
-        getBinding().highLightText.setVisibility(View.VISIBLE);
+//        getBinding().highLightText.setVisibility(View.VISIBLE);
         getBinding().highLightREcycler.setVisibility(View.VISIBLE);
         getBinding().highLightREcycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         trailerAdapter = new TrailerAdapter(getActivity(), highLightData, this);

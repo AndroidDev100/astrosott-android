@@ -70,6 +70,7 @@
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.verification.VerificationActivity"
+
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.forgotPassword.ui.ChangePasswordActivity"
