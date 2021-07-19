@@ -2001,7 +2001,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                                 getBinding().skipCredits.setText(labelCredit);
                                 getBinding().skipCredits.setVisibility(View.VISIBLE);
-
+                                isPlayerSurfaceClicked = false;
                                 isSkipCreditVisible = true;
                                 isUserGeneratedCredit = false;
                                 hideSkipIntro();
@@ -2767,6 +2767,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         isPlayerSurfaceClicked = true;
                         getBinding().progressBar.setProgress(0);
                     }
+                    if (handler1 != null) {
+                        handler1.removeCallbacksAndMessages(null);
+                    }
 
                     if (lockEnable) {
 //                        if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
@@ -2823,6 +2826,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         }
                         getBinding().progressBar.setProgress(0);
                         isPlayerSurfaceClicked = true;
+                    }
+                    if (handler1 != null) {
+                        handler1.removeCallbacksAndMessages(null);
                     }
                     if (lockEnable) {
 //                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
@@ -2935,6 +2941,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (objectAnimator != null) {
                 objectAnimator.cancel();
                 objectAnimator = null;
+            }
+            if (handler1 != null) {
+                handler1.removeCallbacksAndMessages(null);
             }
             getBinding().progressBar.setProgress(0);
             isSkipCreditVisible = false;
@@ -3567,6 +3576,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
     private void checkPercentagePlayedOfVideo() {
+        isPlayerSurfaceClicked = false;
         double currentPosition = runningPlayer.getCurrentPosition();
         double totalDuration = runningPlayer.getDuration();
         double percentagePlayed = ((currentPosition / totalDuration) * 100L);
@@ -3664,6 +3674,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 objectAnimator = null;
             }
             getBinding().progressBar.setProgress(0);
+
 
         }
 
