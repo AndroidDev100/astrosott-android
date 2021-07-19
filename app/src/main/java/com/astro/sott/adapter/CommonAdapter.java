@@ -419,6 +419,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private void circleDataLogic(CircleHolder holder, List<AssetCommonBean> dataList, int position) {
 
         new ToolBarHandler(activity).setMoreListener(((CircleHolder) holder).circularRecyclerItemBinding.moreText, AppConstants.TYPE2, dataList.get(position), activity);
+        new ToolBarHandler(activity).setTitleListener(((CircleHolder) holder).circularRecyclerItemBinding.headerTitle, AppConstants.TYPE2, dataList.get(position), activity);
 
 
         ((CircleHolder) holder).circularRecyclerItemBinding.titleLayout.setVisibility(View.VISIBLE);
@@ -487,6 +488,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         Log.w("ImageListSize-->>", dataList.get(position).getRailAssetList().get(0).getImages().size() + "");
         int totalCount = dataList.get(position).getTotalCount();
         new ToolBarHandler(activity).setMoreListener(holder.itemBinding.moreText, AppConstants.TYPE3, dataList.get(position), activity);
+        new ToolBarHandler(activity).setTitleListener(holder.itemBinding.headerTitle, AppConstants.TYPE3, dataList.get(position), activity);
 
 
         holder.itemBinding.titleLayout.setVisibility(View.VISIBLE);
@@ -597,6 +599,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 */
         int totalCount = dataList.get(position).getTotalCount();
         new ToolBarHandler(activity).setMoreListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
+        new ToolBarHandler(activity).setTitleListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.headerTitle, AppConstants.TYPE5, dataList.get(position));
 
         //new ToolBarHandler(activity).setMoreListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
         ((LandscapeHolder) holder).landscapeRecyclerItemBinding.headerTitle.setText(dataList.get(position).getTitle());
@@ -671,6 +674,8 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
        /* int totalCount = dataList.get(position).getTotalCount();
         if (totalCount > 20) {*/
         new ToolBarHandler(activity).setMoreListener(holder.squareRecyclerItemBinding.moreText, AppLevelConstants.TYPE4, dataList.get(position));
+        new ToolBarHandler(activity).setTitleListener(holder.squareRecyclerItemBinding.headerTitle, AppLevelConstants.TYPE4, dataList.get(position));
+
         holder.squareRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
        /* } else {
             holder.squareRecyclerItemBinding.moreText.setVisibility(View.GONE);
@@ -690,6 +695,8 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         /*int totalCount = dataList.get(position).getTotalCount();
         if (totalCount > 20) {*/
         new ToolBarHandler(activity).setMoreListener(holder.potraitRecyclerItemBinding.moreText, AppLevelConstants.TYPE3, dataList.get(position));
+        new ToolBarHandler(activity).setTitleListener(holder.potraitRecyclerItemBinding.headerTitle, AppLevelConstants.TYPE3, dataList.get(position));
+
         holder.potraitRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
         /*} else {
             holder.potraitRecyclerItemBinding.moreText.setVisibility(View.GONE);

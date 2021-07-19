@@ -1075,7 +1075,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             }
 
             if (getBinding().expandableLayout.isExpanded()) {
-//                getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
+//                getBinding().textExpandable.setText(().getString(R.string.view_more));
 
             } else {
 //                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));

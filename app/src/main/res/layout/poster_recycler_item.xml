@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:fontFamily="@font/heebo_medium"
+                    android:fontFamily="@font/roboto_medium"
                     android:textColor="@color/white"
                     android:textSize="@dimen/rail_title_size" />
 
