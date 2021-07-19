@@ -18,6 +18,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
+import android.graphics.Color;
 import android.graphics.Insets;
 import android.graphics.Rect;
 import android.hardware.display.DisplayManager;
@@ -4270,24 +4271,48 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         public void onBindViewHolder(@NonNull final ViewHolder1 holder, final int position) {
             if (trackItemList.get(position).isSelected()) {
                 // holder.tick.setBackgroundResource(R.drawable.tick);
-                holder.layout.setBackgroundColor(getResources().getColor(R.color.grape_purple));
+                // holder.layout.setBackgroundColor(getResources().getColor(R.color.grape_purple));
+                // holder.imgQuality.setBackgroundColor(Color.parseColor("#00e895"));
+                if (trackItemList.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.LOW)) {
+                    holder.imgQuality.setBackgroundResource(R.drawable.ic_low_quality_green);
+
+                } else if (trackItemList.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.MEDIUM)) {
+                    holder.imgQuality.setBackgroundResource(R.drawable.ic_medium_quality_green);
+
+                } else if (trackItemList.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.HIGH)) {
+                    holder.imgQuality.setBackgroundResource(R.drawable.ic_high_quality_green);
+
+                }
+                holder.qualityText.setTextColor(getResources().getColor(R.color.turquoise_green));
             } else {
+                // holder.imgQuality.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                if (trackItemList.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.LOW)) {
+                    holder.imgQuality.setBackgroundResource(R.drawable.ic_low_quality);
+
+                } else if (trackItemList.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.MEDIUM)) {
+                    holder.imgQuality.setBackgroundResource(R.drawable.ic_medium_quality);
+
+                } else if (trackItemList.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.HIGH)) {
+                    holder.imgQuality.setBackgroundResource(R.drawable.ic_video_quality);
+
+                }
+                holder.qualityText.setTextColor(getResources().getColor(R.color.white));
                 // holder.tick.setBackgroundResource(0);
-                holder.layout.setBackgroundColor(getResources().getColor(R.color.transparentColor));
+                // holder.layout.setBackgroundColor(getResources().getColor(R.color.transparentColor));
                 //viewHolder.notificationItemBinding.titleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
             holder.qualityText.setText(tracks.get(position).getTrackName());
 
-            if (tracks.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.LOW)) {
-                holder.imgQuality.setBackgroundResource(R.drawable.ic_low_quality);
-
-            } else if (tracks.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.MEDIUM)) {
-                holder.imgQuality.setBackgroundResource(R.drawable.ic_medium_quality);
-
-            } else if (tracks.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.HIGH)) {
-                holder.imgQuality.setBackgroundResource(R.drawable.ic_video_quality);
-
-            }
+//            if (tracks.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.LOW)) {
+//                holder.imgQuality.setBackgroundResource(R.drawable.ic_low_quality);
+//
+//            } else if (tracks.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.MEDIUM)) {
+//                holder.imgQuality.setBackgroundResource(R.drawable.ic_medium_quality);
+//
+//            } else if (tracks.get(position).getTrackName().equalsIgnoreCase(AppLevelConstants.HIGH)) {
+//                holder.imgQuality.setBackgroundResource(R.drawable.ic_video_quality);
+//
+//            }
 
 //            holder.description.setText(tracks.get(position).getTrackDescription());
             holder.layout.setOnClickListener(new View.OnClickListener() {
