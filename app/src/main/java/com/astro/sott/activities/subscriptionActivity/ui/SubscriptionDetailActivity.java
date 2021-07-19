@@ -279,6 +279,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         this.planName = planName;
         offerId = productId;
         planPrice = price;
+        FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, price, "trx_select", "");
         if (serviceType.equalsIgnoreCase("ppv")) {
             offerType = "TVOD";
             billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
@@ -366,7 +367,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
                     try {
                         CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Success", "Content Details Page");
-                        FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS);
+                        FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS, UserInfo.getInstance(this).getCpCustomerId());
                     } catch (Exception e) {
                         onBackPressed();
                     }

@@ -119,11 +119,8 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, itemList); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-            if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
-                bundle.putString("item_language", AssetContent.getChannelLanguage(asset));
-            } else {
-                bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
-            }
+
+            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
@@ -138,11 +135,8 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Content Action"); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-            if (asset.getType() == MediaTypeConstant.getProgram(context) || asset.getType() == MediaTypeConstant.getLinear(context)) {
-                bundle.putString("item_language", AssetContent.getChannelLanguage(asset));
-            } else {
-                bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
-            }
+
+            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
 
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
@@ -152,12 +146,13 @@ public class FirebaseEventManager {
         }
     }
 
-    public void packageEvent(String packageTitle, String price, String eventName) {
+    public void packageEvent(String packageTitle, String price, String eventName, String customerId) {
         try {
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Rental Subscription");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, packageTitle);
             bundle.putDouble("item_price", Double.parseDouble(price));
+            bundle.putString("user_id", customerId);
             mFirebaseAnalytics.logEvent(eventName, bundle);
         } catch (Exception e) {
 
@@ -170,7 +165,7 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Content Action"); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-            bundle.putString("item_language", AssetContent.getChannelLanguage(asset));
+            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
             if (!channelName.equalsIgnoreCase(""))
                 bundle.putString("item_channel”", channelName);
             bundle.putString("item_date", AppCommonMethods.getFirebaseDate(asset.getStartDate()));
@@ -191,7 +186,7 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Related-" + channelName + ":" + asset.getName()); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-            bundle.putString("item_language", AssetContent.getChannelLanguage(asset));
+            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
             if (!channelName.equalsIgnoreCase(""))
                 bundle.putString("item_channel”", channelName);
             bundle.putString("item_date”", AppCommonMethods.getFirebaseDate(asset.getStartDate()));
@@ -204,13 +199,13 @@ public class FirebaseEventManager {
         }
     }
 
-    public void showTabEvent(Asset asset) {
+    public void showTabEvent(Asset asset, Context context) {
         try {
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Shows-" + asset.getName()); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-            bundle.putString("item_language", AssetContent.getChannelLanguage(asset));
+            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
@@ -219,13 +214,13 @@ public class FirebaseEventManager {
         }
     }
 
-    public void shareEvent(Asset asset) {
+    public void shareEvent(Asset asset, Context context) {
         try {
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Content Action"); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-            bundle.putString("item_language", AssetContent.getChannelLanguage(asset));
+            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
             mFirebaseAnalytics.logEvent(SHARE, bundle);

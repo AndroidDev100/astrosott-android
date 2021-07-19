@@ -582,7 +582,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 lastClickTime = SystemClock.elapsedRealtime();
                 try {
                     CleverTapManager.getInstance().socialShare(this, asset, false);
-                    FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
+                    FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset,this);
                 } catch (Exception e) {
 
                 }
@@ -698,8 +698,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     public void openDialougeForEntitleMent(RailCommonData railCommonData) {
-       /* boolean status = UserInfo.getInstance(this).isActive();
-        if (status) {*/
+        boolean status = UserInfo.getInstance(this).isActive();
+        if (status) {
            /* AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
             builder.setTitle(getResources().getString(R.string.become_vip)).setMessage(getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
@@ -714,12 +714,16 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
             Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
             bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));*/
-        if (railCommonData.getObject() != null) {
-            fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
-            FragmentManager fm = getSupportFragmentManager();
-            EpisodeDialogFragment cancelDialogFragment = EpisodeDialogFragment.newInstance("Detail Page", fileId);
-            cancelDialogFragment.setEditDialogCallBack(WebSeriesDescriptionActivity.this);
-            cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+            if (railCommonData.getObject() != null) {
+                fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
+                FragmentManager fm = getSupportFragmentManager();
+                EpisodeDialogFragment cancelDialogFragment = EpisodeDialogFragment.newInstance("Detail Page", fileId);
+                cancelDialogFragment.setEditDialogCallBack(WebSeriesDescriptionActivity.this);
+                cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+            }
+        } else {
+            new ActivityLauncher(this).signupActivity(this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
+
         }
         /*} else {
             showLoginDialog();

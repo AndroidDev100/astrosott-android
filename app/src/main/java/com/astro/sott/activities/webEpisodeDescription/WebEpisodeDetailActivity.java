@@ -967,7 +967,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
     private void openShareDialouge() {
         try {
             CleverTapManager.getInstance().socialShare(this, asset, false);
-            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
+            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset,this);
         } catch (Exception e) {
 
         }

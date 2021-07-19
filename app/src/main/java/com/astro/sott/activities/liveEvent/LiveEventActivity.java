@@ -835,7 +835,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     private void openShareDialouge() {
         try {
             CleverTapManager.getInstance().socialShare(this, asset, false);
-            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
+            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset,this);
         }catch (Exception e) {
 
         }
