@@ -481,7 +481,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
       /*  if (from.equalsIgnoreCase("Profile")) {
             new ActivityLauncher(AstrLoginActivity.this).profileScreenRedirection(AstrLoginActivity.this, HomeActivity.class);
         } else {*/
-            onBackPressed();
+        onBackPressed();
         /*}*/
     }
 
