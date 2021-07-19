@@ -100,12 +100,12 @@ public class FirebaseEventManager {
 
     public void userLoginEvent(String customerId, String userType, String signupMethod) {
         Bundle bundle = new Bundle();
-       /* if (signupMethod.equalsIgnoreCase("Facebook")||signupMethod.equalsIgnoreCase("Google")) {
+        if (!signupMethod.equalsIgnoreCase("Mobile")) {
             bundle.putString("sign_up_method", signupMethod);
-        }else {*/
-        bundle.putString("sign_up_method", "Evergent");
+        } else {
+            bundle.putString("sign_up_method", "Mobile Number");
 
-        /* }*/
+        }
         bundle.putString("user_id", customerId);
         bundle.putString("user_type", userType); // e.g VIP,  Registered User etc
         mFirebaseAnalytics.logEvent("login", bundle);
