@@ -577,7 +577,7 @@ public class PlayerRepository {
             for (int i = 0; i < textTracks.size(); i++) {
                 if (i == 0) {
                     TextTrack textTrackInfo = textTracks.get(i);
-                    String name = "none";
+                    String name = "None";
                     trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
                 } else {
                     TextTrack textTrackInfo = textTracks.get(i);
