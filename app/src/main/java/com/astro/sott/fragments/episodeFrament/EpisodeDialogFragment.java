@@ -3,6 +3,7 @@ package com.astro.sott.fragments.episodeFrament;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.astro.sott.fragments.manageSubscription.ui.CancelDialogFragment;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class EpisodeDialogFragment extends DialogFragment {
@@ -73,18 +75,31 @@ public class EpisodeDialogFragment extends DialogFragment {
             fileId = getArguments().getString(AppLevelConstants.FILE_ID_KEY);
             ImageView btnCancel = view.findViewById(R.id.close_icon);
             TextView subscribe = view.findViewById(R.id.subscribe);
-            TextView login = view.findViewById(R.id.login);
+            TextView description = view.findViewById(R.id.description);
 
+            TextView login = view.findViewById(R.id.login);
+            if (UserInfo.getInstance(baseActivity).isActive()) {
+                description.setText(baseActivity.getResources().getString(R.string.subscribe__dialog_description));
+                subscribe.setText(baseActivity.getResources().getString(R.string.subscribe_more));
+            } else {
+                description.setText(baseActivity.getResources().getString(R.string.subscribe__dialog_description_logout));
+                subscribe.setText(baseActivity.getResources().getString(R.string.continue_text));
+
+            }
             // Fetch arguments from bundle and set title
 
 //        getDialog().setTitle(title);
             login.setOnClickListener(v -> {
-                if (from.equalsIgnoreCase("player")) {
-                    baseActivity.onBackPressed();
-                    new ActivityLauncher(baseActivity).signupActivity(baseActivity, SignUpActivity.class, CleverTapManager.PLAYER_LOCK);
+                if (UserInfo.getInstance(baseActivity).isActive()) {
+                    if (from.equalsIgnoreCase("player")) {
+                        baseActivity.onBackPressed();
+                        new ActivityLauncher(baseActivity).signupActivity(baseActivity, SignUpActivity.class, CleverTapManager.PLAYER_LOCK);
+                    } else {
+                        new ActivityLauncher(baseActivity).signupActivity(baseActivity, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
+                        dismiss();
+                    }
                 } else {
-                    new ActivityLauncher(baseActivity).signupActivity(baseActivity, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
-                    dismiss();
+
                 }
 
 
@@ -92,10 +107,23 @@ public class EpisodeDialogFragment extends DialogFragment {
             subscribe.setOnClickListener(v -> {
                 if (from.equalsIgnoreCase("player"))
                     baseActivity.onBackPressed();
-                Intent intent = new Intent(baseActivity, SubscriptionDetailActivity.class);
-                intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
-                startActivity(intent);
-                dismiss();
+
+                if (UserInfo.getInstance(baseActivity).isActive()) {
+                    Intent intent = new Intent(baseActivity, SubscriptionDetailActivity.class);
+                    intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                    startActivity(intent);
+                    dismiss();
+                } else {
+                    new Handler().postDelayed(() -> {
+                        if (from.equalsIgnoreCase("player")) {
+                            new ActivityLauncher(baseActivity).signupActivity(baseActivity, SignUpActivity.class, CleverTapManager.PLAYER_LOCK);
+                        } else {
+                            new ActivityLauncher(baseActivity).signupActivity(baseActivity, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
+                            dismiss();
+                        }
+                    }, 1000);
+
+                }
             });
 
             // Show soft keyboard automatically and request focus to field
@@ -104,7 +132,13 @@ public class EpisodeDialogFragment extends DialogFragment {
             // etDialog.setOnEditorActionListener(this);
 
 
-            btnCancel.setOnClickListener(v -> dismiss());
+            btnCancel.setOnClickListener(v -> {
+                if (from.equalsIgnoreCase("player")) {
+                    baseActivity.onBackPressed();
+                } else {
+                    dismiss();
+                }
+            });
 
 
         }
