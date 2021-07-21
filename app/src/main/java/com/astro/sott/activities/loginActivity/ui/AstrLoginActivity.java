@@ -282,7 +282,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             //   resetPassword();
         });
         getBinding().signup.setOnClickListener(view -> {
-            Intent intent = new Intent(this, AstrLoginActivity.class);
+            Intent intent = new Intent(this,SignUpActivity.class);
             intent.putExtra(AppLevelConstants.FROM_KEY, from);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
