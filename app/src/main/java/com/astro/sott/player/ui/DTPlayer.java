@@ -2722,14 +2722,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             showAlertDialog(getResources().getString(R.string.purchase_dialouge), getResources().getString(R.string.login), getResources().getString(R.string.cancel));
         });
 
-        getBinding().shareWith.setOnClickListener(view -> {
-//
-            if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
-                return;
-            }
-            lastClickTime = SystemClock.elapsedRealtime();
-            openShareDialouge();
-        });
+//        getBinding().shareWith.setOnClickListener(view -> {
+////
+//            if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
+//                return;
+//            }
+//            lastClickTime = SystemClock.elapsedRealtime();
+//            openShareDialouge();
+//        });
 
 
         getBinding().lockIcon.setOnClickListener(view -> {

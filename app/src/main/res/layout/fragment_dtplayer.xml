@@ -94,21 +94,21 @@
                         android:contentDescription=""
                         tools:ignore="ContentDescription" />
 
-                    <TextView
-                        android:id="@+id/shareWith"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/share_margin_top"
-                        android:layout_marginEnd="@dimen/dp10"
-                        android:layout_toStartOf="@+id/live_txt"
-                        android:clickable="true"
-                        android:drawablePadding="7dp"
-                        android:focusable="true"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/font_medium"
-                        android:visibility="gone"
-                        app:drawableTopCompat="@drawable/share" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/shareWith"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="@dimen/share_margin_top"-->
+<!--                        android:layout_marginEnd="@dimen/dp10"-->
+<!--                        android:layout_toStartOf="@+id/live_txt"-->
+<!--                        android:clickable="true"-->
+<!--                        android:drawablePadding="7dp"-->
+<!--                        android:focusable="true"-->
+<!--                        android:fontFamily="@font/roboto_regular"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="@dimen/font_medium"-->
+<!--                        android:visibility="gone"-->
+<!--                        app:drawableTopCompat="@drawable/share" />-->
 
 
                     <TextView
