@@ -282,7 +282,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             //   resetPassword();
         });
         getBinding().signup.setOnClickListener(view -> {
-            Intent intent = new Intent(this,SignUpActivity.class);
+            Intent intent = new Intent(this, SignUpActivity.class);
             intent.putExtra(AppLevelConstants.FROM_KEY, from);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -586,7 +586,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     return false;
 
                 }
-            } else if (true) {
+            } else if (email_mobile.matches(EMAIL_REGEX)) {
                 type = "Email";
                 getBinding().errorEmail.setTextColor(getResources().getColor(R.color.heather));
                 getBinding().errorEmail.setText(getResources().getString(R.string.mobile_suggestion));
