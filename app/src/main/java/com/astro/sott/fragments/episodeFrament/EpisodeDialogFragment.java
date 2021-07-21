@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,7 +151,7 @@ public class EpisodeDialogFragment extends DialogFragment {
         int width = getResources().getDimensionPixelSize(R.dimen.episode_dialog_fragment_width);
         int height = getResources().getDimensionPixelSize(R.dimen.epiosode_dialog_fragment_height);
         if (getDialog().getWindow() != null)
-            getDialog().getWindow().setLayout(width, height);
+            getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         // Call super onResume after sizing
         super.onResume();
     }

@@ -1255,7 +1255,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
 
     private void playerChecks(final RailCommonData railCommonData) {
-        new GeoBlockingCheck().aseetAvailableOrNot(WebSeriesDescriptionActivity.this, railData.getObject(), (status, response, totalCount, errorcode, message) -> {
+        new GeoBlockingCheck().aseetAvailableOrNot(WebSeriesDescriptionActivity.this, railCommonData.getObject(), (status, response, totalCount, errorcode, message) -> {
             if (status) {
                 if (totalCount != 0) {
                     checkBlockingErrors(response, railCommonData);

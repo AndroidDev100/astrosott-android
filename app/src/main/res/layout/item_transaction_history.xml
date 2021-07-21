@@ -51,7 +51,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:fontFamily="@font/heebo_regular"
-                android:text="@string/watchlist"
                 android:textColor="@color/white"
                 android:layout_margin="@dimen/_2dp"
                 android:layout_centerInParent="true"

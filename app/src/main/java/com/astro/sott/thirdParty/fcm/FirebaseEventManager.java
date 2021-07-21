@@ -27,6 +27,7 @@ public class FirebaseEventManager {
     public static final String SIGN_UP = "Sign Up";
     public static final String LOGIN = "Login";
     public static final String SHARE = "share";
+    public String searchString = "";
 
 
     public static final String TRX_VIP = "trx_vip";
@@ -66,6 +67,14 @@ public class FirebaseEventManager {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         }
         return firebaseEventManager;
+    }
+
+    public String getSearchString() {
+        return searchString;
+    }
+
+    public void setSearchString(String searchString) {
+        this.searchString = searchString;
     }
 
     public void trackScreenName(String screenName) {
@@ -120,6 +129,22 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
 
+            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void searchViewItemEvent(String itemList, Asset asset, Context context) {
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, itemList); //e.g TV Shows Top Slider
+            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
+            bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
+            bundle.putString("search_variant", searchString);
             bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());

@@ -713,6 +713,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                     getBinding().autoRecyclerView.setVisibility(View.GONE);
                     getBinding().separator.setVisibility(View.GONE);
                     searchBeginFrom = 1;
+                    FirebaseEventManager.getFirebaseInstance(this).searchString = searchString;
                     setUiComponents(searchmodels);
                     counter++;
                     callViewModel(searchString, from);
@@ -772,6 +773,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                     getBinding().autoRecyclerView.setVisibility(View.GONE);
                     getBinding().separator.setVisibility(View.GONE);
                     searchBeginFrom = 2;
+                    FirebaseEventManager.getFirebaseInstance(this).searchString = searchString;
                     setUiComponents(searchmodels);
                     counter++;
                     callQuickSearch(searchString, from);

@@ -134,7 +134,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
-            FirebaseEventManager.getFirebaseInstance(activity).viewItemEvent(FirebaseEventManager.SEARCH, itemValue, activity);
+            FirebaseEventManager.getFirebaseInstance(activity).searchViewItemEvent(FirebaseEventManager.SEARCH, itemValue, activity);
             if (itemValue != null && itemValue.getType() == MediaTypeConstant.getMovie(activity)) {
                 getRailCommonData(itemValue, activity.getResources().getString(R.string.movie));
                 if (railCommonData.getImages().size() == itemValue.getImages().size())
