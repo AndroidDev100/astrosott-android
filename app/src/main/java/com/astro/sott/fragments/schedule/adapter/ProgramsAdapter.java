@@ -104,7 +104,7 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
         viewHolder.scheduleItemBinding.share.setOnClickListener(v -> {
             try {
                 CleverTapManager.getInstance().socialShare(context, commonData.getObject(), false);
-                FirebaseEventManager.getFirebaseInstance(context).shareEvent(commonData.getObject());
+                FirebaseEventManager.getFirebaseInstance(context).shareEvent(commonData.getObject(), context);
             } catch (Exception e) {
 
             }

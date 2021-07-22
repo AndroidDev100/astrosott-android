@@ -51,8 +51,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:fontFamily="@font/heebo_regular"
-                android:text="@string/watch_movie"
                 android:textColor="@color/white"
+                android:layout_margin="@dimen/_2dp"
+                android:layout_centerInParent="true"
+               android:layout_toLeftOf="@id/currency"
+                android:lines="2"
                 android:textSize="@dimen/_16sp" />
 
             <TextView
@@ -60,7 +63,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/dimen16dp"
+                android:layout_marginEnd="@dimen/dimen14dp"
+                android:padding="@dimen/_4dp"
                 android:fontFamily="@font/heebo_medium"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp" />

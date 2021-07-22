@@ -603,7 +603,6 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     stringBuilder.append(s + " | ");
                 }
                 getChannelLanguage();
-                getParentalRating();
             }
         });
 
@@ -611,15 +610,13 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     }
 
     private void getChannelLanguage() {
-        String language = "";
-        MultilingualStringValue stringValue = null;
-        if (asset.getMetas() != null)
-            stringValue = (MultilingualStringValue) asset.getMetas().get(AppLevelConstants.KEY_LANGUAGE);
-        if (stringValue != null)
-            language = stringValue.getValue();
-
-        if (language != null && !language.equalsIgnoreCase(""))
-            stringBuilder.append(language + " | ");
+        viewModel.getLanguageLiveData(asset.getTags()).observe(this, language -> {
+            if (!TextUtils.isEmpty(language)) {
+                if (language != null && !language.equalsIgnoreCase(""))
+                    stringBuilder.append(language + " | ");
+            }
+            getParentalRating();
+        });
     }
 
     private void getParentalRating() {
@@ -835,8 +832,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     private void openShareDialouge() {
         try {
             CleverTapManager.getInstance().socialShare(this, asset, false);
-            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
-        }catch (Exception e) {
+            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset, this);
+        } catch (Exception e) {
 
         }
         AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), SubMediaTypes.LiveEvent.name());

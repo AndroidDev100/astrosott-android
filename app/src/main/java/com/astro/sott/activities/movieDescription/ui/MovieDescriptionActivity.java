@@ -691,7 +691,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             lastClickTime = SystemClock.elapsedRealtime();
             try {
                 CleverTapManager.getInstance().socialShare(this, asset, false);
-                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
+                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset,this);
             } catch (Exception e) {
 
             }

@@ -109,7 +109,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
                     try {
                         CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Success", "Content Details Page");
-                        FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS);
+                        FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS, UserInfo.getInstance(this).getCpCustomerId());
 
                     } catch (Exception e) {
 
@@ -158,9 +158,11 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
 
     @Override
     public void onCardClicked(String productId, String serviceType, String activePlan, String name, String price) {
-        this.planName = planName;
+
+        this.planName = name;
         offerId = productId;
         planPrice = price;
+        FirebaseEventManager.getFirebaseInstance(this).packageEvent(name, price, "trx_select", "");
         if (serviceType.equalsIgnoreCase("ppv")) {
             offerType = "TVOD";
             billingProcessor.purchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());

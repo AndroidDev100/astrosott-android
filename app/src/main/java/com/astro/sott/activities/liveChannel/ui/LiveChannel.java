@@ -238,7 +238,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     stringBuilder.append(s + " | ");
                 }
                 getChannelLanguage();
-                getParentalRating();
+
             }
         });
 
@@ -246,15 +246,14 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     }
 
     private void getChannelLanguage() {
-        String language = "";
-        MultilingualStringValue stringValue = null;
-        if (programAsset.getMetas() != null)
-            stringValue = (MultilingualStringValue) programAsset.getMetas().get(AppLevelConstants.KEY_LANGUAGE);
-        if (stringValue != null)
-            language = stringValue.getValue();
+        activityViewModel.getLanguageLiveData(programAsset.getTags()).observe(this, language -> {
+            if (!TextUtils.isEmpty(language)) {
+                if (language != null && !language.equalsIgnoreCase(""))
+                    stringBuilder.append(language + " | ");
+            }
+            getParentalRating();
+        });
 
-        if (language != null && !language.equalsIgnoreCase(""))
-            stringBuilder.append(language + " | ");
     }
 
     private void getParentalRating() {
@@ -332,7 +331,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         getBinding().share.setOnClickListener(v -> {
             try {
                 CleverTapManager.getInstance().socialShare(this, asset, true);
-                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
+                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset,this);
             } catch (Exception e) {
 
             }

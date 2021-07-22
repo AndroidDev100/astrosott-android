@@ -67,6 +67,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
+import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.DoubleClick;
 import com.astro.sott.callBacks.WindowFocusCallback;
@@ -75,6 +76,7 @@ import com.astro.sott.callBacks.kalturaCallBacks.PlayBackContextCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.RefreshTokenCallBack;
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
+import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.RefreshKS;
@@ -797,7 +799,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (assetRuleErrorCode == AppLevelConstants.GEO_LOCATION_ERROR) {
                     getActivity().runOnUiThread(() -> DialogHelper.openDialougeforGeoLocation(1, getActivity()));
                 } else if (errorCode == AppLevelConstants.FOR_PURCHASED_ERROR) {
-                    getActivity().runOnUiThread(() -> DialogHelper.openDialougeForEntitleMent(getActivity()));
+                    getActivity().runOnUiThread(() -> {
+                        FragmentManager fm = baseActivity.getSupportFragmentManager();
+                        EpisodeDialogFragment cancelDialogFragment = EpisodeDialogFragment.newInstance("player", AppCommonMethods.getFileIdOfAssest(asset));
+                        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+                    });/* DialogHelper.openDialougeForEntitleMent(getActivity()));*/
                 } else if (errorCode == AppLevelConstants.USER_ACTIVE_ERROR) {
                     getActivity().runOnUiThread(() -> DialogHelper.openDialougeForEntitleMent(getActivity()));
                 } else if (errorCode == AppLevelConstants.NO_MEDIA_FILE) {

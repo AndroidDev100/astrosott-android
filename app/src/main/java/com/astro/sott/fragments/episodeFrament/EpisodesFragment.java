@@ -54,6 +54,7 @@ import com.kaltura.client.types.ProductPrice;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -399,7 +400,13 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         if (selectedIndex == -1) {
             return;
         }
+        try {
+            if (seriesNumberList!=null && seriesNumberList.size()>0){
+                Collections.sort(seriesNumberList);
+            }
+        }catch (Exception e){
 
+        }
         SeasonListAdapter listAdapter = new SeasonListAdapter(seriesNumberList, selectedIndex, context);
         builder = new android.app.AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());

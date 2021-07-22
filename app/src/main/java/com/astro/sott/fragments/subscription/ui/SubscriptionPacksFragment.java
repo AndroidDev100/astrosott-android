@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.R;
@@ -106,6 +107,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         UIinitialization();
         modelCall();
         getProducts();
+
 
     }
 

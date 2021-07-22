@@ -1980,7 +1980,7 @@ public class AssetContent {
     public static String getMediaEntryId(Map<String, String> map) {
 
 
-        String entryId="";
+        String entryId = "";
         if (map != null) {
             stringValue = map.get(AppLevelConstants.KEY_ENTRY_ID);
         }

@@ -90,8 +90,9 @@ public class MovieShowsAdapter extends RecyclerView.Adapter<MovieShowsAdapter.Si
                     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
                         if (NetworkConnectivity.isOnline(mContext)) {
                             try {
-                            FirebaseEventManager.getFirebaseInstance(mContext).showTabEvent(commonData.getObject());
-                            }catch (Exception ex){}
+                                FirebaseEventManager.getFirebaseInstance(mContext).showTabEvent(commonData.getObject(), mContext);
+                            } catch (Exception ex) {
+                            }
                             detailRailClick.detailItemClicked(_url, position, type, commonData);
                         } else {
                             ToastHandler.show(mContext.getResources().getString(R.string.no_internet_connection), mContext);

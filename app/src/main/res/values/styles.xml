@@ -150,7 +150,7 @@
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/aqua_marine</item>
     </style>
 
     <style name="ErrorAppearance" parent="@android:style/TextAppearance">
