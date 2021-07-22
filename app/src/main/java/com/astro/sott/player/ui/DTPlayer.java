@@ -2634,6 +2634,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
 
         if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
+//            getBinding().skipIntro.setClickable(false);
+//            getBinding().skipCredits.setClickable(false);
+//            getBinding().skipRecap.setClickable(false);
             return;
         }
 
@@ -2664,6 +2667,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (getBinding().videoDialog.getVisibility() == View.VISIBLE || getBinding().audioDialog.getVisibility() == View.VISIBLE) {
                     getBinding().audioDialog.setVisibility(View.GONE);
                     getBinding().videoDialog.setVisibility(View.GONE);
+                    getBinding().skipIntro.setClickable(true);
+                    getBinding().skipCredits.setClickable(true);
+                    getBinding().skipRecap.setClickable(true);
                 }
                 getBinding().listViewSettings.setVisibility(View.GONE);
                 timer = true;
@@ -2756,6 +2762,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             }
         });
 
+        getBinding().audioDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                return;
+            }
+        });
+
         getBinding().rl.setOnClickListener(new DoubleClick(new DoubleClickListener() {
             @Override
             public void onSingleClick(View view) {
@@ -2796,6 +2809,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         }
                         if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
                             getBinding().audioDialog.setVisibility(View.GONE);
+                            getBinding().skipIntro.setClickable(true);
+                            getBinding().skipCredits.setClickable(true);
+                            getBinding().skipRecap.setClickable(true);
                         }
                         ShowAndHideView();
                     }
@@ -2857,6 +2873,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         }
                         if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
                             getBinding().audioDialog.setVisibility(View.GONE);
+                            getBinding().skipIntro.setClickable(true);
+                            getBinding().skipCredits.setClickable(true);
+                            getBinding().skipRecap.setClickable(true);
                         }
                         ShowAndHideView();
                     }
@@ -2988,6 +3007,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             public void onClick(View v) {
                 if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
                     getBinding().audioDialog.setVisibility(View.GONE);
+                    getBinding().skipIntro.setClickable(true);
+                    getBinding().skipCredits.setClickable(true);
+                    getBinding().skipRecap.setClickable(true);
                 }
                 chooseVideoquality();
             }
@@ -3008,6 +3030,17 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             @Override
             public void onClick(View v) {
                 getBinding().nextEpisode.setVisibility(View.GONE);
+                getBinding().skipIntro.setVisibility(View.GONE);
+                getBinding().skipRecap.setVisibility(View.GONE);
+                getBinding().skipCredits.setVisibility(View.GONE);
+                if (objectAnimator != null) {
+                    objectAnimator.cancel();
+                    objectAnimator = null;
+                }
+                if (handler1!=null){
+                    handler1.removeCallbacksAndMessages(null);
+                }
+                getBinding().progressBar.setProgress(0);
                 isSkipCreditVisible = false;
                 playNextEpisode();
             }
@@ -3408,19 +3441,34 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             });
         }
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (captionList != null || audioList != null) {
-                    getBinding().audioDialog.setVisibility(View.VISIBLE);
-                    getBinding().audioDialog.bringToFront();
-                } else {
+        if (captionList != null || audioList != null) {
+            getBinding().audioDialog.setVisibility(View.VISIBLE);
+            getBinding().audioDialog.bringToFront();
+            getBinding().skipIntro.setClickable(false);
+            getBinding().skipCredits.setClickable(false);
+            getBinding().skipRecap.setClickable(false);
+        } else {
 
-                    getBinding().audioDialog.setVisibility(View.GONE);
+            getBinding().audioDialog.setVisibility(View.GONE);
+            getBinding().skipIntro.setClickable(true);
+            getBinding().skipCredits.setClickable(true);
+            getBinding().skipRecap.setClickable(true);
 
-                }
-            }
-        }, 1200);
+        }
+
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (captionList != null || audioList != null) {
+//                    getBinding().audioDialog.setVisibility(View.VISIBLE);
+//                    getBinding().audioDialog.bringToFront();
+//                } else {
+//
+//                    getBinding().audioDialog.setVisibility(View.GONE);
+//
+//                }
+//            }
+//        }, 1200);
 
 
     }
@@ -4431,6 +4479,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     captionName = captionList[position].getTrackName();
                     viewModel.changeTextTrack(captionList[position].getUniqueId());
                     getBinding().audioDialog.setVisibility(View.GONE);
+                    getBinding().skipIntro.setClickable(true);
+                    getBinding().skipCredits.setClickable(true);
+                    getBinding().skipRecap.setClickable(true);
                     // dialogQuality.cancel();
                     hideSoftKeyButton();
 
