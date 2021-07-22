@@ -42,14 +42,14 @@ public class ContinueWatchingUpdate {
                     // callBack.response(true,responseList,channelList);
                     try {
                         AssetCommonBean assetCommonBean = new AssetCommonBean();
-                        setRailType(assetCommonBean, list.get(counter).getRailType(), list.get(counter).getRailDetail().getWidgetType());
-                        assetCommonBean.setRailType(list.get(counter).getRailType());
+                        setRailType(assetCommonBean, AppConstants.Rail6, dtChannelsList.get(counter).getWidgetType());
+                        assetCommonBean.setRailType(AppConstants.Rail6);
                         assetCommonBean.setRailDetail(dtChannelsList.get(counter));
-                        assetCommonBean.setTitle(list.get(counter).getTitle());
+                        assetCommonBean.setTitle(dtChannelsList.get(counter).getName());
                         assetCommonBean.setMoreType(AppConstants.CONTINUE_WATCHING);
-                        assetCommonBean.setID(list.get(counter).getID());
+                        assetCommonBean.setID(dtChannelsList.get(counter).getId());
                         List<RailCommonData> railCommonData = new ArrayList<>();
-                        sortContinueWatchingRail(context,listResponseResponse, 1, assetCommonBean, 0,AppConstants.TYPE6, railCommonData,dtChannelsList.get(counter));
+                        sortContinueWatchingRail(context, listResponseResponse, 1, assetCommonBean, 0, AppConstants.TYPE6, railCommonData, dtChannelsList.get(counter));
                     } catch (Exception e) {
 
                     }
@@ -83,7 +83,6 @@ public class ContinueWatchingUpdate {
         }
         return description;
     }*/
-
 
 
     public void sortContinueWatchingRail(Context context, List<Response<ListResponse<Asset>>> list, int type,
@@ -185,7 +184,6 @@ public class ContinueWatchingUpdate {
 
 
     }
-
 
 
 }

@@ -577,7 +577,7 @@ public class PlayerRepository {
             for (int i = 0; i < textTracks.size(); i++) {
                 if (i == 0) {
                     TextTrack textTrackInfo = textTracks.get(i);
-                    String name = "none";
+                    String name = "None";
                     trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
                 } else {
                     TextTrack textTrackInfo = textTracks.get(i);
@@ -1125,8 +1125,10 @@ public class PlayerRepository {
                 player.getSettings().setSecureSurface(true);
                 player.getSettings().setAdAutoPlayOnResume(true);
                 subscribePhoenixAnalyticsReportEvent();
-                player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
-
+                try {
+                    player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
+                } catch (Exception e) {
+                }
                 player.prepare(mediaConfig);
                 player.play();
 

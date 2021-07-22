@@ -977,7 +977,41 @@ public class AssetContent {
 
         if (stringBuilder.length() > 0) {
             language = stringBuilder.toString();
-            language = language.substring(0, language.length() - 2);
+            language = language.substring(0, language.length() - 1);
+        }
+
+
+        return language;
+    }
+
+    public static String getLanguageDataStringForCleverTap
+            (Map<String, MultilingualStringValueArray> map, Context context) {
+
+        String language = "";
+        String lang = "";
+        List<MultilingualStringValue> language_value = new ArrayList<>();
+        MultilingualStringValueArray language_list = map.get(AppLevelConstants.KEY_LANGUAGE);
+        if (language_list != null)
+//            for (MultilingualStringValue value : language_list.getObjects()) {
+//                language_value.add(value);
+//            }
+            language_value.addAll(language_list.getObjects());
+        StringBuilder stringBuilder = new StringBuilder();
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        ArrayList<AudioLanguages> audioLanguageList = responseDmsModel.getAudioLanguageList();
+
+        for (int i = 0; i <= language_value.size() - 1; i++) {
+            lang = language_value.get(i).getValue();
+            for (int j = 0; j < audioLanguageList.size(); j++) {
+                if (lang.equalsIgnoreCase(audioLanguageList.get(j).getKey())) {
+                    stringBuilder.append(lang).append(",");
+                }
+            }
+        }
+
+        if (stringBuilder.length() > 0) {
+            language = stringBuilder.toString();
+            language = language.substring(0, language.length() - 1);
         }
 
 
@@ -1057,7 +1091,7 @@ public class AssetContent {
 
         if (stringBuilder.length() > 0) {
             language = stringBuilder.toString();
-            language = language.substring(0, language.length() - 2);
+            language = language.substring(0, language.length() - 1);
         }
 
 
@@ -1946,9 +1980,9 @@ public class AssetContent {
     public static String getMediaEntryId(Map<String, String> map) {
 
 
-        String entryId;
+        String entryId = "";
         if (map != null) {
-            stringValue =  map.get(AppLevelConstants.KEY_ENTRY_ID);
+            stringValue = map.get(AppLevelConstants.KEY_ENTRY_ID);
         }
         if (stringValue != null) {
             entryId = stringValue;

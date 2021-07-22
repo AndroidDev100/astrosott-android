@@ -133,8 +133,9 @@ public class ActivityLauncher {
     }
 
 
-    public void profileSubscription() {
+    public void profileSubscription(String from) {
         Intent intent = new Intent(activity, ProfileSubscriptionActivity.class);
+        intent.putExtra("from", from);
         activity.startActivity(intent);
     }
 
@@ -159,14 +160,15 @@ public class ActivityLauncher {
     public void setPasswordActivity(Activity source, String token, String newEmail, String newMobile) {
         Intent intent = new Intent(source, SetPasswordActivity.class);
         intent.putExtra("token", token);
-        intent.putExtra("newEmail",newEmail);
-        intent.putExtra("newMobile",newMobile);
+        intent.putExtra("newEmail", newEmail);
+        intent.putExtra("newMobile", newMobile);
         intent.putExtra("token", token);
         activity.startActivity(intent);
     }
 
-    public void signupActivity(Activity source, Class<SignUpActivity> destination) {
+    public void signupActivity(Activity source, Class<SignUpActivity> destination, String from) {
         Intent intent = new Intent(source, destination);
+        intent.putExtra(AppLevelConstants.FROM_KEY, from);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }

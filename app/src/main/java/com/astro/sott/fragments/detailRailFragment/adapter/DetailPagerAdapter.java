@@ -213,13 +213,25 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
             if (fragmentType == 1) {
                 return mContext.getString(R.string.episode_title);
             } else if (fragmentType == 2) {
-                return mContext.getString(R.string.trailer_more);
+                if (TabsData.getInstance().getHighLightsData() != null && TabsData.getInstance().getHighLightsData().size() > 0 && TabsData.getInstance().getTrailerData() == null) {
+                    return mContext.getString(R.string.highlights);
+                } else if (TabsData.getInstance().getTrailerData() != null && TabsData.getInstance().getTrailerData().size() > 0 && TabsData.getInstance().getHighLightsData() == null) {
+                    return mContext.getString(R.string.trailer_title);
+                } else {
+                    return mContext.getString(R.string.trailer_more);
+                }
             } else if (fragmentType == 3) {
                 if (position == 0) {
                     return mContext.getString(R.string.episode_title);
 
                 } else {
-                    return mContext.getString(R.string.trailer_more);
+                    if (TabsData.getInstance().getHighLightsData() != null && TabsData.getInstance().getHighLightsData().size() > 0 && TabsData.getInstance().getTrailerData() == null) {
+                        return mContext.getString(R.string.highlights);
+                    } else if (TabsData.getInstance().getTrailerData() != null && TabsData.getInstance().getTrailerData().size() > 0 && TabsData.getInstance().getHighLightsData() == null) {
+                        return mContext.getString(R.string.trailer_title);
+                    } else {
+                        return mContext.getString(R.string.trailer_more);
+                    }
                 }
 
             } else if (fragmentType == 4) {
@@ -231,7 +243,13 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
                 }
             } else if (fragmentType == 5) {
                 if (position == 0) {
-                    return mContext.getString(R.string.trailer_more);
+                    if (TabsData.getInstance().getHighLightsData() != null && TabsData.getInstance().getHighLightsData().size() > 0 && TabsData.getInstance().getTrailerData() == null) {
+                        return mContext.getString(R.string.highlights);
+                    } else if (TabsData.getInstance().getTrailerData() != null && TabsData.getInstance().getTrailerData().size() > 0 && TabsData.getInstance().getHighLightsData() == null) {
+                        return mContext.getString(R.string.trailer_title);
+                    } else {
+                        return mContext.getString(R.string.trailer_more);
+                    }
                 } else {
                     return mContext.getString(R.string.related);
                 }
@@ -239,7 +257,13 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
                 if (position == 0) {
                     return mContext.getString(R.string.episode_title);
                 } else if (position == 1) {
-                    return mContext.getString(R.string.trailer_more);
+                    if (TabsData.getInstance().getHighLightsData() != null && TabsData.getInstance().getHighLightsData().size() > 0 && TabsData.getInstance().getTrailerData().size()==0) {
+                        return mContext.getString(R.string.highlights);
+                    } else if (TabsData.getInstance().getTrailerData() != null && TabsData.getInstance().getTrailerData().size() > 0 && TabsData.getInstance().getHighLightsData().size() == 0) {
+                        return mContext.getString(R.string.trailer_title);
+                    } else {
+                        return mContext.getString(R.string.trailer_more);
+                    }
                 } else {
                     return mContext.getString(R.string.related);
 

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.astro.sott.callBacks.SpecificAssetCallBack;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -102,7 +103,8 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
         });
         viewHolder.scheduleItemBinding.share.setOnClickListener(v -> {
             try {
-                FirebaseEventManager.getFirebaseInstance(context).shareEvent(commonData.getObject());
+                CleverTapManager.getInstance().socialShare(context, commonData.getObject(), false);
+                FirebaseEventManager.getFirebaseInstance(context).shareEvent(commonData.getObject(), context);
             } catch (Exception e) {
 
             }

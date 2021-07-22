@@ -445,62 +445,129 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     private void updateContinueWatching() {
         if (UserInfo.getInstance(getActivity()).isActive()) {
             if (dtChannelsList != null) {
-                if (adapter != null && adapter.getContinueWatchInd() != -1) {
+                if (adapter != null) {
                     if (checkContinueWatching(loadedList) == 1) {
-                        new ContinueWatchingUpdate().updateCall(getActivity(), dtChannelsList, getContinueWatchInd(), 1, loadedList, (status, commonResponse) -> {
-                            if (status) {
-                                PrintLogging.printLog("", "sizeOfOf  " + commonResponse.size() + " " + adapter.getContinueWatchInd());
-                                if (adapter != null && getActivity() != null) {
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            PrintLogging.printLog("", "sizeinlist 3" + counterValueApiFail);
-                                            loadedList.remove(getContinueWatchInd());
-                                            loadedList.add(getContinueWatchInd(), commonResponse.get(0));
-                                            adapter.notifyItemChanged(getContinueWatchInd());
+                        if (adapter.getContinueWatchInd() != -1) {
+                            new ContinueWatchingUpdate().updateCall(getActivity(), dtChannelsList, getContinueWatchInd(), 1, loadedList, (status, commonResponse) -> {
+                                if (status) {
+                                    if (adapter != null && getActivity() != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                loadedList.remove(getContinueWatchInd());
+                                                loadedList.add(getContinueWatchInd(), commonResponse.get(0));
+                                                //    adapter.notifyDataSetChanged();
+                                                adapter.notifyItemChanged(getContinueWatchInd());
+                                                updateMyList();
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    updateMyList();
+                                    if (commonResponse != null && commonResponse.size() == 0) {
+                                        if (adapter != null && getActivity() != null) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    loadedList.remove(getContinueWatchInd());
+                                                    adapter.notifyDataSetChanged();
+                                                   /* adapter.notifyItemChanged(getContinueWatchInd());*/
+                                                    updateMyList();
+                                                }
+                                            });
                                         }
-                                    });
-
-
+                                    }
                                 }
-                            }
-                        });
+
+                            });
+                        }
+                    } else {
+                        if (checkContinueWatchingInChannelList(dtChannelsList) == 1) {
+                            new ContinueWatchingUpdate().updateCall(getActivity(), dtChannelsList, getContinueWatchIndInChannelList(), 1, loadedList, (status, commonResponse) -> {
+                                if (status) {
+                                    if (adapter != null && getActivity() != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                loadedList.add(getContinueWatchIndInChannelList(), commonResponse.get(0));
+                                                /*adapter.notifyItemChanged(getContinueWatchIndInChannelList());*/
+                                                adapter.notifyDataSetChanged();
+                                                updateMyList();
+                                            }
+                                        });
+
+
+                                    }
+                                }
+
+                            });
+
+                        } else {
+                            updateMyList();
+                        }
                     }
                 }
             }
         }
+
+    }
+
+    private void updateMyList() {
         try {
-            if (adapter != null && adapter.getMyListIndex() != -1)
+            if (adapter != null)
                 if (checkMyList(loadedList) == 1) {
-                    new MyListUpdate().updateCall(getActivity(), dtChannelsList, getMyListIndex(), (status, commonResponse) -> {
-                        if (status) {
-                            if (adapter != null && getActivity() != null) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        PrintLogging.printLog("", "sizeinlist 3" + counterValueApiFail);
-                                        loadedList.remove(getMyListIndex());
-                                        loadedList.add(getMyListIndex(), commonResponse.get(0));
-                                        adapter.notifyItemChanged(getMyListIndex());
-                                    }
-                                });
-
-
-                            }
-                        } else {
-                            if (commonResponse != null && commonResponse.size() == 0) {
+                    if (adapter.getMyListIndex() != -1) {
+                        new MyListUpdate().updateCall(getActivity(), dtChannelsList, getMyListIndexInChannelList(), (status, commonResponse) -> {
+                            if (status) {
                                 if (adapter != null && getActivity() != null) {
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
                                             loadedList.remove(getMyListIndex());
+                                            loadedList.add(getMyListIndex(), commonResponse.get(0));
+                                            /*adapter.notifyDataSetChanged();*/
                                             adapter.notifyItemChanged(getMyListIndex());
                                         }
                                     });
+
+
+                                }
+                            } else {
+                                if (commonResponse != null && commonResponse.size() == 0) {
+                                    if (adapter != null && getActivity() != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                loadedList.remove(getMyListIndex());
+                                                adapter.notifyDataSetChanged();
+                                                //   adapter.notifyItemChanged(getMyListIndex());
+                                            }
+                                        });
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+                    }
+                } else {
+                    if (checkMyListInChannelList(dtChannelsList) == 1) {
+                        new MyListUpdate().updateCall(getActivity(), dtChannelsList, getMyListIndexInChannelList(), (status, commonResponse) -> {
+                            if (status) {
+                                if (adapter != null && getActivity() != null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            PrintLogging.printLog("", "sizeinlist 3" + counterValueApiFail);
+                                            loadedList.add(getMyListIndexInChannelList(), commonResponse.get(0));
+                                            adapter.notifyDataSetChanged();
+                                            /* adapter.notifyItemChanged(getMyListIndexInChannelList());*/
+                                        }
+                                    });
+
+                                }
+                            } else {
+                            }
+                        });
+                    }
                 }
         } catch (Exception ex) {
         }
@@ -546,10 +613,54 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         return exists;
     }
 
+    private int checkContinueWatchingInChannelList(List<VIUChannel> channelList) {
+        int exists = 0;
+        for (int i = 0; i < channelList.size(); i++) {
+            if (channelList.get(i) != null && channelList.get(i).getDescription() != null) {
+                if (channelList.get(i).getDescription().equalsIgnoreCase(AppConstants.KEY_CONTINUE_WATCHING)) {
+                    exists = 1;
+                }
+            }
+        }
+        return exists;
+    }
+
+    private int checkMyListInChannelList(List<VIUChannel> channelList) {
+        int exists = 0;
+        for (int i = 0; i < channelList.size(); i++) {
+            if (channelList.get(i) != null && channelList.get(i).getDescription() != null) {
+                if (channelList.get(i).getDescription().equalsIgnoreCase(AppConstants.KEY_MY_WATCHLIST)) {
+                    exists = 1;
+                }
+            }
+        }
+        return exists;
+    }
+
     private int getMyListIndex() {
         for (int i = 0; i < loadedList.size(); i++) {
             String railType = loadedList.get(i).getRailDetail().getDescription();
             if (railType.equalsIgnoreCase(AppConstants.KEY_MY_WATCHLIST)) {
+                updatedContinueWIndex = i;
+            }
+        }
+        return updatedContinueWIndex;
+    }
+
+    private int getMyListIndexInChannelList() {
+        for (int i = 0; i < dtChannelsList.size(); i++) {
+            String railType = dtChannelsList.get(i).getDescription();
+            if (railType.equalsIgnoreCase(AppConstants.KEY_MY_WATCHLIST)) {
+                updatedContinueWIndex = i;
+            }
+        }
+        return updatedContinueWIndex;
+    }
+
+    private int getContinueWatchIndInChannelList() {
+        for (int i = 0; i < dtChannelsList.size(); i++) {
+            String railType = dtChannelsList.get(i).getDescription();
+            if (railType.equalsIgnoreCase(AppConstants.KEY_CONTINUE_WATCHING)) {
                 updatedContinueWIndex = i;
             }
         }

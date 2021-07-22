@@ -23,6 +23,9 @@ import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivityProfileSubscriptionBinding;
 import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
+import com.astro.sott.modelClasses.InApp.PackDetail;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.InAppProcessListener;
@@ -38,16 +41,22 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
     private BillingProcessor billingProcessor;
     private SubscriptionViewModel subscriptionViewModel;
 
+
     @Override
     protected ActivityProfileSubscriptionBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
         return ActivityProfileSubscriptionBinding.inflate(inflater);
     }
+
+    String from = "Profile";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         intializeBilling();
         modelCall();
+        FirebaseEventManager.getFirebaseInstance(this).subscribeClicked = false;
+
+        from = getIntent().getStringExtra("from");
         setFragment();
     }
 
@@ -55,6 +64,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
         NewSubscriptionPacksFragment someFragment = new NewSubscriptionPacksFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("productList", new ArrayList<String>());
+        bundle.putString("from", from);
         someFragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frameContent, someFragment, "SubscriptionFragment"); // give your fragment container id in first parameter
@@ -97,9 +107,20 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
         subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
             if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
+                    try {
+                        CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Success", "Content Details Page");
+                        FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS, UserInfo.getInstance(this).getCpCustomerId());
+
+                    } catch (Exception e) {
+
+                    }
                     Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
                 }
             } else {
+                try {
+                    CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failure", "Content Details Page");
+                } catch (Exception ex) {
+                }
                 Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
 
             }
@@ -107,6 +128,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
 
 
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -116,6 +138,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
             }
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -131,9 +154,17 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
         billingProcessor.initializeBillingProcessor();
     }
 
+    private String planName = "", planPrice = "", offerId = "", offerType = "";
+
     @Override
-    public void onCardClicked(String productId, String serviceType, String activePlan,String name,String price) {
+    public void onCardClicked(String productId, String serviceType, String activePlan, String name, String price) {
+
+        this.planName = name;
+        offerId = productId;
+        planPrice = price;
+        FirebaseEventManager.getFirebaseInstance(this).packageEvent(name, price, "trx_select", "");
         if (serviceType.equalsIgnoreCase("ppv")) {
+            offerType = "TVOD";
             billingProcessor.purchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {
             if (billingProcessor != null && billingProcessor.isReady()) {
@@ -142,9 +173,11 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     public void response(Purchase purchaseObject) {
                         if (purchaseObject != null) {
                             if (purchaseObject.getSku() != null && purchaseObject.getPurchaseToken() != null) {
+                                offerType = "SVOD";
                                 billingProcessor.updatePurchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
                             }
                         } else {
+                            offerType = "SVOD";
                             billingProcessor.purchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
                         }
                     }

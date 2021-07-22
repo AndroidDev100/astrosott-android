@@ -282,7 +282,12 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             //   resetPassword();
         });
         getBinding().signup.setOnClickListener(view -> {
-            new ActivityLauncher(this).signupActivity(this, SignUpActivity.class);
+            Intent intent = new Intent(this, SignUpActivity.class);
+            intent.putExtra(AppLevelConstants.FROM_KEY, from);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+            // new ActivityLauncher(this).signupActivity(this, SignUpActivity.class, "");
 
         });
         setTextWatcher();
@@ -354,7 +359,13 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
                 KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
                 getContact();
-                CleverTapManager.getInstance().setSignInEvent(this, from, type);
+                try {
+
+
+                    CleverTapManager.getInstance().setSignInEvent(this, from, type);
+                } catch (Exception exception) {
+
+                }
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
@@ -466,12 +477,12 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
         AppCommonMethods.setCleverTap(this);
         if (UserInfo.getInstance(this).getCpCustomerId() != null && !UserInfo.getInstance(this).getCpCustomerId().equalsIgnoreCase(""))
-            FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "");
-        if (from.equalsIgnoreCase("Profile")) {
+            FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "", type);
+      /*  if (from.equalsIgnoreCase("Profile")) {
             new ActivityLauncher(AstrLoginActivity.this).profileScreenRedirection(AstrLoginActivity.this, HomeActivity.class);
-        } else {
-            onBackPressed();
-        }
+        } else {*/
+        onBackPressed();
+        /*}*/
     }
 
 

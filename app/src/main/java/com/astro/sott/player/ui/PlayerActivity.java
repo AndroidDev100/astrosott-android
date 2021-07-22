@@ -22,6 +22,7 @@ import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.WindowFocusCallback;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -179,6 +180,7 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
             } else {
                 assetURL = "";
             }
+
             if (isLivePlayer) {
                 fragment.getUrl(Constants.assetUrl, asset, railData.getProgress(), isLivePlayer, programName, railCommonDataList, programAsset);
 
@@ -187,6 +189,14 @@ public class PlayerActivity extends BaseBindingActivity<PlayerActivityBinding> {
 
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (railData != null && railData.getObject() != null)
+            CleverTapManager.getInstance().mediaWatched(this, railData.getObject(), false);
+
     }
 
     @Override

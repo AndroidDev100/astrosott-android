@@ -201,7 +201,7 @@ public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBind
     }
 
     private void setActive() {
-        FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "");
+        FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "",type);
         UserInfo.getInstance(this).setActive(true);
         AppCommonMethods.setCleverTap(this);
         new ActivityLauncher(IsThatYouActivity.this).profileScreenRedirection(IsThatYouActivity.this, HomeActivity.class);

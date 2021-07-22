@@ -20,6 +20,7 @@ import com.astro.sott.activities.home.HomeActivity
 import com.astro.sott.activities.isThatYou.IsThatYouActivity
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel
 import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
@@ -70,6 +71,9 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         super.onCreate(savedInstanceState)
         activitySinUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sin_up)
         modelCall()
+        if (intent.getStringExtra(AppLevelConstants.FROM_KEY) != null)
+            from = intent.getStringExtra(AppLevelConstants.FROM_KEY)!!
+        CleverTapManager.getInstance().loginOrigin = from
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.SIGN_UP)
         setClicks()
         setWatcher()
@@ -182,11 +186,10 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             false
         })
         activitySinUpBinding?.fb?.setOnClickListener(View.OnClickListener {
-
             activitySinUpBinding?.loginButton?.performClick()
         })
         activitySinUpBinding?.loginBtn?.setOnClickListener(View.OnClickListener {
-            onBackPressed()
+            ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity::class.java, from)
         })
         activitySinUpBinding?.backIcon?.setOnClickListener(View.OnClickListener {
             onBackPressed()
@@ -411,12 +414,15 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                         evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.externalSessionToken
                     KsPreferenceKey.getInstance(this).startSessionKs =
                         evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.externalSessionToken
-                    if (type.equals("Facebook", ignoreCase = true) || type.equals("Google", ignoreCase = true)) {
+                    if (type.equals("Facebook", ignoreCase = true) || type.equals(
+                            "Google",
+                            ignoreCase = true
+                        )
+                    ) {
                         UserInfo.getInstance(this).isSocialLogin = true
                     }
                     getContact()
                     try {
-                        from = CleverTapManager.getInstance().loginOrigin
                         CleverTapManager.getInstance().setSignInEvent(this, from, type)
                     } catch (ex: Exception) {
                     }
@@ -458,6 +464,11 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             })
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (UserInfo.getInstance(this).isActive)
+            onBackPressed()
+    }
 
     private fun getContact() {
         astroLoginViewModel!!.getContact(UserInfo.getInstance(this@SignUpActivity).accessToken)
@@ -576,13 +587,20 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         UserInfo.getInstance(this).isActive = true
         AppCommonMethods.setCleverTap(this)
         FirebaseEventManager.getFirebaseInstance(this)
-            .userLoginEvent(UserInfo.getInstance(this).cpCustomerId, "")
-
-
+            .userLoginEvent(UserInfo.getInstance(this).cpCustomerId, "", "")
 
         Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT)
             .show()
-        ActivityLauncher(this@SignUpActivity).homeScreen(this, HomeActivity::class.java)
+
+        if (from.equals("Profile", ignoreCase = true)) {
+            ActivityLauncher(this).profileScreenRedirection(
+                this,
+                HomeActivity::class.java
+            )
+        } else {
+            onBackPressed()
+        }
+        //   ActivityLauncher(this@SignUpActivity).homeScreen(this, HomeActivity::class.java)
 
     }
 

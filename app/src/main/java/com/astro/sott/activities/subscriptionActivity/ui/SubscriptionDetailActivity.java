@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,22 +27,33 @@ import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
+import com.astro.sott.modelClasses.InApp.PackDetail;
+import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
+import com.astro.sott.utils.PacksDateLayer;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.InAppProcessListener;
 import com.astro.sott.utils.billing.PurchaseDetailListener;
 import com.astro.sott.utils.billing.PurchaseType;
 import com.astro.sott.utils.billing.SKUsListListener;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
+import com.google.gson.JsonArray;
 import com.kaltura.client.types.Subscription;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubscriptionDetailBinding> implements CardCLickedCallBack, InAppProcessListener {
     private BillingProcessor billingProcessor;
     private SubscriptionViewModel subscriptionViewModel;
+    private SkuDetails skuDetails;
+    private List<PackDetail> packDetailList;
+    private boolean haveSvod = false, haveTvod = false;
 
     String fileId = "";
     boolean isPlayable;
@@ -81,6 +93,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private int count = 0;
 
     private void getSubscriptionActionList() {
+        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         if (!from.equalsIgnoreCase("Live Event")) {
             subscriptionViewModel.getSubscriptionPackageList(fileId).observe(this, subscriptionList -> {
                 if (subscriptionList != null) {
@@ -92,7 +105,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                                 count++;
                             }
                         }
-                        setPackFragment();
+                        getProducts();
+                        // setPackFragment();
                     }
                 }
             });
@@ -108,14 +122,17 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                                     count++;
                                 }
                             }
-                            setPackFragment();
+                            getProducts();
+
+                            // setPackFragment();
                         }
                     }
                 });
             } else {
                 subscriptionIds = fileId.split(",");
                 if (subscriptionIds != null && subscriptionIds.length > 0)
-                    setPackFragment();
+                    getProducts();
+                // setPackFragment();
             }
         }
 
@@ -130,6 +147,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     }*/
 
     private void setPackFragment() {
+        getBinding().frameContent.setVisibility(View.VISIBLE);
         FragmentManager fm = getSupportFragmentManager();
         SubscriptionPacksFragment subscriptionPacksFragment = new SubscriptionPacksFragment();
         Bundle bundle = new Bundle();
@@ -145,6 +163,88 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         fm.beginTransaction().replace(R.id.frameContent, subscriptionPacksFragment).commitNow();
 
     }
+
+    private void getProducts() {
+        if (subscriptionIds != null) {
+            JsonArray jsonArray = new JsonArray();
+            for (String id : subscriptionIds) {
+                jsonArray.add(id);
+            }
+            subscriptionViewModel.getProductForLogin(UserInfo.getInstance(this).getAccessToken(), jsonArray, from).observe(this, evergentCommonResponse -> {
+                if (evergentCommonResponse.isStatus()) {
+                    if (evergentCommonResponse.getGetProductResponse() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage().size() > 0) {
+                        checkIfDetailAvailableOnPlaystore(evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage());
+                    }
+                } else {
+                    if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
+                        EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                            if (evergentCommonResponse.isStatus()) {
+                                getProducts();
+                            } else {
+                                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                                AppCommonMethods.removeUserPrerences(this);
+                            }
+                        });
+                    } else {
+
+                    }
+                }
+            });
+        }
+    }
+
+    private void checkIfDetailAvailableOnPlaystore(List<ProductsResponseMessageItem> productsResponseMessage) {
+        packDetailList = new ArrayList<>();
+        List<String> subSkuList = AppCommonMethods.getSubscriptionSKUs(productsResponseMessage, this);
+        List<String> productsSkuList = AppCommonMethods.getProductSKUs(productsResponseMessage, this);
+        onListOfSKUs(subSkuList, productsSkuList, new SKUsListListener() {
+            @Override
+            public void onListOfSKU(@Nullable List<SkuDetails> purchases) {
+                // Log.w("valuessAdded--->>",purchases.size()+"");
+                // Log.w("valuessAdded--->>",purchases.get(0).getDescription());
+
+                for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
+                    if (responseMessageItem.getAppChannels() != null && responseMessageItem.getAppChannels().get(0) != null && responseMessageItem.getAppChannels().get(0).getAppChannel() != null && responseMessageItem.getAppChannels().get(0).getAppChannel().equalsIgnoreCase("Google Wallet") && responseMessageItem.getAppChannels().get(0).getAppID() != null) {
+                        if (responseMessageItem.getServiceType().equalsIgnoreCase("ppv")) {
+                            skuDetails = getPurchaseDetail(responseMessageItem.getAppChannels().get(0).getAppID());
+                            haveTvod = true;
+                        } else {
+                            skuDetails = getSubscriptionDetail(responseMessageItem.getAppChannels().get(0).getAppID());
+                            haveSvod = true;
+                        }
+                        if (skuDetails != null) {
+                            PackDetail packDetail = new PackDetail();
+                            packDetail.setSkuDetails(skuDetails);
+                            packDetail.setProductsResponseMessageItem(responseMessageItem);
+                            packDetailList.add(packDetail);
+                        }
+                    }
+                }
+
+                if (packDetailList.size() > 0) {
+                    if (packDetailList.size() == 1) {
+                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                        onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPrice());
+                    } else {
+                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                        if (haveSvod && haveTvod == false) {
+                            PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+                            Intent intent = new Intent(SubscriptionDetailActivity.this, ProfileSubscriptionActivity.class);
+                            intent.putExtra("from", "Content Detail Page");
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            setPackFragment();
+                        }
+
+                    }
+
+                }
+
+            }
+        });
+    }
+
 
     private void intializeBilling() {
 
@@ -172,13 +272,16 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         TabsData.getInstance().setDetail(false);
     }
 
-    private String planName = "", planPrice = "";
+    private String planName = "", planPrice = "", offerId = "", offerType = "";
 
     @Override
     public void onCardClicked(String productId, String serviceType, String active, String planName, String price) {
         this.planName = planName;
+        offerId = productId;
         planPrice = price;
+        FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, price, "trx_select", "");
         if (serviceType.equalsIgnoreCase("ppv")) {
+            offerType = "TVOD";
             billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
         } else {
             if (billingProcessor != null && billingProcessor.isReady()) {
@@ -187,9 +290,11 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     public void response(Purchase purchaseObject) {
                         if (purchaseObject != null) {
                             if (purchaseObject.getSku() != null && purchaseObject.getPurchaseToken() != null) {
+                                offerType = "SVOD";
                                 billingProcessor.updatePurchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
                             }
                         } else {
+                            offerType = "SVOD";
                             billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
                         }
                     }
@@ -261,9 +366,10 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
                     Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
                     try {
-                        FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS);
+                        CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Success", "Content Details Page");
+                        FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS, UserInfo.getInstance(this).getCpCustomerId());
                     } catch (Exception e) {
-
+                        onBackPressed();
                     }
                     onBackPressed();
                 } else {
@@ -272,6 +378,11 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 }
 
             } else {
+                try {
+                    CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failure", "Content Details Page");
+                } catch (Exception ex) {
+                    onBackPressed();
+                }
                 Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 onBackPressed();
 
@@ -288,7 +399,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     @Override
     public void onBillingError(@Nullable BillingResult error) {
-
+        onBackPressed();
     }
 
     public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList, SKUsListListener callBacks) {

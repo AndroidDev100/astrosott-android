@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
 import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
@@ -72,7 +73,7 @@ public class DialogHelper {
             builder.setTitle(context.getResources().getString(R.string.become_vip)).setMessage(context.getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                        new ActivityLauncher(baseActivity).profileSubscription();
+                        new ActivityLauncher(baseActivity).profileSubscription("Player");
                         dialog.cancel();
                     });
 
@@ -180,12 +181,12 @@ public class DialogHelper {
             builder.setTitle(context.getResources().getString(R.string.become_vip)).setMessage(context.getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.login), (dialog, id) -> {
-                        new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class, CleverTapManager.PLAYER_LOCK);
+                        new ActivityLauncher(context).signupActivity(context, SignUpActivity.class, CleverTapManager.PLAYER_LOCK);
                         baseActivity.onBackPressed();
                         dialog.cancel();
                     })
                     .setNegativeButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                        new ActivityLauncher(baseActivity).profileSubscription();
+                        new ActivityLauncher(baseActivity).profileSubscription("Player");
                         dialog.cancel();
                     });
 

@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceStatusCallBack;
@@ -225,7 +226,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(LiveEventActivity.this).astrLoginActivity(LiveEventActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
+                    new ActivityLauncher(LiveEventActivity.this).signupActivity(LiveEventActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
@@ -252,7 +253,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(LiveEventActivity.this).astrLoginActivity(LiveEventActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
+                    new ActivityLauncher(LiveEventActivity.this).signupActivity(LiveEventActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             }
@@ -602,7 +603,6 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     stringBuilder.append(s + " | ");
                 }
                 getChannelLanguage();
-                getParentalRating();
             }
         });
 
@@ -610,15 +610,13 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     }
 
     private void getChannelLanguage() {
-        String language = "";
-        MultilingualStringValue stringValue = null;
-        if (asset.getMetas() != null)
-            stringValue = (MultilingualStringValue) asset.getMetas().get(AppLevelConstants.KEY_LANGUAGE);
-        if (stringValue != null)
-            language = stringValue.getValue();
-
-        if (language != null && !language.equalsIgnoreCase(""))
-            stringBuilder.append(language + " | ");
+        viewModel.getLanguageLiveData(asset.getTags()).observe(this, language -> {
+            if (!TextUtils.isEmpty(language)) {
+                if (language != null && !language.equalsIgnoreCase(""))
+                    stringBuilder.append(language + " | ");
+            }
+            getParentalRating();
+        });
     }
 
     private void getParentalRating() {
@@ -833,8 +831,9 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
     private void openShareDialouge() {
         try {
-            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
-        }catch (Exception e) {
+            CleverTapManager.getInstance().socialShare(this, asset, false);
+            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset, this);
+        } catch (Exception e) {
 
         }
         AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), SubMediaTypes.LiveEvent.name());

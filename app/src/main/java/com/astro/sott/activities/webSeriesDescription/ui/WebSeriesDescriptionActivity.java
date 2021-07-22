@@ -1,5 +1,6 @@
 package com.astro.sott.activities.webSeriesDescription.ui;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -32,6 +33,7 @@ import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.viewModel.WebSeriesDescriptionViewModel;
 import com.astro.sott.baseModel.BaseActivity;
@@ -41,7 +43,10 @@ import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
+import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.fragments.episodeFrament.EpisodesFragment;
+import com.astro.sott.fragments.manageSubscription.ui.CancelDialogFragment;
+import com.astro.sott.fragments.manageSubscription.ui.ManageSubscriptionFragment;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.RefreshKS;
@@ -90,7 +95,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWebSeriesDescriptionBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, AlertDialogFragment.AlertDialogListener, MoreLikeThis, EpisodesFragment.FirstEpisodeCallback {
+public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWebSeriesDescriptionBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, AlertDialogFragment.AlertDialogListener, MoreLikeThis, EpisodesFragment.FirstEpisodeCallback, EpisodeDialogFragment.EditDialogListener {
     private final Handler mHandler = new Handler();
     private final List<AssetCommonBean> loadedList = new ArrayList<>();
     private Asset asset;
@@ -183,7 +188,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
+                    new ActivityLauncher(WebSeriesDescriptionActivity.this).signupActivity(WebSeriesDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             }
@@ -240,7 +245,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
+                    new ActivityLauncher(WebSeriesDescriptionActivity.this).signupActivity(WebSeriesDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), WebSeriesDescriptionActivity.this);
@@ -315,7 +320,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void setMetas() {
         getMovieYear();
-      //  setRailBaseFragment();
+        //  setRailBaseFragment();
     }
 
     private void getMovieYear() {
@@ -576,8 +581,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
                 try {
-                    FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset);
-                }catch (Exception e){
+                    CleverTapManager.getInstance().socialShare(this, asset, false);
+                    FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset, this);
+                } catch (Exception e) {
 
                 }
                 openShareDialouge();
@@ -687,18 +693,17 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             callProgressBar();
             playerChecks(railCommonData);
         } else {
-            openDialougeForEntitleMent();
+            openDialougeForEntitleMent(railCommonData);
         }
     }
 
-    public void openDialougeForEntitleMent() {
+    public void openDialougeForEntitleMent(RailCommonData railCommonData) {
         boolean status = UserInfo.getInstance(this).isActive();
-        if (status) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
+           /* AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
             builder.setTitle(getResources().getString(R.string.become_vip)).setMessage(getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                        new ActivityLauncher(this).profileSubscription();
+                        new ActivityLauncher(this).profileSubscription("Content Detail Page");
                         dialog.cancel();
                     });
 
@@ -707,10 +712,18 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
             bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
             Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
-        } else {
-            showLoginDialog();
+            bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));*/
+        if (railCommonData.getObject() != null) {
+            fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
+            FragmentManager fm = getSupportFragmentManager();
+            EpisodeDialogFragment cancelDialogFragment = EpisodeDialogFragment.newInstance("Detail Page", fileId);
+            cancelDialogFragment.setEditDialogCallBack(WebSeriesDescriptionActivity.this);
+            cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
         }
+
+        /*} else {
+            showLoginDialog();
+        }*/
     }
 
     public void showLoginDialog() {
@@ -720,13 +733,13 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 .setPositiveButton(getResources().getString(R.string.login), (dialog, id) -> {
                     //dialog.cancel();
 
-                    new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
+                    new ActivityLauncher(this).signupActivity(this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
                     dialog.cancel();
                     //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
                 })
                 .
                         setNegativeButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                            new ActivityLauncher(this).profileSubscription();
+                            new ActivityLauncher(this).profileSubscription("Content Detail Page");
                             dialog.cancel();
                         });
 
@@ -1075,9 +1088,12 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             }
 
             if (getBinding().expandableLayout.isExpanded()) {
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
 //                getBinding().textExpandable.setText(().getString(R.string.view_more));
 
             } else {
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+
 //                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
             }
             if (view != null) {
@@ -1229,7 +1245,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     public void onFinishDialog() {
         if (isPurchased) {
             isPurchased = false;
-            new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
+            new ActivityLauncher(WebSeriesDescriptionActivity.this).signupActivity(WebSeriesDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
 
         }
     }
@@ -1242,7 +1258,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
 
     private void playerChecks(final RailCommonData railCommonData) {
-        new GeoBlockingCheck().aseetAvailableOrNot(WebSeriesDescriptionActivity.this, railData.getObject(), (status, response, totalCount, errorcode, message) -> {
+        new GeoBlockingCheck().aseetAvailableOrNot(WebSeriesDescriptionActivity.this, railCommonData.getObject(), (status, response, totalCount, errorcode, message) -> {
             if (status) {
                 if (totalCount != 0) {
                     checkBlockingErrors(response, railCommonData);
@@ -1628,6 +1644,11 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         getBinding().ivPlayIcon.setVisibility(View.GONE);
         setRailBaseFragment();
         isActive = UserInfo.getInstance(this).isActive();
+    }
+
+    @Override
+    public void onFinishEditDialog() {
+
     }
 }
 

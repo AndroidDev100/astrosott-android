@@ -12,6 +12,7 @@ import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.search.ui.ActivitySearch;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.baseModel.TabsBaseFragment;
@@ -251,7 +252,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         oldLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
         if (UserInfo.getInstance(this).isHouseHoldError()){
             UserInfo.getInstance(this).setHouseHoldError(false);
-            new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class, CleverTapManager.HOME);
+            new ActivityLauncher(this).signupActivity(this, SignUpActivity.class, CleverTapManager.HOME);
         }
         setSupportActionBar((Toolbar) getBinding().toolbar);
         if (getIntent().getStringExtra("fragmentType") != null)

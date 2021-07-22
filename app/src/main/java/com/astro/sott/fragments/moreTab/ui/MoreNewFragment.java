@@ -24,6 +24,7 @@ import com.astro.sott.activities.manageDevice.ui.ManageDeviceActivity;
 import com.astro.sott.activities.profile.ui.ChangeEmailConfirmation;
 import com.astro.sott.activities.profile.ui.EditEmailActivity;
 import com.astro.sott.activities.profile.ui.EditProfileActivity;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.ProfileSubscriptionActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
@@ -145,8 +146,9 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         });
 
         getBinding().loginSignupMore.setOnClickListener(view -> {
+            FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
             FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, "Sign Up/ Sign In", FirebaseEventManager.BTN_CLICK);
-            new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "Profile");
+            new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
 
         });
         getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
@@ -161,8 +163,13 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             public void onClick(View v) {
                 FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.MANAGE_SUBSCRIBE, FirebaseEventManager.BTN_CLICK);
                 if (getBinding().subscribe.getText().toString().equalsIgnoreCase("subscribe")) {
-                    navBar.setVisibility(View.GONE);
-                    new ActivityLauncher(getActivity()).profileSubscription();
+                    if (UserInfo.getInstance(getActivity()).isActive()) {
+                        navBar.setVisibility(View.GONE);
+                        new ActivityLauncher(getActivity()).profileSubscription("Profile");
+                    } else {
+                        FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = true;
+                        new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
+                    }
                 } else {
                     navBar.setVisibility(View.GONE);
                     ManageSubscriptionFragment manageSubscriptionFragment = new ManageSubscriptionFragment();
@@ -197,7 +204,8 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                     transaction.commit();
                 } else {
-                    new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "Profile");
+                    FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
+                    new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
 
                 }
 //                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
@@ -277,7 +285,8 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 manageDeviceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(manageDeviceIntent);
             } else {
-                new ActivityLauncher(getActivity()).astrLoginActivity(getActivity(), AstrLoginActivity.class, "Profile");
+                FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
+                new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
 
             }
 
@@ -475,9 +484,13 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                         getBinding().subscribe.setVisibility(View.VISIBLE);
                         getBinding().subscribe.setText(getResources().getString(R.string.manage_subscription));
                     } else {
+                        if (FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked)
+                            new ActivityLauncher(getActivity()).profileSubscription("Profile");
                         setUiForLogout();
                     }
                 } else {
+                    if (FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked)
+                        new ActivityLauncher(getActivity()).profileSubscription("Profile");
                     setUiForLogout();
                 }
             } else {
@@ -555,7 +568,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void logoutApi() {
-        subscriptionViewModel.logoutUser(UserInfo.getInstance(getActivity()).getAccessToken(),UserInfo.getInstance(getActivity()).getExternalSessionToken()).observe(this, logoutExternalResponseEvergentCommonResponse -> {
+        subscriptionViewModel.logoutUser(UserInfo.getInstance(getActivity()).getAccessToken(), UserInfo.getInstance(getActivity()).getExternalSessionToken()).observe(this, logoutExternalResponseEvergentCommonResponse -> {
 
         });
     }

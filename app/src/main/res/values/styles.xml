@@ -29,7 +29,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/fragment_background_color</item>
         <item name="colorAccent">@color/colorPrimaryDark</item>
-        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowEnableSplitTouch">false</item>
         <item name="android:splitMotionEvents">false</item>
@@ -150,7 +150,7 @@
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/aqua_marine</item>
     </style>
 
     <style name="ErrorAppearance" parent="@android:style/TextAppearance">

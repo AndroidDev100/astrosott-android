@@ -230,6 +230,8 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     }
 
     private void getTrailerAndHighlights(List<Asset> assetList) {
+        trailerFragmentViewModel.setTrailerData(null);
+        trailerFragmentViewModel.setHighLightsData(null);
         trailerData = new ArrayList<>();
         highlightsData = new ArrayList<>();
         for (Asset assetItem : assetList) {
