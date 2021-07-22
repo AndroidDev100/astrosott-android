@@ -1144,15 +1144,15 @@ public class PlayerRepository {
 
     private SubtitleStyleSettings getStyleForPositionTwo() {
         return new SubtitleStyleSettings("AdultsStyle")
-                .setBackgroundColor(Color.WHITE)
-                .setTextColor(Color.BLUE)
+                .setBackgroundColor(Color.BLACK)
+                .setTextColor(Color.WHITE)
                 .setTextSizeFraction(SubtitleStyleSettings.SubtitleTextSizeFraction.SUBTITLE_FRACTION_100)
-                .setWindowColor(Color.BLUE)
-                .setEdgeColor(Color.BLUE)
+                .setWindowColor(Color.BLACK)
+                .setEdgeColor(Color.BLACK)
                 .setTypeface(SubtitleStyleSettings.SubtitleStyleTypeface.SANS_SERIF)
                 .setEdgeType(SubtitleStyleSettings.SubtitleStyleEdgeType.EDGE_TYPE_DROP_SHADOW)
                 // Move subtitle vertical up-down
-                .setSubtitlePosition(new PKSubtitlePosition(true).setVerticalPosition(30));
+                .setSubtitlePosition(new PKSubtitlePosition(true).setVerticalPosition(70));
     }
 
     private void addKavaPluginConfig(Context context, PKPluginConfigs pluginConfigs, Asset asset) {
