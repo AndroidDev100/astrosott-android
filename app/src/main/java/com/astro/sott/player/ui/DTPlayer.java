@@ -1653,20 +1653,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     getPlayerView(player);
                     player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fit);
                     getPlayerState();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            haveAudioOrNot();
-                            // haveSubtitleorNot();
-                        }
-                    }, 4000);
 
                 }
             });
         } catch (Exception e) {
             PrintLogging.printLog("Exception", e.toString());
         }
-
 
     }
 
@@ -1733,38 +1725,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
 
 
-        viewModel.loadCaptionWithPlayer().observe(this, textTracks -> {
-            if (textTracks != null && textTracks.size() > 0) {
 
-                viewModel.getTextTrackItems().observe(baseActivity, trackItems -> {
-                    if (trackItems.length > 0) {
-                        isCaption = true;
-                        captionList = trackItems.clone();
-//                        if (captionName == "") {
-//                            captionList[0].setSelected(true);
-//                            captionName = captionList[0].getTrackName();
-//                        }
-//                        CaptionAdapter captionAdapter = new CaptionAdapter(trackItems);
-//                        getBinding().audioQuality.recycleviewSubtitle.setAdapter(captionAdapter);
-                    } else {
-                        isCaption = false;
-//                        getBinding().audioQuality.recycleviewSubtitle.setVisibility(View.GONE);
-//                        getBinding().audioQuality.titleSubtitle.setVisibility(View.GONE);
-                    }
-                });
-
-
-            } else {
-                // dialogQuality.cancel();
-//                    hideSoftKeyButton();
-                // callHandler();
-                isCaption = false;
-//                getBinding().audioQuality.recycleviewSubtitle.setVisibility(View.GONE);
-//                getBinding().audioQuality.titleSubtitle.setVisibility(View.GONE);
-                //ToastHandler.show(baseActivity.getResources().getString(R.string.no_caption_available), baseActivity.getApplicationContext());
-            }
-
-        });
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -1838,7 +1799,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (isFirstAd) {
                 new Handler().postDelayed(() -> {
                     haveAudioOrNot();
-                    // haveSubtitleorNot();
+                     haveSubtitleorNot();
 
                 }, 7000);
                 isFirstAd = false;
@@ -1962,6 +1923,18 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
         });
+
+//        player.addListener(this, PlayerEvent.Type.LOADED_METADATA, event -> {
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Log.d("gtgtgtgtgt","Enter2");
+//                    haveAudioOrNot();
+//                    haveSubtitleorNot();
+//                }
+//            }, 2000);
+//
+//        });
 
         player.addListener(this, PlayerEvent.playheadUpdated, event -> {
             if (!isLivePlayer) {
@@ -2373,6 +2346,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (booleanLiveData.hasObservers()) return;
                     if (aBoolean != null && aBoolean) {
                         getBinding().pBar.setVisibility(View.GONE);
+                        haveAudioOrNot();
+                        haveSubtitleorNot();
 //                        getBinding().urlimage.setVisibility(View.GONE);
                         if (playerAsset.getType() != MediaTypeConstant.getLinear(getActivity()))
                             setVideoQuality();
@@ -3315,25 +3290,45 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         viewModel.loadCaptionWithPlayer().observe(this, textTracks -> {
             if (textTracks != null && textTracks.size() > 0) {
                 viewModel.getTextTrackItems().observe(baseActivity, trackItems -> {
-                    if (trackItems != null && trackItems.length > 0) {
-                        /*for (int i = 0; i < trackItems.length; i++) {
-                            String trackLang = trackItems[i].getTrackName().trim();
-                            String lang = new KsPreferenceKey(baseActivity).getSubtitleLanguage().trim();
-                            if (trackLang.equalsIgnoreCase(lang)) {
-                                viewModel.changeAudioTrack(trackItems[i].getUniqueId());
-                                break;
-                            }
-                        }*/
-
+                    if (trackItems.length > 0) {
                         isCaption = true;
+                        captionList = trackItems.clone();
+//                        if (captionName == "") {
+//                            captionList[0].setSelected(true);
+//                            captionName = captionList[0].getTrackName();
+//                        }
+//                        CaptionAdapter captionAdapter = new CaptionAdapter(trackItems);
+//                        getBinding().audioQuality.recycleviewSubtitle.setAdapter(captionAdapter);
                     } else {
                         isCaption = false;
+//                        getBinding().audioQuality.recycleviewSubtitle.setVisibility(View.GONE);
+//                        getBinding().audioQuality.titleSubtitle.setVisibility(View.GONE);
                     }
                 });
+
+
             } else {
+                // dialogQuality.cancel();
+//                    hideSoftKeyButton();
+                // callHandler();
                 isCaption = false;
+//                getBinding().audioQuality.recycleviewSubtitle.setVisibility(View.GONE);
+//                getBinding().audioQuality.titleSubtitle.setVisibility(View.GONE);
+                //ToastHandler.show(baseActivity.getResources().getString(R.string.no_caption_available), baseActivity.getApplicationContext());
             }
+
         });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isCaption || isAudioTracks) {
+                    getBinding().subtitleAudio.setVisibility(View.VISIBLE);
+                } else {
+                    getBinding().subtitleAudio.setVisibility(View.GONE);
+                }
+            }
+        }, 2000);
     }
 
     private void chooseCaption() {

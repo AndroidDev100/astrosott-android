@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Handler;
 
 import androidx.core.content.ContextCompat;
@@ -56,7 +57,9 @@ import com.kaltura.playkit.player.ABRSettings;
 import com.kaltura.playkit.player.AudioTrack;
 import com.kaltura.playkit.player.PKAspectRatioResizeMode;
 import com.kaltura.playkit.player.PKPlayerErrorType;
+import com.kaltura.playkit.player.PKSubtitlePosition;
 import com.kaltura.playkit.player.PKTracks;
+import com.kaltura.playkit.player.SubtitleStyleSettings;
 import com.kaltura.playkit.player.TextTrack;
 import com.kaltura.playkit.player.VideoTrack;
 import com.kaltura.playkit.plugins.ima.IMAConfig;
@@ -1130,12 +1133,26 @@ public class PlayerRepository {
                 } catch (Exception e) {
                 }
                 player.prepare(mediaConfig);
+                player.getSettings().setSubtitleStyle(getStyleForPositionTwo());
                 player.play();
 
             } // This is your code
         };
         mainHandler.post(myRunnable);
 
+    }
+
+    private SubtitleStyleSettings getStyleForPositionTwo() {
+        return new SubtitleStyleSettings("AdultsStyle")
+                .setBackgroundColor(Color.WHITE)
+                .setTextColor(Color.BLUE)
+                .setTextSizeFraction(SubtitleStyleSettings.SubtitleTextSizeFraction.SUBTITLE_FRACTION_100)
+                .setWindowColor(Color.BLUE)
+                .setEdgeColor(Color.BLUE)
+                .setTypeface(SubtitleStyleSettings.SubtitleStyleTypeface.SANS_SERIF)
+                .setEdgeType(SubtitleStyleSettings.SubtitleStyleEdgeType.EDGE_TYPE_DROP_SHADOW)
+                // Move subtitle vertical up-down
+                .setSubtitlePosition(new PKSubtitlePosition(true).setVerticalPosition(30));
     }
 
     private void addKavaPluginConfig(Context context, PKPluginConfigs pluginConfigs, Asset asset) {
