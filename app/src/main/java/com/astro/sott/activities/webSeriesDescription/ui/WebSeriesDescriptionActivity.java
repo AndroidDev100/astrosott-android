@@ -1088,9 +1088,12 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             }
 
             if (getBinding().expandableLayout.isExpanded()) {
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
 //                getBinding().textExpandable.setText(().getString(R.string.view_more));
 
             } else {
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+
 //                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
             }
             if (view != null) {
