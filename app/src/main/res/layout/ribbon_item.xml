@@ -12,7 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/ribbon_color_new"
-            android:fontFamily="@font/heebo_medium"
+            android:fontFamily="@font/roboto_medium"
             android:textStyle="normal"
             android:paddingLeft="8dp"
             android:paddingTop="4dp"

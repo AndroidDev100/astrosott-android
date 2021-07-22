@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="11dp"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:text="Wed, 1/4/2019"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_14sp" />
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:text="@string/watchlist"
                 android:textColor="@color/white"
                 android:layout_margin="@dimen/_2dp"
@@ -66,7 +66,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/dimen14dp"
                 android:padding="@dimen/_4dp"
-                android:fontFamily="@font/heebo_medium"
+                android:fontFamily="@font/roboto_medium"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp" />
 
@@ -78,7 +78,7 @@
             android:layout_below="@+id/rl1"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/dimen16dp"
-            android:fontFamily="@font/heebo_light"
+            android:fontFamily="@font/roboto_light"
             android:text="inclusive 6% Tax"
             android:textColor="@color/white"
             android:textSize="@dimen/_10sp"
@@ -98,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:text="@string/payment_method"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_14sp" />
@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:drawablePadding="@dimen/dimen12dp"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp" />
         </RelativeLayout>
@@ -122,7 +122,7 @@
             android:layout_marginStart="@dimen/dimen16dp"
             android:layout_marginEnd="@dimen/dimen16dp"
             android:layout_marginBottom="@dimen/dimen16dp"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/roboto_regular"
             android:textColor="@color/cancel_red_color"
             android:textSize="@dimen/font_small"
             android:visibility="gone" />

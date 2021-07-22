@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -189,6 +190,10 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 } else {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                    landscapeItemBinding.tvTitle.setMaxLines(2);
+                    landscapeItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
+
+
                 }
 
             } catch (Exception ignored) {
@@ -242,6 +247,11 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 } else {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                    landscapeItemBinding.tvTitle.setMaxLines(2);
+                    landscapeItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
+
+
+
                 }
             } catch (Exception ignored) {
 
@@ -293,6 +303,11 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 } else {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                    landscapeItemBinding.tvTitle.setMaxLines(2);
+                    landscapeItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
+
+
+
                 }
             } catch (Exception ignored) {
 

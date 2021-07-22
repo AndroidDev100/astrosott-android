@@ -59,7 +59,7 @@
                 android:textSize="@dimen/font_medium"
                 android:ellipsize="end"
                 android:layout_below="@id/card_view"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:maxLines="1"
                 android:textColor="@color/title_color">
 
@@ -73,7 +73,7 @@
                 android:textSize="@dimen/font_small"
                 android:text=""
                 android:layout_below="@id/tv_title"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:maxLines="1"
                 android:textColor="@color/title_color">
 

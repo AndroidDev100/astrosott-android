@@ -8,6 +8,7 @@ import android.os.SystemClock;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.astro.sott.databinding.ContinuewatchinglistingItemBinding;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ImageHelper;
+import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.kaltura.client.types.BooleanValue;
 import com.kaltura.client.types.Value;
 
@@ -69,6 +71,20 @@ public class CommonContWatchListingAdapter extends RecyclerView.Adapter<CommonCo
             holder.landscapeItemBinding.tvTitle.setText(singleItem.getObject().getName());
             ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageTocontinueWatchingListing(holder.landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.square1);
             getPremimumMark(i, holder.landscapeItemBinding);
+            if(itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)){
+                holder.landscapeItemBinding.tvTitle.setMaxLines(1);
+
+
+            }
+            else if(itemsList.get(i).getType() == MediaTypeConstant.getLinear(mContext)){
+                holder.landscapeItemBinding.tvTitle.setMaxLines(1);
+
+
+            }else {
+                holder.landscapeItemBinding.tvTitle.setMaxLines(2);
+                holder.landscapeItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
+
+            }
         } catch (Exception e) {
 
         }

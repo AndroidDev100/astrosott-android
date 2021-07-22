@@ -108,7 +108,7 @@
     <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">12sp</item>
         <item name="textAllCaps">false</item>
-        <item name="fontFamily">@font/heebo_medium</item>
+        <item name="fontFamily">@font/roboto_medium</item>
         <item name="maxLines">1</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
@@ -119,21 +119,21 @@
     <style name="MineCustomTabTextAppearence" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="textAllCaps">false</item>
-        <item name="fontFamily">@font/heebo_medium</item>
+        <item name="fontFamily">@font/roboto_medium</item>
 
     </style>
 
     <style name="packTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="textAllCaps">false</item>
-        <item name="fontFamily">@font/heebo_medium</item>
+        <item name="fontFamily">@font/roboto_medium</item>
 
     </style>
 
     <style name="MineCustomBottomNavText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">12sp</item>
         <item name="textAllCaps">false</item>
-        <item name="fontFamily">@font/heebo_medium</item>
+        <item name="fontFamily">@font/roboto_medium</item>
 
     </style>
 
@@ -235,7 +235,7 @@
 
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/heebo_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
         <item name="android:textAllCaps">false</item>

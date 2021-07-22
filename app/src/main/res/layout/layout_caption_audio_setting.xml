@@ -23,7 +23,7 @@
             android:text="@string/audio"
             android:textColor="@color/pale_gray"
             android:textSize="@dimen/dimen20sp"
-            android:fontFamily="@font/heebo_bold"
+            android:fontFamily="@font/roboto_bold"
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin70dp"
@@ -48,7 +48,7 @@
             android:text="@string/subtitle"
             android:textColor="@color/pale_gray"
             android:textSize="@dimen/dimen20sp"
-            android:fontFamily="@font/heebo_bold"
+            android:fontFamily="@font/roboto_bold"
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dimen20dp"/>

@@ -57,7 +57,7 @@
                         android:layout_marginRight="30dp"
                         android:layout_toStartOf="@+id/iv_quality"
                         android:layout_toEndOf="@id/iv_cancel"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:maxLines="1"
@@ -272,7 +272,7 @@
                         android:layout_marginTop="32.7dp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:layout_toEndOf="@+id/slash"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:text=""
@@ -289,7 +289,7 @@
                         android:layout_marginStart="13dp"
                         android:layout_marginTop="32.7dp"
                         android:layout_marginBottom="@dimen/_8sdp"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:text=""
@@ -306,7 +306,7 @@
                         android:layout_marginTop="32.7dp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:layout_toEndOf="@+id/current_time"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:text="/"
@@ -378,7 +378,7 @@
                             android:layout_gravity="bottom|center"
                             android:layout_marginEnd="3.5dp"
                             android:drawablePadding="@dimen/_6dp"
-                            android:fontFamily="@font/heebo_regular"
+                            android:fontFamily="@font/roboto_regular"
                             android:gravity="center"
                             android:lineHeight="32sp"
                             android:padding="@dimen/_4sdp"
@@ -398,7 +398,7 @@
                         android:layout_marginTop="@dimen/_2dp"
                         android:layout_weight="1"
                         android:drawablePadding="@dimen/_6dp"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:padding="@dimen/_4sdp"
@@ -418,7 +418,7 @@
                         android:layout_marginTop="@dimen/_4dp"
                         android:layout_weight="1"
                         android:drawablePadding="@dimen/_6dp"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:padding="@dimen/_4sdp"
@@ -459,7 +459,7 @@
 
                 <!--                    android:drawableLeft="@drawable/ic_subtitle"-->
                 <!--                    android:drawablePadding="@dimen/_6dp"-->
-                <!--                    android:fontFamily="@font/heebo_regular"-->
+                <!--                    android:fontFamily="@font/roboto_regular"-->
                 <!--                    android:gravity="center"-->
                 <!--                    android:lineHeight="32sp"-->
                 <!--                    android:layout_toLeftOf="@+id/next_episode"-->
@@ -481,7 +481,7 @@
                 <!--                    android:layout_toLeftOf="@+id/subtitle_audio"-->
                 <!--                    android:drawableLeft="@drawable/ic_video_quality"-->
                 <!--                    android:drawablePadding="@dimen/_6dp"-->
-                <!--                    android:fontFamily="@font/heebo_regular"-->
+                <!--                    android:fontFamily="@font/roboto_regular"-->
                 <!--                    android:gravity="center"-->
                 <!--                    android:lineHeight="32sp"-->
                 <!--                    android:padding="@dimen/_1sdp"-->
@@ -497,7 +497,7 @@
                 <!--                    android:layout_marginTop="@dimen/_4dp"-->
                 <!--                    android:drawableLeft="@drawable/ic_next_episode"-->
                 <!--                    android:drawablePadding="@dimen/_6dp"-->
-                <!--                    android:fontFamily="@font/heebo_regular"-->
+                <!--                    android:fontFamily="@font/roboto_regular"-->
                 <!--                    android:gravity="center"-->
                 <!--                    android:lineHeight="32sp"-->
                 <!--                    android:padding="@dimen/_1sdp"-->
@@ -744,7 +744,7 @@
                 android:layout_height="@dimen/dimen40dp"
                 android:layout_marginEnd="@dimen/dimen55dp"
                 android:background="@drawable/skip_intro_button"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
                 android:padding="@dimen/_2sdp"
                 android:text="SKIP INTRO"
@@ -771,7 +771,7 @@
                 android:layout_height="@dimen/dimen40dp"
                 android:layout_marginEnd="@dimen/dimen55dp"
                 android:background="@drawable/skip_intro_button"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
                 android:text="SKIP INTRO"
                 android:padding="@dimen/_2dp"
@@ -814,7 +814,7 @@
                 android:layout_height="@dimen/dimen40dp"
                 android:layout_marginEnd="@dimen/dimen55dp"
                 android:background="@drawable/skip_intro_button"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
                 android:padding="@dimen/_2sdp"
                 android:text="SKIP INTRO"

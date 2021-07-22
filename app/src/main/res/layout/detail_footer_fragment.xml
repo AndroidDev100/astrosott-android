@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/roboto_regular"
             android:paddingBottom="10dp"
             android:text="@string/load_more"
             android:visibility="gone"

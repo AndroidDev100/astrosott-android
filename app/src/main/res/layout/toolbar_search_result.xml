@@ -33,7 +33,7 @@
             android:layout_marginEnd="@dimen/search_toolbar_padding_right"
             android:layout_toEndOf="@+id/home_icon_back"
             android:ellipsize="end"
-            android:fontFamily="@font/heebo_medium"
+            android:fontFamily="@font/roboto_medium"
             android:gravity="center_vertical"
             android:maxLines="1"
             android:singleLine="true"

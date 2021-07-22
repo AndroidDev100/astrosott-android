@@ -28,7 +28,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:fontFamily="@font/heebo_medium"
+                    android:fontFamily="@font/roboto_medium"
                     android:text="@string/you_may_like"
                     android:textColor="@color/white"
                     android:textSize="@dimen/rail_title_size" />
@@ -54,7 +54,7 @@
                     <!-- <TextView
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
-                         android:fontFamily="@font/heebo_regular"
+                         android:fontFamily="@font/roboto_regular"
                          android:text="@string/show_all"
                          android:textColor="@color/aqua_marine"
                          android:background="?attr/selectableItemBackgroundBorderless"

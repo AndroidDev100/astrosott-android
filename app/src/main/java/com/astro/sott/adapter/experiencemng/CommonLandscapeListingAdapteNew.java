@@ -106,6 +106,9 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
                 } else {
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
+                    holder.landscapeItemBinding.mediaTypeLayout.lineOne.setMaxLines(2);
+                    holder.landscapeItemBinding.mediaTypeLayout.lineOne.setEllipsize(TextUtils.TruncateAt.END);
+
                 }
                 //holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
             } catch (Exception ignored) {
