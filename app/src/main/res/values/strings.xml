@@ -115,6 +115,9 @@
     <string name="added_to_watchlist">added to your My List</string>
 
     <string name="become_vip">Become a VIP</string>
+    <string name="subscription_upgrade">Subscription Upgrade</string>
+    <string name="subscription_downgrade">Subscription Downgrade</string>
+
     <string name="device_Removed">Device Removed</string>
     <string name="rent_movie">Rent Movie For RM XX.XX</string>
     <string name="rooted_failure_msg">Tsk tsk tsk…you cannot run this app on jailbreak or rooted devices!</string>
@@ -251,6 +254,8 @@
     <string name="subscribe__dialog_description_logout">  Please login or create an account to complete the purchase!</string>
     <string name="new_version">New Version Available</string>
     <string name="pin_required">Pin cannot be blank</string>
+    <string name="upgrade_description">Upgrade will be immediate and prorated upgrade price will be charged/refunded accordingly to each payment method policies.</string>
+    <string name="downgrade_description">Downgrade will only take effect in the next billing cycle!</string>
     <string name="incorrect_pin">Incorrect Pin. Try again</string>
     <string name="no_content_available">No Content Available</string>
     <string name="login">Login</string>
@@ -506,6 +511,10 @@
     <string name="manage_subscription">Manage Subscriptions</string>
     <string name="partner_billing">Partner Billing</string>
     <string name="subscribe_more">Subscribe</string>
+    <string name="upgrade">Upgrade</string>
+    <string name="downgrade">Downgrade</string>
+
+
     <string name="manage_subscription_more">Manage Subscription</string>
     <string name="renew_date">Renew on 22/2/21</string>
     <string name="transac_history">Transaction History</string>

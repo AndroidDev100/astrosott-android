@@ -25,6 +25,8 @@ import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
+import com.astro.sott.fragments.subscription.dialog.DowngradeDialogFragment;
+import com.astro.sott.fragments.subscription.dialog.UpgradeDialogFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.modelClasses.InApp.PackDetail;
@@ -48,7 +50,7 @@ import com.kaltura.client.types.Subscription;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubscriptionDetailBinding> implements CardCLickedCallBack, InAppProcessListener {
+public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubscriptionDetailBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener {
     private BillingProcessor billingProcessor;
     private SubscriptionViewModel subscriptionViewModel;
     private SkuDetails skuDetails;
@@ -402,6 +404,22 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         onBackPressed();
     }
 
+    @Override
+    public void onUpgrade() {
+        FragmentManager fm = getSupportFragmentManager();
+        UpgradeDialogFragment upgradeDialogFragment = UpgradeDialogFragment.newInstance("Detail Page", "");
+        upgradeDialogFragment.setEditDialogCallBack(SubscriptionDetailActivity.this);
+        upgradeDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+    }
+
+    @Override
+    public void onDowngrade() {
+        FragmentManager fm = getSupportFragmentManager();
+        DowngradeDialogFragment downgradeDialogFragment = DowngradeDialogFragment.newInstance("Detail Page", "");
+        downgradeDialogFragment.setEditDialogCallBack(SubscriptionDetailActivity.this);
+        downgradeDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+    }
+
     public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList, SKUsListListener callBacks) {
         if (billingProcessor != null && billingProcessor.isReady()) {
             billingProcessor.getAllSkuDetails(subSkuList, productsSkuList, new SKUsListListener() {
@@ -422,5 +440,16 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 billingProcessor.endConnection();
             }
         }
+    }
+
+    @Override
+    public void onUpgradeClick() {
+        billingProcessor.upgrade();
+    }
+
+    @Override
+    public void onDowngradeClick() {
+        billingProcessor.downgrade();
+
     }
 }

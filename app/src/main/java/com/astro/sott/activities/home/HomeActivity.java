@@ -850,6 +850,16 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     }
 
+    @Override
+    public void onUpgrade() {
+
+    }
+
+    @Override
+    public void onDowngrade() {
+
+    }
+
     public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList, SKUsListListener callBacks) {
         if (billingProcessor != null && billingProcessor.isReady()) {
             billingProcessor.getAllSkuDetails(subSkuList, productsSkuList, new SKUsListListener() {
