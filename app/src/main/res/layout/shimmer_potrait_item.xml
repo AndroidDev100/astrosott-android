@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="@dimen/potrait_item_width"
-        android:layout_height="@dimen/potrait_item_height"
+        android:layout_width="@dimen/landscape_image_width"
+        android:layout_height="@dimen/landscape_image_height"
+        android:background="@color/shimmer_background_color"
+        card_view:cardBackgroundColor="@color/shimmer_background_color"
         card_view:cardCornerRadius="2dp"
         card_view:cardElevation="1dp"
         card_view:cardMaxElevation="1dp"
-        card_view:cardPreventCornerOverlap="false"
-        card_view:cardBackgroundColor="@color/shimmer_background_color"
-        android:background="@color/shimmer_background_color">
-               <!-- <ImageView
-                    android:id="@+id/itemImage"
-                    android:layout_width="@dimen/potrait_item_width"
-                    tools:ignore="ContentDescription"
-                    android:layout_height="@dimen/potrait_item_height"
-                    android:src="@drawable/portrait"
-                    android:background="@color/fragment_background_color"
-                    android:scaleType="fitXY"
-                    android:contentDescription="@string/shimmer_placeholder" />-->
+        card_view:cardPreventCornerOverlap="false">
+        <!-- <ImageView
+             android:id="@+id/itemImage"
+             android:layout_width="@dimen/potrait_item_width"
+             tools:ignore="ContentDescription"
+             android:layout_height="@dimen/potrait_item_height"
+             android:src="@drawable/portrait"
+             android:background="@color/fragment_background_color"
+             android:scaleType="fitXY"
+             android:contentDescription="@string/shimmer_placeholder" />-->
     </androidx.cardview.widget.CardView>
 </layout>
