@@ -3741,7 +3741,7 @@ public class KsServices {
                 if (result.results.getTotalCount() > 0) {
                     if (result.results.getObjects() != null) {
                         if (result.results.getObjects().size() > 0 && result.results.getObjects().get(0) != null) {
-                            specificAssetCallBack.getAsset(false, result.results.getObjects().get(0));
+                            specificAssetCallBack.getAsset(true, result.results.getObjects().get(0));
 
                         } else {
                             specificAssetCallBack.getAsset(false, null);

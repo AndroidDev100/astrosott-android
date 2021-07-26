@@ -513,8 +513,8 @@
     <string name="subscribe_more">Subscribe</string>
     <string name="upgrade">Upgrade</string>
     <string name="downgrade">Downgrade</string>
-
-
+    <string name="currently_not_active">Currently no Active Subscription</string>
+    <string name="add_subscription">Add Subscriptions</string>
     <string name="manage_subscription_more">Manage Subscription</string>
     <string name="renew_date">Renew on 22/2/21</string>
     <string name="transac_history">Transaction History</string>

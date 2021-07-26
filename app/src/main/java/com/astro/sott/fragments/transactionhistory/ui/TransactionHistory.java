@@ -39,6 +39,7 @@ import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.OrderItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 
@@ -121,6 +122,10 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     }
 
     private void setClicks() {
+
+        getBinding().addSubscription.setOnClickListener(v -> {
+            new ActivityLauncher(getActivity()).profileSubscription("Profile");
+        });
         getBinding().arrow.setOnClickListener(v -> {
             if (getBinding().separator.getVisibility() == View.GONE) {
                 setArrow(true);
@@ -255,12 +260,14 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         subscriptionViewModel.getPaymentV2(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
+                getBinding().noDataLayout.setVisibility(View.GONE);
                 if (evergentCommonResponse.getPaymentV2Response() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder().size() > 0) {
                     getBinding().statusLay.setVisibility(View.VISIBLE);
                     orderList.addAll(evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder());
                     checkTypesOfOrder(orderList);
                 } else {
                     getBinding().statusLay.setVisibility(View.GONE);
+                    getBinding().noDataLayout.setVisibility(View.VISIBLE);
                 }
             } else {
 
@@ -274,6 +281,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                     });
                 } else {
                     getBinding().statusLay.setVisibility(View.GONE);
+                    getBinding().noDataLayout.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity(), evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
 
