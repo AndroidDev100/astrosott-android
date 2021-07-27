@@ -69,6 +69,7 @@
             android:fontFamily="@font/roboto_medium"
             android:text="@string/reload_app"
             android:gravity="center"
+            android:textAllCaps="false"
             android:layout_marginStart="@dimen/dimen55dp"
             android:layout_marginEnd="@dimen/dimen55dp"
             android:textColor="@color/white"
