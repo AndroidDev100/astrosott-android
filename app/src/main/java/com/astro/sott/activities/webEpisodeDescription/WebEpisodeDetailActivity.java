@@ -936,7 +936,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
     private void setExpandable() {
         getBinding().expandableLayout.collapse();
         getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
-        getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
+//        getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
         getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
         getBinding().lessButton.setOnClickListener(view -> {
 
@@ -951,10 +951,13 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
             }
 
             if (getBinding().expandableLayout.isExpanded()) {
-                getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
+//                getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
 
             } else {
-                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
+//                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+
             }
             if (view != null) {
                 getBinding().expandableLayout.expand();
