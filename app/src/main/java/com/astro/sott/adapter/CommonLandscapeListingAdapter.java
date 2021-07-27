@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,6 +110,8 @@ public class CommonLandscapeListingAdapter extends RecyclerView.Adapter<CommonLa
             } else {
                 holder.landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                 holder.landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                holder.landscapeItemBinding.tvTitle.setMaxLines(2);
+                holder.landscapeItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
             }
         } catch (Exception e) {
             PrintLogging.printLog("Exception", "", "" + e);

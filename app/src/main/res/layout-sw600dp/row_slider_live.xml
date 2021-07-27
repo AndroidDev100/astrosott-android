@@ -119,7 +119,7 @@
 
                     android:ellipsize="end"
 
-                    android:fontFamily="@font/heebo_bold"
+                    android:fontFamily="@font/roboto_bold"
 
                     android:maxLines="1"
 
@@ -147,7 +147,7 @@
 
                     android:ellipsize="end"
 
-                    android:fontFamily="@font/heebo_bold"
+                    android:fontFamily="@font/roboto_bold"
 
                     android:maxLines="1"
 

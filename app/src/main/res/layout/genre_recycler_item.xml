@@ -13,7 +13,7 @@
                 android:layout_marginTop="@dimen/_22sdp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp"
-                android:fontFamily="@font/heebo_medium"
+                android:fontFamily="@font/roboto_medium"
                 android:text="@string/genre"
                 android:id="@+id/genre"
                 android:layout_centerInParent="true"

@@ -2,6 +2,7 @@ package com.astro.sott.adapter.experiencemng;
 
 import android.app.Activity;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -215,6 +216,8 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             else {
                 itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                 itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                itemBinding.tvTitle.setMaxLines(2);
+                itemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
             }
 
             // itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -279,6 +282,8 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             else {
                 itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                 itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                itemBinding.tvTitle.setMaxLines(2);
+                itemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
             }
             //itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
         }catch (Exception ignored){
@@ -342,6 +347,8 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             else {
                 itemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                 itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                itemBinding.tvTitle.setMaxLines(2);
+                itemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
             }
            // itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
         }catch (Exception ignored){

@@ -57,7 +57,7 @@
             android:layout_below="@id/card_view"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/roboto_regular"
             android:maxLines="1"
             android:textColor="@color/white" />
 

@@ -6,6 +6,8 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,6 +151,9 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }else {
                     potraitItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                    potraitItemBinding.tvTitle.setMaxLines(2);
+                    potraitItemBinding.tvTitle.setText("ghfrthgvcbfdgrthfyjhvcgnfhxhtghjmnbvcxdfrtgyujik");
+                    potraitItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
                 }
 
                 //  potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -201,6 +206,10 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }else {
                     potraitItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                    potraitItemBinding.tvTitle.setMaxLines(2);
+                    potraitItemBinding.tvTitle.setText("ghfrthgvcbfdgrthfyjhvcgnfhxhtghjmnbvcxdfrtgyujik");
+
+                    potraitItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
                 }
 
             }catch (Exception ignored){
@@ -244,6 +253,10 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }else {
                     potraitItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     potraitItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                    potraitItemBinding.tvTitle.setMaxLines(2);
+                    potraitItemBinding.tvTitle.setText("ghfrthgvcbfdgrthfyjhvcgnfhxhtghjmnbvcxdfrtgyujik");
+                    potraitItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
+
                 }
 
             }catch (Exception ignored){

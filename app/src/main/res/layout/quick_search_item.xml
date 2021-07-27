@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:maxLines="2"
                 android:layout_marginTop="4dp"
                 android:text="@{ResultAllXmlUtils.setTitle(singleItem)}"

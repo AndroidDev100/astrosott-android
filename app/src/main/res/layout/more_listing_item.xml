@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:maxLines="1"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp" />
@@ -115,7 +115,7 @@
                 android:layout_marginBottom="@dimen/search_item_card_view_corner"
                 android:ellipsize="end"
                 android:textColor="@color/white"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:maxLines="1"
                 android:textSize="@dimen/search_show_all_text_size" />
 
@@ -127,7 +127,7 @@
                 android:layout_marginTop="@dimen/rail_top_margin"
                 android:layout_marginBottom="@dimen/search_item_card_view_corner"
                 android:ellipsize="end"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:maxLines="1"
                 android:text="@{title.description}"
                 android:textColor="@color/yellow_orange"

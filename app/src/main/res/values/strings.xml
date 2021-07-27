@@ -258,7 +258,7 @@
     <string name="downgrade_description">Downgrade will only take effect in the next billing cycle!</string>
     <string name="incorrect_pin">Incorrect Pin. Try again</string>
     <string name="no_content_available">No Content Available</string>
-    <string name="login">Login</string>
+    <string name="login">Log In</string>
     <string name="not_yet">Not Yet!</string>
     <string name="sorry_have_to_go">Sorry, I have to go...</string>
     <string name="error_sms_failure">A verification PIN cannot be sent right now. Please try again later</string>
@@ -589,7 +589,7 @@
     <string name="verification_code_text">Please key in your Verification Code</string>
     <string name="didnt_receive_otp">Didn\'t receive the verification code?</string>
     <string name="resend_otp"><u>Send me another verification code</u></string>
-    <string name="welcome_back">Let’s get started \n Already registered? Just log in below</string>
+    <string name="welcome_back">Let’s get started </string>
     <string name="email_id_mobileNo">Email Address or Mobile Number</string>
     <string name="user_name">User Name</string>
     <string name="forgt_psw"><u>Forgot Password?</u></string>
@@ -702,6 +702,7 @@
     <string name="dashes_long">.........</string>
     <string name="load_more">Load More</string>
     <string name="watch_movie">Watch Movie</string>
+    <string name="already_registered_para">Already registered? Just log in below</string>
 
 
 </resources>

@@ -116,6 +116,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private String idfromAssetWatchlist, cast = "", crew = "", genre, language, subGenre;
     private WebEpisodeDescriptionCommonAdapter adapter = null;
     private int tempCount = 0;
+    private String duraton;
+    private String description = "";
     private List<Integer> seriesNumberList;
     private List<AssetCommonBean> clipList;
     private List<VIUChannel> channelList;
@@ -430,12 +432,67 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getBinding().tvShortDescription.setText(value);
                 getBinding().movieTitle.setText(asset.getName());
                 MultilingualStringValue stringValue = null;
-                String description = "";
+
                 if (asset.getMetas() != null)
                     stringValue = (MultilingualStringValue) asset.getMetas().get(AppLevelConstants.KEY_LONG_DESCRIPTION);
                 if (stringValue != null)
                     description = stringValue.getValue();
                 getBinding().descriptionText.setText(description);
+//                   getBinding().descriptionText.setText("fdghjbknhygtfrdsewastdryguhiygjtfrgdes");
+
+                Log.d("Linecountdesc",getBinding().descriptionText.getLineCount()+"");
+
+
+//                    int lineCount = getBinding().descriptionText.getLineCount();
+//                    Log.d("linecount",lineCount+"");
+//
+//                    if( lineCount <= 3){
+//                if((getBinding().durationText.getText()!= null )||(getBinding().subtitleText.getText()!= null )||(getBinding().castText.getText() != null)||(getBinding().crewText.getText()!= null)) {
+//                              getBinding().descriptionText.setVisibility(View.VISIBLE);
+//                              getBinding().shadow.setVisibility(View.GONE);
+//                              getBinding().lessButton.setVisibility(View.GONE);
+//                              getBinding().expandableLayout.expand();
+//                    Log.d("ERRbjhmn",getBinding().durationText.getText()+"");
+//                    Log.d("ERRbjhmn",getBinding().subtitleText.getText()+"");
+//                    Log.d("ERRbjhmn",getBinding().castText.getText()+"");
+//                    Log.d("ERRbjhmn",getBinding().crewText.getText()+"");
+//                    Log.d("ERRbjhmn","in if");
+//
+//
+//
+//
+//
+//
+//
+//                } else if((getBinding().durationText.getText()!= "" )||(getBinding().subtitleText.getText()!= "" )||(getBinding().castText.getText() != "")||(getBinding().crewText.getText()!= "")) {
+//                        getBinding().descriptionText.setVisibility(View.VISIBLE);
+//                        getBinding().shadow.setVisibility(View.GONE);
+//                        getBinding().lessButton.setVisibility(View.GONE);
+//                        getBinding().expandableLayout.expand();
+////                    getBinding().descriptionText.setMaxLines(lineCount);
+//                    Log.d("ERRbjhmn","in else if");
+//
+//
+//                }
+//                    else{
+//                        getBinding().descriptionText.setVisibility(View.VISIBLE);
+//                        getBinding().shadow.setVisibility(View.VISIBLE);
+//                        getBinding().lessButton.setVisibility(View.VISIBLE);
+//                    getBinding().expandableLayout.collapse();
+//                    Log.d("ERRbjhmn","in else");
+//
+//
+//
+//                }
+//            }else{
+//                        getBinding().descriptionText.setMaxLines(3);
+//                        Log.d("ERRbjhmn","greater than3");
+//
+//            }
+//
+
+
+
 
 
             }
@@ -507,7 +564,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void getDuration() {
-        String duraton = AppCommonMethods.getURLDuration(asset);
+         duraton = AppCommonMethods.getURLDuration(asset);
 
         if (!TextUtils.isEmpty(duraton)) {
             getBinding().durationLay.setVisibility(View.VISIBLE);
@@ -574,7 +631,12 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             modelCall();
             intentValues();
+//
             setExpandable();
+
+
+
+
             getBinding().shareWith.setOnClickListener(view -> {
                 if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
                     return;
@@ -1072,7 +1134,12 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void setExpandable() {
-        getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+//        if(getBinding().descriptionText.getLineCount() >3)
+//        {
+//            getBinding().descriptionText.setMaxLines(3);
+//            getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+//
+//        }
 //        getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
         getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
         getBinding().lessButton.setOnClickListener(view -> {
@@ -1083,8 +1150,13 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getBinding().shadow.setVisibility(View.GONE);
 
             } else {
-                getBinding().shadow.setVisibility(View.VISIBLE);
+//                if(getBinding().descriptionText.getLineCount() >3)
+//            {
+//                getBinding().descriptionText.setMaxLines(3);
                 getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+                getBinding().shadow.setVisibility(View.VISIBLE);
+
+//            }
             }
 
             if (getBinding().expandableLayout.isExpanded()) {
