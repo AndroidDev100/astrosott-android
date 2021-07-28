@@ -400,6 +400,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         }
     }
 
+    int lineCount = 0;
+
     private void getLanguage() {
         viewModel.getLanguageLiveData(map).observe(this, new Observer<String>() {
             @Override
@@ -440,59 +442,24 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getBinding().descriptionText.setText(description);
 //                   getBinding().descriptionText.setText("fdghjbknhygtfrdsewastdryguhiygjtfrgdes");
 
-                Log.d("Linecountdesc",getBinding().descriptionText.getLineCount()+"");
 
+                getBinding().descriptionText.post(() -> {
+                    lineCount = getBinding().descriptionText.getLineCount();
+                    Log.d("linecountCheck", lineCount + "");
+                });
 
-                    int lineCount = getBinding().descriptionText.getLineCount();
-                    Log.d("linecount",lineCount+"");
-
-                    if( lineCount <= 3){
-                if((getBinding().durationText.getText()!= null )||(getBinding().subtitleText.getText()!= null )||(getBinding().castText.getText() != null)||(getBinding().crewText.getText()!= null)) {
-                              getBinding().descriptionText.setVisibility(View.VISIBLE);
-                              getBinding().shadow.setVisibility(View.GONE);
-                              getBinding().lessButton.setVisibility(View.GONE);
-                              getBinding().expandableLayout.expand();
-                    Log.d("ERRbjhmn",getBinding().durationText.getText()+"");
-                    Log.d("ERRbjhmn",getBinding().subtitleText.getText()+"");
-                    Log.d("ERRbjhmn",getBinding().castText.getText()+"");
-                    Log.d("ERRbjhmn",getBinding().crewText.getText()+"");
-                    Log.d("ERRbjhmn","in if");
-
-
-
-
-
-
-
-                } else if((getBinding().durationText.getText()!= "" )||(getBinding().subtitleText.getText()!= "" )||(getBinding().castText.getText() != "")||(getBinding().crewText.getText()!= "")) {
-                        getBinding().descriptionText.setVisibility(View.VISIBLE);
-                        getBinding().shadow.setVisibility(View.GONE);
-                        getBinding().lessButton.setVisibility(View.GONE);
-                        getBinding().expandableLayout.expand();
-//                    getBinding().descriptionText.setMaxLines(lineCount);
-                    Log.d("ERRbjhmn","in else if");
-
-
-                }
-                    else{
-                        getBinding().descriptionText.setVisibility(View.VISIBLE);
+                lineCount = getBinding().descriptionText.getLineCount();
+                if (lineCount <= 3) {
+                    if ((!TextUtils.isEmpty(getBinding().durationText.getText())) || (!TextUtils.isEmpty(getBinding().subtitleText.getText())) || (!TextUtils.isEmpty(getBinding().castText.getText())) || (!TextUtils.isEmpty(getBinding().crewText.getText()))) {
                         getBinding().shadow.setVisibility(View.VISIBLE);
                         getBinding().lessButton.setVisibility(View.VISIBLE);
-                    getBinding().expandableLayout.collapse();
-                    Log.d("ERRbjhmn","in else");
-
-
+                    } else {
+                        getBinding().shadow.setVisibility(View.GONE);
+                        getBinding().lessButton.setVisibility(View.GONE);
+                    }
+                } else {
 
                 }
-            }else{
-//                        getBinding().descriptionText.setMaxLines(3);
-                        Log.d("ERRbjhmn","greater than3");
-
-            }
-
-
-
-
 
 
             }
@@ -537,7 +504,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     getBinding().crewLay.setVisibility(View.GONE);
                 } else {
                     getBinding().crewLay.setVisibility(View.VISIBLE);
-                    getBinding().crewText.setText(" " + crewText);
+                    getBinding().crewText.setText(crewText + "");
                 }
 
             }
@@ -564,7 +531,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void getDuration() {
-         duraton = AppCommonMethods.getURLDuration(asset);
+        duraton = AppCommonMethods.getURLDuration(asset);
 
         if (!TextUtils.isEmpty(duraton)) {
             getBinding().durationLay.setVisibility(View.VISIBLE);
@@ -583,7 +550,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getBinding().castLay.setVisibility(View.GONE);
             } else {
                 getBinding().castLay.setVisibility(View.VISIBLE);
-                getBinding().castText.setText(" " + castTest);
+                getBinding().castText.setText(castTest + "");
             }
 
         });
@@ -633,8 +600,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             intentValues();
 //
             setExpandable();
-
-
 
 
             getBinding().shareWith.setOnClickListener(view -> {
