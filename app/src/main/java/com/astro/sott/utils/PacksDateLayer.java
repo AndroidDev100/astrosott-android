@@ -2,10 +2,11 @@ package com.astro.sott.utils;
 
 import com.astro.sott.modelClasses.InApp.PackDetail;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PacksDateLayer {
-    private List<PackDetail> packDetailList;
+    private ArrayList<PackDetail> packDetailList;
     private static PacksDateLayer packsDateLayer;
 
 
@@ -15,11 +16,11 @@ public class PacksDateLayer {
         return packsDateLayer;
     }
 
-    public List<PackDetail> getPackDetailList() {
+    public ArrayList<PackDetail> getPackDetailList() {
         return packDetailList;
     }
 
-    public void setPackDetailList(List<PackDetail> packDetailList) {
+    public void setPackDetailList(ArrayList<PackDetail> packDetailList) {
         this.packDetailList = packDetailList;
     }
 }
