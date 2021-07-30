@@ -54,7 +54,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private BillingProcessor billingProcessor;
     private SubscriptionViewModel subscriptionViewModel;
     private SkuDetails skuDetails;
-    private List<PackDetail> packDetailList;
+    private ArrayList<PackDetail> packDetailList;
     private boolean haveSvod = false, haveTvod = false;
 
     String fileId = "";

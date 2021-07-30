@@ -121,6 +121,9 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
 
                     }
                     Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                    if (from.equalsIgnoreCase("Content Detail Page")) {
+                        onBackPressed();
+                    }
                 }
             } else {
                 try {
