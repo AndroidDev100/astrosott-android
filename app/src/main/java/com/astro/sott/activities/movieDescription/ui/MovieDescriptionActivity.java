@@ -127,6 +127,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private int priorityLevel;
     private int assetRestrictionLevel;
     private boolean assetKey = false;
+    private boolean becomeVipButtonCLicked = false;
     private boolean isDtvAdded = false;
 
 
@@ -221,6 +222,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                         startActivity(intent);
                     }
                 } else {
+                    becomeVipButtonCLicked = true;
                     new ActivityLauncher(MovieDescriptionActivity.this).signupActivity(MovieDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
@@ -440,6 +442,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                             getBinding().playText.setText(getResources().getString(R.string.watch_now));
                             getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.GONE);
+                            becomeVipButtonCLicked = false;
                             getBinding().playText.setTextColor(getResources().getColor(R.color.black));
                         }
 
@@ -454,6 +457,16 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                             getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.GONE);
                             getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                            if (becomeVipButtonCLicked) {
+                                becomeVipButtonCLicked = false;
+                                if (UserInfo.getInstance(this).isActive()) {
+                                    if (!fileId.equalsIgnoreCase("")) {
+                                        Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                        intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                        startActivity(intent);
+                                    }
+                                }
+                            }
 
                         });
                         this.vodType = EntitlementCheck.SVOD;
@@ -464,6 +477,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                             getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                             getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.GONE);
+                            becomeVipButtonCLicked = false;
                             getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
 
@@ -691,7 +705,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             lastClickTime = SystemClock.elapsedRealtime();
             try {
                 CleverTapManager.getInstance().socialShare(this, asset, false);
-                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset,this);
+                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset, this);
             } catch (Exception e) {
 
             }

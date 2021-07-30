@@ -122,6 +122,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private List<VIUChannel> dtChannelsList;
     private int seasonCounter = 0;
     private int counter = 0;
+    private boolean becomeVipButtonCLicked = false;
     private boolean playerChecksCompleted = false;
     private int errorCode = -1;
     private boolean episodeTested = false;
@@ -188,6 +189,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         startActivity(intent);
                     }
                 } else {
+                    becomeVipButtonCLicked = true;
                     new ActivityLauncher(WebSeriesDescriptionActivity.this).signupActivity(WebSeriesDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
@@ -693,6 +695,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             callProgressBar();
             playerChecks(railCommonData);
         } else {
+            becomeVipButtonCLicked = true;
+            assetToPlay = railCommonData;
             openDialougeForEntitleMent(railCommonData);
         }
     }
@@ -1300,7 +1304,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
 
-        String fileId = "";
         if (railCommonData != null && railCommonData.getObject() != null) {
             isEntitlementCheck = true;
             fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
@@ -1314,7 +1317,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                 getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.black));
-
+                                becomeVipButtonCLicked = false;
                             }
 
                         });
@@ -1328,10 +1331,19 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                 getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-
+                                if (becomeVipButtonCLicked) {
+                                    if (UserInfo.getInstance(this).isActive()) {
+                                        if (!fileId.equalsIgnoreCase("")) {
+                                            Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                            intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                            startActivity(intent);
+                                        }
+                                    }
+                                }
 
                             });
                             this.vodType = EntitlementCheck.SVOD;
+
 
                         } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                             getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
@@ -1339,8 +1351,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                             getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.GONE);
                             getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-
-
+                            becomeVipButtonCLicked = false;
                             this.vodType = EntitlementCheck.TVOD;
 
 
@@ -1537,16 +1548,17 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     @Override
     public void onFirstEpisodeData(List<AssetCommonBean> railCommonData, String checkSeries) {
-        if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
-            railList1.clear();
-            railList1.addAll(railCommonData.get(0).getRailAssetList());
-            TabsData.getInstance().setSeriesType(checkSeries);
-            if (TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
-                viewModel.getEpisodeToPlay(assetId).observe(this, assetHistory -> {
-                    if (assetHistory != null && assetHistory.getAssetId() != null) {
-                        viewModel.getSpecificAsset(assetHistory.getAssetId() + "").observe(this, railAsset -> {
-                            if (railAsset != null) {
-                                fromNextEpisode = true;
+        if (assetToPlay == null) {
+            if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
+                railList1.clear();
+                railList1.addAll(railCommonData.get(0).getRailAssetList());
+                TabsData.getInstance().setSeriesType(checkSeries);
+                if (TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
+                    viewModel.getEpisodeToPlay(assetId).observe(this, assetHistory -> {
+                        if (assetHistory != null && assetHistory.getAssetId() != null) {
+                            viewModel.getSpecificAsset(assetHistory.getAssetId() + "").observe(this, railAsset -> {
+                                if (railAsset != null) {
+                                    fromNextEpisode = true;
                                 /*railList1.clear();
                                 railList1.addAll(railCommonData.get(0).getRailAssetList());*/
                                /* if (checkSeries.equalsIgnoreCase(AppLevelConstants.OPEN)) {
@@ -1557,25 +1569,28 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                     int seasonNumber = AssetContent.getSpecificSeason(railAsset.getObject().getMetas());
                                     GetSeasonEpisode(seasonNumber, assetToPlay);
                                 }*/
-                                assetToPlay = railAsset;
-                                checkForPlayButtonCondition();
+                                    assetToPlay = railAsset;
+                                    checkForPlayButtonCondition();
 
-                            } else {
-                                assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
-                                checkForPlayButtonCondition();
-                            }
-                        });
-                    } else {
-                        assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
-                        checkForPlayButtonCondition();
+                                } else {
+                                    assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
+                                    checkForPlayButtonCondition();
+                                }
+                            });
+                        } else {
+                            assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
+                            checkForPlayButtonCondition();
 
-                    }
-                });
-            } else {
-                assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
-                checkForPlayButtonCondition();
+                        }
+                    });
+                } else {
+                    assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
+                    checkForPlayButtonCondition();
 
+                }
             }
+        } else {
+            becomeVipButtonCLicked = false;
         }
 
     }
@@ -1635,7 +1650,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         getBinding().scrollView.scrollTo(0, 0);
         railData = commonData;
         getDatafromBack();
-        setRailBaseFragment();
         assetToPlay = null;
         isEntitlementCheck = false;
         getBinding().ivPlayIcon.setVisibility(View.GONE);
