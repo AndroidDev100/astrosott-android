@@ -133,15 +133,20 @@
                     android:textSize="12sp"
                     android:visibility="gone" />
 
-                <include
-                    android:id="@+id/media_type_layout"
-                    layout="@layout/mediatype_item"
-                    android:visibility="gone" />
 
             </LinearLayout>
 
 
         </androidx.cardview.widget.CardView>
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/root"
+            android:layout_marginStart="3dp"
+            android:id="@+id/media_type_layout"
+            layout="@layout/mediatype_item"
+            android:visibility="gone" />
+
 
         <ImageView
             android:id="@+id/billing_image"

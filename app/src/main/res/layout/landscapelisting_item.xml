@@ -71,6 +71,7 @@
         <RelativeLayout
             android:id="@+id/titleLayout"
             android:layout_width="@dimen/landscape_item_width"
+
             android:layout_height="wrap_content"
             android:layout_below="@+id/cv_landscape"
 

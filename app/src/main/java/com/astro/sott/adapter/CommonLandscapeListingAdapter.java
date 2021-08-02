@@ -68,6 +68,8 @@ public class CommonLandscapeListingAdapter extends RecyclerView.Adapter<CommonLa
     public void onBindViewHolder(@NonNull SingleItemRowHolder holder, int i) {
         RailCommonData singleItem = itemsList.get(i);
         holder.landscapeItemBinding.livenowLay.setVisibility(View.GONE);
+//      holder.landscapeItemBinding.tvTitle.setText("knjhbgfderftyijok;lmnjbhvgcfxdawerdtfgyjh");
+
         holder.landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
         holder.landscapeItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
 
