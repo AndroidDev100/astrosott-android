@@ -3,6 +3,7 @@ package com.astro.sott.adapter.experiencemng;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,10 +105,11 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + "-" + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
                 } else {
+                    holder.landscapeItemBinding.mediaTypeLayout.lineOne.setMaxLines(2);
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
-                    holder.landscapeItemBinding.mediaTypeLayout.lineOne.setMaxLines(2);
                     holder.landscapeItemBinding.mediaTypeLayout.lineOne.setEllipsize(TextUtils.TruncateAt.END);
+
 
                 }
                 //holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
