@@ -141,6 +141,7 @@
 
     <color name="black_text_color">#262C40</color>
     <color name="warm_black_color">#707070</color>
+    <color name="turquoise_green">#00e895</color>
     <array name="packages_colors">
         <item>@color/yellow_orange</item>
         <item>@color/thumb_color</item>
