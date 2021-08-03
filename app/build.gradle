@@ -175,12 +175,12 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation 'com.kaltura.playkit:playkit:4.13.3'
-    implementation 'com.kaltura.playkit:playkitproviders:4.13.3'
-    implementation 'com.kaltura.playkit:imaplugin:4.13.3'
-    implementation 'com.kaltura.playkit:kavaplugin:4.13.3'
-    implementation 'com.kaltura.playkit:vrplugin:4.13.3'
-    implementation 'com.kaltura.playkit:googlecast:4.13.3'
+    implementation 'com.kaltura.playkit:playkit:4.15.0'
+    implementation 'com.kaltura.playkit:playkitproviders:4.15.0'
+    implementation 'com.kaltura.playkit:imaplugin:4.15.0'
+    implementation 'com.kaltura.playkit:kavaplugin:4.15.0'
+    implementation 'com.kaltura.playkit:vrplugin:4.15.0'
+    implementation 'com.kaltura.playkit:googlecast:4.15.0'
 
     implementation 'com.google.firebase:firebase-messaging:20.2.4'
     implementation 'com.google.firebase:firebase-core:17.4.0'
