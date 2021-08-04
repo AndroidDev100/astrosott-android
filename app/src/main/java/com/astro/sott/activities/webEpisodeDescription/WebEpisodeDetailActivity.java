@@ -1106,13 +1106,13 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                 } else {
                     isAdded = false;
                     getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
-                    getBinding().watchList.setTextColor(getResources().getColor(R.color.title_color));
+                    getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
 
                 }
             } else {
                 isAdded = false;
                 getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
-                getBinding().watchList.setTextColor(getResources().getColor(R.color.title_color));
+                getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
             }
         });
     }
