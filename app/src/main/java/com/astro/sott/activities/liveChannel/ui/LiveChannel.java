@@ -120,6 +120,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private boolean isLiveChannel = true;
     private boolean isDtvAdded = false;
     private int indicatorWidth;
+    private boolean becomeVipButtonCLicked = false;
 
 
     private LiveChannelCommunicator mLiveChannelCommunicator;
@@ -322,6 +323,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                         startActivity(intent);
                     }
                 } else {
+                    becomeVipButtonCLicked = true;
                     new ActivityLauncher(LiveChannel.this).signupActivity(LiveChannel.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
@@ -331,7 +333,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         getBinding().share.setOnClickListener(v -> {
             try {
                 CleverTapManager.getInstance().socialShare(this, asset, true);
-                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset,this);
+                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset, this);
             } catch (Exception e) {
 
             }
@@ -401,6 +403,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                                     getBinding().vipButtonLive.setVisibility(View.VISIBLE);
                                 }
 //                        getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                becomeVipButtonCLicked = false;
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.black));
 
@@ -417,7 +420,18 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                                 getBinding().vipButtonLive.setVisibility(View.VISIBLE);
 //                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
-                                getCridDetail();
+                                if (becomeVipButtonCLicked) {
+                                    becomeVipButtonCLicked = false;
+                                    if (UserInfo.getInstance(this).isActive()) {
+                                        if (!fileId.equalsIgnoreCase("")) {
+                                            Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                            intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                            startActivity(intent);
+                                        }
+                                    }
+                                } else {
+                                    getCridDetail();
+                                }
                             });
                             this.vodType = EntitlementCheck.SVOD;
 
@@ -429,6 +443,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                                 getBinding().vipButtonLive.setVisibility(View.VISIBLE);
 //                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                becomeVipButtonCLicked = false;
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 

@@ -116,19 +116,25 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     try {
                         CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Success", "Content Details Page");
                         FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS, UserInfo.getInstance(this).getCpCustomerId());
-
                     } catch (Exception e) {
 
                     }
                     Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
                     if (from.equalsIgnoreCase("Content Detail Page")) {
                         onBackPressed();
+                    } else {
+                        setFragment();
                     }
                 }
             } else {
                 try {
                     CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failure", "Content Details Page");
                 } catch (Exception ex) {
+                }
+                if (from.equalsIgnoreCase("Content Detail Page")) {
+                    onBackPressed();
+                } else {
+                    setFragment();
                 }
                 Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
 
