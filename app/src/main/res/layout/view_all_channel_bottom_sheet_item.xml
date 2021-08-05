@@ -15,7 +15,6 @@
                 android:id="@+id/imvChannelLogo"
                 android:layout_width="@dimen/dimen80dp"
                 android:layout_height="@dimen/dimen80dp"
-                android:src="@drawable/wallet_logo"
                 android:scaleType="fitXY"
                 android:contentDescription="@string/contentDescription" />
         </LinearLayout>

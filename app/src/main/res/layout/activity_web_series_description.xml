@@ -95,14 +95,12 @@
                                     android:contentDescription="@string/play_icon"
                                     android:visibility="gone" />
 
-                                <FrameLayout
+
+                                <ImageView
                                     android:layout_width="match_parent"
-                                    android:layout_height="@dimen/_90sdp"
-                                    android:layout_alignParentBottom="true"
-                                    android:background="@drawable/purple_shadow">
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/ic_shadow"></ImageView>
 
-
-                                </FrameLayout>
                             </RelativeLayout>
 
 

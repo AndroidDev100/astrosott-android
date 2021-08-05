@@ -1765,7 +1765,6 @@ public class AppCommonMethods {
                     imageView.setVisibility(View.VISIBLE);
                 } else {
                     imageView.setVisibility(View.GONE);
-
                 }
             } else {
                 if (AssetContent.getBillingId(tags)) {
