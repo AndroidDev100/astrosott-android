@@ -240,6 +240,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="10dp"
                         android:visibility="gone"
+                        app:tabGravity="fill"
                         android:background="@drawable/tab_bg"
                         app:tabBackground="@color/transparentColor"
                         app:layout_constraintLeft_toLeftOf="parent"
