@@ -111,7 +111,6 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        Log.w("valuesB",baseCategory.getRailCardSize());
         if (baseCategory != null && baseCategory.getRailCardSize() != null) {
             if (baseCategory.getRailCardSize().equalsIgnoreCase(RailCardSize.NORMAL.name())) {
                 LandscapeItemBinding landscapeItemBinding = DataBindingUtil.inflate(
