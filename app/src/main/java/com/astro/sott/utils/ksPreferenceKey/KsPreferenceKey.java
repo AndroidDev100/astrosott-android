@@ -66,6 +66,14 @@ public class KsPreferenceKey {
         session.setString("kalturaPhoenixUrl", kalturaPhoenixUrl);
     }
 
+    public String getKalturaPhoenixUrlForWaterMark() {
+        return session.getString("KalturaPhoenixUrlForWaterMark", "");
+    }
+
+    public void setKalturaPhoenixUrlForWaterMark(String kalturaPhoenixUrl) {
+        session.setString("KalturaPhoenixUrlForWaterMark", kalturaPhoenixUrl);
+    }
+
     public String getHouseHoldId() {
         return session.getString("household_id", "");
     }

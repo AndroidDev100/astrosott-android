@@ -85,8 +85,10 @@ import com.astro.sott.callBacks.otpCallbacks.AutoMsisdnCallback;
 import com.astro.sott.callBacks.otpCallbacks.DTVAccountCallback;
 import com.astro.sott.callBacks.otpCallbacks.OtpCallback;
 import com.astro.sott.callBacks.otpCallbacks.OtpVerificationCallback;
+import com.astro.sott.callBacks.waterMarkCallBacks.WaterMarkCallback;
 import com.astro.sott.db.search.SearchedKeywords;
 import com.astro.sott.modelClasses.DTVContactInfoModel;
+import com.astro.sott.modelClasses.WaterMark.WaterMarkModel;
 import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.modelClasses.dmsResponse.FilterLanguages;
 import com.astro.sott.modelClasses.dmsResponse.FilterValues;
@@ -4102,6 +4104,7 @@ public class KsServices {
                     ResponseDmsModel responseDmsModel = response.body();
                     if (responseDmsModel != null && response.body() != null) {
                         if (response.body().getParams().getGateways() != null) {
+                            KsPreferenceKey.getInstance(activity).setKalturaPhoenixUrlForWaterMark(response.body().getParams().getGateways().getJsonGW());
                             StringBuilder stringBuilder = new StringBuilder(response.body().getParams().getGateways().getJsonGW());
                             stringBuilder.append(activity.getString(R.string.suffix_api_v3));
                             Log.e("Phonex Base Url", stringBuilder.toString());
@@ -8383,4 +8386,28 @@ public class KsServices {
     }
 
 
+    public void callWaterMarkApi(Context context, String kalturaPhoenixUrl, String ks, WaterMarkCallback waterMarkCallback) {
+
+        ApiInterface endpoint = RequestConfig.getClient(kalturaPhoenixUrl).create(ApiInterface.class);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("apiVersion", "5.4.0.28193");
+        jsonObject.addProperty("ks", ks);
+        Call<WaterMarkModel> call = endpoint.getJwtToken(jsonObject);
+        call.enqueue(new Callback<WaterMarkModel>() {
+            @Override
+            public void onResponse(Call<WaterMarkModel> call, retrofit2.Response<WaterMarkModel> response) {
+                if (response.code() == 200) {
+                    waterMarkCallback.onSuccess(response.body());
+                }else {
+                    waterMarkCallback.onError(new Throwable("Something went Wrong... Please Try again."));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WaterMarkModel> call, Throwable t) {
+                waterMarkCallback.onError(t);
+            }
+        });
+
+    }
 }

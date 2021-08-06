@@ -1,6 +1,7 @@
 package com.astro.sott.networking.retrofit;
 
 
+import com.astro.sott.modelClasses.WaterMark.WaterMarkModel;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.activities.SelectAccount.SelectAccountModel.Response;
 import com.astro.sott.modelClasses.DTVContactInfoModel;
@@ -56,4 +57,7 @@ public interface ApiInterface {
 
     @GET(".")
     Call<OtpModel> getMsisdn();
+
+    @POST("/api/p/3209/service/JwtGenerator/action/GetToken")
+    Call<WaterMarkModel> getJwtToken(@Body JsonObject verifyOtpPayload);
 }
