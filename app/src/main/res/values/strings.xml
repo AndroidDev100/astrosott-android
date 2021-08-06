@@ -250,7 +250,7 @@
     <string name="subscribe_header">Subscribe to unlock</string>
     <string name="device_removed_description">Uh-oh! Your device was removed from this account. Please verify that it\'s you by logging in again to continue.</string>
     <string name="subscribe_description">Subscribing now to unlock and enjoy premium titles!</string>
-    <string name="subscribe__dialog_description">Subscribing now to unlock this title!</string>
+    <string name="subscribe__dialog_description">Subscribe now to unlock this title!</string>
     <string name="subscribe__dialog_description_logout">  Please login or create an account to complete the purchase!</string>
     <string name="new_version">New Version Available</string>
     <string name="pin_required">Pin cannot be blank</string>
