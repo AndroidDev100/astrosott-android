@@ -1142,8 +1142,6 @@ public class PlayerRepository {
                     player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
                 } catch (Exception e) {
                 }
-                Log.d("gtgtgtgtgtg",isLivePlayer+"");
-                Log.d("gtgtgtgtgtg","Bearer" +" "+jwtToken);
                 if (isLivePlayer && UserInfo.getInstance(context).isActive()){
                     Map<String,String> headers = new HashMap<>();
                     headers.put("Authorization", "Bearer" +" "+jwtToken);
