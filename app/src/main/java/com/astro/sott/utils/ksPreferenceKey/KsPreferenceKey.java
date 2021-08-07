@@ -255,6 +255,24 @@ public class KsPreferenceKey {
         session.setInt("video_quality_position", qualityPosition);
     }
 
+
+    public int getExpiryTime() {
+        return session.getInt("expiry_time", 0);
+    }
+
+    public void setExpiryTime(int expiryTime) {
+        session.setInt("expiry_time", expiryTime);
+    }
+
+    public String getJwtToken() {
+        return session.getString("jwt_token", "");
+    }
+
+    public void setJwtToken(String jwtToken) {
+        session.setString("jwt_token", jwtToken);
+    }
+
+
     public boolean getPrefrenceSelected() {
         return session.getBoolean("p_selected", false);
     }

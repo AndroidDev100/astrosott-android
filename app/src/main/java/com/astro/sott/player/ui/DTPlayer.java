@@ -1579,22 +1579,28 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 if (isLivePlayer){
                     if (UserInfo.getInstance(baseActivity).isActive()) {
-                        viewModel.callWaterMarkApi(KsPreferenceKey.getInstance(baseActivity).getKalturaPhoenixUrlForWaterMark(), KsPreferenceKey.getInstance(baseActivity).getStartSessionKs()).observe(this, new Observer<WaterMarkModel>() {
-                            @Override
-                            public void onChanged(WaterMarkModel waterMarkModel) {
-                                if (waterMarkModel!=null){
-                                    if (waterMarkModel.getResponseCode() == 200){
-                                        jwt = waterMarkModel.getJwt();
-                                        expiryDate = waterMarkModel.getExp();
-                                        startPlayer(mediaEntry);
-                                    }else {
+                        if (AppCommonMethods.isTokenExpired(baseActivity)) {
+                            viewModel.callWaterMarkApi(KsPreferenceKey.getInstance(baseActivity).getKalturaPhoenixUrlForWaterMark(), KsPreferenceKey.getInstance(baseActivity).getStartSessionKs()).observe(this, new Observer<WaterMarkModel>() {
+                                @Override
+                                public void onChanged(WaterMarkModel waterMarkModel) {
+                                    if (waterMarkModel != null) {
+                                        if (waterMarkModel.getResponseCode() == 200) {
+                                            jwt = waterMarkModel.getJwt();
+                                            expiryDate = waterMarkModel.getExp();
+                                            KsPreferenceKey.getInstance(baseActivity).setExpiryTime(expiryDate);
+                                            KsPreferenceKey.getInstance(baseActivity).setJwtToken(jwt);
+                                            startPlayer(mediaEntry);
+                                        } else {
+                                            startPlayer(mediaEntry);
+                                        }
+                                    } else {
                                         startPlayer(mediaEntry);
                                     }
-                                }else {
-                                    startPlayer(mediaEntry);
                                 }
-                            }
-                        });
+                            });
+                        }else {
+                            startPlayer(mediaEntry);
+                        }
                     }
                 }else {
                     startPlayer(mediaEntry);

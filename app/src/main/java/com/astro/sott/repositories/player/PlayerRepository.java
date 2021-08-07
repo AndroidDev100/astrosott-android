@@ -1142,9 +1142,9 @@ public class PlayerRepository {
                     player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
                 } catch (Exception e) {
                 }
-                if (isLivePlayer && UserInfo.getInstance(context).isActive()){
+                if (isLivePlayer && UserInfo.getInstance(context).isActive() && !KsPreferenceKey.getInstance(context).getJwtToken().equalsIgnoreCase("")){
                     Map<String,String> headers = new HashMap<>();
-                    headers.put("Authorization", "Bearer" +" "+jwtToken);
+                    headers.put("Authorization", "Bearer" +" "+KsPreferenceKey.getInstance(context).getJwtToken());
                     CustomPlaybackRequestAdapter customPlaybackRequestAdapter = new CustomPlaybackRequestAdapter("com.astro.sott", player);
                     customPlaybackRequestAdapter.setHttpHeaders(headers);
                     player.getSettings().setContentRequestAdapter(customPlaybackRequestAdapter);

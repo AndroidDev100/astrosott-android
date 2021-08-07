@@ -1,5 +1,7 @@
 package com.astro.sott.utils.commonMethods;
 
+import static com.astro.sott.activities.myPlans.adapter.MyPlanAdapter.getDateCurrentTimeZone;
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -27,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.search.constants.SearchFilterEnum;
+import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.baseModel.PrefrenceBean;
 import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
@@ -37,6 +40,7 @@ import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.modelClasses.dmsResponse.SubtitleLanguages;
 import com.astro.sott.networking.ksServices.KsServices;
+import com.astro.sott.player.ui.DTPlayer;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.usermanagment.modelClasses.getDevice.AccountDeviceDetailsItem;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
@@ -3115,4 +3119,20 @@ public class AppCommonMethods {
         return name;
     }
 
+    public static boolean isTokenExpired(Activity context) {
+        boolean isExpired = false;
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm aa");
+        String getCurrentDateTime = sdf.format(c.getTime());
+        String getMyTime = getDateCurrentTimeZone(KsPreferenceKey.getInstance(context).getExpiryTime());
+
+
+        if (getCurrentDateTime.compareTo(getMyTime) < 0) {
+            isExpired = false;
+        } else {
+            isExpired = true;
+        }
+
+        return isExpired;
+    }
 }
