@@ -68,15 +68,15 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/circular_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dimen80dp"
+                android:layout_height="@dimen/dimen80dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_65sdp"
-                android:src="@drawable/ic_account_circle_80px" />
+                android:layout_marginTop="@dimen/_75sdp"
+                android:src="@drawable/defaultprofilepic" />
 
             <TextView
                 android:id="@+id/change_profilePhoto"
@@ -89,7 +89,7 @@
                 android:text="@string/change_profile_photo"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <LinearLayout
                 android:id="@+id/ll1"

@@ -2,6 +2,7 @@ package com.astro.sott.fragments.episodeFrament;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Layout;
@@ -69,6 +70,8 @@ public class EpisodeDialogFragment extends DialogFragment {
 
         View view = inflater.inflate(R.layout.episode_dialog_fragment, container);
         if (getDialog().getWindow() != null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
+                    .TRANSPARENT));
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
             // Get field from view
             inputLayoutDialog = view.findViewById(R.id.input_layout_dialog);
@@ -79,14 +82,9 @@ public class EpisodeDialogFragment extends DialogFragment {
             TextView description = view.findViewById(R.id.description);
 
             TextView login = view.findViewById(R.id.login);
-            if (UserInfo.getInstance(baseActivity).isActive()) {
-                description.setText(baseActivity.getResources().getString(R.string.subscribe__dialog_description));
-                subscribe.setText(baseActivity.getResources().getString(R.string.subscribe_more));
-            } else {
-                description.setText(baseActivity.getResources().getString(R.string.subscribe__dialog_description_logout));
-                subscribe.setText(baseActivity.getResources().getString(R.string.continue_text));
+            description.setText(baseActivity.getResources().getString(R.string.subscribe__dialog_description));
+            subscribe.setText(baseActivity.getResources().getString(R.string.subscribe_more));
 
-            }
             // Fetch arguments from bundle and set title
 
 //        getDialog().setTitle(title);

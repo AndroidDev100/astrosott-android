@@ -221,6 +221,12 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 
             // itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            if (singleItem.getProgress() > 0) {
+                itemBinding.progressBar.setVisibility(View.VISIBLE);
+                itemBinding.progressBar.setProgress(singleItem.getPosition());
+            } else {
+                itemBinding.progressBar.setVisibility(View.GONE);
+            }
         }catch (Exception ignored){
 
         }
@@ -286,6 +292,12 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 itemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
             }
             //itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            if (singleItem.getProgress() > 0) {
+                itemBinding.progressBar.setVisibility(View.VISIBLE);
+                itemBinding.progressBar.setProgress(singleItem.getPosition());
+            } else {
+                itemBinding.progressBar.setVisibility(View.GONE);
+            }
         }catch (Exception ignored){
 
         }
@@ -351,6 +363,12 @@ public class CommonPosterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 itemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
             }
            // itemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+            if (singleItem.getProgress() > 0) {
+                itemBinding.progressBar.setVisibility(View.VISIBLE);
+                itemBinding.progressBar.setProgress(singleItem.getPosition());
+            } else {
+                itemBinding.progressBar.setVisibility(View.GONE);
+            }
         }catch (Exception ignored){
 
         }

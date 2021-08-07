@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -98,6 +99,25 @@
                     </RelativeLayout>
 
                 </RelativeLayout>
+
+                <SeekBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:background="@color/white"
+                    android:minHeight="0dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="0dp"
+                    android:progress="10"
+                    android:progressDrawable="@drawable/cw_progressbar_style"
+                    android:thumb="@color/gray"
+                    android:thumbTint="@android:color/transparent"
+                    android:visibility="gone"
+                    tools:targetApi="lollipop" />
+
 
 
                 <!--<SeekBar
