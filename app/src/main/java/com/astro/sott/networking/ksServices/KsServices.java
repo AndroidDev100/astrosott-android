@@ -6244,7 +6244,11 @@ public class KsServices {
     public void getAssetDetailEpg(VIUChannel channel, List<VIUChannel> list) {
 
         clientSetupKs();
-        String assetId = channel.getManualImageAssetId();
+        String assetId = "";
+        if (StringUtils.isNullOrEmptyOrZero(channel.getLandingPageAssetId()))
+            assetId = channel.getManualImageAssetId();
+        else
+            assetId = channel.getLandingPageAssetId();
         final MutableLiveData<RailCommonData> mutableLiveData = new MutableLiveData<>();
         final KsServices ksServices = new KsServices(activity);
         AssetService.GetAssetBuilder builder = AssetService.get(assetId, AssetReferenceType.EPG_INTERNAL).setCompletion(result -> {
@@ -6254,9 +6258,10 @@ public class KsServices {
                     homechannelCallBack.response(true, responseList, list);
 
                 } else {
-
+                    homechannelCallBack.response(false, null, null);
                 }
             } else {
+                homechannelCallBack.response(false, null, null);
                 /*ErrorHandling.checkErrorType(result.error, (code, status) -> {
                     if (code.equalsIgnoreCase(AppConstants.KS_EXPIRE) && status) {
                         homechannelCallBack.response(false, null, null);
@@ -6288,8 +6293,11 @@ public class KsServices {
                     homechannelCallBack.response(true, responseList, list);
 
                 } else {
+                    homechannelCallBack.response(false, null, null);
                 }
             } else {
+                homechannelCallBack.response(false, null, null);
+
                /* ErrorHandling.checkErrorType(result.error, (code, status) -> {
                     if (code.equalsIgnoreCase(AppConstants.KS_EXPIRE) && status) {
                         homechannelCallBack.response(false, null, null);

@@ -117,7 +117,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private boolean iconClicked = false;
     private String image_url = "";
     private long lastClickTime = 0;
-    private int errorCode = -1;
+    private int errorCode = -1, watchPosition = 0;
     private boolean playerChecksCompleted = false;
     private int assetRuleErrorCode = -1;
     private boolean isParentalLocked = false;
@@ -425,10 +425,19 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         }
     }
 
+    private void getBookmarking(Asset asset) {
+        if (UserInfo.getInstance(this).isActive()) {
+            viewModel.getBookmarking(asset).observe(this, integer -> {
+                watchPosition = integer;
+            });
+        }
+    }
+
     private String fileId = "";
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
-
+        if (railData != null && railData.getObject() != null)
+            getBookmarking(railData.getObject());
 
         fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
 
@@ -439,7 +448,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                     runOnUiThread(() -> {
                         if (playbackControlValue) {
                             getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                            getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                            if (watchPosition > 0) {
+                                getBinding().playText.setText(getResources().getString(R.string.resume));
+                            } else {
+                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                            }
                             getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.GONE);
                             becomeVipButtonCLicked = false;

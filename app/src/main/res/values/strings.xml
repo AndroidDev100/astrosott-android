@@ -122,6 +122,7 @@
     <string name="rent_movie">Rent Movie For RM XX.XX</string>
     <string name="rooted_failure_msg">Tsk tsk tsk…you cannot run this app on jailbreak or rooted devices!</string>
     <string name="watch_now">Watch Now</string>
+    <string name="resume">Resume</string>
 
 
     //dialog buttons

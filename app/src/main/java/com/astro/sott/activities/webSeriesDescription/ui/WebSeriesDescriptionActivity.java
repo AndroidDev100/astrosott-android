@@ -122,7 +122,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private List<AssetCommonBean> clipList;
     private List<VIUChannel> channelList;
     private List<VIUChannel> dtChannelsList;
-    private int seasonCounter = 0;
+    private int seasonCounter = 0, watchPosition = 0;
     private int counter = 0;
     private boolean becomeVipButtonCLicked = false;
     private boolean playerChecksCompleted = false;
@@ -232,6 +232,14 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
         setBannerImage(assetId);
 
+    }
+
+    private void getBookmarking(Asset asset) {
+        if (UserInfo.getInstance(this).isActive()) {
+            viewModel.getBookmarking(asset).observe(this, integer -> {
+                watchPosition = integer;
+            });
+        }
     }
 
     private void setClicks() {
@@ -1343,7 +1351,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private boolean isEntitlementCheck = false;
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
-
+        if (railCommonData != null && railCommonData.getObject() != null)
+            getBookmarking(railCommonData.getObject());
         if (railCommonData != null && railCommonData.getObject() != null) {
             isEntitlementCheck = true;
             fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
@@ -1353,7 +1362,11 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         runOnUiThread(() -> {
                             if (playbackControlValue) {
                                 getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                if (watchPosition > 0) {
+                                    getBinding().playText.setText(getResources().getString(R.string.resume));
+                                } else {
+                                    getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                }
                                 getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.black));

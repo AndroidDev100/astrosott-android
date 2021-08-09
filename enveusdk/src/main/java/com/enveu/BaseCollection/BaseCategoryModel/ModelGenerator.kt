@@ -24,7 +24,11 @@ class ModelGenerator {
             cat.status = true
             cat.screen = response.body()?.data?.screen
             cat.responseCode = response.body()?.responseCode
-            if (i?.layout.equals(Layouts.CUS.name, true) && i?.customFields != null && i?.customFields.railTile != null) {
+            if (i?.layout.equals(
+                    Layouts.CUS.name,
+                    true
+                ) && i?.customFields != null && i?.customFields.railTile != null
+            ) {
                 if (!i?.customFields.railTile.equals("", true)) {
                     cat.name = i?.customFields.railTile
                     cat.showHeader = true
@@ -104,7 +108,7 @@ class ModelGenerator {
             cat.isAnonymousUser = i?.item?.playlist?.forAnonymousUser
             cat.isLoggedInUser = i?.item?.playlist?.forLoggedInUser
             cat.landingPageTitle = i?.item?.landingPage?.landingPageTitle
-            cat.isProgram = i?.item?.isProgram
+            cat.isProgram = i?.item?.landingPage?.isProgram
             cat.imageSource = i?.item?.imageSource
             cat.imageURL = i?.item?.imageURL
             cat.manualImageAssetId = i?.item?.assetId
@@ -120,7 +124,6 @@ class ModelGenerator {
             cat.isAnonymousUser = i?.item?.playlist?.forAnonymousUser
             cat.isLoggedInUser = i?.item?.playlist?.forLoggedInUser
             cat.landingPageTitle = i?.item?.landingPage?.landingPageTitle
-            cat.isProgram = i?.item?.isProgram
 
 
             list.add(cat)
