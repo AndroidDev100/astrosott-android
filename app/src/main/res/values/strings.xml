@@ -104,7 +104,8 @@
     <string name="title_creators">Creators</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="delete_confirmation">Are you sure you want to delete the search history?</string>
-
+    <string name="all_logout">All Logout</string>
+    <string name="device_logout">Do you really want to logout from all devices?</string>
     <string name="popular_search">Popular Searches</string>
     <string name="recent_searches">Search History</string>
 
@@ -127,7 +128,7 @@
 
     //dialog buttons
     <string name="yes">Yes !</string>
-    <string name="ok">OK</string>
+    <string name="ok">Ok</string>
     <string name="no">No</string>
     <string name="go">Go</string>
     <string name="exit">Exit</string>
@@ -619,7 +620,7 @@
     <string name="submit">Submit</string>
     <string name="season_number">Season 1</string>
     <string name="search_astro">Search for title, genre, cast, etc.</string>
-    <string name="logout_all_devices">LOGOUT ALL DEVICES</string>
+    <string name="logout_all_devices">Remove All Devices</string>
     <string name="linked_accounts">Linked Accounts</string>
     <string name="search_text">Search</string>
     <string name="sort_by">Sort By</string>
