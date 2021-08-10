@@ -117,7 +117,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                         CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Success", "Content Details Page");
                         FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS, UserInfo.getInstance(this).getCpCustomerId());
                     } catch (Exception e) {
-
+                        Log.w("ex", e);
                     }
                     Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
                     if (from.equalsIgnoreCase("Content Detail Page")) {

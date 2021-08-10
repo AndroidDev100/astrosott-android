@@ -207,7 +207,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         asset = railData.getObject();
         if (asset.getName() != null)
             FirebaseEventManager.getFirebaseInstance(WebSeriesDescriptionActivity.this).trackScreenName(asset.getName());
-
+        FirebaseEventManager.getFirebaseInstance(WebSeriesDescriptionActivity.this).setRelatedAssetName(asset.getName());
         TabsData.getInstance().setSeriesAsset(asset);
         getBinding().setMovieAssestModel(asset);
         map = asset.getTags();

@@ -285,8 +285,11 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             viewPagerIntializtion();
 
         }*/
-        if (railData.getObject() != null)
+        if (railData.getObject() != null) {
             Constants.channelName = railData.getObject().getName();
+            FirebaseEventManager.getFirebaseInstance(LiveChannel.this).setRelatedAssetName(railData.getObject().getName());
+        }
+
         setImages(railData, this, getBinding().channelLogo);
         if (programAsset != null) {
             FirebaseEventManager.getFirebaseInstance(this).trackScreenName(railData.getObject().getName() + "-" + programAsset.getName());

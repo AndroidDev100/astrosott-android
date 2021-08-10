@@ -168,6 +168,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
         if (asset.getName() != null)
             FirebaseEventManager.getFirebaseInstance(MovieDescriptionActivity.this).trackScreenName(asset.getName());
+        FirebaseEventManager.getFirebaseInstance(MovieDescriptionActivity.this).setRelatedAssetName(asset.getName());
 
         layoutType = layout;
         assetId = asset.getId();
@@ -213,7 +214,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 callProgressBar();
                 playerChecks(railData);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
-                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("trx_rent", asset, this);
+                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("trx_vip", asset, this);
                 if (UserInfo.getInstance(this).isActive()) {
                     fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
                     if (!fileId.equalsIgnoreCase("")) {

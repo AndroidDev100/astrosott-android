@@ -22,6 +22,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.liveEvent.LiveEventActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
@@ -135,6 +136,8 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
         if (asset != null)
             getBookmarking(asset);
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(asset.getName());
+        FirebaseEventManager.getFirebaseInstance(BoxSetDetailActivity.this).setRelatedAssetName(asset.getName());
+
         layoutType = layout;
         assetId = asset.getId();
         name = asset.getName();

@@ -10,6 +10,7 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.astro.sott.activities.liveChannel.ui.LiveChannel;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
@@ -169,6 +170,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         railData = commonRailData;
         asset = railData.getObject();
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(asset.getName());
+        FirebaseEventManager.getFirebaseInstance(LiveEventActivity.this).setRelatedAssetName(asset.getName());
 
         layoutType = layout;
         assetId = asset.getId();

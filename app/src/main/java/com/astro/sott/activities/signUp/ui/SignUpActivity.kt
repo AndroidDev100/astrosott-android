@@ -498,6 +498,10 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                             UserInfo.getInstance(this).alternateUserName =
                                 evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName
                         }
+                        if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.accountRole != null) UserInfo.getInstance(
+                            this
+                        ).accountRole =
+                            evergentCommonResponse.getContactResponse.getContactResponseMessage!!.accountRole
                         if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.socialLoginTypes != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.socialLoginTypes!!.size > 0) {
                             socialLoginTypesItem =
                                 evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.socialLoginTypes as List<SocialLoginTypesItem>?
@@ -587,7 +591,11 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         UserInfo.getInstance(this).isActive = true
         AppCommonMethods.setCleverTap(this)
         FirebaseEventManager.getFirebaseInstance(this)
-            .userLoginEvent(UserInfo.getInstance(this).cpCustomerId, "", "")
+            .userLoginEvent(
+                UserInfo.getInstance(this).cpCustomerId,
+                UserInfo.getInstance(this).accountRole,
+                ""
+            )
 
         Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT)
             .show()

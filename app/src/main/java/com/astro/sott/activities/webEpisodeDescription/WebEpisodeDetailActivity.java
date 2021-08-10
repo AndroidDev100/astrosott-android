@@ -207,6 +207,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                 callProgressBar();
                 playerChecks(railData);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("trx_vip", railData.getObject(), this);
                 if (UserInfo.getInstance(this).isActive()) {
                     fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
                     if (!fileId.equalsIgnoreCase("")) {

@@ -408,6 +408,8 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     socialLoginTypesItem = evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getSocialLoginTypes();
                     AppCommonMethods.checkSocailLinking(this, socialLoginTypesItem);
                 }
+                if (evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getAccountRole() != null)
+                    UserInfo.getInstance(this).setAccountRole(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getAccountRole());
                 if (type.equalsIgnoreCase("Facebook") || type.equalsIgnoreCase("Google")) {
                     UserInfo.getInstance(this).setSocialLogin(true);
                 }
@@ -477,7 +479,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
         AppCommonMethods.setCleverTap(this);
         if (UserInfo.getInstance(this).getCpCustomerId() != null && !UserInfo.getInstance(this).getCpCustomerId().equalsIgnoreCase(""))
-            FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "", type);
+            FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), UserInfo.getInstance(this).getAccountRole(), type);
       /*  if (from.equalsIgnoreCase("Profile")) {
             new ActivityLauncher(AstrLoginActivity.this).profileScreenRedirection(AstrLoginActivity.this, HomeActivity.class);
         } else {*/

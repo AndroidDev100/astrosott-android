@@ -107,6 +107,8 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
                 UserInfo.getInstance(this).setLastName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getLastName());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
+                if (evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getAccountRole() != null)
+                    UserInfo.getInstance(this).setAccountRole(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getAccountRole());
                 AppCommonMethods.setCrashlyticsUserId(this);
                 getActiveSubscription();
 
@@ -164,7 +166,7 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
     }
 
     private void setActive() {
-        FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "",type);
+        FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), UserInfo.getInstance(this).getAccountRole(), type);
         UserInfo.getInstance(this).setActive(true);
         UserInfo.getInstance(this).setSocialLogin(true);
         AppCommonMethods.setCleverTap(this);
