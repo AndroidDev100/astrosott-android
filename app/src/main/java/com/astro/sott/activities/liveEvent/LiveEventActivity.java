@@ -468,7 +468,14 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                             if (UserInfo.getInstance(this).isActive()) {
                                                 if (!fileId.equalsIgnoreCase("")) {
                                                     Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                                    if (isPlayableOrNot()) {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
+                                                    } else {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
+                                                    }
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                                    intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                                                     startActivity(intent);
                                                 }
                                             }
@@ -491,7 +498,14 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                             if (UserInfo.getInstance(this).isActive()) {
                                                 if (!fileId.equalsIgnoreCase("")) {
                                                     Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                                    if (isPlayableOrNot()) {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
+                                                    } else {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
+                                                    }
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                                    intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                                                     startActivity(intent);
                                                 }
                                             }
@@ -542,7 +556,14 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                             if (UserInfo.getInstance(this).isActive()) {
                                                 if (!fileId.equalsIgnoreCase("")) {
                                                     Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                                    if (isPlayableOrNot()) {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
+                                                    } else {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
+                                                    }
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                                    intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                                                     startActivity(intent);
                                                 }
                                             }
@@ -564,7 +585,14 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                             if (UserInfo.getInstance(this).isActive()) {
                                                 if (!fileId.equalsIgnoreCase("")) {
                                                     Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                                    if (isPlayableOrNot()) {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
+                                                    } else {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
+                                                    }
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                                    intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                                                     startActivity(intent);
                                                 }
                                             }
