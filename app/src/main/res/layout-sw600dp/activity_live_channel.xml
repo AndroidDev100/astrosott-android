@@ -200,6 +200,10 @@
 
                         </TextView>
                     </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
 
 
                     <TextView
@@ -225,7 +229,167 @@
                         android:textColor="@color/title_color"
                         android:textSize="@dimen/font_medium_large"
                         tools:targetApi="p" />
+
+                     <FrameLayout
+                            android:id="@+id/shadow"
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/above_dark_shadow" />
+                    </RelativeLayout>
+
                 </LinearLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.astro.sott.utils.helpers.ExpandableCardLayout
+                        android:id="@+id/expandable_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="34dp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:orientation="vertical"
+                        app:el_expanded="false"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <!--                            <LinearLayout-->
+                            <!--                                android:id="@+id/duration_lay"-->
+                            <!--                                android:layout_width="match_parent"-->
+                            <!--                                android:layout_height="wrap_content"-->
+                            <!--                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top"-->
+                            <!--                                android:visibility="gone">-->
+
+                            <!--                                <TextView-->
+                            <!--                                    android:layout_width="wrap_content"-->
+                            <!--                                    android:layout_height="wrap_content"-->
+                            <!--                                    android:fontFamily="@font/roboto_bold"-->
+                            <!--                                    android:text="@string/duration"-->
+
+                            <!--                                    android:textColor="@color/white"-->
+                            <!--                                    android:textSize="@dimen/font_medium" />-->
+
+                            <!--                                <TextView-->
+                            <!--                                    android:id="@+id/duration_text"-->
+                            <!--                                    android:layout_width="wrap_content"-->
+                            <!--                                    android:layout_height="wrap_content"-->
+                            <!--                                    android:fontFamily="@font/roboto_regular"-->
+                            <!--                                    android:textColor="@color/white"-->
+                            <!--                                    android:textSize="@dimen/font_medium" />-->
+                            <!--                            </LinearLayout>-->
+
+                            <LinearLayout
+                                android:id="@+id/subtitle_lay"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:text="@string/sub_title_live"
+
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/font_medium" />
+
+                                <TextView
+                                    android:id="@+id/subtitle_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:textColor="@color/white"
+                                    android:text="@string/validity"
+                                    android:textSize="@dimen/font_medium" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/cast_lay"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:text="@string/cast_live"
+
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/font_medium" />
+
+                                <TextView
+                                    android:id="@+id/cast_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:textColor="@color/white"
+                                    android:text="@string/validity"
+                                    android:textSize="@dimen/font_medium" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/crew_lay"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/movie_crew_ll_margin_top">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:text="@string/directors"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/font_medium" />
+
+                                <TextView
+                                    android:id="@+id/crew_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:textColor="@color/white"
+                                    android:text="@string/validity"
+                                    android:textSize="@dimen/font_medium" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </com.astro.sott.utils.helpers.ExpandableCardLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/less_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent">
+
+                        <TextView
+                            android:id="@+id/text_expandable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/roboto_bold"
+                            android:maxLines="2"
+                            android:padding="6dp"
+                            android:textColor="@color/aqua_marine"
+                            android:textSize="@dimen/font_medium" />
+                    </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -240,6 +404,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="10dp"
                         android:visibility="gone"
+                        app:tabGravity="fill"
                         android:background="@drawable/tab_bg"
                         app:tabBackground="@color/transparentColor"
                         app:layout_constraintLeft_toLeftOf="parent"

@@ -159,6 +159,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             intentValues();
             getBinding().pager.disableScroll(true);
             getBinding().pager.setOffscreenPageLimit(0);
+            setExpandable();
 
         } else {
             noConnectionLayout();
@@ -215,6 +216,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + "-" + AppCommonMethods.getEndTime(programAsset.getEndDate()) + " | ");
             getImage();
             getGenre();
+//            getMovieCasts();
         } catch (Exception e) {
 
         }
@@ -244,7 +246,36 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
 
     }
-
+//    private void getMovieCrews() {
+//        activityViewModel.getCrewLiveDAta(map).observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String crewText) {
+//
+//                PrintLogging.printLog(this.getClass(), "", "crewValusIs" + crewText);
+//
+//                if (TextUtils.isEmpty(crewText)) {
+//                    getBinding().crewLay.setVisibility(View.GONE);
+//                } else {
+//                    getBinding().crewLay.setVisibility(View.VISIBLE);
+//                    getBinding().crewText.setText(" " + crewText);
+//                }
+//
+//            }
+//        });
+//    }
+//    private void getMovieCasts() {
+//        activityViewModel.getCastLiveData(programAsset.getTags()).observe(this, castTest -> {
+//            if (TextUtils.isEmpty(castTest)) {
+//                getBinding().castLay.setVisibility(View.GONE);
+//
+//            } else {
+//                getBinding().castLay.setVisibility(View.VISIBLE);
+//                getBinding().castText.setText(" " + castTest);
+//
+//            }
+//            Log.d("eCASTLA",castTest+"");
+//        });
+//    }
     private void getChannelLanguage() {
         activityViewModel.getLanguageLiveData(programAsset.getTags()).observe(this, language -> {
             if (!TextUtils.isEmpty(language)) {
@@ -795,6 +826,42 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
             }
 
+        });
+
+    }
+    private void setExpandable() {
+//
+        getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
+        getBinding().lessButton.setOnClickListener(view -> {
+            getBinding().descriptionText.toggle();
+            getBinding().descriptionText.setEllipsis("...");
+            if (getBinding().descriptionText.isExpanded()) {
+                getBinding().descriptionText.setEllipsize(null);
+                getBinding().shadow.setVisibility(View.GONE);
+
+            } else {
+//                if(getBinding().descriptionText.getLineCount() >3)
+//            {
+//                getBinding().descriptionText.setMaxLines(3);
+                getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+                getBinding().shadow.setVisibility(View.VISIBLE);
+
+//            }
+            }
+
+            if (getBinding().expandableLayout.isExpanded()) {
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+//                getBinding().textExpandable.setText(().getString(R.string.view_more));
+
+            } else {
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+
+//                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
+            }
+            if (view != null) {
+                getBinding().expandableLayout.expand();
+            }
+            getBinding().expandableLayout.collapse();
         });
 
     }

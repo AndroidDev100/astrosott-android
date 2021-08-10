@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.databinding.QuickSearchItemBinding;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
@@ -47,8 +49,9 @@ public class SearchNormalAdapter extends RecyclerView.Adapter<SearchNormalAdapte
     @Override
     public void onBindViewHolder(@NonNull SingleItemRowHolder viewHolder, final int position) {
         boolean imageAvailable = false;
+       Asset singleItem = itemsList.get(position);
 
-
+        AppCommonMethods.setBillingUi(viewHolder.searchItemBinding.billingImage, singleItem.getTags(), singleItem.getType(), activity);
 
         if (itemsList.get(position).getType() == MediaTypeConstant.getWebEpisode(activity)) {
             Drawable background = viewHolder.searchItemBinding.creatorLay.getBackground();

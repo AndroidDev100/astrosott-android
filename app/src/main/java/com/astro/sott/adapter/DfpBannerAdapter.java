@@ -67,6 +67,9 @@ public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         ArrayList<String> DFP_DETAILS = AppCommonMethods.splitString(item.getFanPlacementId(), "#");
         holder.rowDfpBannerBinding.bannerRoot.setVisibility(View.GONE);
+
+//        holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText("gfchgvbjbhvg");
+
         // Banner ads detail should be in below FORMAT
         //DFP#Android#Phone#Banner#/21805729337/Watcho_Android/Watcho_Aos_app_Prem_ATF
         // /21805729337/Watcho_iOS/Watcho_iOS_app_LiveTV_ATF  /21805729337/Watcho_iOS/Watcho_iOS_app_LiveTV_ATF

@@ -243,8 +243,7 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ((LandscapeHeroHolder) holder).itemBinding.heroImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClick(holder.getAdapterPosition());
-                    Log.d("position",item.getRailDetail().getAsset().getImages().get(position).getUrl());
+                    itemClick(position);
 
                     Log.d("position","landscapehero");
 
@@ -294,7 +293,6 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     imageUrl = potraitUrl;
                 } else if (getViewType() == AppConstants.HERO_LDS_BANNER || getViewType() == AppConstants.HERO_LDS_LANDSCAPE || getViewType() == AppConstants.HERO_PR_POSTER || getViewType() == AppConstants.HERO_RCG_BANNER) {
                     imageUrl = landscapeUrl;
-                    Log.d("vghgb1",landscapeUrl+"");
                 }
 
             }
@@ -319,19 +317,17 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if (asset.getImages().size() > 0) {
 
                 for (int i = 0; i < asset.getImages().size(); i++) {
-                    if (asset.getImages().get(i).getRatio().equals("16:9")) {
-                        String image_url =AppConstants.WEBP_URL+ item.getRailDetail().getImageURL();
+                    if (asset.getImages().get(i).getRatio().equals("16x9")) {
+                        String image_url =AppConstants.WEBP_URL+ asset.getImages().get(i).getUrl();
                         landscapeUrl = image_url + AppConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.landscape_image_width) + AppConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.landscape_image_height) + AppConstants.QUALITY;
                         isImage = true;
-
-
                     }
-                    if (asset.getImages().get(i).getRatio().equals("9:16")) {
+                    if (asset.getImages().get(i).getRatio().equals("9x16")) {
                         String image_url = AppConstants.WEBP_URL+asset.getImages().get(i).getUrl();
                         potraitUrl = image_url + AppConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.portrait_image_width) + AppConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.portrait_image_height) + AppConstants.QUALITY;
                         isImage = true;
                     }
-                    if (asset.getImages().get(i).getRatio().equals("1:1")) {
+                    if (asset.getImages().get(i).getRatio().equals("1x1")) {
                         String image_url =AppConstants.WEBP_URL+ asset.getImages().get(i).getUrl();
                         squareUrl = image_url + AppConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.square_image_width) + AppConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.square_image_height) + AppConstants.QUALITY;
                         isImage = true;

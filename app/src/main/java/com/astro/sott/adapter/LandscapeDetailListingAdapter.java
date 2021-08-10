@@ -4,6 +4,8 @@ import android.app.Activity;
 import androidx.databinding.DataBindingUtil;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +65,7 @@ public class LandscapeDetailListingAdapter extends RecyclerView.Adapter<Landscap
         RailCommonData singleItem = itemsList.get(i);
         holder.landscapeItemBinding.livenowLay.setVisibility(View.GONE);
         holder.landscapeItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
+        Log.d("hgbhjn","detail");
         try {
 
 

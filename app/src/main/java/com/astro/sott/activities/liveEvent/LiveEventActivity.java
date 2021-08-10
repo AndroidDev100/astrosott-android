@@ -680,6 +680,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         //PrintLogging.printLog(this.getClass(),"", "valuessId" +);
         setMetaDataValues(asset, type);
         getBinding().noConnectionLayout.setVisibility(View.GONE);
+        setExpandable();
         getBinding().share.setOnClickListener(view -> {
 
             if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
@@ -828,6 +829,42 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
     }
 
+    private void setExpandable() {
+//
+        getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
+        getBinding().lessButton.setOnClickListener(view -> {
+            getBinding().descriptionText.toggle();
+            getBinding().descriptionText.setEllipsis("...");
+            if (getBinding().descriptionText.isExpanded()) {
+                getBinding().descriptionText.setEllipsize(null);
+                getBinding().shadow.setVisibility(View.GONE);
+
+            } else {
+//                if(getBinding().descriptionText.getLineCount() >3)
+//            {
+//                getBinding().descriptionText.setMaxLines(3);
+                getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+                getBinding().shadow.setVisibility(View.VISIBLE);
+
+//            }
+            }
+
+            if (getBinding().expandableLayout.isExpanded()) {
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+//                getBinding().textExpandable.setText(().getString(R.string.view_more));
+
+            } else {
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+
+//                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
+            }
+            if (view != null) {
+                getBinding().expandableLayout.expand();
+            }
+            getBinding().expandableLayout.collapse();
+        });
+
+    }
 
     private void openShareDialouge() {
         try {

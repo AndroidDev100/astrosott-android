@@ -3,6 +3,7 @@ package com.astro.sott.adapter.experiencemng;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +87,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
     @Override
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
         RailCommonData singleItem = itemsList.get(i);
+
         try {
             /*if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
@@ -102,7 +104,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
                 holder.landscapeItemBinding.mediaTypeLayout.lineOne.setText(itemsList.get(i).getObject().getName());
                 if (singleItem.getObject().getType() == MediaTypeConstant.getProgram(mContext)) {
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
-                    holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + "-" + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
+                                    holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + "-" + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
                 } else {
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
 
