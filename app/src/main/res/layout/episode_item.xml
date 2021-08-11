@@ -111,7 +111,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:fontFamily="@font/roboto_medium"
-
                     android:lineHeight="24sp"
                     android:maxLines="2"
                     android:textColor="@color/title_color"

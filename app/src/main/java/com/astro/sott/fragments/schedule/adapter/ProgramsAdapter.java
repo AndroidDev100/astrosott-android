@@ -47,6 +47,7 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
     private SpecificAssetCallBack callBack;
     private boolean value;
 
+
     public ProgramsAdapter(Activity mContext,
                            List<RailCommonData> railData, int pos, EpgNotAvailableCallBack callBack, SpecificAssetCallBack specificAssetCallBack) {
         this.context = mContext;
@@ -114,6 +115,9 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
 
         Long currentTime = AppCommonMethods.getCurrentTimeStampLong();
         Long startTime = data.get(i).getObject().getStartDate();
+
+        Log.e("currentTime", String.valueOf(Long.valueOf(currentTime)));
+
         Log.e("currentTime", String.valueOf(Long.valueOf(currentTime)));
         Log.e("startTime", String.valueOf(startTime));
 

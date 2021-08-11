@@ -570,13 +570,30 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
 
     private StringBuilder stringBuilder;
-
+    private  int lineCount = 0;
     private void setMetas() {
         //  getDuration();
         ///  getMovieYear();
         try {
             getBinding().programTitle.setText(asset.getName());
             getBinding().descriptionText.setText(asset.getDescription());
+            getBinding().descriptionText.post(() -> {
+                lineCount = getBinding().descriptionText.getLineCount();
+                Log.d("linecountCheck", lineCount + "");
+            });
+
+            lineCount = getBinding().descriptionText.getLineCount();
+            if (lineCount <= 3) {
+                if ((!TextUtils.isEmpty(getBinding().subtitleText.getText())) || (!TextUtils.isEmpty(getBinding().castText.getText())) || (!TextUtils.isEmpty(getBinding().crewText.getText()))) {
+                    getBinding().shadow.setVisibility(View.VISIBLE);
+                    getBinding().lessButton.setVisibility(View.VISIBLE);
+                } else {
+                    getBinding().shadow.setVisibility(View.GONE);
+                    getBinding().lessButton.setVisibility(View.GONE);
+                }
+            } else {
+
+            }
             stringBuilder = new StringBuilder();
             stringBuilder.append(viewModel.getStartDate(liveEventStartDate) + " - " + AppCommonMethods.getEndTime(liveEventEndDate) + " | ");
             getImage();

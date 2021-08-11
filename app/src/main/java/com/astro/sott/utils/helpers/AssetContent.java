@@ -370,7 +370,7 @@ public class AssetContent {
         if (rating_list != null)
             cast_value.addAll(rating_list.getObjects());
 //            for (MultilingualStringValue value : rating_list.getObjects()) {
-//                cast_value.add(value);
+//                cast_value.getBinding().metadd(value);
 //            }
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i <= cast_value.size() - 1; i++) {

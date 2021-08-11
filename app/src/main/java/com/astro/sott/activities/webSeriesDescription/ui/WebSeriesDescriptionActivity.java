@@ -443,56 +443,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 Log.d("Linecountdesc",getBinding().descriptionText.getLineCount()+"");
 
 
-//                    int lineCount = getBinding().descriptionText.getLineCount();
-//                    Log.d("linecount",lineCount+"");
-//
-//                    if( lineCount <= 3){
-//                if((getBinding().durationText.getText()!= null )||(getBinding().subtitleText.getText()!= null )||(getBinding().castText.getText() != null)||(getBinding().crewText.getText()!= null)) {
-//                              getBinding().descriptionText.setVisibility(View.VISIBLE);
-//                              getBinding().shadow.setVisibility(View.GONE);
-//                              getBinding().lessButton.setVisibility(View.GONE);
-//                              getBinding().expandableLayout.expand();
-//                    Log.d("ERRbjhmn",getBinding().durationText.getText()+"");
-//                    Log.d("ERRbjhmn",getBinding().subtitleText.getText()+"");
-//                    Log.d("ERRbjhmn",getBinding().castText.getText()+"");
-//                    Log.d("ERRbjhmn",getBinding().crewText.getText()+"");
-//                    Log.d("ERRbjhmn","in if");
-//
-//
-//
-//
-//
-//
-//
-//                } else if((getBinding().durationText.getText()!= "" )||(getBinding().subtitleText.getText()!= "" )||(getBinding().castText.getText() != "")||(getBinding().crewText.getText()!= "")) {
-//                        getBinding().descriptionText.setVisibility(View.VISIBLE);
-//                        getBinding().shadow.setVisibility(View.GONE);
-//                        getBinding().lessButton.setVisibility(View.GONE);
-//                        getBinding().expandableLayout.expand();
-////                    getBinding().descriptionText.setMaxLines(lineCount);
-//                    Log.d("ERRbjhmn","in else if");
-//
-//
-//                }
-//                    else{
-//                        getBinding().descriptionText.setVisibility(View.VISIBLE);
-//                        getBinding().shadow.setVisibility(View.VISIBLE);
-//                        getBinding().lessButton.setVisibility(View.VISIBLE);
-//                    getBinding().expandableLayout.collapse();
-//                    Log.d("ERRbjhmn","in else");
-//
-//
-//
-//                }
-//            }else{
-//                        getBinding().descriptionText.setMaxLines(3);
-//                        Log.d("ERRbjhmn","greater than3");
-//
-//            }
-//
-
-
-
 
 
             }
