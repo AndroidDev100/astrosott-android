@@ -133,7 +133,9 @@
         <activity
             android:name="com.clevertap.android.sdk.InAppNotificationActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
+        <meta-data
+            android:name="CLEVERTAP_NOTIFICATION_ICON"
+            android:value="@mipmap/ic_launcher"/>
         <meta-data
             android:name="CLEVERTAP_INAPP_EXCLUDE"
             android:value=".activities.splash.ui.SplashActivity" />

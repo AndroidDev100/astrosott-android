@@ -1167,7 +1167,7 @@ public class PlayerRepository {
                 kavaAnalyticsConfig = new KavaAnalyticsConfig()
                         .setApplicationVersion(BuildConfig.VERSION_NAME)
                         .setPartnerId(BuildConfig.KAVA_PARTNER_ID)
-                        .setUserId(KsPreferenceKey.getInstance(context).getUser().getId())
+                        .setUserId(UserInfo.getInstance(context).getCpCustomerId())
                         .setEntryId(entryId);
                 pluginConfigs.setPluginConfig(KavaAnalyticsPlugin.factory.getName(), kavaAnalyticsConfig);
             } else {
