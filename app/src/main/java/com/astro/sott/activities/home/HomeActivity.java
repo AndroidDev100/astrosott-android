@@ -28,7 +28,6 @@ import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.video.ui.VideoFragment;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
-import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.billing.BillingProcessor;
@@ -80,17 +79,13 @@ import com.astro.sott.fragments.livetv.ui.LiveTvFragment;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.android.play.core.appupdate.AppUpdateInfo;
-import com.google.android.play.core.install.InstallStateUpdatedListener;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.InstallStatus;
 import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.ArrayList;
 
-public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack, InAppProcessListener, CardCLickedCallBack {
+public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, InAppProcessListener, CardCLickedCallBack {
     private final String TAG = this.getClass().getSimpleName();
     private TextView toolbarTitle;
     private HomeFragment homeFragment;
@@ -108,7 +103,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private NativeAdLayout nativeAdLayout;
     private LinearLayout adView;
     private int indicatorWidth;
-    private AppUpdateInfo appUpdateInfo;
+    /*private AppUpdateInfo appUpdateInfo;*/
     private long mLastClickTime = 0;
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -258,12 +253,12 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         if (getIntent().getStringExtra("fragmentType") != null)
             fragmentType = getIntent().getStringExtra("fragmentType");
         modelCall();
-        ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
+       // ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
         // Before starting an update, register a listener for updates.
 
-        ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().registerListener(listener);
+     //   ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().registerListener(listener);
 
-        ApplicationUpdateManager.getInstance(getApplicationContext()).isUpdateAvailable();
+        //ApplicationUpdateManager.getInstance(getApplicationContext()).isUpdateAvailable();
 
         createViewModel();
         intializeBilling();
@@ -647,7 +642,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
         // Checks that the update is not stalled during 'onResume()'.
         // However, you should execute this check at all entry points into the app.
-        ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+       /* ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
 
             if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                 // If the update is downloaded but not installed,
@@ -659,7 +654,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 // When status updates are no longer needed, unregister the listener.
                 ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().unregisterListener(listener);
             }
-        });
+        });*/
     }
 
     private void updateLang() {
@@ -685,7 +680,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     }
 
-    @Override
+   /* @Override
     public void getAppUpdateCallBack(AppUpdateInfo appUpdateInfo) {
 
         this.appUpdateInfo = appUpdateInfo;
@@ -695,25 +690,25 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         } else {
             PrintLogging.printLog("InApp update", "NoUpdate available");
         }
-    }
+    }*/
 
     /* Displays the snackbar notification and call to action. */
-    private void popupSnackbarForCompleteUpdate() {
+   /* private void popupSnackbarForCompleteUpdate() {
         Snackbar snackbar =
                 Snackbar.make(getBinding().mainLayout, getResources().getString(R.string.update_has_downloaded), Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(getResources().getString(R.string.restart), view -> ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().completeUpdate());
         snackbar.setActionTextColor(
                 getResources().getColor(R.color.colorPrimary));
         snackbar.show();
-    }
+    }*/
 
-    InstallStateUpdatedListener listener = installState -> {
+    /*InstallStateUpdatedListener listener = installState -> {
         if (installState.installStatus() == InstallStatus.DOWNLOADED) {
             // After the update is downloaded, show a notification
             // and request user confirmation to restart the app.
             popupSnackbarForCompleteUpdate();
         }
-    };
+    };*/
 
     private void intializeBilling() {
         billingProcessor = new BillingProcessor(HomeActivity.this, HomeActivity.this);
