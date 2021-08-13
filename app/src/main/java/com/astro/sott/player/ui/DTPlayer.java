@@ -1601,6 +1601,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         }else {
                             startPlayer(mediaEntry);
                         }
+                    }else {
+                        startPlayer(mediaEntry);
                     }
                 }else {
                     startPlayer(mediaEntry);
