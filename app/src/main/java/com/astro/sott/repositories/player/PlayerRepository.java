@@ -22,6 +22,9 @@ import android.widget.TextView;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.callBacks.kalturaCallBacks.RefreshTokenCallBack;
+import com.astro.sott.callBacks.waterMarkCallBacks.WaterMarkCallback;
+import com.astro.sott.modelClasses.OtpModel;
+import com.astro.sott.modelClasses.WaterMark.WaterMarkModel;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.RefreshKS;
 import com.astro.sott.repositories.mysubscriptionplan.MySubscriptionPlanRepository;
@@ -69,14 +72,17 @@ import com.kaltura.playkit.plugins.kava.KavaAnalyticsPlugin;
 import com.kaltura.playkit.plugins.ott.PhoenixAnalyticsConfig;
 import com.kaltura.playkit.plugins.ott.PhoenixAnalyticsEvent;
 import com.kaltura.playkit.plugins.ott.PhoenixAnalyticsPlugin;
+import com.kaltura.playkit.plugins.playback.CustomPlaybackRequestAdapter;
 import com.kaltura.playkit.plugins.playback.KalturaPlaybackRequestAdapter;
 import com.kaltura.playkit.plugins.playback.KalturaUDRMLicenseRequestAdapter;
 import com.kaltura.playkit.providers.MediaEntryProvider;
 
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.kaltura.client.APIOkRequestsExecutor.TAG;
 
@@ -106,6 +112,8 @@ public class PlayerRepository {
     private MediaEntryProvider mediaProvider;
     private StringBuilder formatBuilder;
     private Formatter formatter;
+    private String jwtToken = "";
+    private boolean isLivePlayer = false;
     private final Runnable updateTimeTask = new Runnable() {
         public void run() {
             seekBar1.setProgress(((int) player.getCurrentPosition()));
@@ -1005,7 +1013,7 @@ public class PlayerRepository {
                                                    final String deviceid,
                                                    final Asset asset,
                                                    int isPurchased,
-                                                   int assetPosition) {
+                                                   int assetPosition, String jwt, Boolean isLivePlayer) {
         final MutableLiveData<Player> playerMutableLiveData = new MutableLiveData<>();
 
         if (player != null) {
@@ -1013,6 +1021,8 @@ public class PlayerRepository {
         }
 
         this.context = context;
+        this.jwtToken = jwt;
+        this.isLivePlayer = isLivePlayer;
 
         if (isPurchased == 1) {
             formatBuilder = new StringBuilder();
@@ -1132,6 +1142,14 @@ public class PlayerRepository {
                     player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
                 } catch (Exception e) {
                 }
+                if (isLivePlayer && UserInfo.getInstance(context).isActive() && !KsPreferenceKey.getInstance(context).getJwtToken().equalsIgnoreCase("")){
+                    Map<String,String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer" +" "+KsPreferenceKey.getInstance(context).getJwtToken());
+                    CustomPlaybackRequestAdapter customPlaybackRequestAdapter = new CustomPlaybackRequestAdapter("com.astro.sott", player);
+                    customPlaybackRequestAdapter.setHttpHeaders(headers);
+                    player.getSettings().setContentRequestAdapter(customPlaybackRequestAdapter);
+                }
+
                 player.prepare(mediaConfig);
                 player.getSettings().setSubtitleStyle(getStyleForPositionTwo());
                 player.play();
@@ -1479,6 +1497,26 @@ public class PlayerRepository {
         player.seekTo(0);
         getPlayerState(booleanMutableLiveData);
         return booleanMutableLiveData;
+    }
+
+    public LiveData<WaterMarkModel> callWaterMarkApi(Context context, String kalturaPhoenixUrl, String ks) {
+        MutableLiveData<WaterMarkModel> mutableLiveData = new MutableLiveData<>();
+        KsServices ksServices = new KsServices(context);
+        ksServices.callWaterMarkApi(context, kalturaPhoenixUrl, ks, new WaterMarkCallback() {
+            @Override
+            public void onSuccess(WaterMarkModel waterMarkModel) {
+                waterMarkModel.setResponseCode(200);
+                mutableLiveData.postValue(waterMarkModel);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                WaterMarkModel waterMarkModel = new WaterMarkModel();
+                waterMarkModel.setMessage(t.getMessage());
+                mutableLiveData.postValue(waterMarkModel);
+            }
+        });
+        return mutableLiveData;
     }
 }
 

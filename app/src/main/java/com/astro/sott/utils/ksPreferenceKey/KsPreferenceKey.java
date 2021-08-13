@@ -66,6 +66,14 @@ public class KsPreferenceKey {
         session.setString("kalturaPhoenixUrl", kalturaPhoenixUrl);
     }
 
+    public String getKalturaPhoenixUrlForWaterMark() {
+        return session.getString("KalturaPhoenixUrlForWaterMark", "");
+    }
+
+    public void setKalturaPhoenixUrlForWaterMark(String kalturaPhoenixUrl) {
+        session.setString("KalturaPhoenixUrlForWaterMark", kalturaPhoenixUrl);
+    }
+
     public String getHouseHoldId() {
         return session.getString("household_id", "");
     }
@@ -246,6 +254,24 @@ public class KsPreferenceKey {
     public void setQualityPosition(int qualityPosition) {
         session.setInt("video_quality_position", qualityPosition);
     }
+
+
+    public int getExpiryTime() {
+        return session.getInt("expiry_time", 0);
+    }
+
+    public void setExpiryTime(int expiryTime) {
+        session.setInt("expiry_time", expiryTime);
+    }
+
+    public String getJwtToken() {
+        return session.getString("jwt_token", "");
+    }
+
+    public void setJwtToken(String jwtToken) {
+        session.setString("jwt_token", jwtToken);
+    }
+
 
     public boolean getPrefrenceSelected() {
         return session.getBoolean("p_selected", false);

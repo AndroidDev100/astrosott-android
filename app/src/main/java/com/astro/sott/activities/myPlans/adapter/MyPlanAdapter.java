@@ -159,7 +159,7 @@ public class MyPlanAdapter extends RecyclerView.Adapter<MyPlanAdapter.SingleItem
 //            Date currenTimeZone = (Date) calendar.getTime();
 //            return sdf.format(currenTimeZone);
 
-            String dateString = DateFormat.format("dd-MMM-yyyy  HH:mm:ss", new Date(timestamp*1000)).toString();
+            String dateString = DateFormat.format("MM/dd/yyyy HH:mm aa", new Date(timestamp*1000)).toString();
             return dateString;
         } catch (Exception e) {
         }

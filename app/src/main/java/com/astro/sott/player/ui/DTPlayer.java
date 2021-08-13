@@ -77,6 +77,7 @@ import com.astro.sott.callBacks.kalturaCallBacks.RefreshTokenCallBack;
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
+import com.astro.sott.modelClasses.WaterMark.WaterMarkModel;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.RefreshKS;
@@ -344,6 +345,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private boolean isDialogShowing = false, isAudioTracks = false, isCaption = false;
     private AudioManager mAudioManager;
     private Boolean isLivePlayer = false;
+    private String jwt = "";
+    private int expiryDate;
 
     private final BroadcastReceiver headsetRecicer = new BroadcastReceiver() {
         @Override
@@ -568,6 +571,22 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
         checkAssetTypeCondition(urlToplay, asset, prog);
 
+    }
+
+    private void callWaterMarkApi() {
+        if (UserInfo.getInstance(baseActivity).isActive()) {
+            viewModel.callWaterMarkApi(KsPreferenceKey.getInstance(baseActivity).getKalturaPhoenixUrlForWaterMark(), KsPreferenceKey.getInstance(baseActivity).getStartSessionKs()).observe(this, new Observer<WaterMarkModel>() {
+                @Override
+                public void onChanged(WaterMarkModel waterMarkModel) {
+                    if (waterMarkModel!=null){
+                        if (waterMarkModel.getResponseCode() == 200){
+                            jwt = waterMarkModel.getJwt();
+                            expiryDate = waterMarkModel.getExp();
+                        }
+                    }
+                }
+            });
+        }
     }
 
     private void setEventConvivaEvent(Boolean isLivePlayer, Asset programAsset) {
@@ -1558,7 +1577,34 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     AudioManager.AUDIOFOCUS_GAIN);
 
             if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                startPlayer(mediaEntry);
+                if (isLivePlayer){
+                    if (UserInfo.getInstance(baseActivity).isActive()) {
+                        if (AppCommonMethods.isTokenExpired(baseActivity)) {
+                            viewModel.callWaterMarkApi(KsPreferenceKey.getInstance(baseActivity).getKalturaPhoenixUrlForWaterMark(), KsPreferenceKey.getInstance(baseActivity).getStartSessionKs()).observe(this, new Observer<WaterMarkModel>() {
+                                @Override
+                                public void onChanged(WaterMarkModel waterMarkModel) {
+                                    if (waterMarkModel != null) {
+                                        if (waterMarkModel.getResponseCode() == 200) {
+                                            jwt = waterMarkModel.getJwt();
+                                            expiryDate = waterMarkModel.getExp();
+                                            KsPreferenceKey.getInstance(baseActivity).setExpiryTime(expiryDate);
+                                            KsPreferenceKey.getInstance(baseActivity).setJwtToken(jwt);
+                                            startPlayer(mediaEntry);
+                                        } else {
+                                            startPlayer(mediaEntry);
+                                        }
+                                    } else {
+                                        startPlayer(mediaEntry);
+                                    }
+                                }
+                            });
+                        }else {
+                            startPlayer(mediaEntry);
+                        }
+                    }
+                }else {
+                    startPlayer(mediaEntry);
+                }
             }
 
             AsyncTask.execute(new Runnable() {
@@ -1645,9 +1691,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             }
 
         });*/
+
+
         Log.e("DTPlayer", "DTPlayer assetPosition" + assetPosition);
         try {
-            viewModel.startPlayerBookmarking(mediaEntry, UDID.getDeviceId(baseActivity, baseActivity.getContentResolver()), asset, isPurchased, assetPosition).observe(this, player -> {
+            viewModel.startPlayerBookmarking(mediaEntry, UDID.getDeviceId(baseActivity, baseActivity.getContentResolver()), asset, isPurchased, assetPosition,jwt,isLivePlayer).observe(this, player -> {
                 if (player != null) {
                     adsCallBackHandling(player);
                     getPlayerView(player);
