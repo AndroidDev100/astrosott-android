@@ -278,6 +278,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 getContact();
                 try {
                     origin = CleverTapManager.getInstance().getLoginOrigin();
+                    AppCommonMethods.onUserRegister(this);
                     CleverTapManager.getInstance().setSignInEvent(this, origin, loginType);
                 } catch (Exception ex) {
                 }
