@@ -190,6 +190,20 @@ public class AppCommonMethods {
 
     }
 
+    public static void onUserRegister(Activity context) {
+        try {
+            CleverTapAPI clevertapDefaultInstance =
+                    CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver()));
+            HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("MSG-email", true);
+            clevertapDefaultInstance.pushProfile(profileUpdate);
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
     public static void namePushCleverTap(Activity context, String name) {
 
         try {

@@ -88,6 +88,7 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
                 UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
                 KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
+                AppCommonMethods.onUserRegister(this);
                 getContact();
 
             } else {
