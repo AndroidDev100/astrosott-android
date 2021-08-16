@@ -21,7 +21,12 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SubscriptionPagerAdapter(private var context: Context, private val packagesList: List<PackDetail>, private val productList: AccountServiceMessageItem, private val onPackageChooseClickListener: OnPackageChooseClickListener) : PagerAdapter() {
+class SubscriptionPagerAdapter(
+    private var context: Context,
+    private val packagesList: List<PackDetail>,
+    private val productList: AccountServiceMessageItem,
+    private val onPackageChooseClickListener: OnPackageChooseClickListener
+) : PagerAdapter() {
 
     private var activePlan: String? = null
 
@@ -32,14 +37,20 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(context)
-        val bannerBinding: FragmentPackageBinding = DataBindingUtil.bind<FragmentPackageBinding>(inflater.inflate(R.layout.fragment_package, container, false))!! //HomeViewPagerBannerBinding.bind(view);
+        val bannerBinding: FragmentPackageBinding = DataBindingUtil.bind<FragmentPackageBinding>(
+            inflater.inflate(
+                R.layout.fragment_package,
+                container,
+                false
+            )
+        )!! //HomeViewPagerBannerBinding.bind(view);
         bannerBinding.executePendingBindings()
         val packageModel = packagesList[position].productsResponseMessageItem
         val skuModel = packagesList[position].skuDetails
         if (position == 1) {
             bannerBinding.btnChooseMe.setTextColor(context.resources.getColor(R.color.title_color))
             bannerBinding.text.setTextColor(context.resources.getColor(R.color.title_color))
-        }else{
+        } else {
             bannerBinding.btnChooseMe.setTextColor(context.resources.getColor(R.color.black_text_color))
             bannerBinding.text.setTextColor(context.resources.getColor(R.color.black_text_color))
         }
@@ -48,7 +59,12 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
             bannerBinding.text.setPadding(0, 0, 0, 0)
         } else {
             bannerBinding.text.visibility = View.VISIBLE
-            bannerBinding.text.setPadding(0, SliderPotrait.dp2px(context, 6f), 0, SliderPotrait.dp2px(context, 6f))
+            bannerBinding.text.setPadding(
+                0,
+                SliderPotrait.dp2px(context, 6f),
+                0,
+                SliderPotrait.dp2px(context, 6f)
+            )
         }
         bannerBinding.packagePriceOld.visibility = View.GONE
         val rainbow = context.resources.getIntArray(R.array.packages_colors)
@@ -64,12 +80,25 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
             //Log.w("priceValues", skuModel!!.introductoryPrice + "<--->"+skuModel!!.price+"<----->"+packageModel.duration+"  "+skuModel.introductoryPricePeriod)
         }
 
-        if (skuModel.introductoryPricePeriod != null && !skuModel.introductoryPricePeriod.equals("", true)) {
+        if (skuModel.introductoryPricePeriod != null && !skuModel.introductoryPricePeriod.equals(
+                "",
+                true
+            )
+        ) {
             if (packageModel.promotions != null && packageModel.promotions?.size!! > 0) {
                 bannerBinding.text.visibility = View.VISIBLE
-                bannerBinding.text.setPadding(0, SliderPotrait.dp2px(context, 6f), 0, SliderPotrait.dp2px(context, 6f))
+                bannerBinding.text.setPadding(
+                    0,
+                    SliderPotrait.dp2px(context, 6f),
+                    0,
+                    SliderPotrait.dp2px(context, 6f)
+                )
                 bannerBinding.text.text = packageModel.promotions!![0].promoDescrip
-                if (packageModel.promotions!![0].promoCpDescription != null && !packageModel.promotions!![0].promoCpDescription.equals("", true)) {
+                if (packageModel.promotions!![0].promoCpDescription != null && !packageModel.promotions!![0].promoCpDescription.equals(
+                        "",
+                        true
+                    )
+                ) {
                     bannerBinding.offer.visibility = View.VISIBLE
                     bannerBinding.offer.text = packageModel.promotions!![0].promoCpDescription
                 }
@@ -77,9 +106,11 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
             bannerBinding.currency.text = skuModel.priceCurrencyCode
             bannerBinding.packagePrice.text = skuModel.introductoryPrice + "/"
             bannerBinding.period.text = packageModel.duration.toString() + packageModel.period
-            bannerBinding.packagePriceOld.text = skuModel.price.toString() + "/" + packageModel.duration + packageModel.period
+            bannerBinding.packagePriceOld.text =
+                skuModel.price.toString() + "/" + packageModel.duration + packageModel.period
             bannerBinding.packagePriceOld.visibility = View.VISIBLE
-            bannerBinding.packagePriceOld.paintFlags = bannerBinding.packagePriceOld.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            bannerBinding.packagePriceOld.paintFlags =
+                bannerBinding.packagePriceOld.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         } else {
             //Log.w("priceValues else", skuModel!!.price )
             bannerBinding.offer.visibility = View.GONE
@@ -112,7 +143,8 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
         }
         if (packageModel.skuORQuickCode != null && productList != null) {
             if (checkActiveOrNot(packageModel.skuORQuickCode!!)) {
-                bannerBinding.btnChooseMe.background = context.resources.getDrawable(R.drawable.ic_btn)
+                bannerBinding.btnChooseMe.background =
+                    context.resources.getDrawable(R.drawable.ic_btn)
                 bannerBinding.btnChooseMe.isEnabled = false
                 activePlan = skuModel.sku
             } else {
@@ -127,7 +159,13 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
         bannerBinding.bulletsList.adapter = adapter
         bannerBinding.btnChooseMe.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                onPackageChooseClickListener.onPackageClicked(position, packagesList[position], activePlan,packagesList[position].productsResponseMessageItem.displayName,skuModel.price)
+                onPackageChooseClickListener.onPackageClicked(
+                    position,
+                    packagesList[position],
+                    activePlan,
+                    packagesList[position].productsResponseMessageItem.displayName,
+                    skuModel.priceAmountMicros
+                )
             }
 
         })
@@ -156,6 +194,12 @@ class SubscriptionPagerAdapter(private var context: Context, private val package
     }
 
     interface OnPackageChooseClickListener {
-        fun onPackageClicked(position: Int, packDetails: PackDetail, activePlan: String?,planName: String?,price: String?)
+        fun onPackageClicked(
+            position: Int,
+            packDetails: PackDetail,
+            activePlan: String?,
+            planName: String?,
+            price: Long?
+        )
     }
 }

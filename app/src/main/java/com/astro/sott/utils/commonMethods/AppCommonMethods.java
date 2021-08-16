@@ -457,6 +457,21 @@ public class AppCommonMethods {
         }
         return "";
     }
+    public static String getDateCleverTap(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DDTHH:MM:SSZ", Locale.getDefault());
+            sdf.setTimeZone(TimeZone.getDefault());
+
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
 
     private static String getTimeStamp(String todayDate, int type) {
         /*Calendar currnetDateTime = Calendar.getInstance();

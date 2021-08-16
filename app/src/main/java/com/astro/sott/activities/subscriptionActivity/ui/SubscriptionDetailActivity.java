@@ -226,7 +226,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 if (packDetailList.size() > 0) {
                     if (packDetailList.size() == 1) {
                         getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                        onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPrice());
+                        onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
                     } else {
                         getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                         if (haveSvod && haveTvod == false) {
@@ -274,10 +274,11 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         TabsData.getInstance().setDetail(false);
     }
 
-    private String planName = "", planPrice = "", offerId = "", offerType = "";
+    private Long planPrice;
+    private String planName = "", offerId = "", offerType = "";
 
     @Override
-    public void onCardClicked(String productId, String serviceType, String active, String planName, String price) {
+    public void onCardClicked(String productId, String serviceType, String active, String planName, Long price) {
         this.planName = planName;
         offerId = productId;
         planPrice = price;

@@ -169,10 +169,11 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
         billingProcessor.initializeBillingProcessor();
     }
 
-    private String planName = "", planPrice = "", offerId = "", offerType = "";
+    private Long planPrice;
+    private String planName = "", offerId = "", offerType = "";
 
     @Override
-    public void onCardClicked(String productId, String serviceType, String activePlan, String name, String price) {
+    public void onCardClicked(String productId, String serviceType, String activePlan, String name, Long price) {
 
         this.planName = name;
         offerId = productId;

@@ -427,7 +427,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         packDetails: PackDetail,
         activePlan: String?,
         planName: String?,
-        price: String?
+        price: Long?
     ) {
         if (UserInfo.getInstance(context).isActive) {
             cardClickedCallback.onCardClicked(

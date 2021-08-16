@@ -85,7 +85,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ArrayList;
 
-public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, InAppProcessListener, CardCLickedCallBack {
+public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, InAppProcessListener {
     private final String TAG = this.getClass().getSimpleName();
     private TextView toolbarTitle;
     private HomeFragment homeFragment;
@@ -245,7 +245,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         oldLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
-        if (UserInfo.getInstance(this).isHouseHoldError()){
+        if (UserInfo.getInstance(this).isHouseHoldError()) {
             UserInfo.getInstance(this).setHouseHoldError(false);
             new ActivityLauncher(this).signupActivity(this, SignUpActivity.class, CleverTapManager.HOME);
         }
@@ -253,10 +253,10 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         if (getIntent().getStringExtra("fragmentType") != null)
             fragmentType = getIntent().getStringExtra("fragmentType");
         modelCall();
-       // ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
+        // ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
         // Before starting an update, register a listener for updates.
 
-     //   ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().registerListener(listener);
+        //   ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().registerListener(listener);
 
         //ApplicationUpdateManager.getInstance(getApplicationContext()).isUpdateAvailable();
 
@@ -731,28 +731,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         }
     }
 
-    @Override
-    public void onCardClicked(String productId, String serviceType, String active,String name,String price) {
-       /* if (serviceType.equalsIgnoreCase("ppv")) {
-            billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
-        } else {
-            if (billingProcessor != null && billingProcessor.isReady()) {
-                billingProcessor.queryPurchases(HomeActivity.this, new PurchaseDetailListener() {
-                    @Override
-                    public void response(Purchase purchaseObject) {
-                        if (purchaseObject != null) {
-                            if (purchaseObject.getSku() != null && purchaseObject.getPurchaseToken() != null) {
-                                billingProcessor.updatePurchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
-                            }
-                        } else {
-                            billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
-                        }
-                    }
-                });
-
-            }
-        }*/
-    }
 
     public SkuDetails getSubscriptionDetail(String productId) {
         return billingProcessor.getLocalSubscriptionSkuDetail(HomeActivity.this, productId);

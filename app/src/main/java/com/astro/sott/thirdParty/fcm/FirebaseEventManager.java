@@ -177,12 +177,13 @@ public class FirebaseEventManager {
         }
     }
 
-    public void packageEvent(String packageTitle, String price, String eventName, String customerId) {
+    public void packageEvent(String packageTitle, Long price, String eventName, String customerId) {
         try {
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Rental Subscription");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, packageTitle);
-            bundle.putString("item_price", price);
+            Long amount = price / 1000000;
+            bundle.putString("item_price", amount + "");
             bundle.putString("user_id", customerId);
             mFirebaseAnalytics.logEvent(eventName, bundle);
         } catch (Exception e) {
