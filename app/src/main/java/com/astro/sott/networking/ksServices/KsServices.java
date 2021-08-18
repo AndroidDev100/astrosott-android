@@ -8406,14 +8406,18 @@ public class KsServices {
             public void onResponse(Call<WaterMarkModel> call, retrofit2.Response<WaterMarkModel> response) {
                 if (response.code() == 200) {
                     waterMarkCallback.onSuccess(response.body());
-                }else {
-                    waterMarkCallback.onError(new Throwable("Something went Wrong... Please Try again."));
+                } else {
+                    if (response.code() == 500016)
+
+                    else {
+                        waterMarkCallback.onError(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<WaterMarkModel> call, Throwable t) {
-                waterMarkCallback.onError(t);
+                waterMarkCallback.onError(0);
             }
         });
 

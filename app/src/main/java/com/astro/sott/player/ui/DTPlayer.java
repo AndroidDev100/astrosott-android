@@ -578,8 +578,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             viewModel.callWaterMarkApi(KsPreferenceKey.getInstance(baseActivity).getKalturaPhoenixUrlForWaterMark(), KsPreferenceKey.getInstance(baseActivity).getStartSessionKs()).observe(this, new Observer<WaterMarkModel>() {
                 @Override
                 public void onChanged(WaterMarkModel waterMarkModel) {
-                    if (waterMarkModel!=null){
-                        if (waterMarkModel.getResponseCode() == 200){
+                    if (waterMarkModel != null) {
+                        if (waterMarkModel.getResponseCode() == 200) {
                             jwt = waterMarkModel.getJwt();
                             expiryDate = waterMarkModel.getExp();
                         }
@@ -1577,7 +1577,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     AudioManager.AUDIOFOCUS_GAIN);
 
             if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                if (isLivePlayer){
+                if (isLivePlayer) {
                     if (UserInfo.getInstance(baseActivity).isActive()) {
                         if (AppCommonMethods.isTokenExpired(baseActivity)) {
                             viewModel.callWaterMarkApi(KsPreferenceKey.getInstance(baseActivity).getKalturaPhoenixUrlForWaterMark(), KsPreferenceKey.getInstance(baseActivity).getStartSessionKs()).observe(this, new Observer<WaterMarkModel>() {
@@ -1591,20 +1591,29 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                             KsPreferenceKey.getInstance(baseActivity).setJwtToken(jwt);
                                             startPlayer(mediaEntry);
                                         } else {
-                                            startPlayer(mediaEntry);
+                                            if (waterMarkModel.getResponseCode() == 500016) {
+                                                new RefreshKS(baseActivity).refreshKS(new RefreshTokenCallBack() {
+                                                    @Override
+                                                    public void response(CommonResponse ksresponse) {
+                                                        playBackError();
+                                                    }
+                                                });
+                                            } else {
+                                                playBackError();
+                                            }
                                         }
                                     } else {
-                                        startPlayer(mediaEntry);
+                                        playBackError();
                                     }
                                 }
                             });
-                        }else {
+                        } else {
                             startPlayer(mediaEntry);
                         }
-                    }else {
+                    } else {
                         startPlayer(mediaEntry);
                     }
-                }else {
+                } else {
                     startPlayer(mediaEntry);
                 }
             }
@@ -1697,7 +1706,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         Log.e("DTPlayer", "DTPlayer assetPosition" + assetPosition);
         try {
-            viewModel.startPlayerBookmarking(mediaEntry, UDID.getDeviceId(baseActivity, baseActivity.getContentResolver()), asset, isPurchased, assetPosition,jwt,isLivePlayer).observe(this, player -> {
+            viewModel.startPlayerBookmarking(mediaEntry, UDID.getDeviceId(baseActivity, baseActivity.getContentResolver()), asset, isPurchased, assetPosition, jwt, isLivePlayer).observe(this, player -> {
                 if (player != null) {
                     adsCallBackHandling(player);
                     getPlayerView(player);
@@ -1775,7 +1784,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         });
 
 
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -1849,7 +1857,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (isFirstAd) {
                 new Handler().postDelayed(() -> {
                     haveAudioOrNot();
-                     haveSubtitleorNot();
+                    haveSubtitleorNot();
 
                 }, 7000);
                 isFirstAd = false;
@@ -3062,7 +3070,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     objectAnimator.cancel();
                     objectAnimator = null;
                 }
-                if (handler1!=null){
+                if (handler1 != null) {
                     handler1.removeCallbacksAndMessages(null);
                 }
                 getBinding().progressBar.setProgress(0);
