@@ -8407,11 +8407,7 @@ public class KsServices {
                 if (response.code() == 200) {
                     waterMarkCallback.onSuccess(response.body());
                 } else {
-                    if (response.code() == 500016)
-
-                    else {
-                        waterMarkCallback.onError(response.code());
-                    }
+                    waterMarkCallback.onError(response.code());
                 }
             }
 
