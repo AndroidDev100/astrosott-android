@@ -309,7 +309,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/roboto_regular"
                                     android:textColor="@color/white"
-                                    android:text="@string/validity"
+
                                     android:textSize="@dimen/font_medium" />
                             </LinearLayout>
 
@@ -334,7 +334,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/roboto_regular"
                                     android:textColor="@color/white"
-                                    android:text="@string/validity"
+
                                     android:textSize="@dimen/font_medium" />
                             </LinearLayout>
 
@@ -359,7 +359,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/roboto_regular"
                                     android:textColor="@color/white"
-                                    android:text="@string/validity"
+
                                     android:textSize="@dimen/font_medium" />
                             </LinearLayout>
                         </LinearLayout>

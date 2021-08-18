@@ -696,6 +696,7 @@
     <string name="already_registered_para">Already registered? Just log in below</string>
     <string name="sub_title_live" >Subtitle:</string>
     <string name="cast_live">Cast:</string>
+    <string name="password_rules_new">Incorrect email/mobile number or password</string>
 
 
 </resources>

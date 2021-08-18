@@ -233,6 +233,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 String password = getBinding().passwordEdt.getText().toString();
                 if (checkPasswordValidation(password)) {
                     getBinding().passwordError.setText(getString(R.string.password_rules));
+
                     login(password);
                 } else {
                     getBinding().passwordError.setTextColor(getResources().getColor(R.color.red_live));
@@ -250,6 +251,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     if (checkPasswordValidation(password)) {
                         getBinding().passwordError.setTextColor(getResources().getColor(R.color.heather));
                         getBinding().passwordError.setText(getString(R.string.password_rules));
+
                     } else {
                         getBinding().passwordError.setTextColor(getResources().getColor(R.color.red_live));
                         getBinding().errorEmail.setText(getResources().getString(R.string.mobile_suggestion));
@@ -561,7 +563,9 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         } else if (password.matches(PASSWORD_REGEX)) {
             return true;
         }
-        passwordError = getResources().getString(R.string.password_error);
+//        passwordError = getResources().getString(R.string.password_error);
+        passwordError = getResources().getString(R.string.password_rules_new);
+
         return false;
     }
 

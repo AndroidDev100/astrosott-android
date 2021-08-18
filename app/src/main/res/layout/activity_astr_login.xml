@@ -195,7 +195,7 @@
                     android:paddingStart="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen20dp"
-                    android:text="@string/password_rules"
+                    android:text="@string/password_rules_new"
                     android:textColor="@color/heather"
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"

@@ -34,7 +34,12 @@ import com.astro.sott.databinding.ScheduleItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.kaltura.client.types.ProgramAsset;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.SingleItemRowHolder> {
 
@@ -78,7 +83,8 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
                 ImageHelper.getInstance(viewHolder.scheduleItemBinding.image.getContext()).loadImageToPotrait(viewHolder.scheduleItemBinding.image, final_url, R.drawable.square1);
             }
         }
-        viewHolder.scheduleItemBinding.startEndTime.setText(AppCommonMethods.setTime(commonData.getObject(), 1) + " - " + AppCommonMethods.setTime(commonData.getObject(), 0));
+        viewHolder.scheduleItemBinding.startEndTime.setText((getStartDate(data.get(i).getObject().getStartDate()))+ " - " + (AppCommonMethods.setTime(commonData.getObject(), 0)));
+//        viewHolder.scheduleItemBinding.startEndTime.setText(AppCommonMethods.setTime(commonData.getObject(), 1) + " - " + AppCommonMethods.setTime(commonData.getObject(), 0));
         viewHolder.scheduleItemBinding.descriptionText.setText(commonData.getObject().getDescription());
         //viewHolder.scheduleItemBinding.descriptionText.collapse();
         String stTime = AppCommonMethods.getProgramTime(commonData.getObject(), 1);
@@ -117,8 +123,6 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
         Long startTime = data.get(i).getObject().getStartDate();
 
         Log.e("currentTime", String.valueOf(Long.valueOf(currentTime)));
-
-        Log.e("currentTime", String.valueOf(Long.valueOf(currentTime)));
         Log.e("startTime", String.valueOf(startTime));
 
         Boolean enable = ((ProgramAsset) data.get(i).getObject()).getEnableCatchUp();
@@ -129,6 +133,19 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
         }
 
 
+    }
+    public String getStartDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM hh:mmaaa", Locale.US);
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
     }
 
 

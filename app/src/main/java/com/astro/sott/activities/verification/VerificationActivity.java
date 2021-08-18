@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     private AstroLoginViewModel astroLoginViewModel;
     private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "", origin = "";
     private CountDownTimer countDownTimer;
+    private String num ="91";
+    private String newMobileNo="";
     private List<SocialLoginTypesItem> socialLoginTypesItem;
 
     @Override
@@ -63,18 +66,23 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             newEmail = getIntent().getExtras().getString("newEmail");
         if (getIntent().getExtras().getString("newMobile") != null)
             newMobile = getIntent().getExtras().getString("newMobile");
+             newMobileNo=num+newMobile;
+        Log.d("jkmmmm",newMobileNo+"");
+
+
         password = getIntent().getExtras().getString(AppLevelConstants.PASSWORD_KEY);
         from = getIntent().getExtras().getString(AppLevelConstants.FROM_KEY);
         if (from.equalsIgnoreCase(AppLevelConstants.CONFIRM_PASSWORD) || from.equalsIgnoreCase(AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD)) {
             if (loginType.equalsIgnoreCase("Email")) {
                 emailMobile = newEmail;
             } else if (loginType.equalsIgnoreCase("Mobile")) {
-                emailMobile = newMobile;
+                emailMobile = newMobileNo;
             }
         }
         if (emailMobile != null && !emailMobile.equalsIgnoreCase("")) {
             getBinding().descriptionTxt.setText(getResources().getString(R.string.onetime_pass_code_text) + "\n" + emailMobile);
         }
+
 
     }
 

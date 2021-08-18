@@ -1,5 +1,6 @@
 package com.astro.sott.baseModel;
 
+import androidx.constraintlayout.widget.Constraints;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -15,6 +16,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
@@ -87,6 +90,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                 && NetworkConnectivity.isOnline(getActivity())) {
             swipeToRefresh = 2;
             getBinding().noConnectionLayout.setVisibility(View.GONE);
+
             connectionValidation(true);
         } else {
             connectionValidation(false);
@@ -148,6 +152,9 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 
     private void noConnectionLayout() {
         getBinding().noConnectionLayout.setVisibility(View.VISIBLE);
+       Constraints.LayoutParams params = new Constraints.LayoutParams(Constraints.LayoutParams.MATCH_PARENT,Constraints.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 60, 0, 0);
+        getBinding().noConnectionLayout.setLayoutParams(params);
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
     }
 
