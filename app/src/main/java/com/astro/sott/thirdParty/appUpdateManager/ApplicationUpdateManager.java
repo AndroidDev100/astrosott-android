@@ -1,3 +1,4 @@
+/*
 package com.astro.sott.thirdParty.appUpdateManager;
 
 import android.content.Context;
@@ -6,27 +7,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.astro.sott.callBacks.AppUpdateCallBack;
 import com.astro.sott.utils.helpers.PrintLogging;
-import com.google.android.play.core.appupdate.AppUpdateInfo;
-import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.android.play.core.tasks.Task;
 
 public class ApplicationUpdateManager {
 
     private static ApplicationUpdateManager applicationUpdateManager;
 
     //    private boolean isUpdateAvailable = false;
-    private AppUpdateManager appUpdateManager;
-    private AppUpdateInfo appUpdateInfoObject;
+   */
+/* private AppUpdateManager appUpdateManager;
+    private AppUpdateInfo appUpdateInfoObject;*//*
+
 
     public static final int APP_UPDATE_REQUEST_CODE = 101;
     private AppUpdateCallBack appUpdateCallBack;
 
     private ApplicationUpdateManager(Context context) {
 
-        appUpdateManager = AppUpdateManagerFactory.create(context);
+        */
+/*appUpdateManager = AppUpdateManagerFactory.create(context);*//*
+
 
     }
 
@@ -50,9 +49,11 @@ public class ApplicationUpdateManager {
         return appUpdateManager;
     }
 
-    /**
+    */
+/**
      * Check for app update availability
-     */
+     *//*
+
 
     public void isUpdateAvailable() {
 
@@ -96,9 +97,11 @@ public class ApplicationUpdateManager {
     }
 
 
-    /**
+    */
+/**
      * if update available start update
-     */
+     *//*
+
 
     public void startUpdate(AppUpdateInfo appUpdateInfo, int updateType, Context context, int requestCode) {
 
@@ -131,3 +134,4 @@ public class ApplicationUpdateManager {
 
 
 }
+*/

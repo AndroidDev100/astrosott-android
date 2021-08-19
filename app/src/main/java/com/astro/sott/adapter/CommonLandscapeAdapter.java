@@ -200,7 +200,12 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 
                 }
-
+                if (singleItem.getProgress() > 0) {
+                    landscapeItemBinding.progressBar.setVisibility(View.VISIBLE);
+                    landscapeItemBinding.progressBar.setProgress(singleItem.getPosition());
+                } else {
+                    landscapeItemBinding.progressBar.setVisibility(View.GONE);
+                }
             } catch (Exception ignored) {
                 landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
             }
@@ -258,6 +263,13 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 
                 }
+
+                if (singleItem.getProgress() > 0) {
+                    landscapeItemBinding.progressBar.setVisibility(View.VISIBLE);
+                    landscapeItemBinding.progressBar.setProgress(singleItem.getPosition());
+                } else {
+                    landscapeItemBinding.progressBar.setVisibility(View.GONE);
+                }
             } catch (Exception ignored) {
 
             }
@@ -313,6 +325,13 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 
 
+                }
+
+                if (singleItem.getProgress() > 0) {
+                    landscapeItemBinding.progressBar.setVisibility(View.VISIBLE);
+                    landscapeItemBinding.progressBar.setProgress(singleItem.getPosition());
+                } else {
+                    landscapeItemBinding.progressBar.setVisibility(View.GONE);
                 }
             } catch (Exception ignored) {
 

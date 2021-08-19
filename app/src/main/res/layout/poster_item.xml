@@ -77,17 +77,20 @@
                 <SeekBar
                     android:id="@+id/progressBar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:background="@color/white"
                     android:minHeight="0dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
                     android:paddingBottom="0dp"
-                    android:progress="50"
+                    android:progress="10"
+                    android:progressDrawable="@drawable/cw_progressbar_style"
                     android:thumb="@color/gray"
                     android:thumbTint="@android:color/transparent"
-                    tools:targetApi="lollipop"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:targetApi="lollipop" />
 
 
 

@@ -1065,7 +1065,21 @@ public class AssetContent {
         return connection;
     }
 
-    public static String getSubTitleLanguageDataString(Map<String, MultilingualStringValueArray> map, Context context) {
+
+    public  static String getTileSortName(Map<String, Value> map) {
+        MultilingualStringValue titleSortValue = null;
+        String s = "";
+        if (map != null) {
+            titleSortValue = (MultilingualStringValue) map.get(AppLevelConstants.TitleSortName);
+        }
+        if (titleSortValue != null) {
+            s = String.valueOf(titleSortValue.getValue());
+        }
+        return s;
+    }
+
+    public static String getSubTitleLanguageDataString
+            (Map<String, MultilingualStringValueArray> map, Context context) {
 
         String language = "";
         String lang = "";

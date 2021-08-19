@@ -22,6 +22,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.liveEvent.LiveEventActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
@@ -84,7 +85,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     private Map<String, Value> yearMap;
     private FragmentManager manager;
     private long assetId;
-    private int assetType;
+    private int assetType, watchPosition = 0;
     private String trailor_url = "";
     private String name, titleName, idfromAssetWatchlist;
     private boolean isActive, isAdded;
@@ -132,7 +133,11 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     private void getDataFromBack(RailCommonData commonRailData, int layout) {
         railData = commonRailData;
         asset = railData.getObject();
+        if (asset != null)
+            getBookmarking(asset);
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(asset.getName());
+        FirebaseEventManager.getFirebaseInstance(BoxSetDetailActivity.this).setRelatedAssetName(asset.getName());
+
         layoutType = layout;
         assetId = asset.getId();
         name = asset.getName();
@@ -373,8 +378,17 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
         }
     }
 
+    private void getBookmarking(Asset asset) {
+        if (UserInfo.getInstance(this).isActive()) {
+            viewModel.getBookmarking(asset).observe(this, integer -> {
+                watchPosition = integer;
+            });
+        }
+    }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     private void checkEntitleMent(final RailCommonData railCommonData) {
+
         String fileId = "";
 
         fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
@@ -385,7 +399,11 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                 if (purchasedStatus) {
                     runOnUiThread(() -> {
                         getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                        getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                        if (watchPosition > 0) {
+                            getBinding().playText.setText(getResources().getString(R.string.resume));
+                        } else {
+                            getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                        }
                         getBinding().astroPlayButton.setVisibility(View.GONE);
                         getBinding().starIcon.setVisibility(View.GONE);
                         getBinding().playText.setTextColor(getResources().getColor(R.color.black));
@@ -888,8 +906,8 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     private void openShareDialouge() {
         try {
             CleverTapManager.getInstance().socialShare(this, asset, false);
-            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset,this);
-        }catch (Exception e){
+            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset, this);
+        } catch (Exception e) {
 
         }
         AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), SubMediaTypes.BoxSet.name());

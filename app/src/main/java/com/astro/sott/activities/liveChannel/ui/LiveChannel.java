@@ -120,6 +120,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private boolean isLiveChannel = true;
     private boolean isDtvAdded = false;
     private int indicatorWidth;
+    private boolean becomeVipButtonCLicked = false;
+
     private  int lineCount = 0;
 
     private LiveChannelCommunicator mLiveChannelCommunicator;
@@ -216,6 +218,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 lineCount = getBinding().descriptionText.getLineCount();
                 Log.d("linecountCheck", lineCount + "");
             });
+            ;
+            Log.d("linecountCheck",  getBinding().subtitleText.getText()+ "");
 
             lineCount = getBinding().descriptionText.getLineCount();
             if (lineCount <= 3) {
@@ -225,7 +229,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 } else {
                     getBinding().shadow.setVisibility(View.GONE);
                     getBinding().lessButton.setVisibility(View.GONE);
-                }
+            }
             } else {
 
             }
@@ -233,7 +237,9 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + "-" + AppCommonMethods.getEndTime(programAsset.getEndDate()) + " | ");
             getImage();
             getGenre();
-//            getMovieCasts();
+            getMovieCasts();
+            getMovieCrews();
+            setSubtitleLanguage();
         } catch (Exception e) {
 
         }
@@ -263,36 +269,58 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
 
     }
-//    private void getMovieCrews() {
-//        activityViewModel.getCrewLiveDAta(map).observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String crewText) {
-//
-//                PrintLogging.printLog(this.getClass(), "", "crewValusIs" + crewText);
-//
-//                if (TextUtils.isEmpty(crewText)) {
-//                    getBinding().crewLay.setVisibility(View.GONE);
-//                } else {
-//                    getBinding().crewLay.setVisibility(View.VISIBLE);
-//                    getBinding().crewText.setText(" " + crewText);
-//                }
-//
-//            }
-//        });
-//    }
-//    private void getMovieCasts() {
-//        activityViewModel.getCastLiveData(programAsset.getTags()).observe(this, castTest -> {
-//            if (TextUtils.isEmpty(castTest)) {
-//                getBinding().castLay.setVisibility(View.GONE);
-//
-//            } else {
-//                getBinding().castLay.setVisibility(View.VISIBLE);
-//                getBinding().castText.setText(" " + castTest);
-//
-//            }
-//            Log.d("eCASTLA",castTest+"");
-//        });
-//    }
+    private void setSubtitleLanguage() {
+
+        activityViewModel.getSubTitleLanguageLiveData(programAsset.getTags()).observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String crewText) {
+
+                PrintLogging.printLog(this.getClass(), "", "crewValusIs" + crewText);
+
+                if (TextUtils.isEmpty(crewText)) {
+                    getBinding().subtitleLay.setVisibility(View.GONE);
+                } else {
+                    getBinding().subtitleLay.setVisibility(View.VISIBLE);
+                    getBinding().subtitleText.setText(" " + crewText);
+                }
+                Log.d("eSubtitle",crewText+"");
+
+            }
+        });
+    }
+
+    private void getMovieCrews() {
+        activityViewModel.getCrewLiveDAta(programAsset.getTags()).observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String crewText) {
+
+                PrintLogging.printLog(this.getClass(), "", "crewValusIs" + crewText);
+
+                if (TextUtils.isEmpty(crewText)) {
+                    getBinding().crewLay.setVisibility(View.GONE);
+                } else {
+                    getBinding().crewLay.setVisibility(View.VISIBLE);
+                    getBinding().crewText.setText(" " + crewText);
+                }
+                Log.d("eCASTLA",crewText+"");
+
+            }
+
+        });
+    }
+    private void getMovieCasts() {
+        activityViewModel.getCastLiveData(programAsset.getTags()).observe(this, castTest -> {
+            if (TextUtils.isEmpty(castTest)) {
+                getBinding().castLay.setVisibility(View.GONE);
+
+            } else {
+                getBinding().castLay.setVisibility(View.VISIBLE);
+                getBinding().castText.setText(" " + castTest);
+
+            }
+            Log.d("eCASTLA",castTest+"");
+        });
+    }
     private void getChannelLanguage() {
         activityViewModel.getLanguageLiveData(programAsset.getTags()).observe(this, language -> {
             if (!TextUtils.isEmpty(language)) {
@@ -332,8 +360,11 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             viewPagerIntializtion();
 
         }*/
-        if (railData.getObject() != null)
+        if (railData.getObject() != null) {
             Constants.channelName = railData.getObject().getName();
+            FirebaseEventManager.getFirebaseInstance(LiveChannel.this).setRelatedAssetName(railData.getObject().getName());
+        }
+
         setImages(railData, this, getBinding().channelLogo);
         if (programAsset != null) {
             FirebaseEventManager.getFirebaseInstance(this).trackScreenName(railData.getObject().getName() + "-" + programAsset.getName());
@@ -370,6 +401,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                         startActivity(intent);
                     }
                 } else {
+                    becomeVipButtonCLicked = true;
                     new ActivityLauncher(LiveChannel.this).signupActivity(LiveChannel.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
@@ -379,7 +411,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         getBinding().share.setOnClickListener(v -> {
             try {
                 CleverTapManager.getInstance().socialShare(this, asset, true);
-                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset,this);
+                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset, this);
             } catch (Exception e) {
 
             }
@@ -449,6 +481,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                                     getBinding().vipButtonLive.setVisibility(View.VISIBLE);
                                 }
 //                        getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                becomeVipButtonCLicked = false;
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.black));
 
@@ -465,7 +498,18 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                                 getBinding().vipButtonLive.setVisibility(View.VISIBLE);
 //                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
-                                getCridDetail();
+                                if (becomeVipButtonCLicked) {
+                                    becomeVipButtonCLicked = false;
+                                    if (UserInfo.getInstance(this).isActive()) {
+                                        if (!fileId.equalsIgnoreCase("")) {
+                                            Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                            intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                            startActivity(intent);
+                                        }
+                                    }
+                                } else {
+                                    getCridDetail();
+                                }
                             });
                             this.vodType = EntitlementCheck.SVOD;
 
@@ -477,6 +521,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                                 getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                                 getBinding().vipButtonLive.setVisibility(View.VISIBLE);
 //                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                becomeVipButtonCLicked = false;
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
@@ -847,7 +892,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
     }
     private void setExpandable() {
-//
+//            getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
         getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
         getBinding().lessButton.setOnClickListener(view -> {
             getBinding().descriptionText.toggle();

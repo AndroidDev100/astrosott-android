@@ -380,6 +380,35 @@ public class BillingProcessor implements PurchasesUpdatedListener {
         }
     }
 
+
+    public void downgrade() {
+        BillingFlowParams purchaseParams;
+        if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase("")) {
+            purchaseParams = BillingFlowParams.newBuilder()
+                    .setOldSku(oldSKU.trim(), oldPurchaseToken.trim())
+                    .setReplaceSkusProrationMode(DEFERRED)
+                    .setSkuDetails(skuDetails)
+                    .setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId())
+                    .build();
+        } else {
+            purchaseParams = BillingFlowParams.newBuilder()
+                    .setOldSku(oldSKU.trim(), oldPurchaseToken.trim())
+                    .setReplaceSkusProrationMode(DEFERRED)
+                    .setSkuDetails(skuDetails)
+                    .build();
+        }
+
+        executeServiceRequest(
+                () -> {
+
+                    int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
+
+                });
+    }
+
+    private String oldSKU, oldPurchaseToken;
+    private Activity activity;
+
     public void initiateUpdatePurchaseFlow(@NonNull Activity activity, @NonNull SkuDetails skuDetails, String oldSKU, String oldPurchaseToken) {
         if (skuDetails.getType().equals(BillingClient.SkuType.SUBS) && areSubscriptionsSupported()
                 || skuDetails.getType().equals(BillingClient.SkuType.INAPP)) {
@@ -402,53 +431,18 @@ public class BillingProcessor implements PurchasesUpdatedListener {
             Log.w("priceValues", oldPrice + "  " + newPrice);
 
             if (oldSkuDetails != null) {
+                this.oldSKU = oldSKU;
+                this.oldPurchaseToken = oldPurchaseToken;
+                this.skuDetails=skuDetails;
+                this.activity = activity;
+
                 if (oldPrice > newPrice) {
                     Log.w("priceValues", "deffred");
-                    BillingFlowParams purchaseParams;
-                    if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase("")) {
-                        purchaseParams = BillingFlowParams.newBuilder()
-                                .setOldSku(oldSKU.trim(), oldPurchaseToken.trim())
-                                .setReplaceSkusProrationMode(DEFERRED)
-                                .setSkuDetails(skuDetails)
-                                .setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId())
-                                .build();
-                    } else {
-                        purchaseParams = BillingFlowParams.newBuilder()
-                                .setOldSku(oldSKU.trim(), oldPurchaseToken.trim())
-                                .setReplaceSkusProrationMode(DEFERRED)
-                                .setSkuDetails(skuDetails)
-                                .build();
-                    }
-
-                    executeServiceRequest(
-                            () -> {
-
-                                int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
-
-                            });
+                    inAppProcessListener.onDowngrade();
+                  //  downgrade();
                 } else {
-                    BillingFlowParams purchaseParams;
-                    if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase("")) {
-                        purchaseParams = BillingFlowParams.newBuilder()
-                                .setOldSku(oldSKU, oldPurchaseToken)
-                                .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
-                                .setSkuDetails(skuDetails)
-                                .setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId())
-                                .build();
-                    } else {
-                        purchaseParams = BillingFlowParams.newBuilder()
-                                .setOldSku(oldSKU, oldPurchaseToken)
-                                .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
-                                .setSkuDetails(skuDetails)
-                                .build();
-                    }
-
-                    executeServiceRequest(
-                            () -> {
-                                PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
-                                int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
-                                Log.w("responsCode-->>", responseCode + "");
-                            });
+                    inAppProcessListener.onUpgrade();
+                  //  upgrade();
                 }
             } else {
                 BillingFlowParams purchaseParams;
@@ -476,6 +470,32 @@ public class BillingProcessor implements PurchasesUpdatedListener {
             }
 
         }
+    }
+
+    public void upgrade() {
+
+        BillingFlowParams purchaseParams;
+        if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase("")) {
+            purchaseParams = BillingFlowParams.newBuilder()
+                    .setOldSku(oldSKU, oldPurchaseToken)
+                    .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+                    .setSkuDetails(skuDetails)
+                    .setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId())
+                    .build();
+        } else {
+            purchaseParams = BillingFlowParams.newBuilder()
+                    .setOldSku(oldSKU, oldPurchaseToken)
+                    .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+                    .setSkuDetails(skuDetails)
+                    .build();
+        }
+
+        executeServiceRequest(
+                () -> {
+                    PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
+                    int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
+                    Log.w("responsCode-->>", responseCode + "");
+                });
     }
 
 
@@ -842,7 +862,6 @@ public class BillingProcessor implements PurchasesUpdatedListener {
         }
 
     }
-
 
 
     public void acknowledgeNonConsumablePurchases(Purchase purchase) {

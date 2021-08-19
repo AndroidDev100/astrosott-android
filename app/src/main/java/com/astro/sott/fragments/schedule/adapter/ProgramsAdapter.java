@@ -18,13 +18,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.astro.sott.callBacks.SpecificAssetCallBack;
+import com.astro.sott.fragments.schedule.ui.Schedule;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.ToastHandler;
+import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.R;
 import com.astro.sott.activities.forwardEPG.ForwardedEPGActivity;
@@ -92,6 +95,8 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
         });
 
         viewHolder.scheduleItemBinding.moreButton.setOnClickListener(v -> {
+            FirebaseEventManager.getFirebaseInstance(context).viewItemEvent("Schedule - " + Constants.channelName, commonData.getObject(), context);
+
             viewHolder.scheduleItemBinding.descriptionText.toggle();
             if (viewHolder.scheduleItemBinding.descriptionText.isExpanded()) {
                 viewHolder.scheduleItemBinding.descriptionText.setEllipsize(null);

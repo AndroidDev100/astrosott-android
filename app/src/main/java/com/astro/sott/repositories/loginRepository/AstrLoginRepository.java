@@ -29,6 +29,8 @@ import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class AstrLoginRepository {
     private static AstrLoginRepository astrLoginRepository;
 
@@ -266,7 +268,7 @@ public class AstrLoginRepository {
         return mutableLiveData;
     }
 
-    public LiveData<EvergentCommonResponse> removeDevice(Context context, String accessToken, String serial) {
+    public LiveData<EvergentCommonResponse> removeDevice(Context context, String accessToken, ArrayList<String> serial) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
         EvergentServices.Companion.getInstance().removeDevice(context, accessToken, serial, new EvergentRemoveDevice() {

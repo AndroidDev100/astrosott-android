@@ -68,8 +68,6 @@ public class CommonLandscapeListingAdapter extends RecyclerView.Adapter<CommonLa
     public void onBindViewHolder(@NonNull SingleItemRowHolder holder, int i) {
         RailCommonData singleItem = itemsList.get(i);
         holder.landscapeItemBinding.livenowLay.setVisibility(View.GONE);
-//      holder.landscapeItemBinding.tvTitle.setText("knjhbgfderftyijok;lmnjbhvgcfxdawerdtfgyjh");
-
         holder.landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
         holder.landscapeItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
 
@@ -82,7 +80,7 @@ public class CommonLandscapeListingAdapter extends RecyclerView.Adapter<CommonLa
                 ImageHelper.getInstance(holder.landscapeItemBinding.itemImage.getContext()).loadImageToPlaceholder(holder.landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.ic_landscape_placeholder, holder.landscapeItemBinding.itemImage), R.drawable.ic_landscape_placeholder);
 
             }
-            AppCommonMethods.setBillingUi(holder.landscapeItemBinding.billingImage, itemsList.get(i).getObject().getTags(), itemsList.get(i).getType(),mContext);
+            AppCommonMethods.setBillingUi(holder.landscapeItemBinding.metas.billingImage, itemsList.get(i).getObject().getTags(), itemsList.get(i).getType(),mContext);
             AppCommonMethods.handleTitleDesc(holder.landscapeItemBinding.titleLayout, holder.landscapeItemBinding.tvTitle, holder.landscapeItemBinding.tvDescription, baseCategory, itemsList.get(i), mContext);
             holder.landscapeItemBinding.titleLayout.setVisibility(View.VISIBLE);
             holder.landscapeItemBinding.tvTitle.setVisibility(View.VISIBLE);

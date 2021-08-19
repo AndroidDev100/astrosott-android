@@ -64,7 +64,7 @@ import java.util.Map;
 public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding> implements TrailerAsset, AlertDialogSingleButtonFragment.AlertDialogListener {
 
     private RailCommonData railCommonData;
-    private int errorCode = -1;
+    private int errorCode = AppLevelConstants.NO_ERROR;
     private boolean isParentalLocked = false;
     private Asset asset;
     private boolean playerChecksCompleted = false;
@@ -153,7 +153,8 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
                 if (totalCount != 0) {
                     checkBlockingErrors(response, railData);
                 } else {
-                    checkEntitleMent(railData);
+                    playerChecksCompleted = true;
+                    checkErrors(railData);
                 }
             } else {
                 callProgressBar();
@@ -208,7 +209,8 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
 //                        checkEntitleMent(railData);
 //                        break;
                     default:
-                        checkEntitleMent(railData);
+                        playerChecksCompleted = true;
+                        checkErrors(railData);
                         break;
                 }
             }

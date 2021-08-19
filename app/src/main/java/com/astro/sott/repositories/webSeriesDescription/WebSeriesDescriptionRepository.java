@@ -148,6 +148,14 @@ public class WebSeriesDescriptionRepository {
     }
 
 
+    public LiveData<Integer> getBookMarking(Context context, Asset asset) {
+        MutableLiveData<Integer> assetPosition = new MutableLiveData<>();
+        new KsServices(context).callBookMarking(asset, position -> {
+            assetPosition.postValue(position);
+        });
+        return assetPosition;
+    }
+
     private String calculateLatout(int layoutType) {
         if (layoutType == 1) {
             tileType = AppLevelConstants.TYPE2;

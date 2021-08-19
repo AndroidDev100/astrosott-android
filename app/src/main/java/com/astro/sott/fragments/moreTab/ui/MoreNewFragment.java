@@ -161,7 +161,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.MANAGE_SUBSCRIBE, FirebaseEventManager.BTN_CLICK);
+                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, getBinding().subscribe.getText().toString(), FirebaseEventManager.BTN_CLICK);
                 if (getBinding().subscribe.getText().toString().equalsIgnoreCase("subscribe")) {
                     if (UserInfo.getInstance(getActivity()).isActive()) {
                         navBar.setVisibility(View.GONE);

@@ -117,7 +117,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private boolean iconClicked = false;
     private String image_url = "";
     private long lastClickTime = 0;
-    private int errorCode = -1;
+    private int errorCode = -1, watchPosition = 0;
     private boolean playerChecksCompleted = false;
     private int assetRuleErrorCode = -1;
     private boolean isParentalLocked = false;
@@ -127,6 +127,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private int priorityLevel;
     private int assetRestrictionLevel;
     private boolean assetKey = false;
+    private boolean becomeVipButtonCLicked = false;
     private boolean isDtvAdded = false;
 
 
@@ -167,6 +168,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
         if (asset.getName() != null)
             FirebaseEventManager.getFirebaseInstance(MovieDescriptionActivity.this).trackScreenName(asset.getName());
+        FirebaseEventManager.getFirebaseInstance(MovieDescriptionActivity.this).setRelatedAssetName(asset.getName());
 
         layoutType = layout;
         assetId = asset.getId();
@@ -212,7 +214,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 callProgressBar();
                 playerChecks(railData);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
-                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("trx_rent", asset, this);
+                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("trx_vip", asset, this);
                 if (UserInfo.getInstance(this).isActive()) {
                     fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
                     if (!fileId.equalsIgnoreCase("")) {
@@ -221,6 +223,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                         startActivity(intent);
                     }
                 } else {
+                    becomeVipButtonCLicked = true;
                     new ActivityLauncher(MovieDescriptionActivity.this).signupActivity(MovieDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
@@ -423,10 +426,19 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         }
     }
 
+    private void getBookmarking(Asset asset) {
+        if (UserInfo.getInstance(this).isActive()) {
+            viewModel.getBookmarking(asset).observe(this, integer -> {
+                watchPosition = integer;
+            });
+        }
+    }
+
     private String fileId = "";
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
-
+        if (railData != null && railData.getObject() != null)
+            getBookmarking(railData.getObject());
 
         fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
 
@@ -437,9 +449,14 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                     runOnUiThread(() -> {
                         if (playbackControlValue) {
                             getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                            getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                            if (watchPosition > 0) {
+                                getBinding().playText.setText(getResources().getString(R.string.resume));
+                            } else {
+                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                            }
                             getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.GONE);
+                            becomeVipButtonCLicked = false;
                             getBinding().playText.setTextColor(getResources().getColor(R.color.black));
                         }
 
@@ -454,6 +471,16 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                             getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.GONE);
                             getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                            if (becomeVipButtonCLicked) {
+                                becomeVipButtonCLicked = false;
+                                if (UserInfo.getInstance(this).isActive()) {
+                                    if (!fileId.equalsIgnoreCase("")) {
+                                        Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                        intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                        startActivity(intent);
+                                    }
+                                }
+                            }
 
                         });
                         this.vodType = EntitlementCheck.SVOD;
@@ -464,6 +491,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                             getBinding().playText.setText(getResources().getString(R.string.rent_movie));
                             getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                             getBinding().starIcon.setVisibility(View.GONE);
+                            becomeVipButtonCLicked = false;
                             getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
 
@@ -691,7 +719,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             lastClickTime = SystemClock.elapsedRealtime();
             try {
                 CleverTapManager.getInstance().socialShare(this, asset, false);
-                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset,this);
+                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset, this);
             } catch (Exception e) {
 
             }
@@ -1112,13 +1140,13 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 } else {
                     isAdded = false;
                     getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
-                    getBinding().watchList.setTextColor(getResources().getColor(R.color.title_color));
+                    getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
 
                 }
             } else {
                 isAdded = false;
                 getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
-                getBinding().watchList.setTextColor(getResources().getColor(R.color.title_color));
+                getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
             }
         });
     }

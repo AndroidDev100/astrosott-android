@@ -105,7 +105,7 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
 
         boolean isTablet = this.getResources().getBoolean(R.bool.isTablet);
         if (isTablet) {
-           // getBinding().resultRecycler.setLayoutManager(new GridLayoutManager(this, 5));
+            // getBinding().resultRecycler.setLayoutManager(new GridLayoutManager(this, 5));
 
             getBinding().resultRecycler.addItemDecoration(new SpacingItemDecoration(20, 2));
             GridLayoutManager mLayoutManager = new GridLayoutManager(this, 4);
@@ -198,43 +198,8 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
                         if (railCommonData.getImages().size() == itemValue.getImages().size())
                             new ActivityLauncher(ResultActivity.this).liveChannelActivity(ResultActivity.this, LiveChannel.class, railCommonData);
                     } else if (itemValue.getType() == MediaTypeConstant.getProgram(ResultActivity.this)) {
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
-                        new LiveChannelManager().getLiveProgram(ResultActivity.this, itemValue, new CheckLiveProgram() {
-                            @Override
-                            public void response(CommonResponse asset) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                                    }
-                                });
-
-                                if (asset != null) {
-                                    if (asset.getStatus()) {
-                                        if (asset.getLivePrograme()) {
-                                            PrintLogging.printLog(this.getClass(), "", "Live Program" + asset.getCurrentProgram().getName());
-                                            getProgramRailCommonData(itemValue, "liveChannelCall-->>" + asset.getStatus());
-                                            new ActivityLauncher(ResultActivity.this).liveChannelActivity(ResultActivity.this, LiveChannel.class, railCommonData);
-                                        } else {
-                                            getProgramRailCommonData(asset.getCurrentProgram(), "liveChannelCall-->>" + asset.getStatus() + "--" + asset.getProgramTime());
-                                            if (asset.getProgramTime() == 1) {
-                                                getProgramRailCommonData(itemValue, AppLevelConstants.PROGRAM_VIDEO_CLICLKED);
-                                                new ActivityLauncher(ResultActivity.this).catchUpActivity(ResultActivity.this, CatchupActivity.class, railCommonData);
-                                            } else {
-                                                getProgramRailCommonData(itemValue, AppLevelConstants.PROGRAM_CLICKED);
-                                                //  new ActivityLauncher(ResultActivity.this).forwardeEPGActivity(ResultActivity.this, ForwardedEPGActivity.class, railCommonData);
-                                            }
-                                        }
-                                    } else {
-                                        PrintLogging.printLog(this.getClass(), "", "forwardedEPG");
-                                    }
-                                } else {
-                                    //Asset Not Found
-                                    runOnUiThread(() -> ToastHandler.show("Asset Not Found", ResultActivity.this));
-
-                                }
-                            }
-                        });
+                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                        new ActivityLauncher(ResultActivity.this).checkCurrentProgram(itemValue);
                         //  liveProgramCallBack.response(itemValue);
                         //new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class,railCommonData);
                     }

@@ -28,6 +28,8 @@ public interface AppLevelConstants {
     String DATE = "date";
     String FILE_ID= "file_id";
 
+    String TitleSortName="TitleSortName";
+
 
     String POSITIVE_BUTTON_TEXT = "positiveButtonText";
     String FORCE = "force";

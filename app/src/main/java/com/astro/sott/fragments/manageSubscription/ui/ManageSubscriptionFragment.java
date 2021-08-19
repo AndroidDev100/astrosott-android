@@ -92,7 +92,7 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
         setToolBar();
         getBinding().planRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         modelCall();
-        getActiveSubscription();
+
         FirebaseEventManager.getFirebaseInstance(getActivity()).trackScreenName(FirebaseEventManager.MANAGE_SUBSCRIPTION);
 
         getBinding().toolbar.backButton.setOnClickListener(v -> {
@@ -100,6 +100,11 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActiveSubscription();
+    }
 
     private void getActiveSubscription() {
         getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);

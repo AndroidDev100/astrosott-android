@@ -28,6 +28,10 @@ public class CleverTapManager {
     public static final String SOCIAL_SHARE = "Social Share";
     public static final String ADD_MY_LIST = "Add My list";
 
+    public static final String CHANNEL_NAME = "Channel Name";
+    public static final String CONTENT_ID = "Content ID";
+    public static final String CONTENT_LICENSE_EXPIRY = "Content License Expiry";
+
 
     public static final String GENRE = "Genre";
     public static final String SUB_GENRE = "Sub-genre";
@@ -87,6 +91,9 @@ public class CleverTapManager {
     public void mediaWatched(Context context, Asset asset, Boolean isLive) {
         HashMap<String, Object> mediaWatched = new HashMap<String, Object>();
         mediaWatched.put(CONTENT_TITLE, asset.getName());
+        mediaWatched.put(CONTENT_ID, asset.getExternalId());
+        mediaWatched.put(CHANNEL_NAME, asset.getName());
+        mediaWatched.put(CONTENT_LICENSE_EXPIRY, AppCommonMethods.getDateCleverTap(asset.getEndDate()));
         mediaWatched.put(GENRE, AssetContent.getGenredataString(asset.getTags()));
         mediaWatched.put(SUB_GENRE, AssetContent.getSubGenredataString(asset.getTags()));
         mediaWatched.put(CONTENT_TYPE, AppCommonMethods.getAssetType(asset.getType(), context));
@@ -118,13 +125,15 @@ public class CleverTapManager {
         CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver())).pushEvent(MEDIA_WATCHED, mediaWatched);
     }
 
-    public void charged(Context context, String offerName, String offerId, String offerType, String transactionAmount, String paymentMode, String paymentStatus, String origin) {
+    public void charged(Context context, String offerName, String offerId, String offerType, Long transactionAmount, String paymentMode, String paymentStatus, String origin) {
         HashMap<String, Object> charged = new HashMap<String, Object>();
         charged.put(OFFER_NAME, offerName);
         charged.put(OFFER_ID, offerId);
-        charged.put(OFFER_TYPE, offerType);
+        //  charged.put(OFFER_TYPE, offerType);
         charged.put(DATE_PURCHASE, AppCommonMethods.getCurrentDate());
-        charged.put(TRANSACTION_AMOUNT, transactionAmount);
+        //1000000
+        Long amount = transactionAmount / 1000000;
+        charged.put(TRANSACTION_AMOUNT, amount);
         charged.put(PAYMENT_MODE, paymentMode);
         charged.put(PAYMENT_STATUS, paymentStatus);
         charged.put(PURCHASE_ORIGIN, origin);
@@ -134,6 +143,7 @@ public class CleverTapManager {
     public void socialShare(Context context, Asset asset, Boolean isLive) {
         HashMap<String, Object> mediaWatched = new HashMap<String, Object>();
         mediaWatched.put(CONTENT_TITLE, asset.getName());
+        mediaWatched.put(CONTENT_ID, asset.getExternalId());
         mediaWatched.put(GENRE, AssetContent.getGenredataString(asset.getTags()));
         mediaWatched.put(SUB_GENRE, AssetContent.getSubGenredataString(asset.getTags()));
         mediaWatched.put(CONTENT_TYPE, AppCommonMethods.getAssetType(asset.getType(), context));
@@ -143,6 +153,8 @@ public class CleverTapManager {
     public void addMyList(Context context, Asset asset, Boolean isLive) {
         HashMap<String, Object> mediaWatched = new HashMap<String, Object>();
         mediaWatched.put(CONTENT_TITLE, asset.getName());
+        mediaWatched.put(CONTENT_ID, asset.getExternalId());
+        mediaWatched.put(CONTENT_LICENSE_EXPIRY, AppCommonMethods.getDateCleverTap(asset.getEndDate()));
         mediaWatched.put(GENRE, AssetContent.getGenredataString(asset.getTags()));
         mediaWatched.put(SUB_GENRE, AssetContent.getSubGenredataString(asset.getTags()));
         CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver())).pushEvent(ADD_MY_LIST, mediaWatched);

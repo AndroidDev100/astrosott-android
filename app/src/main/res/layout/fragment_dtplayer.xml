@@ -94,21 +94,21 @@
                         android:contentDescription=""
                         tools:ignore="ContentDescription" />
 
-                    <TextView
-                        android:id="@+id/shareWith"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/share_margin_top"
-                        android:layout_marginEnd="@dimen/dp10"
-                        android:layout_toStartOf="@+id/live_txt"
-                        android:clickable="true"
-                        android:drawablePadding="7dp"
-                        android:focusable="true"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/font_medium"
-                        android:visibility="gone"
-                        app:drawableTopCompat="@drawable/share" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/shareWith"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="@dimen/share_margin_top"-->
+<!--                        android:layout_marginEnd="@dimen/dp10"-->
+<!--                        android:layout_toStartOf="@+id/live_txt"-->
+<!--                        android:clickable="true"-->
+<!--                        android:drawablePadding="7dp"-->
+<!--                        android:focusable="true"-->
+<!--                        android:fontFamily="@font/roboto_regular"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="@dimen/font_medium"-->
+<!--                        android:visibility="gone"-->
+<!--                        app:drawableTopCompat="@drawable/share" />-->
 
 
                     <TextView
@@ -186,18 +186,7 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginBottom="115dp"/>
-                <LinearLayout
-                    android:id="@+id/audio_dialog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:visibility="gone">
 
-                    <include
-                        android:id="@+id/audio_quality"
-                        layout="@layout/layout_caption_audio_setting" />
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/brightness_dialog"
@@ -844,6 +833,19 @@
 <!--            style="@style/Widget.AppCompat.ProgressBar.Horizontal"-->
 <!--            android:progressDrawable="@drawable/layer_progress"/>-->
 <!--        </LinearLayout>-->
+
+        <LinearLayout
+            android:id="@+id/audio_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/audio_quality"
+                layout="@layout/layout_caption_audio_setting" />
+        </LinearLayout>
     </RelativeLayout>
 
 
