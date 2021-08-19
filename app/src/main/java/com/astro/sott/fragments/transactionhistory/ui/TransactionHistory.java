@@ -261,6 +261,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 getBinding().noDataLayout.setVisibility(View.GONE);
+                getBinding().downloadButton.setVisibility(View.VISIBLE);
                 if (evergentCommonResponse.getPaymentV2Response() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder().size() > 0) {
                     getBinding().statusLay.setVisibility(View.VISIBLE);
                     orderList.addAll(evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder());
@@ -268,9 +269,9 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                 } else {
                     getBinding().statusLay.setVisibility(View.GONE);
                     getBinding().noDataLayout.setVisibility(View.VISIBLE);
+                    getBinding().downloadButton.setVisibility(View.GONE);
                 }
             } else {
-
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
                     EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
                         if (evergentCommonResponse.isStatus()) {
@@ -282,6 +283,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                 } else {
                     getBinding().statusLay.setVisibility(View.GONE);
                     getBinding().noDataLayout.setVisibility(View.VISIBLE);
+                    getBinding().downloadButton.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
 
