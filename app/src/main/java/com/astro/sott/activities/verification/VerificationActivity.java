@@ -39,8 +39,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     private AstroLoginViewModel astroLoginViewModel;
     private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "", origin = "";
     private CountDownTimer countDownTimer;
-    private String num ="91";
-    private String newMobileNo="";
+    private String num ="+91";
+    private StringBuilder stringBuilder = new StringBuilder();;
     private List<SocialLoginTypesItem> socialLoginTypesItem;
 
     @Override
@@ -66,8 +66,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             newEmail = getIntent().getExtras().getString("newEmail");
         if (getIntent().getExtras().getString("newMobile") != null)
             newMobile = getIntent().getExtras().getString("newMobile");
-             newMobileNo=num+newMobile;
-        Log.d("jkmmmm",newMobileNo+"");
+        Log.d("eMOBILENUMBER",newMobile+"");
 
 
         password = getIntent().getExtras().getString(AppLevelConstants.PASSWORD_KEY);
@@ -76,7 +75,9 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             if (loginType.equalsIgnoreCase("Email")) {
                 emailMobile = newEmail;
             } else if (loginType.equalsIgnoreCase("Mobile")) {
-                emailMobile = newMobileNo;
+                emailMobile = newMobile;
+                stringBuilder=stringBuilder.append(num+emailMobile);
+                        Log.d("eMOBILENUMBER",stringBuilder+"");
             }
         }
         if (emailMobile != null && !emailMobile.equalsIgnoreCase("")) {

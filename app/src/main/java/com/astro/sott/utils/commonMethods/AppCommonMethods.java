@@ -1,6 +1,7 @@
 package com.astro.sott.utils.commonMethods;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -872,14 +873,24 @@ public class AppCommonMethods {
         String deviceName;
         if (TextUtils.isEmpty(Settings.System.getString(context.getContentResolver(), AppLevelConstants.DEVICE_NAME))) {
             deviceName = Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
+
+
+//            deviceName= android.os.Build.MODEL;
         } else {
             deviceName = Settings.System.getString(context.getContentResolver(), AppLevelConstants.DEVICE_NAME);
+//            BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+//            deviceName = myDevice.getName();
+//            Log.d("tfgh",deviceName+"");
+//            deviceName = android.os.Build.MODEL;
 
         }
         return deviceName;
     }
 
     public static String getDeviceId(ContentResolver contentResolver) {
+//        BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+//        String deviceName = myDevice.getName();
+//        return deviceName;
         return Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID);
     }
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -124,7 +125,8 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
         }));
     }
 
-    private String email_mobile = "", type = "";
+    private String email_mobile = "", type = "",num="+91";
+    private StringBuilder stringBuilder =new StringBuilder();
 
     private void createOtp() {
         if (!UserInfo.getInstance(this).getEmail().equalsIgnoreCase("")) {
@@ -132,7 +134,8 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
             email_mobile = UserInfo.getInstance(this).getEmail();
         } else if (!UserInfo.getInstance(this).getMobileNumber().equalsIgnoreCase("")) {
             type = "mobile";
-            email_mobile = UserInfo.getInstance(this).getMobileNumber();
+            email_mobile = num+UserInfo.getInstance(this).getMobileNumber();
+            Log.d("mobilenium",email_mobile);
         }
 
         astroLoginViewModel.createOtp(type, email_mobile).observe(this, evergentCommonResponse -> {

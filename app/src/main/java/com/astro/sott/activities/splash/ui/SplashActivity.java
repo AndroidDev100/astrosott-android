@@ -1,6 +1,13 @@
 
 package com.astro.sott.activities.splash.ui;
 
+import static android.os.Build.CPU_ABI2;
+import static android.os.Build.DEVICE;
+
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -10,6 +17,8 @@ import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -86,6 +95,8 @@ import com.kaltura.playkit.player.PKDeviceCapabilitiesInfo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -106,6 +117,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     private String name = "";
     private Long assetIdFire;
     private String via = "";
+   private String devicename ="";
     private String description = "";
     private RailCommonData railCommonData;
     private boolean isFirstTimeUser;
@@ -193,6 +205,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     private void callViewModel() {
         Log.e(TAG, "oncreate: " + "in2");
         myViewModel = ViewModelProviders.of(this).get(SplashViewModel.class);
+
         connectionObserver();
     }
 
@@ -971,6 +984,28 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+       myDevice.enable();
+       myDevice.startDiscovery();
+       Handler handler = new Handler();
+        Runnable r = new Runnable() {
+            public void run() {
+
+                devicename= BluetoothAdapter.getDefaultAdapter().getName();
+                Log.d("DEVICEusername",devicename+"");
+
+            }
+        };
+        handler.postDelayed(r, 1000);
+
+        String deviceModel = Build.PRODUCT;
+        Log.d("DEVICEProduct",deviceModel+"");
+        String deviceName4=  Settings.Global.getString(getContentResolver(), Settings.Global.DEVICE_NAME);
+//                Settings.Secure.getString(getContentResolver(), "bluetooth_name");
+        Log.d("DEVICEname",deviceName4+"");
+
+//
 //        View decorView = getWindow().getDecorView();
 //        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 //                |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
