@@ -211,35 +211,52 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             ProgramAsset program = (ProgramAsset) programAsset;
             if (program.getCrid() != null)
                 cridId = program.getCrid();
-
+            getMovieCasts();
+            getMovieCrews();
+            setSubtitleLanguage();
             getBinding().programTitle.setText(programAsset.getName());
+
             getBinding().descriptionText.setText(programAsset.getDescription());
-            getBinding().descriptionText.post(() -> {
-                lineCount = getBinding().descriptionText.getLineCount();
-                Log.d("linecountCheck", lineCount + "");
+////            getBinding().descriptionText.post(() -> {
+//                lineCount = getBinding().descriptionText.getLineCount();
+//                Log.d("linecountCheck", lineCount + "");
+////            });
+
+            getBinding().descriptionText.post(new Runnable() {
+                @Override
+                public void run() {
+                    lineCount = getBinding().descriptionText.getLineCount();
+                    Log.i("linecountCheck", "" + getBinding().descriptionText.getLineCount());
+                    // Use lineCount here
+
+                    if (lineCount <= 3) {
+                        if  ((!TextUtils.isEmpty(getBinding().subtitleText.getText().toString())) || (!TextUtils.isEmpty(getBinding().castText.getText().toString())) || (!TextUtils.isEmpty(getBinding().crewText.getText().toString()))) {
+                            getBinding().shadow.setVisibility(View.VISIBLE);
+                            getBinding().lessButton.setVisibility(View.VISIBLE);
+                            Log.d("linecountCheck",  "inf");
+
+                        }
+                        else {
+                            getBinding().shadow.setVisibility(View.GONE);
+                            getBinding().lessButton.setVisibility(View.GONE);
+                            Log.d("linecountCheck",  "inelse");
+
+                        }
+                    } else {
+                        Log.d("linecountCheck",  "else");
+
+                    }
+                }
             });
-            ;
-            Log.d("linecountCheck",  getBinding().subtitleText.getText()+ "");
 
-            lineCount = getBinding().descriptionText.getLineCount();
-            if (lineCount <= 3) {
-                if ((!TextUtils.isEmpty(getBinding().subtitleText.getText())) || (!TextUtils.isEmpty(getBinding().castText.getText())) || (!TextUtils.isEmpty(getBinding().crewText.getText()))) {
-                    getBinding().shadow.setVisibility(View.VISIBLE);
-                    getBinding().lessButton.setVisibility(View.VISIBLE);
-                } else {
-                    getBinding().shadow.setVisibility(View.GONE);
-                    getBinding().lessButton.setVisibility(View.GONE);
-            }
-            } else {
 
-            }
+//            lineCount = getBinding().descriptionText.getLineCount();
+
             stringBuilder = new StringBuilder();
             stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + "-" + AppCommonMethods.getEndTime(programAsset.getEndDate()) + " | ");
             getImage();
             getGenre();
-            getMovieCasts();
-            getMovieCrews();
-            setSubtitleLanguage();
+
         } catch (Exception e) {
 
         }
@@ -351,6 +368,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         railData = backRailData;
         if (programAsset != null)
             setProgramMetas();
+
         AllChannelManager.getInstance().setRailCommonData(backRailData);
         PrintLogging.printLog(this.getClass(), "", "programAssetId" + backRailData.getObject().getName());
         /*if (backRailData.getObject().getType() == MediaTypeConstant.getProgram(LiveChannel.this)) {
@@ -892,7 +910,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
     }
     private void setExpandable() {
-//            getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+            getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
         getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
         getBinding().lessButton.setOnClickListener(view -> {
             getBinding().descriptionText.toggle();

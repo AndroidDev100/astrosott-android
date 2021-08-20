@@ -207,7 +207,7 @@
                             android:id="@+id/description_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="45dp"
+                            android:layout_marginTop="42dp"
                             android:layout_marginEnd="@dimen/expandable_text_margin_right"
                             android:ellipsize="end"
                             android:maxLines="3"
