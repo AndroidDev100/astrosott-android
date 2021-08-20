@@ -146,9 +146,13 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
         if (holder instanceof NormalHolder) {
             setNormalValues(((NormalHolder) holder).landscapeItemBinding, i);
+
+
         } else if (holder instanceof SmallHolder) {
+
             setSmallValues(((SmallHolder) holder).circularItemBinding, i);
         } else if (holder instanceof LargeHolder) {
+
             setLargeValues(((LargeHolder) holder).circularItemBinding, i);
         }
 

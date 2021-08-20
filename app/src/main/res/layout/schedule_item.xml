@@ -67,12 +67,13 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="18dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/schedule_white_outline_button"
                     android:gravity="center"
                     android:paddingTop="7dp"
-                    android:paddingBottom="7dp">
+                    android:paddingBottom="7dp"
+                    android:background="@drawable/schedule_white_outline_button">
+
 
 
                     <TextView
@@ -85,14 +86,14 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:text="jbnmjnm nmbvhxdfgvhbn"
-                        android:textColor="@color/title_color"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_12sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
+                    android:layout_marginTop="6dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -135,7 +136,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="11dp"
                 android:layout_marginRight="16dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
@@ -156,6 +157,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="2"
+
                 android:paddingTop="10dp"
                 android:paddingEnd="20dp"
                 android:paddingStart="0dp"

@@ -118,7 +118,6 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
                     holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
                     holder.landscapeItemBinding.mediaTypeLayout.lineOne.setEllipsize(TextUtils.TruncateAt.END);
 
-
                 }
                 //holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
             } catch (Exception ignored) {

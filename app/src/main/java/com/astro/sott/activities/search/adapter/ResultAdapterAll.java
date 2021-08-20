@@ -56,6 +56,7 @@ public class ResultAdapterAll extends RecyclerView.Adapter<ResultAdapterAll.Sing
             ImageHelper.getInstance(viewHolder.searchItemBinding.image.getContext()).loadPlaceHolder(viewHolder.searchItemBinding.image, R.drawable.ic_landscape_placeholder);
         }
         viewHolder.searchItemBinding.tvTitle.setText(itemsList.get(position).getName());
+
         viewHolder.searchItemBinding.tvShortDescription.setText(itemsList.get(position).getDescription());
         viewHolder.searchItemBinding.setSingleItem(itemsList.get(position));
 

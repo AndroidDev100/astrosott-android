@@ -274,7 +274,6 @@
                                             android:layout_alignParentBottom="true"
                                             android:background="@drawable/above_dark_shadow" />
                                     </RelativeLayout>
-
                                     <androidx.constraintlayout.widget.ConstraintLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"

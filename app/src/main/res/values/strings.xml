@@ -705,6 +705,8 @@
     <string name="load_more">Load More</string>
     <string name="watch_movie">Watch Movie</string>
     <string name="already_registered_para">Already registered? Just log in below</string>
+    <string name="sub_title_live" >Subtitle:</string>
+    <string name="cast_live">Cast:</string>
 
 
 </resources>

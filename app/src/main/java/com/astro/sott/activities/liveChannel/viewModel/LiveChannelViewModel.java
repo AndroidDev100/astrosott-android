@@ -252,7 +252,14 @@ public class LiveChannelViewModel extends AndroidViewModel {
     public LiveData<String> getCastLiveData(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getCastActorsData(map);
     }
+    public LiveData<String> getSubTitleLanguageLiveData(Map<String, MultilingualStringValueArray> map) {
 
+        return AssetContent.getSubTitleLanguageData(map);
+    }
+
+    public LiveData<String> getCrewLiveDAta(Map<String, MultilingualStringValueArray> map) {
+        return AssetContent.getCrewData(map);
+    }
     public LiveData<RailCommonData> getSpecificAsset(String assetId) {
         return new SplashRepository().getSpecificAsset(getApplication(), assetId);
     }

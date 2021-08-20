@@ -1820,9 +1820,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
     private void skipIntro() {
-        labelIntro = "SKIP INTRO";
-        labelCredit = "SKIP CREDIT";
-        labelRecap = "SKIP RECAP";
+        labelIntro = "Skip Intro";
+        labelCredit = "Skip Credit";
+        labelRecap = "Skip Recap";
         introStartTime = AssetContent.getIntroStart(playerAsset.getMetas());
         introEndTime = AssetContent.getIntroEnd(playerAsset.getMetas());
         creditStartTime = AssetContent.getCreditStart(playerAsset.getMetas());

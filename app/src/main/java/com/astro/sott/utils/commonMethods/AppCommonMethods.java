@@ -1793,16 +1793,21 @@ public class AppCommonMethods {
 
     public static void setBillingUi(ImageView imageView, Map<String, MultilingualStringValueArray> tags, Integer type, Activity mContext) {
         try {
-            if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext) || type == MediaTypeConstant.getLinear(mContext)) {
+            if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext) || type == MediaTypeConstant.getLinear(mContext) ) {
                 if (AssetContent.getBillingIdForSeries(tags)) {
+                    Log.d("ghdbj","billing for series");
                     imageView.setVisibility(View.VISIBLE);
                 } else {
                     imageView.setVisibility(View.GONE);
                 }
             } else {
                 if (AssetContent.getBillingId(tags)) {
+                    Log.d("ghdbj","billing Id if");
                     imageView.setVisibility(View.VISIBLE);
+
                 } else {
+                    Log.d("ghdbj","billing Id else");
+
                     imageView.setVisibility(View.GONE);
 
                 }
