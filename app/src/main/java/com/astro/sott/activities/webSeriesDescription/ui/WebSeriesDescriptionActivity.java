@@ -459,20 +459,21 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 });
 
                 lineCount = getBinding().descriptionText.getLineCount();
+                Log.d("linecountCheck", "inf" + lineCount);
+
                 if (lineCount <= 3) {
                     if ((!TextUtils.isEmpty(getBinding().durationText.getText())) || (!TextUtils.isEmpty(getBinding().subtitleText.getText())) || (!TextUtils.isEmpty(getBinding().castText.getText())) || (!TextUtils.isEmpty(getBinding().crewText.getText()))) {
                         getBinding().shadow.setVisibility(View.VISIBLE);
                         getBinding().lessButton.setVisibility(View.VISIBLE);
-                        Log.d("linecountCheck",  "inf");
 
                     } else {
                         getBinding().shadow.setVisibility(View.GONE);
                         getBinding().lessButton.setVisibility(View.GONE);
-                        Log.d("linecountCheck",  "inelse");
+                        Log.d("linecountCheck", "inelse");
 
                     }
                 } else {
-                    Log.d("linecountCheck",  "else");
+                    Log.d("linecountCheck", "else");
 
                 }
 

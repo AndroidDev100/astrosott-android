@@ -122,7 +122,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private int indicatorWidth;
     private boolean becomeVipButtonCLicked = false;
 
-    private  int lineCount = 0;
+    private int lineCount = 0;
 
     private LiveChannelCommunicator mLiveChannelCommunicator;
     private boolean assetKey = false;
@@ -222,6 +222,13 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 //                Log.d("linecountCheck", lineCount + "");
 ////            });
 
+//            lineCount = getBinding().descriptionText.getLineCount();
+
+            stringBuilder = new StringBuilder();
+            stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + "-" + AppCommonMethods.getEndTime(programAsset.getEndDate()) + " | ");
+            getImage();
+            getGenre();
+
             getBinding().descriptionText.post(new Runnable() {
                 @Override
                 public void run() {
@@ -230,32 +237,23 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     // Use lineCount here
 
                     if (lineCount <= 3) {
-                        if  ((!TextUtils.isEmpty(getBinding().subtitleText.getText().toString())) || (!TextUtils.isEmpty(getBinding().castText.getText().toString())) || (!TextUtils.isEmpty(getBinding().crewText.getText().toString()))) {
+                        if ((!TextUtils.isEmpty(getBinding().subtitleText.getText().toString())) || (!TextUtils.isEmpty(getBinding().castText.getText().toString())) || (!TextUtils.isEmpty(getBinding().crewText.getText().toString()))) {
                             getBinding().shadow.setVisibility(View.VISIBLE);
                             getBinding().lessButton.setVisibility(View.VISIBLE);
-                            Log.d("linecountCheck",  "inf");
+                            Log.d("linecountCheck", "inf");
 
-                        }
-                        else {
+                        } else {
                             getBinding().shadow.setVisibility(View.GONE);
                             getBinding().lessButton.setVisibility(View.GONE);
-                            Log.d("linecountCheck",  "inelse");
+                            Log.d("linecountCheck", "inelse");
 
                         }
                     } else {
-                        Log.d("linecountCheck",  "else");
+                        Log.d("linecountCheck", "else");
 
                     }
                 }
             });
-
-
-//            lineCount = getBinding().descriptionText.getLineCount();
-
-            stringBuilder = new StringBuilder();
-            stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + "-" + AppCommonMethods.getEndTime(programAsset.getEndDate()) + " | ");
-            getImage();
-            getGenre();
 
         } catch (Exception e) {
 
@@ -286,6 +284,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
 
     }
+
     private void setSubtitleLanguage() {
 
         activityViewModel.getSubTitleLanguageLiveData(programAsset.getTags()).observe(this, new Observer<String>() {
@@ -300,7 +299,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     getBinding().subtitleLay.setVisibility(View.VISIBLE);
                     getBinding().subtitleText.setText(" " + crewText);
                 }
-                Log.d("eSubtitle",crewText+"");
+                Log.d("eSubtitle", crewText + "");
 
             }
         });
@@ -319,12 +318,13 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     getBinding().crewLay.setVisibility(View.VISIBLE);
                     getBinding().crewText.setText(" " + crewText);
                 }
-                Log.d("eCASTLA",crewText+"");
+                Log.d("eCASTLA", crewText + "");
 
             }
 
         });
     }
+
     private void getMovieCasts() {
         activityViewModel.getCastLiveData(programAsset.getTags()).observe(this, castTest -> {
             if (TextUtils.isEmpty(castTest)) {
@@ -335,9 +335,10 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 getBinding().castText.setText(" " + castTest);
 
             }
-            Log.d("eCASTLA",castTest+"");
+            Log.d("eCASTLA", castTest + "");
         });
     }
+
     private void getChannelLanguage() {
         activityViewModel.getLanguageLiveData(programAsset.getTags()).observe(this, language -> {
             if (!TextUtils.isEmpty(language)) {
@@ -909,8 +910,9 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
         });
 
     }
+
     private void setExpandable() {
-            getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+        getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
         getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
         getBinding().lessButton.setOnClickListener(view -> {
             getBinding().descriptionText.toggle();
