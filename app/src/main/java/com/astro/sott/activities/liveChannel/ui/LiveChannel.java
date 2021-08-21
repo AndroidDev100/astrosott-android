@@ -228,6 +228,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             stringBuilder.append(activityViewModel.getStartDate(programAsset.getStartDate()) + "-" + AppCommonMethods.getEndTime(programAsset.getEndDate()) + " | ");
             getImage();
             getGenre();
+            Log.i("linecountCheckjack", "" + getBinding().descriptionText.getLineCount());
 
             getBinding().descriptionText.post(new Runnable() {
                 @Override
@@ -237,6 +238,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     // Use lineCount here
 
                     if (lineCount <= 3) {
+                        getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+                        getBinding().descriptionText.setMaxLines(3);
                         if ((!TextUtils.isEmpty(getBinding().subtitleText.getText().toString())) || (!TextUtils.isEmpty(getBinding().castText.getText().toString())) || (!TextUtils.isEmpty(getBinding().crewText.getText().toString()))) {
                             getBinding().shadow.setVisibility(View.VISIBLE);
                             getBinding().lessButton.setVisibility(View.VISIBLE);
@@ -249,6 +252,10 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
                         }
                     } else {
+                        getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+                        getBinding().descriptionText.setMaxLines(3);
+                        getBinding().shadow.setVisibility(View.VISIBLE);
+                        getBinding().lessButton.setVisibility(View.VISIBLE);
                         Log.d("linecountCheck", "else");
 
                     }
@@ -926,6 +933,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 //            {
 //                getBinding().descriptionText.setMaxLines(3);
                 getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+                getBinding().descriptionText.setMaxLines(3);
                 getBinding().shadow.setVisibility(View.VISIBLE);
 
 //            }
