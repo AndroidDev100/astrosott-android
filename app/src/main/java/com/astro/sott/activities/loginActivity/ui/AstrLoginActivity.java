@@ -167,7 +167,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     }
                 });
 
-        getBinding().loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
+      //  getBinding().loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
     }
 
     private void setGoogleSignIn() {
