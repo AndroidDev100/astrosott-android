@@ -312,7 +312,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     }
                 });
 
-        getBinding().loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
+        //    getBinding().loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
     }
 
     private void updateProfile(String name, String type, boolean isLinking) {

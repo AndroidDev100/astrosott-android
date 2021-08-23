@@ -365,7 +365,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                     // App code
                 }
             })
-        activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
+       // activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
     }
 
     private fun checkPassword(type: String, emailMobile: String, password: String) {
