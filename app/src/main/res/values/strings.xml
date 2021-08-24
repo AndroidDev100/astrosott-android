@@ -59,6 +59,7 @@
     <string name="related">Related</string>
     <string name="episode_title">Episode</string>
     <string name="shows">Shows</string>
+    <string name="term_policy_new">By clicking Sign Up or any Social Login above, you agree to</string>
 
     <string name="trailer_more">Trailers &amp; More</string>
     <string name="trailer_title">Trailers</string>
@@ -582,6 +583,7 @@
     <string name="terms_and_conditions">I agree to the </string>
     <string name="terms"><u>Terms</u></string>
     <string name="privacy"><u>Privacy</u></string>
+    <string name="privacy_policy_new"><u>Privacy Policy</u></string>
 
 
     <string name="already_have_an_account">Already have an account? </string>
@@ -639,6 +641,7 @@
     <string name="clear">Clear</string>
     <string name="apply">Apply</string>
     <string name="is_this_you">Is this you?</string>
+    <string name="email_suggestion">Enter a valid email address format. eg: example@email.com</string>
     <string name="is_that_you_para">Please login with your registered password \n \u0020\u0020\u0020 to continue.</string>
     <string name="proceed">Proceed</string>
     <string name="details_confirmation">Details Confirmation</string>
@@ -661,7 +664,7 @@
     <string name="successful">Successful</string>
     <string name="pending">Pending</string>
     <string name="failed">Failed</string>
-
+    <string name="field_cannot_empty">This field is cannot be empty</string>
     <string name="mobile_suggestion">Mobile number without country code, spacing &amp; hyphen</string>
     <string name="detail_pack_desc">All prices displayed are inclusive of 6% digital tax.</string>
     <string name="pack_desc">All prices displayed are inclusive of 6% </string>
@@ -705,7 +708,7 @@
     <string name="load_more">Load More</string>
     <string name="watch_movie">Watch Movie</string>
     <string name="already_registered_para">Already registered? Just log in below</string>
-    <string name="sub_title_live" >Subtitle:</string>
+    <string name="sub_title_live">Subtitle:</string>
     <string name="cast_live">Cast:</string>
 
 

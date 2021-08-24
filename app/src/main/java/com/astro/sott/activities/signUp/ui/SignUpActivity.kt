@@ -172,15 +172,15 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                     } else {
                         activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
                         activitySinUpBinding?.errorEmail?.text =
-                            resources.getString(R.string.mobile_suggestion)
+                            resources.getString(R.string.email_suggestion)
                         activitySinUpBinding?.errorPasssword?.text =
                             getString(R.string.password_error)
                     }
                 } else {
                     activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
                     activitySinUpBinding?.errorEmail?.text =
-                        resources.getString(R.string.mobile_suggestion)
-                    activitySinUpBinding?.errorPasssword?.text = getString(R.string.valid_password)
+                        resources.getString(R.string.email_suggestion)
+                    activitySinUpBinding?.errorPasssword?.text = getString(R.string.field_cannot_empty)
                 }
             }
             false
@@ -198,7 +198,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             var password = activitySinUpBinding?.passwordEdt?.text.toString()
             var email_mobile = activitySinUpBinding?.mobileEmailEdt?.text.toString()
             if (!email_mobile.equals("", true)) {
-                if (mobilePattern.containsMatchIn(email_mobile)) {
+                /*if (mobilePattern.containsMatchIn(email_mobile)) {
                     if (email_mobile?.length == 10 || email_mobile?.length == 11) {
 
                         checkPassword("mobile", email_mobile, password)
@@ -210,35 +210,35 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                         checkPasswordValidation(password)
 
                     }
-                } else if (true) {
+                } else*/ if (emailPattern.containsMatchIn(email_mobile)) {
                     checkPassword("email", email_mobile, password)
                 } else {
 
-                    var numeric = true
-                    try {
-                        val num = parseDouble(email_mobile?.first().toString())
-                    } catch (e: NumberFormatException) {
-                        numeric = false
-                    }
-                    if (numeric) {
-                        activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
-                        activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
-                        activitySinUpBinding?.errorEmail?.text =
-                            getString(R.string.email_mobile_error)
-                        checkPasswordValidation(password)
-                    } else {
-                        activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
-                        activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
-                        activitySinUpBinding?.errorEmail?.text =
-                            getString(R.string.email_mobile_error)
-                        checkPasswordValidation(password)
-                    }
+                    /*  var numeric = true
+                      try {
+                          val num = parseDouble(email_mobile?.first().toString())
+                      } catch (e: NumberFormatException) {
+                          numeric = false
+                      }
+                      if (numeric) {
+                          activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
+                          activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
+                          activitySinUpBinding?.errorEmail?.text =
+                              getString(R.string.email_mobile_error)
+                          checkPasswordValidation(password)
+                      } else {*/
+                    activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
+                    activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
+                    activitySinUpBinding?.errorEmail?.text =
+                        getString(R.string.email_suggestion)
+                    checkPasswordValidation(password)
+                    /* }*/
                 }
 
             } else {
                 activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
                 activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
-                activitySinUpBinding?.errorEmail?.text = getString(R.string.email_mobile_error)
+                activitySinUpBinding?.errorEmail?.text = getString(R.string.field_cannot_empty)
                 checkPasswordValidation(password)
 
             }
@@ -253,16 +253,16 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                 ) {
                     activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.heather))
                     activitySinUpBinding?.errorEmail?.text =
-                        resources.getString(R.string.mobile_suggestion)
+                        resources.getString(R.string.email_suggestion)
                 } else {
                     activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                     activitySinUpBinding?.errorEmail?.text =
-                        resources.getString(R.string.email_mobile_error)
+                        resources.getString(R.string.email_suggestion)
                 }
             } else {
                 activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                 activitySinUpBinding?.errorEmail?.text =
-                    resources.getString(R.string.email_mobile_error)
+                    resources.getString(R.string.email_suggestion)
 
             }
         }
@@ -298,7 +298,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         } else {
             activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
             activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
-            activitySinUpBinding?.errorPasssword?.text = getString(R.string.valid_password)
+            activitySinUpBinding?.errorPasssword?.text = getString(R.string.field_cannot_empty)
         }
     }
 
@@ -365,24 +365,24 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                     // App code
                 }
             })
-       // activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
+        // activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
     }
 
     private fun checkPassword(type: String, emailMobile: String, password: String) {
         activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.heather))
-        activitySinUpBinding?.errorEmail?.text = getString(R.string.mobile_suggestion)
+        activitySinUpBinding?.errorEmail?.text = getString(R.string.email_suggestion)
         var password = activitySinUpBinding?.passwordEdt?.text.toString();
         if (!password.equals("", true)) {
             if (passwordPattern.containsMatchIn(password)) {
-                if (activitySinUpBinding?.checkbox!!.isChecked) {
+              /*  if (activitySinUpBinding?.checkbox!!.isChecked) {*/
                     activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.warm_grey))
                     activitySinUpBinding?.errorCheckbox?.visibility = View.GONE
                     searchAccountv2(type, emailMobile, password)
 
-                } else {
+              /*  } else {
                     activitySinUpBinding?.errorCheckbox?.visibility = View.VISIBLE
                     activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.warm_grey))
-                }
+                }*/
                 //createUser(type, emailMobile, password)
             } else {
                 activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
@@ -393,7 +393,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         } else {
             activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
             activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
-            activitySinUpBinding?.errorPasssword?.text = getString(R.string.valid_password)
+            activitySinUpBinding?.errorPasssword?.text = getString(R.string.field_cannot_empty)
 
         }
     }

@@ -3,29 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.core.widget.NestedScrollView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grape_purple">
+        android:background="@color/grape_purple"
+        tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_back"
+            android:contentDescription="@string/contentDescription"
+            android:padding="7dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="48dp"
-            android:background="@color/grape_purple"
-            tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
-
-            <ImageView
-                android:id="@+id/back_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:padding="7dp"
-                android:background="@drawable/ic_back"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@string/contentDescription" />
+            android:background="@color/grape_purple">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -41,20 +41,20 @@
                     android:layout_height="@dimen/_70sdp"
                     android:layout_marginTop="40dp"
                     android:background="@drawable/sooka"
+                    android:contentDescription="@string/contentDescription"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/contentDescription" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/forgot_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
                     android:text="@string/sign_up_title"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:gravity="center"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/logo" />
@@ -111,11 +111,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen18dp"
-                    android:visibility="visible"
-                    android:paddingEnd="10dp"
                     android:paddingStart="0dp"
-                    android:text="@string/mobile_suggestion"
+                    android:paddingEnd="10dp"
+                    android:text="@string/email_suggestion"
                     android:textColor="@color/heather"
+                    android:visibility="visible"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/email" />
 
@@ -146,8 +146,8 @@
                         android:hint="@string/password"
                         android:importantForAutofill="no"
                         android:inputType="text|textPassword"
-                        android:maxLines="1"
                         android:maxLength="16"
+                        android:maxLines="1"
                         android:singleLine="true"
                         android:textColor="@color/white"
                         android:textColorHint="@color/grey"
@@ -159,10 +159,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:padding="4dp"
                         android:layout_marginEnd="@dimen/dimen18dp"
                         android:background="@drawable/ic_outline_visibility_off_light"
-                        android:contentDescription="@string/contentDescription" />
+                        android:contentDescription="@string/contentDescription"
+                        android:padding="4dp" />
                 </LinearLayout>
 
                 <TextView
@@ -170,9 +170,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen18dp"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="0dp"
                     android:layout_marginRight="@dimen/dimen18dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="20dp"
                     android:text="@string/password_rules"
                     android:textColor="@color/heather"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -212,6 +212,7 @@
                     android:layout_marginTop="23dp"
                     android:buttonTint="@color/neon_green"
                     android:gravity="center"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="@id/password"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
                     app:layout_goneMarginTop="35dp" />
@@ -220,10 +221,10 @@
                     android:id="@+id/error_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen26dp"
                     android:text="@string/error_checkbox"
                     android:textColor="@color/red_live"
                     android:visibility="gone"
-                    android:layout_marginStart="@dimen/dimen26dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/checkbox" />
 
@@ -233,14 +234,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="30dp"
+
                     android:fontFamily="@font/roboto_regular"
                     android:text="@string/terms_and_conditions"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sp"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toRightOf="@id/checkbox"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
                     app:layout_goneMarginTop="39dp" />
+
                 <TextView
                     android:id="@+id/terms"
                     android:layout_width="wrap_content"
@@ -251,10 +255,13 @@
                     android:text="@string/terms"
                     android:textAlignment="center"
                     android:textColor="@color/aqua_marine"
+
                     android:textSize="@dimen/_14sp"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toRightOf="@id/agree"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
-                    app:layout_goneMarginTop="39dp"/>
+                    app:layout_goneMarginTop="39dp" />
+
                 <TextView
                     android:id="@+id/and"
                     android:layout_width="wrap_content"
@@ -266,9 +273,11 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sp"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toRightOf="@id/terms"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
-                    app:layout_goneMarginTop="39dp"/>
+                    app:layout_goneMarginTop="39dp" />
+
                 <TextView
                     android:id="@+id/privacy"
                     android:layout_width="wrap_content"
@@ -280,9 +289,10 @@
                     android:textAlignment="center"
                     android:textColor="@color/aqua_marine"
                     android:textSize="@dimen/_14sp"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toRightOf="@id/and"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
-                    app:layout_goneMarginTop="39dp"/>
+                    app:layout_goneMarginTop="39dp" />
 
                 <TextView
                     android:id="@+id/next_btn"
@@ -343,7 +353,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/or"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.767" />
+                    app:layout_constraintVertical_bias="0.810" />
 
                 <View
                     android:layout_width="@dimen/_60dp"
@@ -351,11 +361,12 @@
                     android:layout_margin="4dp"
                     android:background="@color/white"
                     android:gravity="center"
+
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/or"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.765" />
+                    app:layout_constraintVertical_bias="0.810" />
 
                 <TextView
                     android:id="@+id/or"
@@ -374,54 +385,96 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/already_have_account" />
 
-                <Button
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:id="@+id/social_lay"
+                  app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/or"
+                    android:layout_height="wrap_content">
+                <FrameLayout
                     android:id="@+id/google"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/social_bg"
+                   >
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_fb_icon"></ImageView>
+                </FrameLayout>
+
+
+                <FrameLayout
+                    android:id="@+id/fb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:background="@drawable/social_bg"
+                    app:layout_constraintLeft_toRightOf="@id/google"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/or">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_fb_icon"></ImageView>
+                </FrameLayout>
+
+                <Button
+
                     android:layout_width="250dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="24dp"
                     android:background="@drawable/google_btn"
+                    android:drawableStart="@drawable/ic_google_button"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
                     android:text="@string/sign_in_google"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:drawableStart="@drawable/ic_google_button"
                     android:textSize="@dimen/_14sp"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/or" />
-
+                    app:layout_constraintTop_toBottomOf="@id/fb" />
+                </LinearLayout>
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/login_button"
                     android:layout_width="@dimen/dimen250dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/google"
                     android:layout_height="40dp"
-                    android:visibility="gone"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
-                    android:layout_marginBottom="30dp" />
+                    android:layout_marginBottom="30dp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/social_lay" />
 
                 <TextView
-                    android:id="@+id/fb"
                     android:layout_width="250dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="@dimen/dimen16dp"
                     android:background="@drawable/facebook_button"
+                    android:drawablePadding="1dp"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
-                    android:textAlignment="center"
-                    android:drawablePadding="1dp"
                     android:paddingStart="@dimen/dimen28dp"
                     android:paddingEnd="@dimen/dimen20dp"
                     android:text="@string/sign_in_fb"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sp"
+                    android:visibility="gone"
+                    app:drawableLeftCompat="@drawable/ic_fb_btn"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/google"
-                    app:drawableLeftCompat="@drawable/ic_fb_btn" />
+                    app:layout_constraintTop_toBottomOf="@id/social_lay" />
 
                 <TextView
                     android:id="@+id/apple"
@@ -429,23 +482,103 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="@dimen/dimen16dp"
                     android:background="@color/white"
+                    android:drawablePadding="2dp"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
+                    android:paddingStart="@dimen/dimen42dp"
+                    android:paddingEnd="@dimen/dimen30dp"
                     android:text="@string/sign_in_apple"
                     android:textColor="@color/black"
-                    android:drawablePadding="2dp"
-                    android:paddingStart="@dimen/dimen42dp"
-                    android:visibility="invisible"
-                    android:paddingEnd="@dimen/dimen30dp"
                     android:textSize="@dimen/_14sp"
+                    android:visibility="invisible"
+                    app:drawableLeftCompat="@drawable/ic_apple_btn"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fb"
-                    app:drawableLeftCompat="@drawable/ic_apple_btn" />
+                    app:layout_constraintTop_toBottomOf="@id/social_lay" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/shadow_term"
+            app:layout_constraintBottom_toTopOf="@id/term_policy_lay"
+            android:layout_height="10dp"></LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/term_policy_lay"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:elevation="7dp"
+            android:background="@color/dark_purple"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <TextView
+                android:id="@+id/descp1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/term_policy_new"
+                android:textColor="@color/title_color"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+              app:layout_constraintBottom_toTopOf="@id/terms_lay">
+
+            </TextView>
+
+            <LinearLayout
+                android:id="@+id/terms_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:gravity="center"
+                android:layout_marginBottom="7dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/our"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="our"
+                    android:textColor="@color/title_color">
+
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:text="@string/term_and_con"
+                    android:textColor="@color/aqua_marine"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:text="@string/and"
+                    android:textColor="@color/title_color">
+
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:text="@string/privacy_policy_new"
+                    android:textColor="@color/aqua_marine">
+
+                </TextView>
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
