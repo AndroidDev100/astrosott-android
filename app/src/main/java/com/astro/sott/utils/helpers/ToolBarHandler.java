@@ -124,6 +124,7 @@ public class ToolBarHandler {
         });
 
     }
+
     public void setTitleListener(TextView more, final String type, final AssetCommonBean assetCommonBean) {
 
 
@@ -407,6 +408,13 @@ public class ToolBarHandler {
     public void setContinueWatchingListener(LinearLayout moreText, final String type, final AssetCommonBean assetCommonBean) {
 
         moreText.setOnClickListener(view -> {
+            new ActivityLauncher(activity).continueWatchingListing(activity, ContinueWatchingActivity.class, type, assetCommonBean);
+        });
+    }
+
+    public void setTitleContinueWatchingListener(TextView titleText, final String type, final AssetCommonBean assetCommonBean) {
+
+        titleText.setOnClickListener(view -> {
             new ActivityLauncher(activity).continueWatchingListing(activity, ContinueWatchingActivity.class, type, assetCommonBean);
         });
     }

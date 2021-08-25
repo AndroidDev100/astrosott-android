@@ -645,6 +645,8 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         } else if (isContinueRail) {
             if (activity instanceof HomeActivity) {
+                new ToolBarHandler(activity).setTitleContinueWatchingListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.headerTitle, AppConstants.TYPE5, dataList.get(position));
+
                 if (totalCount >= 20) {
                     new ToolBarHandler(activity).setContinueWatchingListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
                 } else {
