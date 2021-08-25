@@ -1,3 +1,4 @@
+/*
 package com.astro.sott.thirdParty.appUpdateManager;
 
 import android.content.Context;
@@ -50,9 +51,11 @@ public class ApplicationUpdateManager {
         return appUpdateManager;
     }
 
-    /**
+    */
+/**
      * Check for app update availability
-     */
+     *//*
+
 
     public void isUpdateAvailable() {
 
@@ -96,9 +99,11 @@ public class ApplicationUpdateManager {
     }
 
 
-    /**
+    */
+/**
      * if update available start update
-     */
+     *//*
+
 
     public void startUpdate(AppUpdateInfo appUpdateInfo, int updateType, Context context, int requestCode) {
 
@@ -131,3 +136,4 @@ public class ApplicationUpdateManager {
 
 
 }
+*/

@@ -101,8 +101,8 @@ android {
             dimension 'default'
             versionCode 1036
             versionName "21.8.5(19)"
-        /*    versionCode 1
-            versionName "1"*/
+            /*    versionCode 1
+                versionName "1"*/
             applicationId "com.astro.sott"
             buildConfigField "String", "KALTURA_BASE_URL", "\"https://rest-as.ott.kaltura.com/api_v3/service/\""
             buildConfigField "int", "KAVA_PARTNER_ID", "2455471"
@@ -241,7 +241,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
     //InApp Update
-    implementation 'com.google.android.play:core:1.5.0'
+    // implementation 'com.google.android.play:core:1.5.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //JWT
