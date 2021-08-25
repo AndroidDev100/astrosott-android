@@ -257,7 +257,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
         //     ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().registerListener(listener);
 
-      //  ApplicationUpdateManager.getInstance(getApplicationContext()).isUpdateAvailable();
+        //  ApplicationUpdateManager.getInstance(getApplicationContext()).isUpdateAvailable();
 
         createViewModel();
         intializeBilling();
@@ -852,6 +852,18 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     @Override
     public void onDowngrade() {
 
+    }
+
+    @Override
+    public void onAcknowledged(String productId, String purchaseToken, String orderId) {
+        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), productId, purchaseToken, orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+            if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
+                if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
+                }
+            } else {
+
+            }
+        });
     }
 
     public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList, SKUsListListener callBacks) {
