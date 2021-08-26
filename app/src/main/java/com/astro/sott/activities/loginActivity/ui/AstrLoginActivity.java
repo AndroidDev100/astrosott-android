@@ -602,7 +602,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     getBinding().passwordError.setText(getResources().getString(R.string.password_rules));
                     getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
                     getBinding().errorEmail.setVisibility(View.VISIBLE);
-                    getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
+                    getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
                     passwordValidaton(password);
                     return false;
 
