@@ -12,7 +12,7 @@
     <string name="save_video_to">Save video to...</string>
     <string name="new_playlist">New Playlist</string>
     <string name="done">Done</string>
-    <string name="mobile_error">Mobile number is 11-12 numerical values, without spacing &amp; hyphen</string>
+    <string name="mobile_error">Mobile number is 11-12 numerical values, without \n spacing &amp; hyphen</string>
     <string name="email_mobile_error">Please enter a valid email address or mobile number.</string>
     <string name="email_error">Please enter a valid email address</string>
     <string name="valid_password">Please enter valid password</string>

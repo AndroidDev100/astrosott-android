@@ -591,8 +591,14 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         String password = getBinding().passwordEdt.getText().toString();
         if (!email_mobile.equalsIgnoreCase("")) {
             if (email_mobile.matches(MOBILE_REGEX)) {
-
-                if (email_mobile.length() == 10 || email_mobile.length() == 11) {
+                char firstChar = email_mobile.charAt(0);
+                if (String.valueOf(firstChar).equalsIgnoreCase("6")) {
+                    email_mobile = email_mobile;
+                } else {
+                    email_mobile = "6" + email_mobile;
+                    getBinding().emailMobileEdt.setText(email_mobile);
+                }
+                if (email_mobile.length() == 11 || email_mobile.length() == 12) {
                     type = "Mobile";
                     getBinding().errorEmail.setTextColor(getResources().getColor(R.color.heather));
                     getBinding().errorEmail.setText(getResources().getString(R.string.mobile_suggestion));
