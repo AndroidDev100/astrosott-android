@@ -228,6 +228,12 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         getBinding().backIcon.setOnClickListener(view -> {
             onBackPressed();
         });
+        getBinding().term.setOnClickListener(v -> {
+            new ActivityLauncher(this).termAndCondition(this);
+        });
+        getBinding().privacy.setOnClickListener(v -> {
+            new ActivityLauncher(this).privacy(this);
+        });
         getBinding().loginBtn.setOnClickListener(view -> {
             if (checkEmailVaildation()) {
                 String password = getBinding().passwordEdt.getText().toString();
@@ -615,7 +621,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     numeric = false;
                 }
                 if (numeric) {
-
+                    getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
                 } else {
                     getBinding().errorEmail.setText(getResources().getString(R.string.email_suggestion));
                 }

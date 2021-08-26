@@ -246,7 +246,6 @@
                     app:layout_goneMarginTop="39dp" />
 
                 <TextView
-                    android:id="@+id/terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -274,12 +273,11 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sp"
                     android:visibility="gone"
-                    app:layout_constraintLeft_toRightOf="@id/terms"
+                    app:layout_constraintLeft_toRightOf="@id/error_passsword"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
                     app:layout_goneMarginTop="39dp" />
 
                 <TextView
-                    android:id="@+id/privacy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -387,63 +385,65 @@
 
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    app:layout_constraintLeft_toLeftOf="parent"
                     android:id="@+id/social_lay"
-                  app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/or"
-                    android:layout_height="wrap_content">
-                <FrameLayout
-                    android:id="@+id/google"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/social_bg"
-                   >
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_fb_icon"></ImageView>
-                </FrameLayout>
-
-
-                <FrameLayout
-                    android:id="@+id/fb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:background="@drawable/social_bg"
-                    app:layout_constraintLeft_toRightOf="@id/google"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/or">
 
-                    <ImageView
+                    <FrameLayout
+                        android:id="@+id/google"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_fb_icon"></ImageView>
-                </FrameLayout>
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/social_bg">
 
-                <Button
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_fb_icon"></ImageView>
+                    </FrameLayout>
 
-                    android:layout_width="250dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/google_btn"
-                    android:drawableStart="@drawable/ic_google_button"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:text="@string/sign_in_google"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14sp"
-                    android:visibility="gone"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fb" />
+
+                    <FrameLayout
+                        android:id="@+id/fb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/social_bg"
+                        app:layout_constraintLeft_toRightOf="@id/google"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/or">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_fb_icon"></ImageView>
+                    </FrameLayout>
+
+                    <Button
+
+                        android:layout_width="250dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/google_btn"
+                        android:drawableStart="@drawable/ic_google_button"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:text="@string/sign_in_google"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14sp"
+                        android:visibility="gone"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/fb" />
                 </LinearLayout>
+
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/login_button"
                     android:layout_width="@dimen/dimen250dp"
@@ -503,17 +503,18 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
+            android:layout_height="10dp"
             android:background="@drawable/shadow_term"
-            app:layout_constraintBottom_toTopOf="@id/term_policy_lay"
-            android:layout_height="10dp"></LinearLayout>
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/term_policy_lay"></LinearLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/term_policy_lay"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:orientation="vertical"
-            android:elevation="7dp"
             android:background="@color/dark_purple"
+            android:elevation="7dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
@@ -522,13 +523,13 @@
                 android:id="@+id/descp1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:gravity="center"
                 android:text="@string/term_policy_new"
                 android:textColor="@color/title_color"
-                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toTopOf="@id/terms_lay"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-              app:layout_constraintBottom_toTopOf="@id/terms_lay">
+                app:layout_constraintRight_toRightOf="parent">
 
             </TextView>
 
@@ -536,11 +537,11 @@
                 android:id="@+id/terms_lay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:gravity="center"
                 android:layout_marginBottom="7dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
 
                 <TextView
                     android:id="@+id/our"
@@ -552,6 +553,7 @@
                 </TextView>
 
                 <TextView
+                    android:id="@+id/terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
@@ -568,6 +570,7 @@
                 </TextView>
 
                 <TextView
+                    android:id="@+id/privacy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"

@@ -11,22 +11,12 @@
         tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
 
 
-        <ImageView
-            android:id="@+id/back_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen16dp"
-            android:layout_marginTop="@dimen/dimen16dp"
-            android:background="@drawable/ic_back"
-            android:contentDescription="@string/contentDescription"
-            android:paddingStart="0dp"
-            android:paddingEnd="7dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/back_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="60dp"
             android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -454,6 +444,98 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen16dp"
+            android:background="@drawable/ic_back"
+            android:elevation="2dp"
+            android:contentDescription="@string/contentDescription"
+            android:paddingStart="0dp"
+            android:paddingEnd="7dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/shadow_term"
+            app:layout_constraintBottom_toTopOf="@id/term_policy_lay"
+            android:layout_height="10dp"></LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/term_policy_lay"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:elevation="7dp"
+            android:background="@color/dark_purple"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <TextView
+                android:id="@+id/descp1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/term_policy_new"
+                android:textColor="@color/title_color"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/terms_lay">
+
+            </TextView>
+
+            <LinearLayout
+                android:id="@+id/terms_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:gravity="center"
+                android:layout_marginBottom="7dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/our"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="our"
+                    android:textColor="@color/title_color">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/term"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:text="@string/term_and_con"
+                    android:textColor="@color/aqua_marine"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:text="@string/and"
+                    android:textColor="@color/title_color">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/privacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:text="@string/privacy_policy_new"
+                    android:textColor="@color/aqua_marine">
+
+                </TextView>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
