@@ -101,8 +101,8 @@ android {
             dimension 'default'
             versionCode 1036
             versionName "21.8.5(19)"
-        /*    versionCode 1
-            versionName "1"*/
+            /*    versionCode 1
+                versionName "1"*/
             applicationId "com.astro.sott"
             buildConfigField "String", "KALTURA_BASE_URL", "\"https://rest-as.ott.kaltura.com/api_v3/service/\""
             buildConfigField "int", "KAVA_PARTNER_ID", "3089633"
