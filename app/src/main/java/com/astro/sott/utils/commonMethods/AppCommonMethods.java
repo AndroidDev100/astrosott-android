@@ -2935,7 +2935,7 @@ public class AppCommonMethods {
     public static String getAdsUrl(String url, Asset asset, Context context) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(url);
-        stringBuilder.append("?&cust_params=");
+        stringBuilder.append("&cust_params=");
         //did%3D" + AppCommonMethods.getDeviceId(context.getContentResolver())
        /* if (UserInfo.getInstance(context).getCpCustomerId() != null && !UserInfo.getInstance(context).getCpCustomerId().equalsIgnoreCase(""))
             stringBuilder.append("&cid%3D" + UserInfo.getInstance(context).getCpCustomerId());*/
