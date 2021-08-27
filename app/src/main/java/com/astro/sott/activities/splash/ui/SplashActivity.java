@@ -985,25 +985,25 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
-       myDevice.enable();
-       myDevice.startDiscovery();
-       Handler handler = new Handler();
-        Runnable r = new Runnable() {
-            public void run() {
-
-                devicename= BluetoothAdapter.getDefaultAdapter().getName();
-                Log.d("DEVICEusername",devicename+"");
-
-            }
-        };
-        handler.postDelayed(r, 1000);
-
-        String deviceModel = Build.PRODUCT;
-        Log.d("DEVICEProduct",deviceModel+"");
-        String deviceName4=  Settings.Global.getString(getContentResolver(), Settings.Global.DEVICE_NAME);
-//                Settings.Secure.getString(getContentResolver(), "bluetooth_name");
-        Log.d("DEVICEname",deviceName4+"");
+//        BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+//       myDevice.enable();
+//       myDevice.startDiscovery();
+//       Handler handler = new Handler();
+//        Runnable r = new Runnable() {
+//            public void run() {
+//
+//                devicename= BluetoothAdapter.getDefaultAdapter().getName();
+//                Log.d("DEVICEusername",devicename+"");
+//
+//            }
+//        };
+//        handler.postDelayed(r, 1000);
+//
+//        String deviceModel = Build.PRODUCT;
+//        Log.d("DEVICEProduct",deviceModel+"");
+//        String deviceName4=  Settings.Global.getString(getContentResolver(), Settings.Global.DEVICE_NAME);
+////                Settings.Secure.getString(getContentResolver(), "bluetooth_name");
+//        Log.d("DEVICEname",deviceName4+"");
 
 //
 //        View decorView = getWindow().getDecorView();

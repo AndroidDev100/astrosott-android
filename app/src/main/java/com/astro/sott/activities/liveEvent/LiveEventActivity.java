@@ -264,11 +264,13 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     }
 
     private boolean isPlayableOrNot() {
-        if (AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate && liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong()) {
-            return true;
-        } else {
-            return false;
-        }
+
+            if ((AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate) && (liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong())) {
+                return true;
+            } else {
+                return false;
+            }
+
     }
 
     private void checkErrors() {

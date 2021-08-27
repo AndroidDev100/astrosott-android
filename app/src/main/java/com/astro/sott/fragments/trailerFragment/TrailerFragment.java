@@ -45,6 +45,7 @@ import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.DialogHelper;
+import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
@@ -118,10 +119,19 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     private void checkTrailerOrHighlights() {
         trailerData = trailerFragmentViewModel.getTrailer();
         highLightData = trailerFragmentViewModel.getHighLights();
-        if (trailerData.size() > 0)
-            setTrailerUiComponents();
-        if (highLightData.size() > 0)
-            setHighLightUiComponents();
+     try {
+         if (trailerData.size() > 0)
+          setTrailerUiComponents();
+
+         if (highLightData.size() > 0)
+          setHighLightUiComponents();
+     }catch (NullPointerException e){
+         PrintLogging.printLog("Exception", e.toString());
+
+     }
+        Log.d("trailerSIZE",trailerData.size()+"");
+        Log.d("trailerSIZE",highLightData.size()+"");
+
 
 
     }
