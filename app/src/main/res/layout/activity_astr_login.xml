@@ -479,7 +479,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/term_policy_new"
+                android:text="@string/term_policy_login"
                 android:textColor="@color/title_color"
                 android:layout_marginBottom="4dp"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -512,7 +512,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:text="@string/term_and_con"
+                    android:text="@string/term_and_condition_login"
                     android:textColor="@color/aqua_marine"></TextView>
 
                 <TextView
