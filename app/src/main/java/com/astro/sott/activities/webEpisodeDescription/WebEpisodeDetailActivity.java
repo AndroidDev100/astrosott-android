@@ -106,7 +106,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
     private Map<String, Value> yearMap;
     private FragmentManager manager;
     private long assetId;
-    private int assetType;
+    private int assetType, watchPosition = 0;
     private List<PersonalList> playlist = new ArrayList<>();
     private List<PersonalList> personalLists = new ArrayList<>();
     private RailBaseFragment baseRailFragment;
@@ -207,6 +207,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                 callProgressBar();
                 playerChecks(railData);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("trx_vip", railData.getObject(), this);
                 if (UserInfo.getInstance(this).isActive()) {
                     fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
                     if (!fileId.equalsIgnoreCase("")) {
@@ -419,9 +420,19 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
 
     private String fileId = "";
 
+    private void getBookmarking(Asset asset) {
+        if (UserInfo.getInstance(this).isActive()) {
+            viewModel.getBookmarking(asset).observe(this, integer -> {
+                watchPosition = integer;
+            });
+        }
+    }
+
     private void checkEntitleMent(final RailCommonData railCommonData) {
 
         try {
+            if (railData != null && railData.getObject() != null)
+                getBookmarking(railData.getObject());
             fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
             new EntitlementCheck().checkAssetPurchaseStatus(WebEpisodeDetailActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
                 this.errorCode = AppLevelConstants.NO_ERROR;
@@ -430,7 +441,11 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                         runOnUiThread(() -> {
                             if (playbackControlValue) {
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                if (watchPosition > 0) {
+                                    getBinding().playText.setText(getResources().getString(R.string.resume));
+                                } else {
+                                    getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                }
                                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.black));
@@ -970,7 +985,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
     private void openShareDialouge() {
         try {
             CleverTapManager.getInstance().socialShare(this, asset, false);
-            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset,this);
+            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset, this);
         } catch (Exception e) {
 
         }
@@ -1106,13 +1121,13 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                 } else {
                     isAdded = false;
                     getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
-                    getBinding().watchList.setTextColor(getResources().getColor(R.color.title_color));
+                    getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
 
                 }
             } else {
                 isAdded = false;
                 getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
-                getBinding().watchList.setTextColor(getResources().getColor(R.color.title_color));
+                getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
             }
         });
     }

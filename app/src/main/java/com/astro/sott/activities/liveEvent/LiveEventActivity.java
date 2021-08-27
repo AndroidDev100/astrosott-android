@@ -10,6 +10,7 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.astro.sott.activities.liveChannel.ui.LiveChannel;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
@@ -113,6 +114,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     private List<PersonalList> personalLists = new ArrayList<>();
     private RailBaseFragment baseRailFragment;
     private String trailor_url = "";
+    private boolean becomeVipButtonCLicked = false;
+
     private List<Integer> list;
     private String name, titleName, idfromAssetWatchlist;
     private boolean isActive, isAdded;
@@ -167,6 +170,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         railData = commonRailData;
         asset = railData.getObject();
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(asset.getName());
+        FirebaseEventManager.getFirebaseInstance(LiveEventActivity.this).setRelatedAssetName(asset.getName());
 
         layoutType = layout;
         assetId = asset.getId();
@@ -226,6 +230,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         startActivity(intent);
                     }
                 } else {
+                    becomeVipButtonCLicked = true;
                     new ActivityLauncher(LiveEventActivity.this).signupActivity(LiveEventActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
@@ -253,6 +258,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         startActivity(intent);
                     }
                 } else {
+                    becomeVipButtonCLicked = true;
                     new ActivityLauncher(LiveEventActivity.this).signupActivity(LiveEventActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
@@ -444,6 +450,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                     getBinding().playText.setTextColor(getResources().getColor(R.color.black));
                                     getBinding().playText.setText(getResources().getString(R.string.watch_now));
                                     getBinding().playButton.setVisibility(View.VISIBLE);
+                                    becomeVipButtonCLicked = false;
                                     getBinding().starIcon.setVisibility(View.GONE);
                                 }
                             });
@@ -458,7 +465,23 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                         getBinding().playButton.setVisibility(View.VISIBLE);
                                         getBinding().starIcon.setVisibility(View.GONE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-
+                                        if (becomeVipButtonCLicked) {
+                                            becomeVipButtonCLicked = false;
+                                            if (UserInfo.getInstance(this).isActive()) {
+                                                if (!fileId.equalsIgnoreCase("")) {
+                                                    Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                                    if (isPlayableOrNot()) {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
+                                                    } else {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
+                                                    }
+                                                    intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                                    intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        }
                                     });
                                 }
                                 this.vodType = EntitlementCheck.SVOD;
@@ -469,8 +492,26 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
                                         getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                         getBinding().playButton.setVisibility(View.VISIBLE);
+                                        becomeVipButtonCLicked = false;
                                         getBinding().starIcon.setVisibility(View.VISIBLE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                                        if (becomeVipButtonCLicked) {
+                                            becomeVipButtonCLicked = false;
+                                            if (UserInfo.getInstance(this).isActive()) {
+                                                if (!fileId.equalsIgnoreCase("")) {
+                                                    Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                                    if (isPlayableOrNot()) {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
+                                                    } else {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
+                                                    }
+                                                    intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                                    intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        }
                                     });
                                 }
 
@@ -512,7 +553,23 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                         getBinding().playButton.setVisibility(View.VISIBLE);
                                         getBinding().starIcon.setVisibility(View.VISIBLE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-
+                                        if (becomeVipButtonCLicked) {
+                                            becomeVipButtonCLicked = false;
+                                            if (UserInfo.getInstance(this).isActive()) {
+                                                if (!fileId.equalsIgnoreCase("")) {
+                                                    Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                                    if (isPlayableOrNot()) {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
+                                                    } else {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
+                                                    }
+                                                    intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                                    intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        }
                                     });
                                 }
                                 this.vodType = EntitlementCheck.SVOD;
@@ -525,6 +582,23 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                         getBinding().playButton.setVisibility(View.VISIBLE);
                                         getBinding().starIcon.setVisibility(View.GONE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                                        if (becomeVipButtonCLicked) {
+                                            becomeVipButtonCLicked = false;
+                                            if (UserInfo.getInstance(this).isActive()) {
+                                                if (!fileId.equalsIgnoreCase("")) {
+                                                    Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                                    if (isPlayableOrNot()) {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
+                                                    } else {
+                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
+                                                    }
+                                                    intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                                    intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        }
                                     });
                                 }
 
@@ -582,20 +656,21 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             getBinding().descriptionText.post(() -> {
                 lineCount = getBinding().descriptionText.getLineCount();
                 Log.d("linecountCheck", lineCount + "");
+                lineCount = getBinding().descriptionText.getLineCount();
+                if (lineCount <= 3) {
+                    if ((!TextUtils.isEmpty(getBinding().subtitleText.getText())) || (!TextUtils.isEmpty(getBinding().castText.getText())) || (!TextUtils.isEmpty(getBinding().crewText.getText()))) {
+                        getBinding().shadow.setVisibility(View.VISIBLE);
+                        getBinding().lessButton.setVisibility(View.VISIBLE);
+                    } else {
+                        getBinding().shadow.setVisibility(View.GONE);
+                        getBinding().lessButton.setVisibility(View.GONE);
+                    }
+                } else {
+
+                }
             });
 
-            lineCount = getBinding().descriptionText.getLineCount();
-            if (lineCount <= 3) {
-                if ((!TextUtils.isEmpty(getBinding().subtitleText.getText())) || (!TextUtils.isEmpty(getBinding().castText.getText())) || (!TextUtils.isEmpty(getBinding().crewText.getText()))) {
-                    getBinding().shadow.setVisibility(View.VISIBLE);
-                    getBinding().lessButton.setVisibility(View.VISIBLE);
-                } else {
-                    getBinding().shadow.setVisibility(View.GONE);
-                    getBinding().lessButton.setVisibility(View.GONE);
-                }
-            } else {
 
-            }
             stringBuilder = new StringBuilder();
             stringBuilder.append(viewModel.getStartDate(liveEventStartDate) + " - " + AppCommonMethods.getEndTime(liveEventEndDate) + " | ");
             getImage();

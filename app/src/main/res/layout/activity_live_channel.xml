@@ -71,14 +71,10 @@
                                 tools:ignore="ContentDescription" />
 
 
-                            <FrameLayout
+                            <ImageView
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/_90sdp"
-                                android:layout_alignParentBottom="true"
-                                android:background="@drawable/purple_shadow">
-
-
-                            </FrameLayout>
+                                android:background="@drawable/ic_shadow"
+                                android:layout_height="match_parent"></ImageView>
 
                             <ImageView
                                 android:id="@+id/astro_play_button"
@@ -211,10 +207,8 @@
                             android:id="@+id/description_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="45dp"
+                            android:layout_marginTop="46dp"
                             android:layout_marginEnd="@dimen/expandable_text_margin_right"
-                            android:ellipsize="end"
-                            android:maxLines="3"
                             android:fontFamily="@font/roboto_regular"
                             android:lineHeight="24sp"
                             android:textColor="@color/title_color"

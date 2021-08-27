@@ -77,7 +77,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerI
             lastClickTime = SystemClock.elapsedRealtime();
 
             if (NetworkConnectivity.isOnline(context)) {
-
                 trailerAssetCallBack.getTrailerAsset(asset);
             } else {
                 ToastHandler.show(context.getResources().getString(R.string.no_internet_connection), context);

@@ -3,6 +3,7 @@ package com.astro.sott.activities.subscriptionActivity.ui;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -18,9 +19,13 @@ import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.R;
 import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivityProfileSubscriptionBinding;
+import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
+import com.astro.sott.fragments.subscription.dialog.DowngradeDialogFragment;
+import com.astro.sott.fragments.subscription.dialog.UpgradeDialogFragment;
 import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.modelClasses.InApp.PackDetail;
@@ -32,12 +37,13 @@ import com.astro.sott.utils.billing.InAppProcessListener;
 import com.astro.sott.utils.billing.PurchaseDetailListener;
 import com.astro.sott.utils.billing.PurchaseType;
 import com.astro.sott.utils.billing.SKUsListListener;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityProfileSubscriptionBinding> implements CardCLickedCallBack, InAppProcessListener {
+public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityProfileSubscriptionBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener {
     private BillingProcessor billingProcessor;
     private SubscriptionViewModel subscriptionViewModel;
 
@@ -110,16 +116,25 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     try {
                         CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Success", "Content Details Page");
                         FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS, UserInfo.getInstance(this).getCpCustomerId());
-
                     } catch (Exception e) {
-
+                        Log.w("ex", e);
                     }
                     Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                    if (from.equalsIgnoreCase("Content Detail Page")) {
+                        onBackPressed();
+                    } else {
+                        setFragment();
+                    }
                 }
             } else {
                 try {
                     CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failure", "Content Details Page");
                 } catch (Exception ex) {
+                }
+                if (from.equalsIgnoreCase("Content Detail Page")) {
+                    onBackPressed();
+                } else {
+                    setFragment();
                 }
                 Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
 
@@ -154,10 +169,11 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
         billingProcessor.initializeBillingProcessor();
     }
 
-    private String planName = "", planPrice = "", offerId = "", offerType = "";
+    private Long planPrice;
+    private String planName = "", offerId = "", offerType = "";
 
     @Override
-    public void onCardClicked(String productId, String serviceType, String activePlan, String name, String price) {
+    public void onCardClicked(String productId, String serviceType, String activePlan, String name, Long price) {
 
         this.planName = name;
         offerId = productId;
@@ -212,6 +228,24 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
 
     }
 
+    @Override
+    public void onUpgrade() {
+        FragmentManager fm = getSupportFragmentManager();
+        UpgradeDialogFragment upgradeDialogFragment = UpgradeDialogFragment.newInstance("Detail Page", "");
+        upgradeDialogFragment.setEditDialogCallBack(ProfileSubscriptionActivity.this);
+        upgradeDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+
+    }
+
+    @Override
+    public void onDowngrade() {
+        FragmentManager fm = getSupportFragmentManager();
+        DowngradeDialogFragment downgradeDialogFragment = DowngradeDialogFragment.newInstance("Detail Page", "");
+        downgradeDialogFragment.setEditDialogCallBack(ProfileSubscriptionActivity.this);
+        downgradeDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+
+    }
+
     public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList, SKUsListListener callBacks) {
         if (billingProcessor != null && billingProcessor.isReady()) {
             billingProcessor.getAllSkuDetails(subSkuList, productsSkuList, new SKUsListListener() {
@@ -224,4 +258,13 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
         }
     }
 
+    @Override
+    public void onUpgradeClick() {
+        billingProcessor.upgrade();
+    }
+
+    @Override
+    public void onDowngradeClick() {
+        billingProcessor.downgrade();
+    }
 }

@@ -167,7 +167,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     }
                 });
 
-        getBinding().loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
+        //  getBinding().loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
     }
 
     private void setGoogleSignIn() {
@@ -228,6 +228,12 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         getBinding().backIcon.setOnClickListener(view -> {
             onBackPressed();
         });
+        getBinding().term.setOnClickListener(v -> {
+            new ActivityLauncher(this).termAndCondition(this);
+        });
+        getBinding().privacy.setOnClickListener(v -> {
+            new ActivityLauncher(this).privacy(this);
+        });
         getBinding().loginBtn.setOnClickListener(view -> {
             if (checkEmailVaildation()) {
                 String password = getBinding().passwordEdt.getText().toString();
@@ -279,10 +285,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             getBinding().loginButton.performClick();
             //  confirmOtp();
         });
-        getBinding().apple.setOnClickListener(view -> {
 
-            //   resetPassword();
-        });
         getBinding().signup.setOnClickListener(view -> {
             Intent intent = new Intent(this, SignUpActivity.class);
             intent.putExtra(AppLevelConstants.FROM_KEY, from);
@@ -410,6 +413,8 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     socialLoginTypesItem = evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getSocialLoginTypes();
                     AppCommonMethods.checkSocailLinking(this, socialLoginTypesItem);
                 }
+                if (evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getAccountRole() != null)
+                    UserInfo.getInstance(this).setAccountRole(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getAccountRole());
                 if (type.equalsIgnoreCase("Facebook") || type.equalsIgnoreCase("Google")) {
                     UserInfo.getInstance(this).setSocialLogin(true);
                 }
@@ -479,7 +484,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
         AppCommonMethods.setCleverTap(this);
         if (UserInfo.getInstance(this).getCpCustomerId() != null && !UserInfo.getInstance(this).getCpCustomerId().equalsIgnoreCase(""))
-            FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "", type);
+            FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), UserInfo.getInstance(this).getAccountRole(), type);
       /*  if (from.equalsIgnoreCase("Profile")) {
             new ActivityLauncher(AstrLoginActivity.this).profileScreenRedirection(AstrLoginActivity.this, HomeActivity.class);
         } else {*/
@@ -543,12 +548,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2327")) {
-                    Intent intent = new Intent(this, DetailConfirmationActivity.class);
-                    intent.putExtra(AppLevelConstants.TYPE_KEY, type);
-                    intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);
-                    intent.putExtra(AppLevelConstants.PASSWORD_KEY, password);
-                    intent.putExtra("name", name);
-                    startActivity(intent);
+                    createUser(password);
                 } else {
                     Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -556,9 +556,30 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         });
     }
 
+    private void createUser(String password) {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        astroLoginViewModel.createUser(type, email_mobile, password, name, tabletSize).observe(this, evergentCommonResponse -> {
+            if (evergentCommonResponse.isStatus()) {
+                UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getAccessToken());
+                UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getRefreshToken());
+                UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
+                KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
+                astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
+                AppCommonMethods.onUserRegister(this);
+                getContact();
+
+            } else {
+                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                getBinding().progressBar.setVisibility(View.GONE);
+            }
+
+        });
+    }
+
     private boolean checkPasswordValidation(String password) {
         if (password.equalsIgnoreCase("")) {
-            passwordError = getResources().getString(R.string.valid_password);
+            passwordError = getResources().getString(R.string.field_cannot_empty);
             return false;
         } else if (password.matches(PASSWORD_REGEX)) {
             return true;
@@ -585,7 +606,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     getBinding().passwordError.setText(getResources().getString(R.string.password_rules));
                     getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
                     getBinding().errorEmail.setVisibility(View.VISIBLE);
-                    getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
+                    getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
                     passwordValidaton(password);
                     return false;
 
@@ -596,10 +617,22 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 getBinding().errorEmail.setText(getResources().getString(R.string.mobile_suggestion));
                 return true;
             } else {
+
+                boolean numeric = true;
+                try {
+                    double num = Double.parseDouble(email_mobile);
+                } catch (NumberFormatException e) {
+                    numeric = false;
+                }
+                if (numeric) {
+                    getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
+                } else {
+                    getBinding().errorEmail.setText(getResources().getString(R.string.email_suggestion));
+                }
                 getBinding().passwordError.setText(getResources().getString(R.string.password_rules));
                 getBinding().errorEmail.setVisibility(View.VISIBLE);
                 getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
-                getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
+
                 passwordValidaton(password);
                 return false;
 
@@ -608,7 +641,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             getBinding().passwordError.setText(getResources().getString(R.string.password_rules));
             getBinding().errorEmail.setVisibility(View.VISIBLE);
             getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
-            getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
+            getBinding().errorEmail.setText(getResources().getString(R.string.field_cannot_empty));
             passwordValidaton(password);
             return false;
 

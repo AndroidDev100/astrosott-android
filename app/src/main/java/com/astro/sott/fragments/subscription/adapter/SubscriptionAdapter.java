@@ -109,7 +109,7 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
         holder.binding.btnBuy.setOnClickListener(v -> {
             if (UserInfo.getInstance(fragment).isActive()) {
                 if (!holder.binding.actualPrice.getText().toString().equalsIgnoreCase("subscribed"))
-                    cardCLickedCallBack.onCardClicked(packDetailList.get(position).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(position).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(position).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(position).getSkuDetails().getPrice());
+                    cardCLickedCallBack.onCardClicked(packDetailList.get(position).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(position).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(position).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(position).getSkuDetails().getPriceAmountMicros());
             } else {
                 new ActivityLauncher(fragment).signupActivity(fragment, SignUpActivity.class, CleverTapManager.SUBSCRIPTION_PAGE);
             }

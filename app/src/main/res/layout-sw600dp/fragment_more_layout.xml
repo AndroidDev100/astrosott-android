@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@color/grape_purple">
 
 
@@ -58,13 +58,13 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:orientation="horizontal">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:id="@+id/circular_imageView_more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/dimen70dp"
+                    android:layout_height="@dimen/dimen70dp"
                     android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_account_circle_80px" />
+                    android:src="@drawable/defaultprofilepic" />
 
                 <Button
                     android:id="@+id/login_signup_more"

@@ -2,6 +2,7 @@ package com.astro.sott.adapter.experiencemng;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,6 +101,7 @@ public class CommonPosterListingAdapter extends RecyclerView.Adapter<CommonPoste
                 holder.potraitItemBinding.mediaTypeLayout.lineTwo.setText(itemsList.get(i).getObject().getDescription());
                 holder.potraitItemBinding.mediaTypeLayout.lineOne.setMaxLines(2);
                 holder.potraitItemBinding.mediaTypeLayout.lineOne.setEllipsize(TextUtils.TruncateAt.END);
+
 
             }
         } catch (Exception e) {

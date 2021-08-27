@@ -287,6 +287,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 getContact();
                 try {
                     origin = CleverTapManager.getInstance().getLoginOrigin();
+                    AppCommonMethods.onUserRegister(this);
                     CleverTapManager.getInstance().setSignInEvent(this, origin, loginType);
                 } catch (Exception ex) {
                 }
@@ -330,6 +331,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                     socialLoginTypesItem = evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getSocialLoginTypes();
                     AppCommonMethods.checkSocailLinking(this, socialLoginTypesItem);
                 }
+                if (evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getAccountRole() != null)
+                    UserInfo.getInstance(this).setAccountRole(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getAccountRole());
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
                 UserInfo.getInstance(this).setMobileNumber(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getMobileNumber());
                 UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());
@@ -394,7 +397,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void setActive() {
-        FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), "", "Evergent");
+        FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), UserInfo.getInstance(this).getAccountRole(), "Evergent");
         UserInfo.getInstance(this).setActive(true);
         AppCommonMethods.setCleverTap(this);
         // new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);

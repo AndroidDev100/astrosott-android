@@ -128,6 +128,10 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
         return WebSeriesDescriptionRepository.getInstance().getClipData(getApplication().getApplicationContext(), ref_id);
     }
 
+    public LiveData<Integer> getBookmarking(Asset asset) {
+        return WebSeriesDescriptionRepository.getInstance().getBookMarking(getApplication().getApplicationContext(), asset);
+    }
+
     public LiveData<String> listAllSeriesList(long assetID) {
         return WebSeriesDescriptionRepository.getInstance().seriesFollowList(getApplication().getApplicationContext(), assetID);
     }
@@ -149,11 +153,11 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType, String sortType) {
-        return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType,sortType);
+        return EpisodesLayer.getInstance().getEpisodesList(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType, sortType);
     }
 
     public LiveData<List<AssetCommonBean>> callSeasonEpisodesBingeWatch(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType, String sortType) {
-        return EpisodesLayer.getInstance().getEpisodesListBingeWatch(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType,sortType);
+        return EpisodesLayer.getInstance().getEpisodesListBingeWatch(getApplication().getApplicationContext(), map, assetType, counter, seriesNumberList, seasonCounter, layoutType, sortType);
     }
 
     public LiveData<AssetCommonBean> getChannelList(int screen_id) {

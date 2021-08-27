@@ -1,6 +1,7 @@
 package com.astro.sott.activities.movieDescription.viewModel;
 
 import android.app.Application;
+
 import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
 
@@ -15,6 +16,7 @@ import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.repositories.dtv.DTVRepository;
 import com.astro.sott.repositories.movieDescription.MovieDescriptionRepository;
 import com.astro.sott.repositories.player.PlayerRepository;
+import com.astro.sott.repositories.webSeriesDescription.WebSeriesDescriptionRepository;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.kaltura.client.types.Asset;
@@ -42,6 +44,10 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
 
     public LiveData<String> getCastLiveData(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getCastData(map);
+    }
+
+    public LiveData<Integer> getBookmarking(Asset asset) {
+        return WebSeriesDescriptionRepository.getInstance().getBookMarking(getApplication().getApplicationContext(), asset);
     }
 
     public String getStartDate(long timestamp) {
@@ -97,7 +103,7 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
 
 
     public LiveData<String> getUrlfromModel(Asset asset, String videoResolution) {
-        return AssetContent.getUrl(asset,videoResolution);
+        return AssetContent.getUrl(asset, videoResolution);
     }
 
     public LiveData<String> getRefIdLivedata(Map<String, MultilingualStringValueArray> map) {
@@ -127,7 +133,7 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
     }
 
     public LiveData<CommonResponse> addToWatchlist(String id, String titleName, int playlistId) {
-        return MovieDescriptionRepository.getInstance().addToWatchlist(id, titleName, getApplication().getApplicationContext(),playlistId);
+        return MovieDescriptionRepository.getInstance().addToWatchlist(id, titleName, getApplication().getApplicationContext(), playlistId);
     }
 
     public LiveData<CommonResponse> deleteWatchlist(String idfromAssetWatchlist) {

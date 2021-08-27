@@ -25,6 +25,7 @@ public class UserInfo {
 
 
     private String email;
+    private String accountRole;
     private String cpCustomerId;
     private String mobileNumber;
 
@@ -48,6 +49,13 @@ public class UserInfo {
         session.setBoolean("isSocialLogin", socialLinked);
     }
 
+    public String getAccountRole() {
+        return session.getString("astro_accountRole", "");
+    }
+
+    public void setAccountRole(String accountRole) {
+        session.setString("astro_accountRole", accountRole);
+    }
 
     public boolean isSocialLogin() {
         return session.getBoolean("isSocialLogin", false);

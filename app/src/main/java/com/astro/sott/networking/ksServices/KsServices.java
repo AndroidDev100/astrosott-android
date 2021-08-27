@@ -85,8 +85,10 @@ import com.astro.sott.callBacks.otpCallbacks.AutoMsisdnCallback;
 import com.astro.sott.callBacks.otpCallbacks.DTVAccountCallback;
 import com.astro.sott.callBacks.otpCallbacks.OtpCallback;
 import com.astro.sott.callBacks.otpCallbacks.OtpVerificationCallback;
+import com.astro.sott.callBacks.waterMarkCallBacks.WaterMarkCallback;
 import com.astro.sott.db.search.SearchedKeywords;
 import com.astro.sott.modelClasses.DTVContactInfoModel;
+import com.astro.sott.modelClasses.WaterMark.WaterMarkModel;
 import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.modelClasses.dmsResponse.FilterLanguages;
 import com.astro.sott.modelClasses.dmsResponse.FilterValues;
@@ -3741,7 +3743,7 @@ public class KsServices {
                 if (result.results.getTotalCount() > 0) {
                     if (result.results.getObjects() != null) {
                         if (result.results.getObjects().size() > 0 && result.results.getObjects().get(0) != null) {
-                            specificAssetCallBack.getAsset(false, result.results.getObjects().get(0));
+                            specificAssetCallBack.getAsset(true, result.results.getObjects().get(0));
 
                         } else {
                             specificAssetCallBack.getAsset(false, null);
@@ -4102,6 +4104,7 @@ public class KsServices {
                     ResponseDmsModel responseDmsModel = response.body();
                     if (responseDmsModel != null && response.body() != null) {
                         if (response.body().getParams().getGateways() != null) {
+                            KsPreferenceKey.getInstance(activity).setKalturaPhoenixUrlForWaterMark(response.body().getParams().getGateways().getJsonGW());
                             StringBuilder stringBuilder = new StringBuilder(response.body().getParams().getGateways().getJsonGW());
                             stringBuilder.append(activity.getString(R.string.suffix_api_v3));
                             Log.e("Phonex Base Url", stringBuilder.toString());
@@ -6244,7 +6247,11 @@ public class KsServices {
     public void getAssetDetailEpg(VIUChannel channel, List<VIUChannel> list) {
 
         clientSetupKs();
-        String assetId = channel.getManualImageAssetId();
+        String assetId = "";
+        if (StringUtils.isNullOrEmptyOrZero(channel.getLandingPageAssetId()))
+            assetId = channel.getManualImageAssetId();
+        else
+            assetId = channel.getLandingPageAssetId();
         final MutableLiveData<RailCommonData> mutableLiveData = new MutableLiveData<>();
         final KsServices ksServices = new KsServices(activity);
         AssetService.GetAssetBuilder builder = AssetService.get(assetId, AssetReferenceType.EPG_INTERNAL).setCompletion(result -> {
@@ -6254,9 +6261,10 @@ public class KsServices {
                     homechannelCallBack.response(true, responseList, list);
 
                 } else {
-
+                    homechannelCallBack.response(false, null, null);
                 }
             } else {
+                homechannelCallBack.response(false, null, null);
                 /*ErrorHandling.checkErrorType(result.error, (code, status) -> {
                     if (code.equalsIgnoreCase(AppConstants.KS_EXPIRE) && status) {
                         homechannelCallBack.response(false, null, null);
@@ -6288,8 +6296,11 @@ public class KsServices {
                     homechannelCallBack.response(true, responseList, list);
 
                 } else {
+                    homechannelCallBack.response(false, null, null);
                 }
             } else {
+                homechannelCallBack.response(false, null, null);
+
                /* ErrorHandling.checkErrorType(result.error, (code, status) -> {
                     if (code.equalsIgnoreCase(AppConstants.KS_EXPIRE) && status) {
                         homechannelCallBack.response(false, null, null);
@@ -8383,4 +8394,28 @@ public class KsServices {
     }
 
 
+    public void callWaterMarkApi(Context context, String kalturaPhoenixUrl, String ks, WaterMarkCallback waterMarkCallback) {
+
+        ApiInterface endpoint = RequestConfig.getClient(kalturaPhoenixUrl).create(ApiInterface.class);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("apiVersion", "5.4.0.28193");
+        jsonObject.addProperty("ks", ks);
+        Call<WaterMarkModel> call = endpoint.getJwtToken(jsonObject);
+        call.enqueue(new Callback<WaterMarkModel>() {
+            @Override
+            public void onResponse(Call<WaterMarkModel> call, retrofit2.Response<WaterMarkModel> response) {
+                if (response.code() == 200) {
+                    waterMarkCallback.onSuccess(response.body());
+                } else {
+                    waterMarkCallback.onError(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WaterMarkModel> call, Throwable t) {
+                waterMarkCallback.onError(0);
+            }
+        });
+
+    }
 }

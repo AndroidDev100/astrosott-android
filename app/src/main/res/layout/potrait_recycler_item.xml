@@ -77,7 +77,7 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="14dp"
+                    android:layout_height="24dp"
                     android:layout_weight="1"
                     android:background="@color/shimmer_background_color" />
 
@@ -87,7 +87,7 @@
 
                 <LinearLayout
                     android:layout_width="40dp"
-                    android:layout_height="14dp"
+                    android:layout_height="24dp"
                     android:background="@color/shimmer_background_color" />
 
             </LinearLayout>

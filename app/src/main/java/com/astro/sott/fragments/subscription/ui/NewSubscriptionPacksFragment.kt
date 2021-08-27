@@ -192,9 +192,10 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         } else {
             if (from.equals("Content Detail Page", true)) {
                 if (PacksDateLayer.getInstance().packDetailList != null) {
-                    binding.includeProgressbar.progressBar.visibility= View.GONE
+                    packDetailList = PacksDateLayer.getInstance().packDetailList;
+                    binding.includeProgressbar.progressBar.visibility = View.GONE
                     loadDataFromModel(PacksDateLayer.getInstance().packDetailList)
-                }else{
+                } else {
                     getProductsForLogout()
                 }
             } else {
@@ -426,7 +427,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         packDetails: PackDetail,
         activePlan: String?,
         planName: String?,
-        price: String?
+        price: Long?
     ) {
         if (UserInfo.getInstance(context).isActive) {
             cardClickedCallback.onCardClicked(

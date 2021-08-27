@@ -19,12 +19,23 @@ import com.astro.sott.usermanagment.modelClasses.getProducts.Attribute
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
 import java.util.*
 
-class SubscriptionRecyclerViewAdapter(private val activity: Activity, private val packagesList: ArrayList<PackDetail>, private val productList: ArrayList<String>, private val onPackageChooseClickListener: OnPackageChooseClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SubscriptionRecyclerViewAdapter(
+    private val activity: Activity,
+    private val packagesList: ArrayList<PackDetail>,
+    private val productList: ArrayList<String>,
+    private val onPackageChooseClickListener: OnPackageChooseClickListener
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var activePlan: String? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding: FragmentPackageBinding = DataBindingUtil.bind<FragmentPackageBinding>(layoutInflater.inflate(R.layout.fragment_package, parent, false))!!
+        val binding: FragmentPackageBinding = DataBindingUtil.bind<FragmentPackageBinding>(
+            layoutInflater.inflate(
+                R.layout.fragment_package,
+                parent,
+                false
+            )
+        )!!
         binding.executePendingBindings()
         return HeaderHolder(binding)
     }
@@ -40,12 +51,17 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                     bannerBinding.text.setPadding(0, 0, 0, 0)
                 } else {
                     bannerBinding.text.visibility = View.VISIBLE
-                    bannerBinding.text.setPadding(0, SliderPotrait.dp2px(activity, 6f), 0, SliderPotrait.dp2px(activity, 6f))
+                    bannerBinding.text.setPadding(
+                        0,
+                        SliderPotrait.dp2px(activity, 6f),
+                        0,
+                        SliderPotrait.dp2px(activity, 6f)
+                    )
                 }
                 if (position == 1) {
                     bannerBinding.btnChooseMe.setTextColor(activity.resources.getColor(R.color.title_color))
                     bannerBinding.text.setTextColor(activity.resources.getColor(R.color.title_color))
-                }else{
+                } else {
                     bannerBinding.btnChooseMe.setTextColor(activity.resources.getColor(R.color.black_text_color))
                     bannerBinding.text.setTextColor(activity.resources.getColor(R.color.black_text_color))
                 }
@@ -59,28 +75,48 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                 bannerBinding.mainBackground.background = backgroundDrawable
                 bannerBinding.packageTitle.text = packageModel.displayName
                 bannerBinding.packageTitle.setTextColor(currentColor)
-                Log.w("priceValues ada", skuModel!!.introductoryPrice + "<--->" + skuModel!!.price + "<----->")
-                if (skuModel != null && skuModel.introductoryPricePeriod != null && !skuModel.introductoryPricePeriod.equals("")) {
+                Log.w(
+                    "priceValues ada",
+                    skuModel!!.introductoryPrice + "<--->" + skuModel!!.price + "<----->"
+                )
+                if (skuModel != null && skuModel.introductoryPricePeriod != null && !skuModel.introductoryPricePeriod.equals(
+                        ""
+                    )
+                ) {
                     if (packageModel.promotions != null && packageModel.promotions?.size!! > 0) {
                         bannerBinding.text.visibility = View.VISIBLE
-                        bannerBinding.text.setPadding(0, SliderPotrait.dp2px(activity, 6f), 0, SliderPotrait.dp2px(activity, 6f))
+                        bannerBinding.text.setPadding(
+                            0,
+                            SliderPotrait.dp2px(activity, 6f),
+                            0,
+                            SliderPotrait.dp2px(activity, 6f)
+                        )
                         bannerBinding.text.text = packageModel.promotions!![0].promoDescrip
-                        if (packageModel.promotions!![0].promoCpDescription != null && !packageModel.promotions!![0].promoCpDescription.equals("", true)) {
+                        if (packageModel.promotions!![0].promoCpDescription != null && !packageModel.promotions!![0].promoCpDescription.equals(
+                                "",
+                                true
+                            )
+                        ) {
                             bannerBinding.offer.visibility = View.VISIBLE
-                            bannerBinding.offer.text = packageModel.promotions!![0].promoCpDescription
+                            bannerBinding.offer.text =
+                                packageModel.promotions!![0].promoCpDescription
                         }
                     }
                     bannerBinding.currency.text = skuModel.priceCurrencyCode
                     bannerBinding.packagePrice.text = skuModel.introductoryPrice + "/"
-                    bannerBinding.period.text = packageModel.duration.toString() + packageModel.period
-                    bannerBinding.packagePriceOld.text = skuModel.price.toString() + "/" + packageModel.duration + packageModel.period
+                    bannerBinding.period.text =
+                        packageModel.duration.toString() + packageModel.period
+                    bannerBinding.packagePriceOld.text =
+                        skuModel.price.toString() + "/" + packageModel.duration + packageModel.period
                     bannerBinding.packagePriceOld.visibility = View.VISIBLE
-                    bannerBinding.packagePriceOld.paintFlags = bannerBinding.packagePriceOld.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    bannerBinding.packagePriceOld.paintFlags =
+                        bannerBinding.packagePriceOld.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 } else {
                     bannerBinding.offer.visibility = View.GONE
                     bannerBinding.currency.text = skuModel.priceCurrencyCode
                     bannerBinding.packagePrice.text = skuModel.price + "/"
-                    bannerBinding.period.text = packageModel.duration.toString() + packageModel.period
+                    bannerBinding.period.text =
+                        packageModel.duration.toString() + packageModel.period
                 }
                 bannerBinding.packageDescription.text = packageModel.uiDisplayText
 
@@ -105,7 +141,8 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                 }
                 if (packageModel.skuORQuickCode != null && productList.isNotEmpty()) {
                     if (checkActiveOrNot(packageModel.skuORQuickCode!!)) {
-                        bannerBinding.btnChooseMe.background = activity.resources.getDrawable(R.drawable.ic_btn)
+                        bannerBinding.btnChooseMe.background =
+                            activity.resources.getDrawable(R.drawable.ic_btn)
                         bannerBinding.btnChooseMe.isEnabled = false
                         activePlan = skuModel.sku
                     } else {
@@ -119,7 +156,13 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
                 bannerBinding.bulletsList.adapter = adapter
                 bannerBinding.btnChooseMe.setOnClickListener(object : View.OnClickListener {
                     override fun onClick(v: View?) {
-                        onPackageChooseClickListener.onPackageClicked(position, packagesList[position], activePlan,packagesList[position].productsResponseMessageItem.displayName,skuModel.price)
+                        onPackageChooseClickListener.onPackageClicked(
+                            position,
+                            packagesList[position],
+                            activePlan,
+                            packagesList[position].productsResponseMessageItem.displayName,
+                            skuModel.priceAmountMicros
+                        )
                     }
 
                 })
@@ -144,6 +187,7 @@ class SubscriptionRecyclerViewAdapter(private val activity: Activity, private va
         return packagesList.size
     }
 
-    private inner class HeaderHolder(val packageBinding: FragmentPackageBinding) : RecyclerView.ViewHolder(packageBinding.root)
+    private inner class HeaderHolder(val packageBinding: FragmentPackageBinding) :
+        RecyclerView.ViewHolder(packageBinding.root)
 
 }

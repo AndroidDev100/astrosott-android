@@ -19,6 +19,8 @@ import com.astro.sott.fragments.transactionhistory.ui.TransactionHistory;
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.OrderItem;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,13 +57,27 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                 holder.binding.orderName.setText(orderItems.get(position).getOrderProductInfo().get(0).getDisplayName());
             }
 
-            if (orderItems.get(position).getCurrencyCode() != null && orderItems.get(position).getTotalPriceCharged() != null) {
-                holder.binding.currency.setText(orderItems.get(position).getCurrencyCode() + " " + orderItems.get(position).getTotalPriceCharged());
+            if (orderItems.get(position).getCurrencyCode() != null && orderItems.get(position).getPaymentsInfo().get(0)!= null) {
+                holder.binding.currency.setText(orderItems.get(position).getCurrencyCode() + " " + orderItems.get(position).getPaymentsInfo().get(0).getAmount());
             } else {
                 holder.binding.currency.setText("");
             }
+
+            if (orderItems.get(position).getPaymentsInfo() != null && orderItems.get(position).getPaymentsInfo().get(0) != null && orderItems.get(position).getPaymentsInfo().get(0).getPaymentCategory() != null) {
+                try {
+                    holder.binding.paymentCategory.setText(WordUtils.capitalizeFully(orderItems.get(position).getPaymentsInfo().get(0).getPaymentCategory()));
+                } catch (Exception e) {
+                }
+            }
+
             if (orderItems.get(position).getPaymentsInfo() != null && orderItems.get(position).getPaymentsInfo().get(0) != null && orderItems.get(position).getPaymentsInfo().get(0).getPaymentType() != null) {
-                holder.binding.creditNo.setText(orderItems.get(position).getPaymentsInfo().get(0).getPaymentType());
+                if (orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase("Credit card")) {
+                    String creditNumber = orderItems.get(position).getPaymentsInfo().get(0).getCreditCardNumber().replace("x", "");
+
+                    holder.binding.creditNo.setText(orderItems.get(position).getPaymentsInfo().get(0).getPaymentType() + " " + creditNumber);
+                } else {
+                    holder.binding.creditNo.setText(orderItems.get(position).getPaymentsInfo().get(0).getPaymentType());
+                }
             } else {
                 holder.binding.creditNo.setText("");
             }

@@ -14,6 +14,8 @@ import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordRe
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.updateProfile.UpdateProfileResponse;
 
+import java.util.ArrayList;
+
 public class AstroLoginViewModel extends AndroidViewModel {
     public AstroLoginViewModel(@NonNull Application application) {
         super(application);
@@ -63,7 +65,7 @@ public class AstroLoginViewModel extends AndroidViewModel {
         return AstrLoginRepository.getInstance().getDevice(getApplication(), acessToken);
     }
 
-    public LiveData<EvergentCommonResponse> removeDevice(String acessToken, String serial) {
+    public LiveData<EvergentCommonResponse> removeDevice(String acessToken, ArrayList<String> serial) {
         return AstrLoginRepository.getInstance().removeDevice(getApplication(), acessToken, serial);
     }
 

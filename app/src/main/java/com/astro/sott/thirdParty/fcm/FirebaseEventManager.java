@@ -3,6 +3,7 @@ package com.astro.sott.thirdParty.fcm;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AssetContent;
@@ -28,6 +29,7 @@ public class FirebaseEventManager {
     public static final String LOGIN = "Login";
     public static final String SHARE = "share";
     public String searchString = "";
+    private String relatedAssetName = "";
 
 
     public static final String TRX_VIP = "trx_vip";
@@ -99,6 +101,14 @@ public class FirebaseEventManager {
         mFirebaseAnalytics.logEvent(eventName, bundle);
     }
 
+    public String getRelatedAssetName() {
+        return relatedAssetName;
+    }
+
+    public void setRelatedAssetName(String relatedAssetName) {
+        this.relatedAssetName = relatedAssetName;
+    }
+
     public void languageBtnEvent(String lang, String category) {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, " Language Settings");
@@ -113,7 +123,6 @@ public class FirebaseEventManager {
             bundle.putString("sign_up_method", signupMethod);
         } else {
             bundle.putString("sign_up_method", "Mobile Number");
-
         }
         bundle.putString("user_id", customerId);
         bundle.putString("user_type", userType); // e.g VIP,  Registered User etc
@@ -128,8 +137,7 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, itemList); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-
-            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
+            bundle.putString("item_language", AssetContent.getLanguageDataStringForCleverTap(asset.getTags(), context));
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
@@ -145,7 +153,7 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
             bundle.putString("search_variant", searchString);
-            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
+            bundle.putString("item_language", AssetContent.getLanguageDataStringForCleverTap(asset.getTags(), context));
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
@@ -160,9 +168,7 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Content Action"); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-
-            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
-
+            bundle.putString("item_language", AssetContent.getLanguageDataStringForCleverTap(asset.getTags(), context));
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
             mFirebaseAnalytics.logEvent(eventName, bundle);
@@ -171,16 +177,17 @@ public class FirebaseEventManager {
         }
     }
 
-    public void packageEvent(String packageTitle, String price, String eventName, String customerId) {
+    public void packageEvent(String packageTitle, Long price, String eventName, String customerId) {
         try {
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Rental Subscription");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, packageTitle);
-            bundle.putDouble("item_price", Double.parseDouble(price));
+            Long amount = price / 1000000;
+            bundle.putDouble("item_price", amount );
             bundle.putString("user_id", customerId);
             mFirebaseAnalytics.logEvent(eventName, bundle);
         } catch (Exception e) {
-
+            Log.w("exc", e);
         }
     }
 
@@ -190,7 +197,7 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Content Action"); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
+            bundle.putString("item_language", AssetContent.getLanguageDataStringForCleverTap(asset.getTags(), context));
             if (!channelName.equalsIgnoreCase(""))
                 bundle.putString("item_channel”", channelName);
             bundle.putString("item_date", AppCommonMethods.getFirebaseDate(asset.getStartDate()));
@@ -208,10 +215,10 @@ public class FirebaseEventManager {
     public void ralatedTabEvent(String eventName, Asset asset, Context context, String channelName) {
         try {
             Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Related-" + channelName + ":" + asset.getName()); //e.g TV Shows Top Slider
+            bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Related-" + FirebaseEventManager.getFirebaseInstance(context).getRelatedAssetName()); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
+            bundle.putString("item_language", AssetContent.getLanguageDataStringForCleverTap(asset.getTags(), context));
             if (!channelName.equalsIgnoreCase(""))
                 bundle.putString("item_channel”", channelName);
             bundle.putString("item_date”", AppCommonMethods.getFirebaseDate(asset.getStartDate()));
@@ -230,7 +237,7 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Shows-" + asset.getName()); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
+            bundle.putString("item_language", AssetContent.getLanguageDataStringForCleverTap(asset.getTags(), context));
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
@@ -245,7 +252,7 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Content Action"); //e.g TV Shows Top Slider
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
             bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
-            bundle.putString("item_language", AssetContent.getLanguageDataString(asset.getTags(), context));
+            bundle.putString("item_language", AssetContent.getLanguageDataStringForCleverTap(asset.getTags(), context));
             bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
             mFirebaseAnalytics.logEvent(SHARE, bundle);

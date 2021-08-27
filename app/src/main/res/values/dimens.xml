@@ -30,6 +30,10 @@
     <dimen name="landscape_list_item_width">185dp</dimen>
     <dimen name="landscape_list_item_height">100dp</dimen>
 
+    <dimen name="landscape_item_width_small">106dp</dimen>
+    <dimen name="landscape_item_height_small">60dp</dimen>
+    <dimen name="landscape_item_width_large">213dp</dimen>
+    <dimen name="landscape_item_height_large">120dp</dimen>
 
     <dimen name="square_item_height">100dp</dimen>
     <dimen name="square_item_width">100dp</dimen>
@@ -39,6 +43,7 @@
 
     <dimen name="square_item_height_large">133dp</dimen>
     <dimen name="square_item_width_large">133dp</dimen>
+
 
     <dimen name="crousel_title_margin_left">16dp</dimen>
     <dimen name="crousel_title_margin_right">16dp</dimen>
@@ -113,6 +118,7 @@
     <dimen name="potrait_item_height_small">106dp</dimen>
 
     <dimen name="potrait_item_width_large">120dp</dimen>
+    <dimen name="potrait_item_height_large">213dp</dimen>
 
     <dimen name="potrait_listing_item_width">100dp</dimen>
     <dimen name="potrait_listing_item_height">180dp</dimen>

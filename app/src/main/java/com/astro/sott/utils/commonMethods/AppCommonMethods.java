@@ -1,5 +1,7 @@
 package com.astro.sott.utils.commonMethods;
 
+import static com.astro.sott.activities.myPlans.adapter.MyPlanAdapter.getDateCurrentTimeZone;
+
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
@@ -28,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.search.constants.SearchFilterEnum;
+import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.baseModel.PrefrenceBean;
 import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
@@ -38,6 +41,7 @@ import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.modelClasses.dmsResponse.SubtitleLanguages;
 import com.astro.sott.networking.ksServices.KsServices;
+import com.astro.sott.player.ui.DTPlayer;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.usermanagment.modelClasses.getDevice.AccountDeviceDetailsItem;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
@@ -180,6 +184,20 @@ public class AppCommonMethods {
             profileUpdate.put("Phone", UserInfo.getInstance(context).getMobileNumber());
             profileUpdate.put("App Language", "English");
             clevertapDefaultInstance.onUserLogin(profileUpdate, AppCommonMethods.getDeviceId(context.getContentResolver()));
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+    public static void onUserRegister(Activity context) {
+        try {
+            CleverTapAPI clevertapDefaultInstance =
+                    CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver()));
+            HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("MSG-email", true);
+            clevertapDefaultInstance.pushProfile(profileUpdate);
         } catch (Exception e) {
 
         }
@@ -446,6 +464,21 @@ public class AppCommonMethods {
             calendar.setTimeInMillis(timestamp);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+            sdf.setTimeZone(TimeZone.getDefault());
+
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+    public static String getDateCleverTap(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DDTHH:MM:SSZ", Locale.getDefault());
             sdf.setTimeZone(TimeZone.getDefault());
 
             Date currenTimeZone = (Date) calendar.getTime();
@@ -1777,7 +1810,6 @@ public class AppCommonMethods {
                     imageView.setVisibility(View.VISIBLE);
                 } else {
                     imageView.setVisibility(View.GONE);
-
                 }
             } else {
                 if (AssetContent.getBillingId(tags)) {
@@ -2951,7 +2983,7 @@ public class AppCommonMethods {
     public static String getAdsUrl(String url, Asset asset, Context context) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(url);
-        stringBuilder.append("?cust_params%3Ddid%3D" + AppCommonMethods.getDeviceId(context.getContentResolver()));
+        stringBuilder.append("?&cust_params%3Ddid%3D" + AppCommonMethods.getDeviceId(context.getContentResolver()));
         if (UserInfo.getInstance(context).getCpCustomerId() != null && !UserInfo.getInstance(context).getCpCustomerId().equalsIgnoreCase(""))
             stringBuilder.append("&cid%3D" + UserInfo.getInstance(context).getCpCustomerId());
         if (!asset.getName().equalsIgnoreCase(""))
@@ -3131,4 +3163,20 @@ public class AppCommonMethods {
         return name;
     }
 
+    public static boolean isTokenExpired(Activity context) {
+        boolean isExpired = false;
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm aa");
+        String getCurrentDateTime = sdf.format(c.getTime());
+        String getMyTime = getDateCurrentTimeZone(KsPreferenceKey.getInstance(context).getExpiryTime());
+
+
+        if (getCurrentDateTime.compareTo(getMyTime) < 0) {
+            isExpired = false;
+        } else {
+            isExpired = true;
+        }
+
+        return isExpired;
+    }
 }

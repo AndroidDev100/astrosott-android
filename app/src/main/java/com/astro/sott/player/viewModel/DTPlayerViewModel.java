@@ -19,9 +19,12 @@ import com.astro.sott.activities.webEpisodeDescription.layers.EpisodesLayer;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.beanModel.login.CommonResponse;
+import com.astro.sott.modelClasses.OtpModel;
+import com.astro.sott.modelClasses.WaterMark.WaterMarkModel;
 import com.astro.sott.player.adapter.TrackItem;
 import com.astro.sott.repositories.dtv.DTVRepository;
 import com.astro.sott.repositories.liveChannel.LiveChannelRepository;
+import com.astro.sott.repositories.loginRepository.LoginRepository;
 import com.astro.sott.repositories.mysubscriptionplan.MySubscriptionPlanRepository;
 import com.astro.sott.repositories.player.PlayerRepository;
 import com.astro.sott.repositories.splash.SplashRepository;
@@ -210,8 +213,8 @@ public class DTPlayerViewModel extends AndroidViewModel {
 
 
     public LiveData<Player> startPlayerBookmarking(PKMediaEntry mediaEntry, String deviceid,
-                                                   Asset asset, int isPurchased, int assetPosition) {
-        return PlayerRepository.getInstance().startPlayerBookmarking(getApplication().getApplicationContext(), mediaEntry, deviceid, asset, isPurchased, assetPosition);
+                                                   Asset asset, int isPurchased, int assetPosition, String jwt, Boolean isLivePlayer) {
+        return PlayerRepository.getInstance().startPlayerBookmarking(getApplication().getApplicationContext(), mediaEntry, deviceid, asset, isPurchased, assetPosition,jwt,isLivePlayer);
     }
 
     public LiveData<Boolean> getStateOfPlayer() {
@@ -279,5 +282,10 @@ public class DTPlayerViewModel extends AndroidViewModel {
 
     public LiveData<String> getHungamaUrl(String providerExternalContentId) {
         return DTVRepository.getInstance().getHungamaUrl(getApplication().getApplicationContext(), providerExternalContentId);
+    }
+
+    public LiveData<WaterMarkModel> callWaterMarkApi(String kalturaPhoenixUrl, String ks) {
+        return PlayerRepository.getInstance().callWaterMarkApi(getApplication().getApplicationContext(), kalturaPhoenixUrl, ks);
+
     }
 }
