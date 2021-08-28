@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#EC1C24</color>
     <color name="splash_back">#ec1c24</color>
-    <color name="shimmer_background_color">#220F34</color>
+    <color name="shimmer_background_color">#0F001E</color>
     <color name="colorPrimaryDark">#333333</color>
     <color name="colorAccent">#757575</color>
     <color name="primary_red">#C62828</color>

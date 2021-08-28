@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="@dimen/landscape_image_width"
-        android:layout_height="@dimen/landscape_image_height"
-        android:background="@color/shimmer_background_color"
-        card_view:cardBackgroundColor="@color/shimmer_background_color"
-        card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="1dp"
-        card_view:cardMaxElevation="1dp"
-        card_view:cardPreventCornerOverlap="false">
-        <!-- <ImageView
-             android:id="@+id/itemImage"
-             android:layout_width="@dimen/potrait_item_width"
-             tools:ignore="ContentDescription"
-             android:layout_height="@dimen/potrait_item_height"
-             android:src="@drawable/portrait"
-             android:background="@color/fragment_background_color"
-             android:scaleType="fitXY"
-             android:contentDescription="@string/shimmer_placeholder" />-->
-    </androidx.cardview.widget.CardView>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/landscape_shimmer"
+            android:layout_width="@dimen/landscape_image_width"
+            android:layout_height="@dimen/landscape_image_height"
+            android:background="@color/shimmer_background_color"
+            card_view:cardBackgroundColor="@color/shimmer_background_color"
+            card_view:cardCornerRadius="5dp"
+            card_view:cardElevation="1dp"
+            card_view:cardMaxElevation="1dp"
+            card_view:cardPreventCornerOverlap="false"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            card_view:layout_constraintRight_toRightOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent">
+            <!-- <ImageView
+                 android:id="@+id/itemImage"
+                 android:layout_width="@dimen/potrait_item_width"
+                 tools:ignore="ContentDescription"
+                 android:layout_height="@dimen/potrait_item_height"
+                 android:src="@drawable/portrait"
+                 android:background="@color/fragment_background_color"
+                 android:scaleType="fitXY"
+                 android:contentDescription="@string/shimmer_placeholder" />-->
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="140dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="9dp"
+            android:layout_weight="1"
+            android:background="@color/shimmer_background_color"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/landscape_shimmer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
