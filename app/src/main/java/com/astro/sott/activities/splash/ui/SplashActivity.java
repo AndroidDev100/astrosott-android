@@ -1,6 +1,7 @@
 
 package com.astro.sott.activities.splash.ui;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -10,6 +11,7 @@ import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -155,7 +157,10 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
 
     private void connectionValidation(Boolean aBoolean) {
-        Log.e(TAG, "oncreate: " + "in3" + aBoolean);
+        /*BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+        String deviceName = Settings.Global.getString(getContentResolver(), Settings.Global.DEVICE_NAME);
+
+        Log.e(TAG, "oncreate: " + "indevice_name3" + deviceName);*/
         if (aBoolean) {
             if (!CommonUtils.isRooted(this)) {
                 Log.e(TAG, "oncreate: " + "in4");
@@ -938,7 +943,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
     }
-
 
 
     @Override
