@@ -856,4 +856,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         }
     }
 
+    @Override
+    public void onCardClicked(String productId, String serviceType, String activePlan, String name, Long price) {
+
+    }
 }
