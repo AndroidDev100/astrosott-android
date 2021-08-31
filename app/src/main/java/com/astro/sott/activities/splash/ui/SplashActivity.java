@@ -1001,11 +1001,11 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //
 //        String deviceModel = Build.PRODUCT;
 //        Log.d("DEVICEProduct",deviceModel+"");
-//        String deviceName4=  Settings.Global.getString(getContentResolver(), Settings.Global.DEVICE_NAME);
+//        String deviceName1=  Settings.Global.getString(getContentResolver(), Settings.Global.DEVICE_NAME);
 ////                Settings.Secure.getString(getContentResolver(), "bluetooth_name");
-//        Log.d("DEVICEname",deviceName4+"");
+//        Log.d("DEVICEname",deviceName1+"");
 
-//
+
 //        View decorView = getWindow().getDecorView();
 //        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 //                |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
