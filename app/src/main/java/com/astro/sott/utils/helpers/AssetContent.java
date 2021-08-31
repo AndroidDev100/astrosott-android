@@ -1201,7 +1201,7 @@ public class AssetContent {
 
         if (stringBuilder.length() > 0) {
             provider = stringBuilder.toString();
-            provider = provider.substring(0, provider.length() - 2);
+            provider = provider.substring(0, provider.length() - 1);
         } else {
             provider = "";
         }
