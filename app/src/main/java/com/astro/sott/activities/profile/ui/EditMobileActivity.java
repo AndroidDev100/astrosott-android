@@ -85,19 +85,37 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
         getBinding().button.setOnClickListener(v -> {
             String mobile = getBinding().newMobile.getText().toString();
             if (!mobile.equalsIgnoreCase("") && mobile.matches(MOBILE_REGEX)) {
-                if (alreadyMobile && UserInfo.getInstance(this).isPasswordExists()) {
-                    Intent intent = new Intent(this, ConfirmPasswordActivity.class);
-                    intent.putExtra("newMobile", mobile);
-                    startActivity(intent);
-                } else if (alreadyMobile && !UserInfo.getInstance(this).isPasswordExists()) {
-                    createOtp(mobile);
-                } else if (!alreadyMobile && UserInfo.getInstance(this).isPasswordExists()) {
-                    Intent intent = new Intent(this, ConfirmPasswordActivity.class);
-                    intent.putExtra("newMobile", mobile);
-                    startActivity(intent);
-                } else if (!alreadyMobile && !UserInfo.getInstance(this).isPasswordExists()) {
-                    createOtp(mobile);
+                if (mobile.matches(MOBILE_REGEX)) {
+                    char firstChar = mobile.charAt(0);
+                    if (String.valueOf(firstChar).equalsIgnoreCase("6")) {
+                        mobile = mobile;
+                    } else {
+                        mobile = "6" + mobile;
+                        getBinding().newMobile.setText(mobile);
+                    }
+                    if (mobile.length() == 11 || mobile.length() == 12) {
+                        if (alreadyMobile && UserInfo.getInstance(this).isPasswordExists()) {
+                            Intent intent = new Intent(this, ConfirmPasswordActivity.class);
+                            intent.putExtra("newMobile", mobile);
+                            startActivity(intent);
+                        } else if (alreadyMobile && !UserInfo.getInstance(this).isPasswordExists()) {
+                            createOtp(mobile);
+                        } else if (!alreadyMobile && UserInfo.getInstance(this).isPasswordExists()) {
+                            Intent intent = new Intent(this, ConfirmPasswordActivity.class);
+                            intent.putExtra("newMobile", mobile);
+                            startActivity(intent);
+                        } else if (!alreadyMobile && !UserInfo.getInstance(this).isPasswordExists()) {
+                            createOtp(mobile);
 
+                        }
+                    } else {
+                        getBinding().errorEmail.setVisibility(View.VISIBLE);
+                        getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
+
+                    }
+                } else {
+                    getBinding().errorEmail.setVisibility(View.VISIBLE);
+                    getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
                 }
             } else {
                 getBinding().errorEmail.setVisibility(View.VISIBLE);
@@ -105,7 +123,10 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
             }
 
         });
-        getBinding().newMobile.addTextChangedListener(new CustomTextWatcher(this, new TextWatcherCallBack() {
+
+        getBinding().newMobile.addTextChangedListener(new
+
+                CustomTextWatcher(this, new TextWatcherCallBack() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
