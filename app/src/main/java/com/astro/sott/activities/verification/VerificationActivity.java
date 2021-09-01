@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
+import com.astro.sott.activities.forgotPassword.ui.PasswordChangedDialog;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
@@ -38,7 +39,7 @@ import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.List;
 
-public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> implements MaximumLimitDialog.EditDialogListener {
+public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> implements MaximumLimitDialog.EditDialogListener, PasswordChangedDialog.EditDialogListener {
     private AstroLoginViewModel astroLoginViewModel;
     private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "", origin = "";
     private CountDownTimer countDownTimer;
@@ -238,9 +239,10 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     private void changePassword() {
         astroLoginViewModel.changePassword(UserInfo.getInstance(this).getAccessToken(), oldPassword, password).observe(this, changePasswordResponse -> {
             if (changePasswordResponse.isStatus() && changePasswordResponse.getResponse().getChangePasswordResponseMessage() != null) {
-                Toast.makeText(this, getResources().getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
-                new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);
-
+                FragmentManager fm = getSupportFragmentManager();
+                PasswordChangedDialog cancelDialogFragment = PasswordChangedDialog.newInstance("Detail Page", "");
+                cancelDialogFragment.setEditDialogCallBack(VerificationActivity.this);
+                cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
             } else {
                 Toast.makeText(this, changePasswordResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
 //                Toast.makeText(this, getResources().getString(R.string.password_change_failed), Toast.LENGTH_SHORT).show();
@@ -413,5 +415,10 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     @Override
     public void onFinishEditDialog() {
 
+    }
+
+    @Override
+    public void onPasswordChanged() {
+        new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);
     }
 }

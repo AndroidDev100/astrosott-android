@@ -1,6 +1,7 @@
 package com.astro.sott.activities.forgotPassword.ui;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -13,13 +14,16 @@ import android.widget.Toast;
 import com.astro.sott.R;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityChangePasswordBinding;
+import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
 
-public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePasswordBinding> {
+public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePasswordBinding> implements PasswordChangedDialog.EditDialogListener {
     private String token = "";
     private AstroLoginViewModel astroLoginViewModel;
     private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
@@ -165,12 +169,19 @@ public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePa
         astroLoginViewModel.resetPassword(token, password).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
-                Toast.makeText(this, "You have successfully updated your password. All other registered devices will be auto logout for security purposes.", Toast.LENGTH_SHORT).show();
-                new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class, "Profile");
+                FragmentManager fm = getSupportFragmentManager();
+                PasswordChangedDialog cancelDialogFragment = PasswordChangedDialog.newInstance("Detail Page", "");
+                cancelDialogFragment.setEditDialogCallBack(ChangePasswordActivity.this);
+                cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onPasswordChanged() {
+        new ActivityLauncher(this).astrLoginActivity(this, AstrLoginActivity.class, "Profile");
     }
 }

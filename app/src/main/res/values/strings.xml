@@ -99,7 +99,7 @@
     <string name="sub_title">Subtitle Language: </string>
     <string name="duration">Content Duration: </string>
     <string name="directors">Director/Producer: </string>
-    <string name="email_unavailable">Sorry, you cannot proceed without sharing contact info.</string>
+    <string name="email_unavailable">Sorry, cannot proceed without contact info!</string>
     <string name="show_all"><u>See More</u></string>
     <string name="title_creators">Creators</string>
     <string name="no_internet_connection">No internet connection</string>
@@ -114,6 +114,7 @@
     <string name="checkout">Checkout</string>
     <string name="on_Dialog">on sooka!</string>
     <string name="added_to_watchlist">added to your My List</string>
+    <string name="password_updated">Password Updated!</string>
     <string name="maxed_out_title">Verification Code Resend Maxed Out!</string>
     <string name="become_vip">Become a VIP</string>
     <string name="subscription_upgrade">Subscription Upgrade</string>
@@ -131,6 +132,7 @@
     <string name="ok">Ok</string>
     <string name="no">No</string>
     <string name="ok_with_exlamation">Ok!!</string>
+    <string name="ok_understand">Ok, Understand!</string>
     <string name="go">Go</string>
     <string name="exit">Exit</string>
 
