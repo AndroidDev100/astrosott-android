@@ -1938,6 +1938,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         });
 
+        player.addListener(this, PlayerEvent.sourceSelected, event -> {
+            Log.d(TAG, "event received: " + event.source.getUrl());
+
+        });
+
         player.addListener(this, PlayerEvent.playbackInfoUpdated, event -> {
             try {
                 long bitRate = event.playbackInfo.getVideoBitrate() / 1000;
@@ -2322,6 +2327,34 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             exitPlayeriew(player);
         }
     }
+
+    private void getKeepAliveHeaderUrl(URL url) {
+        new Thread() {
+
+        }.start();
+        new Thread() {
+
+            {
+                HttpURLConnection conn = null;
+                try {
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setInstanceFollowRedirects(false);
+                    String keepAliveURL = conn.getHeaderField("Location");
+                    boolean isSuccess = !TextUtils.isEmpty(keepAliveURL) && conn.getResponseCode() == 302;
+                    if (isSuccess) {
+                        getKeepAliveHeaderUrl(new URL(keepAliveURL));
+                    } else {
+                        Log.d("Test", "The Final Url Is : $url");
+                    }
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+
+            }
+        }.start();
+    }
+
 
     public void checkFatalError() {
         adRunning = false;
