@@ -135,7 +135,8 @@
     <string name="ok_understand">Ok, Understand!</string>
     <string name="go">Go</string>
     <string name="exit">Exit</string>
-
+    <string name="existing_user_description">Account with this email/mobile number already exist. Kindly proceed to login with the right login method.</string>
+    <string name="existing_sooka_account">Existing sooka Account</string>
     <string name="event_is_live">Event is live , if you want to Watch this Event Please Go</string>
     <string name="retry">Retry</string>
     <string name="something_went_wrong">Oops, something went wrong. Please try again later</string>

@@ -85,6 +85,7 @@ public class PasswordChangedDialog extends DialogFragment {
 
             subscribe.setOnClickListener(v -> {
                 editDialogListener.onPasswordChanged();
+                dismiss();
             });
 
             // Show soft keyboard automatically and request focus to field

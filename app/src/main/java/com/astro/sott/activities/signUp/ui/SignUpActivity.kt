@@ -11,6 +11,7 @@ import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.astro.sott.R
@@ -22,7 +23,9 @@ import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginView
 import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity
 import com.astro.sott.activities.verification.VerificationActivity
+import com.astro.sott.baseModel.BaseActivity
 import com.astro.sott.databinding.ActivitySinUpBinding
+import com.astro.sott.fragments.dialog.AlreadyUserFragment
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager
@@ -49,7 +52,7 @@ import org.json.JSONObject
 import java.lang.Double.parseDouble
 import java.util.*
 
-class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListener {
+class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     private var socialLoginTypesItem: List<SocialLoginTypesItem>? = null
     private var astroLoginViewModel: AstroLoginViewModel? = null
     private var activitySinUpBinding: ActivitySinUpBinding? = null
@@ -137,6 +140,12 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
         } catch (e: ApiException) {
+            activitySinUpBinding?.progressBar?.visibility = View.GONE
+            Toast.makeText(
+                this,
+                resources.getString(R.string.email_unavailable),
+                Toast.LENGTH_SHORT
+            ).show()
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             // updateUI(null);
@@ -358,11 +367,21 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                 }
 
                 override fun onCancel() {
-                    // App code
+                    activitySinUpBinding?.progressBar?.visibility = View.GONE
+                    Toast.makeText(
+                        this@SignUpActivity,
+                        resources.getString(R.string.email_unavailable),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 override fun onError(exception: FacebookException) {
-                    // App code
+                    activitySinUpBinding?.progressBar?.visibility = View.GONE
+                    Toast.makeText(
+                        this@SignUpActivity,
+                        resources.getString(R.string.email_unavailable),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
         activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
@@ -619,11 +638,9 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             .observe(this, Observer { evergentCommonResponse ->
                 if (evergentCommonResponse.isStatus) {
                     activitySinUpBinding?.progressBar?.visibility = View.GONE
-                    Toast.makeText(
-                        this,
-                        resources.getString(R.string.already_registered),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val fm: FragmentManager = supportFragmentManager
+                    val cancelDialogFragment = AlreadyUserFragment.newInstance("player", "")
+                    cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT)
                 } else {
                     if (evergentCommonResponse.errorCode.equals("eV2327", true)) {
                         createOtp(type, emailMobile, password)
