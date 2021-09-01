@@ -155,6 +155,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1515,6 +1516,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     mediaProvider = new PhoenixMediaProvider()
                             .setSessionProvider(ksSessionProvider)
                             .setAssetId(mediaId)
+                            .setPKUrlType(APIDefines.KalturaUrlType.Direct)
                             .setProtocol(PhoenixMediaProvider.HttpProtocol.Https)
                             .setContextType(APIDefines.PlaybackContextType.Catchup)
                             .setAssetType(APIDefines.KalturaAssetType.Epg)
@@ -1524,6 +1526,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     mediaProvider = new PhoenixMediaProvider()
                             .setSessionProvider(ksSessionProvider)
                             .setAssetId(mediaId)
+                            .setPKUrlType(APIDefines.KalturaUrlType.Direct)
                             .setProtocol(PhoenixMediaProvider.HttpProtocol.Https)
                             .setContextType(APIDefines.PlaybackContextType.Playback)
                             .setAssetType(APIDefines.KalturaAssetType.Media)
@@ -1534,6 +1537,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 mediaProvider = new PhoenixMediaProvider()
                         .setSessionProvider(ksSessionProvider)
                         .setAssetId(mediaId)
+                        .setPKUrlType(APIDefines.KalturaUrlType.Direct)
                         .setProtocol(PhoenixMediaProvider.HttpProtocol.Https)
                         .setContextType(APIDefines.PlaybackContextType.Catchup)
                         .setAssetType(APIDefines.KalturaAssetType.Epg)
@@ -1544,6 +1548,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 mediaProvider = new PhoenixMediaProvider()
                         .setSessionProvider(ksSessionProvider)
                         .setAssetId(mediaId)
+                        .setPKUrlType(APIDefines.KalturaUrlType.Direct)
                         .setProtocol(PhoenixMediaProvider.HttpProtocol.Https)
                         .setContextType(APIDefines.PlaybackContextType.Playback)
                         .setAssetType(APIDefines.KalturaAssetType.Media)
@@ -1940,6 +1945,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         player.addListener(this, PlayerEvent.sourceSelected, event -> {
             Log.d(TAG, "event received: " + event.source.getUrl());
+            try {
+                getKeepAliveHeaderUrl(new URL(event.source.getUrl()));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
 
         });
 
@@ -2331,9 +2341,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private void getKeepAliveHeaderUrl(URL url) {
         new Thread() {
 
-        }.start();
-        new Thread() {
-
             {
                 HttpURLConnection conn = null;
                 try {
@@ -2344,7 +2351,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (isSuccess) {
                         getKeepAliveHeaderUrl(new URL(keepAliveURL));
                     } else {
-                        Log.d("Test", "The Final Url Is : $url");
+                        Log.d("Test", "The Final Url Is : " + url);
                     }
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
