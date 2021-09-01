@@ -1,6 +1,7 @@
 package com.astro.sott.activities.verification;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -16,9 +17,12 @@ import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.verification.dialog.MaximumLimitDialog;
+import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityVerificationBinding;
+import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.fragments.verification.Verification;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
@@ -34,7 +38,7 @@ import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.List;
 
-public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> {
+public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> implements MaximumLimitDialog.EditDialogListener {
     private AstroLoginViewModel astroLoginViewModel;
     private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "", origin = "";
     private CountDownTimer countDownTimer;
@@ -256,7 +260,14 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 countDownTimer();
 
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2846")) {
+                    FragmentManager fm = getSupportFragmentManager();
+                    MaximumLimitDialog cancelDialogFragment = MaximumLimitDialog.newInstance("Detail Page", "");
+                    cancelDialogFragment.setEditDialogCallBack(VerificationActivity.this);
+                    cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+                } else {
+                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                }
 //                getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
                 getBinding().errorLine.setVisibility(View.VISIBLE);
 
@@ -397,5 +408,10 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         onBackPressed();
 
         // Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFinishEditDialog() {
+
     }
 }
