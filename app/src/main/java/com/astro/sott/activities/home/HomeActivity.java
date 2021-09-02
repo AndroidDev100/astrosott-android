@@ -17,7 +17,6 @@ import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActiv
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.baseModel.TabsBaseFragment;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
-import com.astro.sott.callBacks.AppUpdateCallBack;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.fragments.home.ui.ViewPagerFragmentAdapter;
 import com.astro.sott.fragments.homenewtab.ui.HomeTabNew;
@@ -85,7 +84,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ArrayList;
 
-public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, InAppProcessListener {
+public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, InAppProcessListener, CardCLickedCallBack {
     private final String TAG = this.getClass().getSimpleName();
     private TextView toolbarTitle;
     private HomeFragment homeFragment;
@@ -103,7 +102,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private NativeAdLayout nativeAdLayout;
     private LinearLayout adView;
     private int indicatorWidth;
-    /*private AppUpdateInfo appUpdateInfo;*/
+    //    private AppUpdateInfo appUpdateInfo;
     private long mLastClickTime = 0;
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -253,12 +252,12 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         if (getIntent().getStringExtra("fragmentType") != null)
             fragmentType = getIntent().getStringExtra("fragmentType");
         modelCall();
-        // ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
+        //ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
         // Before starting an update, register a listener for updates.
 
-        //   ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().registerListener(listener);
+        //     ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().registerListener(listener);
 
-        //ApplicationUpdateManager.getInstance(getApplicationContext()).isUpdateAvailable();
+        //  ApplicationUpdateManager.getInstance(getApplicationContext()).isUpdateAvailable();
 
         createViewModel();
         intializeBilling();
@@ -833,6 +832,18 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     }
 
+    @Override
+    public void onAcknowledged(String productId, String purchaseToken, String orderId) {
+        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), productId, purchaseToken, orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+            if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
+                if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
+                }
+            } else {
+
+            }
+        });
+    }
+
     public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList, SKUsListListener callBacks) {
         if (billingProcessor != null && billingProcessor.isReady()) {
             billingProcessor.getAllSkuDetails(subSkuList, productsSkuList, new SKUsListListener() {
@@ -845,4 +856,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         }
     }
 
+    @Override
+    public void onCardClicked(String productId, String serviceType, String activePlan, String name, Long price) {
+
+    }
 }

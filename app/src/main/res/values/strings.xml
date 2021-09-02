@@ -12,7 +12,7 @@
     <string name="save_video_to">Save video to...</string>
     <string name="new_playlist">New Playlist</string>
     <string name="done">Done</string>
-    <string name="mobile_error">Mobile number is 11-12 numerical values, without spacing &amp; hyphen</string>
+    <string name="mobile_error">Mobile number is 11-12 numerical values, without \n spacing &amp; hyphen</string>
     <string name="email_mobile_error">Please enter a valid email address or mobile number.</string>
     <string name="email_error">Please enter a valid email address</string>
     <string name="valid_password">Please enter valid password</string>
@@ -60,6 +60,7 @@
     <string name="episode_title">Episode</string>
     <string name="shows">Shows</string>
     <string name="term_policy_new">By clicking Sign Up or any Social Login above, you agree to</string>
+    <string name="term_policy_login">By clicking Log In or any Social Login above, you agree to</string>
 
     <string name="trailer_more">Trailers &amp; More</string>
     <string name="trailer_title">Trailers</string>
@@ -115,7 +116,7 @@
     <string name="checkout">Checkout</string>
     <string name="on_Dialog">on sooka!</string>
     <string name="added_to_watchlist">added to your My List</string>
-
+    <string name="existing_sooka_account">Existing sooka account</string>
     <string name="become_vip">Become a VIP</string>
     <string name="subscription_upgrade">Subscription Upgrade</string>
     <string name="subscription_downgrade">Subscription Downgrade</string>
@@ -250,6 +251,7 @@
     <string name="dialog">sooka</string>
     <string name="lock_Episode">Lock Episodes</string>
     <string name="got_it">Got it</string>
+    <string name="existing_user_description">Account with this email/mobile number already exist. Kindly proceed to login with the right login method.</string>
     <string name="subscribe_header">Subscribe to unlock</string>
     <string name="device_removed_description">Uh-oh! Your device was removed from this account. Please verify that it\'s you by logging in again to continue.</string>
     <string name="subscribe_description">Subscribing now to unlock and enjoy premium titles!</string>
@@ -594,7 +596,9 @@
     <string name="didnt_receive_otp">Didn\'t receive the verification code?</string>
     <string name="resend_otp"><u>Send me another verification code</u></string>
     <string name="welcome_back">Let’s get started </string>
-    <string name="email_id_mobileNo">Email Address or Mobile Number</string>
+    <string name="email_id_mobileNo">Email Id / Mobile Number</string>
+    <string name="email_id">Email Id</string>
+
     <string name="user_name">User Name</string>
     <string name="forgt_psw"><u>Forgot Password?</u></string>
     <string name="sign_in_google">Sign In With Google</string>
@@ -664,13 +668,15 @@
     <string name="successful">Successful</string>
     <string name="pending">Pending</string>
     <string name="failed">Failed</string>
-    <string name="field_cannot_empty">This field is cannot be empty</string>
+    <string name="field_cannot_empty">This field  cannot be empty</string>
     <string name="mobile_suggestion">Mobile number without country code, spacing &amp; hyphen</string>
     <string name="detail_pack_desc">All prices displayed are inclusive of 6% digital tax.</string>
     <string name="pack_desc">All prices displayed are inclusive of 6% </string>
     <string name="pack_desc1">digital tax.</string>
     <string name="apply_text">apply.</string>
     <string name="term_and_con"><u>Terms &amp; Conditions</u></string>
+    <string name="term_and_condition_login"><u>Terms and Conditions</u></string>
+
     <string name="terms_packages"><![CDATA[  ]]></string>
     <string name="choose_me">Choose Me</string>
     <string name="manage_quality">High Quality</string>

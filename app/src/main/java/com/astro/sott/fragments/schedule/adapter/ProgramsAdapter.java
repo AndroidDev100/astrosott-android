@@ -106,10 +106,15 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
             viewHolder.scheduleItemBinding.descriptionText.toggle();
             if (viewHolder.scheduleItemBinding.descriptionText.isExpanded()) {
                 viewHolder.scheduleItemBinding.descriptionText.setEllipsize(null);
-                viewHolder.scheduleItemBinding.moreButton.setText("See Less");
+//                viewHolder.scheduleItemBinding.moreButton.setText("See Less");
+                viewHolder.scheduleItemBinding.moreButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+
+
             } else {
                 viewHolder.scheduleItemBinding.descriptionText.setEllipsize(TextUtils.TruncateAt.END);
-                viewHolder.scheduleItemBinding.moreButton.setText("See More");
+//                viewHolder.scheduleItemBinding.moreButton.setText("See More");
+                viewHolder.scheduleItemBinding.moreButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+
 
             }
         });

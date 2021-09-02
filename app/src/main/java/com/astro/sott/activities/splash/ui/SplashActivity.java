@@ -1,13 +1,7 @@
 
 package com.astro.sott.activities.splash.ui;
 
-import static android.os.Build.CPU_ABI2;
-import static android.os.Build.DEVICE;
-
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -17,7 +11,6 @@ import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -95,8 +88,6 @@ import com.kaltura.playkit.player.PKDeviceCapabilitiesInfo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -117,7 +108,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     private String name = "";
     private Long assetIdFire;
     private String via = "";
-   private String devicename ="";
     private String description = "";
     private RailCommonData railCommonData;
     private boolean isFirstTimeUser;
@@ -167,7 +157,10 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
 
     private void connectionValidation(Boolean aBoolean) {
-        Log.e(TAG, "oncreate: " + "in3" + aBoolean);
+        /*BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+        String deviceName = Settings.Global.getString(getContentResolver(), Settings.Global.DEVICE_NAME);
+
+        Log.e(TAG, "oncreate: " + "indevice_name3" + deviceName);*/
         if (aBoolean) {
             if (!CommonUtils.isRooted(this)) {
                 Log.e(TAG, "oncreate: " + "in4");
@@ -205,7 +198,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     private void callViewModel() {
         Log.e(TAG, "oncreate: " + "in2");
         myViewModel = ViewModelProviders.of(this).get(SplashViewModel.class);
-
         connectionObserver();
     }
 
@@ -284,6 +276,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     private void callSpecficAssetApi(String value, String subMediaType) {
 
         myViewModel.getSpecificAsset(SplashActivity.this, value).observe((LifecycleOwner) SplashActivity.this, asset -> {
+
             if (asset != null && asset.getStatus()) {
 
                 PrintLogging.printLog("MediaTypeIs", "", "MediaTypeIs--" + asset.getObject().getType());
@@ -771,12 +764,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 final String mediaType = referringParams.getString("mediaType");
                 if (!mediaType.equals("")) {
                     if (Integer.parseInt(mediaType) == MediaTypeConstant.getProgram(SplashActivity.this)) {
-
                         myViewModel.getLiveSpecificAsset(this, assetId).observe(this, railCommonData -> {
                             if (railCommonData != null && railCommonData.getStatus()) {
                                 liveManger(railCommonData);
-
-
                             } else {
                                 DialogHelper.showAlertDialog(this, getString(R.string.asset_not_found), getString(R.string.ok), this);
                             }
@@ -803,20 +793,15 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     private void liveManger(final RailCommonData railCommonData) {
-
-
         if (railCommonData != null) {
             new LiveChannelManager().getLiveProgram(SplashActivity.this, railCommonData.getObject(), commonResponse -> {
                 Log.w("deepLink", "in2---" + commonResponse.getStatus());
-
                 if (commonResponse.getStatus()) {
                     if (commonResponse.getLivePrograme()) {
-
                         getProgramRailCommonData(commonResponse.getCurrentProgram(), "liveChannelCall-->>" + commonResponse.getStatus());
                         new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
                         new ActivityLauncher(SplashActivity.this).liveChannelActivity(SplashActivity.this, LiveChannel.class, railCommonData);
                     } else {
-
                         getProgramRailCommonData(commonResponse.getCurrentProgram(), "liveChannelCall-->>" + commonResponse.getStatus() + "--" + commonResponse.getProgramTime());
                         if (commonResponse.getProgramTime() == 1) {
                             getProgramRailCommonData(commonResponse.getCurrentProgram(), "Program VideoItemClicked");
@@ -825,7 +810,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                             // new ActivityLauncher(SplashActivity.this).catchUpActivity(SplashActivity.this, CatchupActivity.class, railCommonData);
                         } else {
                             Log.w("deepLink", "in2---2" + commonResponse.getLivePrograme());
-
                             new ActivityLauncher(SplashActivity.this).liveChannelActivity(SplashActivity.this, LiveChannel.class, railCommonData);
                             //   new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
                             //  new ActivityLauncher(SplashActivity.this).forwardeEPGActivity(SplashActivity.this, ForwardedEPGActivity.class, railCommonData);
@@ -840,52 +824,38 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     private void redirectionOnMediaType(RailCommonData asset, String mediaType, String subMediaType) {
-
         PrintLogging.printLog(this.getClass(), "", "mediaTypeDeepLink" + mediaType);
         if (Integer.parseInt(mediaType) == MediaTypeConstant.getMovie(SplashActivity.this)) {
             // finish();
-
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
             new ActivityLauncher(SplashActivity.this).detailActivity(SplashActivity.this, MovieDescriptionActivity.class, asset, AppLevelConstants.Rail3);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getShortFilm(SplashActivity.this)) {
             //  finish();
-
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
             new ActivityLauncher(SplashActivity.this).detailActivity(SplashActivity.this, MovieDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getEpisode(SplashActivity.this)) {
             //finish();
-
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
             new ActivityLauncher(SplashActivity.this).webDetailRedirection(asset, AppLevelConstants.Rail5);
 
             // new ActivityLauncher(SplashActivity.this).webEpisodeActivity(SplashActivity.this, WebEpisodeDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getTrailer(SplashActivity.this)) {
             //  finish();
-
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
             new ActivityLauncher(SplashActivity.this).detailActivity(SplashActivity.this, MovieDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getSeries(SplashActivity.this)) {
             // finish();
-
-
-
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
             new ActivityLauncher(SplashActivity.this).webSeriesActivity(SplashActivity.this, WebSeriesDescriptionActivity.class, asset, AppLevelConstants.Rail5);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getLinear(SplashActivity.this)) {
             //  finish();
-
-
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
             new ActivityLauncher(SplashActivity.this).liveChannelActivity(SplashActivity.this, LiveChannel.class, asset);
         } else if (Integer.parseInt(mediaType) == MediaTypeConstant.getCollection(SplashActivity.this)) {
             //  finish();
-
-
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
             new ActivityLauncher(SplashActivity.this).boxSetDetailActivity(SplashActivity.this, asset, AppLevelConstants.Rail3);
         } else {
-
-
             new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
         }
 
@@ -978,7 +948,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
     }
-
 
 
     @Override

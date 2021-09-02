@@ -367,7 +367,6 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                 purchaseParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId()).build();
             } else {
                 purchaseParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build();
-
             }
             //myBillingClient.launchPriceChangeConfirmationFlow();
 
@@ -433,16 +432,16 @@ public class BillingProcessor implements PurchasesUpdatedListener {
             if (oldSkuDetails != null) {
                 this.oldSKU = oldSKU;
                 this.oldPurchaseToken = oldPurchaseToken;
-                this.skuDetails=skuDetails;
+                this.skuDetails = skuDetails;
                 this.activity = activity;
 
                 if (oldPrice > newPrice) {
                     Log.w("priceValues", "deffred");
                     inAppProcessListener.onDowngrade();
-                  //  downgrade();
+                    //  downgrade();
                 } else {
                     inAppProcessListener.onUpgrade();
-                  //  upgrade();
+                    //  upgrade();
                 }
             } else {
                 BillingFlowParams purchaseParams;
@@ -872,6 +871,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
         final AcknowledgePurchaseResponseListener listener =
                 billingResult -> {
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        inAppProcessListener.onAcknowledged(purchase.getSku(), purchase.getPurchaseToken(), purchase.getOrderId());
                         PrintLogging.printLog(
                                 TAG,
                                 "onAcknowledgePurchaseResponse: "

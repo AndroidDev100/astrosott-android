@@ -11,10 +11,10 @@ import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.astro.sott.R
-import com.astro.sott.activities.detailConfirmation.DetailConfirmationActivity
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity
 import com.astro.sott.activities.home.HomeActivity
 import com.astro.sott.activities.isThatYou.IsThatYouActivity
@@ -22,7 +22,10 @@ import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginView
 import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity
 import com.astro.sott.activities.verification.VerificationActivity
+import com.astro.sott.baseModel.BaseActivity
 import com.astro.sott.databinding.ActivitySinUpBinding
+import com.astro.sott.fragments.dialog.AlreadyUserFragment
+import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager
@@ -47,7 +50,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 
-class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListener {
+class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     private var socialLoginTypesItem: List<SocialLoginTypesItem>? = null
     private var astroLoginViewModel: AstroLoginViewModel? = null
     private var activitySinUpBinding: ActivitySinUpBinding? = null
@@ -59,8 +62,8 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
     private val passwordPattern = Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=\\S+$).{8,16}$")
     private val mobilePattern = Regex("^[0-9]*$")
     private val emailPattern = Regex(
-        "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
     )
     private var mGoogleSignInClient: GoogleSignInClient? = null
 
@@ -89,8 +92,8 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
 
     private fun setGoogleSignIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build()
+                .requestEmail()
+                .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
@@ -118,17 +121,17 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         try {
             val account = completedTask.getResult(ApiException::class.java)
             if (account.id != null && !account.id.equals(
-                    "",
-                    ignoreCase = true
-                ) && account.email != null && !account.email.equals("", ignoreCase = true)
+                            "",
+                            ignoreCase = true
+                    ) && account.email != null && !account.email.equals("", ignoreCase = true)
             ) {
                 name = account.displayName!!
                 login("Google", account.email!!, account.id!!)
             } else {
                 Toast.makeText(
-                    this,
-                    resources.getString(R.string.email_unavailable),
-                    Toast.LENGTH_SHORT
+                        this,
+                        resources.getString(R.string.email_unavailable),
+                        Toast.LENGTH_SHORT
                 ).show()
             }
 
@@ -166,20 +169,20 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                     if (passwordPattern.containsMatchIn(password)) {
                         activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.heather))
                         activitySinUpBinding?.errorPasssword?.text =
-                            getString(R.string.password_rules)
+                                getString(R.string.password_rules)
                     } else {
                         activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
                         activitySinUpBinding?.errorEmail?.text =
-                            resources.getString(R.string.email_suggestion)
+                                resources.getString(R.string.email_suggestion)
                         activitySinUpBinding?.errorPasssword?.text =
-                            getString(R.string.password_error)
+                                getString(R.string.password_error)
                     }
                 } else {
                     activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
                     activitySinUpBinding?.errorEmail?.text =
-                        resources.getString(R.string.email_suggestion)
+                            resources.getString(R.string.email_suggestion)
                     activitySinUpBinding?.errorPasssword?.text =
-                        getString(R.string.field_cannot_empty)
+                            getString(R.string.field_cannot_empty)
                 }
             }
             false
@@ -229,7 +232,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                     activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
                     activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                     activitySinUpBinding?.errorEmail?.text =
-                        getString(R.string.email_suggestion)
+                            getString(R.string.email_suggestion)
                     checkPasswordValidation(password)
                     /* }*/
                 }
@@ -243,25 +246,31 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             }
 
         }
+        activitySinUpBinding?.mobileEmailEdt?.setOnFocusChangeListener { v, hasFocus ->
+            activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
+            activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
+        }
         activitySinUpBinding?.passwordEdt?.setOnFocusChangeListener { v, hasFocus ->
             var email_mobile = activitySinUpBinding?.mobileEmailEdt?.text.toString()
+            activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
+            activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
             if (!email_mobile.equals("", true)) {
                 if (mobilePattern.containsMatchIn(email_mobile) || emailPattern.containsMatchIn(
-                        email_mobile
-                    )
+                                email_mobile
+                        )
                 ) {
                     activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.heather))
                     activitySinUpBinding?.errorEmail?.text =
-                        resources.getString(R.string.email_suggestion)
+                            resources.getString(R.string.email_suggestion)
                 } else {
                     activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                     activitySinUpBinding?.errorEmail?.text =
-                        resources.getString(R.string.email_suggestion)
+                            resources.getString(R.string.email_suggestion)
                 }
             } else {
                 activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                 activitySinUpBinding?.errorEmail?.text =
-                    resources.getString(R.string.field_cannot_empty)
+                        resources.getString(R.string.field_cannot_empty)
 
             }
         }
@@ -269,7 +278,7 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
             if (passwordVisibility) {
                 activitySinUpBinding?.eyeIcon?.setBackgroundResource(R.drawable.ic_outline_visibility_off_light)
                 activitySinUpBinding?.passwordEdt?.inputType =
-                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 passwordVisibility = false
                 activitySinUpBinding?.passwordEdt?.setSelection(activitySinUpBinding?.passwordEdt?.text?.length!!)
             } else {
@@ -306,64 +315,64 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         activitySinUpBinding?.loginButton?.setReadPermissions(Arrays.asList(EMAIL))
 
         LoginManager.getInstance().registerCallback(callbackManager,
-            object : FacebookCallback<LoginResult> {
-                override fun onSuccess(loginResult: LoginResult) {
-                    // App code
-                    Log.w("fb_login", loginResult.toString() + "")
-                    val graphRequest =
-                        GraphRequest.newMeRequest(loginResult.accessToken) { `object`: JSONObject?, response: GraphResponse? ->
-                            if (`object` != null) {
-                                if (`object`.has("email")) {
-                                    try {
-                                        val fbName = `object`.getString("name")
-                                        val email = `object`.getString("email")
-                                        val id = `object`.getString("id")
-                                        if (email != null && !email.equals(
-                                                "",
-                                                ignoreCase = true
-                                            ) && id != null && !id.equals("", ignoreCase = true)
-                                        ) {
-                                            name = fbName
-                                            login("Facebook", email, id + "")
+                object : FacebookCallback<LoginResult> {
+                    override fun onSuccess(loginResult: LoginResult) {
+                        // App code
+                        Log.w("fb_login", loginResult.toString() + "")
+                        val graphRequest =
+                                GraphRequest.newMeRequest(loginResult.accessToken) { `object`: JSONObject?, response: GraphResponse? ->
+                                    if (`object` != null) {
+                                        if (`object`.has("email")) {
+                                            try {
+                                                val fbName = `object`.getString("name")
+                                                val email = `object`.getString("email")
+                                                val id = `object`.getString("id")
+                                                if (email != null && !email.equals(
+                                                                "",
+                                                                ignoreCase = true
+                                                        ) && id != null && !id.equals("", ignoreCase = true)
+                                                ) {
+                                                    name = fbName
+                                                    login("Facebook", email, id + "")
+                                                } else {
+                                                    Toast.makeText(
+                                                            this@SignUpActivity,
+                                                            resources.getString(R.string.email_unavailable),
+                                                            Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+
+                                            } catch (e: JSONException) {
+                                                e.printStackTrace()
+                                            }
                                         } else {
                                             Toast.makeText(
-                                                this@SignUpActivity,
-                                                resources.getString(R.string.email_unavailable),
-                                                Toast.LENGTH_SHORT
+                                                    this@SignUpActivity,
+                                                    resources.getString(R.string.email_unavailable),
+                                                    Toast.LENGTH_SHORT
                                             ).show()
+
+                                            LoginManager.getInstance().logOut()
                                         }
-
-                                    } catch (e: JSONException) {
-                                        e.printStackTrace()
                                     }
-                                } else {
-                                    Toast.makeText(
-                                        this@SignUpActivity,
-                                        resources.getString(R.string.email_unavailable),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
-                                    LoginManager.getInstance().logOut()
                                 }
-                            }
-                        }
-                    val parameters = Bundle()
-                    parameters.putString(
-                        "fields",
-                        "id,name,email"
-                    )
-                    graphRequest.parameters = parameters
-                    graphRequest.executeAsync()
-                }
+                        val parameters = Bundle()
+                        parameters.putString(
+                                "fields",
+                                "id,name,email"
+                        )
+                        graphRequest.parameters = parameters
+                        graphRequest.executeAsync()
+                    }
 
-                override fun onCancel() {
-                    // App code
-                }
+                    override fun onCancel() {
+                        // App code
+                    }
 
-                override fun onError(exception: FacebookException) {
-                    // App code
-                }
-            })
+                    override fun onError(exception: FacebookException) {
+                        // App code
+                    }
+                })
         // activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
     }
 
@@ -403,65 +412,65 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         val tabletSize = resources.getBoolean(R.bool.isTablet)
 
         astroLoginViewModel!!.loginUser(type, emailMobile, password, tabletSize).observe(
-            this@SignUpActivity,
-            Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
-                if (evergentCommonResponse.isStatus) {
-                    UserInfo.getInstance(this).accessToken =
-                        evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.accessToken
-                    UserInfo.getInstance(this).refreshToken =
-                        evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.refreshToken
-                    UserInfo.getInstance(this).externalSessionToken =
-                        evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.externalSessionToken
-                    KsPreferenceKey.getInstance(this).startSessionKs =
-                        evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.externalSessionToken
-                    if (type.equals("Facebook", ignoreCase = true) || type.equals(
-                            "Google",
-                            ignoreCase = true
-                        )
-                    ) {
-                        UserInfo.getInstance(this).isSocialLogin = true
-                    }
-                    getContact()
-                    try {
-                        CleverTapManager.getInstance().setSignInEvent(this, from, type)
-                    } catch (ex: Exception) {
-                    }
-                    astroLoginViewModel!!.addToken(UserInfo.getInstance(this).externalSessionToken)
-                } else {
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
-                    if (type.equals("Facebook", ignoreCase = true) || type.equals(
-                            "Google",
-                            ignoreCase = true
-                        )
-                    ) {
-                        if (evergentCommonResponse.errorCode.equals("eV2327", ignoreCase = true)) {
-                            socialSearchAccountv2(password, type, emailMobile)
-                        } else {
-                            Toast.makeText(
-                                this,
-                                evergentCommonResponse.errorMessage,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                this@SignUpActivity,
+                Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
+                    if (evergentCommonResponse.isStatus) {
+                        UserInfo.getInstance(this).accessToken =
+                                evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.accessToken
+                        UserInfo.getInstance(this).refreshToken =
+                                evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.refreshToken
+                        UserInfo.getInstance(this).externalSessionToken =
+                                evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.externalSessionToken
+                        KsPreferenceKey.getInstance(this).startSessionKs =
+                                evergentCommonResponse.loginResponse.getOAuthAccessTokenv2ResponseMessage!!.externalSessionToken
+                        if (type.equals("Facebook", ignoreCase = true) || type.equals(
+                                        "Google",
+                                        ignoreCase = true
+                                )
+                        ) {
+                            UserInfo.getInstance(this).isSocialLogin = true
                         }
+                        getContact()
+                        try {
+                            CleverTapManager.getInstance().setSignInEvent(this, from, type)
+                        } catch (ex: Exception) {
+                        }
+                        astroLoginViewModel!!.addToken(UserInfo.getInstance(this).externalSessionToken)
                     } else {
-                        if (evergentCommonResponse.errorCode.equals("eV4492", ignoreCase = true)) {
-                            val fm = supportFragmentManager
-                            val accountBlockedDialog = AccountBlockedDialog.newInstance(
-                                resources.getString(R.string.create_playlist_name_title),
-                                ""
-                            )
-                            accountBlockedDialog.setEditDialogCallBack(this)
-                            accountBlockedDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT)
+                        activitySinUpBinding?.progressBar?.visibility = View.GONE
+                        if (type.equals("Facebook", ignoreCase = true) || type.equals(
+                                        "Google",
+                                        ignoreCase = true
+                                )
+                        ) {
+                            if (evergentCommonResponse.errorCode.equals("eV2327", ignoreCase = true)) {
+                                socialSearchAccountv2(password, type, emailMobile)
+                            } else {
+                                Toast.makeText(
+                                        this,
+                                        evergentCommonResponse.errorMessage,
+                                        Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         } else {
-                            Toast.makeText(
-                                this,
-                                evergentCommonResponse.errorMessage,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            if (evergentCommonResponse.errorCode.equals("eV4492", ignoreCase = true)) {
+                                val fm = supportFragmentManager
+                                val accountBlockedDialog = AccountBlockedDialog.newInstance(
+                                        resources.getString(R.string.create_playlist_name_title),
+                                        ""
+                                )
+                                accountBlockedDialog.setEditDialogCallBack(this)
+                                accountBlockedDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT)
+                            } else {
+                                Toast.makeText(
+                                        this,
+                                        evergentCommonResponse.errorMessage,
+                                        Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     }
-                }
-            })
+                })
     }
 
     override fun onResume() {
@@ -472,102 +481,110 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
 
     private fun getContact() {
         astroLoginViewModel!!.getContact(UserInfo.getInstance(this@SignUpActivity).accessToken)
-            .observe(
-                this@SignUpActivity,
-                Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
-                    if (evergentCommonResponse.isStatus && evergentCommonResponse.getContactResponse.getContactResponseMessage != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!!.size > 0) {
-                        UserInfo.getInstance(this).firstName =
-                            evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.firstName
-                        UserInfo.getInstance(this).lastName =
-                            evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.lastName
-                        UserInfo.getInstance(this).email =
-                            evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.email
-                        if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.userName != null && !evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.userName.equals(
-                                "",
-                                ignoreCase = true
-                            )
-                        ) {
-                            UserInfo.getInstance(this).userName =
-                                evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.userName
-                        } else if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName != null && !evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName.equals(
-                                "",
-                                ignoreCase = true
-                            )
-                        ) {
-                            UserInfo.getInstance(this).alternateUserName =
-                                evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName
-                        }
-                        if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.accountRole != null) UserInfo.getInstance(
-                            this
-                        ).accountRole =
-                            evergentCommonResponse.getContactResponse.getContactResponseMessage!!.accountRole
-                        if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.socialLoginTypes != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.socialLoginTypes!!.size > 0) {
-                            socialLoginTypesItem =
-                                evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.socialLoginTypes as List<SocialLoginTypesItem>?
-                            AppCommonMethods.checkSocailLinking(this, socialLoginTypesItem)
-                        }
-                        UserInfo.getInstance(this).isPasswordExists =
-                            evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.isPasswordExists!!
-                        UserInfo.getInstance(this).mobileNumber =
-                            evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.mobileNumber
+                .observe(
+                        this@SignUpActivity,
+                        Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
+                            activitySinUpBinding?.progressBar?.visibility = View.GONE
+                            if (evergentCommonResponse.isStatus && evergentCommonResponse.getContactResponse.getContactResponseMessage != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!!.size > 0) {
+                                UserInfo.getInstance(this).firstName =
+                                        evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.firstName
+                                UserInfo.getInstance(this).lastName =
+                                        evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.lastName
+                                UserInfo.getInstance(this).email =
+                                        evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.email
+                                if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.userName != null && !evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.userName.equals(
+                                                "",
+                                                ignoreCase = true
+                                        )
+                                ) {
+                                    UserInfo.getInstance(this).userName =
+                                            evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.userName
+                                } else if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName != null && !evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName.equals(
+                                                "",
+                                                ignoreCase = true
+                                        )
+                                ) {
+                                    UserInfo.getInstance(this).alternateUserName =
+                                            evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.alternateUserName
+                                }
+                                if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.accountRole != null) UserInfo.getInstance(
+                                        this
+                                ).accountRole =
+                                        evergentCommonResponse.getContactResponse.getContactResponseMessage!!.accountRole
+                                if (evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.socialLoginTypes != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.socialLoginTypes!!.size > 0) {
+                                    socialLoginTypesItem =
+                                            evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.socialLoginTypes as List<SocialLoginTypesItem>?
+                                    AppCommonMethods.checkSocailLinking(this, socialLoginTypesItem)
+                                }
+                                UserInfo.getInstance(this).isPasswordExists =
+                                        evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.isPasswordExists!!
+                                UserInfo.getInstance(this).mobileNumber =
+                                        evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.mobileNumber
 
-                        UserInfo.getInstance(this).cpCustomerId =
-                            evergentCommonResponse.getContactResponse.getContactResponseMessage!!.cpCustomerID
-                        AppCommonMethods.setCrashlyticsUserId(this)
-                        getActiveSubscription()
-                    } else {
-                        if (evergentCommonResponse.errorCode.equals(
-                                "eV2124",
-                                ignoreCase = true
-                            ) || evergentCommonResponse.errorCode.equals(
-                                "111111111",
-                                ignoreCase = true
-                            )
-                        ) {
-                            EvergentRefreshToken.refreshToken(
-                                this,
-                                UserInfo.getInstance(this).refreshToken
-                            ).observe(
-                                this,
-                                Observer { evergentCommonResponse1: EvergentCommonResponse<*>? ->
-                                    if (evergentCommonResponse.isStatus) {
-                                        getContact()
-                                    } else {
-                                        AppCommonMethods.removeUserPrerences(this)
-                                        onBackPressed()
-                                    }
-                                })
-                        } else {
-                            Toast.makeText(
-                                this,
-                                evergentCommonResponse.errorMessage,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                })
+                                UserInfo.getInstance(this).cpCustomerId =
+                                        evergentCommonResponse.getContactResponse.getContactResponseMessage!!.cpCustomerID
+                                AppCommonMethods.setCrashlyticsUserId(this)
+                                getActiveSubscription()
+                            } else {
+                                if (evergentCommonResponse.errorCode.equals(
+                                                "eV2124",
+                                                ignoreCase = true
+                                        ) || evergentCommonResponse.errorCode.equals(
+                                                "111111111",
+                                                ignoreCase = true
+                                        )
+                                ) {
+                                    EvergentRefreshToken.refreshToken(
+                                            this,
+                                            UserInfo.getInstance(this).refreshToken
+                                    ).observe(
+                                            this,
+                                            Observer { evergentCommonResponse1: EvergentCommonResponse<*>? ->
+                                                if (evergentCommonResponse.isStatus) {
+                                                    getContact()
+                                                } else {
+                                                    AppCommonMethods.removeUserPrerences(this)
+                                                    onBackPressed()
+                                                }
+                                            })
+                                } else {
+                                    Toast.makeText(
+                                            this,
+                                            evergentCommonResponse.errorMessage,
+                                            Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        })
     }
 
     private var displayName = ""
     private var from = ""
     private fun getActiveSubscription() {
         astroLoginViewModel!!.getActiveSubscription(UserInfo.getInstance(this).accessToken, "")
-            .observe(
-                this,
-                Observer { evergentCommonResponse: EvergentCommonResponse<GetActiveResponse> ->
-                    if (evergentCommonResponse.isStatus) {
-                        if (evergentCommonResponse.response.getActiveSubscriptionsResponseMessage != null) {
-                            if (evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage != null && evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage!!.size > 0) {
-                                for (accountServiceMessageItem in evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage!!) {
-                                    if (!accountServiceMessageItem?.isFreemium!!) {
-                                        if (accountServiceMessageItem.displayName != null)
-                                            displayName = accountServiceMessageItem.displayName!!
+                .observe(
+                        this,
+                        Observer { evergentCommonResponse: EvergentCommonResponse<GetActiveResponse> ->
+                            if (evergentCommonResponse.isStatus) {
+                                if (evergentCommonResponse.response.getActiveSubscriptionsResponseMessage != null) {
+                                    if (evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage != null && evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage!!.size > 0) {
+                                        for (accountServiceMessageItem in evergentCommonResponse.response.getActiveSubscriptionsResponseMessage!!.accountServiceMessage!!) {
+                                            if (!accountServiceMessageItem?.isFreemium!!) {
+                                                if (accountServiceMessageItem.displayName != null)
+                                                    displayName = accountServiceMessageItem.displayName!!
+                                            }
+                                        }
+                                        if (!displayName.equals("", ignoreCase = true)) {
+                                            UserInfo.getInstance(this).isVip = true
+                                            setActive()
+                                        } else {
+                                            UserInfo.getInstance(this).isVip = false
+                                            setActive()
+                                        }
+                                    } else {
+                                        UserInfo.getInstance(this).isVip = false
+                                        setActive()
                                     }
-                                }
-                                if (!displayName.equals("", ignoreCase = true)) {
-                                    UserInfo.getInstance(this).isVip = true
-                                    setActive()
                                 } else {
                                     UserInfo.getInstance(this).isVip = false
                                     setActive()
@@ -576,34 +593,26 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
                                 UserInfo.getInstance(this).isVip = false
                                 setActive()
                             }
-                        } else {
-                            UserInfo.getInstance(this).isVip = false
-                            setActive()
-                        }
-                    } else {
-                        UserInfo.getInstance(this).isVip = false
-                        setActive()
-                    }
-                })
+                        })
     }
 
     private fun setActive() {
         UserInfo.getInstance(this).isActive = true
         AppCommonMethods.setCleverTap(this)
         FirebaseEventManager.getFirebaseInstance(this)
-            .userLoginEvent(
-                UserInfo.getInstance(this).cpCustomerId,
-                UserInfo.getInstance(this).accountRole,
-                ""
-            )
+                .userLoginEvent(
+                        UserInfo.getInstance(this).cpCustomerId,
+                        UserInfo.getInstance(this).accountRole,
+                        ""
+                )
 
         Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT)
-            .show()
+                .show()
 
         if (from.equals("Profile", ignoreCase = true)) {
             ActivityLauncher(this).profileScreenRedirection(
-                this,
-                HomeActivity::class.java
+                    this,
+                    HomeActivity::class.java
             )
         } else {
             onBackPressed()
@@ -616,102 +625,100 @@ class SignUpActivity : AppCompatActivity(), AccountBlockedDialog.EditDialogListe
         activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
 
         astroLoginViewModel!!.searchAccountV2(type, emailMobile)
-            .observe(this, Observer { evergentCommonResponse ->
-                if (evergentCommonResponse.isStatus) {
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
-                    Toast.makeText(
-                        this,
-                        resources.getString(R.string.already_registered),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    if (evergentCommonResponse.errorCode.equals("eV2327", true)) {
-                        createOtp(type, emailMobile, password)
-                    } else {
+                .observe(this, Observer { evergentCommonResponse ->
+                    if (evergentCommonResponse.isStatus) {
                         activitySinUpBinding?.progressBar?.visibility = View.GONE
-                        Toast.makeText(
-                            this,
-                            evergentCommonResponse.errorMessage,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        val fm: FragmentManager = supportFragmentManager
+                        val cancelDialogFragment = AlreadyUserFragment.newInstance("player", "")
+                        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT)
+                    } else {
+                        if (evergentCommonResponse.errorCode.equals("eV2327", true)) {
+                            createOtp(type, emailMobile, password)
+                        } else {
+                            activitySinUpBinding?.progressBar?.visibility = View.GONE
+                            Toast.makeText(
+                                    this,
+                                    evergentCommonResponse.errorMessage,
+                                    Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                }
-            })
+                })
     }
 
     private fun createOtp(type: String, emailMobile: String, password: String) {
         astroLoginViewModel!!.createOtp(type, emailMobile)
-            .observe(this, Observer { evergentCommonResponse ->
-                activitySinUpBinding?.progressBar?.visibility = View.GONE
+                .observe(this, Observer { evergentCommonResponse ->
+                    activitySinUpBinding?.progressBar?.visibility = View.GONE
 
-                if (evergentCommonResponse.isStatus) {
-                    // Toast.makeText(this, "Verification code had be sent to $emailMobile", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, VerificationActivity::class.java)
-                    intent.putExtra(AppLevelConstants.TYPE_KEY, type)
-                    intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, emailMobile)
-                    intent.putExtra(AppLevelConstants.PASSWORD_KEY, password)
-                    intent.putExtra(AppLevelConstants.FROM_KEY, "signUp")
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT)
-                        .show()
-                }
-            })
+                    if (evergentCommonResponse.isStatus) {
+                        // Toast.makeText(this, "Verification code had be sent to $emailMobile", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, VerificationActivity::class.java)
+                        intent.putExtra(AppLevelConstants.TYPE_KEY, type)
+                        intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, emailMobile)
+                        intent.putExtra(AppLevelConstants.PASSWORD_KEY, password)
+                        intent.putExtra(AppLevelConstants.FROM_KEY, "signUp")
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT)
+                                .show()
+                    }
+                })
     }
 
     private fun socialSearchAccountv2(password: String, type: String, emailMobile: String) {
         activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
         astroLoginViewModel!!.searchAccountV2("email", emailMobile)
-            .observe(this, Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
-                activitySinUpBinding?.progressBar?.visibility = View.GONE
-                if (evergentCommonResponse.isStatus) {
-                    val intent = Intent(this, IsThatYouActivity::class.java)
-                    intent.putExtra(AppLevelConstants.TYPE_KEY, type)
-                    intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, emailMobile)
-                    intent.putExtra(AppLevelConstants.SOCIAL_ID, password)
-                    startActivity(intent)
-                } else {
-                    if (evergentCommonResponse.errorCode.equals("eV2327", ignoreCase = true)) {
-                        createUser(password, emailMobile, type)
+                .observe(this, Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
+                    activitySinUpBinding?.progressBar?.visibility = View.GONE
+                    if (evergentCommonResponse.isStatus) {
+                        val intent = Intent(this, IsThatYouActivity::class.java)
+                        intent.putExtra(AppLevelConstants.TYPE_KEY, type)
+                        intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, emailMobile)
+                        intent.putExtra(AppLevelConstants.SOCIAL_ID, password)
+                        startActivity(intent)
                     } else {
-                        Toast.makeText(
-                            this,
-                            evergentCommonResponse.errorMessage,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        if (evergentCommonResponse.errorCode.equals("eV2327", ignoreCase = true)) {
+                            createUser(password, emailMobile, type)
+                        } else {
+                            Toast.makeText(
+                                    this,
+                                    evergentCommonResponse.errorMessage,
+                                    Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                }
-            })
+                })
     }
 
     private fun createUser(password: String, email_mobile: String, type: String) {
         activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
         val tabletSize = resources.getBoolean(R.bool.isTablet)
         astroLoginViewModel!!.createUser(type, email_mobile, password, name, tabletSize)
-            .observe(this,
-                Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
-                    if (evergentCommonResponse.isStatus) {
-                        UserInfo.getInstance(this).accessToken =
-                            evergentCommonResponse.createUserResponse.createUserResponseMessage!!.accessToken
-                        UserInfo.getInstance(this).refreshToken =
-                            evergentCommonResponse.createUserResponse.createUserResponseMessage!!.refreshToken
-                        UserInfo.getInstance(this).externalSessionToken =
-                            evergentCommonResponse.createUserResponse.createUserResponseMessage!!.externalSessionToken
-                        KsPreferenceKey.getInstance(this).startSessionKs =
-                            evergentCommonResponse.createUserResponse.createUserResponseMessage!!.externalSessionToken
-                        astroLoginViewModel!!.addToken(UserInfo.getInstance(this).externalSessionToken)
-                        AppCommonMethods.onUserRegister(this)
-                        getContact()
-                    } else {
-                        Toast.makeText(
-                            this,
-                            evergentCommonResponse.errorMessage,
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                        activitySinUpBinding?.progressBar?.visibility = View.GONE
-                    }
-                })
+                .observe(this,
+                        Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
+                            if (evergentCommonResponse.isStatus) {
+                                UserInfo.getInstance(this).accessToken =
+                                        evergentCommonResponse.createUserResponse.createUserResponseMessage!!.accessToken
+                                UserInfo.getInstance(this).refreshToken =
+                                        evergentCommonResponse.createUserResponse.createUserResponseMessage!!.refreshToken
+                                UserInfo.getInstance(this).externalSessionToken =
+                                        evergentCommonResponse.createUserResponse.createUserResponseMessage!!.externalSessionToken
+                                KsPreferenceKey.getInstance(this).startSessionKs =
+                                        evergentCommonResponse.createUserResponse.createUserResponseMessage!!.externalSessionToken
+                                astroLoginViewModel!!.addToken(UserInfo.getInstance(this).externalSessionToken)
+                                AppCommonMethods.onUserRegister(this)
+                                getContact()
+                            } else {
+                                Toast.makeText(
+                                        this,
+                                        evergentCommonResponse.errorMessage,
+                                        Toast.LENGTH_SHORT
+                                )
+                                        .show()
+                                activitySinUpBinding?.progressBar?.visibility = View.GONE
+                            }
+                        })
     }
 
     override fun onFinishEditDialog() {

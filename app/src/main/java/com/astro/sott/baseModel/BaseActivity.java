@@ -81,7 +81,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
         // Checks that the update is not stalled during 'onResume()'.
         // However, you should execute this check at all entry points into the app.
-        /*ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+      /*  ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
 
             if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                 // If the update is downloaded but not installed,

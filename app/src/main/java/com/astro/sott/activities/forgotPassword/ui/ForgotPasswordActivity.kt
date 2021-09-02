@@ -93,12 +93,19 @@ class ForgotPasswordActivity : AppCompatActivity()   {
         email_mobile = activityForgotPasswordBinding?.emailMobileEdt?.text.toString()
         return if (!email_mobile.equals("", ignoreCase = true)) {
             if (mobilePattern.containsMatchIn(email_mobile!!)) {
-                if (email_mobile!!.length == 10 || email_mobile!!.length == 11) {
+                val firstChar = email_mobile!![0]
+                if (firstChar.toString().equals("6", ignoreCase = true)) {
+                    email_mobile = email_mobile
+                } else {
+                    email_mobile = "6$email_mobile"
+                    activityForgotPasswordBinding?.emailMobileEdt?.setText(email_mobile)
+                }
+                if (email_mobile!!.length == 11 || email_mobile!!.length == 12) {
                     type = "mobile"
                     true
                 } else {
                     activityForgotPasswordBinding?.errorEmail?.visibility = View.VISIBLE
-                    activityForgotPasswordBinding?.errorEmail?.text = resources.getString(R.string.email_mobile_error)
+                    activityForgotPasswordBinding?.errorEmail?.text = resources.getString(R.string.mobile_error)
                     false
                 }
             } else if (emailPattern.containsMatchIn(email_mobile!!)) {
@@ -106,12 +113,12 @@ class ForgotPasswordActivity : AppCompatActivity()   {
                 true
             } else {
                 activityForgotPasswordBinding?.errorEmail?.visibility = View.VISIBLE
-                activityForgotPasswordBinding?.errorEmail?.text = resources.getString(R.string.email_mobile_error)
+                activityForgotPasswordBinding?.errorEmail?.text = resources.getString(R.string.email_suggestion)
                 false
             }
         } else {
             activityForgotPasswordBinding?.errorEmail?.visibility = View.VISIBLE
-            activityForgotPasswordBinding?.errorEmail?.text = resources.getString(R.string.email_mobile_error)
+            activityForgotPasswordBinding?.errorEmail?.text = resources.getString(R.string.field_cannot_empty)
             false
         }
     }

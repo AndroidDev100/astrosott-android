@@ -2983,19 +2983,21 @@ public class AppCommonMethods {
     public static String getAdsUrl(String url, Asset asset, Context context) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(url);
-        stringBuilder.append("?&cust_params%3Ddid%3D" + AppCommonMethods.getDeviceId(context.getContentResolver()));
-        if (UserInfo.getInstance(context).getCpCustomerId() != null && !UserInfo.getInstance(context).getCpCustomerId().equalsIgnoreCase(""))
-            stringBuilder.append("&cid%3D" + UserInfo.getInstance(context).getCpCustomerId());
+        stringBuilder.append("&cust_params=");
+        //did%3D" + AppCommonMethods.getDeviceId(context.getContentResolver())
+       /* if (UserInfo.getInstance(context).getCpCustomerId() != null && !UserInfo.getInstance(context).getCpCustomerId().equalsIgnoreCase(""))
+            stringBuilder.append("&cid%3D" + UserInfo.getInstance(context).getCpCustomerId());*/
+        stringBuilder.append("vid%3D" + asset.getId());
         if (!asset.getName().equalsIgnoreCase(""))
             stringBuilder.append("&vtitle%3D" + asset.getName());
 
-        stringBuilder.append("&ver%3D" + BuildConfig.VERSION_NAME);
-        stringBuilder.append("&vid%3D" + asset.getId());
+        /* stringBuilder.append("&ver%3D" + BuildConfig.VERSION_NAME);*/
+
         if (asset.getType() == MediaTypeConstant.getLinear(context)) {
             if (AssetContent.isLiveEvent(asset.getMetas())) {
                 stringBuilder.append("&vtype%3DLive Event");
             } else {
-                stringBuilder.append("&ch%3D" + asset.getName());
+                /*  stringBuilder.append("&ch%3D" + asset.getName());*/
                 stringBuilder.append("&vtype%3DLinear Programme");
             }
         } else {
@@ -3012,8 +3014,8 @@ public class AppCommonMethods {
         if (!AssetContent.getProvider(asset.getTags()).equalsIgnoreCase(""))
             stringBuilder.append("&vpro%3D" + AssetContent.getProvider(asset.getTags()));
 
-        if (!AssetContent.getSubTitleLanguageDataString(asset.getTags(), context).equalsIgnoreCase(""))
-            stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags(), context));
+       /* if (!AssetContent.getSubTitleLanguageDataString(asset.getTags(), context).equalsIgnoreCase(""))
+            stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags(), context));*/
         stringBuilder.append("&lang%3D" + "English");
 
         return stringBuilder.toString();

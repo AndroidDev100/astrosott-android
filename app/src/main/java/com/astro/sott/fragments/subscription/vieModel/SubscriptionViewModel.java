@@ -39,8 +39,8 @@ public class SubscriptionViewModel extends AndroidViewModel {
         return MySubscriptionPlanRepository.getInstance().getProducts(getApplication());
     }
 
-    public LiveData<EvergentCommonResponse> getProductForLogin(String accessToken, JsonArray subscriptionId,String from) {
-        return MySubscriptionPlanRepository.getInstance().getProductsForLogin(getApplication(), subscriptionId, accessToken,from);
+    public LiveData<EvergentCommonResponse> getProductForLogin(String accessToken, JsonArray subscriptionId, String from) {
+        return MySubscriptionPlanRepository.getInstance().getProductsForLogin(getApplication(), subscriptionId, accessToken, from);
     }
 
     public LiveData<EvergentCommonResponse> getPaymentV2(String acessToken) {
@@ -51,8 +51,12 @@ public class SubscriptionViewModel extends AndroidViewModel {
         return SubscriptionRepository.getInstance().getSubscriptionPackageList(getApplication().getApplicationContext(), assetId);
     }
 
-    public LiveData<EvergentCommonResponse<GetActiveResponse>> getActiveSubscription(String acessToken,String profile) {
-        return MySubscriptionPlanRepository.getInstance().getActiveSubscription(getApplication(), acessToken,profile);
+    public LiveData<EvergentCommonResponse> getContact(String acessToken) {
+        return AstrLoginRepository.getInstance().getContact(getApplication(), acessToken);
+    }
+
+    public LiveData<EvergentCommonResponse<GetActiveResponse>> getActiveSubscription(String acessToken, String profile) {
+        return MySubscriptionPlanRepository.getInstance().getActiveSubscription(getApplication(), acessToken, profile);
     }
 
     public LiveData<EvergentCommonResponse<ChangePasswordResponse>> changePassword(String acessToken, String oldPassword, String newPassword) {
@@ -64,14 +68,15 @@ public class SubscriptionViewModel extends AndroidViewModel {
     }
 
     public LiveData<EvergentCommonResponse<UpdateProfileResponse>> updateProfile(String type, String emailMobile, String accessToken) {
-        return MySubscriptionPlanRepository.getInstance().updateProfile(getApplication(), type, emailMobile, accessToken,"");
+        return MySubscriptionPlanRepository.getInstance().updateProfile(getApplication(), type, emailMobile, accessToken, "");
     }
 
     public LiveData<EvergentCommonResponse<CheckCredentialResponse>> checkCredential(String password, String emailMobile, String type) {
-        return MySubscriptionPlanRepository.getInstance().checkCredential(getApplication(), password, emailMobile,type);
+        return MySubscriptionPlanRepository.getInstance().checkCredential(getApplication(), password, emailMobile, type);
     }
+
     public LiveData<EvergentCommonResponse<LogoutExternalResponse>> logoutUser(String accessToken, String externalSession) {
-        return MySubscriptionPlanRepository.getInstance().logoutCredential(getApplication(),externalSession,accessToken);
+        return MySubscriptionPlanRepository.getInstance().logoutCredential(getApplication(), externalSession, accessToken);
     }
 
     public LiveData<EvergentCommonResponse<CreateOtpResponse>> createOtp(String type, String emailMobile) {

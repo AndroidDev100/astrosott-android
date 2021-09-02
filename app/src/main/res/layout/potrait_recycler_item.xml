@@ -18,7 +18,7 @@
                 android:id="@+id/header_title_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="13dp"
+                android:layout_marginStart="11dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="5dp"
                 android:orientation="horizontal"
@@ -63,7 +63,7 @@
 
             <LinearLayout
                 android:id="@+id/shimmer_title_layout"
-                android:layout_width="match_parent"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="5dp"
@@ -76,21 +76,12 @@
                 android:baselineAligned="false">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="150dp"
                     android:layout_height="24dp"
                     android:layout_weight="1"
                     android:background="@color/shimmer_background_color" />
 
-                <LinearLayout
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent" />
-
-                <LinearLayout
-                    android:layout_width="40dp"
-                    android:layout_height="24dp"
-                    android:background="@color/shimmer_background_color" />
-
-            </LinearLayout>
+               </LinearLayout>
         </RelativeLayout>
 
         <com.astro.sott.utils.helpers.shimmer.ShimmerRecyclerView

@@ -520,7 +520,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     getBinding().crewLay.setVisibility(View.GONE);
                 } else {
                     getBinding().crewLay.setVisibility(View.VISIBLE);
-                    getBinding().crewText.setText(crewText + "");
+                    getBinding().crewText.setText(" "+crewText + "");
                 }
 
             }
@@ -566,7 +566,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getBinding().castLay.setVisibility(View.GONE);
             } else {
                 getBinding().castLay.setVisibility(View.VISIBLE);
-                getBinding().castText.setText(castTest + "");
+                getBinding().castText.setText(" "+castTest + "");
             }
 
         });
