@@ -18,8 +18,6 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
-import android.graphics.Color;
-import android.graphics.Insets;
 import android.graphics.Rect;
 import android.hardware.display.DisplayManager;
 import android.media.AudioManager;
@@ -31,7 +29,6 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
-import android.os.SystemClock;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -65,9 +62,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.activities.loginActivity.LoginActivity;
-import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
-import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.DoubleClick;
 import com.astro.sott.callBacks.WindowFocusCallback;
@@ -147,8 +142,6 @@ import com.kaltura.playkit.providers.MediaEntryProvider;
 import com.kaltura.playkit.providers.api.phoenix.APIDefines;
 import com.kaltura.playkit.providers.base.OnMediaLoadCompletion;
 import com.kaltura.playkit.providers.ott.PhoenixMediaProvider;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -1569,6 +1562,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.Vod);
 
             }
+            String sourceUrl = mediaEntry.getSources().get(0).getUrl();
+            getKeepAliveHeaderUrl(new URL(sourceUrl));
 
 
             if (getActivity() != null && getActivity().getSystemService(Context.AUDIO_SERVICE) != null) {
@@ -2338,28 +2333,37 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
-    private void getKeepAliveHeaderUrl(URL url) {
-        new Thread() {
+    private class DownloadFilesTask extends AsyncTask<URL, Integer, Void> {
+        protected Void doInBackground(URL... urls) {
 
-            {
+            try {
                 HttpURLConnection conn = null;
-                try {
-                    conn = (HttpURLConnection) url.openConnection();
-                    conn.setInstanceFollowRedirects(false);
-                    String keepAliveURL = conn.getHeaderField("Location");
-                    boolean isSuccess = !TextUtils.isEmpty(keepAliveURL) && conn.getResponseCode() == 302;
-                    if (isSuccess) {
-                        getKeepAliveHeaderUrl(new URL(keepAliveURL));
-                    } else {
-                        Log.d("Test", "The Final Url Is : " + url);
-                    }
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
+                conn = (HttpURLConnection) urls[0].openConnection();
+                conn.setInstanceFollowRedirects(false);
+                String keepAliveURL = conn.getHeaderField("Location");
+                boolean isSuccess = !TextUtils.isEmpty(keepAliveURL) && conn.getResponseCode() == 302;
+                if (isSuccess) {
+                    getKeepAliveHeaderUrl(new URL(keepAliveURL));
+                } else {
+                    Log.d("Test", "The Final Url Is : " + urls[0]);
                 }
-
-
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
-        }.start();
+
+            return null;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+        }
+
+        protected void onPostExecute(Long result) {
+            showDialog("Downloaded " + result + " bytes");
+        }
+    }
+
+    private void getKeepAliveHeaderUrl(URL url) {
+        new DownloadFilesTask().execute(url);
     }
 
 
