@@ -14,9 +14,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AFInAppEventType;
-import com.appsflyer.AppsFlyerLib;
+//import com.appsflyer.AFInAppEventParameterName;
+//import com.appsflyer.AFInAppEventType;
+//import com.appsflyer.AppsFlyerLib;
 import com.astro.sott.activities.deviceMangment.helper.RecyclerTouchListener;
 import com.astro.sott.activities.moreListing.ui.ListingActivityNew;
 import com.astro.sott.activities.myList.adapter.MyWatchlistAdapter;

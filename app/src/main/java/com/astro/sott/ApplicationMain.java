@@ -9,7 +9,7 @@ import android.util.Log;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
-import com.appsflyer.AppsFlyerConversionListener;
+//import com.appsflyer.AppsFlyerConversionListener;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
 
@@ -29,28 +29,28 @@ public class ApplicationMain extends MultiDexApplication {
         return mInstance;
     }
 
-    private AppsFlyerConversionListener conversionDataListener =
-            new AppsFlyerConversionListener() {
-                @Override
-                public void onConversionDataSuccess(Map<String, Object> map) {
-
-                }
-
-                @Override
-                public void onConversionDataFail(String s) {
-
-                }
-
-                @Override
-                public void onAppOpenAttribution(Map<String, String> map) {
-
-                }
-
-                @Override
-                public void onAttributionFailure(String s) {
-
-                }
-            };
+//    private AppsFlyerConversionListener conversionDataListener =
+//            new AppsFlyerConversionListener() {
+//                @Override
+//                public void onConversionDataSuccess(Map<String, Object> map) {
+//
+//                }
+//
+//                @Override
+//                public void onConversionDataFail(String s) {
+//
+//                }
+//
+//                @Override
+//                public void onAppOpenAttribution(Map<String, String> map) {
+//
+//                }
+//
+//                @Override
+//                public void onAttributionFailure(String s) {
+//
+//                }
+//            };
 //    private static Context context;
 
 //    public static Context getAppContext() {
