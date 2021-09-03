@@ -78,9 +78,7 @@
                     tools:ignore="ContentDescription" />
 
 
-
             </androidx.cardview.widget.CardView>
-
 
 
         </FrameLayout>
@@ -88,11 +86,11 @@
 
         <LinearLayout
             android:layout_width="@dimen/landscape_item_width"
-            android:visibility="visible"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/popular_searches_title_margin_left"
             android:layout_marginEnd="@dimen/popular_searches_margin_left"
             android:orientation="vertical"
+            android:visibility="visible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchItemImage">
 
@@ -100,10 +98,10 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="2"
-                android:layout_marginTop="4dp"
                 android:text="@{ResultAllXmlUtils.setTitle(singleItem)}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_medium" />
@@ -115,24 +113,38 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/search_item_card_view_corner"
                 android:ellipsize="end"
-                android:visibility="gone"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="2"
                 android:textColor="@color/search_sub_title"
-                android:textSize="@dimen/font_medium_large" />
+                android:textSize="@dimen/font_medium_large"
+                android:visibility="gone" />
 
         </LinearLayout>
+
+        <include
+            android:id="@+id/metas"
+            layout="@layout/metas_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="2dp"
+            android:layout_gravity="top|end"
+            android:layout_marginStart="@dimen/popular_searches_margin_left"
+            android:layout_marginBottom="@dimen/_5sdp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/billing_image"
             android:layout_width="32dp"
             android:layout_height="24dp"
+            android:layout_marginTop="7dp"
             android:background="@drawable/vip_billing"
             android:contentDescription="@string/contentDescription"
             android:elevation="2dp"
             android:visibility="gone"
-            android:layout_marginTop="7dp"
-app:layout_constraintRight_toRightOf="@id/clRoot"
+            app:layout_constraintRight_toRightOf="@id/clRoot"
             app:layout_constraintTop_toTopOf="parent" />
 
 

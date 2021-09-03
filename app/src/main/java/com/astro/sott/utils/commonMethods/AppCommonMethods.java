@@ -830,7 +830,7 @@ public class AppCommonMethods {
                                             if (dynamicLinkUri != null) {
                                                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                                                 sharingIntent.setType("text/plain");
-                                                sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + dynamicLinkUri.toString());
+                                                sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + asset.getDescription()+ "\n" + dynamicLinkUri.toString());
                                                 // sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + "https://stagingsott.page.link/?link="+dynamicLinkUri.toString()+"&apn=com.astro.stagingsott");
 
                                                 activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
@@ -882,10 +882,12 @@ public class AppCommonMethods {
     private static String getSharingImage(Context context, List<MediaImage> mediaImage, Integer type) {
         String imageURL = "";
         for (int i = 0; i < mediaImage.size(); i++) {
-
+            Log.w("imagevideo-->",mediaImage.get(i).getRatio()+"  "+type);
             if (type == MediaTypeConstant.getMovie(context)) {
                 if (mediaImage.get(i).getRatio().equals("9x16")) {
                     imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.portrait_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.portrait_image_height) + AppLevelConstants.QUALITY;
+                }else if(mediaImage.get(i).getRatio().equals("16x9")) {
+                    imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
                 }
 
             } else {

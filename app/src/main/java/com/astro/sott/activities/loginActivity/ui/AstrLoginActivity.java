@@ -158,12 +158,16 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
                     @Override
                     public void onCancel() {
-                        // App code
+                        getBinding().progressBar.setVisibility(View.GONE);
+                        Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        // App code
+                        getBinding().progressBar.setVisibility(View.GONE);
+                        Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+
                     }
                 });
 
@@ -195,7 +199,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        getBinding().progressBar.setVisibility(View.GONE);
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == 4001) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -220,6 +224,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
         } catch (ApiException e) {
+            getBinding().progressBar.setVisibility(View.GONE);
             Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
         }
     }
@@ -617,7 +622,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     return false;
 
                 }
-            } else if (true) {
+            } else if (email_mobile.matches(EMAIL_REGEX)) {
                 type = "Email";
                 getBinding().errorEmail.setTextColor(getResources().getColor(R.color.heather));
                 getBinding().errorEmail.setText(getResources().getString(R.string.mobile_suggestion));

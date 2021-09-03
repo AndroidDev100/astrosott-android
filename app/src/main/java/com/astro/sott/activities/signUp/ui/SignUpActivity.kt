@@ -38,6 +38,7 @@ import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey
 import com.astro.sott.utils.userInfo.UserInfo
 import com.facebook.*
+import com.facebook.login.LoginBehavior
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -138,6 +139,12 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
         } catch (e: ApiException) {
+            activitySinUpBinding?.progressBar?.visibility = View.GONE
+            Toast.makeText(
+                this,
+                resources.getString(R.string.email_unavailable),
+                Toast.LENGTH_SHORT
+            ).show()
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             // updateUI(null);
@@ -365,15 +372,29 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                         graphRequest.executeAsync()
                     }
 
-                    override fun onCancel() {
-                        // App code
-                    }
 
-                    override fun onError(exception: FacebookException) {
-                        // App code
-                    }
-                })
+                override fun onCancel() {
+                    activitySinUpBinding?.progressBar?.visibility = View.GONE
+                    Toast.makeText(
+                        this@SignUpActivity,
+                        resources.getString(R.string.email_unavailable),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+
+
         // activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
+                override fun onError(exception: FacebookException) {
+                    activitySinUpBinding?.progressBar?.visibility = View.GONE
+                    Toast.makeText(
+                        this@SignUpActivity,
+                        resources.getString(R.string.email_unavailable),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+        activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
     }
 
     private fun checkPassword(type: String, emailMobile: String, password: String) {
