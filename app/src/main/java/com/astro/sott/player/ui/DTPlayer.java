@@ -2582,8 +2582,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         @Override
                         public void onFinishDialog() {
                             DialogHelper.setIsDialog(false);
-                            runningPlayer.stop();
-                            runningPlayer.destroy();
+                            if (runningPlayer != null) {
+                                runningPlayer.stop();
+                                runningPlayer.destroy();
+                            }
                             getActivity().finish();
                         }
                     });

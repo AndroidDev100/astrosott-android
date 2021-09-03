@@ -171,7 +171,7 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
         UserInfo.getInstance(this).setActive(true);
         UserInfo.getInstance(this).setSocialLogin(true);
         AppCommonMethods.setCleverTap(this);
-        Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();
         new ActivityLauncher(DetailConfirmationActivity.this).homeScreen(DetailConfirmationActivity.this, HomeActivity.class);
 
     }

@@ -1,4 +1,4 @@
-package com.astro.sott.fragments.dialog;
+package com.astro.sott.activities.forgotPassword.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.astro.sott.R;
-import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.baseModel.BaseActivity;
@@ -29,7 +28,7 @@ import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.material.textfield.TextInputLayout;
 
 
-public class AlreadyUserFragment extends DialogFragment {
+public class PasswordChangedDialog extends DialogFragment {
     private EditDialogListener editDialogListener;
     private EditText etDialog;
     private TextInputLayout inputLayoutDialog;
@@ -38,14 +37,14 @@ public class AlreadyUserFragment extends DialogFragment {
     private String from = "";
     private BaseActivity baseActivity;
 
-    public AlreadyUserFragment() {
+    public PasswordChangedDialog() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance`method
     }
 
-    public static AlreadyUserFragment newInstance(String title, String message) {
-        AlreadyUserFragment frag = new AlreadyUserFragment();
+    public static PasswordChangedDialog newInstance(String title, String message) {
+        PasswordChangedDialog frag = new PasswordChangedDialog();
         Bundle args = new Bundle();
         args.putString(AppLevelConstants.TITLE, title);
         args.putString(AppLevelConstants.FILE_ID_KEY, message);
@@ -68,7 +67,7 @@ public class AlreadyUserFragment extends DialogFragment {
                              Bundle savedInstanceState) {
 //        return inflater.inflate(R.layout.edit_dialog_layout, container);
 
-        View view = inflater.inflate(R.layout.already_user_dialog_fragment, container);
+        View view = inflater.inflate(R.layout.password_dialog_fragment, container);
         if (getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
                     .TRANSPARENT));
@@ -77,13 +76,15 @@ public class AlreadyUserFragment extends DialogFragment {
             inputLayoutDialog = view.findViewById(R.id.input_layout_dialog);
             from = getArguments().getString(AppLevelConstants.TITLE);
             fileId = getArguments().getString(AppLevelConstants.FILE_ID_KEY);
-            TextView btnOk = view.findViewById(R.id.btnOk);
-            TextView description = view.findViewById(R.id.description);
+            TextView subscribe = view.findViewById(R.id.subscribe);
 
 
-//
-            btnOk.setOnClickListener(v -> {
-                new ActivityLauncher(baseActivity).astrLoginActivity(baseActivity, AstrLoginActivity.class, "Profile");
+            // Fetch arguments from bundle and set title
+
+//        getDialog().setTitle(title);
+
+            subscribe.setOnClickListener(v -> {
+                editDialogListener.onPasswordChanged();
                 dismiss();
             });
 
@@ -110,6 +111,6 @@ public class AlreadyUserFragment extends DialogFragment {
 
     // 1. Defines the listener interface with a method passing back data result.
     public interface EditDialogListener {
-        void onFinishEditDialog();
+        void onPasswordChanged();
     }
 }

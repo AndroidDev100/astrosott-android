@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
@@ -556,6 +557,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     public void onFinishDialog() {
         logoutApi();
         AppCommonMethods.removeUserPrerences(getActivity());
+        Toast.makeText(getActivity(), "Logout Successful!", Toast.LENGTH_SHORT).show();
         setUiForLogout();
         getBinding().rlLogout.setVisibility(View.GONE);
         getBinding().loginSignupMore.setVisibility(View.VISIBLE);
