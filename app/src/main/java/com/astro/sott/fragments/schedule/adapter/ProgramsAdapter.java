@@ -98,6 +98,9 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
             if (lineCount > 1) {
                 viewHolder.scheduleItemBinding.descriptionText.setEllipsize(TextUtils.TruncateAt.END);
             }
+            else{
+                viewHolder.scheduleItemBinding.moreButton.setVisibility(View.GONE);
+            }
         });
 
         viewHolder.scheduleItemBinding.moreButton.setOnClickListener(v -> {
