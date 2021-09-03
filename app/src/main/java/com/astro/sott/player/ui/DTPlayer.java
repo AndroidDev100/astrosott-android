@@ -527,7 +527,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         this.asset = asset;
         if (railCommonDataList != null)
             this.railList = railCommonDataList;
-        setEventConvivaEvent(isLivePlayer, programAsset);
+
 
         isSeries = (asset.getType() == MediaTypeConstant.getEpisode(getActivity()));
         skipIntro();
@@ -583,12 +583,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
-    private void setEventConvivaEvent(Boolean isLivePlayer, Asset programAsset) {
+    private void setEventConvivaEvent(Boolean isLivePlayer, Asset programAsset, String url) {
         String fileId = "";
         String duraton = AppCommonMethods.getDuration(asset);
         fileId = AppCommonMethods.getFileIdOfAssest(playerAsset);
         if (!isLivePlayer && !fileId.equalsIgnoreCase("")) {
-            new KsServices(baseActivity).getPlaybackContext(playerAsset.getId() + "", fileId, new PlayBackContextCallBack() {
+            ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, url, programAsset);
+          /*  new KsServices(baseActivity).getPlaybackContext(playerAsset.getId() + "", fileId, new PlayBackContextCallBack() {
                 @Override
                 public void getUrl(String url) {
                     try {
@@ -596,7 +597,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     } catch (Exception ex) {
                     }
                 }
-            });
+            });*/
         } else {
             try {
                 ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, "", programAsset);
@@ -2345,6 +2346,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (isSuccess) {
                     getKeepAliveHeaderUrl(new URL(keepAliveURL));
                 } else {
+                    setEventConvivaEvent(isLivePlayer, programAsset, urls[0] + "");
                     Log.d("Test", "The Final Url Is : " + urls[0]);
                 }
             } catch (IOException ioException) {
