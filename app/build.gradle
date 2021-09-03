@@ -74,8 +74,8 @@ android {
     productFlavors {
         qa {
             dimension 'default'
-            versionCode 51
-            versionName "21.8.1.7(27)"
+            versionCode 53
+            versionName "21.9.1.2(03)"
             applicationId "com.astro.stagingsott"
             buildConfigField "String", "KALTURA_BASE_URL", "\"https://api.sgs1.ott.kaltura.com/api_v3/service/\""
             buildConfigField "int", "KAVA_PARTNER_ID", "3089623"
