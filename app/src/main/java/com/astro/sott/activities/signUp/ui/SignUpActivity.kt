@@ -393,7 +393,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                     ).show()
                 }
             })
-        activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
+       // activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
     }
 
     private fun checkPassword(type: String, emailMobile: String, password: String) {
