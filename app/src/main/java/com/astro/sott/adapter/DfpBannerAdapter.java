@@ -41,6 +41,7 @@ public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.View
     private final Context mContext;
     private AssetCommonBean item;
     private String deviceId;
+    ArrayList<String> DFP_DETAILS =new ArrayList<String>();
     private PublisherAdRequest adRequest;
     private int bannerType = AppConstants.ADS_BANNER;
 
@@ -65,11 +66,13 @@ public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
-        ArrayList<String> DFP_DETAILS = AppCommonMethods.splitString(item.getFanPlacementId(), "#");
-        holder.rowDfpBannerBinding.bannerRoot.setVisibility(View.GONE);
+        try {
+          DFP_DETAILS   = AppCommonMethods.splitString(item.getFanPlacementId(), "#");
+            holder.rowDfpBannerBinding.bannerRoot.setVisibility(View.GONE);
+        }catch (NullPointerException e){
+            Log.d("NULLEXCEPTION", e+"");
 
-//        holder.landscapeItemBinding.mediaTypeLayout.lineTwo.setText("gfchgvbjbhvg");
-
+        }
         // Banner ads detail should be in below FORMAT
         //DFP#Android#Phone#Banner#/21805729337/Watcho_Android/Watcho_Aos_app_Prem_ATF
         // /21805729337/Watcho_iOS/Watcho_iOS_app_LiveTV_ATF  /21805729337/Watcho_iOS/Watcho_iOS_app_LiveTV_ATF
@@ -155,6 +158,7 @@ public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.View
 
             }
         }
+
     }
 
 

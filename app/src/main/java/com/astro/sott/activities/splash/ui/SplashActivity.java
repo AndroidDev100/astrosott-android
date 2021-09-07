@@ -644,9 +644,13 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                                     myViewModel.getLiveSpecificAsset(this, newU.getQueryParameter("id")).observe(this, railCommonData -> {
                                         if (railCommonData != null && railCommonData.getStatus()) {
                                             //liveManger(railCommonData);
+                                            new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
                                             new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
+
                                         } else {
+
                                             new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+
                                             // DialogHelper.showAlertDialog(this, getString(R.string.asset_not_found), getString(R.string.ok), this);
                                         }
                                     });
@@ -663,6 +667,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                                         myViewModel.getLiveSpecificAsset(this, pendingDynamicLinkData.getLink().getQueryParameter("id")).observe(this, railCommonData -> {
                                             if (railCommonData != null && railCommonData.getStatus()) {
                                                 //liveManger(railCommonData);
+                                                new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
                                                 new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
                                             } else {
                                                 new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
@@ -948,6 +953,28 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+//       myDevice.enable();
+//       myDevice.startDiscovery();
+//       Handler handler = new Handler();
+//        Runnable r = new Runnable() {
+//            public void run() {
+//
+//                devicename= BluetoothAdapter.getDefaultAdapter().getName();
+//                Log.d("DEVICEusername",devicename+"");
+//
+//            }
+//        };
+//        handler.postDelayed(r, 1000);
+//
+//        String deviceModel = Build.PRODUCT;
+//        Log.d("DEVICEProduct",deviceModel+"");
+//        String deviceName1=  Settings.Global.getString(getContentResolver(), Settings.Global.DEVICE_NAME);
+////                Settings.Secure.getString(getContentResolver(), "bluetooth_name");
+//        Log.d("DEVICEname",deviceName1+"");
+
+
 //        View decorView = getWindow().getDecorView();
 //        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 //                |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;

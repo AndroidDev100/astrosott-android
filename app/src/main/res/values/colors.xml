@@ -10,6 +10,7 @@
     <color name="title_color">#f2f2f7</color>
     <color name="live_metas_color">#20fdc9</color>
     <color name="primary_blue">#EC1C24</color>
+    <color name="dark_gray_background">#ff404040</color>
     <color name="indicator_unselected">#cccccc</color>
     <color name="support_01">#D50000</color>
     <color name="support_02">#49AE51</color>

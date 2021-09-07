@@ -15,8 +15,8 @@
             android:id="@+id/top_lay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:background="@color/grape_purple"
             android:orientation="horizontal"
             android:baselineAligned="false">
@@ -24,25 +24,36 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+                <androidx.cardview.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/root"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:filterTouchesWhenObscured="true"
+                    card_view:cardBackgroundColor="@color/grape_purple"
+                    card_view:cardCornerRadius="9dp"
+                    card_view:cardElevation="1dp"
+                    card_view:cardMaxElevation="1dp"
+                    card_view:cardPreventCornerOverlap="false"
+                    card_view:cardUseCompatPadding="true">
+                    <ImageView
+                        android:id="@+id/image"
+                        android:layout_width="160dp"
+                        android:layout_height="90dp"
+                        android:background="@drawable/ic_landscape_placeholder"
+                        android:scaleType="fitXY"
+                        android:contentDescription="@string/contentDescription" />
 
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="160dp"
-                    android:layout_height="90dp"
-                    android:background="@drawable/ic_landscape_placeholder"
-                    android:scaleType="fitXY"
-                    android:contentDescription="@string/contentDescription" />
-
-                <ImageView
-                    android:id="@+id/play_icon"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    android:background="@drawable/ic_green_play_buton"
-                    android:contentDescription="@string/contentDescription" />
-
+                    <ImageView
+                        android:id="@+id/play_icon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:background="@drawable/ic_green_play_buton"
+                        android:contentDescription="@string/contentDescription" />
+                </androidx.cardview.widget.CardView>
             </RelativeLayout>
 
             <LinearLayout
@@ -67,12 +78,12 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:background="@drawable/schedule_white_outline_button">
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="19dp"
+                    android:gravity="center">
+                    <!--                    android:paddingTop="7dp"-->
+                    <!--                    android:paddingBottom="7dp">-->
+                    <!--                    android:background="@drawable/schedule_white_outline_button"-->
 
 
 
@@ -83,11 +94,10 @@
                         android:layout_gravity="center"
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
+                        android:maxLines="2"
                         android:text="jbnmjnm nmbvhxdfgvhbn"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12sp" />
+                        android:textColor="@color/yellow_orange"
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -136,8 +146,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="11dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginRight="12dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_regular"
@@ -152,17 +162,13 @@
                 android:id="@+id/more_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="15dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:ellipsize="end"
+                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="2"
-
-                android:paddingTop="10dp"
-                android:paddingEnd="20dp"
-                android:paddingStart="0dp"
-                android:paddingBottom="10dp"
-                android:text="See More"
+                android:padding="10dp"
                 android:textColor="@color/aqua_marine"
                 android:textSize="@dimen/font_small" />
 
@@ -171,3 +177,4 @@
 
     </RelativeLayout>
 </layout>
+    

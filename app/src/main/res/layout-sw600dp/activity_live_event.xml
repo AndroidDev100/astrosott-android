@@ -228,10 +228,11 @@
                         android:textColor="@color/title_color"
                         android:textSize="@dimen/font_medium_large"
                         tools:targetApi="p" />
-                    <FrameLayout
+
+                        <FrameLayout
                             android:id="@+id/shadow"
                             android:layout_width="match_parent"
-                            android:layout_height="98dp"
+                            android:layout_height="40dp"
                             android:layout_alignParentBottom="true"
                             android:background="@drawable/above_dark_shadow" />
                     </RelativeLayout>

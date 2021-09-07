@@ -116,6 +116,7 @@
     <string name="checkout">Checkout</string>
     <string name="on_Dialog">on sooka!</string>
     <string name="added_to_watchlist">added to your My List</string>
+<!--    <string name="existing_sooka_account">Existing sooka account</string>-->
     <string name="password_updated">Password Updated!</string>
     <string name="maxed_out_title">Verification Code Resend Maxed Out!</string>
     <string name="become_vip">Become a VIP</string>
@@ -254,7 +255,7 @@
     <string name="dialog">sooka</string>
     <string name="lock_Episode">Lock Episodes</string>
     <string name="got_it">Got it</string>
-    <string name="existing_user_description">Account with this email/mobile number already exist. Kindly proceed to login with the right login method.</string>
+<!--    <string name="existing_user_description">Account with this email/mobile number already exist. Kindly proceed to login with the right login method.</string>-->
     <string name="subscribe_header">Subscribe to unlock</string>
     <string name="maxed_out_description">Sorry, you have reached the maximum number Verification Code resend. Please try again 1 hour later.</string>
     <string name="device_removed_description">Uh-oh! Your device was removed from this account. Please verify that it\'s you by logging in again to continue.</string>
@@ -720,6 +721,7 @@
     <string name="already_registered_para">Already registered? Just log in below</string>
     <string name="sub_title_live">Subtitle:</string>
     <string name="cast_live">Cast:</string>
+    <string name="password_rules_new">Incorrect email/mobile number or password</string>
 
 
 </resources>

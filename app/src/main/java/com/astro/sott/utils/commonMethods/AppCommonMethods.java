@@ -3,6 +3,7 @@ package com.astro.sott.utils.commonMethods;
 import static com.astro.sott.activities.myPlans.adapter.MyPlanAdapter.getDateCurrentTimeZone;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -907,14 +908,22 @@ public class AppCommonMethods {
         String deviceName;
         if (TextUtils.isEmpty(Settings.System.getString(context.getContentResolver(), AppLevelConstants.DEVICE_NAME))) {
             deviceName = Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
+//            deviceName= android.os.Build.MODEL;
         } else {
             deviceName = Settings.System.getString(context.getContentResolver(), AppLevelConstants.DEVICE_NAME);
+//            BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+//            deviceName = myDevice.getName();
+//            Log.d("tfgh",deviceName+"");
+//            deviceName = android.os.Build.MODEL;
 
         }
         return deviceName;
     }
 
     public static String getDeviceId(ContentResolver contentResolver) {
+//        BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+//        String deviceName = myDevice.getName();
+//        return deviceName;
         return Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID);
     }
 
@@ -1761,11 +1770,12 @@ public class AppCommonMethods {
 
     public static ArrayList<String> splitString(String temp, String delim) {
         StringBuilder stringBuilder;
-        if (temp.contains("##")) {
-            stringBuilder = new StringBuilder(temp.replace("##", "#StringTokenizer#"));
-        } else {
-            stringBuilder = new StringBuilder(temp);
-        }
+
+            if (temp.contains("##") && (temp != null)){
+                stringBuilder = new StringBuilder(temp.replace("##", "#StringTokenizer#"));
+            } else {
+                stringBuilder = new StringBuilder(temp);
+            }
 
         ArrayList<String> mDetailList = new ArrayList<>();
         StringTokenizer tok = new StringTokenizer(stringBuilder.toString(), delim, true);
@@ -1797,19 +1807,14 @@ public class AppCommonMethods {
         try {
             if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext) || type == MediaTypeConstant.getLinear(mContext) ) {
                 if (AssetContent.getBillingIdForSeries(tags)) {
-                    Log.d("ghdbj","billing for series");
                     imageView.setVisibility(View.VISIBLE);
                 } else {
                     imageView.setVisibility(View.GONE);
                 }
             } else {
                 if (AssetContent.getBillingId(tags)) {
-                    Log.d("ghdbj","billing Id if");
                     imageView.setVisibility(View.VISIBLE);
-
                 } else {
-                    Log.d("ghdbj","billing Id else");
-
                     imageView.setVisibility(View.GONE);
 
                 }

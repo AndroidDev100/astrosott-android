@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -43,6 +44,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     private AstroLoginViewModel astroLoginViewModel;
     private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "", origin = "";
     private CountDownTimer countDownTimer;
+    private String num ="+91";
+    private StringBuilder stringBuilder = new StringBuilder();;
     private List<SocialLoginTypesItem> socialLoginTypesItem;
 
     @Override
@@ -68,6 +71,9 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             newEmail = getIntent().getExtras().getString("newEmail");
         if (getIntent().getExtras().getString("newMobile") != null)
             newMobile = getIntent().getExtras().getString("newMobile");
+        Log.d("eMOBILENUMBER",newMobile+"");
+
+
         password = getIntent().getExtras().getString(AppLevelConstants.PASSWORD_KEY);
         from = getIntent().getExtras().getString(AppLevelConstants.FROM_KEY);
         if (from.equalsIgnoreCase(AppLevelConstants.CONFIRM_PASSWORD) || from.equalsIgnoreCase(AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD)) {
@@ -75,11 +81,14 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 emailMobile = newEmail;
             } else if (loginType.equalsIgnoreCase("Mobile")) {
                 emailMobile = newMobile;
+                stringBuilder=stringBuilder.append(num+emailMobile);
+                        Log.d("eMOBILENUMBER",stringBuilder+"");
             }
         }
         if (emailMobile != null && !emailMobile.equalsIgnoreCase("")) {
             getBinding().descriptionTxt.setText(getResources().getString(R.string.onetime_pass_code_text) + "\n" + emailMobile);
         }
+
 
     }
 

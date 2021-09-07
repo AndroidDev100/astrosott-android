@@ -262,6 +262,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 ((PotraitCarouselHolder) holder).headerRecyclerItemBinding.slider.addSlides(dataList.get(position).getSlides(), dataList.get(position).getWidgetType(), dataList.get(position).getRailDetail(), position, width, dataList.get(position).getRailDetail().getCategory().getAutoRotate() == null ? true : dataList.get(position).getRailDetail().getCategory().getAutoRotate(), dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration() == null ? 0 : dataList.get(position).getRailDetail().getCategory().getAutoRotateDuration());
                 setHeaderAndMoreVisibility(((PotraitCarouselHolder) holder).headerRecyclerItemBinding.headerTitle, ((HeaderHolder) holder).headerRecyclerItemBinding.moreText, dataList.get(position));
                 ((PotraitCarouselHolder) holder).headerRecyclerItemBinding.moreText.setVisibility(View.GONE);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 PrintLogging.printLog("", "crashOnRail" + e.toString());
@@ -449,6 +450,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         int totalCount = dataList.get(position).getTotalCount();
         if (totalCount > 10)
             holder.circularRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
+
     }
 
     private void removeAssetApi(Long assetID, List<RailCommonData> singleSectionItems, TabsContinueWatchingAdapter continueWatchingAdapter,
@@ -544,9 +546,12 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         int totalCount = dataList.get(position).getTotalCount();
         // new ToolBarHandler(activity).setContinueWatchingListener(((ContinueWatchingHolder)holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5,dataList.get(position));
         if (totalCount >= 20) {
+
             new ToolBarHandler(activity).setContinueWatchingListener(((ContinueWatchingHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
         } else {
             ((ContinueWatchingHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
+            holder.landscapeRecyclerItemBinding.headerTitle.setClickable(false);
+
         }
 
 
@@ -639,8 +644,12 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             if (totalCount > 20) {
                 holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
+                holder.landscapeRecyclerItemBinding.headerTitle.setClickable(true);
+
             } else {
                 holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.GONE);
+                holder.landscapeRecyclerItemBinding.headerTitle.setClickable(false);
+
             }
 
         } else if (isContinueRail) {
@@ -651,6 +660,8 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     new ToolBarHandler(activity).setContinueWatchingListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
                 } else {
                     ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
+                    holder.landscapeRecyclerItemBinding.headerTitle.setClickable(false);
+
                 }
             } else {
                 if (totalCount >= 10) {
@@ -663,8 +674,10 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         } else {
             if (totalCount > 20) {
                 holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.VISIBLE);
+                holder.landscapeRecyclerItemBinding.headerTitle.setClickable(true);
+
             } else {
-                // holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
+                 holder.landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
 
             }
         }
@@ -1039,11 +1052,15 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             else
                 header.setVisibility(View.INVISIBLE);
         if (data.getRailDetail() != null)
-            if (data.getRailDetail().isContentShowMoreButton())
+            if (data.getRailDetail().isContentShowMoreButton()) {
                 moreTextView.setVisibility(View.VISIBLE);
-            else
+                header.setClickable(true);
+            }
+            else {
                 moreTextView.setVisibility(View.INVISIBLE);
+                header.setClickable(false);
 
+            }
 
     }
 
@@ -1054,11 +1071,13 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             else
                 header.setVisibility(View.GONE);
         if (data.getRailDetail() != null)
-            if (data.getRailDetail().isContentShowMoreButton())
+            if (data.getRailDetail().isContentShowMoreButton()) {
                 moreTextView.setVisibility(View.VISIBLE);
-            else
+            }
+            else {
                 moreTextView.setVisibility(View.GONE);
 
+            }
 
     }
 
@@ -1069,10 +1088,14 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             else
                 header.setVisibility(View.INVISIBLE);
         if (data.getRailDetail() != null)
-            if (data.getRailDetail().isContentShowMoreButton())
+            if (data.getRailDetail().isContentShowMoreButton()) {
                 moreTextView.setVisibility(View.VISIBLE);
+//                header.setClickable(true);
+            }
             else
                 moreTextView.setVisibility(View.INVISIBLE);
+//        header.setClickable(false);
+
 
 
     }
