@@ -152,7 +152,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 
     private void noConnectionLayout() {
         getBinding().noConnectionLayout.setVisibility(View.VISIBLE);
-       Constraints.LayoutParams params = new Constraints.LayoutParams(Constraints.LayoutParams.MATCH_PARENT,Constraints.LayoutParams.WRAP_CONTENT);
+        Constraints.LayoutParams params = new Constraints.LayoutParams(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 60, 0, 0);
         getBinding().noConnectionLayout.setLayoutParams(params);
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
@@ -478,7 +478,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                                                 public void run() {
                                                     loadedList.remove(getContinueWatchInd());
                                                     adapter.notifyDataSetChanged();
-                                                   /* adapter.notifyItemChanged(getContinueWatchInd());*/
+                                                    /* adapter.notifyItemChanged(getContinueWatchInd());*/
                                                     updateMyList();
                                                 }
                                             });
@@ -489,35 +489,43 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                             });
                         }
                     } else {
-                        if (checkContinueWatchingInChannelList(dtChannelsList) == 1) {
-                            new ContinueWatchingUpdate().updateCall(getActivity(), dtChannelsList, getContinueWatchIndInChannelList(), 1, loadedList, (status, commonResponse) -> {
-                                if (status) {
-                                    if (adapter != null && getActivity() != null) {
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                loadedList.add(getContinueWatchIndInChannelList(), commonResponse.get(0));
-                                                /*adapter.notifyItemChanged(getContinueWatchIndInChannelList());*/
-                                                adapter.notifyDataSetChanged();
-                                                updateMyList();
-                                            }
-                                        });
+                        try {
+
+                            if (checkContinueWatchingInChannelList(dtChannelsList) == 1) {
+                                new ContinueWatchingUpdate().updateCall(getActivity(), dtChannelsList, getContinueWatchIndInChannelList(), 1, loadedList, (status, commonResponse) -> {
+                                    if (status) {
+                                        if (adapter != null && getActivity() != null) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    try {
+                                                        loadedList.add(getContinueWatchIndInChannelList(), commonResponse.get(0));
+                                                        /*adapter.notifyItemChanged(getContinueWatchIndInChannelList());*/
+                                                        adapter.notifyDataSetChanged();
+                                                        updateMyList();
+                                                    }catch (Exception ignored){}
+                                                }
+                                            });
 
 
+                                        }
                                     }
-                                }
 
-                            });
+                                });
+                            } else{
+                                updateMyList();
+                            }
+                        } catch (Exception ignored) {
 
-                        } else {
-                            updateMyList();
                         }
-                    }
+
+
                 }
             }
         }
-
     }
+
+}
 
     private void updateMyList() {
         try {
