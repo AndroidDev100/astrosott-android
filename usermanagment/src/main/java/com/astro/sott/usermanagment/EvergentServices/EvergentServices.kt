@@ -623,7 +623,7 @@ class EvergentServices {
         }
 
         devicejson.addProperty("serialNo", getDeviceId(context.contentResolver))
-        devicejson.addProperty("deviceName", Build.DEVICE)
+        devicejson.addProperty("deviceName",  Settings.Global.getString(context.contentResolver, Settings.Global.DEVICE_NAME))
         if (isTablet) {
             devicejson.addProperty("deviceType", "ANDROID_TABLET")
         } else {
@@ -720,7 +720,10 @@ class EvergentServices {
             json.addProperty("socialLoginType", type)
         }
         devicejson.addProperty("serialNo", getDeviceId(context.contentResolver))
-        devicejson.addProperty("deviceName", Build.DEVICE)
+        devicejson.addProperty(
+            "deviceName",
+            Settings.Global.getString(context.contentResolver, Settings.Global.DEVICE_NAME)
+        )
         if (isTablet) {
             devicejson.addProperty("deviceType", "ANDROID_TABLET")
         } else {
