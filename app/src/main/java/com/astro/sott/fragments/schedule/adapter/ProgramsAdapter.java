@@ -95,10 +95,12 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
 
         viewHolder.scheduleItemBinding.descriptionText.post(() -> {
             int lineCount = viewHolder.scheduleItemBinding.descriptionText.getLineCount();
-            if (lineCount > 1) {
+            if (lineCount > 3) {
+                viewHolder.scheduleItemBinding.shadow.setVisibility(View.VISIBLE);
                 viewHolder.scheduleItemBinding.descriptionText.setEllipsize(TextUtils.TruncateAt.END);
             }
             else{
+                viewHolder.scheduleItemBinding.shadow.setVisibility(View.GONE);
                 viewHolder.scheduleItemBinding.moreButton.setVisibility(View.GONE);
             }
         });
@@ -110,12 +112,14 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
             if (viewHolder.scheduleItemBinding.descriptionText.isExpanded()) {
                 viewHolder.scheduleItemBinding.descriptionText.setEllipsize(null);
 //                viewHolder.scheduleItemBinding.moreButton.setText("See Less");
+                viewHolder.scheduleItemBinding.shadow.setVisibility(View.GONE);
                 viewHolder.scheduleItemBinding.moreButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
 
 
             } else {
                 viewHolder.scheduleItemBinding.descriptionText.setEllipsize(TextUtils.TruncateAt.END);
 //                viewHolder.scheduleItemBinding.moreButton.setText("See More");
+                viewHolder.scheduleItemBinding.shadow.setVisibility(View.VISIBLE);
                 viewHolder.scheduleItemBinding.moreButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
 
 

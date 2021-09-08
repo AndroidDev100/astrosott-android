@@ -366,7 +366,7 @@ public class AppCommonMethods {
             }
 
             Date date = new Date(_time * 1000L);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd=hh:mm a", Locale.US);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd=hh:mma", Locale.US);
             simpleDateFormat.setTimeZone(TimeZone.getDefault());
             String dateTimeValue = simpleDateFormat.format(date);
             String _value[] = dateTimeValue.split("=");
