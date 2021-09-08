@@ -134,7 +134,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/top_lay"
@@ -143,16 +143,17 @@
 
             <com.astro.sott.utils.helpers.ExpandableTextView
                 android:id="@+id/description_text"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="14dp"
                 android:layout_marginRight="12dp"
-                android:layout_weight="1"
+                android:layout_alignParentTop="true"
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_regular"
                 android:lineHeight="24sp"
-                android:maxLines="1"
+                android:maxLines="3"
+                android:text=""
                 android:paddingBottom="20dp"
                 android:textColor="@color/title_color"
                 android:textSize="@dimen/font_small"
@@ -162,17 +163,24 @@
                 android:id="@+id/more_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="3dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:ellipsize="end"
+                android:layout_below="@id/description_text"
+                android:layout_alignParentRight="true"
                 android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="2"
                 android:padding="10dp"
                 android:textColor="@color/aqua_marine"
                 android:textSize="@dimen/font_small" />
+            <FrameLayout
+                android:id="@+id/shadow"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background="@drawable/above_dark_shadow" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
     </RelativeLayout>
