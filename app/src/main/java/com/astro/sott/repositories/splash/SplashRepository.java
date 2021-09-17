@@ -20,6 +20,7 @@ import com.astro.sott.callBacks.commonCallBacks.UserPrefrencesCallBack;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.clevertap.android.sdk.Logger;
 import com.kaltura.client.types.LoginSession;
 
 import java.text.SimpleDateFormat;
@@ -125,15 +126,21 @@ public class SplashRepository implements AlertDialogSingleButtonFragment.AlertDi
 
     private boolean verifyDmsDate(String storedDate) {
         boolean verifyDms;
+        String temp ="";
         if (storedDate == null || storedDate.equalsIgnoreCase(AppLevelConstants.MDATE)) {
             return true;
         }
+     try {
+         String currentDate = getDateTimeStamp(System.currentTimeMillis());
+         temp = getDateTimeStamp(Long.parseLong(storedDate));
+         verifyDms = !currentDate.equalsIgnoreCase(temp);
 
-        String currentDate = getDateTimeStamp(System.currentTimeMillis());
-        String temp = getDateTimeStamp(Long.parseLong(storedDate));
-        verifyDms = !currentDate.equalsIgnoreCase(temp);
+     }catch (NumberFormatException e){
 
+     }
         return true;
+
+
     }
 
     private String getDateTimeStamp(Long timeStamp) {

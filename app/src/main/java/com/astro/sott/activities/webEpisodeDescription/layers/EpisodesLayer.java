@@ -210,6 +210,7 @@ public class EpisodesLayer {
         if (totalCount != 0) {
             List<RailCommonData> railList = new ArrayList<>();
             try {
+                if(list.get(position).results.getObjects().size() > 0 ){
                 for (int j = 0; j < list.get(position).results.getObjects().size(); j++) {
                     RailCommonData railCommonData = new RailCommonData();
                     //  railCommonData.setCatchUpBuffer(list.get(position).results.getObjects().get(j).getEnableCatchUp());
@@ -240,6 +241,7 @@ public class EpisodesLayer {
                     railList.add(railCommonData);
 
                 }
+            }
 
             } catch (NullPointerException e) {
                 PrintLogging.printLog("Exception", e.toString());
