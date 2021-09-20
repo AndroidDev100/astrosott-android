@@ -781,6 +781,7 @@ public class AppCommonMethods {
 
         try {
             String uri = createURI(asset, activity);
+            Log.w("urivalue-->>",uri);
 /*
             DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     .setLink(Uri.parse(uri))
