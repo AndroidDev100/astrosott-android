@@ -17,6 +17,7 @@ import com.astro.sott.fragments.subscription.adapter.SubscriptionPagerAdapter.On
 import com.astro.sott.modelClasses.InApp.PackDetail
 import com.astro.sott.usermanagment.modelClasses.getProducts.Attribute
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
+import com.astro.sott.utils.userInfo.UserInfo
 import java.util.*
 
 class SubscriptionRecyclerViewAdapter(
@@ -156,6 +157,8 @@ class SubscriptionRecyclerViewAdapter(
                 bannerBinding.bulletsList.adapter = adapter
                 bannerBinding.btnChooseMe.setOnClickListener(object : View.OnClickListener {
                     override fun onClick(v: View?) {
+
+
                         onPackageChooseClickListener.onPackageClicked(
                             position,
                             packagesList[position],

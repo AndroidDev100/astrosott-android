@@ -25,6 +25,7 @@ import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
+import com.astro.sott.fragments.dialog.MaxisEditRestrictionPop;
 import com.astro.sott.fragments.subscription.dialog.DowngradeDialogFragment;
 import com.astro.sott.fragments.subscription.dialog.UpgradeDialogFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
@@ -33,6 +34,7 @@ import com.astro.sott.modelClasses.InApp.PackDetail;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
 import com.astro.sott.utils.PacksDateLayer;
 import com.astro.sott.utils.TabsData;
@@ -42,6 +44,7 @@ import com.astro.sott.utils.billing.PurchaseDetailListener;
 import com.astro.sott.utils.billing.PurchaseType;
 import com.astro.sott.utils.billing.SKUsListListener;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.gson.JsonArray;
@@ -55,6 +58,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private SubscriptionViewModel subscriptionViewModel;
     private SkuDetails skuDetails;
     private ArrayList<PackDetail> packDetailList;
+    private String paymentMethod = "";
     private boolean haveSvod = false, haveTvod = false;
 
     String fileId = "";
@@ -84,11 +88,40 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         isPlayable = getIntent().getBooleanExtra(AppLevelConstants.PLAYABLE, false);
 
         modelCall();
+        getActiveSubscription();
         getSubscriptionActionList();
     }
 
     private void modelCall() {
         subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel.class);
+    }
+
+    private void getActiveSubscription() {
+        subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), "profile").observe(this, evergentCommonResponse -> {
+            if (evergentCommonResponse.isStatus()) {
+                if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
+                    for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
+                        if (!accountServiceMessageItem.isFreemium()) {
+                            paymentMethod = accountServiceMessageItem.getPaymentMethod();
+                        }
+                    }
+                    UserInfo.getInstance(this).setMaxis(paymentMethod.equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING));
+                } else {
+
+                }
+            } else {
+                if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
+                    EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                        if (evergentCommonResponse.isStatus()) {
+                            getActiveSubscription();
+                        } else {
+                            AppCommonMethods.removeUserPrerences(this);
+                        }
+                    });
+                } else {
+                }
+            }
+        });
     }
 
     private String[] subscriptionIds;
@@ -226,15 +259,27 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 if (packDetailList.size() > 0) {
                     if (packDetailList.size() == 1) {
                         getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                        onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
+                        if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
+                            if (!packDetailList.get(0).getProductsResponseMessageItem().getServiceType().equalsIgnoreCase("ppv")) {
+                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_packs_restriction_description));
+                            } else {
+                                onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
+                            }
+                        } else {
+                            onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
+                        }
                     } else {
                         getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                         if (haveSvod && haveTvod == false) {
-                            PacksDateLayer.getInstance().setPackDetailList(packDetailList);
-                            Intent intent = new Intent(SubscriptionDetailActivity.this, ProfileSubscriptionActivity.class);
-                            intent.putExtra("from", "Content Detail Page");
-                            startActivity(intent);
-                            finish();
+                            if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
+                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_packs_restriction_description));
+                            } else {
+                                PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+                                Intent intent = new Intent(SubscriptionDetailActivity.this, ProfileSubscriptionActivity.class);
+                                intent.putExtra("from", "Content Detail Page");
+                                startActivity(intent);
+                                finish();
+                            }
                         } else {
                             setPackFragment();
                         }
@@ -282,6 +327,16 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         this.planName = planName;
         offerId = productId;
         planPrice = price;
+        checkForCpId(serviceType, productId, price);
+    }
+
+    private void maxisRestrictionPopUp(String message) {
+        FragmentManager fm = getSupportFragmentManager();
+        MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), message, getResources().getString(R.string.ok_understand));
+        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+    }
+
+    private void checkForCpId(String serviceType, String productId, Long price) {
         FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, price, "trx_select", "");
         if (UserInfo.getInstance(this).getCpCustomerId() != null && !UserInfo.getInstance(this).getCpCustomerId().equalsIgnoreCase("")) {
             processPayment(serviceType, productId);
@@ -324,11 +379,19 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                         if (purchaseObject != null) {
                             if (purchaseObject.getSku() != null && purchaseObject.getPurchaseToken() != null) {
                                 offerType = "SVOD";
-                                billingProcessor.updatePurchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
+                                if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
+                                    maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
+                                } else {
+                                    billingProcessor.updatePurchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
+                                }
                             }
                         } else {
                             offerType = "SVOD";
-                            billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                            if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
+                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_packs_restriction_description));
+                            } else {
+                                billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                            }
                         }
                     }
                 });

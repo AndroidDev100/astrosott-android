@@ -17,6 +17,7 @@ import com.astro.sott.modelClasses.InApp.PackDetail
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem
 import com.astro.sott.usermanagment.modelClasses.getProducts.Attribute
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
+import com.astro.sott.utils.userInfo.UserInfo
 import java.util.*
 import kotlin.collections.ArrayList
 

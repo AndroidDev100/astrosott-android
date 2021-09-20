@@ -80,7 +80,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-    private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
+    private final String PASSWORD_REGEX = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=\\S+$).{8,16}$";
 
 
     @Override
@@ -449,7 +449,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         });
     }
 
-    private String displayName = "";
+    private String displayName = "", paymentMethod = "";
 
     private void getActiveSubscription() {
         astroLoginViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), "").observe(this, evergentCommonResponse -> {
@@ -460,8 +460,10 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                             if (!accountServiceMessageItem.isFreemium()) {
                                 if (accountServiceMessageItem.getDisplayName() != null)
                                     displayName = accountServiceMessageItem.getDisplayName();
+                                paymentMethod = accountServiceMessageItem.getPaymentMethod();
                             }
                         }
+                        UserInfo.getInstance(this).setMaxis(paymentMethod.equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING));
                         if (!displayName.equalsIgnoreCase("")) {
                             UserInfo.getInstance(this).setVip(true);
                             setActive();
