@@ -1225,7 +1225,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             } else {
                 getBinding().seekBar.setVisibility(View.GONE);
-                getBinding().quality.setVisibility(View.GONE);
+                getBinding().quality.setVisibility(View.VISIBLE);
 
             }
 
