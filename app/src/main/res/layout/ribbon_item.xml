@@ -13,16 +13,15 @@
             android:layout_height="wrap_content"
             android:background="@color/ribbon_color_new"
             android:fontFamily="@font/roboto_medium"
-            android:textStyle="normal"
+            android:letterSpacing="0.09"
+            android:lineSpacingExtra="6sp"
             android:paddingLeft="8dp"
             android:paddingTop="4dp"
             android:paddingRight="8dp"
             android:paddingBottom="4dp"
-            android:textAllCaps="true"
-            android:letterSpacing="0.09"
-            android:lineSpacingExtra="6sp"
             android:textColor="@color/ribben_text_color"
-            android:textSize="@dimen/_10sp" />
+            android:textSize="@dimen/_8sdp"
+            android:textStyle="normal" />
 
     </androidx.cardview.widget.CardView>
 </layout>
