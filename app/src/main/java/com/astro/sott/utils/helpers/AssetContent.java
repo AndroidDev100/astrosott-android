@@ -1066,7 +1066,7 @@ public class AssetContent {
     }
 
 
-    public  static String getTileSortName(Map<String, Value> map) {
+    public static String getTileSortName(Map<String, Value> map) {
         MultilingualStringValue titleSortValue = null;
         String s = "";
         if (map != null) {
@@ -1774,6 +1774,20 @@ public class AssetContent {
             return true;
         }
 
+
+    }
+
+
+    public static String getEpisodeNumber(Map<String, Value> metas) {
+        MultilingualStringValue startValue, endValue;
+        String episodeNumber = "";
+        startValue = (MultilingualStringValue) metas.get(AppLevelConstants.KEY_EPISODE_NUMBER);
+        if (startValue != null) {
+            episodeNumber = startValue.getValue();
+        } else {
+            return "";
+        }
+        return episodeNumber;
 
     }
 

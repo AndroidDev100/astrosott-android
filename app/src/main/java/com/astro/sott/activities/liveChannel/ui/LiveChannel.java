@@ -214,7 +214,11 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             getMovieCasts();
             getMovieCrews();
             setSubtitleLanguage();
-            getBinding().programTitle.setText(programAsset.getName());
+            if (AssetContent.getEpisodeNumber(programAsset.getMetas()).equalsIgnoreCase("")) {
+                getBinding().programTitle.setText(programAsset.getName());
+            } else {
+                getBinding().programTitle.setText(programAsset.getName() + " Ep" + AssetContent.getEpisodeNumber(programAsset.getMetas()));
+            }
 
             getBinding().descriptionText.setText(programAsset.getDescription());
 ////            getBinding().descriptionText.post(() -> {

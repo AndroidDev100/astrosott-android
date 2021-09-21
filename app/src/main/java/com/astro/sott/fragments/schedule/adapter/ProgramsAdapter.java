@@ -77,7 +77,11 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
     @Override
     public void onBindViewHolder(@NonNull final SingleItemRowHolder viewHolder, int i) {
         RailCommonData commonData = data.get(i);
-        viewHolder.scheduleItemBinding.epgTitle.setText(commonData.getObject().getName());
+        if (AssetContent.getEpisodeNumber(commonData.getObject().getMetas()).equalsIgnoreCase("")) {
+            viewHolder.scheduleItemBinding.epgTitle.setText(commonData.getObject().getName());
+        }else {
+            viewHolder.scheduleItemBinding.epgTitle.setText(commonData.getObject().getName()+" Ep"+AssetContent.getEpisodeNumber(commonData.getObject().getMetas()));
+        }
 
         for (int count = 0; count < commonData.getObject().getImages().size(); count++) {
             if (commonData.getObject().getImages().get(count).getRatio().equals("16x9")) {
