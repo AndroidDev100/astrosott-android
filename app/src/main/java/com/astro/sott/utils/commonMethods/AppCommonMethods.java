@@ -781,7 +781,7 @@ public class AppCommonMethods {
 
         try {
             String uri = createURI(asset, activity);
-            Log.w("urivalue-->>",uri);
+            Log.w("urivalue-->>",asset.getName()+"  "+asset.getDescription());
 /*
             DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     .setLink(Uri.parse(uri))
@@ -869,6 +869,7 @@ public class AppCommonMethods {
                     .appendQueryParameter("mediaType", assetType)
                     .appendQueryParameter("image", AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType()))
                     .appendQueryParameter("name", asset.getName())
+                    .appendQueryParameter("sd", asset.getDescription())
                     .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE)
                     .build().toString();
 
