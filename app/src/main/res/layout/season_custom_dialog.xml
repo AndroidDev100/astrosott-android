@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout >
+<layout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="?actionBarSize"
-        android:background="@color/transparentColor">
+        android:background="@color/transparentColor"
+        android:paddingBottom="?actionBarSize">
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/my_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"
             android:overScrollMode="never"
             android:scrollbars="vertical" />
 
-        <ImageView
+        <FrameLayout
             android:id="@+id/close"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginBottom="?actionBarSize"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/season_cancel"
-            android:contentDescription="@string/contentDescription" />
+            android:background="@drawable/social_bg">
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/contentDescription"
+                android:src="@drawable/ic_close_24px" />
+        </FrameLayout>
+
     </RelativeLayout>
 
 </layout>

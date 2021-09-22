@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -426,7 +427,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         View content = inflater.inflate(R.layout.season_custom_dialog, null);
         builder.setView(content);
         RecyclerView mRecyclerView = content.findViewById(R.id.my_recycler_view);
-        ImageView imageView = content.findViewById(R.id.close);
+        FrameLayout imageView = content.findViewById(R.id.close);
         imageView.setOnClickListener(v -> {
             alertDialog.cancel();
         });
@@ -458,7 +459,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         View content = inflater.inflate(R.layout.season_custom_dialog, null);
         builder.setView(content);
         RecyclerView mRecyclerView = content.findViewById(R.id.my_recycler_view);
-        ImageView imageView = content.findViewById(R.id.close);
+        FrameLayout imageView = content.findViewById(R.id.close);
         imageView.setOnClickListener(v -> {
             alertDialog.cancel();
         });
