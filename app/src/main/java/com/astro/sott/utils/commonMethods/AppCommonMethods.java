@@ -88,7 +88,10 @@ import com.kaltura.client.types.SubscriptionEntitlement;
 import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
@@ -472,6 +475,7 @@ public class AppCommonMethods {
         }
         return "";
     }
+
     public static String getDateCleverTap(long timestamp) {
         try {
             Calendar calendar = Calendar.getInstance();
@@ -830,7 +834,7 @@ public class AppCommonMethods {
                                             if (dynamicLinkUri != null) {
                                                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                                                 sharingIntent.setType("text/plain");
-                                                sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + asset.getDescription()+ "\n" + dynamicLinkUri.toString());
+                                                sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + asset.getDescription() + "\n" + dynamicLinkUri.toString());
                                                 // sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + "https://stagingsott.page.link/?link="+dynamicLinkUri.toString()+"&apn=com.astro.stagingsott");
 
                                                 activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
@@ -882,11 +886,11 @@ public class AppCommonMethods {
     private static String getSharingImage(Context context, List<MediaImage> mediaImage, Integer type) {
         String imageURL = "";
         for (int i = 0; i < mediaImage.size(); i++) {
-            Log.w("imagevideo-->",mediaImage.get(i).getRatio()+"  "+type);
+            Log.w("imagevideo-->", mediaImage.get(i).getRatio() + "  " + type);
             if (type == MediaTypeConstant.getMovie(context)) {
                 if (mediaImage.get(i).getRatio().equals("9x16")) {
                     imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.portrait_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.portrait_image_height) + AppLevelConstants.QUALITY;
-                }else if(mediaImage.get(i).getRatio().equals("16x9")) {
+                } else if (mediaImage.get(i).getRatio().equals("16x9")) {
                     imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
                 }
 
@@ -1771,11 +1775,11 @@ public class AppCommonMethods {
     public static ArrayList<String> splitString(String temp, String delim) {
         StringBuilder stringBuilder;
 
-            if (temp.contains("##") && (temp != null)){
-                stringBuilder = new StringBuilder(temp.replace("##", "#StringTokenizer#"));
-            } else {
-                stringBuilder = new StringBuilder(temp);
-            }
+        if (temp.contains("##") && (temp != null)) {
+            stringBuilder = new StringBuilder(temp.replace("##", "#StringTokenizer#"));
+        } else {
+            stringBuilder = new StringBuilder(temp);
+        }
 
         ArrayList<String> mDetailList = new ArrayList<>();
         StringTokenizer tok = new StringTokenizer(stringBuilder.toString(), delim, true);
@@ -1805,7 +1809,7 @@ public class AppCommonMethods {
 
     public static void setBillingUi(ImageView imageView, Map<String, MultilingualStringValueArray> tags, Integer type, Activity mContext) {
         try {
-            if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext) || type == MediaTypeConstant.getLinear(mContext) ) {
+            if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext) || type == MediaTypeConstant.getLinear(mContext)) {
                 if (AssetContent.getBillingIdForSeries(tags)) {
                     imageView.setVisibility(View.VISIBLE);
                 } else {
@@ -2977,44 +2981,55 @@ public class AppCommonMethods {
     }
 
     public static String getAdsUrl(String url, Asset asset, Context context) {
+        StringBuilder finalUrl = new StringBuilder();
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(url);
-        stringBuilder.append("&cust_params=");
+       /* stringBuilder.append(url);
+        stringBuilder.append("&cust_params=");*/
         //did%3D" + AppCommonMethods.getDeviceId(context.getContentResolver())
        /* if (UserInfo.getInstance(context).getCpCustomerId() != null && !UserInfo.getInstance(context).getCpCustomerId().equalsIgnoreCase(""))
             stringBuilder.append("&cid%3D" + UserInfo.getInstance(context).getCpCustomerId());*/
-        stringBuilder.append("vid%3D" + asset.getId());
+        stringBuilder.append("vid=" + asset.getId());
         if (!asset.getName().equalsIgnoreCase(""))
-            stringBuilder.append("&vtitle%3D" + asset.getName());
+            stringBuilder.append("&vtitle=" + asset.getName());
 
         /* stringBuilder.append("&ver%3D" + BuildConfig.VERSION_NAME);*/
 
         if (asset.getType() == MediaTypeConstant.getLinear(context)) {
             if (AssetContent.isLiveEvent(asset.getMetas())) {
-                stringBuilder.append("&vtype%3DLive Event");
+                stringBuilder.append("&vtype=Live Event");
             } else {
                 /*  stringBuilder.append("&ch%3D" + asset.getName());*/
-                stringBuilder.append("&vtype%3DLinear Programme");
+                stringBuilder.append("&vtype=Linear Programme");
             }
         } else {
-            stringBuilder.append("&vtype%3DVOD");
+            stringBuilder.append("&vtype=VOD");
         }
         if (!AssetContent.getGenredataString(asset.getTags()).equalsIgnoreCase(""))
-            stringBuilder.append("&genre%3D" + AssetContent.getGenredataString(asset.getTags()));
+            stringBuilder.append("&vgenre=" + AssetContent.getGenredataString(asset.getTags()));
         if (!AssetContent.getSubGenredataString(asset.getTags()).equalsIgnoreCase(""))
-            stringBuilder.append("&subgenre%3D" + AssetContent.getSubGenredataString(asset.getTags()));
+            stringBuilder.append("&subgenre=" + AssetContent.getSubGenredataString(asset.getTags()));
 
         if (!AssetContent.getLanguageDataString(asset.getTags(), context).equalsIgnoreCase(""))
-            stringBuilder.append("&vlang%3D" + AssetContent.getLanguageDataString(asset.getTags(), context));
+            stringBuilder.append("&vlang=" + AssetContent.getLanguageDataString(asset.getTags(), context));
 
         if (!AssetContent.getProvider(asset.getTags()).equalsIgnoreCase(""))
-            stringBuilder.append("&vpro%3D" + AssetContent.getProvider(asset.getTags()));
+            stringBuilder.append("&vpro=" + AssetContent.getProvider(asset.getTags()));
 
        /* if (!AssetContent.getSubTitleLanguageDataString(asset.getTags(), context).equalsIgnoreCase(""))
             stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags(), context));*/
-        stringBuilder.append("&lang%3D" + "English");
-
-        return stringBuilder.toString();
+        stringBuilder.append("&lang=" + "English");
+        try {
+            finalUrl.append(url);
+            finalUrl.append("&cust_params=");
+            finalUrl.append(URLEncoder.encode(stringBuilder.toString(), "UTF-8"));
+            Log.w("addImaTagUrl", URLDecoder.decode("vid%3D1182075%26lang%3DEnglish%26vtitle%3DKisses%20for%20the%20world%20%2D%20EP1%20%28Back%20To%20The%20Beginning%29%26vtype%3DVOD%26vgenre%3DLifestyle%26subgenre%3DTravel%26vpro%3DUniversal%20Music%26vlang%3Dcmn", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            finalUrl.append(url);
+            finalUrl.append("&cust_params=");
+            finalUrl.append(stringBuilder.toString());
+            e.printStackTrace();
+        }
+        return finalUrl.toString();
     }
 
     public static String splitGenre(String customGenre, String customGenreRule) {
