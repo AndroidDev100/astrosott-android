@@ -751,37 +751,13 @@ public class AppCommonMethods {
     static Uri dynamicLinkUri;
 
     public static void openShareDialog(final Activity activity, final Asset asset, Context context, String subMediaType) {
-        /*WeakReference<Activity> mActivity = new WeakReference<>(activity);
-        BranchUniversalObject buo = new BranchUniversalObject()
-                .setTitle(asset.getName())
-                .setContentDescription(asset.getDescription())
-                .setContentImageUrl(AppCommonMethods.getSharingImage(context, asset.getImages(), asset.getType()));
 
-
-        LinkProperties lp = new LinkProperties()
-                .setChannel("Wactho Example")
-                .addControlParameter("assetId", asset.getId() + "")
-                .addControlParameter("mediaType", asset.getType() + "");
-
-        buo.generateShortUrl(context, lp, (url, error) -> {
-
-            String sharingURL;
-            if (error == null) {
-                sharingURL = url;
-                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-
-                sharingIntent.putExtra(Intent.EXTRA_TEXT, mActivity.get().getResources().getString(R.string.checkout) + " " + asset.getName() + " " + mActivity.get().getResources().getString(R.string.on_Dialog) + "\n" + sharingURL);
-
-                activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
-
-                Log.i("BRANCH SDK", "got my Branch link to share: " + sharingURL);
-            }
-        });*/
 
         try {
             String uri = createURI(asset, activity);
-            Log.w("urivalue-->>",asset.getName()+"  "+asset.getDescription());
+            String fallBackUrl = createFallBackUrl(asset, activity);
+            Log.w("urivalue-->>",asset.getName()+"  "+uri);
+            Log.w("urivalue-->>",asset.getName()+"  "+Uri.parse(uri));
 /*
             DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     .setLink(Uri.parse(uri))
@@ -799,14 +775,13 @@ public class AppCommonMethods {
             //  Uri dynamicLinkUri = dynamicLink.getUri();
 
 
+
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     //.setDomainUriPrefix("https://stagingsott.page.link/")
                     .setLink(Uri.parse(uri))
                     .setDomainUriPrefix(AppConstants.FIREBASE_DPLNK_PREFIX)
                     //.setLink(Uri.parse(uri))
-                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
-                            .build())
-                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE)
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE).setFallbackUrl(Uri.parse(fallBackUrl))
                             .build())
                     .setIosParameters(new DynamicLink.IosParameters.Builder(AppConstants.FIREBASE_IOS_PACKAGE).build())
                     .setSocialMetaTagParameters(
@@ -815,6 +790,8 @@ public class AppCommonMethods {
                                     .setDescription(asset.getDescription())
                                     .setImageUrl(Uri.parse(AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType())))
                                     .build())
+                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
+                            .build())
                     .buildShortDynamicLink(ShortDynamicLink.Suffix.SHORT)
                     .addOnCompleteListener(activity, new OnCompleteListener<ShortDynamicLink>() {
                         @Override
@@ -852,10 +829,29 @@ public class AppCommonMethods {
                     });
 
             shortLinkTask.toString();
+            Log.w("urivalue-->>",asset.getName()+"  "+shortLinkTask.toString());
 
         } catch (Exception ignored) {
 
         }
+    }
+
+    private static String createFallBackUrl(Asset asset, Activity activity) {
+        String uri = "";
+        try {
+            String assetId = asset.getId() + "";
+            String assetType = asset.getType() + "";
+            uri = Uri.parse(AppConstants.FIREBASE_DPLNK_FALLBACK_URL)
+                    .buildUpon()
+                    .appendQueryParameter("id", assetId)
+                    .appendQueryParameter("mediaType", assetType)
+                    .build().toString();
+
+        } catch (Exception ignored) {
+            uri = "";
+        }
+
+        return uri;
     }
 
     private static String createURI(Asset asset, Activity activity) {
@@ -863,15 +859,18 @@ public class AppCommonMethods {
         try {
             String assetId = asset.getId() + "";
             String assetType = asset.getType() + "";
-            uri = Uri.parse(AppConstants.FIREBASE_DPLNK_URL)
-                    .buildUpon()
+
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("https")
+                    .authority(AppConstants.FIREBASE_DPLNK_URL)
+                    .appendPath("data")
                     .appendQueryParameter("id", assetId)
                     .appendQueryParameter("mediaType", assetType)
                     .appendQueryParameter("image", AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType()))
                     .appendQueryParameter("name", asset.getName())
                     .appendQueryParameter("sd", asset.getDescription())
-                    .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE)
-                    .build().toString();
+                    .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE);
+            uri = builder.build().toString();
 
         } catch (Exception ignored) {
             uri = "";
