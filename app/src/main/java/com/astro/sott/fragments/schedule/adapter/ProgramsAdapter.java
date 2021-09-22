@@ -18,11 +18,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.astro.sott.callBacks.SpecificAssetCallBack;
+import com.astro.sott.fragments.schedule.ui.Schedule;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.ToastHandler;
+import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.R;
 import com.astro.sott.activities.forwardEPG.ForwardedEPGActivity;
@@ -32,7 +37,12 @@ import com.astro.sott.databinding.ScheduleItemBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.kaltura.client.types.ProgramAsset;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.SingleItemRowHolder> {
 
@@ -44,6 +54,7 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
     private int liveNowIndex = -1;
     private SpecificAssetCallBack callBack;
     private boolean value;
+
 
     public ProgramsAdapter(Activity mContext,
                            List<RailCommonData> railData, int pos, EpgNotAvailableCallBack callBack, SpecificAssetCallBack specificAssetCallBack) {
@@ -75,7 +86,8 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
                 ImageHelper.getInstance(viewHolder.scheduleItemBinding.image.getContext()).loadImageToPotrait(viewHolder.scheduleItemBinding.image, final_url, R.drawable.square1);
             }
         }
-        viewHolder.scheduleItemBinding.startEndTime.setText(AppCommonMethods.setTime(commonData.getObject(), 1) + " - " + AppCommonMethods.setTime(commonData.getObject(), 0));
+        viewHolder.scheduleItemBinding.startEndTime.setText((getStartDate(data.get(i).getObject().getStartDate()))+ " - " + (AppCommonMethods.setTime(commonData.getObject(), 0)));
+//        viewHolder.scheduleItemBinding.startEndTime.setText(AppCommonMethods.setTime(commonData.getObject(), 1) + " - " + AppCommonMethods.setTime(commonData.getObject(), 0));
         viewHolder.scheduleItemBinding.descriptionText.setText(commonData.getObject().getDescription());
         //viewHolder.scheduleItemBinding.descriptionText.collapse();
         String stTime = AppCommonMethods.getProgramTime(commonData.getObject(), 1);
@@ -83,40 +95,74 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
 
         viewHolder.scheduleItemBinding.descriptionText.post(() -> {
             int lineCount = viewHolder.scheduleItemBinding.descriptionText.getLineCount();
-            if (lineCount > 1) {
+            if (lineCount > 3) {
+                viewHolder.scheduleItemBinding.shadow.setVisibility(View.VISIBLE);
                 viewHolder.scheduleItemBinding.descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+            }
+            else{
+                viewHolder.scheduleItemBinding.shadow.setVisibility(View.GONE);
+                viewHolder.scheduleItemBinding.moreButton.setVisibility(View.GONE);
             }
         });
 
         viewHolder.scheduleItemBinding.moreButton.setOnClickListener(v -> {
+            FirebaseEventManager.getFirebaseInstance(context).viewItemEvent("Schedule - " + Constants.channelName, commonData.getObject(), context);
+
             viewHolder.scheduleItemBinding.descriptionText.toggle();
             if (viewHolder.scheduleItemBinding.descriptionText.isExpanded()) {
                 viewHolder.scheduleItemBinding.descriptionText.setEllipsize(null);
-                viewHolder.scheduleItemBinding.moreButton.setText("See Less");
+//                viewHolder.scheduleItemBinding.moreButton.setText("See Less");
+                viewHolder.scheduleItemBinding.shadow.setVisibility(View.GONE);
+                viewHolder.scheduleItemBinding.moreButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+
+
             } else {
                 viewHolder.scheduleItemBinding.descriptionText.setEllipsize(TextUtils.TruncateAt.END);
-                viewHolder.scheduleItemBinding.moreButton.setText("See More");
+//                viewHolder.scheduleItemBinding.moreButton.setText("See More");
+                viewHolder.scheduleItemBinding.shadow.setVisibility(View.VISIBLE);
+                viewHolder.scheduleItemBinding.moreButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+
 
             }
         });
         viewHolder.scheduleItemBinding.share.setOnClickListener(v -> {
-            AppCommonMethods.openShareDialog(context, data.get(i).getObject(), context,"");
+            try {
+                CleverTapManager.getInstance().socialShare(context, commonData.getObject(), false);
+                FirebaseEventManager.getFirebaseInstance(context).shareEvent(commonData.getObject(), context);
+            } catch (Exception e) {
+
+            }
+            AppCommonMethods.openShareDialog(context, data.get(i).getObject(), context, "");
         });
 
 
         Long currentTime = AppCommonMethods.getCurrentTimeStampLong();
         Long startTime = data.get(i).getObject().getStartDate();
+
         Log.e("currentTime", String.valueOf(Long.valueOf(currentTime)));
         Log.e("startTime", String.valueOf(startTime));
 
         Boolean enable = ((ProgramAsset) data.get(i).getObject()).getEnableCatchUp();
 
-        if(startTime>currentTime){
+        if (startTime > currentTime) {
             viewHolder.scheduleItemBinding.playIcon.setVisibility(View.GONE);
 
         }
 
 
+    }
+    public String getStartDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM hh:mmaaa", Locale.US);
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
     }
 
 

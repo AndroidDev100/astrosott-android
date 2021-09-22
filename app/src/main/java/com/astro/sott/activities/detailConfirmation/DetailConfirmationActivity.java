@@ -14,6 +14,7 @@ import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginView
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityDetailConfirmationBinding;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -87,6 +88,7 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
                 UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
                 KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
+                AppCommonMethods.onUserRegister(this);
                 getContact();
 
             } else {
@@ -106,7 +108,9 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
                 UserInfo.getInstance(this).setLastName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getLastName());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
-
+                if (evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getAccountRole() != null)
+                    UserInfo.getInstance(this).setAccountRole(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getAccountRole());
+                AppCommonMethods.setCrashlyticsUserId(this);
                 getActiveSubscription();
 
             } else {
@@ -163,8 +167,11 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
     }
 
     private void setActive() {
+        FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), UserInfo.getInstance(this).getAccountRole(), type);
         UserInfo.getInstance(this).setActive(true);
-        Toast.makeText(this, "User Logged in successfully.", Toast.LENGTH_SHORT).show();
+        UserInfo.getInstance(this).setSocialLogin(true);
+        AppCommonMethods.setCleverTap(this);
+        Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();
         new ActivityLauncher(DetailConfirmationActivity.this).homeScreen(DetailConfirmationActivity.this, HomeActivity.class);
 
     }

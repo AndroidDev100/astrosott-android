@@ -1,5 +1,6 @@
 package com.astro.sott.baseModel;
 
+import androidx.constraintlayout.widget.Constraints;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -11,9 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.callBacks.commonCallBacks.RemoveAdsCallBack;
@@ -22,6 +26,7 @@ import com.astro.sott.fragments.sports.viewModel.SportsViewModel;
 import com.astro.sott.fragments.video.viewModel.VideoViewModel;
 import com.astro.sott.repositories.homeTab.HomeFragmentRepository;
 import com.astro.sott.utils.HeroDiversion;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.ShimmerDataModel;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.R;
@@ -51,6 +56,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     private boolean mIsLoading = true, isScrolling = false;
     private int counter = 0;
     private int swipeToRefresh = 0;
+    int updatedContinueWIndex = -1;
     private int count = 0;
     private List<VIUChannel> channelList;
     private List<VIUChannel> dtChannelsList;
@@ -84,6 +90,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                 && NetworkConnectivity.isOnline(getActivity())) {
             swipeToRefresh = 2;
             getBinding().noConnectionLayout.setVisibility(View.GONE);
+
             connectionValidation(true);
         } else {
             connectionValidation(false);
@@ -119,20 +126,18 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                 getBinding().swipeContainer.setRefreshing(false);
                 getBinding().myRecyclerView.setVisibility(View.GONE);
                 getBinding().noDataLayout.setVisibility(View.VISIBLE);
-                PrintLogging.printLog("", "in error");
             }
-
-
         });
     }
 
 
     private void UIinitialization() {
         swipeToRefresh();
-        getBinding().myRecyclerView.setHasFixedSize(true);
+        getBinding().myRecyclerView.setHasFixedSize(false);
         getBinding().myRecyclerView.setItemViewCacheSize(20);
-        // getBinding().myRecyclerView.setNestedScrollingEnabled(false);
-        getBinding().myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        getBinding().myRecyclerView.setNestedScrollingEnabled(false);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
+        getBinding().myRecyclerView.setLayoutManager(llm);
         CustomShimmerAdapter adapter = new CustomShimmerAdapter(getActivity(), new ShimmerDataModel(getActivity()).getList(0), new ShimmerDataModel(getActivity()).getSlides());
         getBinding().myRecyclerView.setAdapter(adapter);
         getBinding().noData.retryTxt.setOnClickListener(view -> {
@@ -147,6 +152,9 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 
     private void noConnectionLayout() {
         getBinding().noConnectionLayout.setVisibility(View.VISIBLE);
+        Constraints.LayoutParams params = new Constraints.LayoutParams(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 60, 0, 0);
+        getBinding().noConnectionLayout.setLayoutParams(params);
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
     }
 
@@ -237,14 +245,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                             boolean status = false;
                             if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus())
                                 status = assetCommonBeans.get(0).getStatus();
-                            PrintLogging.printLog("", "sizeAsset" + assetCommonBeans.get(0).getStatus() + "");
-
-
-                            if (status == true) {
-                            /*if (swipeToRefresh == 2) {
-                                adapter = null;
-                                loadedList.clear();
-                            }*/
+                            if (status) {
                                 swipeToRefresh = 0;
                                 setUIComponets(assetCommonBeans);
                                 counter++;
@@ -252,8 +253,6 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                                 callRailAPI(channelList);
                                 getBinding().noDataLayout.setVisibility(View.GONE);
                                 getBinding().myRecyclerView.setVisibility(View.VISIBLE);
-                                //getBinding().transparentLayout.setVisibility(View.GONE);
-
                             } else {
                                 swipeToRefresh = 0;
                                 if (counter != channelList.size()) {
@@ -270,15 +269,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                                 }
                             }
 
-                        } else {
-                            // getBinding().myRecyclerView.setVisibility(View.GONE);
-                            // getBinding().noDataLayout.setVisibility(View.VISIBLE);
-                            // PrintLogging.printLog("","in error");
-
-                            // ToastHandler.show(getActivity().getResources().getString(R.string.no_feeds_available), ApplicationMain.getAppContext());
                         }
-
-
                     }
                 });
 
@@ -319,7 +310,12 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         try {
             if (adapter != null) {
                 loadedList.add(assetCommonBeans.get(0));
-                adapter.notifyItemChanged(counter);
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyItemChanged(counter);
+                    }
+                });
                 getBinding().myRecyclerView.scrollToPosition(mScrollY + 500);
             } else {
                 loadedList.add(assetCommonBeans.get(0));
@@ -337,11 +333,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                     adapter = new CommonAdapter(getActivity(), loadedList, loadedList.get(0).getSlides(), this, this, this);
                     getBinding().myRecyclerView.setAdapter(adapter);
                 }
-
-
             }
-
-
         } catch (Exception e) {
             Log.e("Exception", e.getMessage());
         }
@@ -454,6 +446,146 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     public void onResume() {
         super.onResume();
         refreshData();
+        updateContinueWatching();
+    }
+
+    private void updateContinueWatching() {
+        if (UserInfo.getInstance(getActivity()).isActive()) {
+            if (dtChannelsList != null) {
+                if (adapter != null) {
+                    if (checkContinueWatching(loadedList) == 1) {
+                        if (adapter.getContinueWatchInd() != -1) {
+                            new ContinueWatchingUpdate().updateCall(getActivity(), dtChannelsList, getContinueWatchInd(), 1, loadedList, (status, commonResponse) -> {
+                                if (status) {
+                                    if (adapter != null && getActivity() != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                loadedList.remove(getContinueWatchInd());
+                                                loadedList.add(getContinueWatchInd(), commonResponse.get(0));
+                                                //    adapter.notifyDataSetChanged();
+                                                adapter.notifyItemChanged(getContinueWatchInd());
+                                                updateMyList();
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    updateMyList();
+                                    if (commonResponse != null && commonResponse.size() == 0) {
+                                        if (adapter != null && getActivity() != null) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    loadedList.remove(getContinueWatchInd());
+                                                    adapter.notifyDataSetChanged();
+                                                    /* adapter.notifyItemChanged(getContinueWatchInd());*/
+                                                    updateMyList();
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+
+                            });
+                        }
+                    } else {
+                        try {
+
+                            if (checkContinueWatchingInChannelList(dtChannelsList) == 1) {
+                                new ContinueWatchingUpdate().updateCall(getActivity(), dtChannelsList, getContinueWatchIndInChannelList(), 1, loadedList, (status, commonResponse) -> {
+                                    if (status) {
+                                        if (adapter != null && getActivity() != null) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    try {
+                                                        loadedList.add(getContinueWatchIndInChannelList(), commonResponse.get(0));
+                                                        /*adapter.notifyItemChanged(getContinueWatchIndInChannelList());*/
+                                                        adapter.notifyDataSetChanged();
+                                                        updateMyList();
+                                                    }catch (Exception ignored){}
+                                                }
+                                            });
+
+
+                                        }
+                                    }
+
+                                });
+                            } else{
+                                updateMyList();
+                            }
+                        } catch (Exception ignored) {
+
+                        }
+
+
+                }
+            }
+        }
+    }
+
+}
+
+    private void updateMyList() {
+        try {
+            if (adapter != null)
+                if (checkMyList(loadedList) == 1) {
+                    if (adapter.getMyListIndex() != -1) {
+                        new MyListUpdate().updateCall(getActivity(), dtChannelsList, getMyListIndexInChannelList(), (status, commonResponse) -> {
+                            if (status) {
+                                if (adapter != null && getActivity() != null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            loadedList.remove(getMyListIndex());
+                                            loadedList.add(getMyListIndex(), commonResponse.get(0));
+                                            /*adapter.notifyDataSetChanged();*/
+                                            adapter.notifyItemChanged(getMyListIndex());
+                                        }
+                                    });
+
+
+                                }
+                            } else {
+                                if (commonResponse != null && commonResponse.size() == 0) {
+                                    if (adapter != null && getActivity() != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                loadedList.remove(getMyListIndex());
+                                                adapter.notifyDataSetChanged();
+                                                //   adapter.notifyItemChanged(getMyListIndex());
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    if (checkMyListInChannelList(dtChannelsList) == 1) {
+                        new MyListUpdate().updateCall(getActivity(), dtChannelsList, getMyListIndexInChannelList(), (status, commonResponse) -> {
+                            if (status) {
+                                if (adapter != null && getActivity() != null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            PrintLogging.printLog("", "sizeinlist 3" + counterValueApiFail);
+                                            loadedList.add(getMyListIndexInChannelList(), commonResponse.get(0));
+                                            adapter.notifyDataSetChanged();
+                                            /* adapter.notifyItemChanged(getMyListIndexInChannelList());*/
+                                        }
+                                    });
+
+                                }
+                            } else {
+                            }
+                        });
+                    }
+                }
+        } catch (Exception ex) {
+        }
     }
 
     private void setTabId() {
@@ -474,9 +606,97 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         }
     }
 
+    private int checkContinueWatching(List<AssetCommonBean> longList) {
+        int exists = 0;
+        for (int i = 0; i < longList.size(); i++) {
+            if (longList.get(i).getRailType() == AppConstants.Rail6) {
+                exists = 1;
+            }
+        }
+        return exists;
+    }
+
+    private int checkMyList(List<AssetCommonBean> longList) {
+        int exists = 0;
+        for (int i = 0; i < longList.size(); i++) {
+            if (longList.get(i) != null && longList.get(i).getRailDetail() != null && longList.get(i).getRailDetail().getDescription() != null) {
+                if (longList.get(i).getRailDetail().getDescription().equalsIgnoreCase(AppConstants.KEY_MY_WATCHLIST)) {
+                    exists = 1;
+                }
+            }
+        }
+        return exists;
+    }
+
+    private int checkContinueWatchingInChannelList(List<VIUChannel> channelList) {
+        int exists = 0;
+        for (int i = 0; i < channelList.size(); i++) {
+            if (channelList.get(i) != null && channelList.get(i).getDescription() != null) {
+                if (channelList.get(i).getDescription().equalsIgnoreCase(AppConstants.KEY_CONTINUE_WATCHING)) {
+                    exists = 1;
+                }
+            }
+        }
+        return exists;
+    }
+
+    private int checkMyListInChannelList(List<VIUChannel> channelList) {
+        int exists = 0;
+        for (int i = 0; i < channelList.size(); i++) {
+            if (channelList.get(i) != null && channelList.get(i).getDescription() != null) {
+                if (channelList.get(i).getDescription().equalsIgnoreCase(AppConstants.KEY_MY_WATCHLIST)) {
+                    exists = 1;
+                }
+            }
+        }
+        return exists;
+    }
+
+    private int getMyListIndex() {
+        for (int i = 0; i < loadedList.size(); i++) {
+            String railType = loadedList.get(i).getRailDetail().getDescription();
+            if (railType.equalsIgnoreCase(AppConstants.KEY_MY_WATCHLIST)) {
+                updatedContinueWIndex = i;
+            }
+        }
+        return updatedContinueWIndex;
+    }
+
+    private int getMyListIndexInChannelList() {
+        for (int i = 0; i < dtChannelsList.size(); i++) {
+            String railType = dtChannelsList.get(i).getDescription();
+            if (railType.equalsIgnoreCase(AppConstants.KEY_MY_WATCHLIST)) {
+                updatedContinueWIndex = i;
+            }
+        }
+        return updatedContinueWIndex;
+    }
+
+    private int getContinueWatchIndInChannelList() {
+        for (int i = 0; i < dtChannelsList.size(); i++) {
+            String railType = dtChannelsList.get(i).getDescription();
+            if (railType.equalsIgnoreCase(AppConstants.KEY_CONTINUE_WATCHING)) {
+                updatedContinueWIndex = i;
+            }
+        }
+        return updatedContinueWIndex;
+    }
+
+    private int getContinueWatchInd() {
+        for (int i = 0; i < loadedList.size(); i++) {
+            int railType = loadedList.get(i).getRailType();
+            if (railType == AppConstants.Rail6) {
+                updatedContinueWIndex = i;
+            }
+        }
+        return updatedContinueWIndex;
+    }
 
     public void refreshData() {
         try {
+            Log.w("ContinueWatchingIndex", adapter.getContinueWatchInd() + "");
+
+
             if (UserInfo.getInstance(getActivity()).isActive()) {
                 for (int i = 0; i < loadedList.size(); i++) {
                     if (loadedList.get(i).getTitle().equalsIgnoreCase(AppConstants.KEY_DFP_ADS)) {
@@ -487,6 +707,8 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                     }
                 }
             }
+
+
         } catch (Exception ignored) {
         }
     }

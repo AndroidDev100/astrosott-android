@@ -17,6 +17,7 @@ import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivitySetPasswordBinding;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -24,7 +25,9 @@ import com.astro.sott.utils.userInfo.UserInfo;
 public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPasswordBinding> {
     private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
     private boolean passwordVisibilityNewPassword = false;
-    private String token = "", newEmail = "", newMobile = "";
+    private String accessToken = "", newEmail = "", newMobile = "", token = "";
+
+
     private AstroLoginViewModel astroLoginViewModel;
 
     @Override
@@ -36,12 +39,14 @@ public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPassword
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         modelCall();
-        if (getIntent().getExtras().getString("newEmail") != null)
+        if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().getString("newEmail") != null)
             newEmail = getIntent().getExtras().getString("newEmail");
-        if (getIntent().getExtras().getString("newMobile") != null)
+        if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().getString("newMobile") != null)
             newMobile = getIntent().getExtras().getString("newMobile");
 
-        token = UserInfo.getInstance(this).getAccessToken();
+        accessToken = UserInfo.getInstance(this).getAccessToken();
+        token = getIntent().getExtras().getString("token");
+
         setClicks();
     }
 
@@ -95,7 +100,7 @@ public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPassword
     private void resetPassword(String password) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         getBinding().errorPasssword.setVisibility(View.GONE);
-        astroLoginViewModel.resetPassword(token, password).observe(this, evergentCommonResponse -> {
+        astroLoginViewModel.setPassword(accessToken, password).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (!newEmail.equalsIgnoreCase(""))
@@ -110,10 +115,14 @@ public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPassword
 
     private void updateProfile(String name, String type) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
-        String acessToken = UserInfo.getInstance(this).getAccessToken();
-        astroLoginViewModel.updateProfile(type, name, acessToken).observe(this, updateProfileResponse -> {
+        astroLoginViewModel.updateProfile(type, name, accessToken, "").observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
+                if (type.equalsIgnoreCase("email")) {
+                    AppCommonMethods.emailPushCleverTap(this, name);
+                } else {
+                    AppCommonMethods.mobilePushCleverTap(this, name);
+                }
                 new ActivityLauncher(this).profileActivity(this);
                 Toast.makeText(this, updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getMessage() + "", Toast.LENGTH_SHORT).show();
             } else {

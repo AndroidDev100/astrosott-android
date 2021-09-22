@@ -2,21 +2,21 @@
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/main_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/grape_purple"
         android:orientation="vertical"
-        android:paddingTop="@dimen/schedule_top_margin"
-        android:paddingBottom="@dimen/schedule_bottom_margin">
+        android:paddingTop="@dimen/schedule_top_margin">
 
 
         <LinearLayout
+            android:id="@+id/top_lay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:background="@color/grape_purple"
             android:orientation="horizontal"
             android:baselineAligned="false">
@@ -24,24 +24,36 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+                <androidx.cardview.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/root"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:filterTouchesWhenObscured="true"
+                    card_view:cardBackgroundColor="@color/grape_purple"
+                    card_view:cardCornerRadius="9dp"
+                    card_view:cardElevation="1dp"
+                    card_view:cardMaxElevation="1dp"
+                    card_view:cardPreventCornerOverlap="false"
+                    card_view:cardUseCompatPadding="true">
+                    <ImageView
+                        android:id="@+id/image"
+                        android:layout_width="160dp"
+                        android:layout_height="90dp"
+                        android:background="@drawable/ic_landscape_placeholder"
+                        android:scaleType="fitXY"
+                        android:contentDescription="@string/contentDescription" />
 
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="160dp"
-                    android:layout_height="90dp"
-                    android:background="@drawable/ic_landscape_placeholder"
-                    android:scaleType="fitXY"
-                    android:contentDescription="@string/contentDescription" />
-
-                <ImageView
-                    android:id="@+id/play_icon"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_green_play_buton"
-                    android:contentDescription="@string/contentDescription" />
-
+                    <ImageView
+                        android:id="@+id/play_icon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:background="@drawable/ic_green_play_buton"
+                        android:contentDescription="@string/contentDescription" />
+                </androidx.cardview.widget.CardView>
             </RelativeLayout>
 
             <LinearLayout
@@ -56,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="19dp"
                     android:ellipsize="end"
-                    android:fontFamily="@font/heebo_medium"
+                    android:fontFamily="@font/roboto_medium"
                     android:lineHeight="24sp"
                     android:maxLines="1"
                     android:textColor="@color/title_color"
@@ -66,13 +78,13 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/schedule_white_outline_button"
-                    android:gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="19dp"
+                    android:gravity="center">
+                    <!--                    android:paddingTop="7dp"-->
+                    <!--                    android:paddingBottom="7dp">-->
+                    <!--                    android:background="@drawable/schedule_white_outline_button"-->
 
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp">
 
 
                     <TextView
@@ -80,19 +92,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
+                        android:maxLines="2"
                         android:text="jbnmjnm nmbvhxdfgvhbn"
-                        android:textColor="@color/title_color"
-                        android:textSize="@dimen/_12sp" />
+                        android:textColor="@color/yellow_orange"
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
+                    android:layout_marginTop="6dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -126,8 +137,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            android:layout_below="@+id/top_lay"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp">
 
             <com.astro.sott.utils.helpers.ExpandableTextView
                 android:id="@+id/description_text"
@@ -135,12 +147,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="14dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="12dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:lineHeight="24sp"
                 android:maxLines="1"
+                android:paddingBottom="20dp"
                 android:textColor="@color/title_color"
                 android:textSize="@dimen/font_small"
                 tools:targetApi="p" />
@@ -149,21 +162,19 @@
                 android:id="@+id/more_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="15dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:ellipsize="end"
-                android:fontFamily="@font/heebo_regular"
+                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                android:fontFamily="@font/roboto_regular"
                 android:maxLines="2"
-                android:paddingTop="10dp"
-                android:paddingEnd="20dp"
-                android:paddingStart="0dp"
-                android:paddingBottom="10dp"
-                android:text="See More"
+                android:layout_marginEnd="@dimen/dimen10dp"
+                android:padding="10dp"
                 android:textColor="@color/aqua_marine"
                 android:textSize="@dimen/font_small" />
 
         </LinearLayout>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

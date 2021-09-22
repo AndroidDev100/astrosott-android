@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.R;
@@ -107,6 +108,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         modelCall();
         getProducts();
 
+
     }
 
 
@@ -115,7 +117,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     }
 
     private void loadDataFromModel(List<PackDetail> productsResponseMessage) {
-        SubscriptionAdapter adapter = new SubscriptionAdapter(getActivity(), productsResponseMessage, productList,date);
+        SubscriptionAdapter adapter = new SubscriptionAdapter(getActivity(), productsResponseMessage, productList, date);
         getBinding().recyclerView.setAdapter(adapter);
     }
 
@@ -226,14 +228,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         getBinding().recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
 
         getBinding().learnMore.setOnClickListener(v -> {
-            NewSubscriptionPacksFragment someFragment = new NewSubscriptionPacksFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("productList", new ArrayList<String>());
-            someFragment.setArguments(bundle);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.content_frame, someFragment, "SubscriptionNewFragment"); // give your fragment container id in first parameter
-            transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-            transaction.commit();
+            new ActivityLauncher(getActivity()).profileSubscription("Content Detail Page");
         });
         getBinding().closeIcon.setOnClickListener(v -> {
             if (getActivity() != null)
@@ -251,7 +246,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
 
 
     @Override
-    public void onCardClicked(String productId, String serviceType, String a) {
+    public void onCardClicked(String productId, String serviceType, String a,String name,Long price) {
 
     }
 }

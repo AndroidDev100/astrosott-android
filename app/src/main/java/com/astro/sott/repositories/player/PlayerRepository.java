@@ -3,11 +3,13 @@ package com.astro.sott.repositories.player;
 import android.app.Activity;
 import android.app.AlertDialog;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Handler;
 
 import androidx.core.content.ContextCompat;
@@ -17,8 +19,17 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.baseModel.BaseActivity;
+import com.astro.sott.callBacks.kalturaCallBacks.RefreshTokenCallBack;
+import com.astro.sott.callBacks.waterMarkCallBacks.WaterMarkCallback;
+import com.astro.sott.modelClasses.OtpModel;
+import com.astro.sott.modelClasses.WaterMark.WaterMarkModel;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
+import com.astro.sott.networking.refreshToken.RefreshKS;
+import com.astro.sott.repositories.mysubscriptionplan.MySubscriptionPlanRepository;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.BuildConfig;
@@ -32,10 +43,12 @@ import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.shimmer.Constants;
+import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
+import com.kaltura.playkit.PKError;
 import com.kaltura.playkit.PKLog;
 import com.kaltura.playkit.PKMediaConfig;
 import com.kaltura.playkit.PKMediaEntry;
@@ -46,7 +59,10 @@ import com.kaltura.playkit.PlayerEvent;
 import com.kaltura.playkit.player.ABRSettings;
 import com.kaltura.playkit.player.AudioTrack;
 import com.kaltura.playkit.player.PKAspectRatioResizeMode;
+import com.kaltura.playkit.player.PKPlayerErrorType;
+import com.kaltura.playkit.player.PKSubtitlePosition;
 import com.kaltura.playkit.player.PKTracks;
+import com.kaltura.playkit.player.SubtitleStyleSettings;
 import com.kaltura.playkit.player.TextTrack;
 import com.kaltura.playkit.player.VideoTrack;
 import com.kaltura.playkit.plugins.ima.IMAConfig;
@@ -56,14 +72,17 @@ import com.kaltura.playkit.plugins.kava.KavaAnalyticsPlugin;
 import com.kaltura.playkit.plugins.ott.PhoenixAnalyticsConfig;
 import com.kaltura.playkit.plugins.ott.PhoenixAnalyticsEvent;
 import com.kaltura.playkit.plugins.ott.PhoenixAnalyticsPlugin;
+import com.kaltura.playkit.plugins.playback.CustomPlaybackRequestAdapter;
 import com.kaltura.playkit.plugins.playback.KalturaPlaybackRequestAdapter;
 import com.kaltura.playkit.plugins.playback.KalturaUDRMLicenseRequestAdapter;
 import com.kaltura.playkit.providers.MediaEntryProvider;
 
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.kaltura.client.APIOkRequestsExecutor.TAG;
 
@@ -93,6 +112,8 @@ public class PlayerRepository {
     private MediaEntryProvider mediaProvider;
     private StringBuilder formatBuilder;
     private Formatter formatter;
+    private String jwtToken = "";
+    private boolean isLivePlayer = false;
     private final Runnable updateTimeTask = new Runnable() {
         public void run() {
             seekBar1.setProgress(((int) player.getCurrentPosition()));
@@ -115,6 +136,38 @@ public class PlayerRepository {
         return (INSTANCE);
     }
 
+    private void logoutApi(Activity context) {
+        MySubscriptionPlanRepository.getInstance().logoutCredential(context, UserInfo.getInstance(context).getExternalSessionToken(), UserInfo.getInstance(context).getAccessToken());
+    }
+
+    public void openHouseHoldDialog(final Activity context) {
+        BaseActivity baseActivity = (BaseActivity) context;
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
+        builder.setTitle(context.getResources().getString(R.string.device_Removed)).setMessage(context.getResources().getString(R.string.device_removed_description))
+                .setCancelable(true)
+                .setPositiveButton(context.getResources().getString(R.string.continue_as_guest), (dialog, id) -> {
+                    logoutApi(context);
+                    AppCommonMethods.removeUserPrerences(baseActivity);
+                    new ActivityLauncher(context).homeScreen(context, HomeActivity.class);
+                    dialog.cancel();
+                })
+                .setNegativeButton(context.getResources().getString(R.string.login), (dialog, id) -> {
+                    logoutApi(context);
+                    AppCommonMethods.removeUserPrerences(baseActivity);
+                    UserInfo.getInstance(baseActivity).setHouseHoldError(true);
+                    new ActivityLauncher(context).homeScreen(context, HomeActivity.class);
+                    dialog.cancel();
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+        Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        bn.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
+        Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        bp.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
+
+    }
+
     public LiveData<String> playerLoadedMetadata(final int progress, final Context context, final Activity activity) {
         final MutableLiveData<String> playerMutableLiveData = new MutableLiveData<>();
         //PlayerListeners
@@ -122,16 +175,46 @@ public class PlayerRepository {
 
         player.addListener(this, PlayerEvent.error, event -> {
             PlayerEvent.Type error = ((PlayerEvent.Error) event).type;
-            if (event.error.isFatal()) {
-                //  player.pause();
+            try {
+                PKPlayerErrorType pkError = (PKPlayerErrorType) event.error.errorType;
+                if (pkError.errorCode == 500016) {
+                    new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                        @Override
+                        public void response(CommonResponse response) {
+                            if (activity != null && !activity.isFinishing()) {
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (player != null) {
+                                            player.destroy();
+                                            destroCallBacks();
+                                        }
+                                        activity.onBackPressed();
+                                    }
+                                });
+                            }
+
+
+                        }
+                    });
+                } else if (pkError.errorCode == 1003 || pkError.errorCode == 1016 || pkError.errorCode == 1019) {
+                    if (activity != null && !activity.isFinishing()) {
+                        openHouseHoldDialog(activity);
+                    }
+                } else {
+                    if (event.error.isFatal()) {
+                        //  player.pause();
+                        playerMutableLiveData.postValue("");
+                    }
+                }
+
+            } catch (Exception ignored) {
                 playerMutableLiveData.postValue("");
             }
-
-
         });
 
 
-        player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fill);
+        player.getSettings().setSurfaceAspectRatioResizeMode(PKAspectRatioResizeMode.fit);
 
         player.addListener(this, PlayerEvent.Type.LOADED_METADATA, event -> {
             Constants.duration = stringForTime(player.getDuration());
@@ -342,20 +425,22 @@ public class PlayerRepository {
     }
 
     private ArrayList<TrackItem> buildVideoTrackItems(List<VideoTrack> videoTracks, Context context) {
+
         int lowBitrate = -1;
         int highBitrate = -1;
         ArrayList<TrackItem> arrayList = new ArrayList<>();
-        boolean track1 = true;
-        boolean track2 = true;
-        boolean track3 = true;
+        try {
+            boolean track1 = true;
+            boolean track2 = true;
+            boolean track3 = true;
 
-        for (int i = 0; i < videoTracks.size(); i++) {
-            VideoTrack videoTrackInfo = videoTracks.get(i);
-            Log.e("tracksVideo", videoTracks.get(i).getBitrate() + "");
+            for (int i = 0; i < videoTracks.size(); i++) {
+                VideoTrack videoTrackInfo = videoTracks.get(i);
+                Log.e("tracksVideo", videoTracks.get(i).getBitrate() + "");
 
-            if (videoTrackInfo.isAdaptive()) {
-                // arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
-            } else {
+                if (videoTrackInfo.isAdaptive()) {
+                    // arrayList.add(new TrackItem(AppLevelConstants.AUTO, videoTrackInfo.getUniqueId(), context.getString(R.string.auto_description)));
+                } else {
 //                if (i == 1) {
 //                    if (videoTrackInfo.getBitrate()>0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit())) {
 //                        arrayList.add(new TrackItem(AppLevelConstants.LOW, videoTrackInfo.getUniqueId(), context.getString(R.string.low_description)));
@@ -372,26 +457,27 @@ public class PlayerRepository {
 //                    }
 //                }
 
-                if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit())) {
-                    if (track1) {
-                        arrayList.add(new TrackItem(AppLevelConstants.LOW, videoTrackInfo.getUniqueId(), context.getString(R.string.low_description)));
-                        track1 = false;
+                    if (videoTrackInfo.getBitrate() > 0 && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit())) {
+                        if (track1) {
+                            arrayList.add(new TrackItem(AppLevelConstants.LOW, videoTrackInfo.getUniqueId(), context.getString(R.string.low_description)));
+                            track1 = false;
+                        }
+                    } else if (videoTrackInfo.getBitrate() > Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit()) && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit())) {
+                        if (track2) {
+                            arrayList.add(new TrackItem(AppLevelConstants.MEDIUM, videoTrackInfo.getUniqueId(), context.getString(R.string.medium_description)));
+                            track2 = false;
+                        }
+                    } else if (videoTrackInfo.getBitrate() > Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit()) && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())) {
+                        if (track3) {
+                            arrayList.add(new TrackItem(AppLevelConstants.HIGH, videoTrackInfo.getUniqueId(), context.getString(R.string.high_description)));
+                            track3 = false;
+                        }
                     }
-                } else if (videoTrackInfo.getBitrate() > Long.valueOf(KsPreferenceKey.getInstance(context).getLowBitrateMaxLimit()) && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit())) {
-                    if (track2) {
-                        arrayList.add(new TrackItem(AppLevelConstants.MEDIUM, videoTrackInfo.getUniqueId(), context.getString(R.string.medium_description)));
-                        track2 = false;
-                    }
-                } else if (videoTrackInfo.getBitrate() > Long.valueOf(KsPreferenceKey.getInstance(context).getMediumBitrateMaxLimit()) && videoTrackInfo.getBitrate() < Long.valueOf(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())) {
-                    if (track3) {
-                        arrayList.add(new TrackItem(AppLevelConstants.HIGH, videoTrackInfo.getUniqueId(), context.getString(R.string.high_description)));
-                        track3 = false;
-                    }
+
+
                 }
 
-
             }
-        }
 
 
         /*TrackItem[] trackItems = new TrackItem[videoTracks.size()];
@@ -425,7 +511,10 @@ public class PlayerRepository {
 */
 
 
-        return arrayList;
+            return arrayList;
+        } catch (Exception ex) {
+            return arrayList;
+        }
     }
 
     public void removeCallBacks() {
@@ -499,7 +588,7 @@ public class PlayerRepository {
             for (int i = 0; i < textTracks.size(); i++) {
                 if (i == 0) {
                     TextTrack textTrackInfo = textTracks.get(i);
-                    String name = "none";
+                    String name = "None";
                     trackItems[i] = new TrackItem(name, textTrackInfo.getUniqueId(), textTrackInfo.getLanguage());
                 } else {
                     TextTrack textTrackInfo = textTracks.get(i);
@@ -881,7 +970,6 @@ public class PlayerRepository {
                     //  mPlayerControlsView.setProgressBarVisibility(false);
                     break;
                 case BUFFERING:
-                    ConvivaManager.convivaPlayerBufferReportRequest();
                     // log.e("StateChange Buffering");
                     // mPlayerControlsView.setProgressBarVisibility(true);
                     // booleanMutableLiveData.postValue(false);
@@ -925,7 +1013,7 @@ public class PlayerRepository {
                                                    final String deviceid,
                                                    final Asset asset,
                                                    int isPurchased,
-                                                   int assetPosition) {
+                                                   int assetPosition, String jwt, Boolean isLivePlayer) {
         final MutableLiveData<Player> playerMutableLiveData = new MutableLiveData<>();
 
         if (player != null) {
@@ -933,6 +1021,8 @@ public class PlayerRepository {
         }
 
         this.context = context;
+        this.jwtToken = jwt;
+        this.isLivePlayer = isLivePlayer;
 
         if (isPurchased == 1) {
             formatBuilder = new StringBuilder();
@@ -1048,15 +1138,39 @@ public class PlayerRepository {
                 player.getSettings().setSecureSurface(true);
                 player.getSettings().setAdAutoPlayOnResume(true);
                 subscribePhoenixAnalyticsReportEvent();
-                player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
+                try {
+                    player.getSettings().setABRSettings(new ABRSettings().setMaxVideoBitrate(Long.parseLong(KsPreferenceKey.getInstance(context).getHighBitrateMaxLimit())));
+                } catch (Exception e) {
+                }
+                if (isLivePlayer && UserInfo.getInstance(context).isActive() && !KsPreferenceKey.getInstance(context).getJwtToken().equalsIgnoreCase("")) {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer" + " " + KsPreferenceKey.getInstance(context).getJwtToken());
+                    CustomPlaybackRequestAdapter customPlaybackRequestAdapter = new CustomPlaybackRequestAdapter("com.astro.sott", player);
+                    customPlaybackRequestAdapter.setHttpHeaders(headers);
+                    player.getSettings().setContentRequestAdapter(customPlaybackRequestAdapter);
+                }
 
                 player.prepare(mediaConfig);
+                player.getSettings().setSubtitleStyle(getStyleForPositionTwo());
                 player.play();
 
             } // This is your code
         };
         mainHandler.post(myRunnable);
 
+    }
+
+    private SubtitleStyleSettings getStyleForPositionTwo() {
+        return new SubtitleStyleSettings("AdultsStyle")
+                .setBackgroundColor(Color.BLACK)
+                .setTextColor(Color.WHITE)
+                .setTextSizeFraction(SubtitleStyleSettings.SubtitleTextSizeFraction.SUBTITLE_FRACTION_100)
+                .setWindowColor(Color.BLACK)
+                .setEdgeColor(Color.BLACK)
+                .setTypeface(SubtitleStyleSettings.SubtitleStyleTypeface.SANS_SERIF)
+                .setEdgeType(SubtitleStyleSettings.SubtitleStyleEdgeType.EDGE_TYPE_DROP_SHADOW)
+                // Move subtitle vertical up-down
+                .setSubtitlePosition(new PKSubtitlePosition(true).setVerticalPosition(70));
     }
 
     private void addKavaPluginConfig(Context context, PKPluginConfigs pluginConfigs, Asset asset) {
@@ -1071,7 +1185,7 @@ public class PlayerRepository {
                 kavaAnalyticsConfig = new KavaAnalyticsConfig()
                         .setApplicationVersion(BuildConfig.VERSION_NAME)
                         .setPartnerId(BuildConfig.KAVA_PARTNER_ID)
-                        .setUserId(KsPreferenceKey.getInstance(context).getUser().getId())
+                        .setUserId(UserInfo.getInstance(context).getCpCustomerId())
                         .setEntryId(entryId);
                 pluginConfigs.setPluginConfig(KavaAnalyticsPlugin.factory.getName(), kavaAnalyticsConfig);
             } else {
@@ -1098,6 +1212,7 @@ public class PlayerRepository {
         if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAdTagURL() != null && responseDmsModel.getParams().getAdTagURL().getURL() != null) {
             imaVastTag = AppCommonMethods.getAdsUrl(responseDmsModel.getParams().getAdTagURL().getURL(), asset, context);
         }
+        //+responseDmsModel.getParams().getAdTagURL().getURL()
 
         //       String imaVastTag = "https://pubads.g.doubleclick.net/gampad/live/ads?sz=640x360&iu=%2F21633895671%2FQA%2FAndroid_Native_App%2FCOH&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=sample_ar%3Dskippablelinear%26Gender%3DU%26Age%3DNULL%26KidsPinEnabled%3DN%26AppVersion%3D0.1.58%26DeviceModel%3DAndroid%20SDK%20built%20for%20x86%26OptOut%3DFalse%26OSVersion%3D9%26PackageName%3Dcom.tv.v18.viola%26description_url%3Dhttps%253A%252F%252Fwww.voot.com%26first_time%3DFalse&cmsid=2467608&ppid=2fbdf28d-5bf9-4f43-b49e-19c4ca1f10f8&vid=0_o71549bv&ad_rule=1&correlator=246819";
         // String imaVastTag =  "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonlybumper&cmsid=496&vid=short_onecue&correlator=";
@@ -1382,6 +1497,26 @@ public class PlayerRepository {
         player.seekTo(0);
         getPlayerState(booleanMutableLiveData);
         return booleanMutableLiveData;
+    }
+
+    public LiveData<WaterMarkModel> callWaterMarkApi(Context context, String kalturaPhoenixUrl, String ks) {
+        MutableLiveData<WaterMarkModel> mutableLiveData = new MutableLiveData<>();
+        KsServices ksServices = new KsServices(context);
+        ksServices.callWaterMarkApi(context, kalturaPhoenixUrl, ks, new WaterMarkCallback() {
+            @Override
+            public void onSuccess(WaterMarkModel waterMarkModel) {
+                waterMarkModel.setResponseCode(200);
+                mutableLiveData.postValue(waterMarkModel);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                WaterMarkModel waterMarkModel = new WaterMarkModel();
+                waterMarkModel.setResponseCode(errorCode);
+                mutableLiveData.postValue(waterMarkModel);
+            }
+        });
+        return mutableLiveData;
     }
 }
 

@@ -12,7 +12,7 @@
             android:id="@+id/text_auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/roboto_regular"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:paddingEnd="18dp"

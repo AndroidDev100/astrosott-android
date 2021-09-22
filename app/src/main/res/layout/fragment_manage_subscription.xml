@@ -20,7 +20,7 @@
             android:layout_below="@id/toolbar"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="140dp"
-            android:fontFamily="@font/heebo_medium"
+            android:fontFamily="@font/roboto_medium"
             android:lineHeight="16sp"
             android:text="@string/no_active_subs"
             android:textColor="@color/title_color"

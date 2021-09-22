@@ -14,6 +14,18 @@
     <dimen name="landscape_item_width">220dp</dimen>
     <dimen name="landscape_item_height">124dp</dimen>
 
+    <dimen name="landscape_item_width_small">146dp</dimen>
+    <dimen name="landscape_item_height_small">82dp</dimen>
+
+    <dimen name="landscape_item_width_large">293dp</dimen>
+    <dimen name="landscape_item_height_large">165dp</dimen>
+
+    <dimen name="potrait_item_width_small">64dp</dimen>
+    <dimen name="potrait_item_height_small">120dp</dimen>
+
+    <dimen name="potrait_item_width_large">128dp</dimen>
+    <dimen name="potrait_item_height_large">170dp</dimen>
+
     <dimen name="square_item_height">170dp</dimen>
     <dimen name="square_item_width">170dp</dimen>
 

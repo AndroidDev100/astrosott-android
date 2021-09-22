@@ -19,6 +19,7 @@ import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityEditEmailBinding;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
@@ -30,7 +31,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 
-public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBinding> implements  View.OnClickListener {
+public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBinding> implements View.OnClickListener {
     private BillingProcessor billingProcessor;
     private AstroLoginViewModel astroLoginViewModel;
     private boolean alreadyEmail = false;
@@ -46,6 +47,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.EDIT_EMAIL);
         setHeader();
         modelCall();
         intializeBilling();
@@ -144,7 +146,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
 
     private void createOtp(String email) {
         if (alreadyEmail) {
-            astroLoginViewModel.createOtp("email", UserInfo.getInstance(this).getEmail()).observe(this, evergentCommonResponse -> {
+            astroLoginViewModel.createOtp("email", email).observe(this, evergentCommonResponse -> {
 
                 if (evergentCommonResponse.isStatus()) {
                     //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();

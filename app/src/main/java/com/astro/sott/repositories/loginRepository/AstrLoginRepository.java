@@ -29,6 +29,8 @@ import com.astro.sott.usermanagment.modelClasses.searchAccountv2.SearchAccountv2
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class AstrLoginRepository {
     private static AstrLoginRepository astrLoginRepository;
 
@@ -121,6 +123,32 @@ public class AstrLoginRepository {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
         EvergentServices.Companion.getInstance().resetPassword(token, context, password, new EvergentResetPasswordCallBack() {
+
+
+            @Override
+            public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
+                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setErrorMessage(errorMessage);
+                evergentCommonResponse.setErrorCode(errorCode);
+
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+
+            @Override
+            public void onSuccess(@NotNull ResetPasswordResponse resetPasswordResponse) {
+                evergentCommonResponse.setStatus(true);
+                evergentCommonResponse.setResetPasswordResponse(resetPasswordResponse);
+                mutableLiveData.postValue(evergentCommonResponse);
+            }
+        });
+        return mutableLiveData;
+    }
+
+
+    public LiveData<EvergentCommonResponse> setPassword(Context context, String token, String password) {
+        MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
+        EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
+        EvergentServices.Companion.getInstance().setPassword(token, context, password, new EvergentResetPasswordCallBack() {
 
 
             @Override
@@ -240,7 +268,7 @@ public class AstrLoginRepository {
         return mutableLiveData;
     }
 
-    public LiveData<EvergentCommonResponse> removeDevice(Context context, String accessToken, String serial) {
+    public LiveData<EvergentCommonResponse> removeDevice(Context context, String accessToken, ArrayList<String> serial) {
         MutableLiveData<EvergentCommonResponse> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
         EvergentServices.Companion.getInstance().removeDevice(context, accessToken, serial, new EvergentRemoveDevice() {

@@ -50,6 +50,7 @@ public class AssetContent {
     private static DoubleValue baseIdValue;
     private static BooleanValue IsdvrEnabled;
     private static BooleanValue purchaseAllowed;
+    private static String stringValue;
 
     public static LiveData<String> getUrl(Asset asset, String videoResolution) {
         MutableLiveData<String> assetMutableLiveData = new MutableLiveData<>();
@@ -162,6 +163,18 @@ public class AssetContent {
             if (year.length() > 3) {
                 year.substring(0, 4);
             }
+        }
+        return year;
+    }
+
+    public static String getProgramYear(Map<String, Value> metas) {
+        MultilingualStringValue stringValue = null;
+        String year = "";
+        if (metas != null) {
+            stringValue = (MultilingualStringValue) metas.get(AppLevelConstants.YEAR);
+        }
+        if (stringValue != null && stringValue.getValue() != null) {
+            year = stringValue.getValue();
         }
         return year;
     }
@@ -357,7 +370,7 @@ public class AssetContent {
         if (rating_list != null)
             cast_value.addAll(rating_list.getObjects());
 //            for (MultilingualStringValue value : rating_list.getObjects()) {
-//                cast_value.add(value);
+//                cast_value.getBinding().metadd(value);
 //            }
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i <= cast_value.size() - 1; i++) {
@@ -659,7 +672,7 @@ public class AssetContent {
 
         if (stringBuilder.length() > 0) {
             genre = stringBuilder.toString();
-            genre = genre.substring(0, genre.length() - 2);
+            genre = genre.substring(0, genre.length() - 1);
 
         } else {
             genre = "";
@@ -769,7 +782,7 @@ public class AssetContent {
 
         if (stringBuilder.length() > 0) {
             genre = stringBuilder.toString();
-            genre = genre.substring(0, genre.length() - 2);
+            genre = genre.substring(0, genre.length() - 1);
 
         } else {
             genre = "";
@@ -964,7 +977,41 @@ public class AssetContent {
 
         if (stringBuilder.length() > 0) {
             language = stringBuilder.toString();
-            language = language.substring(0, language.length() - 2);
+            language = language.substring(0, language.length() - 1);
+        }
+
+
+        return language;
+    }
+
+    public static String getLanguageDataStringForCleverTap
+            (Map<String, MultilingualStringValueArray> map, Context context) {
+
+        String language = "";
+        String lang = "";
+        List<MultilingualStringValue> language_value = new ArrayList<>();
+        MultilingualStringValueArray language_list = map.get(AppLevelConstants.KEY_LANGUAGE);
+        if (language_list != null)
+//            for (MultilingualStringValue value : language_list.getObjects()) {
+//                language_value.add(value);
+//            }
+            language_value.addAll(language_list.getObjects());
+        StringBuilder stringBuilder = new StringBuilder();
+        ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
+        ArrayList<AudioLanguages> audioLanguageList = responseDmsModel.getAudioLanguageList();
+
+        for (int i = 0; i <= language_value.size() - 1; i++) {
+            lang = language_value.get(i).getValue();
+            for (int j = 0; j < audioLanguageList.size(); j++) {
+                if (lang.equalsIgnoreCase(audioLanguageList.get(j).getKey())) {
+                    stringBuilder.append(lang).append(",");
+                }
+            }
+        }
+
+        if (stringBuilder.length() > 0) {
+            language = stringBuilder.toString();
+            language = language.substring(0, language.length() - 1);
         }
 
 
@@ -1018,7 +1065,21 @@ public class AssetContent {
         return connection;
     }
 
-    public static String getSubTitleLanguageDataString(Map<String, MultilingualStringValueArray> map, Context context) {
+
+    public  static String getTileSortName(Map<String, Value> map) {
+        MultilingualStringValue titleSortValue = null;
+        String s = "";
+        if (map != null) {
+            titleSortValue = (MultilingualStringValue) map.get(AppLevelConstants.TitleSortName);
+        }
+        if (titleSortValue != null) {
+            s = String.valueOf(titleSortValue.getValue());
+        }
+        return s;
+    }
+
+    public static String getSubTitleLanguageDataString
+            (Map<String, MultilingualStringValueArray> map, Context context) {
 
         String language = "";
         String lang = "";
@@ -1044,7 +1105,7 @@ public class AssetContent {
 
         if (stringBuilder.length() > 0) {
             language = stringBuilder.toString();
-            language = language.substring(0, language.length() - 2);
+            language = language.substring(0, language.length() - 1);
         }
 
 
@@ -1140,7 +1201,7 @@ public class AssetContent {
 
         if (stringBuilder.length() > 0) {
             provider = stringBuilder.toString();
-            provider = provider.substring(0, provider.length() - 2);
+            provider = provider.substring(0, provider.length() - 1);
         } else {
             provider = "";
         }
@@ -1928,6 +1989,23 @@ public class AssetContent {
             return introStart;
         }
 
+    }
+
+    public static String getMediaEntryId(Map<String, String> map) {
+
+
+        String entryId = "";
+        if (map != null) {
+            stringValue = map.get(AppLevelConstants.KEY_ENTRY_ID);
+        }
+        if (stringValue != null) {
+            entryId = stringValue;
+
+        } else {
+            entryId = "";
+        }
+
+        return entryId;
     }
 
 }

@@ -2,6 +2,7 @@ package com.astro.sott.repositories.splash;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -42,12 +43,12 @@ public class SplashRepository implements AlertDialogSingleButtonFragment.AlertDi
         final MutableLiveData<String> mutableLiveData = new MutableLiveData<>();
         KsServices ksServices = new KsServices(context);
         boolean _date = verifyDmsDate(SharedPrefHelper.getInstance(context).getString("DMS_Date", "mDate"));
-        Log.e( "oncreate: " , "in7"+_date);
+        Log.e("oncreate: ", "in7" + _date);
         if (_date) {
             ksServices.hitApiDMS(status -> {
                 if (status) {
                     callAnonymousLogin(context, mutableLiveData);
-                }else{
+                } else {
                     mutableLiveData.postValue(null);
                 }
             });
@@ -80,7 +81,7 @@ public class SplashRepository implements AlertDialogSingleButtonFragment.AlertDi
         ksServices.notificationPushToken(fcmRefreshToken, (status, result) -> {
             if (status) {
                 mutableLiveData.postValue(result.results);
-            }else{
+            } else {
                 mutableLiveData.postValue(false);
             }
         });
@@ -89,17 +90,17 @@ public class SplashRepository implements AlertDialogSingleButtonFragment.AlertDi
 
     private void callAnonymousLogin(final Context context, final MutableLiveData<String> stringMutableLiveData) {
         final KsServices ksServices = new KsServices(context);
-        Log.e( "oncreate: " , "inann");
+        Log.e("oncreate: ", "inann");
         ksServices.callanonymousLogin(SharedPrefHelper.getInstance(context), new KsAnonymousLoginCallBack() {
             @Override
             public void success(boolean sucess, com.kaltura.client.utils.response.base.Response<LoginSession> result) {
-                Log.e( "oncreate: " , "inannsuc");
-                getCategories(context,stringMutableLiveData);
+                Log.e("oncreate: ", "inannsuc");
+                getCategories(context, stringMutableLiveData);
             }
 
             @Override
             public void failure(boolean failure, com.kaltura.client.utils.response.base.Response<LoginSession> result) {
-                Log.e( "oncreate: " , "inannfail");
+                Log.e("oncreate: ", "inannfail");
                 stringMutableLiveData.postValue(null);
             }
         });
@@ -132,11 +133,11 @@ public class SplashRepository implements AlertDialogSingleButtonFragment.AlertDi
         String temp = getDateTimeStamp(Long.parseLong(storedDate));
         verifyDms = !currentDate.equalsIgnoreCase(temp);
 
-        return verifyDms;
+        return true;
     }
 
     private String getDateTimeStamp(Long timeStamp) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy",Locale.US);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         return formatter.format(timeStamp);
     }
 
@@ -213,7 +214,7 @@ public class SplashRepository implements AlertDialogSingleButtonFragment.AlertDi
         final MutableLiveData<String> mutableLiveData = new MutableLiveData<>();
 
         KsServices ksServices = new KsServices(ctx);
-        ksServices.checkUserPreferences(ctx,new UserPrefrencesCallBack() {
+        ksServices.checkUserPreferences(ctx, new UserPrefrencesCallBack() {
             @Override
             public void response(String value) {
                 mutableLiveData.postValue(value);
@@ -221,7 +222,7 @@ public class SplashRepository implements AlertDialogSingleButtonFragment.AlertDi
 
             @Override
             public void failure() {
-           mutableLiveData.postValue(null);
+                mutableLiveData.postValue(null);
             }
         });
         return mutableLiveData;

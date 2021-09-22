@@ -12,7 +12,6 @@
             android:layout_height="@dimen/image200dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/imagePadding80dp"
-            android:src="@drawable/payment"
             android:contentDescription="@string/contentDescription" />
 
         <LinearLayout
@@ -20,9 +19,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/imvLogo"
+            android:layout_centerInParent="true"
             android:layout_marginTop="@dimen/imagePadding90dp"
             android:orientation="vertical"
-            android:layout_centerInParent="true"
             android:padding="@dimen/dimen20dp">
 
             <TextView
@@ -36,13 +35,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen15dp"
                 android:fontFamily="@font/roboto_light"
+                android:lineSpacingExtra="@dimen/dimen3dp"
                 android:text="@string/payment_description"
                 android:textColor="@color/white"
-                android:layout_marginTop="@dimen/dimen15dp"
-                android:lineSpacingExtra="@dimen/dimen3dp"
-                android:textSize="@dimen/sp15"
-                />
+                android:textSize="@dimen/sp15" />
 
         </LinearLayout>
 
@@ -71,36 +69,36 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp18" />
 
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/btn"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_marginLeft="@dimen/dimen5dp"-->
-<!--                android:layout_marginTop="@dimen/dimen10dp"-->
-<!--                android:layout_marginRight="@dimen/dimen5dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:background="@drawable/grey_button"-->
-<!--                android:fontFamily="@font/roboto_regular"-->
-<!--                android:padding="@dimen/padding10dp"-->
-<!--                android:text="@string/sign_in_with_different_account"-->
-<!--                android:textAllCaps="false"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="@dimen/sp18" />-->
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/btnDtv"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_marginLeft="@dimen/dimen5dp"-->
-<!--                android:layout_marginTop="@dimen/dimen10dp"-->
-<!--                android:layout_marginRight="@dimen/dimen5dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:background="@drawable/grey_button"-->
-<!--                android:fontFamily="@font/roboto_regular"-->
-<!--                android:padding="@dimen/padding10dp"-->
-<!--                android:text="@string/sign_in_with_different_account"-->
-<!--                android:textAllCaps="false"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="@dimen/sp18" />-->
+            <!--            <androidx.appcompat.widget.AppCompatButton-->
+            <!--                android:id="@+id/btn"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="0dp"-->
+            <!--                android:layout_marginLeft="@dimen/dimen5dp"-->
+            <!--                android:layout_marginTop="@dimen/dimen10dp"-->
+            <!--                android:layout_marginRight="@dimen/dimen5dp"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:background="@drawable/grey_button"-->
+            <!--                android:fontFamily="@font/roboto_regular"-->
+            <!--                android:padding="@dimen/padding10dp"-->
+            <!--                android:text="@string/sign_in_with_different_account"-->
+            <!--                android:textAllCaps="false"-->
+            <!--                android:textColor="@color/white"-->
+            <!--                android:textSize="@dimen/sp18" />-->
+            <!--            <androidx.appcompat.widget.AppCompatButton-->
+            <!--                android:id="@+id/btnDtv"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="0dp"-->
+            <!--                android:layout_marginLeft="@dimen/dimen5dp"-->
+            <!--                android:layout_marginTop="@dimen/dimen10dp"-->
+            <!--                android:layout_marginRight="@dimen/dimen5dp"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:background="@drawable/grey_button"-->
+            <!--                android:fontFamily="@font/roboto_regular"-->
+            <!--                android:padding="@dimen/padding10dp"-->
+            <!--                android:text="@string/sign_in_with_different_account"-->
+            <!--                android:textAllCaps="false"-->
+            <!--                android:textColor="@color/white"-->
+            <!--                android:textSize="@dimen/sp18" />-->
         </LinearLayout>
 
     </RelativeLayout>

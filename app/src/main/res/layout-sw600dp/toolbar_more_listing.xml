@@ -32,10 +32,10 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/search_toolbar_padding_right"
             android:ellipsize="end"
-            android:fontFamily="@font/heebo_medium"
+            android:fontFamily="@font/roboto_medium"
             android:maxLines="1"
             android:singleLine="true"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="13sp" />
 

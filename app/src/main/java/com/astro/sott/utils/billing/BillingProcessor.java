@@ -39,6 +39,9 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +80,9 @@ public class BillingProcessor implements PurchasesUpdatedListener {
         return intent;
     }
 
-    /** A reference to BillingClient */
+    /**
+     * A reference to BillingClient
+     */
     public void initializeBillingProcessor() {
         myBillingClient =
                 BillingClient.newBuilder(mActivity.get())
@@ -90,7 +95,9 @@ public class BillingProcessor implements PurchasesUpdatedListener {
         connectToPlayBillingService();
     }
 
-    /** Initiates Google Play Billing Service. */
+    /**
+     * Initiates Google Play Billing Service.
+     */
     private void connectToPlayBillingService() {
         PrintLogging.printLog(TAG, "connectToPlayBillingService");
         if (!myBillingClient.isReady()) {
@@ -157,8 +164,8 @@ public class BillingProcessor implements PurchasesUpdatedListener {
      *
      * @param billingResult to identify the states of Billing Client Responses.
      * @see <a
-     *     href="https://developer.android.com/google/play/billing/billing_reference.html">Google
-     *     Play InApp Purchase Response Types Guide</a>
+     * href="https://developer.android.com/google/play/billing/billing_reference.html">Google
+     * Play InApp Purchase Response Types Guide</a>
      */
     public static final String TAG = BillingProcessor.class.getName();
 
@@ -355,9 +362,12 @@ public class BillingProcessor implements PurchasesUpdatedListener {
     public void initiatePurchaseFlow(@NonNull Activity activity, @NonNull SkuDetails skuDetails) {
         if (skuDetails.getType().equals(BillingClient.SkuType.SUBS) && areSubscriptionsSupported()
                 || skuDetails.getType().equals(BillingClient.SkuType.INAPP)) {
-
-            final BillingFlowParams purchaseParams =
-                    BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build();
+            final BillingFlowParams purchaseParams;
+            if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase("")) {
+                purchaseParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId()).build();
+            } else {
+                purchaseParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build();
+            }
             //myBillingClient.launchPriceChangeConfirmationFlow();
 
             executeServiceRequest(
@@ -368,6 +378,35 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
         }
     }
+
+
+    public void downgrade() {
+        BillingFlowParams purchaseParams;
+        if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase("")) {
+            purchaseParams = BillingFlowParams.newBuilder()
+                    .setOldSku(oldSKU.trim(), oldPurchaseToken.trim())
+                    .setReplaceSkusProrationMode(DEFERRED)
+                    .setSkuDetails(skuDetails)
+                    .setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId())
+                    .build();
+        } else {
+            purchaseParams = BillingFlowParams.newBuilder()
+                    .setOldSku(oldSKU.trim(), oldPurchaseToken.trim())
+                    .setReplaceSkusProrationMode(DEFERRED)
+                    .setSkuDetails(skuDetails)
+                    .build();
+        }
+
+        executeServiceRequest(
+                () -> {
+
+                    int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
+
+                });
+    }
+
+    private String oldSKU, oldPurchaseToken;
+    private Activity activity;
 
     public void initiateUpdatePurchaseFlow(@NonNull Activity activity, @NonNull SkuDetails skuDetails, String oldSKU, String oldPurchaseToken) {
         if (skuDetails.getType().equals(BillingClient.SkuType.SUBS) && areSubscriptionsSupported()
@@ -391,40 +430,35 @@ public class BillingProcessor implements PurchasesUpdatedListener {
             Log.w("priceValues", oldPrice + "  " + newPrice);
 
             if (oldSkuDetails != null) {
+                this.oldSKU = oldSKU;
+                this.oldPurchaseToken = oldPurchaseToken;
+                this.skuDetails = skuDetails;
+                this.activity = activity;
+
                 if (oldPrice > newPrice) {
                     Log.w("priceValues", "deffred");
-                    BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
-                            .setOldSku(oldSKU.trim(), oldPurchaseToken.trim())
-                            .setReplaceSkusProrationMode(DEFERRED)
-                            .setSkuDetails(skuDetails)
-                            .build();
-
-                    executeServiceRequest(
-                            () -> {
-
-                                int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
-
-                            });
+                    inAppProcessListener.onDowngrade();
+                    //  downgrade();
                 } else {
-                    BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
+                    inAppProcessListener.onUpgrade();
+                    //  upgrade();
+                }
+            } else {
+                BillingFlowParams purchaseParams;
+                if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase("")) {
+                    purchaseParams = BillingFlowParams.newBuilder()
+                            .setOldSku(oldSKU, oldPurchaseToken)
+                            .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+                            .setSkuDetails(skuDetails)
+                            .setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId())
+                            .build();
+                } else {
+                    purchaseParams = BillingFlowParams.newBuilder()
                             .setOldSku(oldSKU, oldPurchaseToken)
                             .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
                             .setSkuDetails(skuDetails)
                             .build();
-
-                    executeServiceRequest(
-                            () -> {
-                                PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
-                                int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
-                                Log.w("responsCode-->>", responseCode + "");
-                            });
                 }
-            } else {
-                BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
-                        .setOldSku(oldSKU, oldPurchaseToken)
-                        .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
-                        .setSkuDetails(skuDetails)
-                        .build();
 
                 executeServiceRequest(
                         () -> {
@@ -435,6 +469,32 @@ public class BillingProcessor implements PurchasesUpdatedListener {
             }
 
         }
+    }
+
+    public void upgrade() {
+
+        BillingFlowParams purchaseParams;
+        if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase("")) {
+            purchaseParams = BillingFlowParams.newBuilder()
+                    .setOldSku(oldSKU, oldPurchaseToken)
+                    .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+                    .setSkuDetails(skuDetails)
+                    .setObfuscatedAccountId(UserInfo.getInstance(activity).getCpCustomerId())
+                    .build();
+        } else {
+            purchaseParams = BillingFlowParams.newBuilder()
+                    .setOldSku(oldSKU, oldPurchaseToken)
+                    .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.IMMEDIATE_AND_CHARGE_PRORATED_PRICE)
+                    .setSkuDetails(skuDetails)
+                    .build();
+        }
+
+        executeServiceRequest(
+                () -> {
+                    PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
+                    int responseCode = myBillingClient.launchBillingFlow(activity, purchaseParams).getResponseCode();
+                    Log.w("responsCode-->>", responseCode + "");
+                });
     }
 
 
@@ -768,6 +828,62 @@ public class BillingProcessor implements PurchasesUpdatedListener {
             }
         }
 
+    }
+
+    public void queryPurchases(Activity context) {
+        if (UserInfo.getInstance(context).isActive()) {
+            if (myBillingClient != null) {
+                final Purchase.PurchasesResult purchasesResult =
+                        myBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+
+                final List<Purchase> purchases = new ArrayList<>();
+                if (purchasesResult.getPurchasesList() != null) {
+                    purchases.addAll(purchasesResult.getPurchasesList());
+                }
+
+                if (purchases.size() > 0) {
+                    for (Purchase purchaseItem : purchases) {
+                        try {
+
+                            JSONObject jsonObject = new JSONObject(purchaseItem.getOriginalJson());
+                            Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
+                            if (!isAcknowledged) {
+                                acknowledgeNonConsumablePurchases(purchaseItem);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                } else {
+                }
+            }
+        }
+
+    }
+
+
+    public void acknowledgeNonConsumablePurchases(Purchase purchase) {
+        final AcknowledgePurchaseParams params =
+                AcknowledgePurchaseParams.newBuilder()
+                        .setPurchaseToken(purchase.getPurchaseToken())
+                        .build();
+        final AcknowledgePurchaseResponseListener listener =
+                billingResult -> {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        inAppProcessListener.onAcknowledged(purchase.getSku(), purchase.getPurchaseToken(), purchase.getOrderId());
+                        PrintLogging.printLog(
+                                TAG,
+                                "onAcknowledgePurchaseResponse: "
+                                        + billingResult.getResponseCode());
+                    } else {
+                        PrintLogging.printLog(
+                                TAG,
+                                "onAcknowledgePurchaseResponse: "
+                                        + billingResult.getDebugMessage());
+                    }
+                };
+        executeServiceRequest(() -> myBillingClient.acknowledgePurchase(params, listener));
     }
 
     public BillingClient getMyBillingClient() {

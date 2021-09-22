@@ -30,6 +30,8 @@ import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityAstrLoginBinding;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
@@ -78,7 +80,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-    private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
+    private final String PASSWORD_REGEX = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=\\S+$).{8,16}$";
 
 
     @Override
@@ -93,6 +95,8 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             from = getIntent().getStringExtra(AppLevelConstants.FROM_KEY);
         modelCall();
         setClicks();
+        CleverTapManager.getInstance().setLoginOrigin(from);
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.LOGIN);
         setGoogleSignIn();
         updateWithToken(AccessToken.getCurrentAccessToken());
 
@@ -154,16 +158,20 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
                     @Override
                     public void onCancel() {
-                        // App code
+                        getBinding().progressBar.setVisibility(View.GONE);
+                        Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        // App code
+                        getBinding().progressBar.setVisibility(View.GONE);
+                        Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+
                     }
                 });
 
-        getBinding().loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
+        //  getBinding().loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
     }
 
     private void setGoogleSignIn() {
@@ -191,7 +199,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        getBinding().progressBar.setVisibility(View.GONE);
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == 4001) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -216,6 +224,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
         } catch (ApiException e) {
+            getBinding().progressBar.setVisibility(View.GONE);
             Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
         }
     }
@@ -224,11 +233,18 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         getBinding().backIcon.setOnClickListener(view -> {
             onBackPressed();
         });
+        getBinding().term.setOnClickListener(v -> {
+            new ActivityLauncher(this).termAndCondition(this);
+        });
+        getBinding().privacy.setOnClickListener(v -> {
+            new ActivityLauncher(this).privacy(this);
+        });
         getBinding().loginBtn.setOnClickListener(view -> {
             if (checkEmailVaildation()) {
                 String password = getBinding().passwordEdt.getText().toString();
                 if (checkPasswordValidation(password)) {
                     getBinding().passwordError.setText(getString(R.string.password_rules));
+
                     login(password);
                 } else {
                     getBinding().passwordError.setTextColor(getResources().getColor(R.color.red_live));
@@ -246,6 +262,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     if (checkPasswordValidation(password)) {
                         getBinding().passwordError.setTextColor(getResources().getColor(R.color.heather));
                         getBinding().passwordError.setText(getString(R.string.password_rules));
+
                     } else {
                         getBinding().passwordError.setTextColor(getResources().getColor(R.color.red_live));
                         getBinding().errorEmail.setText(getResources().getString(R.string.mobile_suggestion));
@@ -273,12 +290,14 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             getBinding().loginButton.performClick();
             //  confirmOtp();
         });
-        getBinding().apple.setOnClickListener(view -> {
 
-            //   resetPassword();
-        });
         getBinding().signup.setOnClickListener(view -> {
-            new ActivityLauncher(this).signupActivity(this, SignUpActivity.class);
+            Intent intent = new Intent(this, SignUpActivity.class);
+            intent.putExtra(AppLevelConstants.FROM_KEY, from);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+            // new ActivityLauncher(this).signupActivity(this, SignUpActivity.class, "");
 
         });
         setTextWatcher();
@@ -350,13 +369,19 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
                 KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
                 getContact();
+                try {
+
+
+                    CleverTapManager.getInstance().setSignInEvent(this, from, type);
+                } catch (Exception exception) {
+
+                }
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
                 if (type.equalsIgnoreCase("Facebook") || type.equalsIgnoreCase("Google")) {
                     if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2327")) {
                         searchAccountv2(password);
-
                     } else {
                         Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
 
@@ -393,11 +418,16 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     socialLoginTypesItem = evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getSocialLoginTypes();
                     AppCommonMethods.checkSocailLinking(this, socialLoginTypesItem);
                 }
-
+                if (evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getAccountRole() != null)
+                    UserInfo.getInstance(this).setAccountRole(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getAccountRole());
+                if (type.equalsIgnoreCase("Facebook") || type.equalsIgnoreCase("Google")) {
+                    UserInfo.getInstance(this).setSocialLogin(true);
+                }
                 UserInfo.getInstance(this).setMobileNumber(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getMobileNumber());
                 UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
+                AppCommonMethods.setCrashlyticsUserId(this);
                 getActiveSubscription();
 
             } else {
@@ -419,7 +449,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         });
     }
 
-    private String displayName = "";
+    private String displayName = "", paymentMethod = "";
 
     private void getActiveSubscription() {
         astroLoginViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), "").observe(this, evergentCommonResponse -> {
@@ -430,8 +460,10 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                             if (!accountServiceMessageItem.isFreemium()) {
                                 if (accountServiceMessageItem.getDisplayName() != null)
                                     displayName = accountServiceMessageItem.getDisplayName();
+                                paymentMethod = accountServiceMessageItem.getPaymentMethod();
                             }
                         }
+                        UserInfo.getInstance(this).setMaxis(paymentMethod.equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING));
                         if (!displayName.equalsIgnoreCase("")) {
                             UserInfo.getInstance(this).setVip(true);
                             setActive();
@@ -457,40 +489,16 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private void setActive() {
         UserInfo.getInstance(this).setActive(true);
         Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
-        // setCleverTap();
-        if (from.equalsIgnoreCase("")) {
-            onBackPressed();
-        } else {
+        AppCommonMethods.setCleverTap(this);
+        if (UserInfo.getInstance(this).getCpCustomerId() != null && !UserInfo.getInstance(this).getCpCustomerId().equalsIgnoreCase(""))
+            FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), UserInfo.getInstance(this).getAccountRole(), type);
+      /*  if (from.equalsIgnoreCase("Profile")) {
             new ActivityLauncher(AstrLoginActivity.this).profileScreenRedirection(AstrLoginActivity.this, HomeActivity.class);
-        }
+        } else {*/
+        onBackPressed();
+        /*}*/
     }
 
-    private void setCleverTap() {
-
-        HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
-        profileUpdate.put("Name", UserInfo.getInstance(this).getFirstName());    // String
-        profileUpdate.put("Identity", UserInfo.getInstance(this).getCpCustomerId());      // String or number
-        profileUpdate.put("Email", UserInfo.getInstance(this).getEmail()); // Email address of the user
-        profileUpdate.put("Phone", "+14155551234");   // Phone (with the country code, starting with +)
-        profileUpdate.put("Gender", "M");             // Can be either M or F
-        profileUpdate.put("DOB", new Date());         // Date of Birth. Set the Date object to the appropriate value first
-
-// optional fields. controls whether the user will be sent email, push etc.
-        profileUpdate.put("MSG-email", false);        // Disable email notifications
-        profileUpdate.put("MSG-push", true);          // Enable push notifications
-        profileUpdate.put("MSG-sms", false);          // Disable SMS notifications
-        profileUpdate.put("MSG-whatsapp", true);      // Enable WhatsApp notifications
-
-        ArrayList<String> stuff = new ArrayList<String>();
-        stuff.add("bag");
-        stuff.add("shoes");
-        profileUpdate.put("MyStuff", stuff);                        //ArrayList of Strings
-
-        String[] otherStuff = {"Jeans", "Perfume"};
-        profileUpdate.put("MyStuff", otherStuff);                   //String Array
-
-
-        CleverTapAPI.getDefaultInstance(getApplicationContext()).onUserLogin(profileUpdate);
 
 
      /*   CleverTapAPI clevertapDefaultInstance =
@@ -534,8 +542,6 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         clevertapDefaultInstance.onUserLogin(profileUpdate, "__horizon43503");*/
 
 
-    }
-
     private void searchAccountv2(String password) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         astroLoginViewModel.searchAccountV2("email", email_mobile).observe(this, evergentCommonResponse -> {
@@ -549,12 +555,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2327")) {
-                    Intent intent = new Intent(this, DetailConfirmationActivity.class);
-                    intent.putExtra(AppLevelConstants.TYPE_KEY, type);
-                    intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);
-                    intent.putExtra(AppLevelConstants.PASSWORD_KEY, password);
-                    intent.putExtra("name", name);
-                    startActivity(intent);
+                    createUser(password);
                 } else {
                     Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -562,14 +563,37 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         });
     }
 
+    private void createUser(String password) {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        astroLoginViewModel.createUser(type, email_mobile, password, name, tabletSize).observe(this, evergentCommonResponse -> {
+            if (evergentCommonResponse.isStatus()) {
+                UserInfo.getInstance(this).setAccessToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getAccessToken());
+                UserInfo.getInstance(this).setRefreshToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getRefreshToken());
+                UserInfo.getInstance(this).setExternalSessionToken(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
+                KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getCreateUserResponse().getCreateUserResponseMessage().getExternalSessionToken());
+                astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
+                AppCommonMethods.onUserRegister(this);
+                getContact();
+
+            } else {
+                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                getBinding().progressBar.setVisibility(View.GONE);
+            }
+
+        });
+    }
+
     private boolean checkPasswordValidation(String password) {
         if (password.equalsIgnoreCase("")) {
-            passwordError = getResources().getString(R.string.valid_password);
+            passwordError = getResources().getString(R.string.field_cannot_empty);
             return false;
         } else if (password.matches(PASSWORD_REGEX)) {
             return true;
         }
-        passwordError = getResources().getString(R.string.password_error);
+//        passwordError = getResources().getString(R.string.password_error);
+        passwordError = getResources().getString(R.string.password_rules_new);
+
         return false;
     }
 
@@ -578,9 +602,15 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         String password = getBinding().passwordEdt.getText().toString();
         if (!email_mobile.equalsIgnoreCase("")) {
             if (email_mobile.matches(MOBILE_REGEX)) {
-
-                if (email_mobile.length() == 10 || email_mobile.length() == 11) {
-                    type = "mobile";
+                char firstChar = email_mobile.charAt(0);
+                if (String.valueOf(firstChar).equalsIgnoreCase("6")) {
+                    email_mobile = email_mobile;
+                } else {
+                    email_mobile = "6" + email_mobile;
+                    getBinding().emailMobileEdt.setText(email_mobile);
+                }
+                if (email_mobile.length() == 11 || email_mobile.length() == 12) {
+                    type = "Mobile";
                     getBinding().errorEmail.setTextColor(getResources().getColor(R.color.heather));
                     getBinding().errorEmail.setText(getResources().getString(R.string.mobile_suggestion));
                     return true;
@@ -589,21 +619,33 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     getBinding().passwordError.setText(getResources().getString(R.string.password_rules));
                     getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
                     getBinding().errorEmail.setVisibility(View.VISIBLE);
-                    getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
+                    getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
                     passwordValidaton(password);
                     return false;
 
                 }
-            } else if (true) {
-                type = "email";
+            } else if (email_mobile.matches(EMAIL_REGEX)) {
+                type = "Email";
                 getBinding().errorEmail.setTextColor(getResources().getColor(R.color.heather));
                 getBinding().errorEmail.setText(getResources().getString(R.string.mobile_suggestion));
                 return true;
             } else {
+
+                boolean numeric = true;
+                try {
+                    double num = Double.parseDouble(email_mobile);
+                } catch (NumberFormatException e) {
+                    numeric = false;
+                }
+                if (numeric) {
+                    getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
+                } else {
+                    getBinding().errorEmail.setText(getResources().getString(R.string.email_suggestion));
+                }
                 getBinding().passwordError.setText(getResources().getString(R.string.password_rules));
                 getBinding().errorEmail.setVisibility(View.VISIBLE);
                 getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
-                getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
+
                 passwordValidaton(password);
                 return false;
 
@@ -612,7 +654,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             getBinding().passwordError.setText(getResources().getString(R.string.password_rules));
             getBinding().errorEmail.setVisibility(View.VISIBLE);
             getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
-            getBinding().errorEmail.setText(getResources().getString(R.string.email_mobile_error));
+            getBinding().errorEmail.setText(getResources().getString(R.string.field_cannot_empty));
             passwordValidaton(password);
             return false;
 

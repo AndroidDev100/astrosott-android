@@ -11,6 +11,8 @@ public class UserInfo {
     private String externalSessionToken;
     private boolean active;
 
+    private boolean houseHoldError;
+
     private boolean isVip;
     private boolean fbLinked;
     private boolean googleLinked;
@@ -23,6 +25,7 @@ public class UserInfo {
 
 
     private String email;
+    private String accountRole;
     private String cpCustomerId;
     private String mobileNumber;
 
@@ -34,6 +37,29 @@ public class UserInfo {
         session.setString("mobileNumber", mobileNumber);
     }
 
+    public boolean isHouseHoldError() {
+        return session.getBoolean("houseHoldError", false);
+    }
+
+    public void setHouseHoldError(boolean houseHoldError) {
+        session.setBoolean("houseHoldError", houseHoldError);
+    }
+
+    public void setSocialLogin(boolean socialLinked) {
+        session.setBoolean("isSocialLogin", socialLinked);
+    }
+
+    public String getAccountRole() {
+        return session.getString("astro_accountRole", "");
+    }
+
+    public void setAccountRole(String accountRole) {
+        session.setString("astro_accountRole", accountRole);
+    }
+
+    public boolean isSocialLogin() {
+        return session.getBoolean("isSocialLogin", false);
+    }
 
     public void setFbLinked(boolean fbLinked) {
         session.setBoolean("isFbLinked", fbLinked);
@@ -61,11 +87,11 @@ public class UserInfo {
 
 
     public String getCpCustomerId() {
-        return cpCustomerId;
+        return session.getString("AstroCpCustomerId", "");
     }
 
     public void setCpCustomerId(String cpCustomerId) {
-        this.cpCustomerId = cpCustomerId;
+        session.setString("AstroCpCustomerId", cpCustomerId);
     }
 
     public String getEmail() {
@@ -79,6 +105,14 @@ public class UserInfo {
 
     public void setVip(boolean vip) {
         session.setBoolean("isVIP", vip);
+    }
+
+    public boolean isMaxis() {
+        return session.getBoolean("isMaxis", false);
+    }
+
+    public void setMaxis(boolean maxis) {
+        session.setBoolean("isMaxis", maxis);
     }
 
     public void setEmail(String email) {

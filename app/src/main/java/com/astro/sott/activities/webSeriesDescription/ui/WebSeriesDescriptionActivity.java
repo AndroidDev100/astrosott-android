@@ -1,8 +1,13 @@
 package com.astro.sott.activities.webSeriesDescription.ui;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -21,26 +26,33 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.viewModel.WebSeriesDescriptionViewModel;
+import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
+import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.fragments.episodeFrament.EpisodesFragment;
+import com.astro.sott.fragments.manageSubscription.ui.CancelDialogFragment;
+import com.astro.sott.fragments.manageSubscription.ui.ManageSubscriptionFragment;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.networking.refreshToken.RefreshKS;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.helpers.ActivityLauncher;
@@ -83,7 +95,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWebSeriesDescriptionBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, AlertDialogFragment.AlertDialogListener, MoreLikeThis, EpisodesFragment.FirstEpisodeCallback {
+public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWebSeriesDescriptionBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, AlertDialogFragment.AlertDialogListener, MoreLikeThis, EpisodesFragment.FirstEpisodeCallback, EpisodeDialogFragment.EditDialogListener {
     private final Handler mHandler = new Handler();
     private final List<AssetCommonBean> loadedList = new ArrayList<>();
     private Asset asset;
@@ -104,12 +116,15 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private String idfromAssetWatchlist, cast = "", crew = "", genre, language, subGenre;
     private WebEpisodeDescriptionCommonAdapter adapter = null;
     private int tempCount = 0;
+    private String duraton;
+    private String description = "";
     private List<Integer> seriesNumberList;
     private List<AssetCommonBean> clipList;
     private List<VIUChannel> channelList;
     private List<VIUChannel> dtChannelsList;
-    private int seasonCounter = 0;
+    private int seasonCounter = 0, watchPosition = 0;
     private int counter = 0;
+    private boolean becomeVipButtonCLicked = false;
     private boolean playerChecksCompleted = false;
     private int errorCode = -1;
     private boolean episodeTested = false;
@@ -163,9 +178,11 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             }
             lastClickTime = SystemClock.elapsedRealtime();
             if (vodType.equalsIgnoreCase(EntitlementCheck.FREE)) {
+                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("watch", asset, this);
                 callProgressBar();
                 playerChecks(assetToPlay);
             } else if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("trx_vip", asset, this);
                 if (UserInfo.getInstance(this).isActive()) {
                     fileId = AppCommonMethods.getFileIdOfAssest(assetToPlay.getObject());
                     if (!fileId.equalsIgnoreCase("")) {
@@ -174,7 +191,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         startActivity(intent);
                     }
                 } else {
-                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, "");
+                    becomeVipButtonCLicked = true;
+                    new ActivityLauncher(WebSeriesDescriptionActivity.this).signupActivity(WebSeriesDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
             }
@@ -189,7 +207,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         asset = railData.getObject();
         if (asset.getName() != null)
             FirebaseEventManager.getFirebaseInstance(WebSeriesDescriptionActivity.this).trackScreenName(asset.getName());
-
+        FirebaseEventManager.getFirebaseInstance(WebSeriesDescriptionActivity.this).setRelatedAssetName(asset.getName());
         TabsData.getInstance().setSeriesAsset(asset);
         getBinding().setMovieAssestModel(asset);
         map = asset.getTags();
@@ -216,12 +234,21 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     }
 
+    private void getBookmarking(Asset asset) {
+        if (UserInfo.getInstance(this).isActive()) {
+            viewModel.getBookmarking(asset).observe(this, integer -> {
+                watchPosition = integer;
+            });
+        }
+    }
+
     private void setClicks() {
         getBinding().webwatchList.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
+            FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("add_mylist", asset, this);
             if (NetworkConnectivity.isOnline(getApplication())) {
                 if (UserInfo.getInstance(this).isActive()) {
                     if (isAdded) {
@@ -230,7 +257,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, "");
+                    new ActivityLauncher(WebSeriesDescriptionActivity.this).signupActivity(WebSeriesDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), WebSeriesDescriptionActivity.this);
@@ -305,7 +332,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void setMetas() {
         getMovieYear();
-        setRailBaseFragment();
+        //  setRailBaseFragment();
     }
 
     private void getMovieYear() {
@@ -383,6 +410,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         }
     }
 
+    int lineCount = 0;
+
     private void getLanguage() {
         viewModel.getLanguageLiveData(map).observe(this, new Observer<String>() {
             @Override
@@ -415,12 +444,38 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getBinding().tvShortDescription.setText(value);
                 getBinding().movieTitle.setText(asset.getName());
                 MultilingualStringValue stringValue = null;
-                String description = "";
+
                 if (asset.getMetas() != null)
                     stringValue = (MultilingualStringValue) asset.getMetas().get(AppLevelConstants.KEY_LONG_DESCRIPTION);
                 if (stringValue != null)
                     description = stringValue.getValue();
                 getBinding().descriptionText.setText(description);
+//                   getBinding().descriptionText.setText("fdghjbknhygtfrdsewastdryguhiygjtfrgdes");
+
+
+                getBinding().descriptionText.post(() -> {
+                    lineCount = getBinding().descriptionText.getLineCount();
+                    Log.d("linecountCheck", lineCount + "");
+                });
+
+                lineCount = getBinding().descriptionText.getLineCount();
+                Log.d("linecountCheck", "inf" + lineCount);
+
+                if (lineCount <= 3) {
+                    if ((!TextUtils.isEmpty(getBinding().durationText.getText())) || (!TextUtils.isEmpty(getBinding().subtitleText.getText())) || (!TextUtils.isEmpty(getBinding().castText.getText())) || (!TextUtils.isEmpty(getBinding().crewText.getText()))) {
+                        getBinding().shadow.setVisibility(View.VISIBLE);
+                        getBinding().lessButton.setVisibility(View.VISIBLE);
+
+                    } else {
+                        getBinding().shadow.setVisibility(View.GONE);
+                        getBinding().lessButton.setVisibility(View.GONE);
+                        Log.d("linecountCheck", "inelse");
+
+                    }
+                } else {
+                    Log.d("linecountCheck", "else");
+
+                }
 
 
             }
@@ -465,7 +520,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     getBinding().crewLay.setVisibility(View.GONE);
                 } else {
                     getBinding().crewLay.setVisibility(View.VISIBLE);
-                    getBinding().crewText.setText(" " + crewText);
+                    getBinding().crewText.setText(" "+crewText + "");
                 }
 
             }
@@ -492,7 +547,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void getDuration() {
-        String duraton = AppCommonMethods.getURLDuration(asset);
+        duraton = AppCommonMethods.getURLDuration(asset);
 
         if (!TextUtils.isEmpty(duraton)) {
             getBinding().durationLay.setVisibility(View.VISIBLE);
@@ -511,7 +566,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getBinding().castLay.setVisibility(View.GONE);
             } else {
                 getBinding().castLay.setVisibility(View.VISIBLE);
-                getBinding().castText.setText(" " + castTest);
+                getBinding().castText.setText(" "+castTest + "");
             }
 
         });
@@ -526,10 +581,15 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 callwatchlistApi();
                 if (isParentalLocked)
                     assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
+
                 //  callwatchlistApi();
 
             }
         }
+
+        checkEntitleMent(assetToPlay);
+        setRailBaseFragment();
+
     }
 
     private void modelCall() {
@@ -554,12 +614,21 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             modelCall();
             intentValues();
+//
             setExpandable();
+
+
             getBinding().shareWith.setOnClickListener(view -> {
                 if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
+                try {
+                    CleverTapManager.getInstance().socialShare(this, asset, false);
+                    FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset, this);
+                } catch (Exception e) {
+
+                }
                 openShareDialouge();
             });
 
@@ -656,15 +725,75 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         });
     }
 
-    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<RailCommonData> railList) {
+    public void moveToPlay(int position, RailCommonData railCommonData, int type, List<
+            RailCommonData> railList) {
 //        if (this.railList!=null){
 //            this.railList.clear();
 //        }
-        fromNextEpisode = false;
-        this.railList = railList;
+        if (type == 0) {
+            fromNextEpisode = false;
+            this.railList = railList;
+            callProgressBar();
+            playerChecks(railCommonData);
+        } else {
+            becomeVipButtonCLicked = true;
+            assetToPlay = railCommonData;
+            openDialougeForEntitleMent(railCommonData);
+        }
+    }
 
-        callProgressBar();
-        playerChecks(railCommonData);
+    public void openDialougeForEntitleMent(RailCommonData railCommonData) {
+        boolean status = UserInfo.getInstance(this).isActive();
+           /* AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
+            builder.setTitle(getResources().getString(R.string.become_vip)).setMessage(getResources().getString(R.string.subscribe_description))
+                    .setCancelable(true)
+                    .setPositiveButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                        new ActivityLauncher(this).profileSubscription("Content Detail Page");
+                        dialog.cancel();
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+            Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+            bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
+            Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+            bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));*/
+        if (railCommonData.getObject() != null) {
+            fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
+            FragmentManager fm = getSupportFragmentManager();
+            EpisodeDialogFragment cancelDialogFragment = EpisodeDialogFragment.newInstance("Detail Page", fileId);
+            cancelDialogFragment.setEditDialogCallBack(WebSeriesDescriptionActivity.this);
+            cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        }
+
+        /*} else {
+            showLoginDialog();
+        }*/
+    }
+
+    public void showLoginDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppAlertTheme);
+        builder.setTitle(getResources().getString(R.string.become_vip)).setMessage(getResources().getString(R.string.subscribe_description))
+                .setCancelable(true)
+                .setPositiveButton(getResources().getString(R.string.login), (dialog, id) -> {
+                    //dialog.cancel();
+
+                    new ActivityLauncher(this).signupActivity(this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
+                    dialog.cancel();
+                    //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
+                })
+                .
+                        setNegativeButton(getResources().getString(R.string.subscribe_text), (dialog, id) -> {
+                            new ActivityLauncher(this).profileSubscription("Content Detail Page");
+                            dialog.cancel();
+                        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+        Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        bn.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
+        Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        bp.setTextColor(ContextCompat.getColor(this, R.color.aqua_marine));
     }
 
     public void episodeCallback(List<RailCommonData> railList) {
@@ -831,16 +960,22 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void startPlayer(RailCommonData railCommonData) {
-        callProgressBar();
-        Intent intent = new Intent(WebSeriesDescriptionActivity.this, PlayerActivity.class);
-        intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
+        try {
 
-        /*  if (fromNextEpisode) {*/
-        intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
+
+            callProgressBar();
+            Intent intent = new Intent(WebSeriesDescriptionActivity.this, PlayerActivity.class);
+            intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railCommonData);
+
+            /*  if (fromNextEpisode) {*/
+            intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) railList1);
        /* } else {
             intent.putExtra(AppLevelConstants.RAIL_LIST, (Serializable) ra);
         }*/
-        startActivity(intent);
+            startActivity(intent);
+        } catch (Exception ignored) {
+
+        }
     }
 
     private void validateParentalPin(RailCommonData railCommonData) {
@@ -982,8 +1117,13 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     }
 
     private void setExpandable() {
-        getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
-        getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
+//        if(getBinding().descriptionText.getLineCount() >3)
+//        {
+//            getBinding().descriptionText.setMaxLines(3);
+//            getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+//
+//        }
+//        getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
         getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
         getBinding().lessButton.setOnClickListener(view -> {
             getBinding().descriptionText.toggle();
@@ -993,15 +1133,23 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getBinding().shadow.setVisibility(View.GONE);
 
             } else {
-                getBinding().shadow.setVisibility(View.VISIBLE);
+//                if(getBinding().descriptionText.getLineCount() >3)
+//            {
+//                getBinding().descriptionText.setMaxLines(3);
                 getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
+                getBinding().shadow.setVisibility(View.VISIBLE);
+
+//            }
             }
 
             if (getBinding().expandableLayout.isExpanded()) {
-                getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+//                getBinding().textExpandable.setText(().getString(R.string.view_more));
 
             } else {
-                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+
+//                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
             }
             if (view != null) {
                 getBinding().expandableLayout.expand();
@@ -1152,7 +1300,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     public void onFinishDialog() {
         if (isPurchased) {
             isPurchased = false;
-            new ActivityLauncher(WebSeriesDescriptionActivity.this).astrLoginActivity(WebSeriesDescriptionActivity.this, AstrLoginActivity.class, "");
+            new ActivityLauncher(WebSeriesDescriptionActivity.this).signupActivity(WebSeriesDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_LOCK);
 
         }
     }
@@ -1165,7 +1313,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
 
     private void playerChecks(final RailCommonData railCommonData) {
-        new GeoBlockingCheck().aseetAvailableOrNot(WebSeriesDescriptionActivity.this, railData.getObject(), (status, response, totalCount, errorcode, message) -> {
+        new GeoBlockingCheck().aseetAvailableOrNot(WebSeriesDescriptionActivity.this, railCommonData.getObject(), (status, response, totalCount, errorcode, message) -> {
             if (status) {
                 if (totalCount != 0) {
                     checkBlockingErrors(response, railCommonData);
@@ -1206,56 +1354,75 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         }
     }
 
+    private boolean isEntitlementCheck = false;
+
     private void checkEntitleMent(final RailCommonData railCommonData) {
-        String fileId = "";
-        if (railCommonData.getObject() != null)
+        if (railCommonData != null && railCommonData.getObject() != null)
+            getBookmarking(railCommonData.getObject());
+        if (railCommonData != null && railCommonData.getObject() != null) {
+            isEntitlementCheck = true;
             fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
-        new EntitlementCheck().checkAssetPurchaseStatus(WebSeriesDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
-            if (apiStatus) {
-                if (purchasedStatus) {
-                    runOnUiThread(() -> {
-                        getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                        getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                        getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
-                        getBinding().starIcon.setVisibility(View.GONE);
-                        getBinding().playText.setTextColor(getResources().getColor(R.color.black));
-
-
-                    });
-                    this.vodType = EntitlementCheck.FREE;
-
-                } else {
-                    if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+            new EntitlementCheck().checkAssetPurchaseStatus(WebSeriesDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+                if (apiStatus) {
+                    if (purchasedStatus) {
                         runOnUiThread(() -> {
-                            getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                            getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                            getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.VISIBLE);
-                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-
+                            if (playbackControlValue) {
+                                getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                                if (watchPosition > 0) {
+                                    getBinding().playText.setText(getResources().getString(R.string.resume));
+                                } else {
+                                    getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                }
+                                getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+                                becomeVipButtonCLicked = false;
+                            }
 
                         });
-                        this.vodType = EntitlementCheck.SVOD;
+                        this.vodType = EntitlementCheck.FREE;
 
-                    } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
-                        getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                        getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                        getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
-                        getBinding().starIcon.setVisibility(View.GONE);
-                        getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                    } else {
+                        if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                            runOnUiThread(() -> {
+                                getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                                getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                                if (becomeVipButtonCLicked) {
+                                    if (UserInfo.getInstance(this).isActive()) {
+                                        if (!fileId.equalsIgnoreCase("")) {
+                                            Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                            intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                            startActivity(intent);
+                                        }
+                                    }
+                                }
+
+                            });
+                            this.vodType = EntitlementCheck.SVOD;
 
 
-                        this.vodType = EntitlementCheck.TVOD;
+                        } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
+                            getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                            getBinding().playText.setText(getResources().getString(R.string.rent_movie));
+                            getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                            getBinding().starIcon.setVisibility(View.GONE);
+                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                            becomeVipButtonCLicked = false;
+                            this.vodType = EntitlementCheck.TVOD;
 
 
+                        }
                     }
+
+                } else {
+
                 }
-
-            } else {
-
-            }
-        });
-       /* new EntitlementCheck().checkAssetType(WebSeriesDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
+            });
+        }
+        /* new EntitlementCheck().checkAssetType(WebSeriesDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
             if (status) {
                 playerChecksCompleted = true;
                 if (purchaseKey.equalsIgnoreCase(getResources().getString(R.string.FOR_PURCHASE_SUBSCRIPTION_ONLY)) || purchaseKey.equals(getResources().getString(R.string.FREE))) {
@@ -1440,16 +1607,17 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     @Override
     public void onFirstEpisodeData(List<AssetCommonBean> railCommonData, String checkSeries) {
-        if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
-            railList1.clear();
-            railList1.addAll(railCommonData.get(0).getRailAssetList());
-            TabsData.getInstance().setSeriesType(checkSeries);
-            if (TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
-                viewModel.getEpisodeToPlay(assetId).observe(this, assetHistory -> {
-                    if (assetHistory != null && assetHistory.getAssetId() != null) {
-                        viewModel.getSpecificAsset(assetHistory.getAssetId() + "").observe(this, railAsset -> {
-                            if (railAsset != null) {
-                                fromNextEpisode = true;
+        if (assetToPlay == null) {
+            if (railCommonData.get(0) != null && railCommonData.get(0).getRailAssetList() != null && railCommonData.get(0).getRailAssetList().size() > 0 && railCommonData.get(0).getRailAssetList().get(0) != null) {
+                railList1.clear();
+                railList1.addAll(railCommonData.get(0).getRailAssetList());
+                TabsData.getInstance().setSeriesType(checkSeries);
+                if (TabsData.getInstance().getSortType().equalsIgnoreCase(AppLevelConstants.KEY_EPISODE_NUMBER)) {
+                    viewModel.getEpisodeToPlay(assetId).observe(this, assetHistory -> {
+                        if (assetHistory != null && assetHistory.getAssetId() != null) {
+                            viewModel.getSpecificAsset(assetHistory.getAssetId() + "").observe(this, railAsset -> {
+                                if (railAsset != null) {
+                                    fromNextEpisode = true;
                                 /*railList1.clear();
                                 railList1.addAll(railCommonData.get(0).getRailAssetList());*/
                                /* if (checkSeries.equalsIgnoreCase(AppLevelConstants.OPEN)) {
@@ -1460,25 +1628,28 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                     int seasonNumber = AssetContent.getSpecificSeason(railAsset.getObject().getMetas());
                                     GetSeasonEpisode(seasonNumber, assetToPlay);
                                 }*/
-                                assetToPlay = railAsset;
-                                checkForPlayButtonCondition();
+                                    assetToPlay = railAsset;
+                                    checkForPlayButtonCondition();
 
-                            } else {
-                                assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
-                                checkForPlayButtonCondition();
-                            }
-                        });
-                    } else {
-                        assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
-                        checkForPlayButtonCondition();
+                                } else {
+                                    assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
+                                    checkForPlayButtonCondition();
+                                }
+                            });
+                        } else {
+                            assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
+                            checkForPlayButtonCondition();
 
-                    }
-                });
-            } else {
-                assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
-                checkForPlayButtonCondition();
+                        }
+                    });
+                } else {
+                    assetToPlay = railCommonData.get(0).getRailAssetList().get(0);
+                    checkForPlayButtonCondition();
 
+                }
             }
+        } else {
+            becomeVipButtonCLicked = false;
         }
 
     }
@@ -1528,8 +1699,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getPlayBackControl(metas);
             }
         }
-        if (playbackControlValue)
-            checkEntitleMent(assetToPlay);
+
+        checkEntitleMent(assetToPlay);
 
     }
 
@@ -1539,8 +1710,15 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         railData = commonData;
         getDatafromBack();
         assetToPlay = null;
+        isEntitlementCheck = false;
         getBinding().ivPlayIcon.setVisibility(View.GONE);
+        setRailBaseFragment();
         isActive = UserInfo.getInstance(this).isActive();
+    }
+
+    @Override
+    public void onFinishEditDialog() {
+
     }
 }
 

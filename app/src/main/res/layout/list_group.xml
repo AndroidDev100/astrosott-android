@@ -15,7 +15,7 @@
         android:layout_marginStart="@dimen/dimen16dp"
         android:textColor="@color/white"
         android:textSize="@dimen/_16sp"
-        android:fontFamily="@font/heebo_regular"
+        android:fontFamily="@font/roboto_regular"
         android:layout_centerInParent="true"
         android:text="@string/watch_movie"
          />

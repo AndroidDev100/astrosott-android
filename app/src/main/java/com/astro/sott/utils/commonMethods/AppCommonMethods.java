@@ -1,6 +1,9 @@
 package com.astro.sott.utils.commonMethods;
 
+import static com.astro.sott.activities.myPlans.adapter.MyPlanAdapter.getDateCurrentTimeZone;
+
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +12,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -26,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.search.constants.SearchFilterEnum;
+import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.baseModel.PrefrenceBean;
 import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
@@ -36,6 +41,7 @@ import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.modelClasses.dmsResponse.SubtitleLanguages;
 import com.astro.sott.networking.ksServices.KsServices;
+import com.astro.sott.player.ui.DTPlayer;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.usermanagment.modelClasses.getDevice.AccountDeviceDetailsItem;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
@@ -56,10 +62,12 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.astro.sott.R;
 import com.astro.sott.utils.constants.AppConstants;
+import com.clevertap.android.sdk.CleverTapAPI;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardType;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
@@ -94,6 +102,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -101,6 +110,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AppCommonMethods {
     private static String progDuration;
@@ -162,13 +173,111 @@ public class AppCommonMethods {
         return "";
     }
 
+    public static void setCrashlyticsUserId(Activity activity) {
+        if (UserInfo.getInstance(activity).getCpCustomerId() != null && !UserInfo.getInstance(activity).getCpCustomerId().equalsIgnoreCase(""))
+            FirebaseCrashlytics.getInstance().setUserId(UserInfo.getInstance(activity).getCpCustomerId());
+
+    }
+
+    public static String getCarrier(Context activity) {
+        String simOperatorName = "";
+        TelephonyManager telemamanger = (TelephonyManager)
+                activity.getSystemService(Context.TELEPHONY_SERVICE);
+
+        simOperatorName = telemamanger.getNetworkOperatorName();
+        return simOperatorName;
+    }
+
+    public static void setCleverTap(Activity context) {
+
+        try {
+            CleverTapAPI clevertapDefaultInstance =
+                    CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver()));
+            HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("Name", UserInfo.getInstance(context).getFirstName());
+            profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
+            profileUpdate.put("Email", UserInfo.getInstance(context).getEmail());
+            profileUpdate.put("Phone", UserInfo.getInstance(context).getMobileNumber());
+            profileUpdate.put("App Language", "English");
+            clevertapDefaultInstance.onUserLogin(profileUpdate, AppCommonMethods.getDeviceId(context.getContentResolver()));
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+    public static void onUserRegister(Activity context) {
+        try {
+            CleverTapAPI clevertapDefaultInstance =
+                    CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver()));
+            HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("MSG-email", true);
+            clevertapDefaultInstance.pushProfile(profileUpdate);
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+    public static void namePushCleverTap(Activity context, String name) {
+
+        try {
+            CleverTapAPI clevertapDefaultInstance =
+                    CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver()));
+            HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("Name", name);
+            profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
+            clevertapDefaultInstance.pushProfile(profileUpdate);
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+    public static void emailPushCleverTap(Activity context, String email) {
+
+        try {
+            CleverTapAPI clevertapDefaultInstance =
+                    CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver()));
+            HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("Email", email);
+            profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
+            clevertapDefaultInstance.pushProfile(profileUpdate);
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+    public static void mobilePushCleverTap(Activity context, String phone) {
+
+        try {
+            CleverTapAPI clevertapDefaultInstance =
+                    CleverTapAPI.getDefaultInstance(context, AppCommonMethods.getDeviceId(context.getContentResolver()));
+            HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
+            profileUpdate.put("Phone", phone);
+            profileUpdate.put("Identity", UserInfo.getInstance(context).getCpCustomerId());
+            clevertapDefaultInstance.pushProfile(profileUpdate);
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
     public static void removeUserPrerences(Context context) {
         UserInfo.getInstance(context).setUserName("");
         UserInfo.getInstance(context).setVip(false);
+        UserInfo.getInstance(context).setHouseHoldError(false);
         UserInfo.getInstance(context).setCpCustomerId("");
         UserInfo.getInstance(context).setLastName("");
         UserInfo.getInstance(context).setEmail("");
         UserInfo.getInstance(context).setMobileNumber("");
+        UserInfo.getInstance(context).setSocialLogin(false);
         UserInfo.getInstance(context).setAlternateUserName("");
         UserInfo.getInstance(context).setAccessToken("");
         UserInfo.getInstance(context).setRefreshToken("");
@@ -218,7 +327,21 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mmaaa", Locale.US);
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+    public static String getFirebaseDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d", Locale.getDefault());
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
@@ -259,7 +382,7 @@ public class AppCommonMethods {
             }
 
             Date date = new Date(_time * 1000L);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd=hh:mm a", Locale.US);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd=hh:mma", Locale.US);
             simpleDateFormat.setTimeZone(TimeZone.getDefault());
             String dateTimeValue = simpleDateFormat.format(date);
             String _value[] = dateTimeValue.split("=");
@@ -357,6 +480,21 @@ public class AppCommonMethods {
             calendar.setTimeInMillis(timestamp);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+            sdf.setTimeZone(TimeZone.getDefault());
+
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+    public static String getDateCleverTap(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DDTHH:MM:SSZ", Locale.getDefault());
             sdf.setTimeZone(TimeZone.getDefault());
 
             Date currenTimeZone = (Date) calendar.getTime();
@@ -629,36 +767,13 @@ public class AppCommonMethods {
     static Uri dynamicLinkUri;
 
     public static void openShareDialog(final Activity activity, final Asset asset, Context context, String subMediaType) {
-        /*WeakReference<Activity> mActivity = new WeakReference<>(activity);
-        BranchUniversalObject buo = new BranchUniversalObject()
-                .setTitle(asset.getName())
-                .setContentDescription(asset.getDescription())
-                .setContentImageUrl(AppCommonMethods.getSharingImage(context, asset.getImages(), asset.getType()));
 
-
-        LinkProperties lp = new LinkProperties()
-                .setChannel("Wactho Example")
-                .addControlParameter("assetId", asset.getId() + "")
-                .addControlParameter("mediaType", asset.getType() + "");
-
-        buo.generateShortUrl(context, lp, (url, error) -> {
-
-            String sharingURL;
-            if (error == null) {
-                sharingURL = url;
-                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-
-                sharingIntent.putExtra(Intent.EXTRA_TEXT, mActivity.get().getResources().getString(R.string.checkout) + " " + asset.getName() + " " + mActivity.get().getResources().getString(R.string.on_Dialog) + "\n" + sharingURL);
-
-                activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
-
-                Log.i("BRANCH SDK", "got my Branch link to share: " + sharingURL);
-            }
-        });*/
 
         try {
             String uri = createURI(asset, activity);
+            String fallBackUrl = createFallBackUrl(asset, activity);
+            Log.w("urivalue-->>",asset.getName()+"  "+uri);
+            Log.w("urivalue-->>",asset.getName()+"  "+Uri.parse(uri));
 /*
             DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     .setLink(Uri.parse(uri))
@@ -676,14 +791,13 @@ public class AppCommonMethods {
             //  Uri dynamicLinkUri = dynamicLink.getUri();
 
 
+
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     //.setDomainUriPrefix("https://stagingsott.page.link/")
                     .setLink(Uri.parse(uri))
                     .setDomainUriPrefix(AppConstants.FIREBASE_DPLNK_PREFIX)
                     //.setLink(Uri.parse(uri))
-                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
-                            .build())
-                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE)
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE).setFallbackUrl(Uri.parse(fallBackUrl))
                             .build())
                     .setIosParameters(new DynamicLink.IosParameters.Builder(AppConstants.FIREBASE_IOS_PACKAGE).build())
                     .setSocialMetaTagParameters(
@@ -692,6 +806,8 @@ public class AppCommonMethods {
                                     .setDescription(asset.getDescription())
                                     .setImageUrl(Uri.parse(AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType())))
                                     .build())
+                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
+                            .build())
                     .buildShortDynamicLink(ShortDynamicLink.Suffix.SHORT)
                     .addOnCompleteListener(activity, new OnCompleteListener<ShortDynamicLink>() {
                         @Override
@@ -708,7 +824,7 @@ public class AppCommonMethods {
                                             if (dynamicLinkUri != null) {
                                                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                                                 sharingIntent.setType("text/plain");
-                                                sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + dynamicLinkUri.toString());
+                                                sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + asset.getDescription()+ "\n" + dynamicLinkUri.toString());
                                                 // sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + "https://stagingsott.page.link/?link="+dynamicLinkUri.toString()+"&apn=com.astro.stagingsott");
 
                                                 activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
@@ -729,10 +845,29 @@ public class AppCommonMethods {
                     });
 
             shortLinkTask.toString();
+            Log.w("urivalue-->>",asset.getName()+"  "+shortLinkTask.toString());
 
         } catch (Exception ignored) {
 
         }
+    }
+
+    private static String createFallBackUrl(Asset asset, Activity activity) {
+        String uri = "";
+        try {
+            String assetId = asset.getId() + "";
+            String assetType = asset.getType() + "";
+            uri = Uri.parse(AppConstants.FIREBASE_DPLNK_FALLBACK_URL)
+                    .buildUpon()
+                    .appendQueryParameter("id", assetId)
+                    .appendQueryParameter("mediaType", assetType)
+                    .build().toString();
+
+        } catch (Exception ignored) {
+            uri = "";
+        }
+
+        return uri;
     }
 
     private static String createURI(Asset asset, Activity activity) {
@@ -740,14 +875,18 @@ public class AppCommonMethods {
         try {
             String assetId = asset.getId() + "";
             String assetType = asset.getType() + "";
-            uri = Uri.parse(AppConstants.FIREBASE_DPLNK_URL)
-                    .buildUpon()
+
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("https")
+                    .authority(AppConstants.FIREBASE_DPLNK_URL)
+                    .appendPath("data")
                     .appendQueryParameter("id", assetId)
                     .appendQueryParameter("mediaType", assetType)
                     .appendQueryParameter("image", AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType()))
                     .appendQueryParameter("name", asset.getName())
-                    .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE)
-                    .build().toString();
+                    .appendQueryParameter("sd", asset.getDescription())
+                    .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE);
+            uri = builder.build().toString();
 
         } catch (Exception ignored) {
             uri = "";
@@ -760,10 +899,12 @@ public class AppCommonMethods {
     private static String getSharingImage(Context context, List<MediaImage> mediaImage, Integer type) {
         String imageURL = "";
         for (int i = 0; i < mediaImage.size(); i++) {
-
+            Log.w("imagevideo-->",mediaImage.get(i).getRatio()+"  "+type);
             if (type == MediaTypeConstant.getMovie(context)) {
                 if (mediaImage.get(i).getRatio().equals("9x16")) {
                     imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.portrait_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.portrait_image_height) + AppLevelConstants.QUALITY;
+                }else if(mediaImage.get(i).getRatio().equals("16x9")) {
+                    imageURL = mediaImage.get(i).getUrl() + AppLevelConstants.WIDTH + (int) context.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) context.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
                 }
 
             } else {
@@ -784,14 +925,22 @@ public class AppCommonMethods {
         String deviceName;
         if (TextUtils.isEmpty(Settings.System.getString(context.getContentResolver(), AppLevelConstants.DEVICE_NAME))) {
             deviceName = Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
+//            deviceName= android.os.Build.MODEL;
         } else {
             deviceName = Settings.System.getString(context.getContentResolver(), AppLevelConstants.DEVICE_NAME);
+//            BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+//            deviceName = myDevice.getName();
+//            Log.d("tfgh",deviceName+"");
+//            deviceName = android.os.Build.MODEL;
 
         }
         return deviceName;
     }
 
     public static String getDeviceId(ContentResolver contentResolver) {
+//        BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+//        String deviceName = myDevice.getName();
+//        return deviceName;
         return Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID);
     }
 
@@ -1243,9 +1392,13 @@ public class AppCommonMethods {
     }
 
     public static ResponseDmsModel callpreference(Context context) {
-        Gson gson = new Gson();
-        String json = SharedPrefHelper.getInstance(context).getString("DMS_Response", "");
-        return gson.fromJson(json, ResponseDmsModel.class);
+        try {
+            Gson gson = new Gson();
+            String json = SharedPrefHelper.getInstance(context).getString("DMS_Response", "");
+            return gson.fromJson(json, ResponseDmsModel.class);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static void setContinueWatchingPreferences(List<AssetHistory> objects, Context activity) {
@@ -1517,6 +1670,13 @@ public class AppCommonMethods {
         return dateTimeValue;
     }
 
+    public static String getCurrentDate() {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+        return formattedDate;
+    }
+
     private static String checkDigit(int number) {
         return number <= 9 ? "0" + number : String.valueOf(number);
     }
@@ -1627,11 +1787,12 @@ public class AppCommonMethods {
 
     public static ArrayList<String> splitString(String temp, String delim) {
         StringBuilder stringBuilder;
-        if (temp.contains("##")) {
-            stringBuilder = new StringBuilder(temp.replace("##", "#StringTokenizer#"));
-        } else {
-            stringBuilder = new StringBuilder(temp);
-        }
+
+            if (temp.contains("##") && (temp != null)){
+                stringBuilder = new StringBuilder(temp.replace("##", "#StringTokenizer#"));
+            } else {
+                stringBuilder = new StringBuilder(temp);
+            }
 
         ArrayList<String> mDetailList = new ArrayList<>();
         StringTokenizer tok = new StringTokenizer(stringBuilder.toString(), delim, true);
@@ -1661,12 +1822,11 @@ public class AppCommonMethods {
 
     public static void setBillingUi(ImageView imageView, Map<String, MultilingualStringValueArray> tags, Integer type, Activity mContext) {
         try {
-            if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext)) {
+            if (type == MediaTypeConstant.getSeries(mContext) || type == MediaTypeConstant.getCollection(mContext) || type == MediaTypeConstant.getLinear(mContext) ) {
                 if (AssetContent.getBillingIdForSeries(tags)) {
                     imageView.setVisibility(View.VISIBLE);
                 } else {
                     imageView.setVisibility(View.GONE);
-
                 }
             } else {
                 if (AssetContent.getBillingId(tags)) {
@@ -2333,9 +2493,9 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
+  /*      StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+        StringBuilderHolder.getInstance().append("'");*/
 
         StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);
@@ -2409,9 +2569,9 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
+      /*  StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+        StringBuilderHolder.getInstance().append("'");*/
 
         StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);
@@ -2485,9 +2645,9 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("description~'");
+      /*  StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
+        StringBuilderHolder.getInstance().append("'");*/
 
         StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);
@@ -2528,7 +2688,7 @@ public class AppCommonMethods {
         try {
 
             Date date = new Date(timestamp * 1000L);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa", Locale.US);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM hh:mmaaa", Locale.US);
             simpleDateFormat.setTimeZone(TimeZone.getDefault());
             String dateTimeValue = simpleDateFormat.format(date);
             return dateTimeValue;
@@ -2556,7 +2716,20 @@ public class AppCommonMethods {
         String email = "";
         try {
             String s = UserInfo.getInstance(context).getEmail();
-            email = s.replaceAll("(?<=.{1}).(?=[^@]*?.@)", "*");
+            String pattern = "([^@]+)@(.*)\\.(.*)";
+
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(s);
+            if (m.find()) {
+                StringBuilder sb = new StringBuilder("");
+                sb.append(m.group(1).charAt(0));
+                sb.append(m.group(1).substring(1));
+                sb.append("@");
+                sb.append(m.group(2).replaceAll(".", "*"));
+                sb.append(".").append(m.group(3));
+                email = sb.toString();
+            }
+
         } catch (Exception ignored) {
             email = "";
         }
@@ -2613,7 +2786,7 @@ public class AppCommonMethods {
             String liveEventStartTime = AppCommonMethods.getLiveEventStartDate(asset.getStartDate()) + "";
             String liveEventEndTime = AppCommonMethods.getLiveEventEndTime(asset.getEndDate()) + "";
             if (liveEventStartTime != null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime != null && !liveEventEndTime.equalsIgnoreCase("")) {
-                StringBuilderHolder.getInstance().append(liveEventStartTime + " - " + liveEventEndTime);
+                StringBuilderHolder.getInstance().append(liveEventStartTime + "-" + liveEventEndTime);
                 StringBuilderHolder.getInstance().append(" | ");
             }
         } else if (type == 5) {
@@ -2634,7 +2807,7 @@ public class AppCommonMethods {
             String liveEventStartTime = AppCommonMethods.getLiveEventStartDate(liveEventStartDate) + "";
             String liveEventEndTime = AppCommonMethods.getLiveEventEndTime(liveEventEndDate) + "";
             if (liveEventStartTime != null && !liveEventStartTime.equalsIgnoreCase("") && liveEventEndTime != null && !liveEventEndTime.equalsIgnoreCase("")) {
-                StringBuilderHolder.getInstance().append(liveEventStartTime + " - " + liveEventEndTime);
+                StringBuilderHolder.getInstance().append(liveEventStartTime + "-" + liveEventEndTime);
                 StringBuilderHolder.getInstance().append(" | ");
             }
         } else {
@@ -2736,8 +2909,8 @@ public class AppCommonMethods {
         try {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d 'at' hh:mm aaa", Locale.getDefault());
+            calendar.setTimeInMillis(timestamp * 1000L);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM hh:mmaaa", Locale.US);
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
@@ -2751,7 +2924,7 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mmaaa", Locale.US);
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
@@ -2823,19 +2996,21 @@ public class AppCommonMethods {
     public static String getAdsUrl(String url, Asset asset, Context context) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(url);
-        stringBuilder.append("?cust_params%3Ddid%3D" + AppCommonMethods.getDeviceId(context.getContentResolver()));
-        if (UserInfo.getInstance(context).getCpCustomerId() != null && !UserInfo.getInstance(context).getCpCustomerId().equalsIgnoreCase(""))
-            stringBuilder.append("&cid%3D" + UserInfo.getInstance(context).getCpCustomerId());
+        stringBuilder.append("&cust_params=");
+        //did%3D" + AppCommonMethods.getDeviceId(context.getContentResolver())
+       /* if (UserInfo.getInstance(context).getCpCustomerId() != null && !UserInfo.getInstance(context).getCpCustomerId().equalsIgnoreCase(""))
+            stringBuilder.append("&cid%3D" + UserInfo.getInstance(context).getCpCustomerId());*/
+        stringBuilder.append("vid%3D" + asset.getId());
         if (!asset.getName().equalsIgnoreCase(""))
             stringBuilder.append("&vtitle%3D" + asset.getName());
 
-        stringBuilder.append("&ver%3D" + BuildConfig.VERSION_NAME);
-        stringBuilder.append("&vid%3D" + asset.getId());
+        /* stringBuilder.append("&ver%3D" + BuildConfig.VERSION_NAME);*/
+
         if (asset.getType() == MediaTypeConstant.getLinear(context)) {
             if (AssetContent.isLiveEvent(asset.getMetas())) {
                 stringBuilder.append("&vtype%3DLive Event");
             } else {
-                stringBuilder.append("&ch%3D" + asset.getName());
+                /*  stringBuilder.append("&ch%3D" + asset.getName());*/
                 stringBuilder.append("&vtype%3DLinear Programme");
             }
         } else {
@@ -2852,8 +3027,8 @@ public class AppCommonMethods {
         if (!AssetContent.getProvider(asset.getTags()).equalsIgnoreCase(""))
             stringBuilder.append("&vpro%3D" + AssetContent.getProvider(asset.getTags()));
 
-        if (!AssetContent.getSubTitleLanguageDataString(asset.getTags(), context).equalsIgnoreCase(""))
-            stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags(), context));
+       /* if (!AssetContent.getSubTitleLanguageDataString(asset.getTags(), context).equalsIgnoreCase(""))
+            stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags(), context));*/
         stringBuilder.append("&lang%3D" + "English");
 
         return stringBuilder.toString();
@@ -3003,4 +3178,20 @@ public class AppCommonMethods {
         return name;
     }
 
+    public static boolean isTokenExpired(Activity context) {
+        boolean isExpired = false;
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm aa");
+        String getCurrentDateTime = sdf.format(c.getTime());
+        String getMyTime = getDateCurrentTimeZone(KsPreferenceKey.getInstance(context).getExpiryTime());
+
+
+        if (getCurrentDateTime.compareTo(getMyTime) < 0) {
+            isExpired = false;
+        } else {
+            isExpired = true;
+        }
+
+        return isExpired;
+    }
 }

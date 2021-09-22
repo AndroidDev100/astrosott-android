@@ -10,12 +10,13 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.search.ui.ActivitySearch;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.baseModel.TabsBaseFragment;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
-import com.astro.sott.callBacks.AppUpdateCallBack;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.fragments.home.ui.ViewPagerFragmentAdapter;
 import com.astro.sott.fragments.homenewtab.ui.HomeTabNew;
@@ -25,7 +26,7 @@ import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.video.ui.VideoFragment;
-import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.billing.BillingProcessor;
@@ -57,6 +58,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,17 +78,13 @@ import com.astro.sott.fragments.livetv.ui.LiveTvFragment;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.android.play.core.appupdate.AppUpdateInfo;
-import com.google.android.play.core.install.InstallStateUpdatedListener;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.InstallStatus;
 import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.ArrayList;
 
-public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, AppUpdateCallBack, InAppProcessListener, CardCLickedCallBack {
+public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> implements DetailRailClick, InAppProcessListener, CardCLickedCallBack {
     private final String TAG = this.getClass().getSimpleName();
     private TextView toolbarTitle;
     private HomeFragment homeFragment;
@@ -104,7 +102,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     private NativeAdLayout nativeAdLayout;
     private LinearLayout adView;
     private int indicatorWidth;
-    private AppUpdateInfo appUpdateInfo;
+    //    private AppUpdateInfo appUpdateInfo;
     private long mLastClickTime = 0;
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -168,7 +166,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     };
 
     private void setProfileFragment() {
-        FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Navigation", "PROFILE");
+        FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Navigation", "Profile");
         getBinding().tabs.setVisibility(View.GONE);
         getBinding().viewPager.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
@@ -196,7 +194,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().indicator.setVisibility(View.GONE);
         liveTvFragment = new LiveTvFragment();
-        setMargins(240, 80);
+        setMargins(150, 110);
         active = liveTvFragment;
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "1").hide(liveTvFragment).commit();
@@ -246,16 +244,20 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         oldLang = new KsPreferenceKey(HomeActivity.this).getAppLangName();
+        if (UserInfo.getInstance(this).isHouseHoldError()) {
+            UserInfo.getInstance(this).setHouseHoldError(false);
+            new ActivityLauncher(this).signupActivity(this, SignUpActivity.class, CleverTapManager.HOME);
+        }
         setSupportActionBar((Toolbar) getBinding().toolbar);
         if (getIntent().getStringExtra("fragmentType") != null)
             fragmentType = getIntent().getStringExtra("fragmentType");
         modelCall();
-        ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
+        //ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
         // Before starting an update, register a listener for updates.
 
-        ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().registerListener(listener);
+        //     ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().registerListener(listener);
 
-        ApplicationUpdateManager.getInstance(getApplicationContext()).isUpdateAvailable();
+        //  ApplicationUpdateManager.getInstance(getApplicationContext()).isUpdateAvailable();
 
         createViewModel();
         intializeBilling();
@@ -490,7 +492,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     // tab titles
-    private String[] titles = new String[]{"ALL", "TV SHOWS", "MOVIES", "SPORTS"};
+    private String[] titles = new String[]{"All", "TV Shows", "Movies", "Sports"};
 
     private void initialFragment(HomeActivity homeActivity) {
         setViewPager();
@@ -582,7 +584,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().indicator.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
-        setMargins(240, 80);
+        setMargins(150, 110);
         fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commitAllowingStateLoss();
         checkSameClick();
         active = liveTvFragment;
@@ -622,6 +624,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     @Override
     protected void onStart() {
         super.onStart();
+
+
 //        setToHome();
     }
 
@@ -637,7 +641,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
         // Checks that the update is not stalled during 'onResume()'.
         // However, you should execute this check at all entry points into the app.
-        ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+       /* ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
 
             if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                 // If the update is downloaded but not installed,
@@ -649,7 +653,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 // When status updates are no longer needed, unregister the listener.
                 ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().unregisterListener(listener);
             }
-        });
+        });*/
     }
 
     private void updateLang() {
@@ -675,7 +679,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     }
 
-    @Override
+   /* @Override
     public void getAppUpdateCallBack(AppUpdateInfo appUpdateInfo) {
 
         this.appUpdateInfo = appUpdateInfo;
@@ -685,35 +689,30 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         } else {
             PrintLogging.printLog("InApp update", "NoUpdate available");
         }
-    }
+    }*/
 
     /* Displays the snackbar notification and call to action. */
-    private void popupSnackbarForCompleteUpdate() {
+   /* private void popupSnackbarForCompleteUpdate() {
         Snackbar snackbar =
                 Snackbar.make(getBinding().mainLayout, getResources().getString(R.string.update_has_downloaded), Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(getResources().getString(R.string.restart), view -> ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().completeUpdate());
         snackbar.setActionTextColor(
                 getResources().getColor(R.color.colorPrimary));
         snackbar.show();
-    }
+    }*/
 
-    InstallStateUpdatedListener listener = installState -> {
+    /*InstallStateUpdatedListener listener = installState -> {
         if (installState.installStatus() == InstallStatus.DOWNLOADED) {
             // After the update is downloaded, show a notification
             // and request user confirmation to restart the app.
             popupSnackbarForCompleteUpdate();
         }
-    };
+    };*/
 
     private void intializeBilling() {
-
-        /*String tempBase64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhiyDBLi/JpQLoxikmVXqxK8M3ZhJNfW2tAdjnGnr7vnDiYOiyk+NomNLqmnLfQwkC+TNWn50A5XmA8FEuZmuqOzKNRQHw2P1Spl27mcZsjXcCFwj2Vy+eso3pPLjG4DfqCmQN2jZo97TW0EhsROdkWflUMepy/d6sD7eNfncA1Z0ECEDuSuOANlMQLJk7Ci5PwUHKYnUAIwbq0fU9LP6O8Ejx5BK6o5K7rtTBttCbknTiZGLo6rB+8RcSB4Z0v3Di+QPyvxjIvfSQXlWhRdyxAs/EZ/F4Hdfn6TB7mLZkKZZwI0xzOObJp2BiesclMi1wHQsNSgQ8pnZ8T52aJczpQIDAQAB";
-        billingProcessor = new BillingProcessor(this, tempBase64, this);
-        billingProcessor.initialize();
-        billingProcessor.loadOwnedPurchasesFromGoogle();*/
-
         billingProcessor = new BillingProcessor(HomeActivity.this, HomeActivity.this);
         billingProcessor.initializeBillingProcessor();
+        // stopProcessor();
     }
 
    /* @Override
@@ -723,29 +722,14 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         }
     }*/
 
-
-    @Override
-    public void onCardClicked(String productId, String serviceType, String active) {
-        if (serviceType.equalsIgnoreCase("ppv")) {
-            billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
-        } else {
-            if (billingProcessor != null && billingProcessor.isReady()) {
-                billingProcessor.queryPurchases(HomeActivity.this, new PurchaseDetailListener() {
-                    @Override
-                    public void response(Purchase purchaseObject) {
-                        if (purchaseObject != null) {
-                            if (purchaseObject.getSku() != null && purchaseObject.getPurchaseToken() != null) {
-                                billingProcessor.updatePurchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
-                            }
-                        } else {
-                            billingProcessor.purchase(HomeActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
-                        }
-                    }
-                });
-
+    public void stopProcessor() {
+        if (billingProcessor != null) {
+            if (billingProcessor.isReady()) {
+                billingProcessor.endConnection();
             }
         }
     }
+
 
     public SkuDetails getSubscriptionDetail(String productId) {
         return billingProcessor.getLocalSubscriptionSkuDetail(HomeActivity.this, productId);
@@ -754,6 +738,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     @Override
     public void onBillingInitialized() {
+        billingProcessor.queryPurchases(this);
 
     }
 
@@ -761,7 +746,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     @Override
     public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
-        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+       /* if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
             if (purchases.get(0).getPurchaseToken() != null) {
                 if (SystemClock.elapsedRealtimeNanos() - lastClickTime < 8000) {
                     return;
@@ -770,7 +755,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
                 if (!TabsData.getInstance().isDetail())
                     processPurchase(purchases);
             }
-        }
+        }*/
     }
 
     private void processPurchase(List<Purchase> purchases) {
@@ -837,6 +822,28 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     }
 
+    @Override
+    public void onUpgrade() {
+
+    }
+
+    @Override
+    public void onDowngrade() {
+
+    }
+
+    @Override
+    public void onAcknowledged(String productId, String purchaseToken, String orderId) {
+        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), productId, purchaseToken, orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+            if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
+                if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
+                }
+            } else {
+
+            }
+        });
+    }
+
     public void onListOfSKUs(List<String> subSkuList, List<String> productsSkuList, SKUsListListener callBacks) {
         if (billingProcessor != null && billingProcessor.isReady()) {
             billingProcessor.getAllSkuDetails(subSkuList, productsSkuList, new SKUsListListener() {
@@ -849,4 +856,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         }
     }
 
+    @Override
+    public void onCardClicked(String productId, String serviceType, String activePlan, String name, Long price) {
+
+    }
 }

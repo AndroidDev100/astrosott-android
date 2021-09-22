@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -54,6 +55,7 @@ import com.kaltura.client.types.ProductPrice;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -188,7 +190,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
             holder.season.setText(mContext.getResources().getString(R.string.season) + " " + list.get(position).toString());
             if (selectedIndex == position) {
-                holder.season.setTextColor(mContext.getResources().getColor(R.color.moretitlecolor));
+                holder.season.setTextColor(mContext.getResources().getColor(R.color.green));
                 //holder.season.setTextSize(getResources().getDimension(R.dimen.large_text_size));
                 Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
                 holder.season.setTypeface(boldTypeface);
@@ -259,7 +261,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             startNo += 20;
             endNo += 20;
             if (selectedIndex == position) {
-                holder.season.setTextColor(mContext.getResources().getColor(R.color.moretitlecolor));
+                holder.season.setTextColor(mContext.getResources().getColor(R.color.green));
                 Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
                 holder.season.setTypeface(boldTypeface);
             } else {
@@ -385,8 +387,18 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             total = openSeriesData.get(0).getTotalCount();
             if ((totalCount > 20)) {
                 getBinding().seasonText.setText("EPISODE 1 - 20");
+//
             } else {
-                getBinding().seasonText.setText("EPISODE 1 - " + total);
+//                getBinding().seasonText.setText("EPISODE 1 - " + total);
+                getBinding().season.setVisibility(View.GONE);
+                RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                params1.setMargins(0, 10, 0, 0);
+                getBinding().rl1.setLayoutParams(params1);
+
+
             }
             getBinding().season.setEnabled(false);
             _mClickListener.onFirstEpisodeData(TabsData.getInstance().getOpenSeriesData(), AppLevelConstants.OPEN);
@@ -399,7 +411,13 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         if (selectedIndex == -1) {
             return;
         }
+        try {
+            if (seriesNumberList!=null && seriesNumberList.size()>0){
+                Collections.sort(seriesNumberList);
+            }
+        }catch (Exception e){
 
+        }
         SeasonListAdapter listAdapter = new SeasonListAdapter(seriesNumberList, selectedIndex, context);
         builder = new android.app.AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());

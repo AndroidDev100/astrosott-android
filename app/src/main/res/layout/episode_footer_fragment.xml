@@ -20,16 +20,21 @@
             android:layout_marginTop="@dimen/view_margin_top"
             android:background="@color/home_screen_seperator"
             android:visibility="gone" />
-
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rl1"
+android:layout_marginTop="@dimen/_50sdp"
+  >
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:overScrollMode="never"
             android:nestedScrollingEnabled="false"
-            android:layout_marginTop="@dimen/_50sdp" />
+           />
 
+</RelativeLayout>
         <LinearLayout
             android:id="@+id/season"
             android:layout_width="wrap_content"
@@ -50,12 +55,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/heebo_medium"
+                android:fontFamily="@font/roboto_medium"
                 android:paddingEnd="5dp"
                 android:paddingStart="0dp"
                 android:text="@string/season_number"
                 android:textAlignment="center"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -84,7 +89,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/recyclerView"
+            android:layout_below="@+id/rl1"
             android:gravity="center_horizontal">
 
 
@@ -99,7 +104,7 @@
                     android:id="@+id/load_more_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/heebo_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
                     android:text="@string/load_more"
                     android:textColor="@color/white"

@@ -3,29 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.core.widget.NestedScrollView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grape_purple">
+        android:background="@color/grape_purple"
+        tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_back"
+            android:contentDescription="@string/contentDescription"
+            android:padding="7dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="48dp"
-            android:background="@color/grape_purple"
-            tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
-
-            <ImageView
-                android:id="@+id/back_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:padding="7dp"
-                android:background="@drawable/ic_back"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@string/contentDescription" />
+            android:background="@color/grape_purple">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -41,17 +41,18 @@
                     android:layout_height="@dimen/_70sdp"
                     android:layout_marginTop="40dp"
                     android:background="@drawable/sooka"
+                    android:contentDescription="@string/contentDescription"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/contentDescription" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/forgot_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/heebo_medium"
-                    android:text="@string/sign_up_text"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:text="@string/sign_up_title"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -63,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/heebo_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:text=""
                     android:textColor="@color/white"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -93,8 +94,8 @@
                         android:layout_weight="1.9"
                         android:background="@null"
                         android:cursorVisible="true"
-                        android:fontFamily="@font/heebo_regular"
-                        android:hint="@string/email_id_mobileNo"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="@string/email_id"
                         android:importantForAutofill="no"
                         android:inputType="text|textNoSuggestions"
                         android:maxLines="1"
@@ -110,27 +111,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen18dp"
-                    android:visibility="visible"
-                    android:paddingEnd="10dp"
                     android:paddingStart="0dp"
-                    android:text="@string/mobile_suggestion"
+                    android:paddingEnd="20dp"
+                    android:text="@string/email_suggestion"
                     android:textColor="@color/heather"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/email" />
 
                 <LinearLayout
                     android:id="@+id/password"
-
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_56dp"
                     android:layout_marginLeft="@dimen/dimen18dp"
-                    android:layout_marginTop="@dimen/dimen25dp"
+                    android:layout_marginTop="@dimen/dimen15dp"
                     android:layout_marginRight="@dimen/dimen18dp"
                     android:background="@drawable/search_linear_bg"
                     android:orientation="horizontal"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/email">
+                    app:layout_constraintTop_toBottomOf="@+id/error_email">
 
                     <EditText
                         android:id="@+id/password_edt"
@@ -141,12 +141,12 @@
                         android:layout_weight="1.9"
                         android:background="@null"
                         android:cursorVisible="true"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:hint="@string/password"
                         android:importantForAutofill="no"
                         android:inputType="text|textPassword"
-                        android:maxLines="1"
                         android:maxLength="16"
+                        android:maxLines="1"
                         android:singleLine="true"
                         android:textColor="@color/white"
                         android:textColorHint="@color/grey"
@@ -158,10 +158,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:padding="4dp"
                         android:layout_marginEnd="@dimen/dimen18dp"
                         android:background="@drawable/ic_outline_visibility_off_light"
-                        android:contentDescription="@string/contentDescription" />
+                        android:contentDescription="@string/contentDescription"
+                        android:padding="4dp" />
                 </LinearLayout>
 
                 <TextView
@@ -169,9 +169,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen18dp"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="0dp"
                     android:layout_marginRight="@dimen/dimen18dp"
+                    android:paddingStart="0dp"
+                    android:visibility="gone"
+                    android:paddingEnd="20dp"
                     android:text="@string/password_rules"
                     android:textColor="@color/heather"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -195,7 +196,7 @@
                     android:layout_marginStart="@dimen/dimen32dp"
                     android:layout_marginTop="@dimen/_4dp"
                     android:layout_marginEnd="13dp"
-                    android:fontFamily="@font/heebo_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="@string/password_rules"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/_12sp"
@@ -211,6 +212,7 @@
                     android:layout_marginTop="23dp"
                     android:buttonTint="@color/neon_green"
                     android:gravity="center"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="@id/password"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
                     app:layout_goneMarginTop="35dp" />
@@ -219,10 +221,10 @@
                     android:id="@+id/error_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen26dp"
                     android:text="@string/error_checkbox"
                     android:textColor="@color/red_live"
                     android:visibility="gone"
-                    android:layout_marginStart="@dimen/dimen26dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/checkbox" />
 
@@ -231,57 +233,64 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="35dp"
-                    android:fontFamily="@font/heebo_regular"
+                    android:layout_marginTop="30dp"
+
+                    android:fontFamily="@font/roboto_regular"
                     android:text="@string/terms_and_conditions"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sp"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toRightOf="@id/checkbox"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
                     app:layout_goneMarginTop="39dp" />
+
                 <TextView
-                    android:id="@+id/terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="35dp"
-                    android:fontFamily="@font/heebo_regular"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="@string/terms"
                     android:textAlignment="center"
                     android:textColor="@color/aqua_marine"
+
                     android:textSize="@dimen/_14sp"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toRightOf="@id/agree"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
-                    app:layout_goneMarginTop="39dp"/>
+                    app:layout_goneMarginTop="39dp" />
+
                 <TextView
                     android:id="@+id/and"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="35dp"
-                    android:fontFamily="@font/heebo_regular"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="@string/and"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sp"
-                    app:layout_constraintLeft_toRightOf="@id/terms"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toRightOf="@id/error_passsword"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
-                    app:layout_goneMarginTop="39dp"/>
+                    app:layout_goneMarginTop="39dp" />
+
                 <TextView
-                    android:id="@+id/privacy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="35dp"
-                    android:fontFamily="@font/heebo_regular"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="@string/privacy"
                     android:textAlignment="center"
                     android:textColor="@color/aqua_marine"
                     android:textSize="@dimen/_14sp"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toRightOf="@id/and"
                     app:layout_constraintTop_toBottomOf="@id/error_passsword"
-                    app:layout_goneMarginTop="39dp"/>
+                    app:layout_goneMarginTop="39dp" />
 
                 <TextView
                     android:id="@+id/next_btn"
@@ -289,9 +298,9 @@
                     android:layout_height="45dp"
                     android:layout_marginTop="32dp"
                     android:background="@drawable/gradient_button"
-                    android:fontFamily="@font/heebo_medium"
+                    android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
-                    android:text="@string/next"
+                    android:text="@string/sign_up"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -306,7 +315,7 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="48dp"
-                    android:fontFamily="@font/heebo_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
 
                     android:text="@string/already_have_an_account"
@@ -323,7 +332,7 @@
                     android:layout_marginStart="3dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="18dp"
-                    android:fontFamily="@font/heebo_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
                     android:text="@string/signup_login"
                     android:textColor="@color/aqua_marine"
@@ -342,7 +351,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/or"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.761" />
+                    app:layout_constraintVertical_bias="0.815" />
 
                 <View
                     android:layout_width="@dimen/_60dp"
@@ -350,11 +359,12 @@
                     android:layout_margin="4dp"
                     android:background="@color/white"
                     android:gravity="center"
+
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/or"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.759" />
+                    app:layout_constraintVertical_bias="0.815" />
 
                 <TextView
                     android:id="@+id/or"
@@ -362,65 +372,109 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="18dp"
-                    android:fontFamily="@font/heebo_bold"
+                    android:fontFamily="@font/roboto_bold"
                     android:gravity="center"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="@string/sign_in_with"
+                    android:text="@string/sign_up_with"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/already_have_account" />
 
-                <Button
-                    android:id="@+id/google"
-                    android:layout_width="250dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/google_btn"
-                    android:fontFamily="@font/heebo_medium"
-                    android:gravity="center"
-                    android:text="@string/sign_in_google"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:drawableStart="@drawable/ic_google_button"
-                    android:textSize="@dimen/_14sp"
+
+                <LinearLayout
+                    android:id="@+id/social_lay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/or" />
+                    app:layout_constraintTop_toBottomOf="@id/or">
+
+                    <FrameLayout
+                        android:id="@+id/google"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/social_bg">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/google_icon"></ImageView>
+                    </FrameLayout>
+
+
+                    <FrameLayout
+                        android:id="@+id/fb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/social_bg"
+                        app:layout_constraintLeft_toRightOf="@id/google"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/or">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_fb_icon"></ImageView>
+                    </FrameLayout>
+
+                    <Button
+
+                        android:layout_width="250dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/google_btn"
+                        android:drawableStart="@drawable/ic_google_button"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:text="@string/sign_in_google"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14sp"
+                        android:visibility="gone"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/fb" />
+                </LinearLayout>
 
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/login_button"
                     android:layout_width="@dimen/dimen250dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/google"
                     android:layout_height="40dp"
-                    android:visibility="gone"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
-                    android:layout_marginBottom="30dp" />
+                    android:layout_marginBottom="30dp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/social_lay" />
 
                 <TextView
-                    android:id="@+id/fb"
                     android:layout_width="250dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="@dimen/dimen16dp"
                     android:background="@drawable/facebook_button"
-                    android:fontFamily="@font/heebo_medium"
-                    android:gravity="center"
-                    android:textAlignment="center"
                     android:drawablePadding="1dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
                     android:paddingStart="@dimen/dimen28dp"
                     android:paddingEnd="@dimen/dimen20dp"
                     android:text="@string/sign_in_fb"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sp"
+                    android:visibility="gone"
+                    app:drawableLeftCompat="@drawable/ic_fb_btn"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/google"
-                    app:drawableLeftCompat="@drawable/ic_fb_btn" />
+                    app:layout_constraintTop_toBottomOf="@id/social_lay" />
 
                 <TextView
                     android:id="@+id/apple"
@@ -428,23 +482,106 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="@dimen/dimen16dp"
                     android:background="@color/white"
-                    android:fontFamily="@font/heebo_medium"
+                    android:drawablePadding="2dp"
+                    android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
+                    android:paddingStart="@dimen/dimen42dp"
+                    android:paddingEnd="@dimen/dimen30dp"
                     android:text="@string/sign_in_apple"
                     android:textColor="@color/black"
-                    android:drawablePadding="2dp"
-                    android:paddingStart="@dimen/dimen42dp"
-                    android:visibility="invisible"
-                    android:paddingEnd="@dimen/dimen30dp"
                     android:textSize="@dimen/_14sp"
+                    android:visibility="invisible"
+                    app:drawableLeftCompat="@drawable/ic_apple_btn"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fb"
-                    app:drawableLeftCompat="@drawable/ic_apple_btn" />
+                    app:layout_constraintTop_toBottomOf="@id/social_lay" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@drawable/shadow_term"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/term_policy_lay"></LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/term_policy_lay"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/dark_purple"
+            android:elevation="7dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <TextView
+                android:id="@+id/descp1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                android:text="@string/term_policy_new"
+                android:textColor="@color/title_color"
+                app:layout_constraintBottom_toTopOf="@id/terms_lay"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+            </TextView>
+
+            <LinearLayout
+                android:id="@+id/terms_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <TextView
+                    android:id="@+id/our"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="our"
+                    android:textColor="@color/title_color">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/terms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:text="@string/term_and_condition_login"
+                    android:textColor="@color/aqua_marine"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:text="@string/and"
+                    android:textColor="@color/title_color">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/privacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:text="@string/privacy_policy_new"
+                    android:textColor="@color/aqua_marine">
+
+                </TextView>
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

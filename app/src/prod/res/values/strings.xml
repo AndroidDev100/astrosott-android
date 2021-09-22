@@ -13,4 +13,6 @@
     <string name="fcm_host" translatable="false">sooka.my</string>
     <string name="fcm_host_link" translatable="false">sooka.my/link</string>
 
+    <string name="app_domain" translatable="false">www.sooka.my</string>
+
 </resources>

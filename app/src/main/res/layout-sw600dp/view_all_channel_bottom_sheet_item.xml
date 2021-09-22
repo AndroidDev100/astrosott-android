@@ -1,27 +1,26 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <LinearLayout
-            android:id="@+id/bottom_sheet"
-            android:layout_width="@dimen/dimen200dp"
-            android:layout_height="@dimen/dimen200dp"
-            android:background="@color/transparentColor"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/dimen10dp"
-            android:layout_marginStart="@dimen/dimen15dp"
-            android:layout_marginBottom="@dimen/dimen2dp"
-            android:maxHeight="@dimen/dimen500dp"
-            app:behavior_hideable="true"
-            app:behavior_peekHeight="@dimen/dimen500dp"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+    <LinearLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="@dimen/dimen200dp"
+        android:layout_height="@dimen/dimen200dp"
+        android:layout_marginStart="@dimen/dimen15dp"
+        android:layout_marginTop="@dimen/dimen10dp"
+        android:layout_marginBottom="@dimen/dimen2dp"
+        android:background="@color/transparentColor"
+        android:maxHeight="@dimen/dimen500dp"
+        android:orientation="horizontal"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="@dimen/dimen500dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-            <ImageView
-                android:id="@+id/imvChannelLogo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/wallet_logo"
-                android:scaleType="fitXY"
-                android:contentDescription="@string/contentDescription" />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/imvChannelLogo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/contentDescription"
+            android:scaleType="fitXY" />
+    </LinearLayout>
 
 </layout>

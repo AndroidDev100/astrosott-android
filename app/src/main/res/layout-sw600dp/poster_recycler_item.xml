@@ -32,7 +32,16 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp" />
 
-                <TextView
+                <ImageView
+                    android:id="@+id/more_text"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
+
+               <!-- <TextView
                     android:id="@+id/more_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,7 +54,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_8sdp"
-                    tools:ignore="KeyboardInaccessibleWidget" />
+                    tools:ignore="KeyboardInaccessibleWidget" />-->
                 <!--<LinearLayout-->
                 <!--android:id="@+id/more_text"-->
                 <!--android:layout_width="wrap_content"-->

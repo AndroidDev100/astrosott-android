@@ -10,6 +10,8 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
 
+import java.lang.reflect.Array;
+
 public class ForceUpdateNetworkCall {
 
     private Context context;
@@ -38,20 +40,16 @@ public class ForceUpdateNetworkCall {
             if (responseDmsModel.getParams() != null) {
                 if (responseDmsModel.getParams().getUpdatedVersion() != null) {
                     appVersion = responseDmsModel.getParams().getUpdatedVersion();
-                  //  String appVersion = "21.3.1(09)";
+                    // String appVersion = "21.6.7";
                     appVersion = appVersion.trim();
                     if (!appVersion.equalsIgnoreCase("")) {
                         if (appVersion.contains(".")) {
                             appVersion = appVersion.replace(".", "");
-                            appVersion = appVersion.replace("(", "");
-                            appVersion = appVersion.replace(")", "");
-
                             if (!appVersion.equalsIgnoreCase("")) {
                                 updateVersion = Integer.parseInt(appVersion);
                                 String version = BuildConfig.VERSION_NAME.replace(".", "");
-                                version = version.replace("(", "");
-                                version =version.replace(")", "");
-
+                                String[] versionSplit = version.split("\\(");
+                                version = versionSplit[0];
                                 appCVesion = Integer.parseInt(version);
                                 versionValidator.version(false, appCVesion, updateVersion);
                                 PrintLogging.printLog("", "versionPrinted" + appCVesion + " " + updateVersion);

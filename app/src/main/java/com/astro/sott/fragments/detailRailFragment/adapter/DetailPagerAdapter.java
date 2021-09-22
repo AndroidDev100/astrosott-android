@@ -211,12 +211,13 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         if (railData.getObject().getType() == MediaTypeConstant.getSeries(mContext)) {
             if (fragmentType == 1) {
-                return mContext.getString(R.string.episode_title);
+                return mContext.getString(R.string.shows);
             } else if (fragmentType == 2) {
+
                 return mContext.getString(R.string.trailer_more);
             } else if (fragmentType == 3) {
                 if (position == 0) {
-                    return mContext.getString(R.string.episode_title);
+                    return mContext.getString(R.string.shows);
 
                 } else {
                     return mContext.getString(R.string.trailer_more);
@@ -224,21 +225,23 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
 
             } else if (fragmentType == 4) {
                 if (position == 0) {
-                    return mContext.getString(R.string.episode_title);
+                    return mContext.getString(R.string.shows);
 
                 } else {
                     return mContext.getString(R.string.related);
                 }
             } else if (fragmentType == 5) {
                 if (position == 0) {
+
                     return mContext.getString(R.string.trailer_more);
                 } else {
                     return mContext.getString(R.string.related);
                 }
             } else if (fragmentType == 6) {
                 if (position == 0) {
-                    return mContext.getString(R.string.episode_title);
+                    return mContext.getString(R.string.shows);
                 } else if (position == 1) {
+
                     return mContext.getString(R.string.trailer_more);
                 } else {
                     return mContext.getString(R.string.related);
@@ -253,28 +256,18 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
                 if (position == 0) {
                     return mContext.getString(R.string.shows);
                 } else if (position == 1) {
-                    if (fragmentType == 1) {
-                        return mContext.getString(R.string.trailer_title);
-                    } else if (fragmentType == 2) {
-                        return mContext.getString(R.string.trailer_more);
 
-                    } else {
-                        return mContext.getString(R.string.highlights);
-                    }
+                    return mContext.getString(R.string.trailer_more);
+
                 } else {
                     return mContext.getString(R.string.related);
                 }
             } else if (adapterSize == 2) {
                 if (TabsData.getInstance().getMovieShows() == null && TabsData.getInstance().getSeriesShows() == null) {
                     if (position == 0) {
-                        if (fragmentType == 1) {
-                            return mContext.getString(R.string.trailer_title);
-                        } else if (fragmentType == 2) {
-                            return mContext.getString(R.string.trailer_more);
 
-                        } else {
-                            return mContext.getString(R.string.highlights);
-                        }
+                        return mContext.getString(R.string.trailer_more);
+
                     } else {
                         return mContext.getString(R.string.related);
                     }
@@ -282,14 +275,9 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
                     if (position == 0) {
                         return mContext.getString(R.string.shows);
                     } else {
-                        if (fragmentType == 1) {
-                            return mContext.getString(R.string.trailer_title);
-                        } else if (fragmentType == 2) {
-                            return mContext.getString(R.string.trailer_more);
 
-                        } else {
-                            return mContext.getString(R.string.highlights);
-                        }
+                        return mContext.getString(R.string.trailer_more);
+
                     }
                 } else {
                     if (position == 0) {
@@ -301,14 +289,8 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
             } else {
                 if (TabsData.getInstance().getMovieShows() == null && TabsData.getInstance().getSeriesShows() == null) {
                     if (TabsData.getInstance().getYouMayAlsoLikeData() == null) {
-                        if (fragmentType == 1) {
-                            return mContext.getString(R.string.trailer_title);
-                        } else if (fragmentType == 2) {
-                            return mContext.getString(R.string.trailer_more);
+                        return mContext.getString(R.string.trailer_more);
 
-                        } else {
-                            return mContext.getString(R.string.highlights);
-                        }
                     } else {
                         return mContext.getString(R.string.related);
 
@@ -322,14 +304,7 @@ public class DetailPagerAdapter extends FragmentStatePagerAdapter {
             if (adapterSize > 1) {
                 switch (position) {
                     case 0:
-                        if (fragmentType == 1) {
-                            return mContext.getString(R.string.trailer_title);
-                        } else if (fragmentType == 2) {
-                            return mContext.getString(R.string.trailer_more);
-
-                        } else if (fragmentType == 3) {
-                            return mContext.getString(R.string.highlights);
-                        }
+                        return mContext.getString(R.string.trailer_more);
                     case 1:
                         return mContext.getString(R.string.related);
 

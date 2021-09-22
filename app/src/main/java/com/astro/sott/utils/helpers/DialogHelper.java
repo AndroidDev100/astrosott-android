@@ -20,12 +20,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
 import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.chaos.view.PinView;
@@ -67,23 +70,24 @@ public class DialogHelper {
         boolean status = UserInfo.getInstance(baseActivity).isActive();
         if (status) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
-            builder.setTitle(context.getResources().getString(R.string.lock_Episode)).setMessage(context.getResources().getString(R.string.purchase_dialouge_for_logged_in))
+            builder.setTitle(context.getResources().getString(R.string.become_vip)).setMessage(context.getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                        baseActivity.onBackPressed();
+                        new ActivityLauncher(baseActivity).profileSubscription("Player");
                         dialog.cancel();
                     });
 
             AlertDialog alert = builder.create();
             alert.show();
             Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-            bn.setTextColor(ContextCompat.getColor(context, R.color.white));
+            bn.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
             Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(context, R.color.primary_blue));
+            bp.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
         } else {
             showLoginDialog(context);
         }
     }
+
 
     public static void openDialougeFornonDialog(final Activity context, boolean isLiveChannel) {
         BaseActivity baseActivity = (BaseActivity) context;
@@ -174,27 +178,24 @@ public class DialogHelper {
         BaseActivity baseActivity = (BaseActivity) context;
         if (context != null && !context.isFinishing()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppAlertTheme);
-            builder.setTitle(context.getResources().getString(R.string.lock_Episode)).setMessage(context.getResources().getString(R.string.purchase_dialouge_for_logged_in))
+            builder.setTitle(context.getResources().getString(R.string.become_vip)).setMessage(context.getResources().getString(R.string.subscribe_description))
                     .setCancelable(true)
                     .setPositiveButton(context.getResources().getString(R.string.login), (dialog, id) -> {
-                        //dialog.cancel();
-
-                        new ActivityLauncher(context).astrLoginActivity(context, AstrLoginActivity.class, "");
+                        new ActivityLauncher(context).signupActivity(context, SignUpActivity.class, CleverTapManager.PLAYER_LOCK);
                         baseActivity.onBackPressed();
                         dialog.cancel();
-                        //    new ActivityLauncher(context).loginActivity(context, LoginActivity.class, 0, "");
                     })
                     .setNegativeButton(context.getResources().getString(R.string.subscribe_text), (dialog, id) -> {
-                        baseActivity.onBackPressed();
+                        new ActivityLauncher(baseActivity).profileSubscription("Player");
                         dialog.cancel();
                     });
 
             AlertDialog alert = builder.create();
             alert.show();
             Button bn = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-            bn.setTextColor(ContextCompat.getColor(context, R.color.white));
+            bn.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
             Button bp = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(context, R.color.primary_blue));
+            bp.setTextColor(ContextCompat.getColor(context, R.color.aqua_marine));
         }
     }
 

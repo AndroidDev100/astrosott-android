@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.R;
 import com.astro.sott.activities.liveChannel.liveChannelManager.LiveChannelManager;
@@ -133,6 +134,7 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
+            FirebaseEventManager.getFirebaseInstance(activity).searchViewItemEvent(FirebaseEventManager.SEARCH, itemValue, activity);
             if (itemValue != null && itemValue.getType() == MediaTypeConstant.getMovie(activity)) {
                 getRailCommonData(itemValue, activity.getResources().getString(R.string.movie));
                 if (railCommonData.getImages().size() == itemValue.getImages().size())

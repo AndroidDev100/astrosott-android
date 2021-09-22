@@ -8,7 +8,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.WebviewBinding;
@@ -92,6 +95,13 @@ public class WebViewActivity extends BaseBindingActivity<WebviewBinding> {
 
                 } else if (strWebview.equalsIgnoreCase(AppLevelConstants.HELP)) {*/
                 getBinding().webview.loadUrl(url);
+               getBinding().webview.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                        view.loadUrl(request.getUrl().toString());
+                        return false;
+                    }
+                });
                 /* }*/
             }
 

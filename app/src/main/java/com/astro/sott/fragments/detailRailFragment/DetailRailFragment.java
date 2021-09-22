@@ -85,7 +85,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                 externalId = asset.getExternalId();
             if (asset.getType() == MediaTypeConstant.getSeries(getActivity())) {
                 getSeasons();
-            } else if (asset.getType() == MediaTypeConstant.getEpisode(getActivity())||asset.getType() == MediaTypeConstant.getMovie(getActivity()) || asset.getType() == MediaTypeConstant.getLinear(getActivity())) {
+            } else if (asset.getType() == MediaTypeConstant.getEpisode(getActivity()) || asset.getType() == MediaTypeConstant.getMovie(getActivity()) || asset.getType() == MediaTypeConstant.getLinear(getActivity())) {
                 getRefId(asset.getType());
             }
         } catch (NullPointerException e) {
@@ -121,7 +121,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
     private void getOpenSeriesEpisodes() {
         trailerFragmentViewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, AppConstants.Rail5, AppLevelConstants.KEY_EPISODE_NUMBER, this).observe(this, assetCommonBeans -> {
-            if (assetCommonBeans.get(0).getStatus()) {
+            if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus()) {
                 trailerFragmentViewModel.setOpenSeriesData(assetCommonBeans);
                 isTrailerCount = 1;
                 getRefId(asset.getType());
@@ -138,7 +138,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     private void getEpisode(List<Integer> seriesNumberList) {
         TabsData.getInstance().setSelectedSeason(seasonCounter);
         trailerFragmentViewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, AppConstants.Rail5, AppLevelConstants.KEY_EPISODE_NUMBER, this).observe(this, assetCommonBeans -> {
-            if (assetCommonBeans.get(0).getStatus()) {
+            if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus()) {
                 trailerFragmentViewModel.setClosedSeriesData(assetCommonBeans);
                 isTrailerCount = 1;
                 getRefId(asset.getType());
@@ -230,6 +230,8 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     }
 
     private void getTrailerAndHighlights(List<Asset> assetList) {
+        trailerFragmentViewModel.setTrailerData(null);
+        trailerFragmentViewModel.setHighLightsData(null);
         trailerData = new ArrayList<>();
         highlightsData = new ArrayList<>();
         for (Asset assetItem : assetList) {
@@ -310,7 +312,7 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                     @Override
                     public void onPageSelected(int i) {
 
-                     //   getBinding().pager.reMeasureCurrentPage(i);
+                        //   getBinding().pager.reMeasureCurrentPage(i);
                     }
 
                     @Override
@@ -325,7 +327,6 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
 
                 getBinding().tabLayout.setVisibility(View.VISIBLE);
             }
-
 
 
         } catch (ArithmeticException e) {

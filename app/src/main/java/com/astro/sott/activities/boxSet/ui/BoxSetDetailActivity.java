@@ -22,9 +22,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.liveEvent.LiveEventActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.beanModel.login.CommonResponse;
@@ -41,6 +43,8 @@ import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
 import com.astro.sott.player.houseHoldCheckManager.HouseHoldCheck;
 import com.astro.sott.player.ui.PlayerActivity;
 import com.astro.sott.repositories.player.PlayerRepository;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -81,7 +85,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     private Map<String, Value> yearMap;
     private FragmentManager manager;
     private long assetId;
-    private int assetType;
+    private int assetType, watchPosition = 0;
     private String trailor_url = "";
     private String name, titleName, idfromAssetWatchlist;
     private boolean isActive, isAdded;
@@ -129,6 +133,11 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     private void getDataFromBack(RailCommonData commonRailData, int layout) {
         railData = commonRailData;
         asset = railData.getObject();
+        if (asset != null)
+            getBookmarking(asset);
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName(asset.getName());
+        FirebaseEventManager.getFirebaseInstance(BoxSetDetailActivity.this).setRelatedAssetName(asset.getName());
+
         layoutType = layout;
         assetId = asset.getId();
         name = asset.getName();
@@ -290,7 +299,6 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     private void startPlayer() {
         try {
             callProgressBar();
-
             //  ConvivaManager.getConvivaAdAnalytics(this);
             Intent intent = new Intent(BoxSetDetailActivity.this, PlayerActivity.class);
             intent.putExtra(AppLevelConstants.RAIL_DATA_OBJECT, railData);
@@ -370,8 +378,17 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
         }
     }
 
+    private void getBookmarking(Asset asset) {
+        if (UserInfo.getInstance(this).isActive()) {
+            viewModel.getBookmarking(asset).observe(this, integer -> {
+                watchPosition = integer;
+            });
+        }
+    }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     private void checkEntitleMent(final RailCommonData railCommonData) {
+
         String fileId = "";
 
         fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
@@ -382,7 +399,11 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                 if (purchasedStatus) {
                     runOnUiThread(() -> {
                         getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                        getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                        if (watchPosition > 0) {
+                            getBinding().playText.setText(getResources().getString(R.string.resume));
+                        } else {
+                            getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                        }
                         getBinding().astroPlayButton.setVisibility(View.GONE);
                         getBinding().starIcon.setVisibility(View.GONE);
                         getBinding().playText.setTextColor(getResources().getColor(R.color.black));
@@ -850,7 +871,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     private void setExpandable() {
         getBinding().expandableLayout.collapse();
         getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
-        getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
+//        getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
         getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
         getBinding().lessButton.setOnClickListener(view -> {
 
@@ -865,10 +886,14 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
             }
 
             if (getBinding().expandableLayout.isExpanded()) {
-                getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
+//                getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+
 
             } else {
-                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+
+//                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
             }
             if (view != null) {
                 getBinding().expandableLayout.expand();
@@ -879,6 +904,12 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
     }
 
     private void openShareDialouge() {
+        try {
+            CleverTapManager.getInstance().socialShare(this, asset, false);
+            FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset, this);
+        } catch (Exception e) {
+
+        }
         AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), SubMediaTypes.BoxSet.name());
     }
 
@@ -915,13 +946,15 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
             lastClickTime = SystemClock.elapsedRealtime();
             if (NetworkConnectivity.isOnline(getApplication())) {
                 if (UserInfo.getInstance(this).isActive()) {
+                    FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent(FirebaseEventManager.ADD_MY_LIST, asset, this);
+
                     if (isAdded) {
                         deleteWatchlist();
                     } else {
                         addToWatchlist(titleName);
                     }
                 } else {
-                    new ActivityLauncher(BoxSetDetailActivity.this).astrLoginActivity(BoxSetDetailActivity.this, AstrLoginActivity.class,"");
+                    new ActivityLauncher(BoxSetDetailActivity.this).signupActivity(BoxSetDetailActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
                 }
             } else {
                 ToastHandler.show(getResources().getString(R.string.no_internet_connection), BoxSetDetailActivity.this);

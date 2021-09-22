@@ -14,6 +14,8 @@ import com.astro.sott.usermanagment.modelClasses.changePassword.ChangePasswordRe
 import com.astro.sott.usermanagment.modelClasses.createOtp.CreateOtpResponse;
 import com.astro.sott.usermanagment.modelClasses.updateProfile.UpdateProfileResponse;
 
+import java.util.ArrayList;
+
 public class AstroLoginViewModel extends AndroidViewModel {
     public AstroLoginViewModel(@NonNull Application application) {
         super(application);
@@ -22,8 +24,8 @@ public class AstroLoginViewModel extends AndroidViewModel {
     public LiveData<EvergentCommonResponse> searchAccountV2(String type, String emailMobile) {
         return AstrLoginRepository.getInstance().searchAccountV2(getApplication(), type, emailMobile);
     }
-    public LiveData<EvergentCommonResponse<UpdateProfileResponse>> updateProfile(String type, String emailMobile, String accessToken) {
-        return MySubscriptionPlanRepository.getInstance().updateProfile(getApplication(), type, emailMobile, accessToken);
+    public LiveData<EvergentCommonResponse<UpdateProfileResponse>> updateProfile(String type, String emailMobile, String accessToken,String token) {
+        return MySubscriptionPlanRepository.getInstance().updateProfile(getApplication(), type, emailMobile, accessToken,token);
     }
     public LiveData<EvergentCommonResponse<CreateOtpResponse>> createOtp(String type, String emailMobile) {
         return AstrLoginRepository.getInstance().createOtp(getApplication(), type, emailMobile);
@@ -39,6 +41,10 @@ public class AstroLoginViewModel extends AndroidViewModel {
 
     public LiveData<EvergentCommonResponse> resetPassword(String token, String password) {
         return AstrLoginRepository.getInstance().resetPassword(getApplication(), token, password);
+    }
+
+    public LiveData<EvergentCommonResponse> setPassword(String token, String password) {
+        return AstrLoginRepository.getInstance().setPassword(getApplication(), token, password);
     }
 
     public LiveData<EvergentCommonResponse> createUser(String type, String emailMobile, String password, String name,boolean isTablet) {
@@ -59,7 +65,7 @@ public class AstroLoginViewModel extends AndroidViewModel {
         return AstrLoginRepository.getInstance().getDevice(getApplication(), acessToken);
     }
 
-    public LiveData<EvergentCommonResponse> removeDevice(String acessToken, String serial) {
+    public LiveData<EvergentCommonResponse> removeDevice(String acessToken, ArrayList<String> serial) {
         return AstrLoginRepository.getInstance().removeDevice(getApplication(), acessToken, serial);
     }
 

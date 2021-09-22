@@ -45,7 +45,7 @@
                     android:id="@+id/textName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/heebo_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:layout_centerVertical="true"
                     android:textColor="@color/white"
                     android:singleLine="true"

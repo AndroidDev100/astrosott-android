@@ -1,6 +1,7 @@
 package com.astro.sott.activities.profile.ui;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -12,11 +13,16 @@ import android.widget.Toast;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
+import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityEditProfileBinding;
+import com.astro.sott.fragments.dialog.MaxisEditRestrictionPop;
+import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -53,9 +59,11 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
         return ActivityEditProfileBinding.inflate(inflater);
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.EDIT_PROFILE);
         modelCall();
         setClicks();
         setFb();
@@ -74,6 +82,13 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     }
 
     private void setClicks() {
+
+        if (!UserInfo.getInstance(this).isPasswordExists()) {
+            if (UserInfo.getInstance(this).isSocialLogin()) {
+                getBinding().editemail.setVisibility(View.GONE);
+                getBinding().editMobileNo.setVisibility(View.GONE);
+            }
+        }
         if (UserInfo.getInstance(this).isFbLinked()) {
             getBinding().linkFb.setText(getResources().getString(R.string.unlink));
         } else {
@@ -94,14 +109,26 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             startActivity(i);
         });
         getBinding().editemail.setOnClickListener(view -> {
-            Intent i = new Intent(getApplicationContext(), EditEmailActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
+            if (UserInfo.getInstance(this).isMaxis()) {
+                FragmentManager fm = getSupportFragmentManager();
+                MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), getResources().getString(R.string.maxis_edit_description), getResources().getString(R.string.ok_understand));
+                cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+            } else {
+                Intent i = new Intent(getApplicationContext(), EditEmailActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
         });
         getBinding().editMobileNo.setOnClickListener(view -> {
-            Intent i = new Intent(getApplicationContext(), EditMobileActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
+            if (UserInfo.getInstance(this).isMaxis()) {
+                FragmentManager fm = getSupportFragmentManager();
+                MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), getResources().getString(R.string.maxis_edit_description), getResources().getString(R.string.ok_understand));
+                cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+            } else {
+                Intent i = new Intent(getApplicationContext(), EditMobileActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
         });
         getBinding().editpassword.setOnClickListener(view -> {
             Intent i = new Intent(getApplicationContext(), EditPasswordActivity.class);
@@ -173,6 +200,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                 UserInfo.getInstance(this).setPasswordExists(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).isPasswordExists());
                 UserInfo.getInstance(this).setEmail(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getEmail());
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
+                AppCommonMethods.setCrashlyticsUserId(this);
                 UserInfo.getInstance(this).setActive(true);
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
@@ -192,6 +220,9 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             }
 
             try {
+                if (UserInfo.getInstance(this).isPasswordExists()) {
+                    getBinding().psw.setText(getResources().getString(R.string.pswd_asterik));
+                }
                 String masked = AppCommonMethods.maskedEmail(EditProfileActivity.this);
                 getBinding().email.setText(masked);
                 if (!UserInfo.getInstance(this).getFirstName().equalsIgnoreCase("")) {
@@ -298,13 +329,13 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     }
                 });
 
-        getBinding().loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
+        //    getBinding().loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
     }
 
     private void updateProfile(String name, String type, boolean isLinking) {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         String acessToken = UserInfo.getInstance(this).getAccessToken();
-        astroLoginViewModel.updateProfile(type, name, acessToken).observe(this, updateProfileResponse -> {
+        astroLoginViewModel.updateProfile(type, name, acessToken, "").observe(this, updateProfileResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 if (type.equalsIgnoreCase("Facebook")) {

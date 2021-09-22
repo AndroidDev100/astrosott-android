@@ -25,7 +25,14 @@ public interface AppLevelConstants {
     String PARENTAL_SWITCH = "ParentalSwitch";
     String TITLE = "title";
     String MESSAGE = "message";
+    String ACTION_BTN = "actn_Btn";
+
     String DATE = "date";
+    String FILE_ID = "file_id";
+
+    String MAXIS_BILLING = "Maxis Billing";
+    String TitleSortName = "TitleSortName";
+
 
     String POSITIVE_BUTTON_TEXT = "positiveButtonText";
     String FORCE = "force";
@@ -101,6 +108,7 @@ public interface AppLevelConstants {
 
     //kaltura error codes
     String KS_EXPIRE = "500016";
+    String HOUSEHOLD_ERROR = "1003";
     String ALREADY_FOLLOW_ERROR = "8013";
     String ALREADY_UNFOLLOW_ERROR = "8012";
     String LOGGED_OUT_ERROR_CODE = "1019";
@@ -468,6 +476,7 @@ public interface AppLevelConstants {
     String FILTER_LANGUAGE_CONSTANT = "FilterLanguage='";
     String OPEN = "open";
     String CLOSE = "close";
+    String KEY_ENTRY_ID = "entryId";
 
 
 }

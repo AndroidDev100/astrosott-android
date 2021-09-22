@@ -178,22 +178,34 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
             PrintLogging.printLog("", "layoutType-->>" + layout);
             mIsLoading = true;
             if (layout.equalsIgnoreCase(ImageType.PR1.name())) {
+                Log.d("position","potrait");
+
                 commonPotraitListingAdapter = new CommonPotraitListingAdapter(this, railList, AppConstants.Rail3, assetCommonBean.getTitle(), category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonPotraitListingAdapter);
             } else if (layout.equalsIgnoreCase(ImageType.PR2.name())) {
+                Log.d("position","poster");
+
                 commonPosterListingAdapter = new CommonPosterListingAdapter(this, railList, AppConstants.Rail3, assetCommonBean.getTitle(), category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonPosterListingAdapter);
             } else if (layout.equalsIgnoreCase(ImageType.SQR.name())) {
+                Log.d("position","square");
+
                 commonSquareListingAdapter = new CommonSquareListingAdapter(this, railList, AppConstants.Rail4, assetCommonBean.getTitle(), category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonSquareListingAdapter);
             } else if (layout.equalsIgnoreCase(ImageType.CIR.name())) {
+                Log.d("position","circle");
+
                 Log.e("IMAGE", String.valueOf(railList.size()));
                 commonCircleAdapter = new CommonCircleListingAdapter(this, railList, AppConstants.Rail2, assetCommonBean.getTitle());
                 getBinding().listRecyclerview.setAdapter(commonCircleAdapter);
             } else if (layout.equalsIgnoreCase(ImageType.LDS.name())) {
+                Log.d("position","landscape");
+
                 commonLandscapeListingAdapter = new CommonLandscapeListingAdapteNew(this, railList, AppConstants.Rail7, assetCommonBean.getTitle(), category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonLandscapeListingAdapter);
             } else {
+                Log.d("position","landsc.");
+
                 commonLandscapeListingAdapter = new CommonLandscapeListingAdapteNew(this, railList, AppConstants.Rail5, assetCommonBean.getTitle(), category.getCategory());
                 getBinding().listRecyclerview.setAdapter(commonLandscapeListingAdapter);
             }

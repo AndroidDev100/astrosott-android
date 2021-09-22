@@ -870,7 +870,6 @@ public class CategoryRails {
                 assetCommonBean.setTitle(channelList.get(counterValue).getName());
                 assetCommonBean.setMoreType(AppConstants.CONTINUE_WATCHING);
                 assetCommonBean.setID(channelList.get(counterValue).getId());
-
                 setRailData(context, category, list, 1, assetCommonBean, i, AppConstants.TYPE6);
 
             }

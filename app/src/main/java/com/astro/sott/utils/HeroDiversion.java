@@ -7,12 +7,15 @@ import android.util.Log;
 
 import androidx.lifecycle.LifecycleOwner;
 
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.moreListing.ui.GridListingActivity;
 import com.astro.sott.activities.moreListing.ui.ListingActivity;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.search.ui.ActivitySearch;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
+import com.astro.sott.activities.splash.ui.SplashActivity;
 import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.activities.webview.ui.WebViewActivity;
@@ -80,7 +83,7 @@ public class HeroDiversion {
                 if (category.getLandingPagetarget() != null) {
                     if (category.getLandingPagetarget().equals(PDFTarget.LGN.name())) {
                         //TODO Open login page
-                        new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class, "");
+                        new ActivityLauncher(activity).signupActivity(activity, SignUpActivity.class, "");
                     } else if (category.getLandingPagetarget().equals(PDFTarget.SRH.name())) {
 
                         //TODO Open search page
@@ -110,7 +113,7 @@ public class HeroDiversion {
                 // TODO Watchlist page
                 boolean isActive = UserInfo.getInstance(activity).isActive();
                 if (!isActive) {
-                    new ActivityLauncher(activity).astrLoginActivity(activity, AstrLoginActivity.class, "");
+                    new ActivityLauncher(activity).signupActivity(activity, SignUpActivity.class, "");
                 } else {
                     //  new ActivityLauncher(activity).myWatchlist(activity, MyWatchlistActivity.class);
                 }
@@ -152,7 +155,7 @@ public class HeroDiversion {
                     assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
                     PrintLogging.printLog("", "className--" + className);
                     // dont get confused with name as potrait its for grid
-                    new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, data.getContentImageType(), assetCommonBean1);
+                    new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, data.getContentImageType(), assetCommonBean1, assetCommonBean.getRailDetail().getCategory());
 
 
                 } else {
@@ -166,7 +169,7 @@ public class HeroDiversion {
                         assetCommonBean1.setRailDetail(assetCommonBean.getRailDetail());
                         PrintLogging.printLog("", "className--" + className);
                         // dont get confused with name as potrait its for grid
-                        new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, data.getContentImageType(), assetCommonBean1);
+                        new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, data.getContentImageType(), assetCommonBean1, assetCommonBean.getRailDetail().getCategory());
 
                     } catch (Exception ignored) {
 
@@ -216,8 +219,10 @@ public class HeroDiversion {
         boolean prog = railCommonDataa.isProgram();
         if (prog) {
             homeViewModel.getLiveSpecificAsset(activity, railCommonDataa.getLandingPageAssetId()).observe((LifecycleOwner) activity, railCommonData -> {
-                if (railCommonData.getStatus()) {
-                    liveManger(railCommonData);
+                if (railCommonData != null && railCommonData.getStatus()) {
+                    new ActivityLauncher(activity).checkCurrentProgram(railCommonData.getObject());
+                } else {
+                    new ActivityLauncher(activity).homeActivity(activity, HomeActivity.class);
                 }
             });
         } else {
@@ -233,14 +238,6 @@ public class HeroDiversion {
                     });
                 }
             });
-        }
-
-    }
-
-
-    private void liveManger(final RailCommonData railCommonData) {
-        if (railCommonData != null) {
-
         }
 
     }

@@ -57,7 +57,7 @@
                         android:layout_marginRight="30dp"
                         android:layout_toStartOf="@+id/iv_quality"
                         android:layout_toEndOf="@id/iv_cancel"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:maxLines="1"
@@ -94,21 +94,21 @@
                         android:contentDescription=""
                         tools:ignore="ContentDescription" />
 
-                    <TextView
-                        android:id="@+id/shareWith"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/share_margin_top"
-                        android:layout_marginEnd="@dimen/dp10"
-                        android:layout_toStartOf="@+id/live_txt"
-                        android:clickable="true"
-                        android:drawablePadding="7dp"
-                        android:focusable="true"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/font_medium"
-                        android:visibility="visible"
-                        app:drawableTopCompat="@drawable/share" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/shareWith"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="@dimen/share_margin_top"-->
+<!--                        android:layout_marginEnd="@dimen/dp10"-->
+<!--                        android:layout_toStartOf="@+id/live_txt"-->
+<!--                        android:clickable="true"-->
+<!--                        android:drawablePadding="7dp"-->
+<!--                        android:focusable="true"-->
+<!--                        android:fontFamily="@font/roboto_regular"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="@dimen/font_medium"-->
+<!--                        android:visibility="gone"-->
+<!--                        app:drawableTopCompat="@drawable/share" />-->
 
 
                     <TextView
@@ -174,99 +174,19 @@
                     android:textColor="#fff"
                     android:textSize="@dimen/player_small_text_size"
                     android:visibility="gone" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginBottom="128dp"
-                    android:gravity="bottom">
 
-                    <TextView
-                        android:id="@+id/skipIntro"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dimen40dp"
-                        android:layout_marginEnd="@dimen/dimen55dp"
-                        android:background="@drawable/skip_intro_button"
-                        android:fontFamily="@font/heebo_regular"
-                        android:gravity="center"
-                        android:padding="@dimen/_7sdp"
-                        android:text="SKIP INTRO"
-                        android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/dimen15sp"
-                        android:visibility="gone">
-
-
-                    </TextView>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginBottom="128dp"
-                    android:gravity="bottom">
-
-                    <TextView
-                        android:id="@+id/skipRecap"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dimen40dp"
-                        android:layout_marginEnd="@dimen/dimen55dp"
-                        android:background="@drawable/skip_intro_button"
-                        android:fontFamily="@font/heebo_regular"
-                        android:gravity="center"
-                        android:padding="@dimen/_7sdp"
-                        android:text="SKIP INTRO"
-                        android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/dimen15sp"
-                        android:visibility="gone">
-
-
-                    </TextView>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginBottom="@dimen/_128dp"
-                    android:gravity="bottom">
-
-                    <TextView
-                        android:id="@+id/skipCredits"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dimen40dp"
-                        android:layout_marginEnd="@dimen/dimen55dp"
-                        android:background="@drawable/skip_intro_button"
-                        android:fontFamily="@font/heebo_regular"
-                        android:gravity="center"
-                        android:padding="@dimen/_7sdp"
-                        android:text="SKIP INTRO"
-                        android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/dimen15sp"
-                        android:visibility="gone">
-
-
-                    </TextView>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/audio_dialog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
+                <ImageView
+                    android:id="@+id/image_preview"
+                    android:layout_width="150dp"
+                    android:layout_height="84dp"
+                    android:src="@drawable/transparent_scrubber"
+                    android:visibility="gone"
+                    android:contentDescription="@string/app_name"
                     android:layout_alignParentBottom="true"
-                    android:visibility="gone">
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="115dp"/>
 
-                    <include
-                        android:id="@+id/audio_quality"
-                        layout="@layout/layout_caption_audio_setting" />
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/brightness_dialog"
@@ -341,7 +261,7 @@
                         android:layout_marginTop="32.7dp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:layout_toEndOf="@+id/slash"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:text=""
@@ -358,7 +278,7 @@
                         android:layout_marginStart="13dp"
                         android:layout_marginTop="32.7dp"
                         android:layout_marginBottom="@dimen/_8sdp"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:text=""
@@ -375,7 +295,7 @@
                         android:layout_marginTop="32.7dp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:layout_toEndOf="@+id/current_time"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:text="/"
@@ -447,7 +367,7 @@
                             android:layout_gravity="bottom|center"
                             android:layout_marginEnd="3.5dp"
                             android:drawablePadding="@dimen/_6dp"
-                            android:fontFamily="@font/heebo_regular"
+                            android:fontFamily="@font/roboto_regular"
                             android:gravity="center"
                             android:lineHeight="32sp"
                             android:padding="@dimen/_4sdp"
@@ -467,7 +387,7 @@
                         android:layout_marginTop="@dimen/_2dp"
                         android:layout_weight="1"
                         android:drawablePadding="@dimen/_6dp"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:padding="@dimen/_4sdp"
@@ -487,7 +407,7 @@
                         android:layout_marginTop="@dimen/_4dp"
                         android:layout_weight="1"
                         android:drawablePadding="@dimen/_6dp"
-                        android:fontFamily="@font/heebo_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:padding="@dimen/_4sdp"
@@ -528,7 +448,7 @@
 
                 <!--                    android:drawableLeft="@drawable/ic_subtitle"-->
                 <!--                    android:drawablePadding="@dimen/_6dp"-->
-                <!--                    android:fontFamily="@font/heebo_regular"-->
+                <!--                    android:fontFamily="@font/roboto_regular"-->
                 <!--                    android:gravity="center"-->
                 <!--                    android:lineHeight="32sp"-->
                 <!--                    android:layout_toLeftOf="@+id/next_episode"-->
@@ -550,7 +470,7 @@
                 <!--                    android:layout_toLeftOf="@+id/subtitle_audio"-->
                 <!--                    android:drawableLeft="@drawable/ic_video_quality"-->
                 <!--                    android:drawablePadding="@dimen/_6dp"-->
-                <!--                    android:fontFamily="@font/heebo_regular"-->
+                <!--                    android:fontFamily="@font/roboto_regular"-->
                 <!--                    android:gravity="center"-->
                 <!--                    android:lineHeight="32sp"-->
                 <!--                    android:padding="@dimen/_1sdp"-->
@@ -566,7 +486,7 @@
                 <!--                    android:layout_marginTop="@dimen/_4dp"-->
                 <!--                    android:drawableLeft="@drawable/ic_next_episode"-->
                 <!--                    android:drawablePadding="@dimen/_6dp"-->
-                <!--                    android:fontFamily="@font/heebo_regular"-->
+                <!--                    android:fontFamily="@font/roboto_regular"-->
                 <!--                    android:gravity="center"-->
                 <!--                    android:lineHeight="32sp"-->
                 <!--                    android:padding="@dimen/_1sdp"-->
@@ -800,8 +720,132 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="128dp"
+            android:gravity="bottom">
+
+            <TextView
+                android:id="@+id/skipIntro"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen40dp"
+                android:layout_marginEnd="@dimen/dimen55dp"
+                android:background="@drawable/skip_intro_button"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:padding="@dimen/_7sdp"
+                android:text="SKIP INTRO"
+                android:textColor="@color/pale_gray"
+                android:textSize="@dimen/dimen15sp"
+                android:visibility="gone">
 
 
+            </TextView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="128dp"
+            android:gravity="bottom">
+
+            <TextView
+                android:id="@+id/skipRecap"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen40dp"
+                android:layout_marginEnd="@dimen/dimen55dp"
+                android:background="@drawable/skip_intro_button"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:padding="@dimen/_7sdp"
+                android:text="SKIP INTRO"
+                android:textColor="@color/pale_gray"
+                android:textSize="@dimen/dimen15sp"
+                android:visibility="gone">
+
+
+            </TextView>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/_128dp"
+            android:gravity="bottom">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:progressDrawable="@drawable/layer_progress"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen40dp"
+                android:indeterminate="false"
+                android:layout_marginEnd="@dimen/dimen55dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:visibility="gone"
+                android:alpha="1"/>
+
+
+            <TextView
+                android:id="@+id/skipCredits"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen40dp"
+                android:layout_marginEnd="@dimen/dimen55dp"
+                android:background="@drawable/skip_intro_button"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:padding="@dimen/_7sdp"
+                android:text="SKIP INTRO"
+                android:textColor="@color/pale_gray"
+                android:textSize="@dimen/dimen15sp"
+                android:visibility="gone">
+
+            </TextView>
+            </FrameLayout>
+
+        </LinearLayout>
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_marginBottom="@dimen/_128dp"-->
+<!--            android:gravity="bottom">-->
+<!--        <ProgressBar-->
+<!--            android:id="@+id/simpleProgressBar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="@dimen/dimen40dp"-->
+<!--            android:max="100"-->
+<!--            android:progress="0"-->
+<!--            android:layout_marginEnd="@dimen/dimen55dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            style="@style/Widget.AppCompat.ProgressBar.Horizontal"-->
+<!--            android:progressDrawable="@drawable/layer_progress"/>-->
+<!--        </LinearLayout>-->
+
+        <LinearLayout
+            android:id="@+id/audio_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/audio_quality"
+                layout="@layout/layout_caption_audio_setting" />
+        </LinearLayout>
     </RelativeLayout>
 
 

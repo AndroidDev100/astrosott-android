@@ -10,6 +10,7 @@
             android:id="@+id/ll1"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_37dp"
+            android:paddingEnd="16dp"
             android:background="@color/dark_toolbar">
 
             <CheckBox
@@ -26,13 +27,24 @@
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="11dp"
-                android:fontFamily="@font/heebo_regular"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_regular"
                 android:text="Wed, 1/4/2019"
-                android:textColor="@color/grey"
+                android:textColor="@color/heather"
+                android:textSize="@dimen/_14sp" />
+
+            <TextView
+                android:id="@+id/paymentCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="11dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/heather"
                 android:textSize="@dimen/_14sp" />
 
         </LinearLayout>
@@ -50,8 +62,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:fontFamily="@font/heebo_regular"
-                android:text="@string/watch_movie"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/_2dp"
+                android:ellipsize="end"
+                android:layout_toLeftOf="@id/currency"
+                android:fontFamily="@font/roboto_regular"
+                android:lines="1"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp" />
 
@@ -60,8 +76,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/dimen16dp"
-                android:fontFamily="@font/heebo_medium"
+                android:layout_marginEnd="@dimen/dimen14dp"
+                android:fontFamily="@font/roboto_medium"
+                android:padding="@dimen/_4dp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp" />
 
@@ -73,11 +90,11 @@
             android:layout_below="@+id/rl1"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/dimen16dp"
-            android:fontFamily="@font/heebo_light"
+            android:fontFamily="@font/roboto_light"
             android:text="inclusive 6% Tax"
             android:textColor="@color/white"
             android:textSize="@dimen/_10sp"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <RelativeLayout
             android:id="@+id/rl2"
@@ -93,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:text="@string/payment_method"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_14sp" />
@@ -104,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:drawablePadding="@dimen/dimen12dp"
-                android:fontFamily="@font/heebo_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp" />
         </RelativeLayout>
@@ -117,7 +134,7 @@
             android:layout_marginStart="@dimen/dimen16dp"
             android:layout_marginEnd="@dimen/dimen16dp"
             android:layout_marginBottom="@dimen/dimen16dp"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/roboto_regular"
             android:textColor="@color/cancel_red_color"
             android:textSize="@dimen/font_small"
             android:visibility="gone" />

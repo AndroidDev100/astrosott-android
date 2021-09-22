@@ -241,7 +241,7 @@ public class EpisodesLayer {
 
                 }
 
-            } catch (Exception e) {
+            } catch (NullPointerException e) {
                 PrintLogging.printLog("Exception", e.toString());
             }
             assetCommonBean.setRailAssetList(railList);

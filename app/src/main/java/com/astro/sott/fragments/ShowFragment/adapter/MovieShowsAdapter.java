@@ -13,6 +13,7 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.callBacks.commonCallBacks.MediaTypeCallBack;
 import com.astro.sott.databinding.SeriesShowItemBinding;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -88,6 +89,10 @@ public class MovieShowsAdapter extends RecyclerView.Adapter<MovieShowsAdapter.Si
                     @Override
                     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
                         if (NetworkConnectivity.isOnline(mContext)) {
+                            try {
+                                FirebaseEventManager.getFirebaseInstance(mContext).showTabEvent(commonData.getObject(), mContext);
+                            } catch (Exception ex) {
+                            }
                             detailRailClick.detailItemClicked(_url, position, type, commonData);
                         } else {
                             ToastHandler.show(mContext.getResources().getString(R.string.no_internet_connection), mContext);

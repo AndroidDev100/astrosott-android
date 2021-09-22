@@ -7,6 +7,8 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,6 +148,8 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }else {
                     squareItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                    squareItemBinding.tvTitle.setMaxLines(2);
+                    squareItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
                 }
 
                 //squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -191,6 +195,8 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }else {
                     squareItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                    squareItemBinding.tvTitle.setMaxLines(2);
+                    squareItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
                 }
 
                 //  squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
@@ -236,6 +242,8 @@ public class CommonSquareAapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }else {
                     squareItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.pale_gray));
                     squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
+                    squareItemBinding.tvTitle.setMaxLines(2);
+                    squareItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
                 }
 
                 //  squareItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());

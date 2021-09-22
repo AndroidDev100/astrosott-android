@@ -1,6 +1,7 @@
 package com.astro.sott;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -8,12 +9,13 @@ import android.util.Log;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
-import com.appsflyer.AppsFlyerConversionListener;
+//import com.appsflyer.AppsFlyerConversionListener;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.SharedPrefHelper;
 
 import com.clevertap.android.sdk.ActivityLifecycleCallback;
 
+import com.clevertap.android.sdk.CleverTapAPI;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.kaltura.playkit.player.PKHttpClientManager;
 
@@ -27,28 +29,28 @@ public class ApplicationMain extends MultiDexApplication {
         return mInstance;
     }
 
-    private AppsFlyerConversionListener conversionDataListener =
-            new AppsFlyerConversionListener() {
-                @Override
-                public void onConversionDataSuccess(Map<String, Object> map) {
-
-                }
-
-                @Override
-                public void onConversionDataFail(String s) {
-
-                }
-
-                @Override
-                public void onAppOpenAttribution(Map<String, String> map) {
-
-                }
-
-                @Override
-                public void onAttributionFailure(String s) {
-
-                }
-            };
+//    private AppsFlyerConversionListener conversionDataListener =
+//            new AppsFlyerConversionListener() {
+//                @Override
+//                public void onConversionDataSuccess(Map<String, Object> map) {
+//
+//                }
+//
+//                @Override
+//                public void onConversionDataFail(String s) {
+//
+//                }
+//
+//                @Override
+//                public void onAppOpenAttribution(Map<String, String> map) {
+//
+//                }
+//
+//                @Override
+//                public void onAttributionFailure(String s) {
+//
+//                }
+//            };
 //    private static Context context;
 
 //    public static Context getAppContext() {
@@ -59,20 +61,14 @@ public class ApplicationMain extends MultiDexApplication {
     public void onCreate() {
         ActivityLifecycleCallback.register(this);
         super.onCreate();
+        CleverTapAPI.createNotificationChannel(this, "sooka-channel", "test-channel", "test-channel", NotificationManager.IMPORTANCE_MAX, true);
         mInstance = this;
 //        ApplicationMain.context = getApplicationContext();
         MultiDex.install(this);
-        // Branch logging for debugging
-        //Branch.enableLogging();
-        //Branch.getAutoInstance(this, true);
-
-
-        // Branch object initialization
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 connectionWarmup();
-                //   AdSettings.setIntegrationErrorMode(INTEGRATION_ERROR_CRASH_DEBUG_MODE);
 
                 FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
                     String token = instanceIdResult.getToken();

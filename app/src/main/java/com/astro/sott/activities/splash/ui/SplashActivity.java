@@ -1,19 +1,25 @@
 
 package com.astro.sott.activities.splash.ui;
 
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -88,10 +94,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-import io.branch.referral.Branch;
-import io.branch.referral.BranchError;
 
-public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogSingleButtonFragment.AlertDialogListener {
+public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogSingleButtonFragment.AlertDialogListener, DisplayManager.DisplayListener {
 
     private static final String TAG = "SplashActivity";
     String screenName = "";
@@ -129,6 +133,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         } else {
             connectionValidation(false);
         }
+
     }
 
     private String keyHash = "";
@@ -152,7 +157,10 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
 
     private void connectionValidation(Boolean aBoolean) {
-        Log.e(TAG, "oncreate: " + "in3" + aBoolean);
+        /*BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+        String deviceName = Settings.Global.getString(getContentResolver(), Settings.Global.DEVICE_NAME);
+
+        Log.e(TAG, "oncreate: " + "indevice_name3" + deviceName);*/
         if (aBoolean) {
             if (!CommonUtils.isRooted(this)) {
                 Log.e(TAG, "oncreate: " + "in4");
@@ -203,7 +211,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     pushToken();
 
                 } else {
-                    //pushToken();
                     showUpdateDialog();
                 }
 
@@ -556,32 +563,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     }
 
-    private Branch.BranchReferralInitListener branchReferralInitListener = new Branch.BranchReferralInitListener() {
-        @Override
-        public void onInitFinished(JSONObject linkProperties, BranchError error) {
-            // do stuff with deep link data (nav to page, display content, etc)
-            Log.d("asasasasasasa", new Gson().toJson(linkProperties));
-            if (error == null) {
-                if (linkProperties.has("assetId")) {
-                    try {
-                        branchObject = new JSONObject(linkProperties.toString());
-                    } catch (JSONException e) {
-
-                    }
-                    //  redirectionCondition(linkProperties);
-                } else {
-                    branchObject = null;
-//                    PrintLogging.printLog("", "c a");
-//                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                }
-            } else {
-                branchObject = null;
-                //DialogHelper.showAlertDialog(getApplicationContext(), getString(R.string.something_went_wrong_try_again), getString(R.string.ok), SplashActivity.this);
-            }
-
-
-        }
-    };
 //
 
     private void processIntent(Intent intent) {
@@ -640,93 +621,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //            }
 //        },6000);
 
-        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(pendingDynamicLinkData -> {
-            Log.w("deepLink", "in" + pendingDynamicLinkData);
-            try {
-                if (pendingDynamicLinkData != null) {
-                    Log.w("deepLink", "in2" + pendingDynamicLinkData.getLink());
-                    Uri deepLink = pendingDynamicLinkData.getLink();
-                    Log.w("deepLink", "in2" + pendingDynamicLinkData.getLink() + " " + deepLink.getQuery());
-                    if (deepLink != null) {
-                        if (deepLink.getQuery() != null && deepLink.getQuery().contains("link=")) {
-                            String arr[] = deepLink.getQuery().toString().split("link=");
-                            String url = arr[1];
-                            Log.w("deepLink", "first" + url);
-                            Uri newU = Uri.parse(url);
-                            Log.w("deepLink", "second" + newU.toString());
-                            Log.w("deepLink", "third" + newU.getQueryParameter("id"));
-                            Log.w("deepLink", "in2---" + newU.getQueryParameter("mediaType"));
-                            Log.w("deepLink", "in2---" + newU.getQueryParameter("subMediaType"));
-                            // Log.w("deepLink",deepLink.getQuery().getQueryParameter("id"));
-                            // Log.w("deepLink",deepLink.getQueryParameter("mediaType"));
-                            // Log.w("deepLink",deepLink.getQueryParameter("name"));
-                            if (newU.getQueryParameter("mediaType") != null) {
-                                if (Integer.parseInt(newU.getQueryParameter("mediaType")) == MediaTypeConstant.getProgram(SplashActivity.this)) {
-                                    myViewModel.getLiveSpecificAsset(this, newU.getQueryParameter("id")).observe(this, railCommonData -> {
-                                        if (railCommonData != null && railCommonData.getStatus()) {
-                                            //liveManger(railCommonData);
-                                            new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
-                                        } else {
-                                            new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                                            // DialogHelper.showAlertDialog(this, getString(R.string.asset_not_found), getString(R.string.ok), this);
-                                        }
-                                    });
-                                } else {
-                                    callSpecficAssetApi(String.valueOf(newU.getQueryParameter("id")), newU.getQueryParameter("subMediaType"));
-                                }
-                            }
+        checkSocialRedirection();
 
-
-                        } else {
-                            if (pendingDynamicLinkData.getLink() != null && pendingDynamicLinkData.getLink().getQueryParameter("id") != null) {
-                                if (pendingDynamicLinkData.getLink().getQueryParameter("mediaType") != null) {
-                                    if (Integer.parseInt(pendingDynamicLinkData.getLink().getQueryParameter("mediaType")) == MediaTypeConstant.getProgram(SplashActivity.this)) {
-                                        myViewModel.getLiveSpecificAsset(this, pendingDynamicLinkData.getLink().getQueryParameter("id")).observe(this, railCommonData -> {
-                                            if (railCommonData != null && railCommonData.getStatus()) {
-                                                //liveManger(railCommonData);
-                                                new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
-                                            } else {
-                                                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                                                // DialogHelper.showAlertDialog(this, getString(R.string.asset_not_found), getString(R.string.ok), this);
-                                            }
-                                        });
-                                    } else {
-                                        callSpecficAssetApi(String.valueOf(pendingDynamicLinkData.getLink().getQueryParameter("id")), pendingDynamicLinkData.getLink().getQueryParameter("subMediaType"));
-                                    }
-                                }
-                            } else {
-                                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                            }
-                        }
-
-                    } else {
-                        if (branchObject != null) {
-                            if (branchObject.has("assetId")) {
-                                redirectionCondition(branchObject);
-                            } else {
-                                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                            }
-                        } else {
-                            new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                        }
-                        Log.d("deepLink", "getDynamicLink: no link found");
-                    }
-                } else {
-                    if (Id != null) {
-                        if (Id != 0) {
-                            callSpecficAssetApi(Id + "", "");
-                        } else {
-                            new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                        }
-                    } else {
-                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                    }
-                }
-            } catch (Exception e) {
-                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-            }
-
-        });
 
 
 //            branchReferralInitListener = new Branch.BranchReferralInitListener() {
@@ -751,6 +647,139 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //
 //                }
 //            };
+    }
+
+    private void checkSocialRedirection() {
+        try {
+            if (getIntent().getData()!=null && getIntent().getData().toString().contains("mediaType")){
+                Uri deepLink=Uri.parse(getIntent().getData().toString());
+
+                if (deepLink.getQuery() != null && deepLink.getQuery().contains("id")) {
+                    String mediatype=(String) deepLink.getQueryParameter("mediaType");
+                    if (Integer.parseInt(mediatype) == MediaTypeConstant.getProgram(SplashActivity.this)) {
+                        myViewModel.getLiveSpecificAsset(this, deepLink.getQueryParameter("id")).observe(this, railCommonData -> {
+                            if (railCommonData != null && railCommonData.getStatus()) {
+                                //liveManger(railCommonData);
+                                new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
+                                new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
+                            } else {
+                                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                // DialogHelper.showAlertDialog(this, getString(R.string.asset_not_found), getString(R.string.ok), this);
+                            }
+                        });
+                    } else {
+                        callSpecficAssetApi(String.valueOf(deepLink.getQueryParameter("id")), deepLink.getQueryParameter("subMediaType"));
+                    }
+                }
+
+            }else {
+                FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(pendingDynamicLinkData -> {
+                    Log.w("deepLink", "in" + pendingDynamicLinkData);
+                    try {
+                        if (pendingDynamicLinkData != null) {
+                            Log.w("deepLink", "in2" + pendingDynamicLinkData.getLink());
+                            Uri deepLink = pendingDynamicLinkData.getLink();
+                            Log.w("deepLink", "in2" + pendingDynamicLinkData.getLink() + " " + deepLink.getQuery());
+                            if (deepLink != null) {
+                                if (deepLink.getQuery() != null && deepLink.getQuery().contains("link=")) {
+                                    String arr[] = deepLink.getQuery().toString().split("link=");
+                                    String url = arr[1];
+                                    Log.w("deepLink", "first" + url);
+                                    Uri newU = Uri.parse(url);
+                                    Log.w("deepLink", "second" + newU.toString());
+                                    Log.w("deepLink", "third" + newU.getQueryParameter("id"));
+                                    Log.w("deepLink", "in2---" + newU.getQueryParameter("mediaType"));
+                                    Log.w("deepLink", "in2---" + newU.getQueryParameter("subMediaType"));
+                                    // Log.w("deepLink",deepLink.getQuery().getQueryParameter("id"));
+                                    // Log.w("deepLink",deepLink.getQueryParameter("mediaType"));
+                                    // Log.w("deepLink",deepLink.getQueryParameter("name"));
+                                    if (newU.getQueryParameter("mediaType") != null) {
+                                        if (Integer.parseInt(newU.getQueryParameter("mediaType")) == MediaTypeConstant.getProgram(SplashActivity.this)) {
+                                            myViewModel.getLiveSpecificAsset(this, newU.getQueryParameter("id")).observe(this, railCommonData -> {
+                                                if (railCommonData != null && railCommonData.getStatus()) {
+                                                    //liveManger(railCommonData);
+                                                    new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
+                                                    new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
+
+                                                } else {
+
+                                                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+
+                                                    // DialogHelper.showAlertDialog(this, getString(R.string.asset_not_found), getString(R.string.ok), this);
+                                                }
+                                            });
+                                        } else {
+                                            callSpecficAssetApi(String.valueOf(newU.getQueryParameter("id")), newU.getQueryParameter("subMediaType"));
+                                        }
+                                    }
+
+
+                                } else {
+                                    if (pendingDynamicLinkData.getLink() != null && pendingDynamicLinkData.getLink().getQueryParameter("id") != null) {
+                                        if (pendingDynamicLinkData.getLink().getQueryParameter("mediaType") != null) {
+                                            if (Integer.parseInt(pendingDynamicLinkData.getLink().getQueryParameter("mediaType")) == MediaTypeConstant.getProgram(SplashActivity.this)) {
+                                                myViewModel.getLiveSpecificAsset(this, pendingDynamicLinkData.getLink().getQueryParameter("id")).observe(this, railCommonData -> {
+                                                    if (railCommonData != null && railCommonData.getStatus()) {
+                                                        //liveManger(railCommonData);
+                                                        new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
+                                                        new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
+                                                    } else {
+                                                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                                        // DialogHelper.showAlertDialog(this, getString(R.string.asset_not_found), getString(R.string.ok), this);
+                                                    }
+                                                });
+                                            } else {
+                                                callSpecficAssetApi(String.valueOf(pendingDynamicLinkData.getLink().getQueryParameter("id")), pendingDynamicLinkData.getLink().getQueryParameter("subMediaType"));
+                                            }
+                                        }
+                                    } else {
+                                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                    }
+                                }
+
+                            } else {
+                                if (branchObject != null) {
+                                    if (branchObject.has("assetId")) {
+                                        redirectionCondition(branchObject);
+                                    } else {
+                                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                    }
+                                } else {
+                                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                }
+                                Log.d("deepLink", "getDynamicLink: no link found");
+                            }
+                        } else {
+                            if (branchObject != null) {
+                                if (branchObject.has("assetId")) {
+                                    redirectionCondition(branchObject);
+                                } else {
+                                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                }
+                            } else {
+                                if (Id != null) {
+                                    if (Id != 0) {
+                                        callSpecficAssetApi(Id + "", "");
+                                    } else {
+                                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                    }
+                                } else {
+                                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                }
+                                //new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                            }
+                        }
+                    } catch (Exception e) {
+                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                    }
+
+                });
+
+            }
+        }catch (Exception e){
+            new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+        }
+
     }
 
 
@@ -921,9 +950,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                         if (BuildConfig.FLAVOR.equalsIgnoreCase("QA")) {
                             final String appPackageName = getPackageName();
                             try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                             } catch (android.content.ActivityNotFoundException anfe) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                             }
 
                         } else if (isDmsFailed) {
@@ -932,9 +961,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                         } else {
                             final String appPackageName = getPackageName();
                             try {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                             } catch (android.content.ActivityNotFoundException anfe) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.astro.sott" + appPackageName)));
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                             }
 
                         }
@@ -948,7 +977,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //            Button bn = alert.getButton(android.content.DialogInterface.BUTTON_NEGATIVE);
 //            bn.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
             Button bp = alert.getButton(android.content.DialogInterface.BUTTON_POSITIVE);
-            bp.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+            bp.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.aqua_marine));
 
         }
 
@@ -965,14 +994,36 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         getBinding().connection.tryAgain.setOnClickListener(view -> connectionObserver());
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+//       myDevice.enable();
+//       myDevice.startDiscovery();
+//       Handler handler = new Handler();
+//        Runnable r = new Runnable() {
+//            public void run() {
+//
+//                devicename= BluetoothAdapter.getDefaultAdapter().getName();
+//                Log.d("DEVICEusername",devicename+"");
+//
+//            }
+//        };
+//        handler.postDelayed(r, 1000);
+//
+//        String deviceModel = Build.PRODUCT;
+//        Log.d("DEVICEProduct",deviceModel+"");
+//        String deviceName1=  Settings.Global.getString(getContentResolver(), Settings.Global.DEVICE_NAME);
+////                Settings.Secure.getString(getContentResolver(), "bluetooth_name");
+//        Log.d("DEVICEname",deviceName1+"");
+
+
 //        View decorView = getWindow().getDecorView();
 //        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 //                |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 //        decorView.setSystemUiVisibility(uiOptions);
-
         if (!isTaskRoot()) {
             final Intent intent = getIntent();
             final String intentAction = intent.getAction();
@@ -1073,5 +1124,22 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         super.onResume();
         if (isDmsApiHit)
             versionStatus();
+    }
+
+    @Override
+    public void onDisplayAdded(int displayId) {
+        Log.e("DISPLAY", "ADDED");
+    }
+
+    @Override
+    public void onDisplayRemoved(int displayId) {
+        Log.e("DISPLAY", "REMOVED");
+
+    }
+
+    @Override
+    public void onDisplayChanged(int displayId) {
+        Log.e("DISPLAY", "CHANGED");
+
     }
 }

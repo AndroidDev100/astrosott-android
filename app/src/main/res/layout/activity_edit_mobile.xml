@@ -38,7 +38,7 @@
                 android:letterSpacing="0.09"
                 android:text="@string/edit_email"
                 android:textAlignment="center"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp" />
 
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
                     android:enabled="false"
-                    android:fontFamily="@font/heebo_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:foregroundTint="@color/white"
                     android:hint="@string/existing_mobile"
                     android:inputType="textEmailAddress"
@@ -96,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
-                    android:fontFamily="@font/heebo_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:foregroundTint="@color/white"
                     android:hint="@string/new_mobile"
                     android:inputType="number"
@@ -126,9 +126,9 @@
                 android:layout_marginTop="@dimen/_30sdp"
                 android:layout_marginEnd="@dimen/_45sdp"
                 android:background="@drawable/gradient_button"
-                android:fontFamily="@font/heebo_medium"
+                android:fontFamily="@font/roboto_medium"
                 android:text="@string/update"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sp" />
 

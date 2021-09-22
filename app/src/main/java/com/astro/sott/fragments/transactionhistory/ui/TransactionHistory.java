@@ -36,8 +36,10 @@ import com.astro.sott.databinding.FragmentTransactionHistoryBinding;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.fragments.transactionhistory.adapter.TransactionAdapter;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.getPaymentV2.OrderItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 
@@ -112,6 +114,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         super.onActivityCreated(savedInstanceState);
         modelCall();
         UIinitialization();
+        FirebaseEventManager.getFirebaseInstance(getActivity()).trackScreenName(FirebaseEventManager.TRANSACTION_HISTORY);
         setClicks();
         getPaymentV2();
         allowPermission();
@@ -119,6 +122,10 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     }
 
     private void setClicks() {
+
+        getBinding().addSubscription.setOnClickListener(v -> {
+            new ActivityLauncher(getActivity()).profileSubscription("Profile");
+        });
         getBinding().arrow.setOnClickListener(v -> {
             if (getBinding().separator.getVisibility() == View.GONE) {
                 setArrow(true);
@@ -253,15 +260,18 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         subscriptionViewModel.getPaymentV2(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
+                getBinding().noDataLayout.setVisibility(View.GONE);
+                getBinding().downloadButton.setVisibility(View.VISIBLE);
                 if (evergentCommonResponse.getPaymentV2Response() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder() != null && evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder().size() > 0) {
                     getBinding().statusLay.setVisibility(View.VISIBLE);
                     orderList.addAll(evergentCommonResponse.getPaymentV2Response().getGetPaymentsV2ResponseMessage().getOrder());
                     checkTypesOfOrder(orderList);
                 } else {
                     getBinding().statusLay.setVisibility(View.GONE);
+                    getBinding().noDataLayout.setVisibility(View.VISIBLE);
+                    getBinding().downloadButton.setVisibility(View.GONE);
                 }
             } else {
-
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
                     EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
                         if (evergentCommonResponse.isStatus()) {
@@ -272,6 +282,8 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                     });
                 } else {
                     getBinding().statusLay.setVisibility(View.GONE);
+                    getBinding().noDataLayout.setVisibility(View.VISIBLE);
+                    getBinding().downloadButton.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
 

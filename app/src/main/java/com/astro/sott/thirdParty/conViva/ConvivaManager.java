@@ -3,6 +3,7 @@ package com.astro.sott.thirdParty.conViva;
 import android.content.Context;
 import android.telephony.TelephonyDisplayInfo;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
@@ -14,6 +15,7 @@ import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.conviva.api.ConvivaConstants;
 import com.conviva.sdk.ConvivaAdAnalytics;
@@ -22,6 +24,7 @@ import com.conviva.sdk.ConvivaSdkConstants;
 import com.conviva.sdk.ConvivaVideoAnalytics;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.DoubleValue;
+import com.kaltura.client.types.LiveAsset;
 import com.kaltura.playkit.Player;
 import com.kaltura.playkit.plugins.ads.AdEvent;
 
@@ -45,6 +48,8 @@ public class ConvivaManager {
     private static final String SERIES_NAME = "c3.cm.seriesName";
     private static final String SERIES_NUMBER = "c3.cm.seasonNumber";
     private static final String EPISODE_NUMBER = "c3.cm.episodeNumber";
+    private static final String EPISODE_NAME = "c3.cm.episodeName";
+
     private static final String APP_NAME = "appName";
     private static final String APP_VERSION = "c3.app.version";
     private static final String CONTENT_LENGTH = "appVersion";
@@ -64,7 +69,7 @@ public class ConvivaManager {
     public static final String FIRST_AID_SYSTEM = "c3.ad.firstAdSystem";
     public static final String ACTORS = "actors";
     public static final String DIRECTORS = "directors";
-    public static final String PRODUCER = "producer";
+    public static final String PRODUCER = "producers";
 
     public static final String DEVICE_ID = "deviceId";
     public static final String PRODUCT_ID = "productId";
@@ -77,13 +82,12 @@ public class ConvivaManager {
     public static final String AD_POSITION = "c3.ad.position";
     public static final String FIRST_AD_ID = "c3.ad.firstAdId";
     public static final String FIRST_CREATIVE_ID = "c3.ad.firstCreativeId";
-    public static final String AD_CREATIVE_ID = "c3.ad.adCreativeId";
+    public static final String AD_CREATIVE_ID = "c3.ad.creativeId";
 
 
     public static final String CARRIER = "carrier";
     public static final String KALTURA_ID = "kalturaAssetId";
-    public static final String Year = "Year";
-
+    public static final String Year = "year";
 
     public static final String AD_STITCHER = "c3.ad.adStitcher";
     public static final String AD_SYSTEM = "c3.ad.system";
@@ -126,169 +130,215 @@ public class ConvivaManager {
         return convivaAdAnalytics;
     }
 
-    public static void setreportPlaybackRequested(Context context, Asset railData, String duraton, Boolean isLivePlayer, String streamUrl) {
-        Map<String, Object> contentInfo = new HashMap<String, Object>();
+    public static void setreportPlaybackRequested(Context context, Asset railData, String duraton, Boolean isLivePlayer, String streamUrl, Asset programAsset) {
+        try {
 
 
-        contentInfo.put(ConvivaSdkConstants.ASSET_NAME, railData.getName());
-        contentInfo.put(ConvivaSdkConstants.IS_LIVE, isLivePlayer + "");
-        contentInfo.put(AFFILIATE, "NA");
-        contentInfo.put(ConvivaSdkConstants.FRAMEWORK_NAME, "Kaltura");
-        contentInfo.put(ConvivaSdkConstants.FRAMEWORK_VERSION, "4.13.3");
+            Asset convivaAsset;
+            if (railData.getType() == MediaTypeConstant.getLinear(context)) {
+                if (AssetContent.isLiveEvent(railData.getMetas()) && programAsset == null) {
+                    convivaAsset = railData;
+                } else {
+                    convivaAsset = programAsset;
+                }
+            } else {
+                convivaAsset = railData;
+            }
 
-        contentInfo.put(ConvivaSdkConstants.DURATION, AppCommonMethods.getDurationFromUrl(railData));
-        if (AssetContent.getActor(railData.getTags()).equalsIgnoreCase("")) {
-            contentInfo.put(ACTORS, "NA");
-        } else {
-            contentInfo.put(ACTORS, AssetContent.getActor(railData.getTags()));
-        }
-        if (AssetContent.getDirector(railData.getTags()).equalsIgnoreCase("")) {
-            contentInfo.put(DIRECTORS, "NA");
-        } else {
-            contentInfo.put(DIRECTORS, AssetContent.getDirector(railData.getTags()));
-        }
-        if (AssetContent.getProducer(railData.getTags()).equalsIgnoreCase("")) {
-            contentInfo.put(PRODUCER, "NA");
-        } else {
-            contentInfo.put(PRODUCER, AssetContent.getProducer(railData.getTags()));
-        }
-        if (AssetContent.getParentalRating(railData.getTags()).equalsIgnoreCase("")) {
-            contentInfo.put(RATING, "NA");
-        } else {
-            contentInfo.put(RATING, AssetContent.getParentalRating(railData.getTags()));
 
-        }
-        if (AssetContent.getYear(railData.getMetas()).equalsIgnoreCase("")) {
-            contentInfo.put(Year, "NA");
-        } else {
-            contentInfo.put(Year, AssetContent.getYear(railData.getMetas()));
-        }
+            Map<String, Object> contentInfo = new HashMap<String, Object>();
 
-        if (AssetContent.getProviderContentTier(railData.getTags()).equalsIgnoreCase("")) {
-            contentInfo.put(providerContentTier, "NA");
+            contentInfo.put(ConvivaSdkConstants.ASSET_NAME, (convivaAsset != null && convivaAsset.getName() != null && !convivaAsset.getName().equalsIgnoreCase("")) ? convivaAsset.getName() : "NA");
+            contentInfo.put(ConvivaSdkConstants.IS_LIVE, isLivePlayer + "");
+            contentInfo.put(AFFILIATE, "NA");
+            contentInfo.put(ConvivaSdkConstants.FRAMEWORK_NAME, "Kaltura");
+            contentInfo.put(ConvivaSdkConstants.FRAMEWORK_VERSION, "4.13.3");
+            if (!UserInfo.getInstance(context).getAccountRole().equalsIgnoreCase("")) {
+                contentInfo.put("accountType", UserInfo.getInstance(context).getAccountRole());
+            } else {
+                contentInfo.put("accountType", "NA");
+            }
 
-        } else {
-            contentInfo.put(providerContentTier, AssetContent.getProviderContentTier(railData.getTags()));
+            if (convivaAsset != null && !AssetContent.getActor(convivaAsset.getTags()).equalsIgnoreCase("")) {
+                contentInfo.put(ACTORS, AssetContent.getActor(convivaAsset.getTags()));
+            } else {
+                contentInfo.put(ACTORS, "NA");
+            }
+            if (convivaAsset != null && !AssetContent.getDirector(convivaAsset.getTags()).equalsIgnoreCase("")) {
+                contentInfo.put(DIRECTORS, AssetContent.getDirector(convivaAsset.getTags()));
+            } else {
+                contentInfo.put(DIRECTORS, "NA");
+            }
+            if (convivaAsset != null && !AssetContent.getProducer(convivaAsset.getTags()).equalsIgnoreCase("")) {
+                contentInfo.put(PRODUCER, AssetContent.getProducer(convivaAsset.getTags()));
+            } else {
+                contentInfo.put(PRODUCER, "NA");
+            }
+            if (convivaAsset != null && !AssetContent.getParentalRating(convivaAsset.getTags()).equalsIgnoreCase("")) {
+                contentInfo.put(RATING, AssetContent.getParentalRating(convivaAsset.getTags()));
+            } else {
+                contentInfo.put(RATING, "NA");
+            }
+            if (convivaAsset.getType() == MediaTypeConstant.getEpisode(context)) {
+                contentInfo.put(EPISODE_NAME, (convivaAsset != null) ? convivaAsset.getName() : "NA");
+            } else {
+                contentInfo.put(EPISODE_NAME, "NA");
+            }
+            if (railData.getType() != MediaTypeConstant.getLinear(context)) {
+                if (convivaAsset != null || !AssetContent.getYear(convivaAsset.getMetas()).equalsIgnoreCase("")) {
+                    contentInfo.put(Year, "NA");
+                } else {
+                    contentInfo.put(Year, AssetContent.getYear(convivaAsset.getMetas()));
+                }
+            } else {
+                if (convivaAsset != null && !AssetContent.getProgramYear(convivaAsset.getMetas()).equalsIgnoreCase("")) {
+                    contentInfo.put(Year, AssetContent.getProgramYear(convivaAsset.getMetas()));
+                } else {
+                    contentInfo.put(Year, "NA");
+                }
+            }
 
-        }
+            if (convivaAsset != null && !AssetContent.getProviderContentTier(convivaAsset.getTags()).equalsIgnoreCase("")) {
+                contentInfo.put(providerContentTier, AssetContent.getProviderContentTier(convivaAsset.getTags()));
+            } else {
+                contentInfo.put(providerContentTier, "NA");
+            }
 
-        if (railData.getStartDate() != null) {
-            contentInfo.put(PUB_DATE, AppCommonMethods.getPubDate(railData.getStartDate()));
-        } else {
-            contentInfo.put(PUB_DATE, "NA");
-        }
-        if (!AssetContent.getLanguageDataString(railData.getTags(), context).equalsIgnoreCase("")) {
-            contentInfo.put(AUDIO_LANGUAGE, AssetContent.getLanguageDataString(railData.getTags(), context));
-        } else {
-            contentInfo.put(AUDIO_LANGUAGE, "NA");
-        }
+            if (convivaAsset != null && convivaAsset.getStartDate() != null) {
+                contentInfo.put(PUB_DATE, AppCommonMethods.getPubDate(convivaAsset.getStartDate()));
+            } else {
+                contentInfo.put(PUB_DATE, "NA");
+            }
+            if (convivaAsset != null && !AssetContent.getLanguageDataString(convivaAsset.getTags(), context).equalsIgnoreCase("")) {
+                contentInfo.put(AUDIO_LANGUAGE, AssetContent.getLanguageDataString(convivaAsset.getTags(), context));
+            } else {
+                contentInfo.put(AUDIO_LANGUAGE, "NA");
+            }
+            if (convivaAsset.getType() == MediaTypeConstant.getSeries(context)) {
+                contentInfo.put(SERIES_NAME, convivaAsset.getName());
+            } else {
+                if (AssetContent.getSeriesName(convivaAsset.getTags()).equalsIgnoreCase("")) {
+                    contentInfo.put(SERIES_NAME, "NA");
+                } else {
+                    contentInfo.put(SERIES_NAME, AssetContent.getSeriesName(convivaAsset.getTags()));
 
-        contentInfo.put(PRODUCT_ID, "Astro-Sooka");
-        contentInfo.put(STREAM_PROTOCOL, "DASH");
-        contentInfo.put(KALTURA_ID, railData.getId());
+                }
+            }
+            if (AssetContent.getSeriesNumber(convivaAsset.getMetas()) == -1) {
+                contentInfo.put(SERIES_NUMBER, "NA");
+            } else {
+                contentInfo.put(SERIES_NUMBER, AssetContent.getSeriesNumber(convivaAsset.getMetas()));
+            }
+            contentInfo.put(PRODUCT_ID, "Astro sooka");
+            contentInfo.put(STREAM_PROTOCOL, "DASH");
+            contentInfo.put(KALTURA_ID, (convivaAsset != null) ? convivaAsset.getId() : "NA");
 
-        contentInfo.put(DEVICE_ID, AppCommonMethods.getDeviceId(context.getContentResolver()));
+            if (context != null && context.getContentResolver() != null)
+                contentInfo.put(DEVICE_ID, AppCommonMethods.getDeviceId(context.getContentResolver()));
 
-        if (UserInfo.getInstance(context).isActive()) {
-            if (UserInfo.getInstance(context).getCpCustomerId() != null) {
-                contentInfo.put(ConvivaSdkConstants.VIEWER_ID, UserInfo.getInstance(context).getCpCustomerId());
+            if (UserInfo.getInstance(context).isActive()) {
+                if (UserInfo.getInstance(context).getCpCustomerId() != null) {
+                    contentInfo.put(ConvivaSdkConstants.VIEWER_ID, UserInfo.getInstance(context).getCpCustomerId());
+                } else {
+                    contentInfo.put(ConvivaSdkConstants.VIEWER_ID, AppCommonMethods.getDeviceId(context.getContentResolver()));
+                }
             } else {
                 contentInfo.put(ConvivaSdkConstants.VIEWER_ID, AppCommonMethods.getDeviceId(context.getContentResolver()));
             }
-        } else {
-            contentInfo.put(ConvivaSdkConstants.VIEWER_ID, AppCommonMethods.getDeviceId(context.getContentResolver()));
-        }
-        if (NetworkConnectivity.isWifiConnected(context)) {
-            contentInfo.put(CONNECTION_TYPE, WIRELESS);
-        } else {
-            contentInfo.put(CONNECTION_TYPE, MOBILE);
-        }
-
-        if (isLivePlayer) {
-            contentInfo.put(CONTENT_TYPE, LINEAR);
-            contentInfo.put(CHANNEL, railData.getName());
-            contentInfo.put(CONTENT_PLAYBACK_TYPE, "LIVE");
-            if (!AppCommonMethods.getPlayerUrl(railData).equalsIgnoreCase("")) {
-                contentInfo.put(ConvivaSdkConstants.STREAM_URL, AppCommonMethods.getPlayerUrl(railData));
+            if (NetworkConnectivity.isWifiConnected(context)) {
+                contentInfo.put(CONNECTION_TYPE, WIRELESS);
             } else {
-                contentInfo.put(ConvivaSdkConstants.STREAM_URL, "NA");
+                contentInfo.put(CONNECTION_TYPE, MOBILE);
             }
-        } else {
-            if (!streamUrl.equalsIgnoreCase("")) {
-                contentInfo.put(ConvivaSdkConstants.STREAM_URL, streamUrl);
+            if (!AssetContent.getTileSortName(convivaAsset.getMetas()).equalsIgnoreCase("")) {
+                contentInfo.put(SHOW_TITLE, AssetContent.getTileSortName(convivaAsset.getMetas()));
             } else {
-                contentInfo.put(ConvivaSdkConstants.STREAM_URL, "NA");
+                contentInfo.put(SHOW_TITLE, "NA");
             }
-            contentInfo.put(CONTENT_PLAYBACK_TYPE, "VOD");
-            if (!AssetContent.getProvider(railData.getTags()).equalsIgnoreCase("")) {
-                contentInfo.put(BRAND, AssetContent.getProvider(railData.getTags()));
+            if (isLivePlayer) {
+                contentInfo.put(CONTENT_TYPE, LINEAR);
+                contentInfo.put(CONTENT_PLAYBACK_TYPE, "LIVE");
+                if (convivaAsset != null && !AppCommonMethods.getPlayerUrl(railData).equalsIgnoreCase("")) {
+                    contentInfo.put(ConvivaSdkConstants.STREAM_URL, AppCommonMethods.getPlayerUrl(railData));
+                } else {
+                    contentInfo.put(ConvivaSdkConstants.STREAM_URL, "NA");
+                }
+
+                try {
+                    if (convivaAsset != null && convivaAsset.getStartDate() != null && convivaAsset.getEndDate() != null) {
+                        long duration = convivaAsset.getEndDate() - convivaAsset.getStartDate();
+                        contentInfo.put(ConvivaSdkConstants.DURATION, (duration > 0) ? duration : 0);
+                    }
+                    if (railData != null && railData.getName() != null) {
+                        contentInfo.put(CHANNEL, railData.getName());
+                    } else {
+                        contentInfo.put(CHANNEL, "NA");
+                    }
+                    contentInfo.put(ASSET_ID, convivaAsset.getId());
+                } catch (Exception e) {
+                }
             } else {
-                contentInfo.put(BRAND, "NA");
+                if (!streamUrl.equalsIgnoreCase("")) {
+                    contentInfo.put(ConvivaSdkConstants.STREAM_URL, streamUrl);
+                } else {
+                    contentInfo.put(ConvivaSdkConstants.STREAM_URL, "NA");
+                }
+                contentInfo.put(ConvivaSdkConstants.DURATION, (convivaAsset != null) ? AppCommonMethods.getDurationFromUrl(convivaAsset) : 0);
+
+                contentInfo.put(CONTENT_PLAYBACK_TYPE, "VOD");
+                if (!AssetContent.getProvider(convivaAsset.getTags()).equalsIgnoreCase("")) {
+                    contentInfo.put(BRAND, AssetContent.getProvider(convivaAsset.getTags()));
+                } else {
+                    contentInfo.put(BRAND, "NA");
+                }
+                contentInfo.put(CHANNEL, convivaAsset.getName());
+
+
+                contentInfo.put(CONTENT_TYPE, VOD);
+                contentInfo.put(ASSET_ID, convivaAsset.getId());
             }
-            if (!AssetContent.getKeyworddata(railData.getTags()).equalsIgnoreCase("")) {
-                contentInfo.put(CHANNEL, AssetContent.getKeyworddata(railData.getTags()));
+
+            if (convivaAsset != null && !AssetContent.getProvider(convivaAsset.getTags()).equalsIgnoreCase("")) {
+                contentInfo.put(ASSET_PROVIDER_NAME, AssetContent.getProvider(convivaAsset.getTags()));
             } else {
-                contentInfo.put(CHANNEL, "NA");
+                contentInfo.put(ASSET_PROVIDER_NAME, "NA");
 
             }
-            if (railData.getType() == MediaTypeConstant.getSeries(context)) {
-                contentInfo.put(SERIES_NAME, railData.getName());
-            }
-            if (AssetContent.getSeriesNumber(railData.getMetas()) == -1) {
-                contentInfo.put(SERIES_NUMBER, "NA");
+            if (convivaAsset != null && convivaAsset.getType() == MediaTypeConstant.getEpisode(context)) {
+                contentInfo.put(EPISODE_NUMBER, convivaAsset.getName());
             } else {
-                contentInfo.put(SERIES_NUMBER, AssetContent.getSeriesNumber(railData.getMetas()));
+                contentInfo.put(EPISODE_NUMBER, "NA");
             }
-            if (AssetContent.getSeriesName(railData.getTags()).equalsIgnoreCase("")) {
-                contentInfo.put(SERIES_NAME, "NA");
+            contentInfo.put(UTM_URL, "NA");
+            TelephonyManager telemamanger = (TelephonyManager)
+                    context.getSystemService(Context.TELEPHONY_SERVICE);
+
+            String simOperatorName = telemamanger.getNetworkOperatorName();
+            if (!simOperatorName.equalsIgnoreCase("")) {
+                contentInfo.put(CARRIER, simOperatorName);
             } else {
-                contentInfo.put(SERIES_NAME, AssetContent.getSeriesName(railData.getTags()));
-
+                contentInfo.put(CARRIER, "NA");
             }
-            contentInfo.put(SHOW_TITLE, railData.getName());
-            contentInfo.put(CONTENT_TYPE, VOD);
-            contentInfo.put(ASSET_ID, railData.getExternalId());
-        }
+            //
+            contentInfo.put(CATEGORY_TYPE, (convivaAsset != null) ? AppCommonMethods.getAssetType(convivaAsset.getType(), context) : "NA");
+            contentInfo.put(APP_NAME, "sooka Android");
+            contentInfo.put(APP_VERSION, BuildConfig.VERSION_NAME);
+            if (convivaAsset != null && !AssetContent.getGenredataString(convivaAsset.getTags()).equals("")) {
+                contentInfo.put(GENRE, AssetContent.getGenredataString(convivaAsset.getTags()));
+            } else {
+                contentInfo.put(GENRE, "NA");
+            }
 
-        if (!AssetContent.getProvider(railData.getTags()).equalsIgnoreCase("")) {
-            contentInfo.put(ASSET_PROVIDER_NAME, AssetContent.getProvider(railData.getTags()));
-        } else {
-            contentInfo.put(ASSET_PROVIDER_NAME, "NA");
-
+            if (convivaAsset != null && !AssetContent.getGenredataString(convivaAsset.getTags()).equals("")) {
+                contentInfo.put(GENRE_LIST, AssetContent.getGenredataString(convivaAsset.getTags()));
+            } else {
+                contentInfo.put(GENRE_LIST, "NA");
+            }
+            contentInfo.put(ConvivaSdkConstants.PLAYER_NAME, "sooka Android");
+            ConvivaManager.getConvivaVideoAnalytics(context).reportPlaybackRequested(contentInfo);
+        } catch (Exception exception) {
+            Log.w("exception", exception);
         }
-        if (railData.getType() == MediaTypeConstant.getEpisode(context)) {
-            contentInfo.put(EPISODE_NUMBER, railData.getName());
-        } else {
-            contentInfo.put(EPISODE_NUMBER, "NA");
-
-        }
-        contentInfo.put(UTM_URL, "NA");
-        TelephonyManager telemamanger = (TelephonyManager)
-                context.getSystemService(Context.TELEPHONY_SERVICE);
-
-        String simOperatorName = telemamanger.getNetworkOperatorName();
-        if (!simOperatorName.equalsIgnoreCase("")) {
-            contentInfo.put(CARRIER, simOperatorName);
-        } else {
-            contentInfo.put(CARRIER, "NA");
-        }
-        //
-        contentInfo.put(CATEGORY_TYPE, AppCommonMethods.getAssetType(railData.getType(), context));
-        contentInfo.put(APP_NAME, "Sooka Android");
-        contentInfo.put(APP_VERSION, BuildConfig.VERSION_NAME);
-        if (AssetContent.getGenredataString(railData.getTags()).equals("")) {
-            contentInfo.put(GENRE, "NA");
-        } else {
-            contentInfo.put(GENRE, AssetContent.getGenredataString(railData.getTags()));
-        }
-
-        if (AssetContent.getSubGenredataString(railData.getTags()).equals("")) {
-            contentInfo.put(GENRE_LIST, "NA");
-        } else {
-            contentInfo.put(GENRE_LIST, AssetContent.getSubGenredataString(railData.getTags()));
-        }
-        contentInfo.put(ConvivaSdkConstants.PLAYER_NAME, "Sooka Android");
-        ConvivaManager.getConvivaVideoAnalytics(context).reportPlaybackRequested(contentInfo);
     }
 
     public static void convivaAdsEvent(BaseActivity baseActivity, AdEvent.AdStartedEvent event) {
@@ -325,62 +375,100 @@ public class ConvivaManager {
     }
 
     public static void convivaPlayerPlayReportRequest() {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PLAYING);
+        } catch (Exception ex) {
+        }
     }
 
     public static void convivaPlayerPauseReportRequest() {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PAUSED);
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.PAUSED);
+        } catch (Exception ex) {
+        }
     }
 
     public static void convivaPlayerBufferReportRequest() {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.BUFFERING);
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.BUFFERING);
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaPlayerSetBitRate(long bitrate) {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.BITRATE, Integer.parseInt(bitrate + ""));
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.BITRATE, Integer.parseInt(bitrate + ""));
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaPlayerStoppedReportRequest() {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.PLAYER_STATE, ConvivaSdkConstants.PlayerState.STOPPED);
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaPlayerSeekStartedReportRequest(Context context) {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.SEEK_STARTED, 0);
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.SEEK_STARTED, 0);
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaPlayerSeekStoppedReportRequest(Context context) {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.SEEK_ENDED, 0);
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackMetric(ConvivaSdkConstants.PLAYBACK.SEEK_ENDED, 0);
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaPlayerAppBackgrounded(Context context) {
-        ConvivaAnalytics.reportAppBackgrounded();
+        try {
+            ConvivaAnalytics.reportAppBackgrounded();
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaPlayerAppForegrounded(Context context) {
-        ConvivaAnalytics.reportAppForegrounded();
+        try {
+            ConvivaAnalytics.reportAppForegrounded();
+        } catch (Exception exception) {
+        }
     }
 
     public static void removeConvivaSession() {
-        if (ConvivaManager.getConvivaVideoAnalytics(mcontext) != null) {
-            ConvivaManager.getConvivaVideoAnalytics(mcontext).release();
-            convivaVideoAnalytics = null;
+        try {
+            if (ConvivaManager.getConvivaVideoAnalytics(mcontext) != null) {
+                ConvivaManager.getConvivaVideoAnalytics(mcontext).release();
+                convivaVideoAnalytics = null;
+            }
+        } catch (Exception exception) {
         }
-
     }
 
     public static void removeConvivaAdsSession() {
-        if (ConvivaManager.getConvivaAdAnalytics(mcontext) != null) {
-            ConvivaManager.getConvivaAdAnalytics(mcontext).release();
-            convivaAdAnalytics = null;
+        try {
+            if (ConvivaManager.getConvivaAdAnalytics(mcontext) != null) {
+                ConvivaManager.getConvivaAdAnalytics(mcontext).release();
+                convivaAdAnalytics = null;
+            }
+        } catch (Exception exception) {
         }
     }
 
     public static void convivaUserWaitStarted() {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackEvent(String.valueOf(ConvivaSdkConstants.Events.USER_WAIT_STARTED));
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackEvent(String.valueOf(ConvivaSdkConstants.Events.USER_WAIT_STARTED));
+        } catch (Exception exception) {
+        }
     }
 
     public static void convivaUserWaitStopped() {
-        ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackEvent(String.valueOf(ConvivaSdkConstants.Events.USER_WAIT_ENDED));
+        try {
+            ConvivaManager.getConvivaVideoAnalytics(mcontext).reportPlaybackEvent(String.valueOf(ConvivaSdkConstants.Events.USER_WAIT_ENDED));
+        } catch (Exception exception) {
+        }
     }
 
 

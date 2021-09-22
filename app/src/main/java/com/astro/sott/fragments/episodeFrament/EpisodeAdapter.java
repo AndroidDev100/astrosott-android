@@ -37,6 +37,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
     private final List<RailCommonData> railList;
     private final Activity mContext;
     private int episodeNumber = 0;
+    private int lineCount;
     EpisodeClickListener itemClickListener;
     EpisodeCallBAck episodeClickListner;
     KsPreferenceKey ksPreferenceKeys;
@@ -101,6 +102,27 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                     description = stringValue.getValue();
 
                 viewHolder.watchlistItemBinding.tvDescription.setText(description);
+                setExpandable(viewHolder);
+                viewHolder.watchlistItemBinding.tvDescription.post(() -> {
+                    lineCount =  viewHolder.watchlistItemBinding.tvDescription.getLineCount();
+                    Log.d("linecountCheck", lineCount + "");
+                    if (lineCount <= 3) {
+                        viewHolder.watchlistItemBinding.shadow.setVisibility(View.GONE);
+                        viewHolder.watchlistItemBinding.lessButton.setVisibility(View.GONE);
+
+                    }else {
+                        viewHolder.watchlistItemBinding.shadow.setVisibility(View.VISIBLE);
+                        viewHolder.watchlistItemBinding.lessButton.setVisibility(View.VISIBLE);
+                        Log.d("linecountCheck", "inelse");
+
+                    }
+
+                });
+
+//                lineCount = viewHolder.watchlistItemBinding.tvDescription.getLineCount();
+//                Log.d("linecountCheck", "inf" + lineCount);
+
+
                 viewHolder.watchlistItemBinding.landscapeImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -129,15 +151,18 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
 
 
             }
+            viewHolder.watchlistItemBinding.lockIcon.setOnClickListener(v -> {
+                itemClickListener.moveToPlay(position, railList.get(position), 1, railList);
+            });
             if (singleItem.isEntitled()) {
-                viewHolder.watchlistItemBinding.lockIcon.setVisibility(View.VISIBLE);
+                viewHolder.watchlistItemBinding.lockIcon.setVisibility(View.GONE);
+                viewHolder.watchlistItemBinding.billingImage.setVisibility(View.VISIBLE);
                 viewHolder.watchlistItemBinding.episodeTransparent.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.watchlistItemBinding.lockIcon.setVisibility(View.GONE);
+                viewHolder.watchlistItemBinding.billingImage.setVisibility(View.GONE);
                 viewHolder.watchlistItemBinding.episodeTransparent.setVisibility(View.GONE);
-
             }
-
             if (value == episodeNumber) {
                 RailCommonData singleItems = railList.get(position);
                 if (singleItems.getExpended()) {
@@ -193,12 +218,49 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
                 }
             });
             viewHolder.watchlistItemBinding.episodeTransparent.setOnClickListener(v -> {
+                itemClickListener.moveToPlay(position, railList.get(position), 1, railList);
             });
 
 
         } catch (Exception e) {
             Log.w("FSEFESFSEFESFESFESFSEF", e + "");
         }
+    }
+
+    private void setExpandable(EpisodeAdapter.SingleItemRowHolder viewHolder) {
+        viewHolder.watchlistItemBinding.expandableLayout.setOnExpansionUpdateListener(expansionFraction -> viewHolder.watchlistItemBinding.lessButton.setRotation(0 * expansionFraction));
+        viewHolder.watchlistItemBinding.lessButton.setOnClickListener(view -> {
+            viewHolder.watchlistItemBinding.tvDescription.toggle();
+            viewHolder.watchlistItemBinding.tvDescription.setEllipsis("...");
+            if ( viewHolder.watchlistItemBinding.tvDescription.isExpanded()) {
+                viewHolder.watchlistItemBinding.tvDescription.setEllipsize(null);
+                viewHolder.watchlistItemBinding.shadow.setVisibility(View.GONE);
+
+            } else {
+//                if(getBinding().descriptionText.getLineCount() >3)
+//            {
+//                getBinding().descriptionText.setMaxLines(3);
+                viewHolder.watchlistItemBinding.tvDescription.setEllipsize(TextUtils.TruncateAt.END);
+                viewHolder.watchlistItemBinding.shadow.setVisibility(View.VISIBLE);
+
+//            }
+            }
+
+            if ( viewHolder.watchlistItemBinding.expandableLayout.isExpanded()) {
+                viewHolder.watchlistItemBinding.textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+//                getBinding().textExpandable.setText(().getString(R.string.view_more));
+
+            } else {
+                viewHolder.watchlistItemBinding.textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+
+//                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
+            }
+            if (view != null) {
+                viewHolder.watchlistItemBinding.expandableLayout.expand();
+            }
+            viewHolder.watchlistItemBinding.expandableLayout.collapse();
+        });
+
     }
 
 

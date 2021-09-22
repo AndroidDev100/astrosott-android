@@ -492,7 +492,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             c.setTime(startDate); // Now use today date.
             c.add(Calendar.DATE, i); // Adding 5 days
             if (i == 0) {
-                output = "TODAY " + sdf.format(c.getTime());
+                output = "Today " + sdf.format(c.getTime());
 
 
             } else if (i == 1) {

@@ -41,11 +41,11 @@ import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
 import com.astro.sott.player.houseHoldCheckManager.HouseHoldCheck;
 import com.astro.sott.player.ui.PlayerActivity;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
-import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.DialogHelper;
+import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
@@ -65,7 +65,7 @@ import java.util.Map;
 public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding> implements TrailerAsset, AlertDialogSingleButtonFragment.AlertDialogListener {
 
     private RailCommonData railCommonData;
-    private int errorCode = -1;
+    private int errorCode = AppLevelConstants.NO_ERROR;
     private boolean isParentalLocked = false;
     private Asset asset;
     private boolean playerChecksCompleted = false;
@@ -119,10 +119,19 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     private void checkTrailerOrHighlights() {
         trailerData = trailerFragmentViewModel.getTrailer();
         highLightData = trailerFragmentViewModel.getHighLights();
-        if (trailerData.size() > 0)
-            setTrailerUiComponents();
-        if (highLightData.size() > 0)
-            setHighLightUiComponents();
+     try {
+         if (trailerData.size() > 0)
+          setTrailerUiComponents();
+
+         if (highLightData.size() > 0)
+          setHighLightUiComponents();
+     }catch (NullPointerException e){
+         PrintLogging.printLog("Exception", e.toString());
+
+     }
+        Log.d("trailerSIZE",trailerData.size()+"");
+        Log.d("trailerSIZE",highLightData.size()+"");
+
 
 
     }
@@ -133,7 +142,7 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
 
 
     private void setTrailerUiComponents() {
-        getBinding().trailerText.setVisibility(View.VISIBLE);
+//        getBinding().trailerText.setVisibility(View.VISIBLE);
         getBinding().trailerRecyclerView.setVisibility(View.VISIBLE);
         getBinding().trailerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         trailerAdapter = new TrailerAdapter(getActivity(), trailerData, this);
@@ -141,7 +150,7 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     }
 
     private void setHighLightUiComponents() {
-        getBinding().highLightText.setVisibility(View.VISIBLE);
+//        getBinding().highLightText.setVisibility(View.VISIBLE);
         getBinding().highLightREcycler.setVisibility(View.VISIBLE);
         getBinding().highLightREcycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         trailerAdapter = new TrailerAdapter(getActivity(), highLightData, this);
@@ -154,7 +163,8 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
                 if (totalCount != 0) {
                     checkBlockingErrors(response, railData);
                 } else {
-                    checkEntitleMent(railData);
+                    playerChecksCompleted = true;
+                    checkErrors(railData);
                 }
             } else {
                 callProgressBar();
@@ -209,7 +219,8 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
 //                        checkEntitleMent(railData);
 //                        break;
                     default:
-                        checkEntitleMent(railData);
+                        playerChecksCompleted = true;
+                        checkErrors(railData);
                         break;
                 }
             }

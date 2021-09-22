@@ -7,7 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
-import com.astro.sott.thirdParty.appUpdateManager.ApplicationUpdateManager;
+import com.astro.sott.utils.ContextWrapper;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.astro.sott.R;
-import com.google.android.play.core.install.model.InstallStatus;
 
 
 public class BaseActivity extends AppCompatActivity {
@@ -26,6 +25,7 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tabletSize = getResources().getBoolean(R.bool.isTablet);
+        ContextWrapper.getInstance().setActivity(this);
         if (tabletSize) {
             // do something
             checkAutoRotation();
@@ -81,7 +81,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
         // Checks that the update is not stalled during 'onResume()'.
         // However, you should execute this check at all entry points into the app.
-        ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+      /*  ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
 
             if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                 // If the update is downloaded but not installed,
@@ -90,19 +90,19 @@ public class BaseActivity extends AppCompatActivity {
 
                 popupSnackbarForCompleteUpdate();
             }
-        });
+        });*/
 
     }
 
 
     /* Displays the snackbar notification and call to action. */
-    private void popupSnackbarForCompleteUpdate() {
+    /*private void popupSnackbarForCompleteUpdate() {
         Snackbar snackbar =
                 Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.update_has_downloaded), Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(getResources().getString(R.string.restart), view -> ApplicationUpdateManager.getInstance(getApplicationContext()).getAppUpdateManager().completeUpdate());
         snackbar.setActionTextColor(
                 getResources().getColor(R.color.colorPrimary));
         snackbar.show();
-    }
+    }*/
 
 }

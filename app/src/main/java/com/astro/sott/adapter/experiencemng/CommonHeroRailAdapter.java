@@ -2,8 +2,10 @@ package com.astro.sott.adapter.experiencemng;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.R;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
@@ -27,8 +30,10 @@ import com.astro.sott.databinding.LayoutHeroPotraitItemBinding;
 import com.astro.sott.databinding.LayoutHeroSquareItemBinding;
 import com.astro.sott.databinding.LayoutRcgBannerItemBinding;
 import com.astro.sott.utils.constants.AppConstants;
+import com.bumptech.glide.Glide;
 import com.enveu.Enum.ImageSource;
 import com.enveu.Enum.ImageType;
+import com.kaltura.client.Logger;
 import com.kaltura.client.types.Asset;
 
 
@@ -167,6 +172,7 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 @Override
                 public void onClick(View v) {
                     itemClick(position);
+                    Log.d("position","square");
                 }
             });
 
@@ -179,6 +185,8 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 @Override
                 public void onClick(View v) {
                     itemClick(position);
+                    Log.d("position","RCGhero");
+
                 }
             });
         } else if (holder instanceof PosterHeroHolder) {
@@ -189,6 +197,8 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 @Override
                 public void onClick(View v) {
                     itemClick(position);
+                    Log.d("position","posterHero");
+
                 }
             });
         } else if (holder instanceof PotraitHeroHolder) {
@@ -198,6 +208,8 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 @Override
                 public void onClick(View v) {
                     itemClick(position);
+                    Log.d("position","potrait");
+
                 }
             });
 
@@ -219,17 +231,22 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 @Override
                 public void onClick(View v) {
                     itemClick(position);
+                    Log.d("position","circular");
+
                 }
             });
         } else if (holder instanceof LandscapeHeroHolder) {
             ((LandscapeHeroHolder) holder).itemBinding.setIsDark(isDark);
-            ImageHelper.getInstance(((LandscapeHeroHolder) holder).itemBinding.heroImage.getContext()).loadImageTo(((LandscapeHeroHolder) holder).itemBinding.heroImage, bannerImageUrl(),R.drawable.ic_landscape_placeholder);
-
+            ImageHelper.getInstance(((LandscapeHeroHolder) holder).itemBinding.heroImage.getContext()).
+                    loadImageTo(((LandscapeHeroHolder) holder).itemBinding.heroImage, bannerImageUrl(),R.drawable.ic_landscape_placeholder);
 
             ((LandscapeHeroHolder) holder).itemBinding.heroImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     itemClick(position);
+
+                    Log.d("position","landscapehero");
+
                 }
             });
         } else if (holder instanceof LandscapeBannerHolder) {
@@ -239,6 +256,8 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 @Override
                 public void onClick(View v) {
                     itemClick(position);
+                    Log.d("position","LandscapeBanner");
+
                 }
             });
         }
@@ -265,18 +284,27 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public String bannerImageUrl() {
         String imageUrl = "";
-        if (item.getRailDetail().getImageSource().equalsIgnoreCase(ImageSource.AST.name())) {
+        try {
+            if (item.getRailDetail().getImageSource().equalsIgnoreCase(ImageSource.AST.name())) {
 
-            if (getViewType() == AppConstants.HERO_CIR_CIRCLE || getViewType() == AppConstants.HERO_SQR_SQUARE) {
-                imageUrl = squareUrl;
-            } else if (getViewType() == AppConstants.HERO_PR_POTRAIT) {
-                imageUrl = potraitUrl;
-            } else if (getViewType() == AppConstants.HERO_LDS_BANNER || getViewType() == AppConstants.HERO_LDS_LANDSCAPE || getViewType() == AppConstants.HERO_PR_POSTER || getViewType() == AppConstants.HERO_RCG_BANNER) {
-                imageUrl = landscapeUrl;
+                if (getViewType() == AppConstants.HERO_CIR_CIRCLE || getViewType() == AppConstants.HERO_SQR_SQUARE) {
+                    imageUrl = squareUrl;
+                } else if (getViewType() == AppConstants.HERO_PR_POTRAIT) {
+                    imageUrl = potraitUrl;
+                } else if (getViewType() == AppConstants.HERO_LDS_BANNER || getViewType() == AppConstants.HERO_LDS_LANDSCAPE || getViewType() == AppConstants.HERO_PR_POSTER || getViewType() == AppConstants.HERO_RCG_BANNER) {
+                    imageUrl = landscapeUrl;
+                }
+
             }
 
-        } else {
-            imageUrl = item.getRailDetail().getImageURL();
+             else{
+                imageUrl = item.getRailDetail().getImageURL();
+                Log.d("vghgb",item.getRailDetail().getImageURL());
+
+            }
+
+        }catch (Exception e){
+
         }
         return imageUrl;
     }
@@ -285,20 +313,21 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         if (item.getRailDetail().getImageSource().equalsIgnoreCase(ImageSource.AST.name())) {
             Asset asset = item.getRailDetail().getAsset();
+            Log.d("vghgb",asset.getImages().size()+"");
             if (asset.getImages().size() > 0) {
 
                 for (int i = 0; i < asset.getImages().size(); i++) {
-                    if (asset.getImages().get(i).getRatio().equals("16:9")) {
+                    if (asset.getImages().get(i).getRatio().equals("16x9")) {
                         String image_url =AppConstants.WEBP_URL+ asset.getImages().get(i).getUrl();
                         landscapeUrl = image_url + AppConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.landscape_image_width) + AppConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.landscape_image_height) + AppConstants.QUALITY;
                         isImage = true;
                     }
-                    if (asset.getImages().get(i).getRatio().equals("9:16")) {
+                    if (asset.getImages().get(i).getRatio().equals("9x16")) {
                         String image_url = AppConstants.WEBP_URL+asset.getImages().get(i).getUrl();
                         potraitUrl = image_url + AppConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.portrait_image_width) + AppConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.portrait_image_height) + AppConstants.QUALITY;
                         isImage = true;
                     }
-                    if (asset.getImages().get(i).getRatio().equals("1:1")) {
+                    if (asset.getImages().get(i).getRatio().equals("1x1")) {
                         String image_url =AppConstants.WEBP_URL+ asset.getImages().get(i).getUrl();
                         squareUrl = image_url + AppConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.square_image_width) + AppConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.square_image_height) + AppConstants.QUALITY;
                         isImage = true;

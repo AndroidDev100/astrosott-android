@@ -30,6 +30,7 @@
                 android:layout_width="@dimen/play_icon_width"
                 android:layout_height="@dimen/play_icon_height"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 android:background="@drawable/ic_green_play_buton"
                 android:contentDescription="@string/contentDescription" />
         </FrameLayout>
@@ -39,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:fontFamily="@font/heebo_regular"
+            android:fontFamily="@font/roboto_regular"
             android:textColor="@color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
