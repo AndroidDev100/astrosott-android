@@ -18,11 +18,14 @@ import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActiv
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceStatusCallBack;
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
+import com.astro.sott.modelClasses.InApp.PackDetail;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.billing.BuyButtonListener;
+import com.astro.sott.utils.billing.BuyButtonManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.conviva.sdk.ConvivaSdkConstants;
@@ -441,7 +444,9 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             getBookmarking(railData.getObject());
 
         fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+      /*  BuyButtonManager.getInstance().getPackages(this, "", fileId, (packDetailList, packageType, lowestPackagePrice) -> {
 
+        });*/
         new EntitlementCheck().checkAssetPurchaseStatus(MovieDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
             this.errorCode = AppLevelConstants.NO_ERROR;
             if (apiStatus) {

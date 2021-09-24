@@ -256,6 +256,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     }
                 }
 
+<<<<<<< Updated upstream
                 if (packDetailList.size() > 0) {
                     if (packDetailList.size() == 1) {
                         getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
@@ -285,11 +286,30 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                         }
 
                     }
+=======
+            }
+        });
+>>>>>>> Stashed changes
 
+        if (packDetailList.size() > 0) {
+            if (packDetailList.size() == 1) {
+                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
+            } else {
+                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                if (haveSvod && haveTvod == false) {
+                    PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+                    Intent intent = new Intent(SubscriptionDetailActivity.this, ProfileSubscriptionActivity.class);
+                    intent.putExtra("from", "Content Detail Page");
+                    startActivity(intent);
+                    finish();
+                } else {
+                    setPackFragment();
                 }
 
             }
-        });
+
+        }
     }
 
 
