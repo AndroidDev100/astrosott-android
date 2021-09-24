@@ -231,7 +231,6 @@ public class ConvivaManager {
             }
             contentInfo.put(PRODUCT_ID, "Astro sooka");
             contentInfo.put(STREAM_PROTOCOL, "DASH");
-            contentInfo.put(KALTURA_ID, (convivaAsset != null) ? convivaAsset.getId() : "NA");
 
             if (context != null && context.getContentResolver() != null)
                 contentInfo.put(DEVICE_ID, AppCommonMethods.getDeviceId(context.getContentResolver()));
@@ -256,6 +255,7 @@ public class ConvivaManager {
                 contentInfo.put(SHOW_TITLE, "NA");
             }
             if (isLivePlayer) {
+                contentInfo.put(KALTURA_ID, (convivaAsset != null) ? railData.getId() : "NA");
                 contentInfo.put(CONTENT_TYPE, LINEAR);
                 contentInfo.put(CONTENT_PLAYBACK_TYPE, "LIVE");
                 if (convivaAsset != null && !AppCommonMethods.getPlayerUrl(railData).equalsIgnoreCase("")) {
@@ -278,6 +278,9 @@ public class ConvivaManager {
                 } catch (Exception e) {
                 }
             } else {
+
+                contentInfo.put(KALTURA_ID, (convivaAsset != null) ? convivaAsset.getId() : "NA");
+
                 if (!streamUrl.equalsIgnoreCase("")) {
                     contentInfo.put(ConvivaSdkConstants.STREAM_URL, streamUrl);
                 } else {
@@ -329,8 +332,8 @@ public class ConvivaManager {
                 contentInfo.put(GENRE, "NA");
             }
 
-            if (convivaAsset != null && !AssetContent.getGenredataString(convivaAsset.getTags()).equals("")) {
-                contentInfo.put(GENRE_LIST, AssetContent.getGenredataString(convivaAsset.getTags()));
+            if (convivaAsset != null && !AssetContent.getSubGenredataString(convivaAsset.getTags()).equals("")) {
+                contentInfo.put(GENRE_LIST, AssetContent.getSubGenredataString(convivaAsset.getTags()));
             } else {
                 contentInfo.put(GENRE_LIST, "NA");
             }

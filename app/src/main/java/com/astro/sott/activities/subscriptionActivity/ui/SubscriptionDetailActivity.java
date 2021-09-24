@@ -369,7 +369,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     //  PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
                     // handle pending purchases, e.g. confirm with users about the pending
                     // purchases, prompt them to complete it, etc.
-                    // TODO: 8/24/2020 handle this in the next release.
+                    Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                 }
             }
         } catch (Exception ignored) {
