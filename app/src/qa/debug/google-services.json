@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:456838347753:android:c41b3f50bfe2af44c3e978",
         "android_client_info": {
-          "package_name": "com.astro.sott"
+          "package_name": "com.astro.stagingsott"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "456838347753-jpkt9iuadtp4g4dqrnf73hampj1uq5o1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.astro.sott",
+            "package_name": "com.astro.stagingsott",
             "certificate_hash": "61945067bdcd4ac551bdd1b3ff0ec4454c893bc6"
           }
         },
@@ -42,7 +42,7 @@
               "client_id": "456838347753-9k7u53h03oc4sadt9i2ckg61bmrkggjv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.astro.sott"
+                "bundle_id": "com.astro.stagingsott"
               }
             }
           ]
