@@ -3022,7 +3022,7 @@ public class AppCommonMethods {
             finalUrl.append(url);
             finalUrl.append("&cust_params=");
             finalUrl.append(URLEncoder.encode(stringBuilder.toString(), "UTF-8"));
-            Log.w("addImaTagUrl", URLDecoder.decode("vid%3D1182075%26lang%3DEnglish%26vtitle%3DKisses%20for%20the%20world%20%2D%20EP1%20%28Back%20To%20The%20Beginning%29%26vtype%3DVOD%26vgenre%3DLifestyle%26subgenre%3DTravel%26vpro%3DUniversal%20Music%26vlang%3Dcmn", "UTF-8"));
+            Log.w("addImaTagUrl", URLDecoder.decode(stringBuilder.toString(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             finalUrl.append(url);
             finalUrl.append("&cust_params=");
