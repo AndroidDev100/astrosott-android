@@ -90,6 +90,24 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
+
+                    <TextView
+                        android:id="@+id/reminder_active"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:drawablePadding="5dp"
+                        android:focusable="true"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="@string/remind_me"
+                        android:textColor="@color/aqua_marine"
+                        android:textSize="@dimen/font_small"
+                        android:visibility="gone"
+                        app:drawableTopCompat="@drawable/reminder_active_icon" />
+
+
                     <TextView
                         android:id="@+id/reminder"
                         android:layout_width="0dp"

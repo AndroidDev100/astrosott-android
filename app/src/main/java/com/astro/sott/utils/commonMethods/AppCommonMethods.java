@@ -157,7 +157,7 @@ public class AppCommonMethods {
 
     }
 
-    public static String getDateTimeFromtimeStampForReminder(long timestamp) {
+    public static String getFiveMinuteEarlyTimeStamp(long timestamp) {
         try {
 
             Calendar calendar = Calendar.getInstance();
@@ -167,6 +167,27 @@ public class AppCommonMethods {
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
+            long output = currenTimeZone.getTime() / 1000L;
+            String str = Long.toString(output);
+            Long timestamp2 = Long.parseLong(str);
+            return String.valueOf(timestamp2);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+
+    public static String getDateTimeFromtimeStampForReminder(long timestamp) {
+        try {
+
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MINUTE,-0);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+
             return sdf.format(currenTimeZone);
         } catch (Exception e) {
         }
@@ -3193,5 +3214,25 @@ public class AppCommonMethods {
         }
 
         return isExpired;
+    }
+
+    public static String getProgramStartTime(Long timestamp) {
+        try {
+
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MINUTE,-0);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            long output = currenTimeZone.getTime() / 1000L;
+            String str = Long.toString(output);
+            Long timestamp2 = Long.parseLong(str);
+            return String.valueOf(timestamp2);
+        } catch (Exception e) {
+        }
+        return "";
+
     }
 }
