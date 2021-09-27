@@ -1,9 +1,7 @@
 package com.astro.sott.utils.billing;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
@@ -11,14 +9,12 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.android.billingclient.api.SkuDetails;
-import com.astro.sott.activities.subscriptionActivity.ui.ProfileSubscriptionActivity;
-import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.modelClasses.InApp.PackDetail;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
-import com.astro.sott.utils.PacksDateLayer;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.gson.JsonArray;
 import com.kaltura.client.types.Subscription;
@@ -31,9 +27,10 @@ public class BuyButtonManager {
     private static BuyButtonManager buyButtonManager;
     private Activity activity;
     private AstroBillingProcessor billingProcessor;
-
+    private SkuDetails skuDetails;
+    public static String TVOD = "TVOD", SVOD = "SVOD", SVOD_TVOD = "SVOD+TVOD";
+    private boolean haveSvod = false, haveTvod = false;
     private ArrayList<PackDetail> packDetailList;
-
     private String[] subscriptionIds;
     private int count = 0;
 
@@ -47,6 +44,7 @@ public class BuyButtonManager {
     public void getPackages(Activity activity, String from, String fileId, Boolean isPlayable, BuyButtonListener buyButtonListener) {
         this.activity = activity;
         modelCall();
+        intializeBilling();
         getSubscriptionActionList(buyButtonListener, from, fileId, isPlayable);
     }
 
@@ -55,18 +53,12 @@ public class BuyButtonManager {
     }
 
     private void intializeBilling() {
-
-       /* String tempBase64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhiyDBLi/JpQLoxikmVXqxK8M3ZhJNfW2tAdjnGnr7vnDiYOiyk+NomNLqmnLfQwkC+TNWn50A5XmA8FEuZmuqOzKNRQHw2P1Spl27mcZsjXcCFwj2Vy+eso3pPLjG4DfqCmQN2jZo97TW0EhsROdkWflUMepy/d6sD7eNfncA1Z0ECEDuSuOANlMQLJk7Ci5PwUHKYnUAIwbq0fU9LP6O8Ejx5BK6o5K7rtTBttCbknTiZGLo6rB+8RcSB4Z0v3Di+QPyvxjIvfSQXlWhRdyxAs/EZ/F4Hdfn6TB7mLZkKZZwI0xzOObJp2BiesclMi1wHQsNSgQ8pnZ8T52aJczpQIDAQAB";
-        billingProcessor = new BillingProcessor(this, tempBase64, this);
-        billingProcessor.initialize();
-        billingProcessor.loadOwnedPurchasesFromGoogle();*/
-
         billingProcessor = new AstroBillingProcessor(activity);
         billingProcessor.initializeBillingProcessor();
     }
 
     private void getSubscriptionActionList(BuyButtonListener buyButtonListener, String from, String fileId, Boolean isPlayable) {
-        if (!from.equalsIgnoreCase("Live Event")) {
+        if (!from.equalsIgnoreCase(AppLevelConstants.LIVE_EVENT)) {
             subscriptionViewModel.getSubscriptionPackageList(fileId).observe((LifecycleOwner) activity, subscriptionList -> {
                 if (subscriptionList != null) {
                     if (subscriptionList.size() > 0) {
@@ -77,7 +69,7 @@ public class BuyButtonManager {
                                 count++;
                             }
                         }
-                        getProducts(from);
+                        getProducts(from, buyButtonListener);
                     }
                 }
             });
@@ -93,17 +85,14 @@ public class BuyButtonManager {
                                     count++;
                                 }
                             }
-                            getProducts(from);
-
-                            // setPackFragment();
+                            getProducts(from, buyButtonListener);
                         }
                     }
                 });
             } else {
                 subscriptionIds = fileId.split(",");
                 if (subscriptionIds != null && subscriptionIds.length > 0)
-                    getProducts(from);
-                // setPackFragment();
+                    getProducts(from, buyButtonListener);
             }
         }
 
@@ -111,7 +100,7 @@ public class BuyButtonManager {
     }
 
 
-    private void getProducts(String from) {
+    private void getProducts(String from, BuyButtonListener buyButtonListener) {
         if (subscriptionIds != null) {
             JsonArray jsonArray = new JsonArray();
             for (String id : subscriptionIds) {
@@ -120,13 +109,13 @@ public class BuyButtonManager {
             subscriptionViewModel.getProductForLogin(UserInfo.getInstance(activity).getAccessToken(), jsonArray, from).observe((LifecycleOwner) activity, evergentCommonResponse -> {
                 if (evergentCommonResponse.isStatus()) {
                     if (evergentCommonResponse.getGetProductResponse() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage() != null && evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage().size() > 0) {
-                        checkIfDetailAvailableOnPlaystore(evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage());
+                        checkIfDetailAvailableOnPlaystore(evergentCommonResponse.getGetProductResponse().getGetProductsResponseMessage().getProductsResponseMessage(), buyButtonListener);
                     }
                 } else {
                     if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
                         EvergentRefreshToken.refreshToken(activity, UserInfo.getInstance(activity).getRefreshToken()).observe((LifecycleOwner) activity, evergentCommonResponse1 -> {
                             if (evergentCommonResponse.isStatus()) {
-                                getProducts(from);
+                                getProducts(from, buyButtonListener);
                             } else {
                                 AppCommonMethods.removeUserPrerences(activity);
                             }
@@ -139,16 +128,13 @@ public class BuyButtonManager {
         }
     }
 
-    private void checkIfDetailAvailableOnPlaystore(List<ProductsResponseMessageItem> productsResponseMessage) {
+    private void checkIfDetailAvailableOnPlaystore(List<ProductsResponseMessageItem> productsResponseMessage, BuyButtonListener buyButtonListener) {
         packDetailList = new ArrayList<>();
         List<String> subSkuList = AppCommonMethods.getSubscriptionSKUs(productsResponseMessage, activity);
         List<String> productsSkuList = AppCommonMethods.getProductSKUs(productsResponseMessage, activity);
         onListOfSKUs(subSkuList, productsSkuList, new SKUsListListener() {
             @Override
             public void onListOfSKU(@Nullable List<SkuDetails> purchases) {
-                // Log.w("valuessAdded--->>",purchases.size()+"");
-                // Log.w("valuessAdded--->>",purchases.get(0).getDescription());
-
                 for (ProductsResponseMessageItem responseMessageItem : productsResponseMessage) {
                     if (responseMessageItem.getAppChannels() != null && responseMessageItem.getAppChannels().get(0) != null && responseMessageItem.getAppChannels().get(0).getAppChannel() != null && responseMessageItem.getAppChannels().get(0).getAppChannel().equalsIgnoreCase("Google Wallet") && responseMessageItem.getAppChannels().get(0).getAppID() != null) {
                         if (responseMessageItem.getServiceType().equalsIgnoreCase("ppv")) {
@@ -166,10 +152,41 @@ public class BuyButtonManager {
                         }
                     }
                 }
+                if (packDetailList.size() > 0) {
+                    if (packDetailList.size() == 1) {
+                        if (haveTvod) {
+                            buyButtonListener.onPackagesAvailable(packDetailList, TVOD, packDetailList.get(0).getSkuDetails().getPrice(), subscriptionIds);
+                        } else {
+                            buyButtonListener.onPackagesAvailable(packDetailList, SVOD, packDetailList.get(0).getSkuDetails().getPrice(), subscriptionIds);
+                        }
+                    } else {
+                        if (haveTvod && haveSvod) {
+                            buyButtonListener.onPackagesAvailable(packDetailList, SVOD_TVOD, getLowestPrice(packDetailList), subscriptionIds);
+                        } else if (haveSvod) {
+                            buyButtonListener.onPackagesAvailable(packDetailList, SVOD, getLowestPrice(packDetailList), subscriptionIds);
+                        } else {
+                            buyButtonListener.onPackagesAvailable(packDetailList, TVOD, getLowestPrice(packDetailList), subscriptionIds);
+                        }
+                    }
+                } else {
 
+                }
             }
         });
     }
+
+    private String getLowestPrice(ArrayList<PackDetail> packDetailList) {
+        String lowestPrice = "";
+        double comparedPrice = packDetailList.get(0).getSkuDetails().getOriginalPriceAmountMicros();
+        for (PackDetail packDetail : packDetailList) {
+            if (comparedPrice > packDetail.getSkuDetails().getIntroductoryPriceAmountMicros()) {
+                comparedPrice = packDetail.getSkuDetails().getOriginalPriceAmountMicros();
+                lowestPrice = packDetail.getSkuDetails().getPrice();
+            }
+        }
+        return lowestPrice;
+    }
+
     public SkuDetails getSubscriptionDetail(String productId) {
         return billingProcessor.getLocalSubscriptionSkuDetail(activity, productId);
     }

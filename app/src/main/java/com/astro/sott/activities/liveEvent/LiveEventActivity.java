@@ -23,6 +23,8 @@ import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.PacksDateLayer;
+import com.astro.sott.utils.billing.BuyButtonManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.SubMediaTypes;
@@ -100,7 +102,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     private RailCommonData railData;
     private Asset asset;
     private String vodType;
-
+    private String[] subscriptionIds;
     private int layoutType, playlistId = 1;
     private DoubleValue doubleValue;
     private boolean xofferWindowValue = false, playbackControlValue = false;
@@ -217,7 +219,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     } else {
                         fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
                     }
-                    if (!fileId.equalsIgnoreCase("")) {
+                    if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
                         if (isPlayableOrNot()) {
                             intent.putExtra(AppLevelConstants.PLAYABLE, true);
@@ -226,6 +228,9 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         }
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                        intent.putExtra("SubscriptionIdBundle", bundle);
                         intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                         startActivity(intent);
                     }
@@ -245,7 +250,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     } else {
                         fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
                     }
-                    if (!fileId.equalsIgnoreCase("")) {
+                    if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
                         if (isPlayableOrNot()) {
                             intent.putExtra(AppLevelConstants.PLAYABLE, true);
@@ -253,6 +258,9 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                             intent.putExtra(AppLevelConstants.PLAYABLE, false);
                         }
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                        intent.putExtra("SubscriptionIdBundle", bundle);
                         intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                         intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                         startActivity(intent);
@@ -270,12 +278,11 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     }
 
     private boolean isPlayableOrNot() {
-
-            if ((AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate) && (liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong())) {
-                return true;
-            } else {
-                return false;
-            }
+        if ((AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate) && (liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong())) {
+            return true;
+        } else {
+            return false;
+        }
 
     }
 
@@ -461,8 +468,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                 if (xofferWindowValue) {
                                     runOnUiThread(() -> {
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                        getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                        getBinding().playButton.setVisibility(View.VISIBLE);
+                                        checkBuyTextButtonCondition(fileId);
                                         getBinding().starIcon.setVisibility(View.GONE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                         if (becomeVipButtonCLicked) {
@@ -490,8 +496,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                 if (xofferWindowValue) {
                                     runOnUiThread(() -> {
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                        getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                        getBinding().playButton.setVisibility(View.VISIBLE);
+                                        checkBuyTextButtonCondition(fileId);
                                         becomeVipButtonCLicked = false;
                                         getBinding().starIcon.setVisibility(View.VISIBLE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
@@ -549,8 +554,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                 if (xofferWindowValue) {
                                     runOnUiThread(() -> {
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                        getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                        getBinding().playButton.setVisibility(View.VISIBLE);
+                                        checkBuyTextButtonCondition(fileId);
                                         getBinding().starIcon.setVisibility(View.VISIBLE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                         if (becomeVipButtonCLicked) {
@@ -578,8 +582,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                 if (xofferWindowValue) {
                                     runOnUiThread(() -> {
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                        getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                        getBinding().playButton.setVisibility(View.VISIBLE);
+                                        checkBuyTextButtonCondition(fileId);
                                         getBinding().starIcon.setVisibility(View.GONE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                         if (becomeVipButtonCLicked) {
@@ -617,6 +620,24 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
     }
 
+    private void checkBuyTextButtonCondition(String fileId) {
+        BuyButtonManager.getInstance().getPackages(this, AppLevelConstants.LIVE_EVENT, fileId, isPlayableOrNot(), (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
+            PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+            this.subscriptionIds = subscriptionIds;
+            if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.buy_from) +" "+ lowestPackagePrice);
+                getBinding().playButton.setVisibility(View.VISIBLE);
+            } else if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                getBinding().playButton.setVisibility(View.VISIBLE);
+            } else {
+                getBinding().playText.setText(getResources().getString(R.string.buy));
+                getBinding().playButton.setVisibility(View.VISIBLE);
+
+            }
+        });
+    }
+
     private void checkDevice(final RailCommonData railData) {
         new HouseHoldCheck().checkHouseholdDevice(LiveEventActivity.this, commonResponse -> {
             if (commonResponse != null) {
@@ -646,7 +667,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
 
     private StringBuilder stringBuilder;
-    private  int lineCount = 0;
+    private int lineCount = 0;
+
     private void setMetas() {
         //  getDuration();
         ///  getMovieYear();

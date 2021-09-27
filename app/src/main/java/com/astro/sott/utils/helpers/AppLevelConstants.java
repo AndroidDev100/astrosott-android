@@ -29,6 +29,8 @@ public interface AppLevelConstants {
 
     String DATE = "date";
     String FILE_ID = "file_id";
+    String LIVE_EVENT = "Live Event";
+
 
     String MAXIS_BILLING = "Maxis Billing";
     String TitleSortName = "TitleSortName";

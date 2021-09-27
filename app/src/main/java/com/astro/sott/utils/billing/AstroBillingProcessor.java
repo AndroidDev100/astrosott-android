@@ -95,6 +95,7 @@ public class AstroBillingProcessor implements PurchasesUpdatedListener {
                     }
                 });
     }
+
     public boolean isReady() {
         if (myBillingClient != null) {
             return myBillingClient.isReady();
@@ -103,6 +104,30 @@ public class AstroBillingProcessor implements PurchasesUpdatedListener {
         }
 
     }
+
+    public List<SkuDetails> getListOfllSkus() {
+        return listOfllSkus;
+    }
+
+    public SkuDetails getLocalSubscriptionSkuDetail(Activity context, String identifier) {
+        SkuDetails matchedSKUDetails = null;
+        try {
+            if (getListOfllSkus() != null && getListOfllSkus().size() > 0) {
+                for (int i = 0; i < getListOfllSkus().size(); i++) {
+                    Log.w("printIdentifier", identifier + "   " + getListOfllSkus().get(i).getSku());
+                    if (identifier.equalsIgnoreCase(getListOfllSkus().get(i).getSku())) {
+                        matchedSKUDetails = getListOfllSkus().get(i);
+                        break;
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+
+        }
+
+        return matchedSKUDetails;
+    }
+
     private void logErrorType(BillingResult billingResult) {
         switch (billingResult.getResponseCode()) {
             case BillingClient.BillingResponseCode.DEVELOPER_ERROR:

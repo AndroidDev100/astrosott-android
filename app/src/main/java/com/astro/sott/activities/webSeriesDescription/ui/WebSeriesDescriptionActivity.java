@@ -54,7 +54,9 @@ import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.PacksDateLayer;
 import com.astro.sott.utils.TabsData;
+import com.astro.sott.utils.billing.BuyButtonManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.NavigationItem;
@@ -110,6 +112,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private boolean isActive, isAdded;
     private long assetId;
     private boolean iconClicked = false;
+    private String[] subscriptionIds;
     private long lastClickTime;
     private String fileId = "", titleName = "";
     private boolean isPurchased;
@@ -188,6 +191,9 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                        intent.putExtra("SubscriptionIdBundle", bundle);
                         startActivity(intent);
                     }
                 } else {
@@ -1386,8 +1392,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
                             runOnUiThread(() -> {
                                 getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                                checkBuyTextButtonCondition(fileId);
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                 if (becomeVipButtonCLicked) {
@@ -1406,8 +1411,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
                         } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                             getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                            getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                            getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+                            checkBuyTextButtonCondition(fileId);
                             getBinding().starIcon.setVisibility(View.GONE);
                             getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                             becomeVipButtonCLicked = false;
@@ -1455,6 +1459,24 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         });
 
 */
+    }
+
+    private void checkBuyTextButtonCondition(String fileId) {
+        BuyButtonManager.getInstance().getPackages(this, "", fileId, true, (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
+            PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+            this.subscriptionIds = subscriptionIds;
+            if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.buy_from) +" "+ lowestPackagePrice);
+                getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+            } else if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+            } else {
+                getBinding().playText.setText(getResources().getString(R.string.buy));
+                getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
+
+            }
+        });
     }
 
     private void isDtvAccountAdded(RailCommonData railCommonData) {

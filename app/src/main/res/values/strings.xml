@@ -120,6 +120,10 @@
     <string name="password_updated">Password Updated!</string>
     <string name="maxed_out_title">Verification Code Resend Maxed Out!</string>
     <string name="become_vip">Become a VIP</string>
+    <string name="buy">Buy</string>
+    <string name="buy_from">Buy From </string>
+
+
     <string name="subscription_upgrade">Subscription Upgrade</string>
     <string name="subscription_downgrade">Subscription Downgrade</string>
 

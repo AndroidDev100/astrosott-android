@@ -1345,7 +1345,7 @@ class EvergentServices {
 
 
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
-        val call = apiInterface?.getProducts("Bearer $accessToken", createUserJson)
+        val call = apiInterface?.getProducts(createUserJson)
         call?.enqueue(object : Callback<GetProductResponse?> {
             override fun onFailure(call: Call<GetProductResponse?>, t: Throwable) {
                 evergentRefreshToken.onFailure("Something Went Wrong", "")

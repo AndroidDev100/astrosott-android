@@ -75,7 +75,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         super.onCreate(savedInstanceState);
         TabsData.getInstance().setDetail(true);
         intializeBilling();
-
+        Bundle b = getIntent().getBundleExtra("SubscriptionIdBundle");
+        subscriptionIds = b.getStringArray(AppLevelConstants.SUBSCRIPTION_ID_KEY);
         if (getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY) != null)
             fileId = getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY);
 
@@ -89,7 +90,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
         modelCall();
         getActiveSubscription();
-        getSubscriptionActionList();
+        checkPackRedirection();
+        // getSubscriptionActionList();
     }
 
     private void modelCall() {
@@ -256,62 +258,54 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     }
                 }
 
-<<<<<<< Updated upstream
-                if (packDetailList.size() > 0) {
-                    if (packDetailList.size() == 1) {
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                        if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
-                            if (!packDetailList.get(0).getProductsResponseMessageItem().getServiceType().equalsIgnoreCase("ppv")) {
-                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_packs_restriction_description));
-                            } else {
-                                onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
-                            }
+
+            }
+        });
+
+    }
+
+    public void checkPackRedirection() {
+        packDetailList = PacksDateLayer.getInstance().getPackDetailList();
+        for (PackDetail packDetail : packDetailList) {
+            if (packDetail.getProductsResponseMessageItem().getServiceType().equalsIgnoreCase("ppv")) {
+                haveTvod = true;
+            } else {
+                haveSvod = true;
+            }
+        }
+        if (packDetailList != null) {
+            if (packDetailList.size() > 0) {
+                if (packDetailList.size() == 1) {
+                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
+                        if (!packDetailList.get(0).getProductsResponseMessageItem().getServiceType().equalsIgnoreCase("ppv")) {
+                            maxisRestrictionPopUp(getResources().getString(R.string.maxis_packs_restriction_description));
                         } else {
                             onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
                         }
                     } else {
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                        if (haveSvod && haveTvod == false) {
-                            if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
-                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_packs_restriction_description));
-                            } else {
-                                PacksDateLayer.getInstance().setPackDetailList(packDetailList);
-                                Intent intent = new Intent(SubscriptionDetailActivity.this, ProfileSubscriptionActivity.class);
-                                intent.putExtra("from", "Content Detail Page");
-                                startActivity(intent);
-                                finish();
-                            }
-                        } else {
-                            setPackFragment();
-                        }
-
+                        onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
                     }
-=======
-            }
-        });
->>>>>>> Stashed changes
-
-        if (packDetailList.size() > 0) {
-            if (packDetailList.size() == 1) {
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
-            } else {
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                if (haveSvod && haveTvod == false) {
-                    PacksDateLayer.getInstance().setPackDetailList(packDetailList);
-                    Intent intent = new Intent(SubscriptionDetailActivity.this, ProfileSubscriptionActivity.class);
-                    intent.putExtra("from", "Content Detail Page");
-                    startActivity(intent);
-                    finish();
                 } else {
-                    setPackFragment();
+                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    if (haveSvod && haveTvod == false) {
+                        if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
+                            maxisRestrictionPopUp(getResources().getString(R.string.maxis_packs_restriction_description));
+                        } else {
+                            PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+                            Intent intent = new Intent(SubscriptionDetailActivity.this, ProfileSubscriptionActivity.class);
+                            intent.putExtra("from", "Content Detail Page");
+                            startActivity(intent);
+                            finish();
+                        }
+                    } else {
+                        setPackFragment();
+                    }
+
                 }
-
             }
-
         }
     }
-
 
     private void intializeBilling() {
 
