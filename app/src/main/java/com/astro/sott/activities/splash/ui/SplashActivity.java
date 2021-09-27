@@ -619,98 +619,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //            }
 //        },6000);
 
-        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(pendingDynamicLinkData -> {
-            Log.w("deepLink", "in" + pendingDynamicLinkData);
-            try {
-                if (pendingDynamicLinkData != null) {
-                    Log.w("deepLink", "in2" + pendingDynamicLinkData.getLink());
-                    Uri deepLink = pendingDynamicLinkData.getLink();
-                    Log.w("deepLink", "in2" + pendingDynamicLinkData.getLink() + " " + deepLink.getQuery());
-                    if (deepLink != null) {
-                        if (deepLink.getQuery() != null && deepLink.getQuery().contains("link=")) {
-                            String arr[] = deepLink.getQuery().toString().split("link=");
-                            String url = arr[1];
-                            Log.w("deepLink", "first" + url);
-                            Uri newU = Uri.parse(url);
-                            Log.w("deepLink", "second" + newU.toString());
-                            Log.w("deepLink", "third" + newU.getQueryParameter("id"));
-                            Log.w("deepLink", "in2---" + newU.getQueryParameter("mediaType"));
-                            Log.w("deepLink", "in2---" + newU.getQueryParameter("subMediaType"));
-                            // Log.w("deepLink",deepLink.getQuery().getQueryParameter("id"));
-                            // Log.w("deepLink",deepLink.getQueryParameter("mediaType"));
-                            // Log.w("deepLink",deepLink.getQueryParameter("name"));
-                            if (newU.getQueryParameter("mediaType") != null) {
-                                if (Integer.parseInt(newU.getQueryParameter("mediaType")) == MediaTypeConstant.getProgram(SplashActivity.this)) {
-                                    myViewModel.getLiveSpecificAsset(this, newU.getQueryParameter("id")).observe(this, railCommonData -> {
-                                        if (railCommonData != null && railCommonData.getStatus()) {
-                                            //liveManger(railCommonData);
-                                            new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
-                                            new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
+        checkSocialRedirection();
 
-                                        } else {
-
-                                            new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-
-                                            // DialogHelper.showAlertDialog(this, getString(R.string.asset_not_found), getString(R.string.ok), this);
-                                        }
-                                    });
-                                } else {
-                                    callSpecficAssetApi(String.valueOf(newU.getQueryParameter("id")), newU.getQueryParameter("subMediaType"));
-                                }
-                            }
-
-
-                        } else {
-                            if (pendingDynamicLinkData.getLink() != null && pendingDynamicLinkData.getLink().getQueryParameter("id") != null) {
-                                if (pendingDynamicLinkData.getLink().getQueryParameter("mediaType") != null) {
-                                    if (Integer.parseInt(pendingDynamicLinkData.getLink().getQueryParameter("mediaType")) == MediaTypeConstant.getProgram(SplashActivity.this)) {
-                                        myViewModel.getLiveSpecificAsset(this, pendingDynamicLinkData.getLink().getQueryParameter("id")).observe(this, railCommonData -> {
-                                            if (railCommonData != null && railCommonData.getStatus()) {
-                                                //liveManger(railCommonData);
-                                                new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
-                                                new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
-                                            } else {
-                                                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                                                // DialogHelper.showAlertDialog(this, getString(R.string.asset_not_found), getString(R.string.ok), this);
-                                            }
-                                        });
-                                    } else {
-                                        callSpecficAssetApi(String.valueOf(pendingDynamicLinkData.getLink().getQueryParameter("id")), pendingDynamicLinkData.getLink().getQueryParameter("subMediaType"));
-                                    }
-                                }
-                            } else {
-                                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                            }
-                        }
-
-                    } else {
-                        if (branchObject != null) {
-                            if (branchObject.has("assetId")) {
-                                redirectionCondition(branchObject);
-                            } else {
-                                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                            }
-                        } else {
-                            new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                        }
-                        Log.d("deepLink", "getDynamicLink: no link found");
-                    }
-                } else {
-                    if (branchObject != null) {
-                        if (branchObject.has("assetId")) {
-                            redirectionCondition(branchObject);
-                        } else {
-                            new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                        }
-                    } else {
-                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-                    }
-                }
-            } catch (Exception e) {
-                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
-            }
-
-        });
 
 
 //            branchReferralInitListener = new Branch.BranchReferralInitListener() {
@@ -735,6 +645,130 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 //
 //                }
 //            };
+    }
+
+    private void checkSocialRedirection() {
+        try {
+            if (getIntent().getData()!=null && getIntent().getData().toString().contains("mediaType")){
+                Uri deepLink=Uri.parse(getIntent().getData().toString());
+
+                if (deepLink.getQuery() != null && deepLink.getQuery().contains("id")) {
+                    String mediatype=(String) deepLink.getQueryParameter("mediaType");
+                    if (Integer.parseInt(mediatype) == MediaTypeConstant.getProgram(SplashActivity.this)) {
+                        myViewModel.getLiveSpecificAsset(this, deepLink.getQueryParameter("id")).observe(this, railCommonData -> {
+                            if (railCommonData != null && railCommonData.getStatus()) {
+                                //liveManger(railCommonData);
+                                new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
+                                new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
+                            } else {
+                                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                // DialogHelper.showAlertDialog(this, getString(R.string.asset_not_found), getString(R.string.ok), this);
+                            }
+                        });
+                    } else {
+                        callSpecficAssetApi(String.valueOf(deepLink.getQueryParameter("id")), deepLink.getQueryParameter("subMediaType"));
+                    }
+                }
+
+            }else {
+                FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(pendingDynamicLinkData -> {
+                    Log.w("deepLink", "in" + pendingDynamicLinkData);
+                    try {
+                        if (pendingDynamicLinkData != null) {
+                            Log.w("deepLink", "in2" + pendingDynamicLinkData.getLink());
+                            Uri deepLink = pendingDynamicLinkData.getLink();
+                            Log.w("deepLink", "in2" + pendingDynamicLinkData.getLink() + " " + deepLink.getQuery());
+                            if (deepLink != null) {
+                                if (deepLink.getQuery() != null && deepLink.getQuery().contains("link=")) {
+                                    String arr[] = deepLink.getQuery().toString().split("link=");
+                                    String url = arr[1];
+                                    Log.w("deepLink", "first" + url);
+                                    Uri newU = Uri.parse(url);
+                                    Log.w("deepLink", "second" + newU.toString());
+                                    Log.w("deepLink", "third" + newU.getQueryParameter("id"));
+                                    Log.w("deepLink", "in2---" + newU.getQueryParameter("mediaType"));
+                                    Log.w("deepLink", "in2---" + newU.getQueryParameter("subMediaType"));
+                                    // Log.w("deepLink",deepLink.getQuery().getQueryParameter("id"));
+                                    // Log.w("deepLink",deepLink.getQueryParameter("mediaType"));
+                                    // Log.w("deepLink",deepLink.getQueryParameter("name"));
+                                    if (newU.getQueryParameter("mediaType") != null) {
+                                        if (Integer.parseInt(newU.getQueryParameter("mediaType")) == MediaTypeConstant.getProgram(SplashActivity.this)) {
+                                            myViewModel.getLiveSpecificAsset(this, newU.getQueryParameter("id")).observe(this, railCommonData -> {
+                                                if (railCommonData != null && railCommonData.getStatus()) {
+                                                    //liveManger(railCommonData);
+                                                    new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
+                                                    new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
+
+                                                } else {
+
+                                                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+
+                                                    // DialogHelper.showAlertDialog(this, getString(R.string.asset_not_found), getString(R.string.ok), this);
+                                                }
+                                            });
+                                        } else {
+                                            callSpecficAssetApi(String.valueOf(newU.getQueryParameter("id")), newU.getQueryParameter("subMediaType"));
+                                        }
+                                    }
+
+
+                                } else {
+                                    if (pendingDynamicLinkData.getLink() != null && pendingDynamicLinkData.getLink().getQueryParameter("id") != null) {
+                                        if (pendingDynamicLinkData.getLink().getQueryParameter("mediaType") != null) {
+                                            if (Integer.parseInt(pendingDynamicLinkData.getLink().getQueryParameter("mediaType")) == MediaTypeConstant.getProgram(SplashActivity.this)) {
+                                                myViewModel.getLiveSpecificAsset(this, pendingDynamicLinkData.getLink().getQueryParameter("id")).observe(this, railCommonData -> {
+                                                    if (railCommonData != null && railCommonData.getStatus()) {
+                                                        //liveManger(railCommonData);
+                                                        new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
+                                                        new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
+                                                    } else {
+                                                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                                        // DialogHelper.showAlertDialog(this, getString(R.string.asset_not_found), getString(R.string.ok), this);
+                                                    }
+                                                });
+                                            } else {
+                                                callSpecficAssetApi(String.valueOf(pendingDynamicLinkData.getLink().getQueryParameter("id")), pendingDynamicLinkData.getLink().getQueryParameter("subMediaType"));
+                                            }
+                                        }
+                                    } else {
+                                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                    }
+                                }
+
+                            } else {
+                                if (branchObject != null) {
+                                    if (branchObject.has("assetId")) {
+                                        redirectionCondition(branchObject);
+                                    } else {
+                                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                    }
+                                } else {
+                                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                }
+                                Log.d("deepLink", "getDynamicLink: no link found");
+                            }
+                        } else {
+                            if (branchObject != null) {
+                                if (branchObject.has("assetId")) {
+                                    redirectionCondition(branchObject);
+                                } else {
+                                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                                }
+                            } else {
+                                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                            }
+                        }
+                    } catch (Exception e) {
+                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                    }
+
+                });
+
+            }
+        }catch (Exception e){
+            new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+        }
+
     }
 
 
