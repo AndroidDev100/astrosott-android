@@ -313,6 +313,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     private PendingIntent pendingIntent;
     Intent myIntent;
     private void setReminder() {
+        try {
         boolean isReminderAdded = new KsPreferenceKey(getApplicationContext()).getReminderId(asset.getId().toString());
         if(isReminderAdded == true){
          showDialog();
@@ -386,6 +387,9 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             }else {
                 Toast.makeText(this, getResources().getString(R.string.reminder_cannot_set), Toast.LENGTH_SHORT).show();
             }
+
+        }
+        }catch (Exception ignored){
 
         }
     }
@@ -1264,22 +1268,24 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(),false);
             getBinding().reminder.setVisibility(View.VISIBLE);
             getBinding().reminderActive.setVisibility(View.GONE);
+            Toast.makeText(this, getResources().getString(R.string.reminder_removed), Toast.LENGTH_SHORT).show();
             cancelAlarm();
         }
     }
 
     private void cancelAlarm() {
-        Long code = asset.getId();
+        try {
+            Long code = asset.getId();
 
-        int requestCode = code.intValue();
-        PrintLogging.printLog("", "notificationcancelRequestId-->>" + requestCode);
+            int requestCode = code.intValue();
+            PrintLogging.printLog("", "notificationcancelRequestId-->>" + requestCode);
 
 
-        if(pendingIntent!=null){
-            pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            if(pendingIntent!=null){
+                pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            alarmManager.cancel(pendingIntent);
-        }else {
+                alarmManager.cancel(pendingIntent);
+            }else {
                 myIntent = new Intent(getApplicationContext(), MyReceiver.class);
                 myIntent.putExtra(AppLevelConstants.ID, asset.getId());
                 myIntent.putExtra(AppLevelConstants.Title, asset.getName());
@@ -1292,8 +1298,10 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                 pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
                 alarmManager.cancel(pendingIntent);
+            }
+        }catch (Exception ignored){
+
         }
     }
-
 }
 

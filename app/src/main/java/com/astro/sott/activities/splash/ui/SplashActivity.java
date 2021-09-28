@@ -591,6 +591,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     description = intent.getStringExtra(AppLevelConstants.DESCRIPTION);
                     Id = intent.getLongExtra(AppLevelConstants.ID, 0);
                     screen_name = intent.getStringExtra(AppLevelConstants.SCREEN_NAME);
+                    Log.w("reminderDetails",screen_name);
 
 
                     JsonObject jsonObject = new JsonObject();
@@ -759,7 +760,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                             } else {
                                 if (Id != null) {
                                     if (Id != 0) {
-                                        callSpecficAssetApi(Id + "", "");
+                                        reminderRedirections(Id);
                                     } else {
                                         new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
                                     }
@@ -780,6 +781,25 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
             new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
         }
 
+    }
+
+    private void reminderRedirections(Long id) {
+        Log.w("reminderDetails",id+"");
+        if (screen_name!=null && screen_name.equalsIgnoreCase(AppLevelConstants.PROGRAM)){
+            myViewModel.getLiveSpecificAsset(this, String.valueOf(id)).observe(this, railCommonData -> {
+                if (railCommonData != null && railCommonData.getStatus()) {
+                    new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
+                    new ActivityLauncher(SplashActivity.this).checkCurrentProgram(railCommonData.getObject());
+
+                } else {
+                    new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                }
+            });
+
+        }else {
+            Log.w("reminderDetails","else");
+            callSpecficAssetApi(id + "", "");
+        }
     }
 
 
