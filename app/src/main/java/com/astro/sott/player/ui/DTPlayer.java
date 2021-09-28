@@ -3635,7 +3635,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     public void onProgressChanged(SeekBar seekbar, int progress,
                                   boolean fromTouch) {
 
-
         if (seekbar.getId() == R.id.seekBar1) {
             WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
             layout.screenBrightness = progress / 100F;
@@ -3647,7 +3646,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (isLivePlayer) {
             } else {
                 positionInPercentage = Math.round((seekbar.getProgress() * 100 / runningPlayer.getDuration()));
-
+            Log.d("Positionperc",positionInPercentage+"");
 
                 float leftMargin = seekbar.getWidth() * positionInPercentage / 100;
 

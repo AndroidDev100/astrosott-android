@@ -933,12 +933,14 @@ public class PlayerRepository {
     }
 
     public LiveData<Boolean> seekPlayerForward() {
-        MutableLiveData<Boolean> booleanMutableLiveData = new MutableLiveData<>();
-        long duration = player.getCurrentPosition();
-        PrintLogging.printLog(this.getClass(), "", "durationplayer" + duration);
-        stringForTime(duration);
-        player.seekTo(duration + 10000);
-        getPlayerState(booleanMutableLiveData);
+        if (player != null) {
+            MutableLiveData<Boolean> booleanMutableLiveData = new MutableLiveData<>();
+            long duration = player.getCurrentPosition();
+            PrintLogging.printLog(this.getClass(), "", "durationplayer" + duration);
+            stringForTime(duration);
+            player.seekTo(duration + 10000);
+            getPlayerState(booleanMutableLiveData);
+        }
         return booleanMutableLiveData;
     }
 
