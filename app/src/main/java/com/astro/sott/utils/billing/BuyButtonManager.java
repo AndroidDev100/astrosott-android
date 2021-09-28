@@ -45,6 +45,7 @@ public class BuyButtonManager {
         this.activity = activity;
         modelCall();
         intializeBilling();
+        count=0;
         getSubscriptionActionList(buyButtonListener, from, fileId, isPlayable);
     }
 

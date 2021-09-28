@@ -110,6 +110,7 @@ public class EpisodeDialogFragment extends DialogFragment {
                 if (UserInfo.getInstance(baseActivity).isActive()) {
                     Intent intent = new Intent(baseActivity, SubscriptionDetailActivity.class);
                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                    intent.putExtra(AppLevelConstants.FROM_KEY, "Locked Episode");
                     startActivity(intent);
                     dismiss();
                 } else {

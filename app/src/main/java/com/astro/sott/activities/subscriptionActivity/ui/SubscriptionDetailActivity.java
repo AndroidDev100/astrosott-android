@@ -76,7 +76,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         TabsData.getInstance().setDetail(true);
         intializeBilling();
         Bundle b = getIntent().getBundleExtra("SubscriptionIdBundle");
-        subscriptionIds = b.getStringArray(AppLevelConstants.SUBSCRIPTION_ID_KEY);
+        if (b!=null&&b.getStringArray(AppLevelConstants.SUBSCRIPTION_ID_KEY) != null)
+            subscriptionIds = b.getStringArray(AppLevelConstants.SUBSCRIPTION_ID_KEY);
         if (getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY) != null)
             fileId = getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY);
 
@@ -90,8 +91,11 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
         modelCall();
         getActiveSubscription();
-        checkPackRedirection();
-        // getSubscriptionActionList();
+        if (from.equalsIgnoreCase("Locked Episode")) {
+            getSubscriptionActionList();
+        }else {
+            checkPackRedirection();
+        }
     }
 
     private void modelCall() {
