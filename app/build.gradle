@@ -36,7 +36,7 @@ android {
     defaultConfig {
         applicationId "com.astro.sott"
         minSdkVersion 24
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         multiDexEnabled true
         versionName "0.1"
@@ -74,8 +74,8 @@ android {
     productFlavors {
         qa {
             dimension 'default'
-            versionCode 55
-            versionName "21.9.1.4(24)"
+            versionCode 56
+            versionName "21.9.1.5(29)"
             applicationId "com.astro.stagingsott"
             buildConfigField "String", "KALTURA_BASE_URL", "\"https://api.sgs1.ott.kaltura.com/api_v3/service/\""
             buildConfigField "int", "KAVA_PARTNER_ID", "3089623"
@@ -99,8 +99,8 @@ android {
         }
         prod {
             dimension 'default'
-            versionCode 1041
-            versionName "21.9.3(24)"
+            versionCode 1042
+            versionName "21.9.4(29)"
             /*    versionCode 1
                 versionName "1"*/
             applicationId "com.astro.sott"
