@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.astro.sott.Alarm.MyReceiver;
+import com.astro.sott.activities.liveEvent.LiveEventActivity;
 import com.astro.sott.callBacks.SpecificAssetCallBack;
 import com.astro.sott.fragments.schedule.ui.Schedule;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
@@ -171,7 +172,6 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
             } else {
                 viewHolder.scheduleItemBinding.notification.setVisibility(View.VISIBLE);
                 viewHolder.scheduleItemBinding.notification.setBackgroundResource(R.drawable.ic_notifications_24px);
-
             }
 
         }

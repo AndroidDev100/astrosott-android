@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
@@ -16,9 +17,12 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 
+import com.astro.sott.ApplicationMain;
+import com.astro.sott.activities.liveEvent.LiveEventActivity;
 import com.astro.sott.activities.splash.ui.SplashActivity;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.R;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 
 import java.util.Random;
 
@@ -62,17 +66,31 @@ public class utils {
 
 
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.pushnotification);
-        contentView.setImageViewResource(R.id.image, R.drawable.favorite_24_px);
+        contentView.setImageViewResource(R.id.image, R.mipmap.ic_launcher);
         contentView.setTextViewText(R.id.title, name);
         contentView.setTextViewText(R.id.text, description);
 
 
         Log.d("OnConditionCall", "ViewGenerated");
-        nb = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.favorite_24_px)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setContent(contentView);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            nb = new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.clevertap_logo)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(NotificationCompat.CATEGORY_ALARM)
+                    .setContent(contentView);
+        }else {
+            nb = new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.clevertap_logo)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(NotificationCompat.CATEGORY_ALARM)
+                    .setContent(contentView);
+        }
+
+        try {
+            new KsPreferenceKey(context).setReminderId(id.toString(),false);
+        }catch (Exception ignored){
+
+        }
 
 
         Notification notification = nb.build();

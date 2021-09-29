@@ -71,6 +71,7 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.ProgressHandler;
 import com.astro.sott.utils.helpers.RecyclerAnimator;
 import com.astro.sott.utils.helpers.shimmer.Constants;
+import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MediaAsset;
@@ -179,6 +180,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 
 
         myReceiver = new MyReceiver();
+        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         //  progressDialog = new ProgressHandler(getActivity());
     }
 
@@ -976,7 +978,6 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         int requestCode = code.intValue();
         PrintLogging.printLog("", "notificationRequestId-->>" + requestCode);
         //String requestCode = String.valueOf(asset.getExternalId());
-        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 
         myIntent = new Intent(getActivity(), MyReceiver.class);
         myIntent.putExtra(AppLevelConstants.ID, asset.getId());
@@ -1004,11 +1005,33 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             intent.setComponent(new ComponentName(getActivity().getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
             intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
             pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+           /* try {
+                Gson gson = new Gson();
+                String pendingInt = gson.toJson(pendingIntent);
+                KsPreferenceKey.getInstance(getActivity()).setReminderPenIntent(String.valueOf(asset.getId()),pendingInt);
+
+                String pendingInt2 = gson.toJson(intent);
+                KsPreferenceKey.getInstance(getActivity()).setReminderIntent(String.valueOf(asset.getId()),pendingInt2);
+
+            }catch (Exception ignored){
+
+            }*/
 
 
         } else {
 
             pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+           /* try {
+                Gson gson = new Gson();
+                String pendingInt = gson.toJson(pendingIntent);
+                KsPreferenceKey.getInstance(getActivity()).setReminderPenIntent(String.valueOf(asset.getId()),pendingInt);
+
+                String pendingInt2 = gson.toJson(myIntent);
+                KsPreferenceKey.getInstance(getActivity()).setReminderIntent(String.valueOf(asset.getId()),pendingInt2);
+
+            }catch (Exception ignored){
+
+            }*/
         }
 
         Calendar calendarToSchedule = Calendar.getInstance();
@@ -1027,6 +1050,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         } else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, reminderDateTimeInMilliseconds, pendingIntent);
         }
+
         Toast.makeText(getActivity(), getResources().getString(R.string.reminder_added), Toast.LENGTH_SHORT).show();
         new KsPreferenceKey(getActivity()).setReminderId(asset.getId().toString(), true);
         reminderIcon.setBackgroundResource(R.drawable.reminder_active_icon);
@@ -1048,7 +1072,6 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         int requestCode = code.intValue();
         PrintLogging.printLog("", "notificationRequestId-->>" + requestCode);
         //String requestCode = String.valueOf(asset.getExternalId());
-        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 
         myIntent = new Intent(getActivity(), MyReceiver.class);
         myIntent.putExtra(AppLevelConstants.ID, asset.getId());
@@ -1056,8 +1079,8 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
         myIntent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
         myIntent.putExtra("requestcode", requestCode);
-        myIntent.setAction("com.dialog.dialoggo.MyIntent");
-        myIntent.setComponent(new ComponentName(getActivity().getPackageName(), "com.dialog.dialoggo.Alarm.MyReceiver"));
+        myIntent.setAction("com.astro.sott.MyIntent");
+        myIntent.setComponent(new ComponentName(getActivity().getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
 
 //                    Random random = new Random();
 //                    int requestCode = Integer.parseInt(String.format("%02d", random.nextInt(10000)));
@@ -1073,7 +1096,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             intent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
             intent.putExtra("requestcode", requestCode);
 
-            intent.setComponent(new ComponentName(getActivity().getPackageName(), "com.dialog.dialoggo.Alarm.MyReceiver"));
+            intent.setComponent(new ComponentName(getActivity().getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
             intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
             pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -1186,7 +1209,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     public void onResume() {
         super.onResume();
         IntentFilter filter = new IntentFilter();
-        filter.addAction("com.dialog.dialoggo.Alarm.MyReceiver");
+        filter.addAction("com.astro.sott.Alarm.MyReceiver");
         getActivity().registerReceiver(myReceiver, filter);
     }
 
@@ -1240,30 +1263,21 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             int requestCode = code.intValue();
             PrintLogging.printLog("", "notificationcancelRequestId-->>" + requestCode);
 
+            myIntent = new Intent(getActivity(), MyReceiver.class);
+            myIntent.putExtra(AppLevelConstants.ID, asset.getId());
+            myIntent.putExtra(AppLevelConstants.Title, asset.getName());
+            myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+            myIntent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
+            myIntent.putExtra("requestcode", requestCode);
+            myIntent.setAction("com.astro.sott.MyIntent");
+            myIntent.setComponent(new ComponentName(getActivity().getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
 
-            if (pendingIntent != null) {
-                pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                alarmManager.cancel(pendingIntent);
-            } else {
-
-                myIntent = new Intent(getActivity(), MyReceiver.class);
-                myIntent.putExtra(AppLevelConstants.ID, asset.getId());
-                myIntent.putExtra(AppLevelConstants.Title, asset.getName());
-                myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
-                myIntent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
-                myIntent.putExtra("requestcode", requestCode);
-                myIntent.setAction("com.dialog.dialoggo.MyIntent");
-                myIntent.setComponent(new ComponentName(getActivity().getPackageName(), "com.dialog.dialoggo.Alarm.MyReceiver"));
-
-                pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                alarmManager.cancel(pendingIntent);
-
-            }
+            pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+            alarmManager.cancel(pendingIntent);
 
         }catch (Exception e){
-
+            PrintLogging.printLog("", "notificationcancelRequestId-->>" + e.toString());
         }
 
 

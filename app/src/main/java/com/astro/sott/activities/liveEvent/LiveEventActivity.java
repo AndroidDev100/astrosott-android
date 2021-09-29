@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -145,6 +146,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     private boolean assetKey = false;
     private boolean isDtvAdded = false;
     private String time = "", month = "", dd = "", year = "", hour = "", minute = "";
+    private MyReceiver myReceiver;
 
     @Override
     public ActivityLiveEventBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -155,6 +157,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         parentalLevels = new ArrayList<>();
+        myReceiver = new MyReceiver();
         connectionObserver();
     }
 
@@ -215,11 +218,22 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             }else {
                 getBinding().reminderActive.setVisibility(View.GONE);
                 getBinding().reminder.setVisibility(View.VISIBLE);
+                try {
+                    new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(),false);
+                }catch (Exception ignored){
+
+                }
+
             }
 
         }else {
             getBinding().reminderActive.setVisibility(View.GONE);
             getBinding().reminder.setVisibility(View.VISIBLE);
+            try {
+                new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(),false);
+            }catch (Exception ignored){
+
+            }
         }
     }
 
@@ -321,8 +335,11 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             boolean reminderCanAdd=checkProgramTiming(asset);
             if (reminderCanAdd){
                 if (currentTime(asset)){
-                    Random random = new Random();
-                    requestCode = Integer.parseInt(String.format("%02d", random.nextInt(10000)));
+                   /* Random random = new Random();
+                    requestCode = Integer.parseInt(String.format("%02d", random.nextInt(10000)));*/
+                    Long code = asset.getId();
+                    requestCode = code.intValue();
+                    PrintLogging.printLog("", "notificationRequestId-->>" + requestCode);
                     alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     long reminderDateTimeInMilliseconds = 000;
 
@@ -1209,6 +1226,14 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             }
         }
         checkEntitleMent(railData);
+        try {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("com.astro.sott.Alarm.MyReceiver");
+            registerReceiver(myReceiver, filter);
+        }catch (Exception ignored){
+
+        }
+
     }
 
     @Override
@@ -1280,25 +1305,19 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             int requestCode = code.intValue();
             PrintLogging.printLog("", "notificationcancelRequestId-->>" + requestCode);
 
+            myIntent = new Intent(LiveEventActivity.this, MyReceiver.class);
+            myIntent.putExtra(AppLevelConstants.ID, asset.getId());
+            myIntent.putExtra(AppLevelConstants.Title, asset.getName());
+            myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+            myIntent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
+            myIntent.putExtra("requestcode", requestCode);
+            myIntent.setAction("com.astro.sott.MyIntent");
+            myIntent.setComponent(new ComponentName(getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
 
-            if(pendingIntent!=null){
-                pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent = PendingIntent.getBroadcast(LiveEventActivity.this, requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.cancel(pendingIntent);
 
-                alarmManager.cancel(pendingIntent);
-            }else {
-                myIntent = new Intent(getApplicationContext(), MyReceiver.class);
-                myIntent.putExtra(AppLevelConstants.ID, asset.getId());
-                myIntent.putExtra(AppLevelConstants.Title, asset.getName());
-                myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
-                myIntent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
-                myIntent.putExtra("requestcode",requestCode);
-                myIntent.setAction("com.dialog.dialoggo.MyIntent");
-                myIntent.setComponent(new ComponentName(getApplicationContext().getPackageName(),"com.dialog.dialoggo.Alarm.MyReceiver"));
-
-                pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                alarmManager.cancel(pendingIntent);
-            }
         }catch (Exception ignored){
 
         }

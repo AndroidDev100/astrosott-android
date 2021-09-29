@@ -3,6 +3,7 @@ package com.astro.sott.utils.commonMethods;
 import static com.astro.sott.activities.myPlans.adapter.MyPlanAdapter.getDateCurrentTimeZone;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.home.HomeActivity;
@@ -3234,5 +3236,25 @@ public class AppCommonMethods {
         }
         return "";
 
+    }
+
+    public static PendingIntent getPendingIntent(Context activity,String assetId) {
+            try {
+                Gson gson = new Gson();
+                String json = KsPreferenceKey.getInstance(activity).getReminderPenIntent(assetId);
+                return gson.fromJson(json, PendingIntent.class);
+            } catch (Exception e) {
+                return null;
+            }
+    }
+
+    public static Intent getIntent(Context activity,String assetId) {
+        try {
+            Gson gson = new Gson();
+            String json = KsPreferenceKey.getInstance(activity).getReminderIntent(assetId);
+            return gson.fromJson(json, Intent.class);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
