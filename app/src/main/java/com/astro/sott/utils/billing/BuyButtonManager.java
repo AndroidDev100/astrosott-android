@@ -45,7 +45,10 @@ public class BuyButtonManager {
         this.activity = activity;
         modelCall();
         intializeBilling();
-        count=0;
+        count = 0;
+        haveSvod = false;
+        haveTvod = false;
+        skuDetails = null;
         getSubscriptionActionList(buyButtonListener, from, fileId, isPlayable);
     }
 
@@ -170,19 +173,21 @@ public class BuyButtonManager {
                         }
                     }
                 } else {
-
+                    buyButtonListener.onPackagesAvailable(packDetailList, SVOD, getLowestPrice(packDetailList), subscriptionIds);
                 }
             }
         });
     }
 
     private String getLowestPrice(ArrayList<PackDetail> packDetailList) {
-        String lowestPrice = "";
+        String lowestPrice = packDetailList.get(0).getSkuDetails().getPrice();
         double comparedPrice = packDetailList.get(0).getSkuDetails().getOriginalPriceAmountMicros();
-        for (PackDetail packDetail : packDetailList) {
-            if (comparedPrice > packDetail.getSkuDetails().getIntroductoryPriceAmountMicros()) {
-                comparedPrice = packDetail.getSkuDetails().getOriginalPriceAmountMicros();
-                lowestPrice = packDetail.getSkuDetails().getPrice();
+        if (packDetailList != null && packDetailList.size() > 0) {
+            for (PackDetail packDetail : packDetailList) {
+                if (comparedPrice > packDetail.getSkuDetails().getOriginalPriceAmountMicros()) {
+                    comparedPrice = packDetail.getSkuDetails().getOriginalPriceAmountMicros();
+                    lowestPrice = packDetail.getSkuDetails().getPrice();
+                }
             }
         }
         return lowestPrice;

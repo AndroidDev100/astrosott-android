@@ -45,7 +45,7 @@ import com.astro.sott.utils.userInfo.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityProfileSubscriptionBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener {
+public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityProfileSubscriptionBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener,MaxisEditRestrictionPop.EditDialogListener {
     private BillingProcessor billingProcessor;
     private SubscriptionViewModel subscriptionViewModel;
 
@@ -237,7 +237,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                         } else {
                             offerType = "SVOD";
                             if (UserInfo.getInstance(ProfileSubscriptionActivity.this).isMaxis()) {
-                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_packs_restriction_description));
+                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
                             } else {
                                 billingProcessor.purchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
                             }
@@ -252,6 +252,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
     private void maxisRestrictionPopUp(String message) {
         FragmentManager fm = getSupportFragmentManager();
         MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), message, getResources().getString(R.string.ok_understand));
+        cancelDialogFragment.setEditDialogCallBack(ProfileSubscriptionActivity.this);
         cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
     }
 
@@ -323,5 +324,10 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
     @Override
     public void onDowngradeClick() {
         billingProcessor.downgrade();
+    }
+
+    @Override
+    public void onFinishEditDialog() {
+
     }
 }

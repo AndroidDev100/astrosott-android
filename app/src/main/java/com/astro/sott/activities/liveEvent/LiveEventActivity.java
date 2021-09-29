@@ -278,11 +278,11 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     }
 
     private boolean isPlayableOrNot() {
-              if((AppCommonMethods.getCurrentTimeStampLong() != null ) && (AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate) && (liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong())) {
-                  return true;
-              } else {
-                  return false;
-              }
+        if ((AppCommonMethods.getCurrentTimeStampLong() != null) && (AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate) && (liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong())) {
+            return true;
+        } else {
+            return false;
+        }
 
     }
 
@@ -625,7 +625,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             PacksDateLayer.getInstance().setPackDetailList(packDetailList);
             this.subscriptionIds = subscriptionIds;
             if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
-                getBinding().playText.setText(getResources().getString(R.string.buy_from) +" "+ lowestPackagePrice);
+                getBinding().playText.setText(getResources().getString(R.string.buy_from) + " " + lowestPackagePrice);
                 getBinding().playButton.setVisibility(View.VISIBLE);
             } else if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD)) {
                 getBinding().playText.setText(getResources().getString(R.string.become_vip));

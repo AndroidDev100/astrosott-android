@@ -88,7 +88,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                 holder.binding.date.setText("");
             }
             if (orderItems.get(position).getPaymentsInfo().get(0).getPostingStatus().equalsIgnoreCase("Posted")) {
-                if (orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET) || orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase("App Store Billing")) {
+                if (orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET) || orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase("App Store Billing")||orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING)) {
                     holder.binding.checkbox.setVisibility(View.GONE);
                 } else {
                     if (checkBoxVisible) {

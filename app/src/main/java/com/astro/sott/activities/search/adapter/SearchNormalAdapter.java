@@ -98,11 +98,13 @@ public class SearchNormalAdapter extends RecyclerView.Adapter<SearchNormalAdapte
         } else {
             viewHolder.searchItemBinding.setSingleItem(itemsList.get(position));
             if (singleItem.getType() == MediaTypeConstant.getProgram(activity)) {
+                viewHolder.searchItemBinding.tvTitle.setMaxLines(1);
                 viewHolder.searchItemBinding.tvDescription.setVisibility(View.VISIBLE);
                 viewHolder.searchItemBinding.tvDescription.setTextColor(activity.getResources().getColor(R.color.yellow_orange));
                 viewHolder.searchItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(singleItem.getStartDate()) + " - " + AppCommonMethods.getEndTime(singleItem.getEndDate()));
             } else if (singleItem.getType() == MediaTypeConstant.getLinear(activity)) {
                 if (AssetContent.isLiveEvent(singleItem.getMetas())) {
+                    viewHolder.searchItemBinding.tvTitle.setMaxLines(1);
                     viewHolder.searchItemBinding.tvDescription.setVisibility(View.VISIBLE);
                     String liveEventTime = AppCommonMethods.getLiveEventTime(singleItem);
                     viewHolder.searchItemBinding.tvDescription.setTextColor(activity.getResources().getColor(R.color.yellow_orange));

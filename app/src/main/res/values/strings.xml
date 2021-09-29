@@ -139,7 +139,8 @@
     <string name="ok">Ok</string>
     <string name="no">No</string>
     <string name="ok_with_exlamation">Ok!!</string>
-    <string name="ok_understand">Ok, Understand!</string>
+    <string name="ok_understand">Ok, understand!</string>
+
     <string name="go">Go</string>
     <string name="exit">Exit</string>
     <string name="maxis_edit_restriction_title">You’re on sooka Partner Bundle Subscription</string>
@@ -262,7 +263,7 @@
     <string name="got_it">Got it</string>
     <string name="maxis_edit_description">You may only update your details at our Partner portal.</string>
 
-    <string name="maxis_upgrade_downgrade_restriction_description"> You may subscribe via sooka if your partner bundle subscription is cancelled and expired..</string>
+    <string name="maxis_upgrade_downgrade_restriction_description"> You may subscribe via sooka if your partner bundle subscription is cancelled and expired.</string>
 
     <string name="maxis_packs_restriction_description">We sooka you a lot, but you need to head back to our Partner portal to change your subscription. You may subscribe via sooka if your partner bundle subscription is cancelled and expired.</string>
     <string name="existing_user_description">Account with this email/mobile number already exist. Kindly proceed to login with the right login method.</string>

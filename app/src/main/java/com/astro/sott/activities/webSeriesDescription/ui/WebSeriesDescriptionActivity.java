@@ -197,7 +197,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                         startActivity(intent);
                     }
                 } else {
-                    becomeVipButtonCLicked = true;
+                    if (!UserInfo.getInstance(this).isActive())
+                        becomeVipButtonCLicked = true;
                     new ActivityLauncher(WebSeriesDescriptionActivity.this).signupActivity(WebSeriesDescriptionActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_BECOME_VIP);
                 }
 
@@ -526,7 +527,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                     getBinding().crewLay.setVisibility(View.GONE);
                 } else {
                     getBinding().crewLay.setVisibility(View.VISIBLE);
-                    getBinding().crewText.setText(" "+crewText + "");
+                    getBinding().crewText.setText(" " + crewText + "");
                 }
 
             }
@@ -572,7 +573,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getBinding().castLay.setVisibility(View.GONE);
             } else {
                 getBinding().castLay.setVisibility(View.VISIBLE);
-                getBinding().castText.setText(" "+castTest + "");
+                getBinding().castText.setText(" " + castTest + "");
             }
 
         });
@@ -742,7 +743,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             callProgressBar();
             playerChecks(railCommonData);
         } else {
-            becomeVipButtonCLicked = true;
+            if (!UserInfo.getInstance(this).isActive())
+                becomeVipButtonCLicked = true;
             assetToPlay = railCommonData;
             openDialougeForEntitleMent(railCommonData);
         }
@@ -1396,6 +1398,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                 if (becomeVipButtonCLicked) {
+                                    becomeVipButtonCLicked = false;
                                     if (UserInfo.getInstance(this).isActive()) {
                                         if (!fileId.equalsIgnoreCase("")) {
                                             Intent intent = new Intent(this, SubscriptionDetailActivity.class);
@@ -1466,7 +1469,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
             PacksDateLayer.getInstance().setPackDetailList(packDetailList);
             this.subscriptionIds = subscriptionIds;
             if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
-                getBinding().playText.setText(getResources().getString(R.string.buy_from) +" "+ lowestPackagePrice);
+                getBinding().playText.setText(getResources().getString(R.string.buy_from) + " " + lowestPackagePrice);
                 getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
             } else if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD)) {
                 getBinding().playText.setText(getResources().getString(R.string.become_vip));

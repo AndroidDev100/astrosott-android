@@ -43,7 +43,7 @@ import org.json.JSONException;
 import java.util.Arrays;
 import java.util.List;
 
-public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfileBinding> {
+public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfileBinding> implements MaxisEditRestrictionPop.EditDialogListener {
     private AstroLoginViewModel astroLoginViewModel;
     private CallbackManager callbackManager;
     private String email_mobile = "";
@@ -112,6 +112,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             if (UserInfo.getInstance(this).isMaxis()) {
                 FragmentManager fm = getSupportFragmentManager();
                 MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), getResources().getString(R.string.maxis_edit_description), getResources().getString(R.string.ok_understand));
+                cancelDialogFragment.setEditDialogCallBack(EditProfileActivity.this);
                 cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
             } else {
                 Intent i = new Intent(getApplicationContext(), EditEmailActivity.class);
@@ -123,6 +124,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             if (UserInfo.getInstance(this).isMaxis()) {
                 FragmentManager fm = getSupportFragmentManager();
                 MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), getResources().getString(R.string.maxis_edit_description), getResources().getString(R.string.ok_understand));
+                cancelDialogFragment.setEditDialogCallBack(EditProfileActivity.this);
                 cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
             } else {
                 Intent i = new Intent(getApplicationContext(), EditMobileActivity.class);
@@ -373,6 +375,11 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+    }
+
+    @Override
+    public void onFinishEditDialog() {
 
     }
 }

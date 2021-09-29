@@ -81,6 +81,7 @@ public class MaxisEditRestrictionPop extends DialogFragment {
 
 //
             btnOk.setOnClickListener(v -> {
+                editDialogListener.onFinishEditDialog();
                 dismiss();
             });
 
