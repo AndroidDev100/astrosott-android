@@ -99,8 +99,8 @@ android {
         }
         prod {
             dimension 'default'
-            versionCode 1042
-            versionName "21.9.4(29)"
+            versionCode 1044
+            versionName "21.9.6(30)"
             /*    versionCode 1
                 versionName "1"*/
             applicationId "com.astro.sott"
