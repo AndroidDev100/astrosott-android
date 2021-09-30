@@ -35,23 +35,24 @@ public class utils {
     @SuppressWarnings("static-access")
     public static void generateNotification(Context context, String name, String description, Long id, String screen_name, int requestcode) {
 
-        String CHANNEL_ID = "my_channel_01";
-        String channel_name = "hello";
-        int importance = NotificationManager.IMPORTANCE_HIGH;
-        Random random = new Random();
-        generatedPassword = Integer.parseInt(String.format("%05d", random.nextInt(10000)));
+        try {
+            String CHANNEL_ID = "my_channel_01";
+            String channel_name = "hello";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            Random random = new Random();
+            generatedPassword = Integer.parseInt(String.format("%05d", random.nextInt(10000)));
 
-        NotificationCompat.Builder nb = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationCompat.Builder nb = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
 
-            Log.d("OnConditionCall", "versionCall");
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, channel_name, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.enableLights(true);
-            notificationChannel.enableVibration(true);
-            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(notificationChannel);
+                Log.d("OnConditionCall", "versionCall");
+                NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, channel_name, NotificationManager.IMPORTANCE_DEFAULT);
+                notificationChannel.enableLights(true);
+                notificationChannel.enableVibration(true);
+                notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.createNotificationChannel(notificationChannel);
 //
 //            nb = new NotificationCompat.Builder(context, CHANNEL_ID)
 //                    .setContentTitle(name)
@@ -62,77 +63,81 @@ public class utils {
 //
 
 
-        }
+            }
 
 
-        RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.pushnotification);
-        contentView.setImageViewResource(R.id.image, R.mipmap.ic_launcher);
-        contentView.setTextViewText(R.id.title, name);
-        contentView.setTextViewText(R.id.text, description);
+            RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.pushnotification);
+            contentView.setImageViewResource(R.id.image, R.mipmap.ic_launcher);
+            contentView.setTextViewText(R.id.title, name);
+            contentView.setTextViewText(R.id.text, description);
 
 
-        Log.d("OnConditionCall", "ViewGenerated");
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            nb = new NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.clevertap_logo)
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setCategory(NotificationCompat.CATEGORY_ALARM)
-                    .setContent(contentView);
-        }else {
-            nb = new NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.clevertap_logo)
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setCategory(NotificationCompat.CATEGORY_ALARM)
-                    .setContent(contentView);
-        }
+            Log.d("OnConditionCall", "ViewGenerated");
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                nb = new NotificationCompat.Builder(context, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.clevertap_logo)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_ALARM)
+                        .setContent(contentView);
+            }else {
+                nb = new NotificationCompat.Builder(context, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.clevertap_logo)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_ALARM)
+                        .setContent(contentView);
+            }
 
-        try {
-            new KsPreferenceKey(context).setReminderId(id.toString(),false);
-        }catch (Exception ignored){
+            try {
+                new KsPreferenceKey(context).setReminderId(id.toString(),false);
+            }catch (Exception ignored){
 
-        }
-
-
-        Notification notification = nb.build();
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notification.defaults |= Notification.DEFAULT_SOUND;
-        notification.defaults |= Notification.DEFAULT_VIBRATE;
+            }
 
 
-        Intent resultIntent = new Intent(context, SplashActivity.class);
+            Notification notification = nb.build();
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+            notification.defaults |= Notification.DEFAULT_SOUND;
+            notification.defaults |= Notification.DEFAULT_VIBRATE;
 
 
-        resultIntent.putExtra(AppLevelConstants.Title, name);
-        resultIntent.putExtra(AppLevelConstants.DESCRIPTION, description);
-        resultIntent.putExtra(AppLevelConstants.ID, id);
-        resultIntent.putExtra(AppLevelConstants.SCREEN_NAME, screen_name);
-        resultIntent.putExtra("via", "reminder");
+            Intent resultIntent = new Intent(context, SplashActivity.class);
+
+
+            resultIntent.putExtra(AppLevelConstants.Title, name);
+            resultIntent.putExtra(AppLevelConstants.DESCRIPTION, description);
+            resultIntent.putExtra(AppLevelConstants.ID, id);
+            resultIntent.putExtra(AppLevelConstants.SCREEN_NAME, screen_name);
+            resultIntent.putExtra("via", "reminder");
 
 
 //        resultIntent.putExtra(AppConstants.SCREEN_NAME,screen_name);
 //        resultIntent.putExtra(AppConstants.ID,id);
-        TaskStackBuilder TSB = TaskStackBuilder.create(context);
-        TSB.addParentStack(SplashActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
-        TSB.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                TSB.getPendingIntent(
-                        requestcode,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
+            TaskStackBuilder TSB = TaskStackBuilder.create(context);
+            TSB.addParentStack(SplashActivity.class);
+            // Adds the Intent that starts the Activity to the top of the stack
+            TSB.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    TSB.getPendingIntent(
+                            requestcode,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
 
-        nb.setContentIntent(resultPendingIntent);
-        nb.setAutoCancel(true);
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
+            nb.setContentIntent(resultPendingIntent);
+            nb.setAutoCancel(true);
+            NotificationManager mNotificationManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            // mId allows you to update the notification later on.
 
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager notificationManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 
-        notificationManager.notify(generatedPassword, nb.build());
-        Log.d("OnConditionCall", "notifyCall");
+            notificationManager.notify(generatedPassword, nb.build());
+            Log.d("OnConditionCall", "notifyCall");
+
+        }catch (Exception ignored){
+            Log.d("OnConditionCall", "crash");
+        }
 
 
     }
