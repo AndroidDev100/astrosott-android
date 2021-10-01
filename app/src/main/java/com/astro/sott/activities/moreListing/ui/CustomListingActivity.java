@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -13,7 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.moreListing.filter.ListingFilterActivity;
 import com.astro.sott.activities.myList.viewModel.MyWatchlistViewModel;
+import com.astro.sott.activities.search.ui.ActivitySearch;
+import com.astro.sott.activities.search.ui.SearchKeywordActivity;
 import com.astro.sott.adapter.experiencemng.CommonLandscapeListingAdapteNew;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.VIUChannel;
@@ -55,6 +59,14 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
         super.onCreate(savedInstanceState);
         assetCommonBean = getIntent().getExtras().getParcelable("assetCommonBean");
         category = getIntent().getExtras().getParcelable("baseCategory");
+        getBinding().toolbar.ivfilter.setVisibility(View.VISIBLE);
+        getBinding().toolbar.ivfilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CustomListingActivity.this, ListingFilterActivity.class);
+                startActivity(intent);
+            }
+        });
         if (assetCommonBean != null) {
             title = assetCommonBean.getTitle();
             if (assetCommonBean.getCustomGenre() != null)
