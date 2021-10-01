@@ -150,7 +150,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
 
         });
         getBinding().downloadButton.setOnClickListener(v -> {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 if (orderList.size() > 0) {
                     if (checkboxVisible) {
                         checkboxVisible = false;
@@ -227,7 +227,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
 
     private boolean osPermission() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             return true;
         } else {
             int result = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -424,7 +424,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     }
 
     private void requestPermission() {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
