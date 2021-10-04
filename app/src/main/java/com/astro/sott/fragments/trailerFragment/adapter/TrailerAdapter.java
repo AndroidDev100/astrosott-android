@@ -69,7 +69,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerI
             holder.trailerItemBinding.durationTxt.setText(AppCommonMethods.getURLDuration(asset));
 
         }
-        holder.trailerItemBinding.playIcon.setOnClickListener(view -> {
+        holder.trailerItemBinding.trailerImage.setOnClickListener(view -> {
 
             if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
                 return;

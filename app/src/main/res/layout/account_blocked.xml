@@ -48,7 +48,7 @@
         android:gravity="center"
         android:lineHeight="20sp"
         android:layout_marginTop="12dp"
-        android:text="@string/forgt_psw"
+        android:text="@string/forgt_psw_without_question_mark"
         android:textColor="@color/aqua_marine"
         android:textSize="@dimen/font_medium_large"
         app:layout_constraintLeft_toLeftOf="parent"

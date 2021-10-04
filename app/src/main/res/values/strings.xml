@@ -210,7 +210,7 @@
     <string name="enter_phone">Enter your phone number</string>
     <string name="enter_pin">Please enter the PIN sent to your phone number</string>
     <string name="already_user">Already a sooka user ? </string>
-    <string name="dont_have_account">Don’t have an account ?</string>
+    <string name="dont_have_account">Don’t have an account?</string>
     <string name="resend_text">Resend PIN</string>
     <string name="phone_number">Phone Number</string>
     <string name="hint_number">7XX XXXXXX</string>
@@ -606,6 +606,8 @@
 
     <string name="user_name">User Name</string>
     <string name="forgt_psw"><u>Forgot Password?</u></string>
+    <string name="forgt_psw_without_question_mark"><u>Forgot Password</u></string>
+
     <string name="sign_in_google">Sign In With Google</string>
     <string name="sign_in_fb">Continue With Facebook</string>
     <string name="sign_in_apple">Sign In With Apple</string>
