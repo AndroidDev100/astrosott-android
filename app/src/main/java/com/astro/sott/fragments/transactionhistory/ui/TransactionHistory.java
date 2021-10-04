@@ -391,12 +391,12 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     }
 
     private void loadDataFromModel(List<OrderItem> order, boolean checkboxVisibility) {
-      /*  if (order != null && order.size() > 0) {
+        if (order != null && order.size() > 0) {
             TransactionAdapter adapter = new TransactionAdapter(TransactionHistory.this, order, checkboxVisibility);
             getBinding().recyclerView.setAdapter(adapter);
         } else {
             getBinding().recyclerView.setAdapter(null);
-        }*/
+        }
 
     }
 
