@@ -120,13 +120,13 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         FirebaseEventManager.getFirebaseInstance(getActivity()).trackScreenName(FirebaseEventManager.TRANSACTION_HISTORY);
         setClicks();
         getPaymentV2();
-        boolean permission=osPermission();
-        Log.w("permission-->>",permission+"");
-        if (permission){
+        boolean permission = osPermission();
+      /*  Log.w("permission-->>", permission + "");
+        if (permission) {
 
-        }else {
+        } else {
             requestPermission();
-        }
+        }*/
     }
 
     private void setClicks() {
@@ -167,8 +167,8 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                     }
 
                 }
-            }else {
-                boolean permission = osPermissionDenied();
+            } else {
+               /* boolean permission = osPermissionDenied();
                 Log.w("permissionResult", permission + "");
                 if (permission) {
 
@@ -189,7 +189,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                         }
 
                     }
-                }
+                }*/
             }
 
         });
@@ -208,7 +208,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     }
 
 
-    private boolean osPermissionDenied() {
+   /* private boolean osPermissionDenied() {
         boolean ispermissionDenied=false;
         int result1 = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (result1==PackageManager.PERMISSION_DENIED){
@@ -223,16 +223,17 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         }else {
             return false;
         }
-    }
+    }*/
 
     private boolean osPermission() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             return true;
         } else {
-            int result = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            return false;
+          /*  int result = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_EXTERNAL_STORAGE);
             int result1 = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+            return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;*/
         }
         //  int result1 = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         // return result1 == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
@@ -240,9 +241,10 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     }
 
     private int osPermissionNew() {
-        int result1 = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        Log.w("permissionResult",PackageManager.PERMISSION_GRANTED+"");
-        return PackageManager.PERMISSION_GRANTED;
+        return 0;
+      /*  int result1 = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        Log.w("permissionResult", PackageManager.PERMISSION_GRANTED + "");
+        return PackageManager.PERMISSION_GRANTED;*/
     }
 
 
@@ -308,7 +310,6 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
 
                     }
                 } else {
-                    //   urls[count]="ankuryadav";
                     //  new DownloadFileFromURL().execute(urls);
                     Toast.makeText(getActivity(), invoiceResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
@@ -390,12 +391,12 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     }
 
     private void loadDataFromModel(List<OrderItem> order, boolean checkboxVisibility) {
-        if (order != null && order.size() > 0) {
+      /*  if (order != null && order.size() > 0) {
             TransactionAdapter adapter = new TransactionAdapter(TransactionHistory.this, order, checkboxVisibility);
             getBinding().recyclerView.setAdapter(adapter);
         } else {
             getBinding().recyclerView.setAdapter(null);
-        }
+        }*/
 
     }
 
@@ -413,7 +414,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         });
     }
 
-    private void allowPermission() {
+ /*   private void allowPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkPermission()) {
 
@@ -421,21 +422,22 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                 requestPermission(); // Code for permission
             }
         }
-    }
+    }*/
 
     private void requestPermission() {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      /*  if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-        }
+        }*/
 
     }
 
 
     private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        return result == PackageManager.PERMISSION_GRANTED;
+        return false;
+       /* int result = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return result == PackageManager.PERMISSION_GRANTED;*/
     }
 
     @Override
@@ -501,7 +503,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     savePdfFile(f_url[i], "astro_transaction" + i);
                 } else {
-                    getFileFromBase64AndSaveInSDCard(f_url[i], "astro_transaction" + i, "pdf");
+                    //   getFileFromBase64AndSaveInSDCard(f_url[i], "astro_transaction" + i, "pdf");
                 }
             }
 
