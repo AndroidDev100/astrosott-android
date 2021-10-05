@@ -448,7 +448,7 @@ public class KsServices {
 
     private List<VIUChannel> dtChannelList;
 
-    public void callDeepSearchAssetListing(long l, List<VIUChannel> list, String ksql, String filterValue, int counter, int pageSize, HomechannelCallBack callBack) {
+    public void callDeepSearchAssetListing(Context context,long l, List<VIUChannel> list, String ksql, String filterValue, int counter, int pageSize, HomechannelCallBack callBack) {
         clientSetupKs();
         homechannelCallBack = callBack;
         this.dtChannelList = list;
@@ -463,19 +463,40 @@ public class KsServices {
             channelFilter.setIdEqual(iid);
             String name = "";
 
-            String KsqlValue = forDeepSearch(ksql, filterValue);
+            String KsqlValue =  ksql;
             PrintLogging.printLog("", "genreValueIs" + KsqlValue);
 
 
             channelFilter.setKSql(KsqlValue);
-            if (AppConstants.SORT_VALUE.equalsIgnoreCase("")) {
+            try {
+                if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")) {
+                    if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())) {
+                        channelFilter.orderBy(SortByEnum.NAME_ASC.name());
+                    } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())) {
+                        channelFilter.orderBy(SortByEnum.VIEWS_DESC.name());
+                    } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())) {
+                        channelFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
+                    } else {
+                        channelFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+                    }
+
+                } else {
+                    channelFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+                }
+
+                PrintLogging.printLog("", "sortvalueIS" + KsPreferenceKey.getInstance(context).getFilterSortBy());
+            }catch (Exception ignored){
+
+            }
+
+           /* if (AppConstants.SORT_VALUE.equalsIgnoreCase("")) {
 
             } else {
                 channelFilter.setOrderBy(AppConstants.SORT_VALUE);
-            }
+            }*/
 
 
-            PrintLogging.printLog("", "sortvalueIS" + AppConstants.SORT_VALUE);
+
             // PersonalListSearchFilter
 
 

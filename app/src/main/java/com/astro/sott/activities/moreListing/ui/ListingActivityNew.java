@@ -16,10 +16,13 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.astro.sott.activities.moreListing.filter.ListingFilterActivity;
 import com.astro.sott.activities.moreListing.viewModel.ListingViewModel;
+import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.ToastHandler;
@@ -36,6 +39,7 @@ import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.databinding.ListingactivityNewBinding;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.enveu.Enum.ImageType;
 import com.google.gson.Gson;
 
@@ -85,6 +89,11 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
 
         tabletSize = getResources().getBoolean(R.bool.isTablet);
         // GAManager.getInstance().trackScreen(getResources().getString(R.string.more_rail_results));
+        try {
+            AppCommonMethods.resetFilter(ListingActivityNew.this);
+        }catch (Exception ignored){
+
+        }
         callOnCreateInstances(intent);
 
     }
@@ -257,6 +266,15 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
                 pageSize = 20;
             }
 
+
+            getBinding().toolbar.ivfilter.setVisibility(View.VISIBLE);
+            getBinding().toolbar.ivfilter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ListingActivityNew.this, ListingFilterActivity.class);
+                    startActivity(intent);
+                }
+            });
 
         } catch (Exception e) {
         }
@@ -633,6 +651,22 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
 //        Gson gson = new Gson();
 //        String json = gson.toJson(list);
 //        sharedPrefHelper.setString("SelectedPreferrence", json);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!KsPreferenceKey.getInstance(ListingActivityNew.this).getFilterApply().equalsIgnoreCase("")) {
+            if (KsPreferenceKey.getInstance(ListingActivityNew.this).getFilterApply().equalsIgnoreCase("true")) {
+                KsPreferenceKey.getInstance(ListingActivityNew.this).setFilterApply("false");
+                isScrolling=false;
+                counter=1;
+                if (pageSize <= 0) {
+                    pageSize = 20;
+                }
+                checkTypeOfList();
+            }
+        }
     }
 }
 

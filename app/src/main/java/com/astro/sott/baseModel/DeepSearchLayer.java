@@ -149,15 +149,16 @@ public class DeepSearchLayer {
         VIUChannel channel = new VIUChannel();
         channel.setId((long) assetId);
 
-        if(genreList.size()>0) {
+        ksql =AppCommonMethods.getDeepSearchKsql("",null,1,context);
+       /* if(genreList.size()>0) {
 
             ksql = AssetContent.getGenredata(genreList);
         }else {
             ksql = "Genre = ''";
-        }
+        }*/
         // DTChannel channel = new DTChannel((long) assetId,"","");
         list.add(channel);
-        ksServices.callDeepSearchAssetListing((long) 1233, list,ksql, filterValue, counter,pageSize, (status, listResponseResponse, channelList) -> {
+        ksServices.callDeepSearchAssetListing(context,(long) 1233, list,ksql, filterValue, counter,pageSize, (status, listResponseResponse, channelList) -> {
             if (status) {
                 // PrintLogging.printLog("totalCount");
                 callDynamicData(context,layout, listResponseResponse);
