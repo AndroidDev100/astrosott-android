@@ -619,9 +619,10 @@ public class ActivityLauncher {
                         activity.startActivity(intent);
                     } else {
                         Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
-
                     }
                 });
+            }else {
+                Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();

@@ -123,7 +123,19 @@
 
         </LinearLayout>
 
-
+        <include
+            android:id="@+id/metas"
+            layout="@layout/metas_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="2dp"
+            android:layout_gravity="top|end"
+            android:layout_marginStart="@dimen/popular_searches_margin_left"
+            android:layout_marginBottom="@dimen/_5sdp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/search_item_seperator_width"

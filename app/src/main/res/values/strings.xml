@@ -59,8 +59,8 @@
     <string name="related">Related</string>
     <string name="episode_title">Episode</string>
     <string name="shows">Shows</string>
-    <string name="term_policy_new">By clicking Sign Up or any Social Login above, you agree to</string>
-    <string name="term_policy_login">By clicking Log In or any Social Login above, you agree to</string>
+    <string name="term_policy_new">By clicking Sign Up or any of the Social Login above, you agree to</string>
+    <string name="term_policy_login">By clicking Log In or any of the Social Login above, you agree to</string>
 
     <string name="trailer_more">Trailers &amp; More</string>
     <string name="trailer_title">Trailers</string>

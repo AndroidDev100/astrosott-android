@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,6 +63,10 @@ public class AccountBlockedDialog extends DialogFragment {
             // Get field from view
             inputLayoutDialog = view.findViewById(R.id.input_layout_dialog);
             TextView forgot = view.findViewById(R.id.forgot);
+            ImageView closeIcon = view.findViewById(R.id.close_icon);
+            closeIcon.setOnClickListener(v -> {
+                dismiss();
+            });
             // Fetch arguments from bundle and set title
 
 //        getDialog().setTitle(title);
@@ -82,7 +87,7 @@ public class AccountBlockedDialog extends DialogFragment {
 
 
     public void onResume() {
-        int width = getResources().getDimensionPixelSize(R.dimen.blocked_fragment_width);
+        int width = getResources().getDisplayMetrics().widthPixels - 30;
         int height = getResources().getDimensionPixelSize(R.dimen.blocked_fragment_height);
         if (getDialog().getWindow() != null)
             getDialog().getWindow().setLayout(width, height);
