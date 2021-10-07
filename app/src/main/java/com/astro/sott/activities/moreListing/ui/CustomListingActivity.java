@@ -59,7 +59,7 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
         super.onCreate(savedInstanceState);
         assetCommonBean = getIntent().getExtras().getParcelable("assetCommonBean");
         category = getIntent().getExtras().getParcelable("baseCategory");
-        getBinding().toolbar.ivfilter.setVisibility(View.VISIBLE);
+        getBinding().toolbar.ivfilter.setVisibility(View.GONE);
         getBinding().toolbar.ivfilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

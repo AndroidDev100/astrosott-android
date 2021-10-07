@@ -74,6 +74,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
     private boolean isShowFilter = false;
     private boolean isSortable = false;
     private int pageSize = -1;
+    private String filter[];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -261,13 +262,34 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
             category = (VIUChannel) getIntent().getExtras().getParcelable("baseCategory");
             this.isShowFilter = getIntent().getExtras().getBoolean("hasFilter");
             this.isSortable = category.isSortable();
+            try {
+                Log.e("filterSize", category.getSizeofFilter()+"  "+isSortable);
+                if (this.isSortable){
+                    getBinding().toolbar.ivfilter.setVisibility(View.VISIBLE);
+                }else {
+                    try {
+                        if (category.getSizeofFilter()>0){
+                            getBinding().toolbar.ivfilter.setVisibility(View.VISIBLE);
+                        }else {
+                            getBinding().toolbar.ivfilter.setVisibility(View.GONE);
+                        }
+
+                    }catch (Exception e){
+
+                    }
+
+                }
+            }catch (Exception e){
+
+            }
+
             this.pageSize = category.getMorePageSize();
             if (pageSize <= 0) {
                 pageSize = 20;
             }
 
 
-            getBinding().toolbar.ivfilter.setVisibility(View.VISIBLE);
+
             getBinding().toolbar.ivfilter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
