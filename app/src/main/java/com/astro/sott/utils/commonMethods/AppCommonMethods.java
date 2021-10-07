@@ -2237,6 +2237,7 @@ public class AppCommonMethods {
         return isPages;
     }
 
+
     public static List<Asset> applyFreePaidFilter(ListResponse<Asset> results, Context context) {
         List<Asset> sortedList = new ArrayList();
         BooleanValue sponsored = null;
