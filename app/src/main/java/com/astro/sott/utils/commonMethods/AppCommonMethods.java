@@ -2666,7 +2666,7 @@ public class AppCommonMethods {
         if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
 
         } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ONDEMAND.name())) {
-            StringBuilderHolder.getInstance().append("(and asset_type='"+MediaTypeConstant.getMovie(context)+"' asset_type='"+MediaTypeConstant.getMovie(context)+"' ");
+            StringBuilderHolder.getInstance().append("(and asset_type='"+MediaTypeConstant.getMovie(context)+"' asset_type='"+MediaTypeConstant.getCollection(context)+"' ");
         } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.LIVE.name())) {
             StringBuilderHolder.getInstance().append("(and asset_type='"+MediaTypeConstant.getLinear(context)+"' asset_type='"+MediaTypeConstant.getProgram(context)+"' ");
         } else {
@@ -2745,6 +2745,179 @@ public class AppCommonMethods {
        // KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
         return StringBuilderHolder.getInstance().getText().toString();
     }
+
+    public static String getLiveDeepSearchKsql(String searchString, String selectedGenre, int from, Context context) {
+        StringBuilderHolder.getInstance().clear();
+
+        if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
+
+        } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ONDEMAND.name())) {
+            StringBuilderHolder.getInstance().append("(and asset_type='"+MediaTypeConstant.getMovie(context)+"' asset_type='"+MediaTypeConstant.getCollection(context)+"' ");
+        } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.LIVE.name())) {
+
+        } else {
+
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+            StringBuilderHolder.getInstance().append("(and ");
+            StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
+            StringBuilderHolder.getInstance().append("");
+        } else {
+            if (selectedGenre != null && !selectedGenre.equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(selectedGenre);
+                StringBuilderHolder.getInstance().append("");
+            } else {
+                StringBuilderHolder.getInstance().append("");
+            }
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")) {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append(" ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            } else {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            }
+
+        } else {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append(" ");
+            } else {
+               /* if (selectedGenre != null && !selectedGenre.equalsIgnoreCase("")) {
+                    StringBuilderHolder.getInstance().append(" ");
+                } else {
+                    StringBuilderHolder.getInstance().append(" ");
+                }*/
+
+            }
+        }
+
+       /* StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+
+        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append(searchString);*/
+        if (StringBuilderHolder.getInstance().getText().toString().contains("(and asset_type")) {
+            if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                    StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")){
+                StringBuilderHolder.getInstance().append("))");
+            }else {
+                StringBuilderHolder.getInstance().append(")");
+            }
+        }else if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")){
+            StringBuilderHolder.getInstance().append(")");
+        }
+        else {
+            StringBuilderHolder.getInstance().append("");
+        }
+
+
+        // KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
+        return StringBuilderHolder.getInstance().getText().toString();
+    }
+
+    public static String getTrendingDeepSearchKsql(String selectedGenre, Context context) {
+        StringBuilderHolder.getInstance().clear();
+
+        if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
+
+        } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ONDEMAND.name())) {
+            StringBuilderHolder.getInstance().append("(and asset_type='"+MediaTypeConstant.getMovie(context)+"' asset_type='"+MediaTypeConstant.getCollection(context)+"' ");
+        } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.LIVE.name())) {
+            StringBuilderHolder.getInstance().append("(and asset_type='"+MediaTypeConstant.getLinear(context)+"' asset_type='"+MediaTypeConstant.getProgram(context)+"' ");
+        } else {
+
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+            StringBuilderHolder.getInstance().append("(and ");
+            StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
+            StringBuilderHolder.getInstance().append("");
+        } else {
+            if (selectedGenre != null && !selectedGenre.equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(selectedGenre);
+                StringBuilderHolder.getInstance().append("");
+            } else {
+                StringBuilderHolder.getInstance().append("");
+            }
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")) {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append(" ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            } else {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            }
+
+        } else {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append(" ");
+            } else {
+               /* if (selectedGenre != null && !selectedGenre.equalsIgnoreCase("")) {
+                    StringBuilderHolder.getInstance().append(" ");
+                } else {
+                    StringBuilderHolder.getInstance().append(" ");
+                }*/
+
+            }
+        }
+
+       /* StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+
+        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append(searchString);*/
+        if (StringBuilderHolder.getInstance().getText().toString().contains("(and asset_type")) {
+            if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                    StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")){
+                StringBuilderHolder.getInstance().append("))");
+            }else {
+                StringBuilderHolder.getInstance().append(")");
+            }
+        }else if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")){
+            StringBuilderHolder.getInstance().append(")");
+        }
+        else {
+            StringBuilderHolder.getInstance().append("");
+        }
+
+
+        // KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
+        return StringBuilderHolder.getInstance().getText().toString();
+    }
+
 
 
     public static List<AccountDeviceDetailsItem> checkCurrentDevice(List<AccountDeviceDetailsItem> accountDeviceDetails, Context context) {

@@ -3565,7 +3565,7 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
     }
 
-    public void getLinearAssetIdListing(String assetId, String customDays, int counter, TrendingCallBack trendingCallBack) {
+    public void getLinearAssetIdListing(Context context,String assetId, String customDays, int counter, TrendingCallBack trendingCallBack) {
         clientSetupKs();
         AssetService.GetAssetBuilder builder = AssetService.get(assetId, AssetReferenceType.MEDIA).setCompletion(result -> {
             PrintLogging.printLog("", "SpecificAsset" + result.isSuccess());
@@ -3577,7 +3577,7 @@ public class KsServices {
                         String externalId = mediaAsset.getExternalIds();
                         int index = Integer.parseInt(customDays);
                         String endDate = getNextDateTimeStamp(index + 1);
-                        callLiveEPGDRailListing(externalId, "0", endDate, counter, trendingCallBack);
+                        callLiveEpgDeeplinkListing(context,externalId, "0", endDate, counter, trendingCallBack);
                     } catch (Exception e) {
                         trendingCallBack.getList(false, null, 0);
 
@@ -3596,7 +3596,7 @@ public class KsServices {
                             @Override
                             public void response(CommonResponse response) {
                                 if (response.getStatus()) {
-                                    getLinearAssetIdListing(assetId, customDays, counter, trendingCallBack);
+                                    getLinearAssetIdListing(context,assetId, customDays, counter, trendingCallBack);
                                 } else {
                                     trendingCallBack.getList(false, null, 0);
 
@@ -3618,13 +3618,96 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
     }
 
+    private void callLiveEpgDeeplinkListing(Context context,String externalId, String startDate, String endDate, int counter, TrendingCallBack trendingCallBack) {
+        String EPGListKSQL;
+        clientSetupKs();
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+
+        String deepSearchKSQL =AppCommonMethods.getLiveDeepSearchKsql("",null,1,context);
+        EPGListKSQL = KSQL.forDeepSearchEPGRail(externalId, startDate, endDate,deepSearchKSQL);
+        searchAssetFilter.setKSql(EPGListKSQL);
+        searchAssetFilter.typeIn("0");
+        try {
+            if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")) {
+                if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())) {
+                    searchAssetFilter.orderBy(SortByEnum.NAME_ASC.name());
+                } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())) {
+                    searchAssetFilter.orderBy(SortByEnum.VIEWS_DESC.name());
+                } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())) {
+                    searchAssetFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
+                } else {
+                    searchAssetFilter.setOrderBy("START_DATE_ASC");
+                }
+
+            } else {
+                searchAssetFilter.setOrderBy("START_DATE_ASC");
+            }
+
+            PrintLogging.printLog("", "sortvalueIS" + KsPreferenceKey.getInstance(context).getFilterSortBy());
+        }catch (Exception ignored){
+
+        }
+
+
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(counter);
+        filterPager.setPageSize(20);
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
+            if (result != null) {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null) {
+                            trendingCallBack.getList(true, result.results.getObjects(), result.results.getTotalCount());
+
+                        } else {
+                            trendingCallBack.getList(false, null, 0);
+
+                        }
+                    }
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        Log.e("KsExpireDeviceManage", errorCode);
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        callLiveEPGDRailListing(externalId, startDate, endDate, counter, trendingCallBack);
+                                    } else {
+                                        trendingCallBack.getList(false, null, 0);
+
+                                    }
+                                }
+                            });
+
+                        } else {
+                            trendingCallBack.getList(false, null, 0);
+
+                        }
+                    } else {
+                        trendingCallBack.getList(false, null, 0);
+
+                    }
+                }
+            } else {
+                trendingCallBack.getList(false, null, 0);
+
+            }
+        });
+
+        getRequestQueue().queue(builder.build(client));
+    }
+
     public static String getNextDateTimeStamp(int dateIndex) {
         String formattedDate;
         int nextDay = 1;
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, dateIndex);
 
-        Date tomorrow = calendar.getTime();
+        Date tomorrow =
+                calendar.getTime();
 
 
         SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
@@ -8059,7 +8142,7 @@ public class KsServices {
     }
 
 
-    public void getTrendingListing(String customMediaType, String customGenre, String customGenreRule, int counter, TrendingCallBack trendingCallBack) {
+    public void getTrendingListing(Context context,String customMediaType, String customGenre, String customGenreRule, int counter, TrendingCallBack trendingCallBack) {
         clientSetupKs();
         SearchAssetFilter relatedFilter = new SearchAssetFilter();
         String kSql = "";
@@ -8078,10 +8161,39 @@ public class KsServices {
 
             }
         }
+        String kSQL=AppCommonMethods.getTrendingDeepSearchKsql(null,context);
         if (!kSql.equalsIgnoreCase("")) {
-            relatedFilter.setKSql(kSql);
+            if (!kSQL.equalsIgnoreCase("")){
+                String finalKSQL=KSQL.forTrendingRail(kSql,kSQL);
+                relatedFilter.setKSql(finalKSQL);
+            }else {
+                relatedFilter.setKSql(kSql);
+            }
+
         }
-        relatedFilter.setOrderBy("VIEWS_DESC");
+
+        try {
+            if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")) {
+                if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())) {
+                    relatedFilter.orderBy(SortByEnum.NAME_ASC.name());
+                } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.POPULAR.name())) {
+                    relatedFilter.orderBy(SortByEnum.VIEWS_DESC.name());
+                } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())) {
+                    relatedFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
+                } else {
+                    relatedFilter.setOrderBy("VIEWS_DESC");
+                }
+
+            } else {
+                relatedFilter.setOrderBy("VIEWS_DESC");
+            }
+
+            PrintLogging.printLog("", "sortvalueIS" + KsPreferenceKey.getInstance(context).getFilterSortBy());
+        }catch (Exception ignored){
+
+        }
+
+
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(counter);
@@ -8114,7 +8226,7 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        getTrendingListing(customMediaType, customGenre, customGenreRule, counter, trendingCallBack);
+                                        getTrendingListing(context,customMediaType, customGenre, customGenreRule, counter, trendingCallBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         trendingCallBack.getList(false, null, 0);

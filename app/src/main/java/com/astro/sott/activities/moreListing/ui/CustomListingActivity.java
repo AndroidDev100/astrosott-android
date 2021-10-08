@@ -26,10 +26,13 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.databinding.ActivityCustomListingBinding;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 
 
 import java.util.ArrayList;
@@ -59,7 +62,6 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
         super.onCreate(savedInstanceState);
         assetCommonBean = getIntent().getExtras().getParcelable("assetCommonBean");
         category = getIntent().getExtras().getParcelable("baseCategory");
-        getBinding().toolbar.ivfilter.setVisibility(View.GONE);
         getBinding().toolbar.ivfilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +85,11 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
                 customDays = assetCommonBean.getCustomDays();
         }
         FirebaseEventManager.getFirebaseInstance(CustomListingActivity.this).trackScreenName(title + " Listing");
+        try {
+            AppCommonMethods.resetFilter(CustomListingActivity.this);
+        }catch (Exception ignored){
+
+        }
         connectionObserver();
     }
 
@@ -112,11 +119,17 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
 
     private void loadData() {
         getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().noDataLayout.setVisibility(View.GONE);
+        getBinding().recyclerViewMore.setVisibility(View.VISIBLE);
         if (customRailType.equalsIgnoreCase(AppLevelConstants.TRENDING)) {
+            //need to apply filter-->>icon will always show
+            getBinding().toolbar.ivfilter.setVisibility(View.VISIBLE);
             getTrendingListing();
         } else if (customRailType.equalsIgnoreCase(AppLevelConstants.PPV_RAIL)) {
             getPPVLiSTING();
         } else if (customRailType.equalsIgnoreCase(AppLevelConstants.LIVECHANNEL_RAIL)) {
+            //need to apply filter-->>icon will always show
+            getBinding().toolbar.ivfilter.setVisibility(View.VISIBLE);
             getEpgListing();
         }
     }
@@ -128,6 +141,12 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
                 totalCOunt = assetListResponse.get(0).getTotalCount();
                 arrayList.addAll(assetListResponse);
                 setUiComponent();
+            }else {
+                if (counter == 1) {
+                    getBinding().recyclerViewMore.setVisibility(View.GONE);
+                    getBinding().noDataLayout.setVisibility(View.VISIBLE);
+                    getBinding().noData.retryTxt.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -140,6 +159,12 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
                 totalCOunt = assetListResponse.get(0).getTotalCount();
                 arrayList.addAll(assetListResponse);
                 setUiComponent();
+            }else {
+                if (counter == 1) {
+                    getBinding().recyclerViewMore.setVisibility(View.GONE);
+                    getBinding().noDataLayout.setVisibility(View.VISIBLE);
+                    getBinding().noData.retryTxt.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -190,15 +215,21 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
     private CommonLandscapeListingAdapteNew commonLandscapeListingAdapteNew;
 
     private void setUiComponent() {
-        if (commonLandscapeListingAdapteNew == null) {
-            commonLandscapeListingAdapteNew = new CommonLandscapeListingAdapteNew(this, arrayList, AppConstants.Rail5, assetCommonBean.getTitle(), category.getCategory());
-            getBinding().recyclerViewMore.setAdapter(commonLandscapeListingAdapteNew);
-            mIsLoading = commonLandscapeListingAdapteNew.getItemCount() != totalCOunt;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (commonLandscapeListingAdapteNew == null) {
+                    commonLandscapeListingAdapteNew = new CommonLandscapeListingAdapteNew(CustomListingActivity.this, arrayList, AppConstants.Rail5, assetCommonBean.getTitle(), category.getCategory());
+                    getBinding().recyclerViewMore.setAdapter(commonLandscapeListingAdapteNew);
+                    mIsLoading = commonLandscapeListingAdapteNew.getItemCount() != totalCOunt;
 
-        } else {
-            mIsLoading = commonLandscapeListingAdapteNew.getItemCount() != totalCOunt;
-            commonLandscapeListingAdapteNew.notifyDataSetChanged();
-        }
+                } else {
+                    mIsLoading = commonLandscapeListingAdapteNew.getItemCount() != totalCOunt;
+                    commonLandscapeListingAdapteNew.notifyDataSetChanged();
+                }
+            }
+        });
+
     }
 
     private void UIinitialization() {
@@ -241,5 +272,25 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
     @Override
     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (!KsPreferenceKey.getInstance(CustomListingActivity.this).getFilterApply().equalsIgnoreCase("")) {
+                if (KsPreferenceKey.getInstance(CustomListingActivity.this).getFilterApply().equalsIgnoreCase("true")) {
+                    KsPreferenceKey.getInstance(CustomListingActivity.this).setFilterApply("false");
+                    mIsLoading=true;
+                    commonLandscapeListingAdapteNew=null;
+                    arrayList.clear();
+                    counter=1;
+                    totalCOunt=0;
+                    loadData();
+                }
+            }
+        }catch (Exception ignored){
+
+        }
     }
 }

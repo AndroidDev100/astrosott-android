@@ -563,6 +563,9 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
                 }
             } else {
                 handleProgressDialog();
+                getBinding().listRecyclerview.setVisibility(View.GONE);
+                getBinding().noDataLayout.setVisibility(View.VISIBLE);
+                getBinding().noData.retryTxt.setVisibility(View.GONE);
             }
         }
     }
@@ -682,11 +685,12 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
             if (KsPreferenceKey.getInstance(ListingActivityNew.this).getFilterApply().equalsIgnoreCase("true")) {
                 KsPreferenceKey.getInstance(ListingActivityNew.this).setFilterApply("false");
                 isScrolling=false;
+                commonLandscapeListingAdapter=null;
                 counter=1;
                 if (pageSize <= 0) {
                     pageSize = 20;
                 }
-                checkTypeOfList();
+                connectionObserver();
             }
         }
     }
