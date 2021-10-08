@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -58,6 +59,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
     private boolean mIsLoading = true;
     private boolean isScrolling = false;
     String title = "";
+    private long lastClickTime = 0;
     private CommonPotraitListingAdapter commonPotraitListingAdapter;
     private CommonSquareListingAdapter commonSquareListingAdapter;
     private CommonCircleListingAdapter commonCircleAdapter;
@@ -293,8 +295,14 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
             getBinding().toolbar.ivfilter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(ListingActivityNew.this, ListingFilterActivity.class);
-                    startActivity(intent);
+                    if (!isApiCalling){
+                        if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                            return;
+                        }
+                        lastClickTime = SystemClock.elapsedRealtime();
+                        Intent intent = new Intent(ListingActivityNew.this, ListingFilterActivity.class);
+                        startActivity(intent);
+                    }
                 }
             });
 
@@ -401,7 +409,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
 
     }
-
+    boolean isApiCalling=false;
     private void checkTypeOfList() {
         int type = viewModel.checkMoreType(assetCommonBean);
         PrintLogging.printLog("", "moreClicked" + "---" + type + "");
@@ -441,6 +449,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
         } else {
             showToolbarView();
             //categoryListingCall();
+            isApiCalling=true;
             deepSearchcategoryListingCall();
         }
     }
@@ -516,6 +525,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
     }
 
     private void setLayoutType(List<RailCommonData> railCommonData) {
+        isApiCalling=false;
         if (railCommonData != null) {
             if (railCommonData.size() > 0) {
                 if (railCommonData.get(0).getStatus()) {
