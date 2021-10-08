@@ -413,7 +413,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
             } else {
                 try {
-                    CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failure", "Content Details Page");
+                    CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failed", "Content Details Page");
                 } catch (Exception ex) {
                     onBackPressed();
                 }

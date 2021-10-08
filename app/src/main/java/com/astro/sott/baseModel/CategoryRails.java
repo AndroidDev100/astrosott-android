@@ -696,6 +696,7 @@ public class CategoryRails {
                             railCommonData.setType(list.get(position).results.getObjects().get(j).getType());
                             railCommonData.setName(list.get(position).results.getObjects().get(j).getName());
                             railCommonData.setId(list.get(position).results.getObjects().get(j).getId());
+                            railCommonData.setRailDetail(channelList);
                             railCommonData.setObject(list.get(position).results.getObjects().get(j));
                             if (tileType.equals(AppConstants.TYPE6)) {
                                 PrintLogging.printLog("", "valueeInLoop" + AssetContent.getVideoProgress(context, j, list.get(position).results.getObjects().get(j).getId().intValue()));

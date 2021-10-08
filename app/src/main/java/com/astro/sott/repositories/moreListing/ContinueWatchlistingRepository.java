@@ -2,6 +2,7 @@ package com.astro.sott.repositories.moreListing;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
 
 import com.astro.sott.callBacks.kalturaCallBacks.ContinueWatchingCallBack;
@@ -15,6 +16,7 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -42,7 +44,7 @@ public class ContinueWatchlistingRepository {
             public void response(boolean status, Response<ListResponse<Asset>> listResponseResponse) {
                 if (status == true) {
                     List<RailCommonData> railList = new ArrayList<>();
-
+                    List<AssetHistory> continueWatchingList = AppCommonMethods.getContinueWatchingPreferences(context);
                     List<Response<ListResponse<Asset>>> list = new ArrayList<>();
                     list.add(listResponseResponse);
                     for (int j = 0; j < listResponseResponse.results.getObjects().size(); j++) {
@@ -73,10 +75,13 @@ public class ContinueWatchlistingRepository {
                         if (listResponseResponse.results.getObjects().get(j).getType() != MediaTypeConstant.getLinear(context) &&
                                 listResponseResponse.results.getObjects().get(j).getType() != MediaTypeConstant.getTrailer(context) &&
                                 listResponseResponse.results.getObjects().get(j).getType() != MediaTypeConstant.getClip()) {
-                            continueWatchingRailCount++;
-                            continueWatchingCount = 1;
-                            railList.add(railCommonData);
-                            assetCommonBean.setTotalCount(continueWatchingRailCount);
+                            boolean included = AppCommonMethods.shouldItemIncluded(continueWatchingList, listResponseResponse.results.getObjects().get(j).getId() + "");
+                            if (included) {
+                                continueWatchingRailCount++;
+                                continueWatchingCount = 1;
+                                railList.add(railCommonData);
+                                assetCommonBean.setTotalCount(continueWatchingRailCount);
+                            }
                         }
 
 

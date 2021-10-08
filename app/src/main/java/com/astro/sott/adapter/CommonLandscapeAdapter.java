@@ -29,7 +29,9 @@ import com.astro.sott.databinding.LandscapeItemSmallBinding;
 import com.astro.sott.modelClasses.dmsResponse.MediaTypes;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
@@ -179,12 +181,12 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             try {
                 landscapeItemBinding.metas.billingImage.setVisibility(View.GONE);
                 setRecycler(landscapeItemBinding.metas.recyclerView, singleItem.getObject().getTags());
-                AppCommonMethods.setBillingUi(landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags(),singleItem.getObject().getType(),mContext);
+                AppCommonMethods.setBillingUi(landscapeItemBinding.metas.billingImage, singleItem.getObject().getTags(), singleItem.getObject().getType(), mContext);
                 AppCommonMethods.handleTitleDesc(landscapeItemBinding.titleLayout, landscapeItemBinding.tvTitle, landscapeItemBinding.tvDescription, baseCategory, itemsList.get(i), mContext);
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
-                    landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) +" - " + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
+                    landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + " - " + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
                 } else if (itemsList.get(i).getType() == MediaTypeConstant.getLinear(mContext)) {
                     if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
                         String liveEventTime = AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
@@ -246,7 +248,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 landscapeItemBinding.tvTitle.setText(itemsList.get(i).getObject().getName());
                 if (itemsList.get(i).getType() == MediaTypeConstant.getProgram(mContext)) {
                     landscapeItemBinding.tvDescription.setTextColor(mContext.getResources().getColor(R.color.yellow_orange));
-                    landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) +" - " + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
+                    landscapeItemBinding.tvDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(i).getObject().getStartDate()) + " - " + AppCommonMethods.getEndTime(itemsList.get(i).getObject().getEndDate()));
                 } else if (itemsList.get(i).getType() == MediaTypeConstant.getLinear(mContext)) {
                     if (AssetContent.isLiveEvent(itemsList.get(i).getObject().getMetas())) {
                         String liveEventTime = AppCommonMethods.getLiveEventTime(itemsList.get(i).getObject());
@@ -259,7 +261,6 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     landscapeItemBinding.tvDescription.setText(itemsList.get(i).getObject().getDescription());
                     landscapeItemBinding.tvTitle.setMaxLines(2);
                     landscapeItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
-
 
 
                 }
@@ -324,7 +325,6 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     landscapeItemBinding.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
 
 
-
                 }
 
                 if (singleItem.getProgress() > 0) {
@@ -382,7 +382,15 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return (null != itemsList ? itemsList.size() : 0);
+        if (itemsList.size() > 20 && itemsList.get(0).getRailDetail() != null && itemsList.get(0).getRailDetail().getDescription() != null) {
+            if (itemsList.get(0).getRailDetail().getDescription().equalsIgnoreCase(AppLevelConstants.KEY_CONTINUE_WATCHING) || itemsList.get(0).getRailDetail().getDescription().equalsIgnoreCase(AppConstants.KEY_MY_WATCHLIST) || itemsList.get(0).getRailDetail().getDescription().equalsIgnoreCase(AppLevelConstants.LIVECHANNEL_RAIL) || itemsList.get(0).getRailDetail().getDescription().equalsIgnoreCase(AppLevelConstants.TRENDING)) {
+                return 20;
+            } else {
+                return (null != itemsList ? itemsList.size() : 0);
+            }
+        } else {
+            return (null != itemsList ? itemsList.size() : 0);
+        }
     }
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {

@@ -4409,6 +4409,8 @@ public class KsServices {
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
         assetHistoryFilter.statusEqual(WatchStatus.PROGRESS.name());
         assetHistoryFilter.daysLessThanOrEqual(AppCommonMethods.getAssetHistory(activity));
+        assetHistoryFilter.setTypeIn(MediaTypeConstant.getEpisode(activity) + "," + MediaTypeConstant.getMovie(activity));
+
 
         FilterPager pagerFilter = new FilterPager();
         pagerFilter.setPageIndex(1);
@@ -4552,6 +4554,7 @@ public class KsServices {
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
         assetHistoryFilter.statusEqual(WatchStatus.PROGRESS.name());
         assetHistoryFilter.daysLessThanOrEqual(AppCommonMethods.getAssetHistory(activity));
+        assetHistoryFilter.setTypeIn(MediaTypeConstant.getEpisode(activity) + "," + MediaTypeConstant.getMovie(activity));
 
         FilterPager pagerFilter = new FilterPager();
         pagerFilter.setPageIndex(1);

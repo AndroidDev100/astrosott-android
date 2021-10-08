@@ -129,7 +129,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                 }
             } else {
                 try {
-                    CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failure", "Content Details Page");
+                    CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failed", "Content Details Page");
                 } catch (Exception ex) {
                 }
                 if (from.equalsIgnoreCase("Content Detail Page")) {
