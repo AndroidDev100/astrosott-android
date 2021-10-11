@@ -326,6 +326,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     private int requestCode;
     private PendingIntent pendingIntent;
     Intent myIntent;
+    String dateTimeForReminder="";
     private void setReminder() {
         try {
         boolean isReminderAdded = new KsPreferenceKey(getApplicationContext()).getReminderId(asset.getId().toString());
@@ -337,6 +338,14 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                 if (currentTime(asset)){
                    /* Random random = new Random();
                     requestCode = Integer.parseInt(String.format("%02d", random.nextInt(10000)));*/
+                    try {
+                        if (viewModel!=null){
+                            dateTimeForReminder  =  viewModel.getNotificationStartDate(liveEventStartDate) + " - " + AppCommonMethods.getEndTime(liveEventEndDate);
+                          //  Log.w("dateTimeForReminder-->>" , dateTimeForReminder);
+                        }
+                    }catch (Exception ignored){
+
+                    }
                     Long code = asset.getId();
                     requestCode = code.intValue();
                     PrintLogging.printLog("", "notificationRequestId-->>" + requestCode);
@@ -348,6 +357,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     myIntent.putExtra(AppLevelConstants.ID, Long.parseLong(asset.getId() + ""));
                     myIntent.putExtra(AppLevelConstants.Title, asset.getName());
                     myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+                    myIntent.putExtra(AppLevelConstants.DATETIME_REMINDER, dateTimeForReminder);
                     myIntent.putExtra(AppLevelConstants.SCREEN_NAME, "LiveEvent");
                     myIntent.putExtra("requestcode", requestCode);
                     myIntent.setAction("com.astro.sott.MyIntent");
@@ -361,6 +371,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         intent.putExtra(AppLevelConstants.ID, Long.parseLong(asset.getId() + ""));
                         intent.putExtra(AppLevelConstants.Title, asset.getName());
                         intent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+                        myIntent.putExtra(AppLevelConstants.DATETIME_REMINDER, dateTimeForReminder);
                         intent.putExtra(AppLevelConstants.SCREEN_NAME, "LiveEvent");
                         intent.putExtra("requestcode", requestCode);
 

@@ -33,7 +33,7 @@ public class utils {
     private static int generatedPassword;
 
     @SuppressWarnings("static-access")
-    public static void generateNotification(Context context, String name, String description, Long id, String screen_name, int requestcode) {
+    public static void generateNotification(Context context, String name, String description, Long id, String screen_name, int requestcode,String dateTime) {
 
         try {
             String CHANNEL_ID = "my_channel_01";
@@ -68,8 +68,12 @@ public class utils {
 
             RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.pushnotification);
             contentView.setImageViewResource(R.id.image, R.mipmap.ic_launcher);
-            contentView.setTextViewText(R.id.title, name);
-            contentView.setTextViewText(R.id.text, description);
+            contentView.setTextViewText(R.id.title, name+" starting in 5 mins!");
+            if (dateTime!=null && !dateTime.equalsIgnoreCase("")){
+                contentView.setTextViewText(R.id.text, "Broadcast "+dateTime);
+            }else {
+                contentView.setTextViewText(R.id.text, ""+description);
+            }
 
 
             Log.d("OnConditionCall", "ViewGenerated");

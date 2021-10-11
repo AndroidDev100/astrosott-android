@@ -88,6 +88,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -964,10 +965,26 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         }
     }
 
+    public String getStartDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d'/'hh:mm aaa", Locale.US);
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+    String reminderDateTime="";
     @Override
     public void setReminder(ImageView reminderIcon, Asset asset) {
         try {
 
+            reminderDateTime= (getStartDate(asset.getStartDate())) + " - " + (AppCommonMethods.setTime(asset, 0));
             splitStartTime(AppCommonMethods.get24HourTime(asset, 1) + "");
             mm = Integer.parseInt(month.trim());
             yr = Integer.parseInt(year.trim());
@@ -985,6 +1002,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             myIntent.putExtra(AppLevelConstants.ID, asset.getId());
             myIntent.putExtra(AppLevelConstants.Title, asset.getName());
             myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+            myIntent.putExtra(AppLevelConstants.DATETIME_REMINDER, reminderDateTime);
             myIntent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
             myIntent.putExtra("requestcode", requestCode);
             myIntent.setAction("com.astro.sott.MyIntent");
@@ -1001,6 +1019,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                 intent.putExtra(AppLevelConstants.ID, asset.getId());
                 intent.putExtra(AppLevelConstants.Title, asset.getName());
                 intent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+                intent.putExtra(AppLevelConstants.DATETIME_REMINDER, reminderDateTime);
                 intent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
                 intent.putExtra("requestcode", requestCode);
 

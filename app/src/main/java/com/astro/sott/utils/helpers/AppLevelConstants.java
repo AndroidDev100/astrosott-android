@@ -406,6 +406,7 @@ public interface AppLevelConstants {
     String ID = "id";
     String Title = "name";
     String DESCRIPTION = "description";
+    String DATETIME_REMINDER = "dateTimeForReminder";
     String SCREEN_NAME = "screenname";
     String PROGRAM = "Program";
     String KEY_DVR_ENABLED = "LongTSTVEnabled";
