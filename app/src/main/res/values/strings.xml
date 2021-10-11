@@ -731,8 +731,8 @@
 
 
     //reminder
-    <string name="reminder_added">Reminder Added</string>
-    <string name="reminder_removed">Reminder Removed</string>
+    <string name="reminder_added">Reminder set for</string>
+    <string name="reminder_removed">Reminder removed for</string>
     <string name="are_you_sure_remove_reminder">Are you sure you want to remove the reminder?</string>
     <string name="reminder_program_about_to_start">Program is about to start, in under 5 min</string>
     <string name="reminder_cannot_set">Cannot set reminder for this program. This program is already live.</string>

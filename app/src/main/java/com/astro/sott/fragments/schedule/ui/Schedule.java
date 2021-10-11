@@ -1053,7 +1053,12 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                 alarmManager.set(AlarmManager.RTC_WAKEUP, reminderDateTimeInMilliseconds, pendingIntent);
             }
 
-            Toast.makeText(getActivity(), getResources().getString(R.string.reminder_added), Toast.LENGTH_SHORT).show();
+            try {
+                Toast.makeText(getActivity(), getResources().getString(R.string.reminder_added)+" "+asset.getName(), Toast.LENGTH_SHORT).show();
+            }catch (Exception ignored){
+
+            }
+
             new KsPreferenceKey(getActivity()).setReminderId(asset.getId().toString(), true);
             reminderIcon.setBackgroundResource(R.drawable.reminder_active_icon);
         }catch (Exception ignored){
@@ -1135,10 +1140,24 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     Asset reminderAsset;
     private void initReminderPopupFragment(Asset asset) {
         this.reminderAsset=asset;
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+       /* FragmentManager fm = getActivity().getSupportFragmentManager();
         ReminderDialogFragment cancelDialogFragment = ReminderDialogFragment.newInstance("Reminder", "");
         cancelDialogFragment.setEditDialogCallBack(Schedule.this);
-        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);*/
+        try {
+            if (reminderAsset!=null){
+                new KsPreferenceKey(getActivity()).setReminderId(reminderAsset.getId().toString(),false);
+                reminderImage.setBackgroundResource(R.drawable.ic_notifications_24px);
+                try {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.reminder_removed)+" "+reminderAsset.getName(), Toast.LENGTH_SHORT).show();
+                }catch (Exception ignored){
+
+                }
+                removeReminder(reminderAsset);
+            }
+        }catch (Exception ignored){
+
+        }
     }
 
     ImageView reminderImage;

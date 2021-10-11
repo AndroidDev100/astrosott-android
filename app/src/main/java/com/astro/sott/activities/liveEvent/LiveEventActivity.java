@@ -393,7 +393,11 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
                         alarmManager.set(AlarmManager.RTC_WAKEUP, reminderDateTimeInMilliseconds, pendingIntent);
                     }
-                    Toast.makeText(this, getResources().getString(R.string.reminder_added), Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(this, getResources().getString(R.string.reminder_added)+" "+asset.getName(), Toast.LENGTH_SHORT).show();
+                    }catch (Exception ignored){
+
+                    }
                     new KsPreferenceKey(getApplicationContext()).setReminderId(asset.getId().toString(), true);
                     getBinding().reminderActive.setVisibility(View.VISIBLE);
                     getBinding().reminder.setVisibility(View.GONE);
@@ -455,21 +459,18 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     }
 
     private void showDialog() {
-       /* AlertDialog.Builder builder = new AlertDialog.Builder(LiveEventActivity.this, R.style.AlertDialogStyle);
-        builder.setTitle(LiveEventActivity.this.getResources().getString(R.string.dialog));
-        if(LiveEventActivity.this !=null) {
-            builder.setMessage(getResources().getString(R.string.remove_alarm))
-                    .setCancelable(true)
-                    .setPositiveButton(getString(R.string.yes), (dialog, id) -> {
-                        new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(),false);
-                        getBinding().reminder.setVisibility(View.VISIBLE);
-                        getBinding().reminderActive.setVisibility(View.GONE);
-                    })
-                    .setNegativeButton(getString(R.string.no), (dialog, id) -> dialog.cancel());
-            AlertDialog alert = builder.create();
-            alert.show();
-        }*/
-        initReminderPopupFragment();
+        if (asset!=null){
+            new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(),false);
+            getBinding().reminder.setVisibility(View.VISIBLE);
+            getBinding().reminderActive.setVisibility(View.GONE);
+            try {
+                 Toast.makeText(this, getResources().getString(R.string.reminder_removed)+" "+asset.getName(), Toast.LENGTH_SHORT).show();
+            }catch (Exception ignored){
+
+            }
+            cancelAlarm();
+        }
+       // initReminderPopupFragment();
     }
 
     private void splitStartTime(String startTime) {
