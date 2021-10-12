@@ -17,14 +17,15 @@ import com.astro.sott.databinding.ActivityForgotPasswordBinding
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.CustomTextWatcher
 
-class ForgotPasswordActivity : AppCompatActivity()   {
+class ForgotPasswordActivity : AppCompatActivity() {
     private var activityForgotPasswordBinding: ActivityForgotPasswordBinding? = null
     private var astroLoginViewModel: AstroLoginViewModel? = null
     private var email_mobile: String? = null
     private var type: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityForgotPasswordBinding = DataBindingUtil.setContentView(this, R.layout.activity_forgot_password)
+        activityForgotPasswordBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_forgot_password)
         modelCall()
         setCLicks()
     }
@@ -41,14 +42,30 @@ class ForgotPasswordActivity : AppCompatActivity()   {
             onBackPressed()
         })
 
-        activityForgotPasswordBinding?.emailMobileEdt?.addTextChangedListener(CustomTextWatcher(this, object : TextWatcherCallBack {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                activityForgotPasswordBinding?.errorEmail?.visibility = View.GONE
-            }
+        activityForgotPasswordBinding?.emailMobileEdt?.addTextChangedListener(
+            CustomTextWatcher(
+                this,
+                object : TextWatcherCallBack {
+                    override fun beforeTextChanged(
+                        charSequence: CharSequence,
+                        i: Int,
+                        i1: Int,
+                        i2: Int
+                    ) {
+                    }
 
-            override fun afterTextChanged(editable: Editable) {}
-        }))
+                    override fun onTextChanged(
+                        charSequence: CharSequence,
+                        i: Int,
+                        i1: Int,
+                        i2: Int
+                    ) {
+                        activityForgotPasswordBinding?.errorEmail?.visibility = View.GONE
+                    }
+
+                    override fun afterTextChanged(editable: Editable) {}
+                })
+        )
     }
 
     private fun modelCall() {
@@ -57,39 +74,49 @@ class ForgotPasswordActivity : AppCompatActivity()   {
 
     private fun searchAccountv2() {
         activityForgotPasswordBinding?.progressBar?.visibility = View.VISIBLE
-        astroLoginViewModel?.searchAccountV2(type, email_mobile)?.observe(this, Observer { evergentCommonResponse ->
-            if (evergentCommonResponse.isStatus) {
-                createOtp()
-            } else {
-                activityForgotPasswordBinding?.progressBar?.visibility = View.GONE
-                Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()
-            }
-        })
+        astroLoginViewModel?.searchAccountV2(type, email_mobile)
+            ?.observe(this, Observer { evergentCommonResponse ->
+                if (evergentCommonResponse.isStatus) {
+                    createOtp()
+                } else {
+                    activityForgotPasswordBinding?.progressBar?.visibility = View.GONE
+                    redirecToOtpScreen()
+                }
+            })
     }
 
     private fun createOtp() {
-        astroLoginViewModel!!.createOtp(type, email_mobile).observe(this, Observer { evergentCommonResponse ->
-            activityForgotPasswordBinding?.progressBar?.visibility = View.GONE
-            if (evergentCommonResponse.isStatus) {
-               // Toast.makeText(this, "Verification code had be sent to $email_mobile", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, VerificationActivity::class.java)
-                intent.putExtra(AppLevelConstants.TYPE_KEY, type)
-                intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile)
-                intent.putExtra(AppLevelConstants.PASSWORD_KEY, "password")
-                intent.putExtra(AppLevelConstants.FROM_KEY, "signIn")
-                intent.flags = intent.flags or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT).show()
-            }
-        })
+        astroLoginViewModel!!.createOtp(type, email_mobile)
+            .observe(this, Observer { evergentCommonResponse ->
+                activityForgotPasswordBinding?.progressBar?.visibility = View.GONE
+                if (evergentCommonResponse.isStatus) {
+                    // Toast.makeText(this, "Verification code had be sent to $email_mobile", Toast.LENGTH_SHORT).show()
+                    redirecToOtpScreen()
+                } else {
+                    Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
+    }
+
+    private fun redirecToOtpScreen() {
+        val intent = Intent(this, VerificationActivity::class.java)
+        intent.putExtra(AppLevelConstants.TYPE_KEY, type)
+        intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile)
+        intent.putExtra(AppLevelConstants.PASSWORD_KEY, "password")
+        intent.putExtra(AppLevelConstants.FROM_KEY, "signIn")
+        intent.flags =
+            intent.flags or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
 
     private fun checkEmailVaildation(): Boolean {
 
         val mobilePattern = Regex("^[0-9]*$")
-        val emailPattern = Regex("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
+        val emailPattern = Regex(
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+        )
         email_mobile = activityForgotPasswordBinding?.emailMobileEdt?.text.toString()
         return if (!email_mobile.equals("", ignoreCase = true)) {
             if (mobilePattern.containsMatchIn(email_mobile!!)) {
@@ -105,7 +132,8 @@ class ForgotPasswordActivity : AppCompatActivity()   {
                     true
                 } else {
                     activityForgotPasswordBinding?.errorEmail?.visibility = View.VISIBLE
-                    activityForgotPasswordBinding?.errorEmail?.text = resources.getString(R.string.mobile_error)
+                    activityForgotPasswordBinding?.errorEmail?.text =
+                        resources.getString(R.string.mobile_error)
                     false
                 }
             } else if (emailPattern.containsMatchIn(email_mobile!!)) {
@@ -113,12 +141,14 @@ class ForgotPasswordActivity : AppCompatActivity()   {
                 true
             } else {
                 activityForgotPasswordBinding?.errorEmail?.visibility = View.VISIBLE
-                activityForgotPasswordBinding?.errorEmail?.text = resources.getString(R.string.email_suggestion)
+                activityForgotPasswordBinding?.errorEmail?.text =
+                    resources.getString(R.string.email_suggestion)
                 false
             }
         } else {
             activityForgotPasswordBinding?.errorEmail?.visibility = View.VISIBLE
-            activityForgotPasswordBinding?.errorEmail?.text = resources.getString(R.string.field_cannot_empty)
+            activityForgotPasswordBinding?.errorEmail?.text =
+                resources.getString(R.string.field_cannot_empty)
             false
         }
     }

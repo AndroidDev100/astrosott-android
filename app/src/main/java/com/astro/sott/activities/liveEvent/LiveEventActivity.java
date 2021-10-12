@@ -110,6 +110,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     private FragmentManager manager;
     private long assetId;
     private int assetType;
+    private String poster_image_url;
     private List<PersonalList> playlist = new ArrayList<>();
     private List<PersonalList> personalLists = new ArrayList<>();
     private RailBaseFragment baseRailFragment;
@@ -224,6 +225,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         } else {
                             intent.putExtra(AppLevelConstants.PLAYABLE, false);
                         }
+                        intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                         intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
@@ -252,6 +254,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         } else {
                             intent.putExtra(AppLevelConstants.PLAYABLE, false);
                         }
+                        intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                         intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
@@ -270,11 +273,11 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     }
 
     private boolean isPlayableOrNot() {
-              if((AppCommonMethods.getCurrentTimeStampLong() != null ) && (AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate) && (liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong())) {
-                  return true;
-              } else {
-                  return false;
-              }
+        if ((AppCommonMethods.getCurrentTimeStampLong() != null) && (AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate) && (liveEventEndDate > AppCommonMethods.getCurrentTimeStampLong())) {
+            return true;
+        } else {
+            return false;
+        }
 
     }
 
@@ -474,6 +477,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                                     } else {
                                                         intent.putExtra(AppLevelConstants.PLAYABLE, false);
                                                     }
+                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
@@ -504,6 +508,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                                     } else {
                                                         intent.putExtra(AppLevelConstants.PLAYABLE, false);
                                                     }
+                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
@@ -562,6 +567,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                                     } else {
                                                         intent.putExtra(AppLevelConstants.PLAYABLE, false);
                                                     }
+                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
@@ -591,6 +597,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                                     } else {
                                                         intent.putExtra(AppLevelConstants.PLAYABLE, false);
                                                     }
+                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
@@ -645,7 +652,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
 
     private StringBuilder stringBuilder;
-    private  int lineCount = 0;
+    private int lineCount = 0;
+
     private void setMetas() {
         //  getDuration();
         ///  getMovieYear();
@@ -732,8 +740,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             for (int i = 0; i < asset.getImages().size(); i++) {
                 if (asset.getImages().get(i).getRatio().equals("16x9")) {
                     String image_url = asset.getImages().get(i).getUrl();
-                    String final_url = image_url + AppLevelConstants.WIDTH + (int) getResources().getDimension(R.dimen.detail_image_width) + AppLevelConstants.HEIGHT + (int) getResources().getDimension(R.dimen.carousel_image_height) + AppLevelConstants.QUALITY;
-                    ImageHelper.getInstance(getBinding().playerImage.getContext()).loadImageToPotrait(getBinding().playerImage, final_url, R.drawable.square1);
+                    poster_image_url = image_url + AppLevelConstants.WIDTH + (int) getResources().getDimension(R.dimen.detail_image_width) + AppLevelConstants.HEIGHT + (int) getResources().getDimension(R.dimen.carousel_image_height) + AppLevelConstants.QUALITY;
+                    ImageHelper.getInstance(getBinding().playerImage.getContext()).loadImageToPotrait(getBinding().playerImage, poster_image_url, R.drawable.square1);
                 }
             }
         }

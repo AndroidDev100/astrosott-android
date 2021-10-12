@@ -237,7 +237,11 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
     @Override
     public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
-        // PrintLogging.printLog(TAG, "onPurchasesUpdate() responseCode: " + billingResult.getResponseCode());
+     /*   if (purchases != null) {
+            for (Purchase purchase : purchases) {
+                PrintLogging.printLog(TAG, "onPurchasesUpdate() responseCode: " + billingResult.getResponseCode() + "-----------" + purchase);
+            }
+        }*/
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
             if (inAppProcessListener != null) {
                 inAppProcessListener.onPurchasesUpdated(billingResult, purchases);

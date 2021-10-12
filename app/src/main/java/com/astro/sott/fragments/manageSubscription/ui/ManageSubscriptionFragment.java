@@ -118,7 +118,6 @@ public class ManageSubscriptionFragment extends BaseBindingFragment<FragmentMana
                     getLastSubscription();
                 }
             } else {
-
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
                     EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
                         if (evergentCommonResponse.isStatus()) {

@@ -26,9 +26,9 @@ public interface AppLevelConstants {
     String TITLE = "title";
     String MESSAGE = "message";
     String DATE = "date";
-    String FILE_ID= "file_id";
+    String FILE_ID = "file_id";
 
-    String TitleSortName="TitleSortName";
+    String TitleSortName = "TitleSortName";
 
 
     String POSITIVE_BUTTON_TEXT = "positiveButtonText";
@@ -80,6 +80,8 @@ public interface AppLevelConstants {
     String FILE_ID_KEY = "file_id";
     String PLAYABLE = "playable";
     String OLD_PASSWORD_KEY = "oldPassword";
+    String POSTER_IMAGE_URL = "poster_image_url";
+
     String PASSWORD_KEY = "password";
     String SOCIAL_ID = "social_id";
     String GOOGLE_WALLET = "Google Wallet";
@@ -105,7 +107,7 @@ public interface AppLevelConstants {
 
     //kaltura error codes
     String KS_EXPIRE = "500016";
-    String HOUSEHOLD_ERROR="1003";
+    String HOUSEHOLD_ERROR = "1003";
     String ALREADY_FOLLOW_ERROR = "8013";
     String ALREADY_UNFOLLOW_ERROR = "8012";
     String LOGGED_OUT_ERROR_CODE = "1019";

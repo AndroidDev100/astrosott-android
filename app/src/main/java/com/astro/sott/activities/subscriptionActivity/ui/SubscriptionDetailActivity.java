@@ -55,6 +55,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private SubscriptionViewModel subscriptionViewModel;
     private SkuDetails skuDetails;
     private ArrayList<PackDetail> packDetailList;
+    private String posterImageUrl = "";
     private boolean haveSvod = false, haveTvod = false;
 
     String fileId = "";
@@ -80,6 +81,9 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
         if (getIntent().getStringExtra(AppLevelConstants.DATE) != null)
             date = getIntent().getStringExtra(AppLevelConstants.DATE);
+
+        if (getIntent().getStringExtra(AppLevelConstants.POSTER_IMAGE_URL) != null)
+            posterImageUrl = getIntent().getStringExtra(AppLevelConstants.POSTER_IMAGE_URL);
 
         isPlayable = getIntent().getBooleanExtra(AppLevelConstants.PLAYABLE, false);
 

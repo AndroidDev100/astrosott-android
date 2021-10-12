@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "properties": [],
-      "versionCode": 1052,
-      "versionName": "21.10.5(04)",
+      "versionCode": 1055,
+      "versionName": "21.10.6(02)",
       "enabled": true,
       "outputFile": "app-prod-release.apk"
     }
