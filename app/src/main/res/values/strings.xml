@@ -93,7 +93,7 @@
     <string name="subscribed_success">Subscribed Successfully</string>
     <string name="less">Less</string>
     <string name="live">Live Now</string>
-    <string name="login_successfull">Login Successful</string>
+    <string name="login_successfull"> Login Successful!</string>
     <string name="similar_channel">Similar Channel</string>
     <string name="title_exclusives">Exclusive</string>
     <string name="live_event_msg">We know you are excited! Set a reminder and come back later when the event starts. See you!</string>
@@ -137,7 +137,7 @@
 
     <string name="no">No</string>
     <string name="ok_with_exlamation">Ok!!</string>
-    <string name="ok_understand">Ok, Understand!</string>
+    <string name="ok_understand">OK, Understand!</string>
     <string name="go">Go</string>
     <string name="exit">Exit</string>
     <string name="existing_sooka_account">Existing sooka Account</string>
@@ -166,7 +166,7 @@
     <string name="video">Video</string>
     <string name="episode">Episode</string>
     <string name="box_set">Box Set</string>
-    <string name="registered_success">You can start enjoying additional features on sooka as a registered user!</string>
+    <string name="registered_success">Registration Successful!</string>
 
     <string name="short_video">Video</string>
     <string name="short_film">Short Films</string>
@@ -180,7 +180,7 @@
     <string name="subtitle">Subtitle</string>
     <string name="audio">Audio</string>
     <string name="cancel">Cancel</string>
-    <string name="oops_no">Oops No.</string>
+    <string name="oops_no">Oops! No.</string>
     <string name="no_epg_available">Sorry, the programme guide is not available for this date.</string>
     <string name="play">Play</string>
     <string name="oops_not_connected">Oops! You\'re not connected</string>
@@ -704,7 +704,7 @@
     <string name="no_internet_description_text">It seems like there is a problem with your internet connection. Please check your connection and try again!</string>
     <string name="reload_app">Reload App</string>
 
-    <string name="logout_confirmation_message_new">Are you sure that you want to logout now?</string>
+    <string name="logout_confirmation_message_new">Are you sure you want to log out now?</string>
 
 
     <string name="contentDescription">ContentDescription</string>
