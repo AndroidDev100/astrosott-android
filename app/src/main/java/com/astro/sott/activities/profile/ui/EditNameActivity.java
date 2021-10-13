@@ -68,8 +68,8 @@ public class EditNameActivity extends BaseBindingActivity<ActivityEditNameBindin
             getBinding().progressBar.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 onBackPressed();
-                AppCommonMethods.namePushCleverTap(this,name);
-                Toast.makeText(this, updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getMessage() + "", Toast.LENGTH_SHORT).show();
+                AppCommonMethods.namePushCleverTap(this, name);
+                Toast.makeText(this, getResources().getString(R.string.name_updated_message), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
 
