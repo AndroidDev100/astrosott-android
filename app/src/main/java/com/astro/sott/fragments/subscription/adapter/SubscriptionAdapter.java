@@ -31,12 +31,14 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
     private List<PackDetail> packDetailList;
     private CardCLickedCallBack cardCLickedCallBack;
     private String eventStartDate;
+    String posterImageUrl = "";
     private List<String> productList;
 
-    public SubscriptionAdapter(Activity ctx, List<PackDetail> productsResponseMessage, List<String> productList, String date) {
+    public SubscriptionAdapter(Activity ctx, List<PackDetail> productsResponseMessage, List<String> productList, String date, String posterImageUrl) {
         this.fragment = ctx;
         packDetailList = productsResponseMessage;
         eventStartDate = date;
+        this.posterImageUrl = posterImageUrl;
         cardCLickedCallBack = (CardCLickedCallBack) ctx;
         this.productList = productList;
     }
@@ -63,6 +65,7 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
         } else {
             if (!eventStartDate.equalsIgnoreCase("")) {
                 description.append("Event Time: " + eventStartDate);
+                ImageHelper.getInstance(fragment).loadImageTo(holder.binding.packImg, posterImageUrl);
             } else {
                 if (packDetailList.get(position).getProductsResponseMessageItem().getDuration() != null && packDetailList.get(position).getProductsResponseMessageItem().getPeriod() != null) {
                     description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());

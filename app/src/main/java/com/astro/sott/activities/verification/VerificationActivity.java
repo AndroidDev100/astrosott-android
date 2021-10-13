@@ -19,6 +19,7 @@ import com.astro.sott.activities.forgotPassword.ui.PasswordChangedDialog;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.profile.ui.EditPasswordActivity;
 import com.astro.sott.activities.verification.dialog.MaximumLimitDialog;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
@@ -44,8 +45,9 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     private AstroLoginViewModel astroLoginViewModel;
     private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "", origin = "";
     private CountDownTimer countDownTimer;
-    private String num ="+91";
-    private StringBuilder stringBuilder = new StringBuilder();;
+    private String num = "+91";
+    private StringBuilder stringBuilder = new StringBuilder();
+    ;
     private List<SocialLoginTypesItem> socialLoginTypesItem;
 
     @Override
@@ -71,7 +73,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             newEmail = getIntent().getExtras().getString("newEmail");
         if (getIntent().getExtras().getString("newMobile") != null)
             newMobile = getIntent().getExtras().getString("newMobile");
-        Log.d("eMOBILENUMBER",newMobile+"");
+        Log.d("eMOBILENUMBER", newMobile + "");
 
 
         password = getIntent().getExtras().getString(AppLevelConstants.PASSWORD_KEY);
@@ -81,8 +83,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 emailMobile = newEmail;
             } else if (loginType.equalsIgnoreCase("Mobile")) {
                 emailMobile = newMobile;
-                stringBuilder=stringBuilder.append(num+emailMobile);
-                        Log.d("eMOBILENUMBER",stringBuilder+"");
+                stringBuilder = stringBuilder.append(num + emailMobile);
+                Log.d("eMOBILENUMBER", stringBuilder + "");
             }
         }
         if (emailMobile != null && !emailMobile.equalsIgnoreCase("")) {
@@ -246,19 +248,10 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void changePassword() {
-        astroLoginViewModel.changePassword(UserInfo.getInstance(this).getAccessToken(), oldPassword, password).observe(this, changePasswordResponse -> {
-            if (changePasswordResponse.isStatus() && changePasswordResponse.getResponse().getChangePasswordResponseMessage() != null) {
-                FragmentManager fm = getSupportFragmentManager();
-                PasswordChangedDialog cancelDialogFragment = PasswordChangedDialog.newInstance("Detail Page", "");
-                cancelDialogFragment.setEditDialogCallBack(VerificationActivity.this);
-                cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
-            } else {
-                Toast.makeText(this, changePasswordResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, getResources().getString(R.string.password_change_failed), Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(getApplicationContext(), EditPasswordActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
 
-                onBackPressed();
-            }
-        });
     }
 
     private void createOtp() {
@@ -269,7 +262,6 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             if (evergentCommonResponse.isStatus()) {
                 Toast.makeText(this, "Verification code resend " + (evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getCurrentOTPCount() - 1) + " of " + (evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getMaxOTPCount() - 1), Toast.LENGTH_SHORT).show();
                 countDownTimer();
-
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2846")) {
                     FragmentManager fm = getSupportFragmentManager();

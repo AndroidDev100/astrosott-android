@@ -163,6 +163,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         } else {
             bundle.putString(AppLevelConstants.FROM_KEY, "detail");
         }
+        if (posterImageUrl != null && !posterImageUrl.equalsIgnoreCase(""))
+            bundle.putString(AppLevelConstants.POSTER_IMAGE_URL, posterImageUrl);
         bundle.putString(AppLevelConstants.DATE, date);
         bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
         subscriptionPacksFragment.setArguments(bundle);

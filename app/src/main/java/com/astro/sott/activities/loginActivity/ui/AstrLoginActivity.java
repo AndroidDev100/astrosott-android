@@ -244,7 +244,6 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 String password = getBinding().passwordEdt.getText().toString();
                 if (checkPasswordValidation(password)) {
                     getBinding().passwordError.setText(getString(R.string.password_rules));
-
                     login(password);
                 } else {
                     getBinding().passwordError.setTextColor(getResources().getColor(R.color.red_live));

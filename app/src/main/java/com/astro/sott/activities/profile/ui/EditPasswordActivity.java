@@ -2,6 +2,7 @@ package com.astro.sott.activities.profile.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.forgotPassword.ui.PasswordChangedDialog;
+import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
@@ -25,7 +28,7 @@ import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.userInfo.UserInfo;
 
-public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswordBinding> {
+public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswordBinding> implements PasswordChangedDialog.EditDialogListener {
     private AstroLoginViewModel astroLoginViewModel;
     private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
 
@@ -64,7 +67,22 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
         });
         getBinding().update.setOnClickListener(v -> {
             String newPassword = getBinding().newPsw.getText().toString();
-            if (UserInfo.getInstance(this).isPasswordExists()) {
+            if (!newPassword.equalsIgnoreCase("")) {
+                if (!newPassword.matches(PASSWORD_REGEX)) {
+                    getBinding().newPasswordError.setVisibility(View.VISIBLE);
+                    getBinding().newPasswordError.setTextColor(getResources().getColor(R.color.red_live));
+                    getBinding().newPasswordError.setText(getResources().getString(R.string.password_rules));
+                } else {
+                    getBinding().newPasswordError.setVisibility(View.GONE);
+                    resetPassword(newPassword);
+                    // changePassword(newPassword);
+                }
+            } else {
+                getBinding().newPasswordError.setVisibility(View.VISIBLE);
+                getBinding().newPasswordError.setTextColor(getResources().getColor(R.color.red_live));
+                getBinding().newPasswordError.setText(getResources().getString(R.string.field_cannot_empty));
+            }
+           /* if (UserInfo.getInstance(this).isPasswordExists()) {
                 String oldPassword = getBinding().existingPsw.getText().toString();
 
                 if (!oldPassword.matches(PASSWORD_REGEX)) {
@@ -77,7 +95,7 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
                 }
             } else {
                 setPassword(newPassword);
-            }
+            }*/
         });
         setTextWatcher();
     }
@@ -125,8 +143,8 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
         }));
     }
 
-    private String email_mobile = "", type = "",num="+91";
-    private StringBuilder stringBuilder =new StringBuilder();
+    private String email_mobile = "", type = "", num = "+91";
+    private StringBuilder stringBuilder = new StringBuilder();
 
     private void createOtp() {
         if (!UserInfo.getInstance(this).getEmail().equalsIgnoreCase("")) {
@@ -134,9 +152,9 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
             email_mobile = UserInfo.getInstance(this).getEmail();
         } else if (!UserInfo.getInstance(this).getMobileNumber().equalsIgnoreCase("")) {
             type = "mobile";
-            email_mobile =UserInfo.getInstance(this).getMobileNumber();
+            email_mobile = UserInfo.getInstance(this).getMobileNumber();
 //            email_mobile = num+UserInfo.getInstance(this).getMobileNumber();
-            Log.d("mobilenum",email_mobile);
+            Log.d("mobilenum", email_mobile);
         }
 
         astroLoginViewModel.createOtp(type, email_mobile).observe(this, evergentCommonResponse -> {
@@ -155,5 +173,36 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void resetPassword(String password) {
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        astroLoginViewModel.setPassword(UserInfo.getInstance(this).getAccessToken(), password).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (evergentCommonResponse.isStatus()) {
+                Toast.makeText(this, "Password changed", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void changePassword(String newPassword) {
+        astroLoginViewModel.changePassword(UserInfo.getInstance(this).getAccessToken(), newPassword, newPassword).observe(this, changePasswordResponse -> {
+            if (changePasswordResponse.isStatus() && changePasswordResponse.getResponse().getChangePasswordResponseMessage() != null) {
+                FragmentManager fm = getSupportFragmentManager();
+                PasswordChangedDialog cancelDialogFragment = PasswordChangedDialog.newInstance("Detail Page", "");
+                cancelDialogFragment.setEditDialogCallBack(EditPasswordActivity.this);
+                cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+            } else {
+                Toast.makeText(this, changePasswordResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                new ActivityLauncher(EditPasswordActivity.this).profileScreenRedirection(EditPasswordActivity.this, HomeActivity.class);
+            }
+        });
+    }
+
+    @Override
+    public void onPasswordChanged() {
+        new ActivityLauncher(EditPasswordActivity.this).profileScreenRedirection(EditPasswordActivity.this, HomeActivity.class);
     }
 }

@@ -12,12 +12,14 @@ import android.widget.Toast;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
+import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityEditProfileBinding;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -114,9 +116,8 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             startActivity(i);
         });
         getBinding().editpassword.setOnClickListener(view -> {
-            Intent i = new Intent(getApplicationContext(), EditPasswordActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
+            checkForPassword();
+
         });
 
         getBinding().linkFb.setOnClickListener(v -> {
@@ -149,6 +150,39 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
 
     }
 
+    private void checkForPassword() {
+        if (!UserInfo.getInstance(this).isPasswordExists()) {
+
+        } else {
+            createOtp();
+        }
+    }
+
+    private void createOtp() {
+        if (!UserInfo.getInstance(this).getEmail().equalsIgnoreCase("")) {
+            type = "email";
+            email_mobile = UserInfo.getInstance(this).getEmail();
+        } else if (!UserInfo.getInstance(this).getMobileNumber().equalsIgnoreCase("")) {
+            type = "mobile";
+            email_mobile = UserInfo.getInstance(this).getMobileNumber();
+//            email_mobile = num+UserInfo.getInstance(this).getMobileNumber();
+            Log.d("mobilenum", email_mobile);
+        }
+
+        astroLoginViewModel.createOtp(type, email_mobile).observe(this, evergentCommonResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (evergentCommonResponse.isStatus()) {
+                Intent intent = new Intent(this, VerificationActivity.class);
+                intent.putExtra(AppLevelConstants.TYPE_KEY, type);
+                intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);
+                intent.putExtra(AppLevelConstants.FROM_KEY, "changePassword");
+                startActivity(intent);
+
+            } else {
+                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     protected void onStart() {

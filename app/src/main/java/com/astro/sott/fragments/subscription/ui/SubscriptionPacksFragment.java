@@ -50,7 +50,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     private List<PackDetail> packDetailList;
     private List<String> productList;
     private String[] subscriptionIds;
-
+    private String posterImageUrl = "";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -97,6 +97,11 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
         if (getArguments().getSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY) != null)
             subscriptionIds = (String[]) getArguments().getSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY);
 
+        if (getArguments().getString(AppLevelConstants.POSTER_IMAGE_URL) != null) {
+            posterImageUrl = getArguments().getString(AppLevelConstants.POSTER_IMAGE_URL);
+        } else {
+            posterImageUrl = "";
+        }
 
         productList = (ArrayList<String>) getArguments().getSerializable("productList");
     }
@@ -117,7 +122,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
     }
 
     private void loadDataFromModel(List<PackDetail> productsResponseMessage) {
-        SubscriptionAdapter adapter = new SubscriptionAdapter(getActivity(), productsResponseMessage, productList, date);
+        SubscriptionAdapter adapter = new SubscriptionAdapter(getActivity(), productsResponseMessage, productList, date, posterImageUrl);
         getBinding().recyclerView.setAdapter(adapter);
     }
 
@@ -246,7 +251,7 @@ public class SubscriptionPacksFragment extends BaseBindingFragment<FragmentSubsc
 
 
     @Override
-    public void onCardClicked(String productId, String serviceType, String a,String name,Long price) {
+    public void onCardClicked(String productId, String serviceType, String a, String name, Long price) {
 
     }
 }
