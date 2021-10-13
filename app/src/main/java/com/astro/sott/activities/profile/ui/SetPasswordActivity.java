@@ -2,6 +2,7 @@ package com.astro.sott.activities.profile.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -17,12 +18,14 @@ import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivitySetPasswordBinding;
+import com.astro.sott.fragments.dialog.CommonDialogFragment;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.userInfo.UserInfo;
 
-public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPasswordBinding> {
+public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPasswordBinding>  implements CommonDialogFragment.EditDialogListener{
     private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
     private boolean passwordVisibilityNewPassword = false;
     private String accessToken = "", newEmail = "", newMobile = "", token = "";
@@ -120,15 +123,28 @@ public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPassword
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 if (type.equalsIgnoreCase("email")) {
                     AppCommonMethods.emailPushCleverTap(this, name);
+                    commonDialog(getResources().getString(R.string.email_updated), getResources().getString(R.string.email_updated_Description), getResources().getString(R.string.ok_single_exlamation));
                 } else {
                     AppCommonMethods.mobilePushCleverTap(this, name);
+                    commonDialog(getResources().getString(R.string.mobile_updated), getResources().getString(R.string.mobile_updated_description), getResources().getString(R.string.ok_single_exlamation));
+
                 }
-                new ActivityLauncher(this).profileActivity(this);
-                Toast.makeText(this, updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getMessage() + "", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
 
             }
         });
+    }
+
+    private void commonDialog(String tiltle, String description, String actionBtn) {
+        FragmentManager fm = getSupportFragmentManager();
+        CommonDialogFragment commonDialogFragment = CommonDialogFragment.newInstance(tiltle, description, actionBtn);
+        commonDialogFragment.setEditDialogCallBack(this);
+        commonDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+    }
+
+    @Override
+    public void onActionBtnClicked() {
+        new ActivityLauncher(this).profileActivity(this);
     }
 }

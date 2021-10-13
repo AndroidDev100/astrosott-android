@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,12 @@ import com.google.android.gms.tasks.Task;
 public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBinding> implements View.OnClickListener {
     private BillingProcessor billingProcessor;
     private AstroLoginViewModel astroLoginViewModel;
+    private String email_mobile = "", type = "";
+    private boolean passwordVisibility = false;
+
+    private String password, newEmail;
+
+    private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
     private boolean alreadyEmail = false;
     private final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -80,25 +87,47 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
         getBinding().backButton.setOnClickListener(v -> {
             onBackPressed();
         });
-        getBinding().button.setOnClickListener(v -> {
-            String email = getBinding().newEmail.getText().toString();
-            if (email.matches(EMAIL_REGEX)) {
-                if (alreadyEmail && UserInfo.getInstance(this).isPasswordExists()) {
-                    Intent intent = new Intent(this, ConfirmPasswordActivity.class);
-                    intent.putExtra("newEmail", email);
-                    startActivity(intent);
-                } else if (alreadyEmail && !UserInfo.getInstance(this).isPasswordExists()) {
-                    createOtp(email);
-                } else if (!alreadyEmail && UserInfo.getInstance(this).isPasswordExists()) {
-                    Intent intent = new Intent(this, ConfirmPasswordActivity.class);
-                    intent.putExtra("newEmail", email);
-                    startActivity(intent);
-                } else if (!alreadyEmail && !UserInfo.getInstance(this).isPasswordExists()) {
 
+        getBinding().eyeIcon.setOnClickListener(view -> {
+            if (passwordVisibility) {
+                getBinding().eyeIcon.setBackgroundResource(R.drawable.ic_outline_visibility_off_light);
+                getBinding().confirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                passwordVisibility = false;
+            } else {
+                passwordVisibility = true;
+                getBinding().confirmPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+                getBinding().eyeIcon.setBackgroundResource(R.drawable.ic_outline_visibility_light);
+
+            }
+            getBinding().confirmPassword.setSelection(getBinding().confirmPassword.getText().length());
+        });
+        getBinding().button.setOnClickListener(v -> {
+            newEmail = getBinding().newEmail.getText().toString();
+            if (!newEmail.equalsIgnoreCase("")) {
+                if (true) {
+                    if (alreadyEmail && UserInfo.getInstance(this).isPasswordExists()) {
+
+                        checkPasswordValidation();
+                       /* Intent intent = new Intent(this, ConfirmPasswordActivity.class);
+                        intent.putExtra("newEmail", newEmail);
+                        startActivity(intent);*/
+                    } else if (alreadyEmail && !UserInfo.getInstance(this).isPasswordExists()) {
+                        createOtp(newEmail);
+                    } else if (!alreadyEmail && UserInfo.getInstance(this).isPasswordExists()) {
+                        checkPasswordValidation();
+                        /*Intent intent = new Intent(this, ConfirmPasswordActivity.class);
+                        intent.putExtra("newEmail", newEmail);
+                        startActivity(intent);*/
+                    } else if (!alreadyEmail && !UserInfo.getInstance(this).isPasswordExists()) {
+
+                    }
+                } else {
+                    getBinding().errorEmail.setVisibility(View.VISIBLE);
+                    getBinding().errorEmail.setText(getResources().getString(R.string.email_error));
                 }
             } else {
                 getBinding().errorEmail.setVisibility(View.VISIBLE);
-                getBinding().errorEmail.setText(getResources().getString(R.string.email_error));
+                getBinding().errorEmail.setText(getResources().getString(R.string.field_cannot_empty));
             }
 
         });
@@ -118,6 +147,62 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
 
             }
         }));
+    }
+
+    private void checkPasswordValidation() {
+        password = getBinding().confirmPassword.getText().toString();
+        if (!password.equalsIgnoreCase("")) {
+            if (password.matches(PASSWORD_REGEX)) {
+                getBinding().errorPasssword.setVisibility(View.GONE);
+                checkCredential();
+            } else {
+                getBinding().errorPasssword.setVisibility(View.VISIBLE);
+                getBinding().errorPasssword.setText(getResources().getString(R.string.password_rules));
+            }
+        } else {
+            getBinding().errorPasssword.setText(getResources().getString(R.string.field_cannot_empty));
+            getBinding().errorPasssword.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void checkCredential() {
+        if (UserInfo.getInstance(this).getEmail().equalsIgnoreCase("")) {
+            type = "Mobile";
+            email_mobile = UserInfo.getInstance(this).getMobileNumber();
+        } else {
+            type = "Email";
+            email_mobile = UserInfo.getInstance(this).getEmail();
+        }
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        astroLoginViewModel.checkCredential(password, email_mobile, type).observe(this, checkCredentialResponse -> {
+            if (checkCredentialResponse != null && checkCredentialResponse.getResponse() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
+                createOtp();
+            } else {
+                getBinding().progressBar.setVisibility(View.GONE);
+                Toast.makeText(this, checkCredentialResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void createOtp() {
+        type = "Email";
+        astroLoginViewModel.createOtp(type, newEmail).observe(this, evergentCommonResponse -> {
+            if (evergentCommonResponse.isStatus()) {
+                getBinding().progressBar.setVisibility(View.GONE);
+                Intent intent = new Intent(this, VerificationActivity.class);
+                intent.putExtra(AppLevelConstants.TYPE_KEY, type);
+                intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, newEmail);
+                if (!newEmail.equalsIgnoreCase(""))
+                    intent.putExtra("newEmail", newEmail);
+                intent.putExtra(AppLevelConstants.PASSWORD_KEY, password);
+                intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD);
+                startActivity(intent);
+            } else {
+                getBinding().progressBar.setVisibility(View.GONE);
+                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @SuppressLint("NonConstantResourceId")

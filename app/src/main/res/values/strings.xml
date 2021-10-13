@@ -27,6 +27,10 @@
     <string name="follow"><b>Follow </b></string>
     <string name="following">Following</string>
     <string name="Email">Email</string>
+    <string name="email_updated">Email Updated!</string>
+    <string name="mobile_updated">Mobile Number Updated!</string>
+    <string name="mobile_updated_description">New Mobile Number updated successfully. You may use this for future login with password.</string>
+    <string name="email_updated_Description">New Email updated successfully. You may use this for future login with password.</string>
     <string name="sms">SMS</string>
     <string name="push">Push</string>
 
@@ -134,6 +138,8 @@
     <string name="yes">Yes !</string>
     <string name="ok">Ok</string>
     <string name="ok_double_exlamation">OK!!</string>
+    <string name="ok_single_exlamation">OK!</string>
+
 
     <string name="no">No</string>
     <string name="ok_with_exlamation">Ok!!</string>
@@ -583,7 +589,7 @@
     <string name="verification_code_Send">Verification code had be sent to </string>
     <string name="select_one">You need to make at least one selection first!</string>
     <string name="profile_txt">Profile</string>
-    <string name="link_success">Your account is linked</string>
+    <string name="link_success">Linked Successfully</string>
     <string name="unlink_success">Your account is unlinked</string>
 
     <string name="acount_mismatch">You can not link this account</string>
@@ -706,7 +712,7 @@
 
     <string name="logout_confirmation_message_new">Are you sure you want to log out now?</string>
 
-
+    <string name="edit_email_title">Please enter your new email address and confirm with your password</string>
     <string name="contentDescription">ContentDescription</string>
     <string name="english">English</string>
     <string name="bahasha">Bahasa Melayu</string>

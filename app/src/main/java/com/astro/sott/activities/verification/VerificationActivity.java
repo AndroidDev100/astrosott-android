@@ -18,6 +18,7 @@ import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
 import com.astro.sott.activities.forgotPassword.ui.PasswordChangedDialog;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
+import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.profile.ui.EditPasswordActivity;
 import com.astro.sott.activities.verification.dialog.MaximumLimitDialog;
@@ -25,6 +26,7 @@ import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionAct
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityVerificationBinding;
+import com.astro.sott.fragments.dialog.CommonDialogFragment;
 import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.fragments.verification.Verification;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
@@ -41,7 +43,7 @@ import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.List;
 
-public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> implements MaximumLimitDialog.EditDialogListener, PasswordChangedDialog.EditDialogListener {
+public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> implements MaximumLimitDialog.EditDialogListener, PasswordChangedDialog.EditDialogListener, CommonDialogFragment.EditDialogListener {
     private AstroLoginViewModel astroLoginViewModel;
     private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "", origin = "";
     private CountDownTimer countDownTimer;
@@ -234,17 +236,24 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 if (type.equalsIgnoreCase("email")) {
                     AppCommonMethods.emailPushCleverTap(this, name);
+                    commonDialog(getResources().getString(R.string.email_updated), getResources().getString(R.string.email_updated_Description), getResources().getString(R.string.ok_single_exlamation));
                 } else {
                     AppCommonMethods.mobilePushCleverTap(this, name);
+                    commonDialog(getResources().getString(R.string.mobile_updated), getResources().getString(R.string.mobile_updated_description), getResources().getString(R.string.ok_single_exlamation));
 
                 }
-                new ActivityLauncher(this).profileActivity(this);
-                Toast.makeText(this, updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getMessage() + "", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
 
             }
         });
+    }
+
+    private void commonDialog(String tiltle, String description, String actionBtn) {
+        FragmentManager fm = getSupportFragmentManager();
+        CommonDialogFragment commonDialogFragment = CommonDialogFragment.newInstance(tiltle, description, actionBtn);
+        commonDialogFragment.setEditDialogCallBack(this);
+        commonDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
     }
 
     private void changePassword() {
@@ -421,5 +430,10 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     @Override
     public void onPasswordChanged() {
         new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);
+    }
+
+    @Override
+    public void onActionBtnClicked() {
+        new ActivityLauncher(this).profileActivity(this);
     }
 }

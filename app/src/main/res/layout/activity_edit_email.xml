@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout >
+<layout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -22,10 +22,10 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
                 android:layout_margin="@dimen/_8sdp"
-                android:padding="7dp"
+                android:contentDescription="@string/contentDescription"
 
-                android:src="@drawable/ic_back"
-                android:contentDescription="@string/contentDescription" />
+                android:padding="7dp"
+                android:src="@drawable/ic_back" />
 
             <TextView
                 android:id="@+id/title"
@@ -44,6 +44,7 @@
 
         </RelativeLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,10 +54,23 @@
             android:layout_marginEnd="@dimen/_13sdp"
             android:orientation="vertical">
 
+
+            <TextView
+                android:id="@+id/email_edt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/edit_email_title"
+                android:textColor="@color/white"
+                android:textSize="16sp"></TextView>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:foregroundTint="@color/white"
                 android:textColorHint="@color/grey"
                 android:visibility="gone"
@@ -117,6 +131,73 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_new_email" />
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout_confirm_Password"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:foregroundTint="@color/white"
+                        android:textColorHint="@color/grey"
+                        app:boxStrokeColor="@color/white"
+                        app:hintTextColor="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/confirm_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:backgroundTint="@color/white"
+                            android:fontFamily="@font/roboto_regular"
+                            android:foregroundTint="@color/white"
+                            android:hint="@string/confirm_psw"
+                            android:inputType="text|textPassword"
+                            android:maxLines="1"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textCursorDrawable="@drawable/cursor_color"
+                            android:textSize="@dimen/_16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageView
+                        android:id="@+id/eye_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginEnd="18dp"
+                        android:background="@drawable/ic_outline_visibility_off_light"
+                        android:contentDescription="@string/contentDescription" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"></View>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/error_passsword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen16dp"
+                android:text="@string/password_error"
+                android:textColor="@color/red_live"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/confirm_password" />
+
             <Button
                 android:id="@+id/button"
                 android:layout_width="match_parent"
@@ -133,5 +214,14 @@
 
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:elevation="5dp"
+            android:theme="@style/progressBarBlue"
+            android:visibility="gone" />
     </RelativeLayout>
 </layout>

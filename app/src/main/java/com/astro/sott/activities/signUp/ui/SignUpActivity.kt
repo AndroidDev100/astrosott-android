@@ -219,7 +219,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                         checkPasswordValidation(password)
 
                     }
-                } else*/ if (emailPattern.containsMatchIn(email_mobile)) {
+                } else*/ if (true) {
                     checkPassword("email", email_mobile, password)
                 } else {
 

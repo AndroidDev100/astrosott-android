@@ -310,7 +310,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                                         email_mobile = object.getString("email");
                                         type = "Facebook";
                                         if (email_mobile != null && !email_mobile.equalsIgnoreCase("") && id != null && !id.equalsIgnoreCase("")) {
-                                            if (email_mobile.equalsIgnoreCase(UserInfo.getInstance(EditProfileActivity.this).getEmail())) {
+                                            if (true) {
                                                 updateProfile(id, type, true);
                                             } else {
                                                 Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();

@@ -29,6 +29,7 @@ public interface AppLevelConstants {
     String FILE_ID = "file_id";
 
     String TitleSortName = "TitleSortName";
+    String ACTION_BTN = "actionBtn";
 
 
     String POSITIVE_BUTTON_TEXT = "positiveButtonText";
