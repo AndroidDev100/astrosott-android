@@ -30,6 +30,8 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ConsumeParams;
+import com.android.billingclient.api.ConsumeResponseListener;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
@@ -888,6 +890,29 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                     }
                 };
         executeServiceRequest(() -> myBillingClient.acknowledgePurchase(params, listener));
+    }
+
+    private void handleConsumablePurchasesAsync(Purchase purchase) {
+        try {
+            // Generating Consume Response listener
+            final ConsumeResponseListener listener =
+                    (billingResult, purchaseToken) -> {
+                        // If billing service was disconnected, we try to reconnect 1 time
+                        // (feel free to introduce your retry policy here).
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                            Log.w("tvod", "consumed");
+                        } else {
+                            Log.w("tvod", "failed");
+                        }
+                    };
+            // Consume the purchase async
+            final ConsumeParams consumeParams =
+                    ConsumeParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken()).build();
+            // Creating a runnable from the request to use it inside our connection retry policy below
+            executeServiceRequest(() -> myBillingClient.consumeAsync(consumeParams, listener));
+        } catch (Exception e) {
+
+        }
     }
 
     public BillingClient getMyBillingClient() {
