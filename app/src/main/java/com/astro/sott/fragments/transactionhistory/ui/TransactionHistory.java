@@ -1,9 +1,11 @@
 package com.astro.sott.fragments.transactionhistory.ui;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -117,8 +120,13 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         FirebaseEventManager.getFirebaseInstance(getActivity()).trackScreenName(FirebaseEventManager.TRANSACTION_HISTORY);
         setClicks();
         getPaymentV2();
-        allowPermission();
+        boolean permission = osPermission();
+      /*  Log.w("permission-->>", permission + "");
+        if (permission) {
 
+        } else {
+            requestPermission();
+        }*/
     }
 
     private void setClicks() {
@@ -142,22 +150,48 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
 
         });
         getBinding().downloadButton.setOnClickListener(v -> {
-            if (orderList.size() > 0) {
-                if (checkboxVisible) {
-                    checkboxVisible = false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (orderList.size() > 0) {
+                    if (checkboxVisible) {
+                        checkboxVisible = false;
+                    } else {
+                        checkboxVisible = true;
+                    }
+
+                    if (getBinding().selectedText.getText().toString().equalsIgnoreCase(getResources().getString(R.string.successful))) {
+                        loadDataFromModel(approvedList, checkboxVisible);
+                    } else if (getBinding().selectedText.getText().toString().equalsIgnoreCase(getResources().getString(R.string.pending))) {
+                        loadDataFromModel(pendingList, checkboxVisible);
+                    } else if (getBinding().selectedText.getText().toString().equalsIgnoreCase(getResources().getString(R.string.failed))) {
+                        loadDataFromModel(failedOrderList, checkboxVisible);
+                    }
+
+                }
+            } else {
+               /* boolean permission = osPermissionDenied();
+                Log.w("permissionResult", permission + "");
+                if (permission) {
+
                 } else {
-                    checkboxVisible = true;
-                }
+                    if (orderList.size() > 0) {
+                        if (checkboxVisible) {
+                            checkboxVisible = false;
+                        } else {
+                            checkboxVisible = true;
+                        }
 
-                if (getBinding().selectedText.getText().toString().equalsIgnoreCase(getResources().getString(R.string.successful))) {
-                    loadDataFromModel(approvedList, checkboxVisible);
-                } else if (getBinding().selectedText.getText().toString().equalsIgnoreCase(getResources().getString(R.string.pending))) {
-                    loadDataFromModel(pendingList, checkboxVisible);
-                } else if (getBinding().selectedText.getText().toString().equalsIgnoreCase(getResources().getString(R.string.failed))) {
-                    loadDataFromModel(failedOrderList, checkboxVisible);
-                }
+                        if (getBinding().selectedText.getText().toString().equalsIgnoreCase(getResources().getString(R.string.successful))) {
+                            loadDataFromModel(approvedList, checkboxVisible);
+                        } else if (getBinding().selectedText.getText().toString().equalsIgnoreCase(getResources().getString(R.string.pending))) {
+                            loadDataFromModel(pendingList, checkboxVisible);
+                        } else if (getBinding().selectedText.getText().toString().equalsIgnoreCase(getResources().getString(R.string.failed))) {
+                            loadDataFromModel(failedOrderList, checkboxVisible);
+                        }
 
+                    }
+                }*/
             }
+
         });
 
         getBinding().downloadAll.setOnClickListener(v -> {
@@ -172,6 +206,47 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
 
         });
     }
+
+
+   /* private boolean osPermissionDenied() {
+        boolean ispermissionDenied=false;
+        int result1 = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (result1==PackageManager.PERMISSION_DENIED){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Log.w("permissionResult","showRationalPopup");
+            }else{
+                Log.w("permissionResult","dontAskPermission");
+            }
+            return ispermissionDenied=true;
+        }else if (result1==PackageManager.PERMISSION_GRANTED){
+            return ispermissionDenied=false;
+        }else {
+            return false;
+        }
+    }*/
+
+    private boolean osPermission() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return true;
+        } else {
+            return false;
+          /*  int result = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            int result1 = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;*/
+        }
+        //  int result1 = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        // return result1 == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+
+    }
+
+    private int osPermissionNew() {
+        return 0;
+      /*  int result1 = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        Log.w("permissionResult", PackageManager.PERMISSION_GRANTED + "");
+        return PackageManager.PERMISSION_GRANTED;*/
+    }
+
 
     private void checkForSelected() {
         String selectedText = getBinding().selectedText.getText().toString();
@@ -235,7 +310,6 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
 
                     }
                 } else {
-                    //   urls[count]="ankuryadav";
                     //  new DownloadFileFromURL().execute(urls);
                     Toast.makeText(getActivity(), invoiceResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
@@ -340,26 +414,30 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         });
     }
 
-    private void allowPermission() {
+ /*   private void allowPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkPermission()) {
 
             } else {
                 requestPermission(); // Code for permission
             }
-        } else {
-            // Code for Below 23 API Oriented Device
-            // Do next code
         }
-    }
+    }*/
 
     private void requestPermission() {
-        ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+      /*  if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        }*/
+
     }
 
+
     private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        return result == PackageManager.PERMISSION_GRANTED;
+        return false;
+       /* int result = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return result == PackageManager.PERMISSION_GRANTED;*/
     }
 
     @Override
@@ -425,7 +503,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     savePdfFile(f_url[i], "astro_transaction" + i);
                 } else {
-                    getFileFromBase64AndSaveInSDCard(f_url[i], "astro_transaction" + i, "pdf");
+                    //   getFileFromBase64AndSaveInSDCard(f_url[i], "astro_transaction" + i, "pdf");
                 }
             }
 
