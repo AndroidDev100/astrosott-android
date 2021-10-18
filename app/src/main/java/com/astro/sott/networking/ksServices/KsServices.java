@@ -477,11 +477,11 @@ public class KsServices {
                     } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())) {
                         channelFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
                     } else {
-                        channelFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+                       // channelFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
                     }
 
                 } else {
-                    channelFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+                   // channelFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
                 }
 
                 PrintLogging.printLog("", "sortvalueIS" + KsPreferenceKey.getInstance(context).getFilterSortBy());

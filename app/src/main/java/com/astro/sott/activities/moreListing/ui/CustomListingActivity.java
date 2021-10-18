@@ -135,6 +135,7 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
             isApiCalling=true;
             getTrendingListing();
         } else if (customRailType.equalsIgnoreCase(AppLevelConstants.PPV_RAIL)) {
+            getBinding().toolbar.ivfilter.setVisibility(View.GONE);
             getPPVLiSTING();
         } else if (customRailType.equalsIgnoreCase(AppLevelConstants.LIVECHANNEL_RAIL)) {
             //need to apply filter-->>icon will always show
