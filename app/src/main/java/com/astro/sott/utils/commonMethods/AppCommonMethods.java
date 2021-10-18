@@ -1967,7 +1967,7 @@ public class AppCommonMethods {
             e.printStackTrace();
         }
 
-        return false;
+        return true;
     }
 
 

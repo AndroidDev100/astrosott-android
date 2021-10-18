@@ -857,9 +857,39 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
                 } else {
                 }
+
+                queryPurchaseProduct(context);
+
             }
         }
 
+    }
+
+    private void queryPurchaseProduct(Activity context) {
+        final Purchase.PurchasesResult purchasesProductResult =
+                myBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+
+        final List<Purchase> purchasesArraylist = new ArrayList<>();
+        if (purchasesProductResult.getPurchasesList() != null) {
+            purchasesArraylist.addAll(purchasesProductResult.getPurchasesList());
+        }
+
+        if (purchasesArraylist.size() > 0) {
+            for (Purchase purchaseProductItem : purchasesArraylist) {
+                try {
+
+                    JSONObject jsonObject = new JSONObject(purchaseProductItem.getOriginalJson());
+                    Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
+                    if (!isAcknowledged) {
+                        acknowledgeNonConsumablePurchases(purchaseProductItem);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+        }
     }
 
 

@@ -67,6 +67,7 @@ public class MaxisEditRestrictionPop extends DialogFragment {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
                     .TRANSPARENT));
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCancelable(false);
             // Get field from view
             inputLayoutDialog = view.findViewById(R.id.input_layout_dialog);
             title_value = getArguments().getString(AppLevelConstants.TITLE);
