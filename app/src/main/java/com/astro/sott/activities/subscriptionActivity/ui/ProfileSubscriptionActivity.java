@@ -29,6 +29,7 @@ import com.astro.sott.fragments.subscription.dialog.UpgradeDialogFragment;
 import com.astro.sott.fragments.subscription.ui.NewSubscriptionPacksFragment;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.modelClasses.InApp.PackDetail;
+import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.TabsData;
@@ -92,7 +93,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     //  PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
                     // handle pending purchases, e.g. confirm with users about the pending
                     // purchases, prompt them to complete it, etc.
-                    Toast.makeText(this,getResources().getString(R.string.something_went_wrong),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (Exception ignored) {
@@ -132,13 +133,22 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failed", "Content Details Page");
                 } catch (Exception ex) {
                 }
-                if (from.equalsIgnoreCase("Content Detail Page")) {
-                    onBackPressed();
+                if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals("111111111")) {
+                    EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                        if (evergentCommonResponse1.isStatus()) {
+                            handlePurchase(purchase);
+                        } else {
+                            AppCommonMethods.removeUserPrerences(this);
+                        }
+                    });
                 } else {
-                    setFragment();
+                    if (from.equalsIgnoreCase("Content Detail Page")) {
+                        onBackPressed();
+                    } else {
+                        setFragment();
+                    }
+                    Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-
             }
         });
 

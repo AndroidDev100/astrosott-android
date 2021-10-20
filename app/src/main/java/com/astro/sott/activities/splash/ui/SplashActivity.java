@@ -869,7 +869,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     private void showAnimation() {
         Animation slideUP = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.fade_in);
-        getBinding().splashImage.startAnimation(slideUP);
+    //    getBinding().splashImage.startAnimation(slideUP);
         slideUP.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {

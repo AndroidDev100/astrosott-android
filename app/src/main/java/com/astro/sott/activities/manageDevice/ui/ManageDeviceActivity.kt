@@ -124,8 +124,25 @@ class ManageDeviceActivity : BaseActivity(), DeviceDeleteCallBack,
                         getDevices()
                     }
                 } else {
-                    Toast.makeText(this, it.errorMessage, Toast.LENGTH_SHORT).show()
-
+                    if (it.errorCode.equals(
+                            "eV2124",
+                            ignoreCase = true
+                        ) || it.errorCode.equals("111111111", ignoreCase = true)
+                    ) {
+                        EvergentRefreshToken.refreshToken(
+                            this,
+                            UserInfo.getInstance(this).refreshToken
+                        ).observe(this, Observer { evergentCommonResponse1 ->
+                            if (it.isStatus()) {
+                                getDevices()
+                            } else {
+                                AppCommonMethods.removeUserPrerences(this)
+                                onBackPressed()
+                            }
+                        })
+                    } else {
+                        Toast.makeText(this, it.errorMessage, Toast.LENGTH_SHORT).show()
+                    }
                 }
             })
     }
@@ -147,8 +164,25 @@ class ManageDeviceActivity : BaseActivity(), DeviceDeleteCallBack,
                         getDevices()
                     }
                 } else {
-                    Toast.makeText(this, it.errorMessage, Toast.LENGTH_SHORT).show()
-
+                    if (it.errorCode.equals(
+                            "eV2124",
+                            ignoreCase = true
+                        ) || it.errorCode.equals("111111111", ignoreCase = true)
+                    ) {
+                        EvergentRefreshToken.refreshToken(
+                            this,
+                            UserInfo.getInstance(this).refreshToken
+                        ).observe(this, Observer { evergentCommonResponse1 ->
+                            if (it.isStatus()) {
+                                getDevices()
+                            } else {
+                                AppCommonMethods.removeUserPrerences(this)
+                                onBackPressed()
+                            }
+                        })
+                    } else {
+                        Toast.makeText(this, it.errorMessage, Toast.LENGTH_SHORT).show()
+                    }
                 }
             })
     }

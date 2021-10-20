@@ -184,6 +184,11 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
     }
 
     private void initFrameFragment() {
+        liveTvFragment = new LiveTvFragment();
+        active = liveTvFragment;
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "1").hide(liveTvFragment).commit();
+        fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commit();
         setToolBarScroll(0);
         FirebaseEventManager.getFirebaseInstance(HomeActivity.this).navEvent("Navigation", "Live TV");
         NavigationItem.getInstance().setTab("Live TV");
@@ -193,12 +198,9 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().indicator.setVisibility(View.GONE);
-        liveTvFragment = new LiveTvFragment();
+
         setMargins(150, 110);
-        active = liveTvFragment;
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.content_frame, liveTvFragment, "1").hide(liveTvFragment).commit();
-        fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commit();
+
         active = liveTvFragment;
     }
 
@@ -573,6 +575,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
 
     private void switchToLiveTvFragment() {
+        fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commitAllowingStateLoss();
         setToolBarScroll(0);
         if (liveTvFragment != null)
             liveTvFragment.refreshData();
@@ -585,7 +588,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
         setMargins(150, 110);
-        fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commitAllowingStateLoss();
+
         checkSameClick();
         active = liveTvFragment;
     }

@@ -182,7 +182,31 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                         checkIfDetailAvailableOnPlaystore(productListItem)
                     }
                 } else {
-                    Toast.makeText(requireActivity(),evergentCommonResponse.errorMessage,Toast.LENGTH_SHORT).show();
+                    if (evergentCommonResponse.errorCode.equals(
+                            "eV2124",
+                            ignoreCase = true
+                        ) || evergentCommonResponse.errorCode.equals("111111111", ignoreCase = true)
+                    ) {
+                        activity?.let {
+                            EvergentRefreshToken.refreshToken(
+                                activity,
+                                UserInfo.getInstance(activity).refreshToken
+                            ).observe(it, Observer { evergentCommonResponse1 ->
+                                if (evergentCommonResponse.isStatus()) {
+                                    getProductsForLogout()
+                                } else {
+                                    AppCommonMethods.removeUserPrerences(activity)
+                                    activity?.onBackPressed()
+                                }
+                            })
+                        }
+                    } else {
+                        Toast.makeText(
+                            requireActivity(),
+                            evergentCommonResponse.errorMessage,
+                            Toast.LENGTH_SHORT
+                        ).show();
+                    }
                 }
             })
     }

@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+        android:background="@color/grape_purple"
         android:filterTouchesWhenObscured="true"
-        android:background="@color/grape_purple">
+        android:fitsSystemWindows="true"
+        tools:ignore="MissingClass">
 
-        <ImageView
-            android:id="@+id/splash_image"
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
             android:layout_width="@dimen/splash_icon_width"
-            android:layout_height="@dimen/splash_icon_height"
             android:layout_centerInParent="true"
-            android:background="@drawable/sooka"
-            android:contentDescription=""
-            tools:ignore="ContentDescription" />
+            android:layout_height="@dimen/splash_icon_height"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/sookaopeningindenlandscape" />
+        <!--  <ImageView
+              android:id="@+id/splash_image"
+              android:layout_width="@dimen/splash_icon_width"
+              android:layout_height="@dimen/splash_icon_height"
+              android:layout_centerInParent="true"
+              android:background="@drawable/sooka"
+              android:contentDescription=""
+              tools:ignore="ContentDescription" />-->
 
         <FrameLayout
             android:id="@+id/no_connection_layout"

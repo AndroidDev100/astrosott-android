@@ -421,11 +421,19 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 try {
                     CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failed", "Content Details Page");
                 } catch (Exception ex) {
+                }
+                if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals("111111111")) {
+                    EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                        if (evergentCommonResponse1.isStatus()) {
+                            handlePurchase(purchase);
+                        } else {
+                            AppCommonMethods.removeUserPrerences(this);
+                        }
+                    });
+                } else {
+                    Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                     onBackPressed();
                 }
-                Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                onBackPressed();
-
             }
         });
 
