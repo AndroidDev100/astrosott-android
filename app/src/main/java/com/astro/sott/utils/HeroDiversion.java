@@ -227,7 +227,6 @@ public class HeroDiversion {
             });
         } else {
             homeViewModel.getSpecificAsset(activity, railCommonDataa.getLandingPageAssetId()).observe((LifecycleOwner) activity, asset -> {
-
                 if (asset.getStatus()) {
                     redirectionOnMediaType(asset, asset.getObject().getType());
                 } else {

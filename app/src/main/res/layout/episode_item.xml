@@ -23,26 +23,32 @@
             <RelativeLayout
                 android:layout_width="155dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp">
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
 
                 <RelativeLayout
                     android:id="@+id/play_lay"
                     android:layout_width="155dp"
                     android:layout_height="88dp"
-                    android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:gravity="center_vertical">
+                    android:background="@drawable/episode_shadow"
+                    android:gravity="center_vertical"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="3dp"
+                    android:paddingBottom="5dp">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="155dp"
-                        app:cardCornerRadius="5dp"
-                        android:layout_height="88dp">
+                        android:layout_height="88dp"
+                        android:elevation="15dp"
+                        app:cardCornerRadius="5dp">
 
                         <ImageView
                             android:id="@+id/landscape_image"
                             android:layout_width="155dp"
                             android:layout_height="88dp"
+
                             android:background="@drawable/ic_landscape_placeholder"
                             android:contentDescription="@string/contentDescription"
                             android:scaleType="fitXY" />
@@ -62,8 +68,8 @@
                         android:id="@+id/episode_transparent"
                         android:layout_width="155dp"
                         android:layout_height="88dp"
-                        android:elevation="5dp"
                         android:background="@color/episode_transparent"
+                        android:elevation="5dp"
                         android:visibility="gone">
 
                     </FrameLayout>

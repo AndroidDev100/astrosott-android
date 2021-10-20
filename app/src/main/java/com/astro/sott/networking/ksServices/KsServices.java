@@ -546,7 +546,80 @@ public class KsServices {
 
     }
 
+    public void checkPlaylistListing(long l, List<VIUChannel> list, int counter,List<VIUChannel> viuChannelList, HomechannelCallBack callBack) {
+        clientSetupKs();
+        homechannelCallBack = callBack;
+        this.channelList = list;
+        listAssetBuilders = new ArrayList<>();
+        for (int i = 0; i < channelList.size(); i++) {
+            long idd = channelList.get(i).getId();
+            Log.w("idsssoftiles", idd + " " + counter);
+            int iid = (int) idd;
+            ChannelFilter channelFilter = new ChannelFilter();
+            channelFilter.setIdEqual(iid);
 
+            // PersonalListSearchFilter
+
+            // Sear
+
+            FilterPager filterPager = new FilterPager();
+            filterPager.setPageIndex(counter);
+            filterPager.setPageSize(20);
+
+            AssetService.ListAssetBuilder builder = AssetService.list(channelFilter, filterPager).setCompletion(result -> {
+                Log.w("homeListing", result.isSuccess() + "");
+                if (result.isSuccess()) {
+                    count++;
+                    Log.w("countValues", count + "");
+                    if (count == listAssetBuilders.size()) {
+                        int totalCount = result.results.getTotalCount();
+                        if (totalCount != 0) {
+                            Log.w("countValues in", count + "");
+                            homechannelCallBack.response(true, responseList, viuChannelList);
+                        } else {
+                            homechannelCallBack.response(false, responseList, viuChannelList);
+                        }
+
+                    }
+
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        callAssetListing(l, list, counter, callBack);
+                                    } else {
+                                        homechannelCallBack.response(false, responseList, viuChannelList);
+                                    }
+                                }
+                            });
+
+                        } else {
+                            homechannelCallBack.response(false, responseList, viuChannelList);
+                        }
+                    } else {
+                        homechannelCallBack.response(false, responseList, viuChannelList);
+                    }
+                    //channelCallBack.response(false, commonResponse);
+                }
+
+
+            });
+            listAssetBuilders.add(builder);
+        }
+        // count=listAssetBuilders.size();
+
+       /* MultiRequestBuilder multiRequestBuilder=new MultiRequestBuilder();
+
+        for (int j=0;j<listAssetBuilders.size();j++){
+            multiRequestBuilder = multiRequestBuilder.add(listAssetBuilders.get(j));
+        }*/
+        getRequestQueue().queue(listAssetBuilders.get(0).build(client));
+
+    }
     public void callAssetListing(long l, List<VIUChannel> list, int counter, HomechannelCallBack callBack) {
         clientSetupKs();
         homechannelCallBack = callBack;
@@ -5605,6 +5678,16 @@ public class KsServices {
                             } else {
                                 getAssetDetailMedia(list.get(counter), list);
                             }
+                        }else if (list.get(counter).getLandingPageType().equalsIgnoreCase(LandingPageType.PLT.name())) {
+                            if (list.get(counter).getLandingPagePlayListId()!=null) {
+                                List<VIUChannel> viuChannels = new ArrayList<>();
+                                VIUChannel channel = new VIUChannel();
+                                channel.setId(Long.parseLong(list.get(counter).getLandingPagePlayListId()));
+                                viuChannels.add(channel);
+                                checkPlaylistListing(1233, viuChannels, 1,list, homechannelCallBack);
+                            }else {
+                                homechannelCallBack.response(false, null, null);
+                            }
                         } else
                             homechannelCallBack.response(true, responseList, list);
 
@@ -5734,6 +5817,16 @@ public class KsServices {
                                 getAssetDetailEpg(list.get(counter), list);
                             } else {
                                 getAssetDetailMedia(list.get(counter), list);
+                            }
+                        } else if (list.get(counter).getLandingPageType().equalsIgnoreCase(LandingPageType.PLT.name())) {
+                            if (list.get(counter).getLandingPagePlayListId()!=null) {
+                                List<VIUChannel> viuChannels = new ArrayList<>();
+                                VIUChannel channel = new VIUChannel();
+                                channel.setId(Long.parseLong(list.get(counter).getLandingPagePlayListId()));
+                                viuChannels.add(channel);
+                                checkPlaylistListing(1233, viuChannels, 1,list, homechannelCallBack);
+                            }else {
+                                homechannelCallBack.response(false, null, null);
                             }
                         } else
                             homechannelCallBack.response(true, responseList, list);

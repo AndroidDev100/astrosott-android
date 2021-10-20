@@ -11,6 +11,7 @@ import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -703,7 +704,12 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                             new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
                         }
                     } else {
-                        new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
+                            }
+                        }, 2000);
                     }
                 }
             } catch (Exception e) {
@@ -869,7 +875,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     private void showAnimation() {
         Animation slideUP = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.fade_in);
-    //    getBinding().splashImage.startAnimation(slideUP);
+        //    getBinding().splashImage.startAnimation(slideUP);
         slideUP.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {

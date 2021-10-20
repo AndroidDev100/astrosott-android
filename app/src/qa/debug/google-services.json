@@ -1,48 +1,41 @@
 {
   "project_info": {
-    "project_number": "456838347753",
-    "project_id": "astro-sott-production",
-    "storage_bucket": "astro-sott-production.appspot.com"
+    "project_number": "929669716426",
+    "firebase_url": "https://astro-sott.firebaseio.com",
+    "project_id": "astro-sott",
+    "storage_bucket": "astro-sott.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:456838347753:android:c41b3f50bfe2af44c3e978",
+        "mobilesdk_app_id": "1:929669716426:android:fea5557289ff80bea6d733",
         "android_client_info": {
-          "package_name": "com.astro.sott"
+          "package_name": "com.astro.stagingsott"
         }
       },
       "oauth_client": [
         {
-          "client_id": "456838347753-jpkt9iuadtp4g4dqrnf73hampj1uq5o1.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.astro.sott",
-            "certificate_hash": "61945067bdcd4ac551bdd1b3ff0ec4454c893bc6"
-          }
-        },
-        {
-          "client_id": "456838347753-ia8d79bcmfrm2dv7sgmtfb0iap2ncndo.apps.googleusercontent.com",
+          "client_id": "929669716426-2edlh3qb5v6djphufaqn65e832m2j40p.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCapeCspvAVBjV3r4XejEWnNpkzT6iuhOU"
+          "current_key": "AIzaSyDLKC6w2CTpSe7DU6oJDLdwxBBEW8LyoTc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "456838347753-ia8d79bcmfrm2dv7sgmtfb0iap2ncndo.apps.googleusercontent.com",
+              "client_id": "929669716426-2edlh3qb5v6djphufaqn65e832m2j40p.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "456838347753-9k7u53h03oc4sadt9i2ckg61bmrkggjv.apps.googleusercontent.com",
+              "client_id": "929669716426-t0e2dptu4o87ltum5rs7kevr8qc9f3up.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.astro.sott"
+                "bundle_id": "com.astro.sott.qa"
               }
             }
           ]

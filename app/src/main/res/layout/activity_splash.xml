@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grape_purple"
+        android:background="@color/pack_bg_color"
         android:filterTouchesWhenObscured="true"
         android:fitsSystemWindows="true"
         tools:ignore="MissingClass">
@@ -14,12 +14,14 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animationView"
-            android:layout_width="@dimen/splash_icon_width"
+            android:layout_width="match_parent"
             android:layout_centerInParent="true"
-            android:layout_height="@dimen/splash_icon_height"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
             app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/sookaopeningindenlandscape" />
+            app:lottie_speed="1.0"
+            app:lottie_loop="false"
+            app:lottie_rawRes="@raw/sookaopeningindentpotrait1" />
         <!--  <ImageView
               android:id="@+id/splash_image"
               android:layout_width="@dimen/splash_icon_width"

@@ -850,7 +850,6 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                 if (purchases.size() > 0) {
                     for (Purchase purchaseItem : purchases) {
                         try {
-
                             JSONObject jsonObject = new JSONObject(purchaseItem.getOriginalJson());
                             Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
                             if (!isAcknowledged) {
