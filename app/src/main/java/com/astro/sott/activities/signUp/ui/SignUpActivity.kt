@@ -126,11 +126,12 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                 name = account.displayName!!
                 login("Google", account.email!!, account.id!!)
             } else {
-                Toast.makeText(
-                    this,
-                    resources.getString(R.string.email_unavailable),
-                    Toast.LENGTH_SHORT
-                ).show()
+                if (this != null)
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.email_unavailable),
+                        Toast.LENGTH_SHORT
+                    ).show()
             }
 
             // Signed in successfully, show authenticated UI.

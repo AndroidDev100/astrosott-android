@@ -4181,12 +4181,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void showDialog(String message) {
-        FragmentManager fm = getFragmentManager();
-        AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(getResources().getString(R.string.dialog), message, getResources().getString(R.string.ok));
-        alertDialog.setCancelable(false);
-        alertDialog.setAlertDialogCallBack(this);
-        if (fm != null)
-            alertDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        try {
+            FragmentManager fm = getFragmentManager();
+            AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(getResources().getString(R.string.dialog), message, getResources().getString(R.string.ok));
+            alertDialog.setCancelable(false);
+            alertDialog.setAlertDialogCallBack(this);
+            if (fm != null)
+                alertDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        }catch (Exception ignored){}
     }
 
     @Override

@@ -156,13 +156,13 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <receiver
+       <!-- <receiver
             android:name="com.appsflyer.MultipleInstallBroadcastReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
         <activity android:name=".activities.parentalControl.ui.ParentalControl" />
         <activity

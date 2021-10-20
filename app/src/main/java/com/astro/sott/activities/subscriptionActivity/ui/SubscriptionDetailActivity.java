@@ -437,7 +437,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                                 if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
                                     maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
                                 } else {
-                                    if (paymentMethod.equalsIgnoreCase("")||paymentMethod.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
+                                    if (paymentMethod.equalsIgnoreCase("") || paymentMethod.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
                                         billingProcessor.updatePurchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
                                     } else {
                                         updatePlanRestriction();
@@ -449,7 +449,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                             if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
                                 maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
                             } else {
-                                if (paymentMethod.equalsIgnoreCase("")||paymentMethod.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
+                                if (paymentMethod.equalsIgnoreCase("") || paymentMethod.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
                                     billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
                                 } else {
                                     updatePlanRestriction();
@@ -563,7 +563,10 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     @Override
     public void onBillingError(@Nullable BillingResult error) {
-        onBackPressed();
+        try {
+            onBackPressed();
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
