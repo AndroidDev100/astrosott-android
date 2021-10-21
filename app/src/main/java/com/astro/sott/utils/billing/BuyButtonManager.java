@@ -161,19 +161,19 @@ public class BuyButtonManager {
                         if (haveTvod) {
                             buyButtonListener.onPackagesAvailable(packDetailList, TVOD, packDetailList.get(0).getSkuDetails().getPrice(), subscriptionIds);
                         } else {
-                            buyButtonListener.onPackagesAvailable(packDetailList, SVOD, packDetailList.get(0).getSkuDetails().getPrice(), subscriptionIds);
+                            buyButtonListener.onPackagesAvailable(packDetailList, SVOD,"0", subscriptionIds);
                         }
                     } else {
                         if (haveTvod && haveSvod) {
                             buyButtonListener.onPackagesAvailable(packDetailList, SVOD_TVOD, getLowestPrice(packDetailList), subscriptionIds);
                         } else if (haveSvod) {
-                            buyButtonListener.onPackagesAvailable(packDetailList, SVOD, getLowestPrice(packDetailList), subscriptionIds);
+                            buyButtonListener.onPackagesAvailable(packDetailList, SVOD, "0", subscriptionIds);
                         } else {
                             buyButtonListener.onPackagesAvailable(packDetailList, TVOD, getLowestPrice(packDetailList), subscriptionIds);
                         }
                     }
                 } else {
-                    buyButtonListener.onPackagesAvailable(packDetailList, SVOD, getLowestPrice(packDetailList), subscriptionIds);
+                    buyButtonListener.onPackagesAvailable(packDetailList, SVOD, "0", subscriptionIds);
                 }
             }
         });
