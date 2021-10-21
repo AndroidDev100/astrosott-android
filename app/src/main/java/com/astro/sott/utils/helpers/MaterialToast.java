@@ -6,7 +6,9 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.CountDownTimer;
+
 import androidx.annotation.RequiresApi;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,17 +58,18 @@ public class MaterialToast {
         toastObject.show();
 
     }
+
     @SuppressLint("WrongConstant")
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    public static void display(String message, Drawable drawable, int color, int gravity,Context activity) {
-        LayoutInflater layoutInflater = (LayoutInflater)activity.getApplicationContext().getSystemService
+    public static void display(String message, Drawable drawable, int color, int gravity, Context activity) {
+        LayoutInflater layoutInflater = (LayoutInflater) activity.getApplicationContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
         View viewHolder = View.inflate(activity, R.layout.material_toast, null);
 
-        LinearLayout outerLayout= viewHolder.findViewById(R.id.outerLayout);
+        LinearLayout outerLayout = viewHolder.findViewById(R.id.outerLayout);
         outerLayout.setBackground(drawable);
 
-        TextView toastTitle= viewHolder.findViewById(R.id.toastTitle);
+        TextView toastTitle = viewHolder.findViewById(R.id.toastTitle);
         toastTitle.setText(message);
         //CustomeText.setFontRegular(toastTitle);
 
@@ -79,16 +82,16 @@ public class MaterialToast {
         int duration = Toast.LENGTH_LONG;
         final Toast toast = Toast.makeText(activity.getApplicationContext(), message, duration);
         toast.show();
-        new CountDownTimer(5000, 1000)
-        {
+        new CountDownTimer(5000, 1000) {
             public void onTick(long millisUntilFinished) {
-                if (toast.getView().getWindowToken() != null)
+                if (toast != null && toast.getView() != null && toast.getView().getWindowToken() != null)
                     toast.show();
                 else
                     cancel();
             }
+
             public void onFinish() {
-                if (toast.getView().getWindowToken() !=null)
+                if (toast != null && toast.getView() != null && toast.getView().getWindowToken() != null)
                     toast.show();
                 else
                     cancel();
