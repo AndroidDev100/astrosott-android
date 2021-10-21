@@ -173,7 +173,7 @@ public class BuyButtonManager {
                         }
                     }
                 } else {
-                    buyButtonListener.onPackagesAvailable(packDetailList, SVOD, getLowestPrice(packDetailList), subscriptionIds);
+                    buyButtonListener.onPackagesAvailable(packDetailList, SVOD, "0", subscriptionIds);
                 }
             }
         });

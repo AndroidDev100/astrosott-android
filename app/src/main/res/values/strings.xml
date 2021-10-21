@@ -33,11 +33,12 @@
     <string name="mobile_updated">Mobile Number Updated!</string>
     <string name="mobile_updated_failed">Mobile Number Update Failed!</string>
     <string name="mobile_updated_description_failed">Unable to update new Mobile Number. Kindly reach out to us for further assistance.</string>
-
+    <string name="unlink_desc">With a linked account, you can log in faster.</string>
     <string name="mobile_updated_description">New Mobile Number updated successfully. You may use this for future login with password.</string>
     <string name="email_updated_Description">New Email updated successfully. You may use this for future login with password.</string>
     <string name="sms">SMS</string>
     <string name="push">Push</string>
+    <string name="unlink_from">Unlink from</string>
 
     <string name="create_playlist_name_title">Create a playlist name</string>
     <string name="epg_data_not_available">There is no EPG available for selected date</string>
@@ -70,7 +71,7 @@
     <string name="shows">Shows</string>
     <string name="term_policy_new">By clicking Sign Up or any of the Social Login above, you agree to</string>
     <string name="term_policy_login">By clicking Log In or any of the Social Login above, you agree to</string>
-
+<string name="unable_link_social">Unable to link this social account. Kindly reach out to us for further assistance.</string>
     <string name="trailer_more">Trailers &amp; More</string>
     <string name="trailer_title">Trailers</string>
     <string name="highlights">Highlights</string>
@@ -605,7 +606,7 @@
     <string name="select_one">You need to make at least one selection first!</string>
     <string name="profile_txt">Profile</string>
     <string name="link_success">Linked Successfully</string>
-    <string name="unlink_success">Your account is unlinked</string>
+    <string name="unlink_success">Unlinked Successfully</string>
 
     <string name="acount_mismatch">You can not link this account</string>
     <string name="live_home">Live TV</string>
@@ -615,7 +616,7 @@
     <string name="privacy"><u>Privacy</u></string>
     <string name="privacy_policy_new"><u>Privacy Policy</u></string>
 
-
+    <string name="linked_failed">Linking Failed!</string>
     <string name="already_have_an_account">Already have an account? </string>
     <string name="password_rules">Password must be 8-16 characters, at least 1 number, 1 lowercase letter &amp; 1 uppercase letter.</string>
     <string name="verify">Verify</string>
