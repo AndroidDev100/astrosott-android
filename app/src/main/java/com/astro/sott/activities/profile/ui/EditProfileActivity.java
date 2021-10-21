@@ -1,6 +1,7 @@
 package com.astro.sott.activities.profile.ui;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -13,8 +14,11 @@ import android.widget.Toast;
 import com.astro.sott.R;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.verification.VerificationActivity;
+import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityEditProfileBinding;
+import com.astro.sott.fragments.dialog.MaxisEditRestrictionPop;
+import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
@@ -106,14 +110,26 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             startActivity(i);
         });
         getBinding().editemail.setOnClickListener(view -> {
-            Intent i = new Intent(getApplicationContext(), EditEmailActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
+            if (UserInfo.getInstance(this).isMaxis()) {
+                FragmentManager fm = getSupportFragmentManager();
+                MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), getResources().getString(R.string.maxis_edit_description), getResources().getString(R.string.ok_understand));
+                cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+            } else {
+                Intent i = new Intent(getApplicationContext(), EditEmailActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
         });
         getBinding().editMobileNo.setOnClickListener(view -> {
-            Intent i = new Intent(getApplicationContext(), EditMobileActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
+            if (UserInfo.getInstance(this).isMaxis()) {
+                FragmentManager fm = getSupportFragmentManager();
+                MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), getResources().getString(R.string.maxis_edit_description), getResources().getString(R.string.ok_understand));
+                cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+            } else {
+                Intent i = new Intent(getApplicationContext(), EditMobileActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
         });
         getBinding().editpassword.setOnClickListener(view -> {
             checkForPassword();
@@ -310,7 +326,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                                         email_mobile = object.getString("email");
                                         type = "Facebook";
                                         if (email_mobile != null && !email_mobile.equalsIgnoreCase("") && id != null && !id.equalsIgnoreCase("")) {
-                                            if (true) {
+                                            if (email_mobile.equalsIgnoreCase(UserInfo.getInstance(EditProfileActivity.this).getEmail())) {
                                                 updateProfile(id, type, true);
                                             } else {
                                                 Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();

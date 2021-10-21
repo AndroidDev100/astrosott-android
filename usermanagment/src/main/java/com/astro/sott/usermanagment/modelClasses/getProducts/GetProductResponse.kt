@@ -14,6 +14,9 @@ data class ProductsResponseMessageItem(
         @field:SerializedName("serviceType")
         val serviceType: String? = null,
 
+        @field:SerializedName("channelPartnerDescription")
+        val channelPartnerDescription: String? = null,
+
         @field:SerializedName("period")
         val period: String? = null,
 

@@ -1,47 +1,48 @@
-package com.astro.sott.fragments.subscription.dialog;
+package com.astro.sott.fragments.dialog;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.baseModel.BaseActivity;
+import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class UpgradeDialogFragment extends DialogFragment {
-    private UpgradeDialogListener upgradeDialogListener;
+
+public class MaxisEditRestrictionPop extends DialogFragment {
+    private EditDialogListener editDialogListener;
     private EditText etDialog;
     private TextInputLayout inputLayoutDialog;
     private String fileId = "";
     private String strMessage = "";
-    private String from = "";
+    private String title_value = "", message = "", actnBtn = "";
     private BaseActivity baseActivity;
 
-    public UpgradeDialogFragment() {
+    public MaxisEditRestrictionPop() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance`method
     }
 
-    public static UpgradeDialogFragment newInstance(String title, String message) {
-        UpgradeDialogFragment frag = new UpgradeDialogFragment();
+    public static MaxisEditRestrictionPop newInstance(String title, String message, String actnBtn) {
+        MaxisEditRestrictionPop frag = new MaxisEditRestrictionPop();
         Bundle args = new Bundle();
         args.putString(AppLevelConstants.TITLE, title);
-        args.putString(AppLevelConstants.FILE_ID_KEY, message);
+        args.putString(AppLevelConstants.MESSAGE, message);
+        args.putString(AppLevelConstants.ACTION_BTN, actnBtn);
         frag.setArguments(args);
         return frag;
     }
@@ -52,8 +53,8 @@ public class UpgradeDialogFragment extends DialogFragment {
         baseActivity = (BaseActivity) context;
     }
 
-    public void setEditDialogCallBack(UpgradeDialogListener upgradeDialogListener) {
-        this.upgradeDialogListener = upgradeDialogListener;
+    public void setEditDialogCallBack(EditDialogListener editDialogListener) {
+        this.editDialogListener = editDialogListener;
     }
 
     @Override
@@ -61,28 +62,25 @@ public class UpgradeDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
 //        return inflater.inflate(R.layout.edit_dialog_layout, container);
 
-        View view = inflater.inflate(R.layout.upgrade_dialog_fragment, container);
+        View view = inflater.inflate(R.layout.already_user_dialog_fragment, container);
         if (getDialog().getWindow() != null) {
-            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
                     .TRANSPARENT));
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
             // Get field from view
             inputLayoutDialog = view.findViewById(R.id.input_layout_dialog);
-            from = getArguments().getString(AppLevelConstants.TITLE);
-            fileId = getArguments().getString(AppLevelConstants.FILE_ID_KEY);
-            ImageView btnCancel = view.findViewById(R.id.close_icon);
-            TextView upgrade = view.findViewById(R.id.upgrade);
+            title_value = getArguments().getString(AppLevelConstants.TITLE);
+            message = getArguments().getString(AppLevelConstants.MESSAGE);
+            actnBtn = getArguments().getString(AppLevelConstants.ACTION_BTN);
+            TextView btnOk = view.findViewById(R.id.btnOk);
             TextView description = view.findViewById(R.id.description);
+            TextView title = view.findViewById(R.id.title);
+            title.setText(title_value);
+            description.setText(message);
+            btnOk.setText(actnBtn);
 
-            TextView login = view.findViewById(R.id.login);
-
-//        getDialog().setTitle(title);
-            login.setOnClickListener(v -> {
-
-
-            });
-            upgrade.setOnClickListener(v -> {
-                upgradeDialogListener.onUpgradeClick();
+//
+            btnOk.setOnClickListener(v -> {
                 dismiss();
             });
 
@@ -92,18 +90,13 @@ public class UpgradeDialogFragment extends DialogFragment {
             // etDialog.setOnEditorActionListener(this);
 
 
-            btnCancel.setOnClickListener(v -> {
-                dismiss();
-            });
-
-
         }
         return view;
     }
 
 
     public void onResume() {
-        int width = getResources().getDisplayMetrics().widthPixels-30;
+        int width = getResources().getDimensionPixelSize(R.dimen.episode_dialog_fragment_width);
         int height = getResources().getDimensionPixelSize(R.dimen.epiosode_dialog_fragment_height);
         if (getDialog().getWindow() != null)
             getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -113,7 +106,7 @@ public class UpgradeDialogFragment extends DialogFragment {
 
 
     // 1. Defines the listener interface with a method passing back data result.
-    public interface UpgradeDialogListener {
-        void onUpgradeClick();
+    public interface EditDialogListener {
+        void onFinishEditDialog();
     }
 }

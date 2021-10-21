@@ -25,11 +25,13 @@ public interface AppLevelConstants {
     String PARENTAL_SWITCH = "ParentalSwitch";
     String TITLE = "title";
     String MESSAGE = "message";
+    String ACTION_BTN = "actn_Btn";
+
     String DATE = "date";
     String FILE_ID = "file_id";
 
     String TitleSortName = "TitleSortName";
-    String ACTION_BTN = "actionBtn";
+    String MAXIS_BILLING = "Maxis Billing";
 
 
     String POSITIVE_BUTTON_TEXT = "positiveButtonText";
@@ -406,6 +408,7 @@ public interface AppLevelConstants {
     String ID = "id";
     String Title = "name";
     String DESCRIPTION = "description";
+    String DATETIME_REMINDER = "dateTimeForReminder";
     String SCREEN_NAME = "screenname";
     String PROGRAM = "Program";
     String KEY_DVR_ENABLED = "LongTSTVEnabled";

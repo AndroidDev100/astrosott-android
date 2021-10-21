@@ -470,6 +470,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                             }
                         }
                     }
+                    UserInfo.getInstance(getActivity()).setMaxis(paymentMethod.equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING));
                     if (!displayName.equalsIgnoreCase("")) {
                         UserInfo.getInstance(getActivity()).setVip(true);
                         getBinding().tvVIPUser.setText(displayName);

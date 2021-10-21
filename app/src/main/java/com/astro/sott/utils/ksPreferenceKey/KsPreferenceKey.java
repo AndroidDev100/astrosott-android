@@ -1,5 +1,6 @@
 package com.astro.sott.utils.ksPreferenceKey;
 
+import android.app.PendingIntent;
 import android.content.Context;
 
 import com.astro.sott.utils.helpers.SharedPrefHelper;
@@ -559,6 +560,22 @@ public class KsPreferenceKey {
 
     public int getSubtitleLanguageIndex() {
         return session.getInt(SUBTITLE_LANG_INDEX, -1);
+    }
+
+    public void setReminderPenIntent(String assetId, String pendingIntent) {
+        session.setString(assetId, pendingIntent);
+    }
+
+    public String getReminderPenIntent(String assetId) {
+        return session.getString(assetId, "");
+    }
+
+    public void setReminderIntent(String assetId, String intent) {
+        session.setString(assetId, intent);
+    }
+
+    public String getReminderIntent(String assetId) {
+        return session.getString(assetId, "");
     }
 
 }

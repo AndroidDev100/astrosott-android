@@ -23,6 +23,7 @@ import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionAct
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivityProfileSubscriptionBinding;
+import com.astro.sott.fragments.dialog.MaxisEditRestrictionPop;
 import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.fragments.subscription.dialog.DowngradeDialogFragment;
 import com.astro.sott.fragments.subscription.dialog.UpgradeDialogFragment;
@@ -191,13 +192,17 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
         planPrice = price;
         FirebaseEventManager.getFirebaseInstance(this).packageEvent(name, price, "trx_select", "");
 
+        checkForCpId(serviceType, productId);
+
+
+    }
+
+    private void checkForCpId(String serviceType, String productId) {
         if (UserInfo.getInstance(this).getCpCustomerId() != null && !UserInfo.getInstance(this).getCpCustomerId().equalsIgnoreCase("")) {
             processPayment(serviceType, productId);
         } else {
             getContact(serviceType, productId);
         }
-
-
     }
 
     private void getContact(String serviceType, String productId) {
@@ -233,17 +238,31 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                         if (purchaseObject != null) {
                             if (purchaseObject.getSku() != null && purchaseObject.getPurchaseToken() != null) {
                                 offerType = "SVOD";
-                                billingProcessor.updatePurchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
+                                if (UserInfo.getInstance(ProfileSubscriptionActivity.this).isMaxis()) {
+                                    maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
+                                } else {
+                                    billingProcessor.updatePurchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
+                                }
                             }
                         } else {
                             offerType = "SVOD";
-                            billingProcessor.purchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                            if (UserInfo.getInstance(ProfileSubscriptionActivity.this).isMaxis()) {
+                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_packs_restriction_description));
+                            } else {
+                                billingProcessor.purchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                            }
                         }
                     }
                 });
 
             }
         }
+    }
+
+    private void maxisRestrictionPopUp(String message) {
+        FragmentManager fm = getSupportFragmentManager();
+        MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), message, getResources().getString(R.string.ok_understand));
+        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
     }
 
     @Override

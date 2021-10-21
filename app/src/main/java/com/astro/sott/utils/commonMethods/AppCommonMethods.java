@@ -3,6 +3,7 @@ package com.astro.sott.utils.commonMethods;
 import static com.astro.sott.activities.myPlans.adapter.MyPlanAdapter.getDateCurrentTimeZone;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.home.HomeActivity;
@@ -158,6 +160,43 @@ public class AppCommonMethods {
     public static void getLanguage() {
 
 
+    }
+
+    public static String getFiveMinuteEarlyTimeStamp(long timestamp) {
+        try {
+
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MINUTE,-5);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            long output = currenTimeZone.getTime() / 1000L;
+            String str = Long.toString(output);
+            Long timestamp2 = Long.parseLong(str);
+            return String.valueOf(timestamp2);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+
+    public static String getDateTimeFromtimeStampForReminder(long timestamp) {
+        try {
+
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MINUTE,-0);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
     }
 
     public static void setCrashlyticsUserId(Activity activity) {
@@ -755,36 +794,13 @@ public class AppCommonMethods {
     static Uri dynamicLinkUri;
 
     public static void openShareDialog(final Activity activity, final Asset asset, Context context, String subMediaType) {
-        /*WeakReference<Activity> mActivity = new WeakReference<>(activity);
-        BranchUniversalObject buo = new BranchUniversalObject()
-                .setTitle(asset.getName())
-                .setContentDescription(asset.getDescription())
-                .setContentImageUrl(AppCommonMethods.getSharingImage(context, asset.getImages(), asset.getType()));
 
-
-        LinkProperties lp = new LinkProperties()
-                .setChannel("Wactho Example")
-                .addControlParameter("assetId", asset.getId() + "")
-                .addControlParameter("mediaType", asset.getType() + "");
-
-        buo.generateShortUrl(context, lp, (url, error) -> {
-
-            String sharingURL;
-            if (error == null) {
-                sharingURL = url;
-                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-
-                sharingIntent.putExtra(Intent.EXTRA_TEXT, mActivity.get().getResources().getString(R.string.checkout) + " " + asset.getName() + " " + mActivity.get().getResources().getString(R.string.on_Dialog) + "\n" + sharingURL);
-
-                activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
-
-                Log.i("BRANCH SDK", "got my Branch link to share: " + sharingURL);
-            }
-        });*/
 
         try {
             String uri = createURI(asset, activity);
+            String fallBackUrl = createFallBackUrl(asset, activity);
+            Log.w("urivalue-->>",asset.getName()+"  "+uri);
+            Log.w("urivalue-->>",asset.getName()+"  "+Uri.parse(uri));
 /*
             DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     .setLink(Uri.parse(uri))
@@ -802,14 +818,13 @@ public class AppCommonMethods {
             //  Uri dynamicLinkUri = dynamicLink.getUri();
 
 
+
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     //.setDomainUriPrefix("https://stagingsott.page.link/")
                     .setLink(Uri.parse(uri))
                     .setDomainUriPrefix(AppConstants.FIREBASE_DPLNK_PREFIX)
                     //.setLink(Uri.parse(uri))
-                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
-                            .build())
-                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE)
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE).setFallbackUrl(Uri.parse(fallBackUrl))
                             .build())
                     .setIosParameters(new DynamicLink.IosParameters.Builder(AppConstants.FIREBASE_IOS_PACKAGE).build())
                     .setSocialMetaTagParameters(
@@ -818,6 +833,8 @@ public class AppCommonMethods {
                                     .setDescription(asset.getDescription())
                                     .setImageUrl(Uri.parse(AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType())))
                                     .build())
+                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
+                            .build())
                     .buildShortDynamicLink(ShortDynamicLink.Suffix.SHORT)
                     .addOnCompleteListener(activity, new OnCompleteListener<ShortDynamicLink>() {
                         @Override
@@ -855,10 +872,29 @@ public class AppCommonMethods {
                     });
 
             shortLinkTask.toString();
+            Log.w("urivalue-->>",asset.getName()+"  "+shortLinkTask.toString());
 
         } catch (Exception ignored) {
 
         }
+    }
+
+    private static String createFallBackUrl(Asset asset, Activity activity) {
+        String uri = "";
+        try {
+            String assetId = asset.getId() + "";
+            String assetType = asset.getType() + "";
+            uri = Uri.parse(AppConstants.FIREBASE_DPLNK_FALLBACK_URL)
+                    .buildUpon()
+                    .appendQueryParameter("id", assetId)
+                    .appendQueryParameter("mediaType", assetType)
+                    .build().toString();
+
+        } catch (Exception ignored) {
+            uri = "";
+        }
+
+        return uri;
     }
 
     private static String createURI(Asset asset, Activity activity) {
@@ -866,14 +902,18 @@ public class AppCommonMethods {
         try {
             String assetId = asset.getId() + "";
             String assetType = asset.getType() + "";
-            uri = Uri.parse(AppConstants.FIREBASE_DPLNK_URL)
-                    .buildUpon()
+
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("https")
+                    .authority(AppConstants.FIREBASE_DPLNK_URL)
+                    .appendPath("data")
                     .appendQueryParameter("id", assetId)
                     .appendQueryParameter("mediaType", assetType)
                     .appendQueryParameter("image", AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType()))
                     .appendQueryParameter("name", asset.getName())
-                    .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE)
-                    .build().toString();
+                    .appendQueryParameter("sd", asset.getDescription())
+                    .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE);
+            uri = builder.build().toString();
 
         } catch (Exception ignored) {
             uri = "";
@@ -3191,5 +3231,45 @@ public class AppCommonMethods {
         }
 
         return isExpired;
+    }
+
+    public static String getProgramStartTime(Long timestamp) {
+        try {
+
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MINUTE,-0);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            long output = currenTimeZone.getTime() / 1000L;
+            String str = Long.toString(output);
+            Long timestamp2 = Long.parseLong(str);
+            return String.valueOf(timestamp2);
+        } catch (Exception e) {
+        }
+        return "";
+
+    }
+
+    public static PendingIntent getPendingIntent(Context activity,String assetId) {
+            try {
+                Gson gson = new Gson();
+                String json = KsPreferenceKey.getInstance(activity).getReminderPenIntent(assetId);
+                return gson.fromJson(json, PendingIntent.class);
+            } catch (Exception e) {
+                return null;
+            }
+    }
+
+    public static Intent getIntent(Context activity,String assetId) {
+        try {
+            Gson gson = new Gson();
+            String json = KsPreferenceKey.getInstance(activity).getReminderIntent(assetId);
+            return gson.fromJson(json, Intent.class);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

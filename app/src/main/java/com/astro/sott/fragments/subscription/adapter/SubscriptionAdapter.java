@@ -59,8 +59,9 @@ public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionAdapte
 
         if (packDetailList.get(position).getProductsResponseMessageItem().getRenewable() != null && packDetailList.get(position).getProductsResponseMessageItem().getRenewable()) {
             if (packDetailList.get(position).getProductsResponseMessageItem().getDuration() != null && packDetailList.get(position).getProductsResponseMessageItem().getPeriod() != null) {
-                description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
-                description.append(" recurring subscription at:");
+                //description.append(packDetailList.get(position).getProductsResponseMessageItem().getDuration() + " " + packDetailList.get(position).getProductsResponseMessageItem().getPeriod());
+                if (packDetailList.get(position).getProductsResponseMessageItem().getChannelPartnerDescription() != null)
+                    description.append(packDetailList.get(position).getProductsResponseMessageItem().getChannelPartnerDescription());
             }
         } else {
             if (!eventStartDate.equalsIgnoreCase("")) {

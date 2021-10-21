@@ -9,7 +9,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
@@ -25,7 +24,6 @@ import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.baseModel.BaseActivity
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.fragments.dialog.AlreadyUserFragment
-import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager
@@ -38,7 +36,6 @@ import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey
 import com.astro.sott.utils.userInfo.UserInfo
 import com.facebook.*
-import com.facebook.login.LoginBehavior
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -587,6 +584,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     }
 
     private var displayName = ""
+    private var paymentMethod = ""
     private var from = ""
     private fun getActiveSubscription() {
         astroLoginViewModel!!.getActiveSubscription(UserInfo.getInstance(this).accessToken, "")
@@ -600,8 +598,14 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                                     if (!accountServiceMessageItem?.isFreemium!!) {
                                         if (accountServiceMessageItem.displayName != null)
                                             displayName = accountServiceMessageItem.displayName!!
+                                        paymentMethod = accountServiceMessageItem.paymentMethod!!
                                     }
                                 }
+                                UserInfo.getInstance(this).isMaxis = paymentMethod.equals(
+                                    AppLevelConstants.MAXIS_BILLING,
+                                    ignoreCase = true
+                                )
+
                                 if (!displayName.equals("", ignoreCase = true)) {
                                     UserInfo.getInstance(this).isVip = true
                                     setActive()

@@ -122,7 +122,7 @@
 
     <string name="removed_from_watchlist">removed from your My List</string>
     <string name="playlist_removed">Video removed from your playlist</string>
-    <string name="checkout">Checkout</string>
+    <string name="checkout">Watch</string>
     <string name="on_Dialog">on sooka!</string>
     <string name="added_to_watchlist">added to your My List</string>
     <!--    <string name="existing_sooka_account">Existing sooka account</string>-->
@@ -151,6 +151,7 @@
     <string name="ok_understand">OK, Understand!</string>
     <string name="go">Go</string>
     <string name="exit">Exit</string>
+    <string name="maxis_edit_restriction_title">You’re on sooka Partner Bundle Subscription</string>
     <string name="existing_sooka_account">Existing sooka Account</string>
     <string name="event_is_live">Event is live , if you want to Watch this Event Please Go</string>
     <string name="retry">Retry</string>
@@ -268,6 +269,11 @@
     <string name="dialog">sooka</string>
     <string name="lock_Episode">Lock Episodes</string>
     <string name="got_it">Got it</string>
+    <string name="maxis_edit_description">You may only update your details at our Partner portal.</string>
+
+    <string name="maxis_upgrade_downgrade_restriction_description"> You may subscribe via sooka if your partner bundle subscription is cancelled and expired..</string>
+
+    <string name="maxis_packs_restriction_description">We sooka you a lot, but you need to head back to our Partner portal to change your subscription. You may subscribe via sooka if your partner bundle subscription is cancelled and expired.</string>
     <string name="existing_user_description">Account with this email/mobile number already exist. Kindly proceed to login with the right login method.</string>
     <string name="subscribe_header">Subscribe to unlock</string>
     <string name="maxed_out_description">Sorry, you have reached the maximum number Verification Code resend. Please try again 1 hour later.</string>
@@ -739,6 +745,14 @@
     <string name="sub_title_live">Subtitle:</string>
     <string name="cast_live">Cast:</string>
     <string name="password_rules_new">Incorrect email/mobile number or password</string>
+
+
+    //reminder
+    <string name="reminder_added">Reminder set for</string>
+    <string name="reminder_removed">Reminder removed for</string>
+    <string name="are_you_sure_remove_reminder">Are you sure you want to remove the reminder?</string>
+    <string name="reminder_program_about_to_start">Program is about to start, in under 5 min</string>
+    <string name="reminder_cannot_set">Cannot set reminder for this program. This program is already live.</string>
 
 
 </resources>

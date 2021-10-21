@@ -259,10 +259,11 @@ public interface AppConstants {
     String CERT_GET_DTV_INFO = "er9ptuvk75.execute-api.ap-southeast-1.amazonaws.com:443";
     String CERT_CONNECTION_DETAILS = "a7fl3pn9ha.execute-api.ap-southeast-1.amazonaws.com:443";
 
-    public static final String FIREBASE_DPLNK_URL = "https://www.sooka.my/";
+    public static final String FIREBASE_DPLNK_URL = "www.sooka.my";
     public static final String FIREBASE_DPLNK_PREFIX = "https://links.sooka.my/";
     public static final String FIREBASE_IOS_PACKAGE = "com.astro.sott";
     public static final String FIREBASE_ANDROID_PACKAGE = "com.astro.sott";
     public static final String FIREBASE_FALLBACK_URL = "https://www.google.com";
+    public static final String FIREBASE_DPLNK_FALLBACK_URL = "https://www.sooka.my/en/data/";
 
 }
