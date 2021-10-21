@@ -37,7 +37,6 @@ import com.google.android.gms.tasks.Task;
 import java.util.List;
 
 public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBinding> {
-    private BillingProcessor billingProcessor;
     private boolean alreadyMobile = false;
     private AstroLoginViewModel astroLoginViewModel;
     private final String MOBILE_REGEX = "^[0-9]*$";
@@ -58,16 +57,6 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
         setHeader();
         modelCall();
         setClicks();
-
-
-        //   billingProcessor.purchase(this, "com.sott.astro.com.my.tvod.1290", "DEVELOPER PAYLOAD HERE");
-         /* List<String> purchases = billingProcessor.listOwnedProducts();
-
-            for (String purchase: purchases){
-                Log.w("Purchased Item", purchase);
-            }
-*/
-        // billingProcessor.consumePurchase("com.sott.astro.com.my.tvod.1290");
     }
 
     private void setHeader() {
@@ -87,49 +76,33 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
             onBackPressed();
         });
         getBinding().button.setOnClickListener(v -> {
-            newMobile = getBinding().newMobile.getText().toString();
-            if (!newMobile.equalsIgnoreCase("") && newMobile.matches(MOBILE_REGEX)) {
-                if (newMobile.matches(MOBILE_REGEX)) {
-                    char firstChar = newMobile.charAt(0);
-                    if (String.valueOf(firstChar).equalsIgnoreCase("6")) {
-                        newMobile = newMobile;
-                    } else {
-                        newMobile = "6" + newMobile;
-                        getBinding().newMobile.setText(newMobile);
+            if (checkMobileValidation()) {
+                if (alreadyMobile && UserInfo.getInstance(this).isPasswordExists()) {
+                    if (checkPasswordValidation()) {
+                        checkCredential();
                     }
-                    if (newMobile.length() == 11 || newMobile.length() == 12) {
-                        if (alreadyMobile && UserInfo.getInstance(this).isPasswordExists()) {
-                            checkPasswordValidation();
-                           /* Intent intent = new Intent(this, ConfirmPasswordActivity.class);
-                            intent.putExtra("newMobile", newMobile);
-                            startActivity(intent);*/
-                        } else if (alreadyMobile && !UserInfo.getInstance(this).isPasswordExists()) {
-                            createOtp(newMobile);
-                        } else if (!alreadyMobile && UserInfo.getInstance(this).isPasswordExists()) {
-                            checkPasswordValidation();
-                           /* Intent intent = new Intent(this, ConfirmPasswordActivity.class);
-                            intent.putExtra("newMobile", newMobile);
-                            startActivity(intent);*/
-                        } else if (!alreadyMobile && !UserInfo.getInstance(this).isPasswordExists()) {
-                            createOtp(newMobile);
-
-                        }
-                    } else {
-                        getBinding().errorEmail.setVisibility(View.VISIBLE);
-                        getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
-
+                } else if (alreadyMobile && !UserInfo.getInstance(this).isPasswordExists()) {
+                    createOtp(newMobile);
+                } else if (!alreadyMobile && UserInfo.getInstance(this).isPasswordExists()) {
+                    if (checkPasswordValidation()) {
+                        checkCredential();
                     }
-                } else {
-                    getBinding().errorEmail.setVisibility(View.VISIBLE);
-                    getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
+                } else if (!alreadyMobile && !UserInfo.getInstance(this).isPasswordExists()) {
+                    createOtp(newMobile);
                 }
-            } else {
-                getBinding().errorEmail.setVisibility(View.VISIBLE);
-                getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
             }
 
         });
+        getBinding().newMobile.setOnFocusChangeListener((v, hasFocus) -> {
+            checkMobileValidation();
+            checkPasswordValidation();
 
+        });
+        getBinding().confirmPassword.setOnFocusChangeListener((v, hasFocus) -> {
+            checkMobileValidation();
+            checkPasswordValidation();
+
+        });
         getBinding().newMobile.addTextChangedListener(new
 
                 CustomTextWatcher(this, new TextWatcherCallBack() {
@@ -148,21 +121,73 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
 
             }
         }));
+
+        getBinding().confirmPassword.addTextChangedListener(new
+
+                CustomTextWatcher(this, new TextWatcherCallBack() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                getBinding().errorPasssword.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        }));
     }
 
-    private void checkPasswordValidation() {
+    private boolean checkMobileValidation() {
+        newMobile = getBinding().newMobile.getText().toString();
+        if (!newMobile.equalsIgnoreCase("")) {
+            if (newMobile.matches(MOBILE_REGEX)) {
+                char firstChar = newMobile.charAt(0);
+                if (String.valueOf(firstChar).equalsIgnoreCase("6")) {
+                    newMobile = newMobile;
+                } else {
+                    newMobile = "6" + newMobile;
+                    getBinding().newMobile.setText(newMobile);
+                }
+                if (newMobile.length() == 11 || newMobile.length() == 12) {
+                    return true;
+                } else {
+                    getBinding().errorEmail.setVisibility(View.VISIBLE);
+                    getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
+                    return false;
+
+                }
+            } else {
+                getBinding().errorEmail.setVisibility(View.VISIBLE);
+                getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
+                return false;
+            }
+        } else {
+            getBinding().errorEmail.setVisibility(View.VISIBLE);
+            getBinding().errorEmail.setText(getResources().getString(R.string.field_cannot_empty));
+            return false;
+        }
+    }
+
+    private boolean checkPasswordValidation() {
         password = getBinding().confirmPassword.getText().toString();
         if (!password.equalsIgnoreCase("")) {
             if (password.matches(PASSWORD_REGEX)) {
                 getBinding().errorPasssword.setVisibility(View.GONE);
-                checkCredential();
+                return true;
             } else {
                 getBinding().errorPasssword.setVisibility(View.VISIBLE);
                 getBinding().errorPasssword.setText(getResources().getString(R.string.password_rules));
+                return false;
             }
         } else {
             getBinding().errorPasssword.setText(getResources().getString(R.string.field_cannot_empty));
             getBinding().errorPasssword.setVisibility(View.VISIBLE);
+            return false;
         }
     }
 
@@ -231,7 +256,6 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
             astroLoginViewModel.createOtp("mobile", mobile).observe(this, evergentCommonResponse -> {
 
                 if (evergentCommonResponse.isStatus()) {
-                    //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(this, VerificationActivity.class);
                     intent.putExtra(AppLevelConstants.TYPE_KEY, "mobile");
                     intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, mobile);

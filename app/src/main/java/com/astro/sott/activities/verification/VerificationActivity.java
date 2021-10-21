@@ -243,7 +243,15 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
                 }
             } else {
-                Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
+                if (updateProfileResponse.getErrorCode().equalsIgnoreCase("eV1062")) {
+                    if (type.equalsIgnoreCase("email")) {
+                        commonDialog(getResources().getString(R.string.email_updated_failed), getResources().getString(R.string.email_updated_failed_desc), getResources().getString(R.string.ok_double_exlamation));
+                    } else {
+                        commonDialog(getResources().getString(R.string.mobile_updated_failed), getResources().getString(R.string.mobile_updated_description_failed), getResources().getString(R.string.ok_double_exlamation));
+                    }
+                } else {
+                    Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

@@ -97,38 +97,36 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
                 passwordVisibility = true;
                 getBinding().confirmPassword.setInputType(InputType.TYPE_CLASS_TEXT);
                 getBinding().eyeIcon.setBackgroundResource(R.drawable.ic_outline_visibility_light);
-
             }
             getBinding().confirmPassword.setSelection(getBinding().confirmPassword.getText().length());
         });
         getBinding().button.setOnClickListener(v -> {
-            newEmail = getBinding().newEmail.getText().toString();
-            if (!newEmail.equalsIgnoreCase("")) {
-                if (true) {
-                    if (alreadyEmail && UserInfo.getInstance(this).isPasswordExists()) {
-
-                        checkPasswordValidation();
-                       /* Intent intent = new Intent(this, ConfirmPasswordActivity.class);
-                        intent.putExtra("newEmail", newEmail);
-                        startActivity(intent);*/
-                    } else if (alreadyEmail && !UserInfo.getInstance(this).isPasswordExists()) {
-                        createOtp(newEmail);
-                    } else if (!alreadyEmail && UserInfo.getInstance(this).isPasswordExists()) {
-                        checkPasswordValidation();
-                        /*Intent intent = new Intent(this, ConfirmPasswordActivity.class);
-                        intent.putExtra("newEmail", newEmail);
-                        startActivity(intent);*/
-                    } else if (!alreadyEmail && !UserInfo.getInstance(this).isPasswordExists()) {
-
+            if (checkEmailValidation()) {
+                if (alreadyEmail && UserInfo.getInstance(this).isPasswordExists()) {
+                    if (checkPasswordValidation()) {
+                        checkCredential();
                     }
-                } else {
-                    getBinding().errorEmail.setVisibility(View.VISIBLE);
-                    getBinding().errorEmail.setText(getResources().getString(R.string.email_error));
+                } else if (alreadyEmail && !UserInfo.getInstance(this).isPasswordExists()) {
+                    createOtp(newEmail);
+                } else if (!alreadyEmail && UserInfo.getInstance(this).isPasswordExists()) {
+                    if (checkPasswordValidation()) {
+                        checkCredential();
+                    }
+                } else if (!alreadyEmail && !UserInfo.getInstance(this).isPasswordExists()) {
+
                 }
-            } else {
-                getBinding().errorEmail.setVisibility(View.VISIBLE);
-                getBinding().errorEmail.setText(getResources().getString(R.string.field_cannot_empty));
             }
+
+
+        });
+        getBinding().newEmail.setOnFocusChangeListener((v, hasFocus) -> {
+            checkEmailValidation();
+            checkPasswordValidation();
+
+        });
+        getBinding().confirmPassword.setOnFocusChangeListener((v, hasFocus) -> {
+            checkEmailValidation();
+            checkPasswordValidation();
 
         });
         getBinding().newEmail.addTextChangedListener(new CustomTextWatcher(this, new TextWatcherCallBack() {
@@ -147,21 +145,56 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
 
             }
         }));
+        getBinding().confirmPassword.addTextChangedListener(new CustomTextWatcher(this, new TextWatcherCallBack() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                getBinding().errorPasssword.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        }));
     }
 
-    private void checkPasswordValidation() {
+    private boolean checkEmailValidation() {
+        newEmail = getBinding().newEmail.getText().toString();
+        if (!newEmail.equalsIgnoreCase("")) {
+            if (newEmail.matches(EMAIL_REGEX)) {
+                return true;
+            } else {
+                getBinding().errorEmail.setVisibility(View.VISIBLE);
+                getBinding().errorEmail.setText(getResources().getString(R.string.email_suggestion));
+                return false;
+            }
+        } else {
+            getBinding().errorEmail.setVisibility(View.VISIBLE);
+            getBinding().errorEmail.setText(getResources().getString(R.string.field_cannot_empty));
+            return false;
+        }
+    }
+
+    private boolean checkPasswordValidation() {
         password = getBinding().confirmPassword.getText().toString();
         if (!password.equalsIgnoreCase("")) {
             if (password.matches(PASSWORD_REGEX)) {
                 getBinding().errorPasssword.setVisibility(View.GONE);
-                checkCredential();
+                return true;
             } else {
                 getBinding().errorPasssword.setVisibility(View.VISIBLE);
                 getBinding().errorPasssword.setText(getResources().getString(R.string.password_rules));
+                return false;
             }
         } else {
             getBinding().errorPasssword.setText(getResources().getString(R.string.field_cannot_empty));
             getBinding().errorPasssword.setVisibility(View.VISIBLE);
+            return false;
         }
     }
 

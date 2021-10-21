@@ -28,7 +28,12 @@
     <string name="following">Following</string>
     <string name="Email">Email</string>
     <string name="email_updated">Email Updated!</string>
+    <string name="email_updated_failed">Email Update Failed!</string>
+    <string name="email_updated_failed_desc">Unable to update new Email. Kindly reach out to support if you need further assistance.</string>
     <string name="mobile_updated">Mobile Number Updated!</string>
+    <string name="mobile_updated_failed">Mobile Number Update Failed!</string>
+    <string name="mobile_updated_description_failed">Unable to update new Mobile Number. Kindly reach out to us for further assistance.</string>
+
     <string name="mobile_updated_description">New Mobile Number updated successfully. You may use this for future login with password.</string>
     <string name="email_updated_Description">New Email updated successfully. You may use this for future login with password.</string>
     <string name="sms">SMS</string>
@@ -559,12 +564,12 @@
     <string name="mobile_no">Mobile Number</string>
     <string name="password">Password</string>
     <string name="update_profile">Update Profile</string>
-    <string name="edit_email">Edit Email Address</string>
+    <string name="edit_email">Edit Email</string>
     <string name="edit_Mobile">Edit Mobile Number</string>
     <string name="set_Mobile">Set Mobile Number</string>
 
 
-    <string name="set_email">Set Email Address</string>
+    <string name="set_email">Set Email</string>
 
     <string name="set_name">Set Name</string>
     <string name="set_password">Set Password</string>
@@ -579,7 +584,7 @@
 
     <string name="new_mobile">New Mobile number</string>
 
-    <string name="new_email">New Email Address</string>
+    <string name="new_email">New Email</string>
     <string name="edit_password">Edit Password</string>
     <string name="existing_password">Existing Password</string>
     <string name="new_psw">New Password</string>
@@ -713,6 +718,8 @@
     <string name="logout_confirmation_message_new">Are you sure you want to log out now?</string>
 
     <string name="edit_email_title">Please enter your new email address and confirm with your password</string>
+    <string name="edit_mobile_title">Please enter your new mobile number and confirm with your password</string>
+
     <string name="contentDescription">ContentDescription</string>
     <string name="english">English</string>
     <string name="bahasha">Bahasa Melayu</string>
