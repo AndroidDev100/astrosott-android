@@ -157,7 +157,8 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
 
         if (startTime > currentTime) {
             viewHolder.scheduleItemBinding.playIcon.setVisibility(View.GONE);
-
+        } else {
+            viewHolder.scheduleItemBinding.notification.setVisibility(View.GONE);
         }
 
         boolean isReminderAdded = new KsPreferenceKey(context).getReminderId(data.get(i).getObject().getId().toString());
@@ -283,12 +284,12 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
         try {
             boolean isReminderAdded = new KsPreferenceKey(context).getReminderId(asset.getId().toString());
             if (isReminderAdded == true) {
-                callBack.cancelReminder(notification,asset);
+                callBack.cancelReminder(notification, asset);
             } else {
                 boolean reminderCanAdd = checkProgramTiming(asset);
                 if (reminderCanAdd) {
                     if (currentTime(asset)) {
-                        callBack.setReminder(notification,asset);
+                        callBack.setReminder(notification, asset);
                     } else {
                         Toast.makeText(context, context.getResources().getString(R.string.reminder_program_about_to_start), Toast.LENGTH_SHORT).show();
                     }
@@ -308,10 +309,10 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
         String currentTime2 = AppCommonMethods.getCurrentTimeStamp();
         Long startTime2 = asset.getStartDate();
         Log.w("reminderDetails", currentTime2 + " " + startTime2 + " " + fiveMinuteBefore);
-        if (Long.valueOf(startTime2)>Long.valueOf(currentTime2)) {
+        if (Long.valueOf(startTime2) > Long.valueOf(currentTime2)) {
 
             return true;
-        }else {
+        } else {
             return false;
         }
 
@@ -321,14 +322,14 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
         String fiveMinuteBefore = AppCommonMethods.getFiveMinuteEarlyTimeStamp(asset.getStartDate());
         String currentTime = AppCommonMethods.getCurrentTimeStamp();
         String startTime = AppCommonMethods.getProgramStartTime(asset.getStartDate());
-        Log.w("reminderDetails",currentTime+" "+startTime+" "+fiveMinuteBefore);
-        if (Long.valueOf(startTime)>Long.valueOf(fiveMinuteBefore)) {
-            if (Long.valueOf(currentTime)<Long.valueOf(fiveMinuteBefore)){
+        Log.w("reminderDetails", currentTime + " " + startTime + " " + fiveMinuteBefore);
+        if (Long.valueOf(startTime) > Long.valueOf(fiveMinuteBefore)) {
+            if (Long.valueOf(currentTime) < Long.valueOf(fiveMinuteBefore)) {
                 return true;
-            }else {
+            } else {
                 return false;
             }
-        }else {
+        } else {
             return true;
         }
     }

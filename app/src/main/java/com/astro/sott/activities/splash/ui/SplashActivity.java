@@ -185,6 +185,19 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         }
     }
 
+    public static boolean isStoreVersion(Context context) {
+        boolean result = false;
+
+        try {
+            String installer = context.getPackageManager()
+                    .getInstallerPackageName(context.getPackageName());
+            result = !TextUtils.isEmpty(installer);
+        } catch (Throwable e) {
+        }
+        Toast.makeText(context, result + "", Toast.LENGTH_SHORT).show();
+        return result;
+    }
+
     private void updateLanguage() {
         String selectedLanguage = new KsPreferenceKey(this).getAppLangName();
         if (selectedLanguage.equalsIgnoreCase("ms")) {
@@ -592,7 +605,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     description = intent.getStringExtra(AppLevelConstants.DESCRIPTION);
                     Id = intent.getLongExtra(AppLevelConstants.ID, 0);
                     screen_name = intent.getStringExtra(AppLevelConstants.SCREEN_NAME);
-                    Log.w("reminderDetails",screen_name);
+                    Log.w("reminderDetails", screen_name);
 
 
                     JsonObject jsonObject = new JsonObject();
@@ -626,7 +639,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         checkSocialRedirection();
 
 
-
 //            branchReferralInitListener = new Branch.BranchReferralInitListener() {
 //                @Override
 //                public void onInitFinished(JSONObject referringParams, BranchError error) {
@@ -653,11 +665,11 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     private void checkSocialRedirection() {
         try {
-            if (getIntent().getData()!=null && getIntent().getData().toString().contains("mediaType")){
-                Uri deepLink=Uri.parse(getIntent().getData().toString());
+            if (getIntent().getData() != null && getIntent().getData().toString().contains("mediaType")) {
+                Uri deepLink = Uri.parse(getIntent().getData().toString());
 
                 if (deepLink.getQuery() != null && deepLink.getQuery().contains("id")) {
-                    String mediatype=(String) deepLink.getQueryParameter("mediaType");
+                    String mediatype = (String) deepLink.getQueryParameter("mediaType");
                     if (Integer.parseInt(mediatype) == MediaTypeConstant.getProgram(SplashActivity.this)) {
                         myViewModel.getLiveSpecificAsset(this, deepLink.getQueryParameter("id")).observe(this, railCommonData -> {
                             if (railCommonData != null && railCommonData.getStatus()) {
@@ -674,7 +686,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                     }
                 }
 
-            }else {
+            } else {
                 FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(pendingDynamicLinkData -> {
                     Log.w("deepLink", "in" + pendingDynamicLinkData);
                     try {
@@ -778,15 +790,15 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 });
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             new ActivityLauncher(SplashActivity.this).homeActivity(SplashActivity.this, HomeActivity.class);
         }
 
     }
 
     private void reminderRedirections(Long id) {
-        Log.w("reminderDetails",id+"");
-        if (screen_name!=null && screen_name.equalsIgnoreCase(AppLevelConstants.PROGRAM)){
+        Log.w("reminderDetails", id + "");
+        if (screen_name != null && screen_name.equalsIgnoreCase(AppLevelConstants.PROGRAM)) {
             myViewModel.getLiveSpecificAsset(this, String.valueOf(id)).observe(this, railCommonData -> {
                 if (railCommonData != null && railCommonData.getStatus()) {
                     new ActivityLauncher(SplashActivity.this).homeScreen(SplashActivity.this, HomeActivity.class);
@@ -797,8 +809,8 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 }
             });
 
-        }else {
-            Log.w("reminderDetails","else");
+        } else {
+            Log.w("reminderDetails", "else");
             callSpecficAssetApi(id + "", "");
         }
     }
@@ -1053,6 +1065,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 return;
             }
         }
+
+
+      //  isStoreVersion(this);
 
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName("Splash Screen");
 
