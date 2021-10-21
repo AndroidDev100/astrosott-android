@@ -129,6 +129,10 @@
     <string name="password_updated">Password Updated!</string>
     <string name="maxed_out_title">Verification Code Resend Maxed Out!</string>
     <string name="become_vip">Become a VIP</string>
+    <string name="buy">Buy</string>
+    <string name="buy_from">Buy From </string>
+
+
     <string name="subscription_upgrade">Subscription Upgrade</string>
     <string name="subscription_downgrade">Subscription Downgrade</string>
 
@@ -271,7 +275,7 @@
     <string name="got_it">Got it</string>
     <string name="maxis_edit_description">You may only update your details at our Partner portal.</string>
 
-    <string name="maxis_upgrade_downgrade_restriction_description"> You may subscribe via sooka if your partner bundle subscription is cancelled and expired..</string>
+    <string name="maxis_upgrade_downgrade_restriction_description"> You may subscribe via sooka if your partner bundle subscription is cancelled and expired.</string>
 
     <string name="maxis_packs_restriction_description">We sooka you a lot, but you need to head back to our Partner portal to change your subscription. You may subscribe via sooka if your partner bundle subscription is cancelled and expired.</string>
     <string name="existing_user_description">Account with this email/mobile number already exist. Kindly proceed to login with the right login method.</string>
@@ -542,7 +546,7 @@
     <string name="subscribe_more">Subscribe</string>
     <string name="upgrade">Upgrade</string>
     <string name="downgrade">Downgrade</string>
-    <string name="currently_not_active">Currently no Active Subscription</string>
+    <string name="currently_not_active">No Transaction History</string>
     <string name="add_subscription">Add Subscriptions</string>
     <string name="manage_subscription_more">Manage Subscription</string>
     <string name="renew_date">Renew on 22/2/21</string>

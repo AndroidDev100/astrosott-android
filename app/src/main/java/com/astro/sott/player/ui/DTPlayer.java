@@ -546,7 +546,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().name.setText("\"" + asset.getName() + "\"");
             }
         } else if (isLivePlayer) {
-            getBinding().name.setText("\"" + Constants.channelName + "\"");
+            getBinding().name.setText( programAsset.getName().toString() );
+//              getBinding().name.setText("\"" + Constants.channelname + "\"");
 
         } else {
             getBinding().name.setText("\"" + asset.getName() + "\"");
@@ -4180,12 +4181,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void showDialog(String message) {
-        FragmentManager fm = getFragmentManager();
-        AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(getResources().getString(R.string.dialog), message, getResources().getString(R.string.ok));
-        alertDialog.setCancelable(false);
-        alertDialog.setAlertDialogCallBack(this);
-        if (fm != null)
-            alertDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        try {
+            FragmentManager fm = getFragmentManager();
+            AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(getResources().getString(R.string.dialog), message, getResources().getString(R.string.ok));
+            alertDialog.setCancelable(false);
+            alertDialog.setAlertDialogCallBack(this);
+            if (fm != null)
+                alertDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        }catch (Exception ignored){}
     }
 
     @Override
@@ -4546,7 +4549,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (captionItemClick == 0) {
                     Log.w("subtitleS 2", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey() + "-----" + captionItemClick);
                     // Log.w("colorChange 2",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
-                    if (new KsPreferenceKey(baseActivity).getSubtitleLanguageIndex() > -1 && !new KsPreferenceKey(baseActivity).getSubTitleLangKey().equalsIgnoreCase("")) {
+                    if (!new KsPreferenceKey(baseActivity).getSubTitleLangKey().equalsIgnoreCase("")) {
                         Log.w("subtitleS 3", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey() + "-----" + captionItemClick);
                         if (tracks[position].getTrackName().trim().equalsIgnoreCase(new KsPreferenceKey(baseActivity).getSubTitleLangKey().trim())) {
                             holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));

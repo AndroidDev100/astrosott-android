@@ -297,6 +297,7 @@ public class AppCommonMethods {
 
     public static void removeUserPrerences(Context context) {
         UserInfo.getInstance(context).setUserName("");
+        UserInfo.getInstance(context).setMaxis(false);
         UserInfo.getInstance(context).setVip(false);
         UserInfo.getInstance(context).setHouseHoldError(false);
         UserInfo.getInstance(context).setCpCustomerId("");
@@ -799,8 +800,8 @@ public class AppCommonMethods {
         try {
             String uri = createURI(asset, activity);
             String fallBackUrl = createFallBackUrl(asset, activity);
-            Log.w("urivalue-->>",asset.getName()+"  "+uri);
-            Log.w("urivalue-->>",asset.getName()+"  "+Uri.parse(uri));
+            Log.w("urivalue-->>", asset.getName() + "  " + uri);
+            Log.w("urivalue-->>", asset.getName() + "  " + Uri.parse(uri));
 /*
             DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     .setLink(Uri.parse(uri))
@@ -816,7 +817,6 @@ public class AppCommonMethods {
 
 
             //  Uri dynamicLinkUri = dynamicLink.getUri();
-
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
@@ -872,7 +872,7 @@ public class AppCommonMethods {
                     });
 
             shortLinkTask.toString();
-            Log.w("urivalue-->>",asset.getName()+"  "+shortLinkTask.toString());
+            Log.w("urivalue-->>", asset.getName() + "  " + shortLinkTask.toString());
 
         } catch (Exception ignored) {
 
@@ -2006,7 +2006,7 @@ public class AppCommonMethods {
             e.printStackTrace();
         }
 
-        return false;
+        return true;
     }
 
 

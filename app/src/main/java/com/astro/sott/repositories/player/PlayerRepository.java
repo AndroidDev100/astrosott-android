@@ -304,7 +304,7 @@ public class PlayerRepository {
             }
 
             if (player != null) {
-                if (new KsPreferenceKey(context).getSubtitleLanguageIndex() > -1 && !new KsPreferenceKey(context).getSubTitleLangKey().equalsIgnoreCase("")) {
+                if (!new KsPreferenceKey(context).getSubTitleLangKey().equalsIgnoreCase("")) {
                     if (tracks != null && tracks.getTextTracks().size() > 0) {
                         //TrackItem[] trackItems = new TrackItem[tracks.getTextTracks().size()];
                         for (int i = 0; i < tracks.getTextTracks().size(); i++) {

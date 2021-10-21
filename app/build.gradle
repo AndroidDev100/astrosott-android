@@ -83,7 +83,7 @@ android {
 
             buildConfigField "String", "KALTURA_API_VERSION", "\"5.8.0\""
             buildConfigField "String", "KALTURA_APPLICATION_NAME", "\"com.kaltura.astro.mobile\""
-            buildConfigField "String", "KALTURA_CLIENT_VERSION", "\"0.0.3\""
+            buildConfigField "String", "KALTURA_CLIENT_VERSION", "\"0.0.4\""
             buildConfigField "String", "KALTURA_PLATFORM", "\"android\""
             buildConfigField "String", "KALTURA_PARTNER_ID", "\"3209\""
 
@@ -100,8 +100,8 @@ android {
         }
         prod {
             dimension 'default'
-            versionCode 1055
-            versionName "21.10.6(02)"
+            versionCode 1058
+            versionName "21.10.11(13)"
             /*    versionCode 1
                 versionName "1"*/
             applicationId "com.astro.sott"

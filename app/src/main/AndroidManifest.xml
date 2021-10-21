@@ -7,19 +7,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission
-        android:name="android.permission.READ_PHONE_STATE"
-        android:maxSdkVersion="29" />
-    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"  android:maxSdkVersion="29"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    <!--  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
-      <uses-permission
-          android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-          android:maxSdkVersion="28" />-->
-    <!--  <uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
+  <!--  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />-->
+   <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS"  />-->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission
@@ -159,13 +156,13 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <receiver
+       <!-- <receiver
             android:name="com.appsflyer.MultipleInstallBroadcastReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
         <activity android:name=".activities.parentalControl.ui.ParentalControl" />
         <activity

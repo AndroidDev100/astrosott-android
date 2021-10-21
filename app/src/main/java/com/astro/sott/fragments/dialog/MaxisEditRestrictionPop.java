@@ -67,6 +67,7 @@ public class MaxisEditRestrictionPop extends DialogFragment {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
                     .TRANSPARENT));
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCancelable(false);
             // Get field from view
             inputLayoutDialog = view.findViewById(R.id.input_layout_dialog);
             title_value = getArguments().getString(AppLevelConstants.TITLE);
@@ -81,6 +82,7 @@ public class MaxisEditRestrictionPop extends DialogFragment {
 
 //
             btnOk.setOnClickListener(v -> {
+                editDialogListener.onFinishEditDialog();
                 dismiss();
             });
 
@@ -96,7 +98,7 @@ public class MaxisEditRestrictionPop extends DialogFragment {
 
 
     public void onResume() {
-        int width = getResources().getDimensionPixelSize(R.dimen.episode_dialog_fragment_width);
+        int width = getResources().getDisplayMetrics().widthPixels - 30;
         int height = getResources().getDimensionPixelSize(R.dimen.epiosode_dialog_fragment_height);
         if (getDialog().getWindow() != null)
             getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);

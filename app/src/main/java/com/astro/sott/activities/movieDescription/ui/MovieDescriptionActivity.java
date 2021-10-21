@@ -18,11 +18,15 @@ import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActiv
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceStatusCallBack;
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
+import com.astro.sott.modelClasses.InApp.PackDetail;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.PacksDateLayer;
+import com.astro.sott.utils.billing.BuyButtonListener;
+import com.astro.sott.utils.billing.BuyButtonManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.conviva.sdk.ConvivaSdkConstants;
@@ -97,7 +101,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private RailCommonData railData;
     private Asset asset;
     private String vodType;
-
+    private String[] subscriptionIds;
     private int layoutType, playlistId = 1;
     private DoubleValue doubleValue;
     private boolean xofferWindowValue = false, playbackControlValue = false;
@@ -220,6 +224,9 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                        intent.putExtra("SubscriptionIdBundle", bundle);
                         startActivity(intent);
                     }
                 } else {
@@ -437,76 +444,75 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private String fileId = "";
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
-        if (railData != null && railData.getObject() != null)
+        if (railData != null && railData.getObject() != null) {
             getBookmarking(railData.getObject());
 
-        fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+            fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
 
-        new EntitlementCheck().checkAssetPurchaseStatus(MovieDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
-            this.errorCode = AppLevelConstants.NO_ERROR;
-            if (apiStatus) {
-                if (purchasedStatus) {
-                    runOnUiThread(() -> {
-                        if (playbackControlValue) {
-                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                            if (watchPosition > 0) {
-                                getBinding().playText.setText(getResources().getString(R.string.resume));
-                            } else {
-                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                            }
-                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.GONE);
-                            becomeVipButtonCLicked = false;
-                            getBinding().playText.setTextColor(getResources().getColor(R.color.black));
-                        }
-
-                    });
-                    this.vodType = EntitlementCheck.FREE;
-
-                } else {
-                    if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+            new EntitlementCheck().checkAssetPurchaseStatus(MovieDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+                this.errorCode = AppLevelConstants.NO_ERROR;
+                if (apiStatus) {
+                    if (purchasedStatus) {
                         runOnUiThread(() -> {
-                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                            getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.GONE);
-                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-                            if (becomeVipButtonCLicked) {
-                                becomeVipButtonCLicked = false;
-                                if (UserInfo.getInstance(this).isActive()) {
-                                    if (!fileId.equalsIgnoreCase("")) {
-                                        Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                                        intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
-                                        startActivity(intent);
-                                    }
+                            if (playbackControlValue) {
+                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                                if (watchPosition > 0) {
+                                    getBinding().playText.setText(getResources().getString(R.string.resume));
+                                } else {
+                                    getBinding().playText.setText(getResources().getString(R.string.watch_now));
                                 }
+                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                becomeVipButtonCLicked = false;
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.black));
                             }
 
                         });
-                        this.vodType = EntitlementCheck.SVOD;
+                        this.vodType = EntitlementCheck.FREE;
+
+                    } else {
+                        if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                            runOnUiThread(() -> {
+                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                checkBuyTextButtonCondition(fileId);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                                if (becomeVipButtonCLicked) {
+                                    becomeVipButtonCLicked = false;
+                                    if (UserInfo.getInstance(this).isActive()) {
+                                        if (!fileId.equalsIgnoreCase("")) {
+                                            Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                            intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                            startActivity(intent);
+                                        }
+                                    }
+                                }
+
+                            });
+                            this.vodType = EntitlementCheck.SVOD;
 
                     } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                         runOnUiThread(() -> {
                             getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                            getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                            checkBuyTextButtonCondition(fileId);
                             getBinding().starIcon.setVisibility(View.GONE);
                             becomeVipButtonCLicked = false;
                             getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
 
-                        });
+                            });
 
-                        this.vodType = EntitlementCheck.TVOD;
+                            this.vodType = EntitlementCheck.TVOD;
 
 
+                        }
                     }
+
+                } else {
+
                 }
-
-            } else {
-
-            }
-        });
+            });
+        }
 
        /* new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
             if (status) {
@@ -535,6 +541,24 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         });
 */
 
+    }
+
+    private void checkBuyTextButtonCondition(String fileId) {
+        BuyButtonManager.getInstance().getPackages(this, "", fileId, true, (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
+            PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+            this.subscriptionIds = subscriptionIds;
+            if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.buy_from) +" "+ lowestPackagePrice);
+                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+            } else if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+            } else {
+                getBinding().playText.setText(getResources().getString(R.string.buy));
+                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+
+            }
+        });
     }
 
 

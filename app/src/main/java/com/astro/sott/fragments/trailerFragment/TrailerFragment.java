@@ -119,20 +119,16 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
     private void checkTrailerOrHighlights() {
         trailerData = trailerFragmentViewModel.getTrailer();
         highLightData = trailerFragmentViewModel.getHighLights();
-     try {
-         if (trailerData.size() > 0)
-          setTrailerUiComponents();
+        try {
+            if (trailerData != null && trailerData.size() > 0)
+                setTrailerUiComponents();
 
-         if (highLightData.size() > 0)
-          setHighLightUiComponents();
-     }catch (NullPointerException e){
-         PrintLogging.printLog("Exception", e.toString());
+            if (highLightData != null && highLightData.size() > 0)
+                setHighLightUiComponents();
+        } catch (NullPointerException e) {
+            PrintLogging.printLog("Exception", e.toString());
 
-     }
-        Log.d("trailerSIZE",trailerData.size()+"");
-        Log.d("trailerSIZE",highLightData.size()+"");
-
-
+        }
 
     }
 

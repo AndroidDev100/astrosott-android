@@ -156,7 +156,7 @@ public class KsPreferenceKey {
     }
 
     public String getSubTitleLangKey() {
-        return session.getString(SUBTITLE_LANG_KEY, "en");
+        return session.getString(SUBTITLE_LANG_KEY, "None");
     }
 
     public void setSubTitleLangKey(String appLangName) {

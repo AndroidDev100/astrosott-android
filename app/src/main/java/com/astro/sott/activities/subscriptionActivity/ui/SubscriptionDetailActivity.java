@@ -26,6 +26,8 @@ import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
 import com.astro.sott.fragments.dialog.MaxisEditRestrictionPop;
+import com.astro.sott.fragments.manageSubscription.ui.ManageSubscriptionFragment;
+import com.astro.sott.fragments.manageSubscription.ui.PlanNotUpdated;
 import com.astro.sott.fragments.subscription.dialog.DowngradeDialogFragment;
 import com.astro.sott.fragments.subscription.dialog.UpgradeDialogFragment;
 import com.astro.sott.fragments.subscription.ui.SubscriptionPacksFragment;
@@ -53,7 +55,7 @@ import com.kaltura.client.types.Subscription;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubscriptionDetailBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener {
+public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubscriptionDetailBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener, MaxisEditRestrictionPop.EditDialogListener, PlanNotUpdated.PlanUpdatedListener {
     private BillingProcessor billingProcessor;
     private SubscriptionViewModel subscriptionViewModel;
     private SkuDetails skuDetails;
@@ -76,7 +78,9 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         super.onCreate(savedInstanceState);
         TabsData.getInstance().setDetail(true);
         intializeBilling();
-
+        Bundle b = getIntent().getBundleExtra("SubscriptionIdBundle");
+        if (b != null && b.getStringArray(AppLevelConstants.SUBSCRIPTION_ID_KEY) != null)
+            subscriptionIds = b.getStringArray(AppLevelConstants.SUBSCRIPTION_ID_KEY);
         if (getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY) != null)
             fileId = getIntent().getStringExtra(AppLevelConstants.FILE_ID_KEY);
 
@@ -93,7 +97,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
         modelCall();
         getActiveSubscription();
-        getSubscriptionActionList();
+
     }
 
     private void modelCall() {
@@ -234,6 +238,13 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         }
     }
 
+    private void updatePlanRestriction() {
+        FragmentManager fm = getSupportFragmentManager();
+        PlanNotUpdated planNotUpdated = PlanNotUpdated.newInstance(getResources().getString(R.string.plan_with_different_payment), "");
+        planNotUpdated.setEditDialogCallBack(SubscriptionDetailActivity.this);
+        planNotUpdated.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+    }
+
     private void checkIfDetailAvailableOnPlaystore(List<ProductsResponseMessageItem> productsResponseMessage) {
         packDetailList = new ArrayList<>();
         List<String> subSkuList = AppCommonMethods.getSubscriptionSKUs(productsResponseMessage, this);
@@ -261,43 +272,86 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                         }
                     }
                 }
-
-                if (packDetailList.size() > 0) {
-                    if (packDetailList.size() == 1) {
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                        if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
-                            if (!packDetailList.get(0).getProductsResponseMessageItem().getServiceType().equalsIgnoreCase("ppv")) {
-                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_packs_restriction_description));
+                if (packDetailList != null) {
+                    if (packDetailList.size() > 0) {
+                        if (packDetailList.size() == 1) {
+                            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                            if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
+                                if (!packDetailList.get(0).getProductsResponseMessageItem().getServiceType().equalsIgnoreCase("ppv")) {
+                                    maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
+                                } else {
+                                    onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
+                                }
                             } else {
                                 onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
                             }
                         } else {
-                            onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
-                        }
-                    } else {
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                        if (haveSvod && haveTvod == false) {
-                            if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
-                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_packs_restriction_description));
+                            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                            if (haveSvod && haveTvod == false) {
+                                if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
+                                    maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
+                                } else {
+                                    PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+                                    Intent intent = new Intent(SubscriptionDetailActivity.this, ProfileSubscriptionActivity.class);
+                                    intent.putExtra("from", "Content Detail Page");
+                                    startActivity(intent);
+                                    finish();
+                                }
                             } else {
-                                PacksDateLayer.getInstance().setPackDetailList(packDetailList);
-                                Intent intent = new Intent(SubscriptionDetailActivity.this, ProfileSubscriptionActivity.class);
-                                intent.putExtra("from", "Content Detail Page");
-                                startActivity(intent);
-                                finish();
+                                setPackFragment();
                             }
-                        } else {
-                            setPackFragment();
+
                         }
-
                     }
-
                 }
 
             }
         });
+
     }
 
+    public void checkPackRedirection() {
+        packDetailList = PacksDateLayer.getInstance().getPackDetailList();
+        for (PackDetail packDetail : packDetailList) {
+            if (packDetail.getProductsResponseMessageItem().getServiceType().equalsIgnoreCase("ppv")) {
+                haveTvod = true;
+            } else {
+                haveSvod = true;
+            }
+        }
+        if (packDetailList != null) {
+            if (packDetailList.size() > 0) {
+                if (packDetailList.size() == 1) {
+                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
+                        if (!packDetailList.get(0).getProductsResponseMessageItem().getServiceType().equalsIgnoreCase("ppv")) {
+                            maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
+                        } else {
+                            onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
+                        }
+                    } else {
+                        onCardClicked(packDetailList.get(0).getProductsResponseMessageItem().getAppChannels().get(0).getAppID(), packDetailList.get(0).getProductsResponseMessageItem().getServiceType(), null, packDetailList.get(0).getProductsResponseMessageItem().getDisplayName(), packDetailList.get(0).getSkuDetails().getPriceAmountMicros());
+                    }
+                } else {
+                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    if (haveSvod && haveTvod == false) {
+                        if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
+                            maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
+                        } else {
+                            PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+                            Intent intent = new Intent(SubscriptionDetailActivity.this, ProfileSubscriptionActivity.class);
+                            intent.putExtra("from", "Content Detail Page");
+                            startActivity(intent);
+                            finish();
+                        }
+                    } else {
+                        setPackFragment();
+                    }
+
+                }
+            }
+        }
+    }
 
     private void intializeBilling() {
 
@@ -339,6 +393,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private void maxisRestrictionPopUp(String message) {
         FragmentManager fm = getSupportFragmentManager();
         MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), message, getResources().getString(R.string.ok_understand));
+        cancelDialogFragment.setEditDialogCallBack(SubscriptionDetailActivity.this);
         cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
     }
 
@@ -388,15 +443,23 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                                 if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
                                     maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
                                 } else {
-                                    billingProcessor.updatePurchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
+                                    if (paymentMethod.equalsIgnoreCase("") || paymentMethod.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
+                                        billingProcessor.updatePurchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
+                                    } else {
+                                        updatePlanRestriction();
+                                    }
                                 }
                             }
                         } else {
                             offerType = "SVOD";
                             if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {
-                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_packs_restriction_description));
+                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
                             } else {
-                                billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                                if (paymentMethod.equalsIgnoreCase("") || paymentMethod.equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
+                                    billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                                } else {
+                                    updatePlanRestriction();
+                                }
                             }
                         }
                     }
@@ -408,7 +471,11 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     @Override
     public void onBillingInitialized() {
-        Log.w("billingProcessor_play", "intialized");
+        if (from.equalsIgnoreCase("Locked Episode")) {
+            getSubscriptionActionList();
+        } else {
+            checkPackRedirection();
+        }
 
     }
 
@@ -510,7 +577,10 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     @Override
     public void onBillingError(@Nullable BillingResult error) {
-        onBackPressed();
+        try {
+            onBackPressed();
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
@@ -565,5 +635,15 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     public void onDowngradeClick() {
         billingProcessor.downgrade();
 
+    }
+
+    @Override
+    public void onFinishEditDialog() {
+        onBackPressed();
+    }
+
+    @Override
+    public void onPlanUpdated() {
+        onBackPressed();
     }
 }
