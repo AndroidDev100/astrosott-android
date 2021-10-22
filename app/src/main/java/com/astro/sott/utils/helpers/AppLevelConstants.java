@@ -26,6 +26,8 @@ public interface AppLevelConstants {
     String TITLE = "title";
     String MESSAGE = "message";
     String ACTION_BTN = "actn_Btn";
+    String NEGATIVE_ACTION_BTN = "negative_actn_Btn";
+
 
     String DATE = "date";
     String FILE_ID = "file_id";

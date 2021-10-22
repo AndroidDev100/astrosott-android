@@ -71,7 +71,7 @@
     <string name="shows">Shows</string>
     <string name="term_policy_new">By clicking Sign Up or any of the Social Login above, you agree to</string>
     <string name="term_policy_login">By clicking Log In or any of the Social Login above, you agree to</string>
-<string name="unable_link_social">Unable to link this social account. Kindly reach out to us for further assistance.</string>
+    <string name="unable_link_social">Unable to link this social account. Kindly reach out to us for further assistance.</string>
     <string name="trailer_more">Trailers &amp; More</string>
     <string name="trailer_title">Trailers</string>
     <string name="highlights">Highlights</string>

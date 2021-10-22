@@ -19,6 +19,7 @@ import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityEditProfileBinding;
 import com.astro.sott.fragments.dialog.CommonDialogFragment;
 import com.astro.sott.fragments.dialog.MaxisEditRestrictionPop;
+import com.astro.sott.fragments.dialog.UnlinkDialogFragment;
 import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
@@ -45,7 +46,7 @@ import org.json.JSONException;
 import java.util.Arrays;
 import java.util.List;
 
-public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfileBinding> implements MaxisEditRestrictionPop.EditDialogListener, CommonDialogFragment.EditDialogListener {
+public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfileBinding> implements MaxisEditRestrictionPop.EditDialogListener, CommonDialogFragment.EditDialogListener, UnlinkDialogFragment.EditDialogListener {
     private AstroLoginViewModel astroLoginViewModel;
     private CallbackManager callbackManager;
     private String email_mobile = "";
@@ -149,7 +150,8 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
                 }
             } else {
-                updateProfile("null", "Facebook", false);
+                unlinkType = "Facebook";
+                unlinkDialog(getResources().getString(R.string.unlink_from) + " " + unlinkType + "?", getResources().getString(R.string.unlink_desc), getResources().getString(R.string.YES), getResources().getString(R.string.cancel));
             }
 
         });
@@ -165,10 +167,17 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                 }
             } else {
                 unlinkType = "Google";
-                updateProfile("null", "Google", false);
+                unlinkDialog(getResources().getString(R.string.unlink_from) + " " + unlinkType + "?", getResources().getString(R.string.unlink_desc), getResources().getString(R.string.YES), getResources().getString(R.string.cancel));
             }
         });
 
+    }
+
+    private void unlinkDialog(String tiltle, String description, String actionBtn, String negativeActn) {
+        FragmentManager fm = getSupportFragmentManager();
+        UnlinkDialogFragment commonDialogFragment = UnlinkDialogFragment.newInstance(tiltle, description, actionBtn, negativeActn);
+        commonDialogFragment.setEditDialogCallBack(this);
+        commonDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
     }
 
     private void commonDialog(String tiltle, String description, String actionBtn) {
@@ -389,21 +398,21 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     if (isLinking) {
                         UserInfo.getInstance(this).setFbLinked(true);
                         getBinding().linkFb.setText(getResources().getString(R.string.unlink));
-                        Toast.makeText(this, type+" "+getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, type + " " + getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
                     } else {
                         UserInfo.getInstance(this).setFbLinked(false);
                         getBinding().linkFb.setText(getResources().getString(R.string.link));
-                        Toast.makeText(this, type+" "+getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, type + " " + getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
                     }
                 } else if (type.equalsIgnoreCase("Google")) {
                     if (isLinking) {
-                        Toast.makeText(this,type+" "+ getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, type + " " + getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
                         UserInfo.getInstance(this).setGoogleLinked(true);
                         getBinding().linkGoogle.setText(getResources().getString(R.string.unlink));
                     } else {
                         UserInfo.getInstance(this).setGoogleLinked(false);
                         getBinding().linkGoogle.setText(getResources().getString(R.string.link));
-                        Toast.makeText(this, type+" "+getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, type + " " + getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -431,5 +440,10 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     @Override
     public void onActionBtnClicked() {
 
+    }
+
+    @Override
+    public void unlinkBtnClicked() {
+        updateProfile("null", unlinkType, false);
     }
 }
