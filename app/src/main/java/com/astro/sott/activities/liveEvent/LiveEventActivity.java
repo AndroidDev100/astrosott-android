@@ -109,7 +109,7 @@ import java.util.Random;
 import java.util.StringTokenizer;
 
 
-public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, ReminderDialogFragment.EditDialogListener{
+public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, ReminderDialogFragment.EditDialogListener {
     ArrayList<ParentalLevels> parentalLevels;
     private RailCommonData railData;
     private Asset asset;
@@ -211,30 +211,30 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
     private void checkReminder() {
         boolean isReminderAdded = new KsPreferenceKey(getApplicationContext()).getReminderId(asset.getId().toString());
-        if(isReminderAdded == true){
+        if (isReminderAdded == true) {
             String currentTime = AppCommonMethods.getCurrentTimeStamp();
             String startTime = AppCommonMethods.getProgramStartTime(liveEventStartDate);
-            Log.w("reminderDetails",currentTime+" "+startTime+" ");
-            if (Long.valueOf(startTime)>Long.valueOf(currentTime)) {
+            Log.w("reminderDetails", currentTime + " " + startTime + " ");
+            if (Long.valueOf(startTime) > Long.valueOf(currentTime)) {
                 getBinding().reminderActive.setVisibility(View.VISIBLE);
                 getBinding().reminder.setVisibility(View.GONE);
-            }else {
+            } else {
                 getBinding().reminderActive.setVisibility(View.GONE);
                 getBinding().reminder.setVisibility(View.VISIBLE);
                 try {
-                    new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(),false);
-                }catch (Exception ignored){
+                    new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(), false);
+                } catch (Exception ignored) {
 
                 }
 
             }
 
-        }else {
+        } else {
             getBinding().reminderActive.setVisibility(View.GONE);
-            getBinding().reminder.setVisibility(View.VISIBLE);
+            // getBinding().reminder.setVisibility(View.VISIBLE);
             try {
-                new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(),false);
-            }catch (Exception ignored){
+                new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(), false);
+            } catch (Exception ignored) {
 
             }
         }
@@ -280,7 +280,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         } else {
                             intent.putExtra(AppLevelConstants.PLAYABLE, false);
                         }
-                        intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
+                        intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                         Bundle bundle = new Bundle();
@@ -312,7 +312,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         } else {
                             intent.putExtra(AppLevelConstants.PLAYABLE, false);
                         }
-                        intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
+                        intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
@@ -337,102 +337,103 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     private int requestCode;
     private PendingIntent pendingIntent;
     Intent myIntent;
-    String dateTimeForReminder="";
+    String dateTimeForReminder = "";
+
     private void setReminder() {
         try {
-        boolean isReminderAdded = new KsPreferenceKey(getApplicationContext()).getReminderId(asset.getId().toString());
-        if(isReminderAdded == true){
-         showDialog();
-        }else {
-            boolean reminderCanAdd=checkProgramTiming(asset);
-            if (reminderCanAdd){
-                if (currentTime(asset)){
+            boolean isReminderAdded = new KsPreferenceKey(getApplicationContext()).getReminderId(asset.getId().toString());
+            if (isReminderAdded == true) {
+                showDialog();
+            } else {
+                boolean reminderCanAdd = checkProgramTiming(asset);
+                if (reminderCanAdd) {
+                    if (currentTime(asset)) {
                    /* Random random = new Random();
                     requestCode = Integer.parseInt(String.format("%02d", random.nextInt(10000)));*/
-                    try {
-                        if (viewModel!=null){
-                            dateTimeForReminder  =  viewModel.getNotificationStartDate(liveEventStartDate) + " - " + AppCommonMethods.getEndTime(liveEventEndDate);
-                          //  Log.w("dateTimeForReminder-->>" , dateTimeForReminder);
+                        try {
+                            if (viewModel != null) {
+                                dateTimeForReminder = viewModel.getNotificationStartDate(liveEventStartDate) + " - " + AppCommonMethods.getEndTime(liveEventEndDate);
+                                //  Log.w("dateTimeForReminder-->>" , dateTimeForReminder);
+                            }
+                        } catch (Exception ignored) {
+
                         }
-                    }catch (Exception ignored){
+                        Long code = asset.getId();
+                        requestCode = code.intValue();
+                        PrintLogging.printLog("", "notificationRequestId-->>" + requestCode);
+                        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        long reminderDateTimeInMilliseconds = 000;
 
-                    }
-                    Long code = asset.getId();
-                    requestCode = code.intValue();
-                    PrintLogging.printLog("", "notificationRequestId-->>" + requestCode);
-                    alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    long reminderDateTimeInMilliseconds = 000;
-
-                    myIntent = new Intent(this, MyReceiver.class);
-                    myIntent.putExtra("via", "LiveEventReminder");
-                    myIntent.putExtra(AppLevelConstants.ID, Long.parseLong(asset.getId() + ""));
-                    myIntent.putExtra(AppLevelConstants.Title, asset.getName());
-                    myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
-                    myIntent.putExtra(AppLevelConstants.DATETIME_REMINDER, dateTimeForReminder);
-                    myIntent.putExtra(AppLevelConstants.SCREEN_NAME, "LiveEvent");
-                    myIntent.putExtra("requestcode", requestCode);
-                    myIntent.setAction("com.astro.sott.MyIntent");
-                    myIntent.setComponent(new ComponentName(getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
-
-
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
-
-                        Intent intent = new Intent();
-                        intent.putExtra(AppLevelConstants.ID, Long.parseLong(asset.getId() + ""));
-                        intent.putExtra(AppLevelConstants.Title, asset.getName());
-                        intent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+                        myIntent = new Intent(this, MyReceiver.class);
+                        myIntent.putExtra("via", "LiveEventReminder");
+                        myIntent.putExtra(AppLevelConstants.ID, Long.parseLong(asset.getId() + ""));
+                        myIntent.putExtra(AppLevelConstants.Title, asset.getName());
+                        myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
                         myIntent.putExtra(AppLevelConstants.DATETIME_REMINDER, dateTimeForReminder);
-                        intent.putExtra(AppLevelConstants.SCREEN_NAME, "LiveEvent");
-                        intent.putExtra("requestcode", requestCode);
-
-                        intent.setComponent(new ComponentName(getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
-                        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-                        pendingIntent = PendingIntent.getBroadcast(this, requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        myIntent.putExtra(AppLevelConstants.SCREEN_NAME, "LiveEvent");
+                        myIntent.putExtra("requestcode", requestCode);
+                        myIntent.setAction("com.astro.sott.MyIntent");
+                        myIntent.setComponent(new ComponentName(getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
 
 
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+
+                            Intent intent = new Intent();
+                            intent.putExtra(AppLevelConstants.ID, Long.parseLong(asset.getId() + ""));
+                            intent.putExtra(AppLevelConstants.Title, asset.getName());
+                            intent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+                            myIntent.putExtra(AppLevelConstants.DATETIME_REMINDER, dateTimeForReminder);
+                            intent.putExtra(AppLevelConstants.SCREEN_NAME, "LiveEvent");
+                            intent.putExtra("requestcode", requestCode);
+
+                            intent.setComponent(new ComponentName(getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
+                            intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+                            pendingIntent = PendingIntent.getBroadcast(this, requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+                        } else {
+
+                            pendingIntent = PendingIntent.getBroadcast(this, requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        }
+
+                        Calendar calendarToSchedule = Calendar.getInstance();
+                        calendarToSchedule.setTimeInMillis(System.currentTimeMillis());
+                        calendarToSchedule.clear();
+
+                        //  calendarToSchedule.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(dd), 11, 18, 0);
+                        Log.w("reminderDetails", year + " " + month + " " + dd + "  " + hour + "  " + minute);
+                        calendarToSchedule.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(dd), Integer.parseInt(hour), Integer.parseInt(minute), 0);
+
+                        reminderDateTimeInMilliseconds = calendarToSchedule.getTimeInMillis();
+
+                        PrintLogging.printLog("", "valueIsform" + reminderDateTimeInMilliseconds);
+
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+                            alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(reminderDateTimeInMilliseconds, pendingIntent), pendingIntent);
+                        } else {
+
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, reminderDateTimeInMilliseconds, pendingIntent);
+                        }
+                        try {
+                            Toast.makeText(this, getResources().getString(R.string.reminder_added) + " " + asset.getName(), Toast.LENGTH_SHORT).show();
+                        } catch (Exception ignored) {
+
+                        }
+                        new KsPreferenceKey(getApplicationContext()).setReminderId(asset.getId().toString(), true);
+                        getBinding().reminderActive.setVisibility(View.VISIBLE);
+                        getBinding().reminder.setVisibility(View.GONE);
                     } else {
-
-                        pendingIntent = PendingIntent.getBroadcast(this, requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        Toast.makeText(this, getResources().getString(R.string.reminder_program_about_to_start), Toast.LENGTH_SHORT).show();
                     }
 
-                    Calendar calendarToSchedule = Calendar.getInstance();
-                    calendarToSchedule.setTimeInMillis(System.currentTimeMillis());
-                    calendarToSchedule.clear();
-
-                    //  calendarToSchedule.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(dd), 11, 18, 0);
-                    Log.w("reminderDetails",year+" "+month+" "+dd+"  "+hour+"  "+minute);
-                    calendarToSchedule.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(dd), Integer.parseInt(hour), Integer.parseInt(minute), 0);
-
-                    reminderDateTimeInMilliseconds = calendarToSchedule.getTimeInMillis();
-
-                    PrintLogging.printLog("", "valueIsform" + reminderDateTimeInMilliseconds);
-
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
-                        alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(reminderDateTimeInMilliseconds, pendingIntent), pendingIntent);
-                    } else {
-
-                        alarmManager.set(AlarmManager.RTC_WAKEUP, reminderDateTimeInMilliseconds, pendingIntent);
-                    }
-                    try {
-                        Toast.makeText(this, getResources().getString(R.string.reminder_added)+" "+asset.getName(), Toast.LENGTH_SHORT).show();
-                    }catch (Exception ignored){
-
-                    }
-                    new KsPreferenceKey(getApplicationContext()).setReminderId(asset.getId().toString(), true);
-                    getBinding().reminderActive.setVisibility(View.VISIBLE);
-                    getBinding().reminder.setVisibility(View.GONE);
-                }else {
-                    Toast.makeText(this, getResources().getString(R.string.reminder_program_about_to_start), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, getResources().getString(R.string.reminder_cannot_set), Toast.LENGTH_SHORT).show();
                 }
 
-            }else {
-                Toast.makeText(this, getResources().getString(R.string.reminder_cannot_set), Toast.LENGTH_SHORT).show();
             }
-
-        }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
     }
@@ -441,14 +442,14 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         String fiveMinuteBefore = AppCommonMethods.getFiveMinuteEarlyTimeStamp(liveEventStartDate);
         String currentTime = AppCommonMethods.getCurrentTimeStamp();
         String startTime = AppCommonMethods.getProgramStartTime(liveEventStartDate);
-        Log.w("reminderDetails",currentTime+" "+startTime+" "+fiveMinuteBefore);
-        if (Long.valueOf(startTime)>Long.valueOf(fiveMinuteBefore)) {
-            if (Long.valueOf(currentTime)<Long.valueOf(fiveMinuteBefore)){
+        Log.w("reminderDetails", currentTime + " " + startTime + " " + fiveMinuteBefore);
+        if (Long.valueOf(startTime) > Long.valueOf(fiveMinuteBefore)) {
+            if (Long.valueOf(currentTime) < Long.valueOf(fiveMinuteBefore)) {
                 return true;
-            }else {
+            } else {
                 return false;
             }
-        }else {
+        } else {
             return true;
         }
     }
@@ -471,28 +472,28 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         String fiveMinuteBefore = AppCommonMethods.getFiveMinuteEarlyTimeStamp(liveEventStartDate);
         String currentTime = AppCommonMethods.getCurrentTimeStamp();
         String startTime = AppCommonMethods.getProgramStartTime(liveEventStartDate);
-        Log.w("reminderDetails",currentTime+" "+startTime+" "+fiveMinuteBefore);
-        if (Long.valueOf(startTime)>Long.valueOf(currentTime)) {
+        Log.w("reminderDetails", currentTime + " " + startTime + " " + fiveMinuteBefore);
+        if (Long.valueOf(startTime) > Long.valueOf(currentTime)) {
 
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
     private void showDialog() {
-        if (asset!=null){
-            new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(),false);
+        if (asset != null) {
+            new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(), false);
             getBinding().reminder.setVisibility(View.VISIBLE);
             getBinding().reminderActive.setVisibility(View.GONE);
             try {
-                 Toast.makeText(this, getResources().getString(R.string.reminder_removed)+" "+asset.getName(), Toast.LENGTH_SHORT).show();
-            }catch (Exception ignored){
+                Toast.makeText(this, getResources().getString(R.string.reminder_removed) + " " + asset.getName(), Toast.LENGTH_SHORT).show();
+            } catch (Exception ignored) {
 
             }
             cancelAlarm();
         }
-       // initReminderPopupFragment();
+        // initReminderPopupFragment();
     }
 
     private void splitStartTime(String startTime) {
@@ -726,7 +727,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                                     } else {
                                                         intent.putExtra(AppLevelConstants.PLAYABLE, false);
                                                     }
-                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
+                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
@@ -756,7 +757,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                                     } else {
                                                         intent.putExtra(AppLevelConstants.PLAYABLE, false);
                                                     }
-                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
+                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
@@ -814,7 +815,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                                     } else {
                                                         intent.putExtra(AppLevelConstants.PLAYABLE, false);
                                                     }
-                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
+                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
@@ -843,7 +844,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                                     } else {
                                                         intent.putExtra(AppLevelConstants.PLAYABLE, false);
                                                     }
-                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
+                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
@@ -1141,6 +1142,12 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             }
             liveEventDate = AppCommonMethods.getLiveEventStartDate(liveEventStartDate);
         }
+        if (AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate) {
+            getBinding().reminder.setVisibility(View.GONE);
+            getBinding().reminderActive.setVisibility(View.GONE);
+        } else {
+            getBinding().reminder.setVisibility(View.VISIBLE);
+        }
         splitStartTime(AppCommonMethods.getDateTimeFromtimeStampForReminder(liveEventStartDate));
     }
 
@@ -1271,7 +1278,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             IntentFilter filter = new IntentFilter();
             filter.addAction("com.astro.sott.Alarm.MyReceiver");
             registerReceiver(myReceiver, filter);
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
@@ -1330,8 +1337,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
     @Override
     public void onFinishEditDialog() {
-        if (asset!=null){
-            new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(),false);
+        if (asset != null) {
+            new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(), false);
             getBinding().reminder.setVisibility(View.VISIBLE);
             getBinding().reminderActive.setVisibility(View.GONE);
             Toast.makeText(this, getResources().getString(R.string.reminder_removed), Toast.LENGTH_SHORT).show();
@@ -1359,7 +1366,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(pendingIntent);
 
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
     }

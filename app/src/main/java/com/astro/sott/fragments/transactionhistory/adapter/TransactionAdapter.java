@@ -81,8 +81,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             } else {
                 holder.binding.creditNo.setText("");
             }
-            if (orderItems.get(position).getOrderProductInfo() != null && orderItems.get(position).getOrderProductInfo().get(0) != null && orderItems.get(position).getOrderProductInfo().get(0).getStartDate() != null) {
-                holder.binding.date.setText(getDate(orderItems.get(position).getOrderProductInfo().get(0).getStartDate()));
+            if (orderItems.get(position).getPaymentsInfo() != null && orderItems.get(position).getPaymentsInfo().get(0) != null && orderItems.get(position).getPaymentsInfo().get(0).getReceivedDate() != null) {
+                holder.binding.date.setText(getDate(orderItems.get(position).getPaymentsInfo().get(0).getReceivedDate()));
 
             } else {
                 holder.binding.date.setText("");
