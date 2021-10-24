@@ -257,22 +257,38 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    checkEmailVaildation();
                     String password = getBinding().passwordEdt.getText().toString();
                     if (checkPasswordValidation(password)) {
-                        getBinding().passwordError.setTextColor(getResources().getColor(R.color.heather));
-                        getBinding().passwordError.setText(getString(R.string.password_rules));
 
                     } else {
                         getBinding().passwordError.setTextColor(getResources().getColor(R.color.red_live));
-                        getBinding().errorEmail.setText(getResources().getString(R.string.mobile_suggestion));
                         getBinding().passwordError.setText(passwordError);
+                        getBinding().passwordError.setVisibility(View.VISIBLE);
                     }
                 }
                 return false;
             }
         });
         getBinding().passwordEdt.setOnFocusChangeListener((v, hasFocus) -> {
-            checkEmailVaildation();
+            if (hasFocus) {
+                String password = getBinding().passwordEdt.getText().toString();
+                if (checkEmailVaildation()) {
+                    checkPasswordValidation(password);
+                }
+            }
+        });
+        getBinding().emailMobileEdt.setOnFocusChangeListener((v, hasFocus) -> {
+            if (checkEmailVaildation()) {
+                String password = getBinding().passwordEdt.getText().toString();
+                if (checkPasswordValidation(password)) {
+
+                } else {
+                    getBinding().passwordError.setTextColor(getResources().getColor(R.color.red_live));
+                    getBinding().passwordError.setText(passwordError);
+                    getBinding().passwordError.setVisibility(View.VISIBLE);
+                }
+            }
         });
         getBinding().forgotText.setOnClickListener(view -> {
             new ActivityLauncher(this).forgotPasswordActivity(this, ForgotPasswordActivity.class);
@@ -591,7 +607,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             return true;
         }
 //        passwordError = getResources().getString(R.string.password_error);
-        passwordError = getResources().getString(R.string.password_rules_new);
+        passwordError = getResources().getString(R.string.password_error);
 
         return false;
     }
@@ -615,15 +631,13 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     return true;
 
                 } else {
-                    getBinding().passwordError.setText(getResources().getString(R.string.password_rules));
                     getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
                     getBinding().errorEmail.setVisibility(View.VISIBLE);
                     getBinding().errorEmail.setText(getResources().getString(R.string.mobile_error));
-                    passwordValidaton(password);
                     return false;
 
                 }
-            } else if (true) {
+            } else if (email_mobile.matches(EMAIL_REGEX)) {
                 type = "Email";
                 getBinding().errorEmail.setTextColor(getResources().getColor(R.color.heather));
                 getBinding().errorEmail.setText(getResources().getString(R.string.mobile_suggestion));
@@ -641,20 +655,16 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 } else {
                     getBinding().errorEmail.setText(getResources().getString(R.string.email_suggestion));
                 }
-                getBinding().passwordError.setText(getResources().getString(R.string.password_rules));
                 getBinding().errorEmail.setVisibility(View.VISIBLE);
                 getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
 
-                passwordValidaton(password);
                 return false;
 
             }
         } else {
-            getBinding().passwordError.setText(getResources().getString(R.string.password_rules));
             getBinding().errorEmail.setVisibility(View.VISIBLE);
             getBinding().errorEmail.setTextColor(getResources().getColor(R.color.red_live));
             getBinding().errorEmail.setText(getResources().getString(R.string.field_cannot_empty));
-            passwordValidaton(password);
             return false;
 
         }

@@ -121,43 +121,48 @@ class SubscriptionPagerAdapter(
         }
         bannerBinding.packageDescription.text = packageModel.uiDisplayText
 
-        var buttonDrawable: Drawable = bannerBinding.btnChooseMe.background
-        buttonDrawable = DrawableCompat.wrap(buttonDrawable)
-        DrawableCompat.setTint(buttonDrawable, currentColor)
-        bannerBinding.btnChooseMe.background = buttonDrawable
-        bannerBinding.masktop.setColorFilter(currentColor)
-        bannerBinding.maskbottom.setColorFilter(currentColor)
-        var attributeList = packageModel.attributes!!
-        Collections.sort(attributeList, object : Comparator<Attribute?> {
-            override fun compare(o1: Attribute?, o2: Attribute?): Int {
-                return o1?.attributeLabel?.compareTo(o2?.attributeLabel!!)!!
-            }
-        })
-        val my_array = ArrayList<String>()
-        if (packageModel.attributes != null) {
-            for (attribute in attributeList) {
-                if (!attribute.attributeLabel.equals("ImageURL1", true)) {
-                    my_array.add(attribute.attributeValue.toString())
+        try {
+            var buttonDrawable: Drawable = bannerBinding.btnChooseMe.background
+            buttonDrawable = DrawableCompat.wrap(buttonDrawable)
+            DrawableCompat.setTint(buttonDrawable, currentColor)
+            bannerBinding.btnChooseMe.background = buttonDrawable
+            bannerBinding.masktop.setColorFilter(currentColor)
+            bannerBinding.maskbottom.setColorFilter(currentColor)
+            var attributeList = packageModel.attributes!!
+            Collections.sort(attributeList, object : Comparator<Attribute?> {
+                override fun compare(o1: Attribute?, o2: Attribute?): Int {
+                    return o1?.attributeLabel?.compareTo(o2?.attributeLabel!!)!!
                 }
-            }
+            })
+            val my_array = ArrayList<String>()
+            if (packageModel.attributes != null) {
+                for (attribute in attributeList) {
+                    if (!attribute.attributeLabel.equals("ImageURL1", true)) {
+                        my_array.add(attribute.attributeValue.toString())
+                    }
+                }
 
-        }
-        if (packageModel.skuORQuickCode != null && productList != null) {
-            if (checkActiveOrNot(packageModel.skuORQuickCode!!)) {
-                bannerBinding.btnChooseMe.background =
-                    context.resources.getDrawable(R.drawable.ic_btn)
-                bannerBinding.btnChooseMe.isEnabled = false
-                activePlan = skuModel.sku
+            }
+            if (packageModel.skuORQuickCode != null && productList != null) {
+                if (checkActiveOrNot(packageModel.skuORQuickCode!!)) {
+                    bannerBinding.btnChooseMe.background =
+                        context.resources.getDrawable(R.drawable.ic_btn)
+                    bannerBinding.btnChooseMe.isEnabled = false
+                    activePlan = skuModel.sku
+                } else {
+                    bannerBinding.btnChooseMe.text = "Choose Me"
+                }
             } else {
                 bannerBinding.btnChooseMe.text = "Choose Me"
             }
-        } else {
-            bannerBinding.btnChooseMe.text = "Choose Me"
+
+
+            val adapter: ArrayAdapter<String> = BulletsAdapter(context, my_array, currentColor)
+            bannerBinding.bulletsList.adapter = adapter
+        } catch (e: Exception) {
+
         }
 
-
-        val adapter: ArrayAdapter<String> = BulletsAdapter(context, my_array, currentColor)
-        bannerBinding.bulletsList.adapter = adapter
         bannerBinding.btnChooseMe.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 onPackageChooseClickListener.onPackageClicked(

@@ -546,7 +546,7 @@ public class KsServices {
 
     }
 
-    public void checkPlaylistListing(long l, List<VIUChannel> list, int counter,List<VIUChannel> viuChannelList, HomechannelCallBack callBack) {
+    public void checkPlaylistListing(long l, List<VIUChannel> list, int counter, List<VIUChannel> viuChannelList, HomechannelCallBack callBack) {
         clientSetupKs();
         homechannelCallBack = callBack;
         this.channelList = list;
@@ -620,6 +620,7 @@ public class KsServices {
         getRequestQueue().queue(listAssetBuilders.get(0).build(client));
 
     }
+
     public void callAssetListing(long l, List<VIUChannel> list, int counter, HomechannelCallBack callBack) {
         clientSetupKs();
         homechannelCallBack = callBack;
@@ -5678,14 +5679,14 @@ public class KsServices {
                             } else {
                                 getAssetDetailMedia(list.get(counter), list);
                             }
-                        }else if (list.get(counter).getLandingPageType().equalsIgnoreCase(LandingPageType.PLT.name())) {
-                            if (list.get(counter).getLandingPagePlayListId()!=null) {
+                        } else if (list.get(counter).getLandingPageType().equalsIgnoreCase(LandingPageType.PLT.name())) {
+                            if (list.get(counter).getLandingPagePlayListId() != null) {
                                 List<VIUChannel> viuChannels = new ArrayList<>();
                                 VIUChannel channel = new VIUChannel();
                                 channel.setId(Long.parseLong(list.get(counter).getLandingPagePlayListId()));
                                 viuChannels.add(channel);
-                                checkPlaylistListing(1233, viuChannels, 1,list, homechannelCallBack);
-                            }else {
+                                checkPlaylistListing(1233, viuChannels, 1, list, homechannelCallBack);
+                            } else {
                                 homechannelCallBack.response(false, null, null);
                             }
                         } else
@@ -5819,13 +5820,13 @@ public class KsServices {
                                 getAssetDetailMedia(list.get(counter), list);
                             }
                         } else if (list.get(counter).getLandingPageType().equalsIgnoreCase(LandingPageType.PLT.name())) {
-                            if (list.get(counter).getLandingPagePlayListId()!=null) {
+                            if (list.get(counter).getLandingPagePlayListId() != null) {
                                 List<VIUChannel> viuChannels = new ArrayList<>();
                                 VIUChannel channel = new VIUChannel();
                                 channel.setId(Long.parseLong(list.get(counter).getLandingPagePlayListId()));
                                 viuChannels.add(channel);
-                                checkPlaylistListing(1233, viuChannels, 1,list, homechannelCallBack);
-                            }else {
+                                checkPlaylistListing(1233, viuChannels, 1, list, homechannelCallBack);
+                            } else {
                                 homechannelCallBack.response(false, null, null);
                             }
                         } else

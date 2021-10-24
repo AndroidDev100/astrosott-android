@@ -656,7 +656,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (activity instanceof HomeActivity) {
                 new ToolBarHandler(activity).setTitleContinueWatchingListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.headerTitle, AppConstants.TYPE5, dataList.get(position));
 
-                if (totalCount >= 20) {
+                if (totalCount > 20) {
                     new ToolBarHandler(activity).setContinueWatchingListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
                 } else {
                     ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);
@@ -664,7 +664,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 }
             } else {
-                if (totalCount >= 10) {
+                if (totalCount > 10) {
                     new ToolBarHandler(activity).setContinueWatchingListener(((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText, AppConstants.TYPE5, dataList.get(position));
                 } else {
                     //   ((LandscapeHolder) holder).landscapeRecyclerItemBinding.moreText.setVisibility(View.INVISIBLE);

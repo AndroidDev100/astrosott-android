@@ -1055,7 +1055,7 @@ public class PlayerRepository {
 
 
             playerPluginConfig.setPluginConfig(PhoenixAnalyticsPlugin.factory.getName(), phoenixPluginConfig.toJson());
-            if (AppCommonMethods.isAdsEnable) {
+            if (AppCommonMethods.isAdsEnable && !isLivePlayer) {
                 if (!AssetContent.isAdsEnable(asset.getMetas())) {
                     getAdsContextApi(asset, playerMutableLiveData, mediaConfig);
                 } else {

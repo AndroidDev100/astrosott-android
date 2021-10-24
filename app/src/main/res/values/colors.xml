@@ -140,7 +140,7 @@
     <color name="pin_error_line_color">#f42d5b</color>
     <color name="ribben_text_color">#151024</color>
     <color name="pack_bg_color">#151024</color>
-    <color name="episode_shadow">#80000000</color>
+    <color name="episode_shadow">#33000000</color>
 
 
     <color name="black_text_color">#262C40</color>

@@ -275,11 +275,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     }
                     if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                        if (isPlayableOrNot()) {
-                            intent.putExtra(AppLevelConstants.PLAYABLE, true);
-                        } else {
-                            intent.putExtra(AppLevelConstants.PLAYABLE, false);
-                        }
+                        intent.putExtra(AppLevelConstants.PLAYABLE, isPlayableOrNot());
                         intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         intent.putExtra(AppLevelConstants.DATE, liveEventDate);
@@ -307,11 +303,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     }
                     if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                        if (isPlayableOrNot()) {
-                            intent.putExtra(AppLevelConstants.PLAYABLE, true);
-                        } else {
-                            intent.putExtra(AppLevelConstants.PLAYABLE, false);
-                        }
+                        intent.putExtra(AppLevelConstants.PLAYABLE, isPlayableOrNot());
                         intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         Bundle bundle = new Bundle();
@@ -720,16 +712,15 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                         if (becomeVipButtonCLicked) {
                                             becomeVipButtonCLicked = false;
                                             if (UserInfo.getInstance(this).isActive()) {
-                                                if (!fileId.equalsIgnoreCase("")) {
+                                                if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                                                     Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                                                    if (isPlayableOrNot()) {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
-                                                    } else {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
-                                                    }
+                                                    intent.putExtra(AppLevelConstants.PLAYABLE, isPlayableOrNot());
                                                     intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                                                    intent.putExtra("SubscriptionIdBundle", bundle);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                                                     startActivity(intent);
                                                 }
@@ -750,16 +741,15 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                         if (becomeVipButtonCLicked) {
                                             becomeVipButtonCLicked = false;
                                             if (UserInfo.getInstance(this).isActive()) {
-                                                if (!fileId.equalsIgnoreCase("")) {
+                                                if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                                                     Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                                                    if (isPlayableOrNot()) {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
-                                                    } else {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
-                                                    }
+                                                    intent.putExtra(AppLevelConstants.PLAYABLE, isPlayableOrNot());
                                                     intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                                                    intent.putExtra("SubscriptionIdBundle", bundle);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                                                     startActivity(intent);
                                                 }
@@ -808,16 +798,15 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                         if (becomeVipButtonCLicked) {
                                             becomeVipButtonCLicked = false;
                                             if (UserInfo.getInstance(this).isActive()) {
-                                                if (!fileId.equalsIgnoreCase("")) {
+                                                if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                                                     Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                                                    if (isPlayableOrNot()) {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
-                                                    } else {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
-                                                    }
+                                                    intent.putExtra(AppLevelConstants.PLAYABLE, isPlayableOrNot());
                                                     intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                                                    intent.putExtra("SubscriptionIdBundle", bundle);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                                                     startActivity(intent);
                                                 }
@@ -837,16 +826,15 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                         if (becomeVipButtonCLicked) {
                                             becomeVipButtonCLicked = false;
                                             if (UserInfo.getInstance(this).isActive()) {
-                                                if (!fileId.equalsIgnoreCase("")) {
+                                                if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                                                     Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                                                    if (isPlayableOrNot()) {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
-                                                    } else {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
-                                                    }
+                                                    intent.putExtra(AppLevelConstants.PLAYABLE, isPlayableOrNot());
                                                     intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                                                    intent.putExtra("SubscriptionIdBundle", bundle);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                                                     startActivity(intent);
                                                 }

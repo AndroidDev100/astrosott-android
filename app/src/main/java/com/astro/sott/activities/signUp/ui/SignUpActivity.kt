@@ -2,6 +2,7 @@ package com.astro.sott.activities.signUp.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputType
 import android.util.Log
 import android.view.KeyEvent
@@ -22,6 +23,7 @@ import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.baseModel.BaseActivity
+import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.fragments.dialog.AlreadyUserFragment
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
@@ -33,6 +35,7 @@ import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem
 import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.helpers.ActivityLauncher
 import com.astro.sott.utils.helpers.AppLevelConstants
+import com.astro.sott.utils.helpers.CustomTextWatcher
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey
 import com.astro.sott.utils.userInfo.UserInfo
 import com.facebook.*
@@ -55,6 +58,9 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     private var callbackManager: CallbackManager? = null
     private var passwordVisibility = false
     private var name: String = ""
+    private var isPasswordCheck = false
+    private var isEmailCheck = false
+
     private val EMAIL = "email, public_profile"
 
     private val passwordPattern = Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=\\S+$).{8,16}$")
@@ -96,7 +102,58 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     }
 
     private fun setWatcher() {
+        activitySinUpBinding?.mobileEmailEdt?.addTextChangedListener(
+            CustomTextWatcher(
+                this,
+                object : TextWatcherCallBack {
+                    override fun beforeTextChanged(
+                        charSequence: CharSequence,
+                        i: Int,
+                        i1: Int,
+                        i2: Int
+                    ) {
+                    }
 
+                    override fun onTextChanged(
+                        charSequence: CharSequence,
+                        i: Int,
+                        i1: Int,
+                        i2: Int
+                    ) {
+                        activitySinUpBinding?.errorEmail?.visibility = View.GONE
+                        activitySinUpBinding?.errorPasssword?.visibility = View.GONE
+
+                    }
+
+                    override fun afterTextChanged(editable: Editable) {}
+                })
+        )
+
+        activitySinUpBinding?.passwordEdt?.addTextChangedListener(
+            CustomTextWatcher(
+                this,
+                object : TextWatcherCallBack {
+                    override fun beforeTextChanged(
+                        charSequence: CharSequence,
+                        i: Int,
+                        i1: Int,
+                        i2: Int
+                    ) {
+                    }
+
+                    override fun onTextChanged(
+                        charSequence: CharSequence,
+                        i: Int,
+                        i1: Int,
+                        i2: Int
+                    ) {
+                        activitySinUpBinding?.errorEmail?.visibility = View.GONE
+                        activitySinUpBinding?.errorPasssword?.visibility = View.GONE
+                    }
+
+                    override fun afterTextChanged(editable: Editable) {}
+                })
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -202,6 +259,8 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             onBackPressed()
         })
         activitySinUpBinding?.nextBtn?.setOnClickListener {
+            isEmailCheck = true
+            isPasswordCheck = true
             var password = activitySinUpBinding?.passwordEdt?.text.toString()
             var email_mobile = activitySinUpBinding?.mobileEmailEdt?.text.toString()
             if (!email_mobile.equals("", true)) {
@@ -217,7 +276,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                         checkPasswordValidation(password)
 
                     }
-                } else*/ if (true) {
+                } else*/ if (emailPattern.containsMatchIn(email_mobile)) {
                     checkPassword("email", email_mobile, password)
                 } else {
 
@@ -238,7 +297,6 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                     activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                     activitySinUpBinding?.errorEmail?.text =
                         getString(R.string.email_suggestion)
-                    checkPasswordValidation(password)
                     /* }*/
                 }
 
@@ -246,27 +304,36 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                 activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
                 activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                 activitySinUpBinding?.errorEmail?.text = getString(R.string.field_cannot_empty)
-                checkPasswordValidation(password)
-
             }
 
         }
         activitySinUpBinding?.mobileEmailEdt?.setOnFocusChangeListener { v, hasFocus ->
-            activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
-            activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
+            if (hasFocus) {
+                activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
+                activitySinUpBinding?.errorPasssword?.visibility = View.GONE
+
+                if (isEmailCheck) {
+                    var password = activitySinUpBinding?.passwordEdt?.text.toString()
+                    if (checkEmailValidation()) {
+                        checkPasswordValidation(password)
+                    }
+                }
+                isEmailCheck = true
+            }
         }
         activitySinUpBinding?.passwordEdt?.setOnFocusChangeListener { v, hasFocus ->
-
-            if (activitySinUpBinding?.errorEmail?.visibility == View.VISIBLE) {
+            if (hasFocus) {
                 var email_mobile = activitySinUpBinding?.mobileEmailEdt?.text.toString()
                 var password = activitySinUpBinding?.passwordEdt?.text.toString()
                 activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
-                activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
+                if (!isPasswordCheck)
+                    activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
                 if (!email_mobile.equals("", true)) {
-                    if (mobilePattern.containsMatchIn(email_mobile) || emailPattern.containsMatchIn(
+                    if (emailPattern.containsMatchIn(
                             email_mobile
                         )
                     ) {
+                        checkPasswordValidation(password)
                         activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.heather))
                         activitySinUpBinding?.errorEmail?.text =
                             resources.getString(R.string.email_suggestion)
@@ -281,11 +348,10 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                         resources.getString(R.string.field_cannot_empty)
 
                 }
-                checkPasswordValidation(password)
-            }else{
-                activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
-                activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
+                isPasswordCheck = true
             }
+            // checkPasswordValidation(password)
+
         }
         activitySinUpBinding?.eyeIcon?.setOnClickListener(View.OnClickListener {
             if (passwordVisibility) {
@@ -303,6 +369,15 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             }
         })
 
+    }
+
+    private fun checkEmailValidation(): Boolean {
+        var email_mobile = activitySinUpBinding?.mobileEmailEdt?.text.toString()
+        if (!email_mobile.equals("", true)) {
+            return emailPattern.containsMatchIn(email_mobile)
+        } else {
+            return false;
+        }
     }
 
     private fun checkPasswordValidation(password: String) {
