@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
 
 import com.astro.sott.activities.login.ui.StartSessionLogin;
+import com.astro.sott.activities.search.constants.SearchFilterEnum;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonUrls;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -18,10 +19,12 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MyWatchlistRepository {
     private static MyWatchlistRepository myWatchlistRepository;
@@ -93,11 +96,11 @@ public class MyWatchlistRepository {
 
     public LiveData<ArrayList<RailCommonData>> getTrending(Context context, String customMediaType, String customGenre, String customGenreRule, int counter) {
         MutableLiveData<ArrayList<RailCommonData>> mutableLiveData = new MutableLiveData<>();
-        new KsServices(context).getTrendingListing(customMediaType, customGenre, customGenreRule, counter, (status, assetListResponse, totalCount) ->
+        new KsServices(context).getTrendingListing(context,customMediaType, customGenre, customGenreRule, counter, (status, assetListResponse, totalCount) ->
         {
             if (status) {
                 railList.clear();
-                getTrendingData(assetListResponse, totalCount, mutableLiveData);
+                getCustomeTrendingData(assetListResponse, totalCount, mutableLiveData,context);
             } else {
                 mutableLiveData.postValue(null);
             }
@@ -105,13 +108,25 @@ public class MyWatchlistRepository {
         return mutableLiveData;
     }
 
+    private void getCustomeTrendingData(List<Asset> assetListResponse, int totalCount, MutableLiveData<ArrayList<RailCommonData>> mutableLiveData,Context context) {
+        for (Asset asset : assetListResponse) {
+            RailCommonData railCommonData = new RailCommonData();
+            railCommonData.setObject(asset);
+            railCommonData.setTotalCount(totalCount);
+            boolean value=applyFreePaidChannelFilter(asset, railList,context,railCommonData);
+        }
+        mutableLiveData.postValue(railList);
+
+    }
+
+
     public LiveData<ArrayList<RailCommonData>> getEPGListing(Context context, String customDays, String linearAssetId, int counter) {
         MutableLiveData<ArrayList<RailCommonData>> mutableLiveData = new MutableLiveData<>();
-        new KsServices(context).getLinearAssetIdListing(linearAssetId, customDays, counter, (status, assetListResponse, totalCount) ->
+        new KsServices(context).getLinearAssetIdListing(context,linearAssetId, customDays, counter, (status, assetListResponse, totalCount) ->
         {
             if (status) {
                 railList.clear();
-                getTrendingData(assetListResponse, totalCount, mutableLiveData);
+                getEpgData(assetListResponse, totalCount, mutableLiveData,context);
             } else {
                 mutableLiveData.postValue(null);
             }
@@ -125,7 +140,7 @@ public class MyWatchlistRepository {
         {
             if (status) {
                 railList.clear();
-                getTrendingData(assetListResponse, totalCount, mutableLiveData);
+                getTrendingData(assetListResponse, totalCount, mutableLiveData,context);
             } else {
                 mutableLiveData.postValue(null);
             }
@@ -133,7 +148,18 @@ public class MyWatchlistRepository {
         return mutableLiveData;
     }
 
-    private void getTrendingData(List<Asset> assetListResponse, int totalCount, MutableLiveData<ArrayList<RailCommonData>> mutableLiveData) {
+    private void getEpgData(List<Asset> assetListResponse, int totalCount, MutableLiveData<ArrayList<RailCommonData>> mutableLiveData,Context context) {
+        for (Asset asset : assetListResponse) {
+            RailCommonData railCommonData = new RailCommonData();
+            railCommonData.setObject(asset);
+            railCommonData.setTotalCount(totalCount);
+            boolean value=applyFreePaidChannelFilter(asset, railList,context,railCommonData);
+        }
+        mutableLiveData.postValue(railList);
+
+    }
+
+    private void getTrendingData(List<Asset> assetListResponse, int totalCount, MutableLiveData<ArrayList<RailCommonData>> mutableLiveData,Context context) {
         for (Asset asset : assetListResponse) {
             RailCommonData railCommonData = new RailCommonData();
             railCommonData.setObject(asset);
@@ -143,6 +169,45 @@ public class MyWatchlistRepository {
         mutableLiveData.postValue(railList);
 
     }
+
+    private boolean applyFreePaidChannelFilter(Asset results, ArrayList<RailCommonData> railList,Context context,RailCommonData railCommonData) {
+        try {
+            if (!KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase("")) {
+
+                Map<String, MultilingualStringValueArray> tagMap = results.getTags();
+                if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
+                    railList.add(railCommonData);
+                } else if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.FREE.name())) {
+                    MultilingualStringValueArray language_list = tagMap.get(AppLevelConstants.KEY_BILLING_ID);
+                    if (language_list != null) {
+                        if (language_list.getObjects() != null && language_list.getObjects().size() > 0 && language_list.getObjects().get(0).getValue() != null
+                                && !language_list.getObjects().get(0).getValue().equalsIgnoreCase("")) {
+
+                        } else {
+                            railList.add(railCommonData);
+                        }
+                    } else {
+                        railList.add(railCommonData);
+                    }
+                } else if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.PAID.name())) {
+                    MultilingualStringValueArray language_list = tagMap.get(AppLevelConstants.KEY_BILLING_ID);
+                    if (language_list != null) {
+                        if (language_list.getObjects() != null && language_list.getObjects().size() > 0 && language_list.getObjects().get(0).getValue() != null
+                                && !language_list.getObjects().get(0).getValue().equalsIgnoreCase("")) {
+                            railList.add(railCommonData);
+                        }
+                    }
+                }
+            } else {
+                railList.add(railCommonData);
+            }
+
+        }catch (Exception ignored){
+            railList.add(railCommonData);
+        }
+        return false;
+    }
+
 
     private void errorHandling() {
         railList = new ArrayList<>();

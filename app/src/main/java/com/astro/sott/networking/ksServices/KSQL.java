@@ -95,6 +95,29 @@ class KSQL {
         return KSQL;
     }
 
+    public static String forDeepSearchEPGRail(String externalId, String startDate, String endDate,String deepSearchKSQL) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (!deepSearchKSQL.equalsIgnoreCase("")){
+            stringBuilder.append("(and (or (and epg_channel_id='" + externalId + "' start_date<'0' end_date>'0')");
+            stringBuilder.append("(and epg_channel_id='" + externalId + "' start_date>='" + startDate + "' start_date<'" + endDate + "'))"+deepSearchKSQL+")");
+        }else {
+            stringBuilder.append("(or (and epg_channel_id='" + externalId + "' start_date<'0' end_date>'0')");
+            stringBuilder.append("(and epg_channel_id='" + externalId + "' start_date>='" + startDate + "' start_date<'" + endDate + "'))");
+        }
+
+//        _one = "(and epg_channel_id='";
+//        _tw0 = "' start_date>='";
+//        _three = "' start_date<'";
+//        _four = "')";
+//        five = "(and epg_channel_id='";
+//        _tw0 = "' start_date>='";
+//        _three = "' start_date<'";
+//        _four = "')";
+        KSQL = stringBuilder.toString();
+        printKSQL(KSQL);
+        return KSQL;
+    }
+
     private static void printKSQL(String ksql) {
         PrintLogging.printLog("KSQL", "", "KSQL" + ksql);
     }
@@ -166,6 +189,16 @@ class KSQL {
         String one = "(and SeriesId='";
         String two = "')";
         KSQL = one + seriesId + two;
+        printKSQL(KSQL);
+        return KSQL;
+    }
+
+    public static String forTrendingRail(String kSql, String kSQL) {
+        KSQL="";
+        String op="(and ";
+        String one = kSql;
+        String two = kSQL;
+        KSQL = op+one  + two+")";
         printKSQL(KSQL);
         return KSQL;
     }

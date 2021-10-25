@@ -6,20 +6,25 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.astro.sott.activities.search.constants.SearchFilterEnum;
 import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
+import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonUrls;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DeepSearchLayer {
     String ksql = "";
@@ -127,7 +132,7 @@ public class DeepSearchLayer {
                     }
                     railCommonData.setImages(imagesList);
                     railCommonData.setUrls(urlList);
-                    railList.add(railCommonData);
+                    boolean value=applyFreePaidChannelFilter(list.get(0).results.getObjects().get(j), railList,context,railCommonData);
 
                 }
             }
@@ -136,6 +141,43 @@ public class DeepSearchLayer {
         }
     }
 
+    private boolean applyFreePaidChannelFilter(Asset results, ArrayList<RailCommonData> railList,Context context,RailCommonData railCommonData) {
+        try {
+        if (!KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase("")) {
+
+            Map<String, MultilingualStringValueArray> tagMap = results.getTags();
+            if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
+                railList.add(railCommonData);
+            } else if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.FREE.name())) {
+                MultilingualStringValueArray language_list = tagMap.get(AppLevelConstants.KEY_BILLING_ID);
+                if (language_list != null) {
+                    if (language_list.getObjects() != null && language_list.getObjects().size() > 0 && language_list.getObjects().get(0).getValue() != null
+                            && !language_list.getObjects().get(0).getValue().equalsIgnoreCase("")) {
+
+                    } else {
+                        railList.add(railCommonData);
+                    }
+                } else {
+                    railList.add(railCommonData);
+                }
+            } else if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.PAID.name())) {
+                MultilingualStringValueArray language_list = tagMap.get(AppLevelConstants.KEY_BILLING_ID);
+                if (language_list != null) {
+                    if (language_list.getObjects() != null && language_list.getObjects().size() > 0 && language_list.getObjects().get(0).getValue() != null
+                            && !language_list.getObjects().get(0).getValue().equalsIgnoreCase("")) {
+                        railList.add(railCommonData);
+                    }
+                }
+            }
+        } else {
+            railList.add(railCommonData);
+        }
+
+        }catch (Exception ignored){
+            railList.add(railCommonData);
+        }
+        return false;
+    }
 
 
     public LiveData<List<RailCommonData>> loadSearchedData(Context context, int assetId,String filterValue, List<String> genreList, int counter, final String layout, boolean isScrolling,int pageSize) {
@@ -149,15 +191,16 @@ public class DeepSearchLayer {
         VIUChannel channel = new VIUChannel();
         channel.setId((long) assetId);
 
-        if(genreList.size()>0) {
+        ksql =AppCommonMethods.getDeepSearchKsql("",null,1,context);
+       /* if(genreList.size()>0) {
 
             ksql = AssetContent.getGenredata(genreList);
         }else {
             ksql = "Genre = ''";
-        }
+        }*/
         // DTChannel channel = new DTChannel((long) assetId,"","");
         list.add(channel);
-        ksServices.callDeepSearchAssetListing((long) 1233, list,ksql, filterValue, counter,pageSize, (status, listResponseResponse, channelList) -> {
+        ksServices.callDeepSearchAssetListing(context,(long) 1233, list,ksql, filterValue, counter,pageSize, (status, listResponseResponse, channelList) -> {
             if (status) {
                 // PrintLogging.printLog("totalCount");
                 callDynamicData(context,layout, listResponseResponse);

@@ -11,15 +11,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.astro.sott.activities.moreListing.filter.ListingFilterActivity;
 import com.astro.sott.activities.moreListing.viewModel.ListingViewModel;
+import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.ToastHandler;
@@ -36,6 +40,7 @@ import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.databinding.ListingactivityNewBinding;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.enveu.Enum.ImageType;
 import com.google.gson.Gson;
 
@@ -54,6 +59,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
     private boolean mIsLoading = true;
     private boolean isScrolling = false;
     String title = "";
+    private long lastClickTime = 0;
     private CommonPotraitListingAdapter commonPotraitListingAdapter;
     private CommonSquareListingAdapter commonSquareListingAdapter;
     private CommonCircleListingAdapter commonCircleAdapter;
@@ -70,6 +76,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
     private boolean isShowFilter = false;
     private boolean isSortable = false;
     private int pageSize = -1;
+    private String filter[];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,6 +92,11 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
 
         tabletSize = getResources().getBoolean(R.bool.isTablet);
         // GAManager.getInstance().trackScreen(getResources().getString(R.string.more_rail_results));
+        try {
+            AppCommonMethods.resetFilter(ListingActivityNew.this);
+        }catch (Exception ignored){
+
+        }
         callOnCreateInstances(intent);
 
     }
@@ -252,11 +264,47 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
             category = (VIUChannel) getIntent().getExtras().getParcelable("baseCategory");
             this.isShowFilter = getIntent().getExtras().getBoolean("hasFilter");
             this.isSortable = category.isSortable();
+            try {
+                Log.e("filterSize", category.getSizeofFilter()+"  "+isSortable);
+                if (this.isSortable){
+                    getBinding().toolbar.ivfilter.setVisibility(View.VISIBLE);
+                }else {
+                    try {
+                        if (category.getSizeofFilter()>0){
+                            getBinding().toolbar.ivfilter.setVisibility(View.VISIBLE);
+                        }else {
+                            getBinding().toolbar.ivfilter.setVisibility(View.GONE);
+                        }
+
+                    }catch (Exception e){
+
+                    }
+
+                }
+            }catch (Exception e){
+
+            }
+
             this.pageSize = category.getMorePageSize();
             if (pageSize <= 0) {
                 pageSize = 20;
             }
 
+
+
+            getBinding().toolbar.ivfilter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!isApiCalling){
+                        if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                            return;
+                        }
+                        lastClickTime = SystemClock.elapsedRealtime();
+                        Intent intent = new Intent(ListingActivityNew.this, ListingFilterActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            });
 
         } catch (Exception e) {
         }
@@ -361,7 +409,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
 
     }
-
+    boolean isApiCalling=false;
     private void checkTypeOfList() {
         int type = viewModel.checkMoreType(assetCommonBean);
         PrintLogging.printLog("", "moreClicked" + "---" + type + "");
@@ -401,6 +449,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
         } else {
             showToolbarView();
             //categoryListingCall();
+            isApiCalling=true;
             deepSearchcategoryListingCall();
         }
     }
@@ -476,6 +525,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
     }
 
     private void setLayoutType(List<RailCommonData> railCommonData) {
+        isApiCalling=false;
         if (railCommonData != null) {
             if (railCommonData.size() > 0) {
                 if (railCommonData.get(0).getStatus()) {
@@ -523,6 +573,9 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
                 }
             } else {
                 handleProgressDialog();
+                getBinding().listRecyclerview.setVisibility(View.GONE);
+                getBinding().noDataLayout.setVisibility(View.VISIBLE);
+                getBinding().noData.retryTxt.setVisibility(View.GONE);
             }
         }
     }
@@ -633,6 +686,23 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
 //        Gson gson = new Gson();
 //        String json = gson.toJson(list);
 //        sharedPrefHelper.setString("SelectedPreferrence", json);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!KsPreferenceKey.getInstance(ListingActivityNew.this).getFilterApply().equalsIgnoreCase("")) {
+            if (KsPreferenceKey.getInstance(ListingActivityNew.this).getFilterApply().equalsIgnoreCase("true")) {
+                KsPreferenceKey.getInstance(ListingActivityNew.this).setFilterApply("false");
+                isScrolling=false;
+                commonLandscapeListingAdapter=null;
+                counter=1;
+                if (pageSize <= 0) {
+                    pageSize = 20;
+                }
+                connectionObserver();
+            }
+        }
     }
 }
 
