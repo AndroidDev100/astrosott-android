@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,12 +21,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
+import com.astro.sott.beanModel.SponsoredTabData;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
@@ -32,6 +36,8 @@ import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.databinding.BoxSetDetailBinding;
 import com.astro.sott.databinding.SponsoredDetailBinding;
 import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
+import com.astro.sott.fragments.detailRailFragment.adapter.DetailPagerAdapter;
+import com.astro.sott.fragments.detailRailFragment.adapter.SponsoredPagerAdapter;
 import com.astro.sott.fragments.detailRailFragment.ui.BoxSetDetailFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
@@ -66,6 +72,7 @@ import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -83,6 +90,7 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
     private FragmentManager manager;
     private long assetId;
     private int assetType;
+    private int indicatorWidth;
     private String trailor_url = "";
     private String name, titleName, idfromAssetWatchlist;
     private boolean isActive, isAdded;
@@ -453,75 +461,6 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
     }
 
 
-    private void isDtvAccountAdded(RailCommonData railCommonData) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                viewModel.getDtvAccountList().observe(SponsoredDetailActivity.this, new Observer<String>() {
-                    @Override
-                    public void onChanged(String dtvAccount) {
-                        try {
-                            if (dtvAccount != null) {
-                                if (dtvAccount.equalsIgnoreCase("0")) {
-                                    isDtvAdded = false;
-                                    callProgressBar();
-
-                                    checkForSubscription(isDtvAdded, railCommonData);
-
-                                } else if (dtvAccount.equalsIgnoreCase("")) {
-                                    isDtvAdded = false;
-                                    callProgressBar();
-                                    checkForSubscription(isDtvAdded, railCommonData);
-                                } else {
-                                    isDtvAdded = true;
-                                    callProgressBar();
-                                    checkForSubscription(isDtvAdded, railCommonData);
-                                }
-
-                            } else {
-                                // Api Failure Error
-                                callProgressBar();
-                                showDialog(getString(R.string.something_went_wrong_try_again));
-                            }
-                        } catch (Exception e) {
-                            Log.e("ExceptionIs", e.toString());
-                        }
-                    }
-                });
-
-            }
-        });
-    }
-
-    private void checkForSubscription(boolean isDtvAdded, RailCommonData railCommonData) {
-        //***** Mobile + Non-Dialog + Non-DTV *************//
-        if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == false) {
-            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(SponsoredDetailActivity.this, false));
-        }
-        //********** Mobile + Non-Dialog + DTV ******************//
-        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.NON_DIALOG) && isDtvAdded == true) {
-            runOnUiThread(() -> DialogHelper.openDialougeFornonDialog(SponsoredDetailActivity.this, false));
-        }
-        //*********** Mobile + Dialog + Non-DTV *****************//
-        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == false) {
-            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), SponsoredDetailActivity.this)) {
-                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(SponsoredDetailActivity.this, true, false));
-            } else {
-                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(SponsoredDetailActivity.this, false, false));
-            }
-        }
-        //************ Mobile + Dialog + DTV ********************//
-        else if (KsPreferenceKey.getInstance(getApplicationContext()).getUserType().equalsIgnoreCase(AppLevelConstants.DIALOG) && isDtvAdded == true) {
-            if (AssetContent.isPurchaseAllowed(railCommonData.getObject().getMetas(), railCommonData.getObject(), SponsoredDetailActivity.this)) {
-                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(SponsoredDetailActivity.this, true, false));
-            } else {
-                runOnUiThread(() -> DialogHelper.openDialougeForDtvAccount(SponsoredDetailActivity.this, false, false));
-            }
-        } else {
-            showDialog(getString(R.string.something_went_wrong_try_again));
-        }
-    }
-
     private void checkDevice(final RailCommonData railData) {
         new HouseHoldCheck().checkHouseholdDevice(SponsoredDetailActivity.this, commonResponse -> {
             if (commonResponse != null) {
@@ -610,12 +549,105 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
 
 
     private void setRailBaseFragment() {
-        FragmentManager fm = getSupportFragmentManager();
+        viewPagerSetup();
+    /*    FragmentManager fm = getSupportFragmentManager();
         BoxSetDetailFragment boxSetDetailFragment = new BoxSetDetailFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(AppLevelConstants.RAIL_DATA_OBJECT, railData);
         boxSetDetailFragment.setArguments(bundle);
-        fm.beginTransaction().replace(R.id.rail_fragment, boxSetDetailFragment).commitNow();
+        fm.beginTransaction().replace(R.id.rail_fragment, boxSetDetailFragment).commitNow();*/
+    }
+
+    private int tabCount = 0;
+    private List<SponsoredTabData> sponsoredTabDataList;
+
+    private void setViewPager() {
+
+    }
+
+    private void viewPagerSetup() {
+        tabCount = 3;
+        sponsoredTabDataList = new ArrayList<>();
+        sponsoredTabDataList.addAll(viewModel.getTabsData(map));
+        try {
+            if (tabCount == 1) {
+                ViewGroup.LayoutParams params = getBinding().tabLayout.getLayoutParams();
+                params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                getBinding().tabLayout.setLayoutParams(params);
+            }
+
+            SponsoredPagerAdapter detailPagerAdapter = new SponsoredPagerAdapter(getSupportFragmentManager(), 1, sponsoredTabDataList);
+            getBinding().pager.setAdapter(detailPagerAdapter);
+            getBinding().pager.disableScroll(true);
+
+            if ((tabCount > 0)) {
+
+                getBinding().tabLayout.setupWithViewPager(getBinding().pager);
+
+                getBinding().tabLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ((getBinding().tabLayout.getTabCount() > 0)) {
+                            indicatorWidth = getBinding().tabLayout.getWidth() / getBinding().tabLayout.getTabCount();
+                        }
+                        Log.d("TabCount", getBinding().tabLayout.getTabCount() + "");
+
+                        Log.d("tabLayout", getBinding().tabLayout.getWidth() + "");
+                        Log.d("indicator", indicatorWidth + "");
+                        //Assign new width
+                        RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                        indicatorParams.width = indicatorWidth;
+                        getBinding().indicator.setLayoutParams(indicatorParams);
+                    }
+                });
+                getBinding().pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getBinding().indicator.getLayoutParams();
+                        //Multiply positionOffset with indicatorWidth to get translation
+                        float translationOffset = (positionOffset + i) * (indicatorWidth);
+                        params.leftMargin = (int) translationOffset;
+                        getBinding().indicator.setLayoutParams(params);
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int i) {
+
+                        getBinding().pager.reMeasureCurrentPage(i);
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int i) {
+
+
+                    }
+                });
+                changeTabsFont();
+                getBinding().indicator.setVisibility(View.VISIBLE);
+                getBinding().blackLine.setVisibility(View.VISIBLE);
+
+                getBinding().tabLayout.setVisibility(View.VISIBLE);
+            }
+        } catch (ArithmeticException e) {
+            Log.d("TAG", e + "");
+        }
+    }
+
+    private void changeTabsFont() {
+        //  Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/"+ Constants.FontStyle);
+        ViewGroup vg = (ViewGroup) getBinding().tabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setSingleLine();
+                }
+            }
+        }
     }
 
     private void modelCall() {
@@ -878,7 +910,7 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
     }
 
     private void openShareDialouge() {
-        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(),"");
+        AppCommonMethods.openShareDialog(this, asset, getApplicationContext(), "");
     }
 
     @Override

@@ -546,7 +546,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().name.setText("\"" + asset.getName() + "\"");
             }
         } else if (isLivePlayer) {
-            getBinding().name.setText( programAsset.getName().toString() );
+            if (programAsset != null) {
+                getBinding().name.setText(programAsset.getName());
+            } else {
+                getBinding().name.setText(asset.getName());
+            }
 //              getBinding().name.setText("\"" + Constants.channelname + "\"");
 
         } else {
@@ -3646,7 +3650,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (isLivePlayer) {
             } else {
                 positionInPercentage = Math.round((seekbar.getProgress() * 100 / runningPlayer.getDuration()));
-            Log.d("Positionperc",positionInPercentage+"");
+                Log.d("Positionperc", positionInPercentage + "");
 
                 float leftMargin = seekbar.getWidth() * positionInPercentage / 100;
 
@@ -4188,7 +4192,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             alertDialog.setAlertDialogCallBack(this);
             if (fm != null)
                 alertDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
     }
 
     @Override

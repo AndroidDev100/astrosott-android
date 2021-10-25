@@ -386,10 +386,60 @@
 
                         </LinearLayout>
 
-                        <FrameLayout
-                            android:id="@+id/rail_fragment"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            >
+                            <!--<View-->
+                            <!--    android:layout_height="50dp"-->
+                            <!--    android:layout_width="match_parent"-->
+                            <!--    android:background="@drawable/tab_background"-->
+                            <!--    app:layout_constraintLeft_toLeftOf="parent"-->
+                            <!--    app:layout_constraintTop_toTopOf="parent"-->
+
+                            <!--    />-->
+
+                            <com.google.android.material.tabs.TabLayout
+                                android:id="@+id/tabLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="@dimen/dimen10dp"
+                                android:background="@drawable/tab_bg"
+                                android:paddingEnd="25dp"
+                                android:paddingStart="0dp"
+                                android:visibility="gone"
+                                app:tabGravity="fill"
+                                app:tabBackground="@color/transparentColor"
+                                app:tabIndicator="@color/transparentColor"
+                                app:tabSelectedTextColor="@color/white"
+                                app:tabTextAppearance="@style/MineCustomTabText"
+                                app:tabTextColor="@color/grey" />
+
+                            <View
+                                android:id="@+id/black_line"
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_below="@id/tabLayout"
+                                android:background="@color/egg_plant"
+                                android:visibility="gone" />
+
+                            <View
+                                android:id="@+id/indicator"
+                                android:layout_width="0dp"
+                                android:layout_height="4dp"
+                                android:layout_below="@id/tabLayout"
+                                android:background="@drawable/tab_indicator"/>
+
+
+                            <com.astro.sott.utils.helpers.LiveTvViewPager
+                                android:id="@+id/pager"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/indicator"
+                                android:background="@color/grape_purple" />
+
+
+                        </RelativeLayout>
                         <!--<fragment
                             android:id="@+id/rail_fragment"
                             android:name="com.dialog.dialoggo.baseModel.RailBaseFragment"

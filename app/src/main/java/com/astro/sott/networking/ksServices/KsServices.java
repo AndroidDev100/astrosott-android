@@ -448,7 +448,7 @@ public class KsServices {
 
     private List<VIUChannel> dtChannelList;
 
-    public void callDeepSearchAssetListing(Context context,long l, List<VIUChannel> list, String ksql, String filterValue, int counter, int pageSize, HomechannelCallBack callBack) {
+    public void callDeepSearchAssetListing(Context context, long l, List<VIUChannel> list, String ksql, String filterValue, int counter, int pageSize, HomechannelCallBack callBack) {
         clientSetupKs();
         homechannelCallBack = callBack;
         this.dtChannelList = list;
@@ -463,7 +463,7 @@ public class KsServices {
             channelFilter.setIdEqual(iid);
             String name = "";
 
-            String KsqlValue =  ksql;
+            String KsqlValue = ksql;
             PrintLogging.printLog("", "genreValueIs" + KsqlValue);
 
 
@@ -477,15 +477,15 @@ public class KsServices {
                     } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())) {
                         channelFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
                     } else {
-                       // channelFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+                        // channelFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
                     }
 
                 } else {
-                   // channelFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+                    // channelFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
                 }
 
                 PrintLogging.printLog("", "sortvalueIS" + KsPreferenceKey.getInstance(context).getFilterSortBy());
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
@@ -494,7 +494,6 @@ public class KsServices {
             } else {
                 channelFilter.setOrderBy(AppConstants.SORT_VALUE);
             }*/
-
 
 
             // PersonalListSearchFilter
@@ -3639,7 +3638,7 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
     }
 
-    public void getLinearAssetIdListing(Context context,String assetId, String customDays, int counter, TrendingCallBack trendingCallBack) {
+    public void getLinearAssetIdListing(Context context, String assetId, String customDays, int counter, TrendingCallBack trendingCallBack) {
         clientSetupKs();
         AssetService.GetAssetBuilder builder = AssetService.get(assetId, AssetReferenceType.MEDIA).setCompletion(result -> {
             PrintLogging.printLog("", "SpecificAsset" + result.isSuccess());
@@ -3651,7 +3650,7 @@ public class KsServices {
                         String externalId = mediaAsset.getExternalIds();
                         int index = Integer.parseInt(customDays);
                         String endDate = getNextDateTimeStamp(index + 1);
-                        callLiveEpgDeeplinkListing(context,externalId, "0", endDate, counter, trendingCallBack);
+                        callLiveEpgDeeplinkListing(context, externalId, "0", endDate, counter, trendingCallBack);
                     } catch (Exception e) {
                         trendingCallBack.getList(false, null, 0);
 
@@ -3670,7 +3669,7 @@ public class KsServices {
                             @Override
                             public void response(CommonResponse response) {
                                 if (response.getStatus()) {
-                                    getLinearAssetIdListing(context,assetId, customDays, counter, trendingCallBack);
+                                    getLinearAssetIdListing(context, assetId, customDays, counter, trendingCallBack);
                                 } else {
                                     trendingCallBack.getList(false, null, 0);
 
@@ -3692,13 +3691,13 @@ public class KsServices {
         getRequestQueue().queue(builder.build(client));
     }
 
-    private void callLiveEpgDeeplinkListing(Context context,String externalId, String startDate, String endDate, int counter, TrendingCallBack trendingCallBack) {
+    private void callLiveEpgDeeplinkListing(Context context, String externalId, String startDate, String endDate, int counter, TrendingCallBack trendingCallBack) {
         String EPGListKSQL;
         clientSetupKs();
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
 
-        String deepSearchKSQL =AppCommonMethods.getLiveDeepSearchKsql("",null,1,context);
-        EPGListKSQL = KSQL.forDeepSearchEPGRail(externalId, startDate, endDate,deepSearchKSQL);
+        String deepSearchKSQL = AppCommonMethods.getLiveDeepSearchKsql("", null, 1, context);
+        EPGListKSQL = KSQL.forDeepSearchEPGRail(externalId, startDate, endDate, deepSearchKSQL);
         searchAssetFilter.setKSql(EPGListKSQL);
         searchAssetFilter.typeIn("0");
         try {
@@ -3718,7 +3717,7 @@ public class KsServices {
             }
 
             PrintLogging.printLog("", "sortvalueIS" + KsPreferenceKey.getInstance(context).getFilterSortBy());
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
@@ -6046,6 +6045,62 @@ public class KsServices {
 
     }
 
+    public void getSponsorChannelData(String channelId,HomechannelCallBack callBack) {
+        responseList = new ArrayList<>();
+        clientSetupKs();
+        int iid = Integer.parseInt(channelId);
+        ChannelFilter channelFilter = new ChannelFilter();
+        channelFilter.setIdEqual(iid);
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageIndex(1);
+        //filterPager.setPageSize(20);
+        filterPager.setPageSize(100);
+        AssetService.ListAssetBuilder builder = AssetService.list(channelFilter, filterPager).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Asset>> result) {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null) {
+                            if (result.results.getObjects().size() > 0) {
+                                responseList.add(result);
+                                callBack.response(true, responseList, null);
+                            } else {
+                                callBack.response(false, null, null);
+                            }
+                        } else {
+                            callBack.response(false, null, null);
+                        }
+                    } else {
+                        callBack.response(false, null, null);
+                    }
+                } else {
+                    if (result.error != null) {
+                        String errorCode = result.error.getCode();
+                        PrintLogging.printLog("", "errorCodess-->>" + errorCode);
+                        if (errorCode.equalsIgnoreCase(AppConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR)) {
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        getSponsorChannelData(channelId,callBack);
+                                    } else {
+                                        callBack.response(false, null, null);
+                                    }
+                                }
+                            });
+
+                        } else {
+                            callBack.response(false, null, null);
+                        }
+                    } else {
+                        callBack.response(false, null, null);
+                    }
+                }
+            }
+        });
+        getRequestQueue().queue(builder.build(client));
+    }
+
     private void getPurchaseList(List<VIUChannel> list) {
 
         clientSetupKs();
@@ -8239,7 +8294,7 @@ public class KsServices {
     }
 
 
-    public void getTrendingListing(Context context,String customMediaType, String customGenre, String customGenreRule, int counter, TrendingCallBack trendingCallBack) {
+    public void getTrendingListing(Context context, String customMediaType, String customGenre, String customGenreRule, int counter, TrendingCallBack trendingCallBack) {
         clientSetupKs();
         SearchAssetFilter relatedFilter = new SearchAssetFilter();
         String kSql = "";
@@ -8258,12 +8313,12 @@ public class KsServices {
 
             }
         }
-        String kSQL=AppCommonMethods.getTrendingDeepSearchKsql(null,context);
+        String kSQL = AppCommonMethods.getTrendingDeepSearchKsql(null, context);
         if (!kSql.equalsIgnoreCase("")) {
-            if (!kSQL.equalsIgnoreCase("")){
-                String finalKSQL=KSQL.forTrendingRail(kSql,kSQL);
+            if (!kSQL.equalsIgnoreCase("")) {
+                String finalKSQL = KSQL.forTrendingRail(kSql, kSQL);
                 relatedFilter.setKSql(finalKSQL);
-            }else {
+            } else {
                 relatedFilter.setKSql(kSql);
             }
 
@@ -8286,10 +8341,9 @@ public class KsServices {
             }
 
             PrintLogging.printLog("", "sortvalueIS" + KsPreferenceKey.getInstance(context).getFilterSortBy());
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
-
 
 
         FilterPager filterPager = new FilterPager();
@@ -8323,7 +8377,7 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        getTrendingListing(context,customMediaType, customGenre, customGenreRule, counter, trendingCallBack);
+                                        getTrendingListing(context, customMediaType, customGenre, customGenreRule, counter, trendingCallBack);
                                         //getSubCategories(context, subCategoryCallBack);
                                     } else {
                                         trendingCallBack.getList(false, null, 0);

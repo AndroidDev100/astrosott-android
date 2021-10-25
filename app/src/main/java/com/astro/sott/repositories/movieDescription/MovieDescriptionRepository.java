@@ -2,6 +2,7 @@ package com.astro.sott.repositories.movieDescription;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
 
 import com.astro.sott.baseModel.CategoryRails;
@@ -155,7 +156,7 @@ public class MovieDescriptionRepository {
             List<RailCommonData> railList = new ArrayList<>();
             for (int j = 0; j < list.get(position).results.getObjects().size(); j++) {
                 RailCommonData railCommonData = new RailCommonData();
-              //  railCommonData.setCatchUpBuffer(list.get(position).results.getObjects().get(j).getEnableCatchUp());
+                //  railCommonData.setCatchUpBuffer(list.get(position).results.getObjects().get(j).getEnableCatchUp());
                 railCommonData.setType(list.get(position).results.getObjects().get(j).getType());
                 railCommonData.setName(list.get(position).results.getObjects().get(j).getName());
                 railCommonData.setId(list.get(position).results.getObjects().get(j).getId());
@@ -203,7 +204,7 @@ public class MovieDescriptionRepository {
         final KsServices ksServices = new KsServices(context);
         AppCommonMethods.checkDMS(context, status -> {
             if (status) {
-                ksServices.callHomeChannels(context,0, screen_id, (status1, listResponseResponse, channelList) -> {
+                ksServices.callHomeChannels(context, 0, screen_id, (status1, listResponseResponse, channelList) -> {
                     if (status1) {
                         callDynamicData(context, listResponseResponse, channelList, layoutType);
                         mutableLiveData.postValue(assetCommonList);
@@ -245,6 +246,19 @@ public class MovieDescriptionRepository {
         return connection;
     }
 
+    public LiveData<Asset> getSponsorData(Context applicationContext, String ref_id) {
+        final MutableLiveData<Asset> connection = new MutableLiveData<>();
+        KsServices ksServices = new KsServices(applicationContext);
+        ksServices.getSponsorChannelData(ref_id, (status, listResponseResponse, channelList) -> {
+            if (status) {
+
+            } else {
+               // connection.postValue(null);
+            }
+        });
+        return connection;
+    }
+
     public LiveData<CommonResponse> compareWatchlist(final String assetId, final Context context) {
         final MutableLiveData<CommonResponse> commonMutableLiveData = new MutableLiveData<>();
         new Watchlist().listWatchlist(assetId, context, commonMutableLiveData);
@@ -253,9 +267,9 @@ public class MovieDescriptionRepository {
     }
 
 
-    public LiveData<CommonResponse> addToWatchlist(String id, String titleName, Context context,int playlistidtype) {
+    public LiveData<CommonResponse> addToWatchlist(String id, String titleName, Context context, int playlistidtype) {
         final MutableLiveData<CommonResponse> stringMutableLiveData = new MutableLiveData<>();
-        new Watchlist().addToWatchList(id, titleName, context, stringMutableLiveData,playlistidtype);
+        new Watchlist().addToWatchList(id, titleName, context, stringMutableLiveData, playlistidtype);
 
         return stringMutableLiveData;
     }
@@ -287,7 +301,7 @@ public class MovieDescriptionRepository {
             } else {
                 commonResponse.setStatus(false);
                 commonResponse.setErrorCode(errorCode);
-                commonResponse.setMessage(new ErrorCallBack().ErrorMessage(errorCode,message));
+                commonResponse.setMessage(new ErrorCallBack().ErrorMessage(errorCode, message));
                 booleanMutableLiveData.postValue(commonResponse);
             }
 

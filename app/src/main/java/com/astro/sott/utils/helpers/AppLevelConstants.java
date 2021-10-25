@@ -200,6 +200,8 @@ public interface AppLevelConstants {
     String KEY_PARENTREF_ID = "TrailerParentRefId";
     String KEY_VIDEO_RESOLUTION = "VideoResolution";
     String KEY_DIRECTOR = "Director";
+    String TAB_NAME = "TabNames";
+
     String KEY_PRODUCER = "Producer";
 
     String PROVIDER = "Provider";

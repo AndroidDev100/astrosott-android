@@ -10,6 +10,7 @@ import com.astro.sott.activities.movieDescription.layers.YouMayAlsoLike;
 import com.astro.sott.baseModel.CategoryRailLayer;
 import com.astro.sott.baseModel.ChannelLayer;
 import com.astro.sott.baseModel.MovieBaseViewModel;
+import com.astro.sott.beanModel.SponsoredTabData;
 import com.astro.sott.beanModel.VIUChannel;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.login.CommonResponse;
@@ -40,6 +41,10 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
 
     public LiveData<String> getCrewLiveDAta(Map<String, MultilingualStringValueArray> map) {
         return AssetContent.getCrewData(map);
+    }
+
+    public List<SponsoredTabData> getTabsData(Map<String, MultilingualStringValueArray> map) {
+        return AssetContent.getSponsorTabData(map);
     }
 
     public LiveData<String> getCastLiveData(Map<String, MultilingualStringValueArray> map) {
@@ -131,6 +136,10 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
 
     public LiveData<Asset> getAssetFromTrailor(String ref_id, Integer type) {
         return MovieDescriptionRepository.getInstance().getAssetFromTrailor(getApplication().getApplicationContext(), ref_id);
+    }
+
+    public LiveData<Asset> getSponsorChannelData(String channelId) {
+        return MovieDescriptionRepository.getInstance().getSponsorData(getApplication().getApplicationContext(), channelId);
     }
 
     public LiveData<String> getLanguageLiveData(Map<String, MultilingualStringValueArray> map) {
