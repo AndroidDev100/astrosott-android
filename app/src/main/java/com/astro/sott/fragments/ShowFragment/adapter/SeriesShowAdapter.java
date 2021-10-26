@@ -53,7 +53,7 @@ public class SeriesShowAdapter extends RecyclerView.Adapter<SeriesShowAdapter.Si
 
     @Override
     public void onBindViewHolder(@NonNull SingleItemViewHolder holder, int position) {
-        if (similarItemList.get(position).getObject().getMediaFiles() != null && similarItemList.get(position).getObject().getMediaFiles().size() > 0) {
+        if (similarItemList.get(position).getObject().getImages() != null && similarItemList.get(position).getObject().getImages().size() > 0) {
             List<MediaImage> media = similarItemList.get(position).getObject().getImages();
             for (MediaImage mediaFile : media) {
                 if (mediaFile.getRatio().equalsIgnoreCase("16x9")) {

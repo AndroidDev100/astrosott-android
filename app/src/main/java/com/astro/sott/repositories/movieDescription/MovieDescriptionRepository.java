@@ -246,14 +246,14 @@ public class MovieDescriptionRepository {
         return connection;
     }
 
-    public LiveData<Asset> getSponsorData(Context applicationContext, String ref_id) {
-        final MutableLiveData<Asset> connection = new MutableLiveData<>();
+    public LiveData<List<Asset>> getSponsorData(Context applicationContext, String channelId) {
+        final MutableLiveData<List<Asset>> connection = new MutableLiveData<>();
         KsServices ksServices = new KsServices(applicationContext);
-        ksServices.getSponsorChannelData(ref_id, (status, listResponseResponse, channelList) -> {
+        ksServices.getSponsorChannelData(channelId, (status, asset) -> {
             if (status) {
-
+                connection.postValue(asset);
             } else {
-               // connection.postValue(null);
+                connection.postValue(null);
             }
         });
         return connection;

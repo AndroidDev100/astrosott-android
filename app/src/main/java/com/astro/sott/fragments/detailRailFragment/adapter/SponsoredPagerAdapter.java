@@ -1,6 +1,7 @@
 package com.astro.sott.fragments.detailRailFragment.adapter;
 
 import android.os.Bundle;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.astro.sott.beanModel.SponsoredTabData;
 import com.astro.sott.fragments.episodeFrament.EpisodesFragment;
 import com.astro.sott.fragments.sponsoredFragment.SponsoredTabFragment;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.LiveTvViewPager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,9 +23,26 @@ import java.util.List;
 
 public class SponsoredPagerAdapter  extends FragmentStatePagerAdapter {
     List<SponsoredTabData> sponsoredTabDataList;
-    public SponsoredPagerAdapter(@NonNull @NotNull FragmentManager fm, int behavior,List<SponsoredTabData> sponsoredTabData) {
-        super(fm, behavior);
+    private int mCurrentPosition = -1;
+
+    public SponsoredPagerAdapter(@NonNull @NotNull FragmentManager fm, List<SponsoredTabData> sponsoredTabData) {
+        super(fm);
         this.sponsoredTabDataList=sponsoredTabData;
+    }
+
+    @Override
+    public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        super.setPrimaryItem(container, position, object);
+
+        if (position != mCurrentPosition && container instanceof LiveTvViewPager) {
+            Fragment fragment = (Fragment) object;
+            LiveTvViewPager pager = (LiveTvViewPager) container;
+
+            if (fragment != null && fragment.getView() != null) {
+                mCurrentPosition = position;
+                pager.measureCurrentView(fragment.getView());
+            }
+        }
     }
 
     @NonNull

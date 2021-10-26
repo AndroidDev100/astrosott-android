@@ -566,9 +566,9 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
     }
 
     private void viewPagerSetup() {
-        tabCount = 3;
         sponsoredTabDataList = new ArrayList<>();
         sponsoredTabDataList.addAll(viewModel.getTabsData(map));
+        tabCount = sponsoredTabDataList.size();
         try {
             if (tabCount == 1) {
                 ViewGroup.LayoutParams params = getBinding().tabLayout.getLayoutParams();
@@ -576,7 +576,7 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
                 getBinding().tabLayout.setLayoutParams(params);
             }
 
-            SponsoredPagerAdapter detailPagerAdapter = new SponsoredPagerAdapter(getSupportFragmentManager(), 1, sponsoredTabDataList);
+            SponsoredPagerAdapter detailPagerAdapter = new SponsoredPagerAdapter(getSupportFragmentManager(),  sponsoredTabDataList);
             getBinding().pager.setAdapter(detailPagerAdapter);
             getBinding().pager.disableScroll(true);
 

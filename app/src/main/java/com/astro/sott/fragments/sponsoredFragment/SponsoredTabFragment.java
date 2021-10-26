@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,18 +14,29 @@ import android.view.ViewGroup;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
+import com.astro.sott.baseModel.BaseBindingFragment;
+import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
+import com.astro.sott.databinding.FragmentSponsoredTabBinding;
+import com.astro.sott.fragments.ShowFragment.adapter.SeriesShowAdapter;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.SpacingItemDecoration;
+import com.kaltura.client.types.Asset;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SponsoredTabFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SponsoredTabFragment extends Fragment {
+public class SponsoredTabFragment extends BaseBindingFragment<FragmentSponsoredTabBinding> {
     private MovieDescriptionViewModel viewModel;
     private String channelId;
+    private List<RailCommonData> railCommonDataList;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,17 +76,15 @@ public class SponsoredTabFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         modelCall();
-        if (getArguments() != null && getArguments().getString("COLLECTION_ID") != null)
-            channelId = getArguments().getString("COLLECTION_ID");
-        getSponsorData();
+
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sponsored_tab, container, false);
+    protected FragmentSponsoredTabBinding inflateBindingLayout(@NonNull @NotNull LayoutInflater inflater) {
+        return FragmentSponsoredTabBinding.inflate(inflater);
     }
+
 
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -82,15 +92,42 @@ public class SponsoredTabFragment extends Fragment {
 
     }
 
+    @Override
+    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getArguments() != null && getArguments().getString("COLLECTION_ID") != null)
+            channelId = getArguments().getString("COLLECTION_ID");
+        setRecycler();
+        getSponsorData();
+    }
+
     private void modelCall() {
         viewModel = ViewModelProviders.of(this).get(MovieDescriptionViewModel.class);
 
     }
 
-    private void getSponsorData() {
-        if (channelId!=null) {
-            viewModel.getSponsorChannelData(channelId).observe(getViewLifecycleOwner(), asset -> {
+    private void setRecycler() {
+        getBinding().recyclerView.setNestedScrollingEnabled(false);
+        getBinding().recyclerView.setHasFixedSize(false);
+        getBinding().recyclerView.addItemDecoration(new SpacingItemDecoration(20, 2));
+        GridLayoutManager mLayoutManager;
+        mLayoutManager = new GridLayoutManager(getActivity(), 2);
+        getBinding().recyclerView.setLayoutManager(mLayoutManager);
+    }
 
+    private void getSponsorData() {
+        if (channelId != null) {
+            viewModel.getSponsorChannelData(channelId).observe(getViewLifecycleOwner(), asset -> {
+                if (asset != null) {
+                    railCommonDataList = new ArrayList<>();
+                    for (Asset assetData : asset) {
+                        RailCommonData railCommonData = new RailCommonData();
+                        railCommonData.setObject(assetData);
+                        railCommonDataList.add(railCommonData);
+                    }
+                    SeriesShowAdapter showAdapter = new SeriesShowAdapter(getActivity(), railCommonDataList, false);
+                    getBinding().recyclerView.setAdapter(showAdapter);
+                }
             });
         }
 

@@ -138,7 +138,7 @@ public class MovieDescriptionViewModel extends MovieBaseViewModel {
         return MovieDescriptionRepository.getInstance().getAssetFromTrailor(getApplication().getApplicationContext(), ref_id);
     }
 
-    public LiveData<Asset> getSponsorChannelData(String channelId) {
+    public LiveData<List<Asset>> getSponsorChannelData(String channelId) {
         return MovieDescriptionRepository.getInstance().getSponsorData(getApplication().getApplicationContext(), channelId);
     }
 

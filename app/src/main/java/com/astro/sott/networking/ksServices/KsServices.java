@@ -6045,15 +6045,13 @@ public class KsServices {
 
     }
 
-    public void getSponsorChannelData(String channelId,HomechannelCallBack callBack) {
-        responseList = new ArrayList<>();
+    public void getSponsorChannelData(String channelId, TrailerAssetCallBack callBack) {
         clientSetupKs();
         int iid = Integer.parseInt(channelId);
         ChannelFilter channelFilter = new ChannelFilter();
         channelFilter.setIdEqual(iid);
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
-        //filterPager.setPageSize(20);
         filterPager.setPageSize(100);
         AssetService.ListAssetBuilder builder = AssetService.list(channelFilter, filterPager).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
             @Override
@@ -6062,16 +6060,15 @@ public class KsServices {
                     if (result.results != null) {
                         if (result.results.getObjects() != null) {
                             if (result.results.getObjects().size() > 0) {
-                                responseList.add(result);
-                                callBack.response(true, responseList, null);
+                                callBack.getTrailorAsset(true, result.results.getObjects());
                             } else {
-                                callBack.response(false, null, null);
+                                callBack.getTrailorAsset(false, null);
                             }
                         } else {
-                            callBack.response(false, null, null);
+                            callBack.getTrailorAsset(false, null);
                         }
                     } else {
-                        callBack.response(false, null, null);
+                        callBack.getTrailorAsset(false, null);
                     }
                 } else {
                     if (result.error != null) {
@@ -6082,18 +6079,18 @@ public class KsServices {
                                 @Override
                                 public void response(CommonResponse response) {
                                     if (response.getStatus()) {
-                                        getSponsorChannelData(channelId,callBack);
+                                        getSponsorChannelData(channelId, callBack);
                                     } else {
-                                        callBack.response(false, null, null);
+                                        callBack.getTrailorAsset(false, null);
                                     }
                                 }
                             });
 
                         } else {
-                            callBack.response(false, null, null);
+                            callBack.getTrailorAsset(false, null);
                         }
                     } else {
-                        callBack.response(false, null, null);
+                        callBack.getTrailorAsset(false, null);
                     }
                 }
             }

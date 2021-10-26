@@ -1152,9 +1152,9 @@ public class AssetContent {
             String[] titleSeparation = crew_value.get(i).getValue().split("\\^");
             if (titleSeparation.length > 0 && titleSeparation[0] != null)
                 sponsoredTabData.setTitle(titleSeparation[0]);
-            if (titleSeparation.length == 1 && titleSeparation[1] != null) {
+            if (titleSeparation.length > 1 && titleSeparation[1] != null) {
                 String[] channelIdSeparator = titleSeparation[1].split("=");
-                if (channelIdSeparator.length == 1 && channelIdSeparator[1] != null)
+                if (channelIdSeparator.length >= 1 && channelIdSeparator[1] != null)
                     sponsoredTabData.setCollectionId(channelIdSeparator[1]);
             }
 
