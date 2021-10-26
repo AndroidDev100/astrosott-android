@@ -64,6 +64,7 @@ public class PlanNotUpdated extends DialogFragment {
         if (getDialog().getWindow() != null) {
             strTitle = getArguments().getString(AppLevelConstants.TITLE);
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCancelable(false);
             // Get field from view
             inputLayoutDialog = view.findViewById(R.id.input_layout_dialog);
 

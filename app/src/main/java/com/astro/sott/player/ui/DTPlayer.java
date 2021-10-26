@@ -546,7 +546,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().name.setText("\"" + asset.getName() + "\"");
             }
         } else if (isLivePlayer) {
-            getBinding().name.setText( programAsset.getName().toString() );
+            if(programAsset!=null) {
+                getBinding().name.setText(programAsset.getName());
+            }else {
+                getBinding().name.setText(asset.getName());
+            }
 //              getBinding().name.setText("\"" + Constants.channelname + "\"");
 
         } else {
