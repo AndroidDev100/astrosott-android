@@ -69,8 +69,10 @@ public class BuyButtonManager {
                         subscriptionIds = new String[subscriptionList.size()];
                         for (Subscription subscription : subscriptionList) {
                             if (subscription.getId() != null) {
-                                subscriptionIds[count] = subscription.getId();
-                                count++;
+                                try {
+                                    subscriptionIds[count] = subscription.getId();
+                                    count++;
+                                }catch (Exception e){ }
                             }
                         }
                         getProducts(from, buyButtonListener);

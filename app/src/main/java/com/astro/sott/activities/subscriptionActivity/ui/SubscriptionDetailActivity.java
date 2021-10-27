@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
@@ -96,8 +97,6 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         isPlayable = getIntent().getBooleanExtra(AppLevelConstants.PLAYABLE, false);
 
         modelCall();
-        getActiveSubscription();
-
     }
 
     private void modelCall() {
@@ -128,6 +127,11 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     });
                 } else {
                 }
+            }
+            if (from.equalsIgnoreCase("Locked Episode")) {
+                getSubscriptionActionList();
+            } else {
+                checkPackRedirection();
             }
         });
     }
@@ -471,11 +475,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     @Override
     public void onBillingInitialized() {
-        if (from.equalsIgnoreCase("Locked Episode")) {
-            getSubscriptionActionList();
-        } else {
-            checkPackRedirection();
-        }
+        getActiveSubscription();
+
 
     }
 

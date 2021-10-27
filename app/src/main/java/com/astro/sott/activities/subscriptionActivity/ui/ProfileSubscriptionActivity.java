@@ -76,7 +76,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
         bundle.putString("from", from);
         someFragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameContent, someFragment, "SubscriptionFragment"); // give your fragment container id in first parameter
+        transaction.add(R.id.frameContent, someFragment, "SubscriptionFragment"); // give your fragment container id in first parameter
         transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
         transaction.commit();
     }

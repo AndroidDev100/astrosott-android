@@ -201,7 +201,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 if (UserInfo.getInstance(getActivity()).isActive()) {
                     TransactionHistory transactionHistory = new TransactionHistory();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.content_frame, transactionHistory); // give your fragment container id in first parameter
+                    transaction.add(R.id.content_frame, transactionHistory); // give your fragment container id in first parameter
                     transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                     transaction.commit();
                 } else {
