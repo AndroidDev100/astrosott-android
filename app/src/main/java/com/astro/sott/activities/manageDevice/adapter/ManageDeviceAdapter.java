@@ -52,16 +52,18 @@ public class ManageDeviceAdapter extends RecyclerView.Adapter<ManageDeviceAdapte
             holder.manageDeviceItemBinding.deleteIcon.setVisibility(View.VISIBLE);
         }
         AppCommonMethods.getDeviceId(mContext.getContentResolver());
-        if (itemList.get(position).getDeviceType().equalsIgnoreCase("IOS")||itemList.get(position).getDeviceType().equalsIgnoreCase("IOS_TABLET")) {
+        if (itemList.get(position).getDeviceType().equalsIgnoreCase("IOS") || itemList.get(position).getDeviceType().equalsIgnoreCase("IOS_TABLET")) {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_apple));
-        } else if (itemList.get(position).getDeviceType().equalsIgnoreCase("ANDROID")||itemList.get(position).getDeviceType().equalsIgnoreCase("ANDROID_TABLET")) {
+        } else if (itemList.get(position).getDeviceType().equalsIgnoreCase("ANDROID") || itemList.get(position).getDeviceType().equalsIgnoreCase("ANDROID_TABLET")) {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_android_24px));
         } else if (itemList.get(position).getDeviceType().equalsIgnoreCase("PC")) {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_laptop_24_px));
+        } else if (itemList.get(position).getDeviceType().equalsIgnoreCase("Samsung_TV") || itemList.get(position).getDeviceType().equalsIgnoreCase("Lg_TV") || itemList.get(position).getDeviceType().equalsIgnoreCase("Android_TV")) {
+            holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_tv_black_24_dp));
         } else {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_laptop_24_px));
         }
-        holder.manageDeviceItemBinding.title.setText(itemList.get(position).getDeviceName() +" "+ itemList.get(position).getModelNo());
+        holder.manageDeviceItemBinding.title.setText(itemList.get(position).getDeviceName() + " " + itemList.get(position).getModelNo());
         holder.manageDeviceItemBinding.activeDate.setText("Last active " + getDate(itemList.get(position).getLastLoginTime()));
         holder.manageDeviceItemBinding.deleteIcon.setOnClickListener(view -> {
             if (itemList.get(position).getSerialNo() != null)
@@ -82,7 +84,7 @@ public class ManageDeviceAdapter extends RecyclerView.Adapter<ManageDeviceAdapte
             date = date_time[0];
         SimpleDateFormat format1 = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
         format1.setTimeZone(TimeZone.getDefault());
-        SimpleDateFormat format2 = new SimpleDateFormat("dd MMM yyyy",Locale.getDefault());
+        SimpleDateFormat format2 = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
         format2.setTimeZone(TimeZone.getDefault());
         try {
             formatDate = format1.parse(date);
