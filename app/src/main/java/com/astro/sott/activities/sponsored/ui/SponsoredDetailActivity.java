@@ -25,8 +25,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
+import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.SponsoredTabData;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -48,6 +50,8 @@ import com.astro.sott.player.geoBlockingManager.GeoBlockingCheck;
 import com.astro.sott.player.houseHoldCheckManager.HouseHoldCheck;
 import com.astro.sott.player.ui.PlayerActivity;
 import com.astro.sott.repositories.player.PlayerRepository;
+import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
+import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -144,6 +148,8 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
         titleName = name;
         isActive = UserInfo.getInstance(this).isActive();
         map = asset.getTags();
+        if (isActive)
+            isWatchlistedOrNot();
         setPlayerFragment();
         getMediaType(asset, railData);
         callSpecificAsset(assetId);
@@ -271,6 +277,27 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
         });
 
 
+    }
+    private void isWatchlistedOrNot() {
+        viewModel.listAllwatchList(assetId + "").observe(this, commonResponse -> {
+            if (commonResponse.getStatus()) {
+                if (commonResponse != null) {
+                    idfromAssetWatchlist = commonResponse.getAssetID();
+                    isAdded = true;
+                    getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
+                    getBinding().watchList.setTextColor(getResources().getColor(R.color.aqua_marine));
+                } else {
+                    isAdded = false;
+                    getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
+                    getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
+
+                }
+            } else {
+                isAdded = false;
+                getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
+                getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
+            }
+        });
     }
 
     private void checkOnlyDevice(RailCommonData railData) {
@@ -543,10 +570,96 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
             lastClickTime = SystemClock.elapsedRealtime();
             openShareDialouge();
         });
+        setWatchlist();
+
         // setRailFragment();
         setRailBaseFragment();
     }
+    private void setWatchlist() {
+        getBinding().watchList.setOnClickListener(view -> {
+            if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                return;
+            }
+            lastClickTime = SystemClock.elapsedRealtime();
+            FirebaseEventManager.getFirebaseInstance(this).clickButtonEvent("add_mylist", asset, this);
+            if (NetworkConnectivity.isOnline(getApplication())) {
+                if (UserInfo.getInstance(this).isActive()) {
+                    if (isAdded) {
+                        deleteWatchlist();
+                    } else {
+                        addToWatchlist(titleName);
+                    }
+                } else {
+                    new ActivityLauncher(SponsoredDetailActivity.this).signupActivity(SponsoredDetailActivity.this, SignUpActivity.class, CleverTapManager.DETAIL_PAGE_MY_LIST);
+                }
+            } else {
+                ToastHandler.show(getResources().getString(R.string.no_internet_connection), SponsoredDetailActivity.this);
 
+            }
+        });
+
+    }
+    private void addToWatchlist(String title) {
+
+        if (UserInfo.getInstance(this).isActive()) {
+
+            viewModel.addToWatchlist(assetId + "", title, playlistId).observe(this, s -> {
+                if (s != null) {
+                    checkAddedCondition(s);
+                }
+            });
+        }
+    }
+    private void checkAddedCondition(CommonResponse s) {
+        if (s.getStatus()) {
+            Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist), Toast.LENGTH_SHORT).show();
+            idfromAssetWatchlist = s.getAssetID();
+            isAdded = true;
+            getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
+            getBinding().watchList.setTextColor(getResources().getColor(R.color.aqua_marine));
+
+        } else {
+            switch (s.getErrorCode()) {
+                case "":
+                    showDialog(s.getMessage());
+                    break;
+                case AppLevelConstants.ALREADY_FOLLOW_ERROR:
+                    Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist), Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    showDialog(s.getMessage());
+                    break;
+            }
+
+        }
+    }
+
+    private void deleteWatchlist() {
+        viewModel.deleteWatchlist(idfromAssetWatchlist).observe(SponsoredDetailActivity.this, aBoolean -> {
+            if (aBoolean != null && aBoolean.getStatus()) {
+                isAdded = false;
+                Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist), Toast.LENGTH_SHORT).show();
+                getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
+                getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
+            } else {
+                if (aBoolean != null && aBoolean.getErrorCode().equals("")) {
+                    showDialog(aBoolean.getMessage());
+                } else {
+                    if (aBoolean != null && aBoolean.getErrorCode().equals(AppLevelConstants.ALREADY_UNFOLLOW_ERROR)) {
+                        isAdded = false;
+                        Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist), Toast.LENGTH_SHORT).show();
+                        getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
+                        getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
+                    } else {
+                        if (aBoolean != null)
+                            showDialog(aBoolean.getMessage());
+                    }
+
+                }
+            }
+
+        });
+    }
 
     private void setRailBaseFragment() {
         viewPagerSetup();
@@ -926,6 +1039,7 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
             if (NetworkConnectivity.isOnline(this)) {
                 titleName = name;
                 isActive = true;
+                isWatchlistedOrNot();
             }
         }
     }

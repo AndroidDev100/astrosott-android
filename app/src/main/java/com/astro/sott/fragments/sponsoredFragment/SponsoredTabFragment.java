@@ -125,7 +125,7 @@ public class SponsoredTabFragment extends BaseBindingFragment<FragmentSponsoredT
                         railCommonData.setObject(assetData);
                         railCommonDataList.add(railCommonData);
                     }
-                    SeriesShowAdapter showAdapter = new SeriesShowAdapter(getActivity(), railCommonDataList, false);
+                    SeriesShowAdapter showAdapter = new SeriesShowAdapter(getActivity(), railCommonDataList, true);
                     getBinding().recyclerView.setAdapter(showAdapter);
                 }
             });

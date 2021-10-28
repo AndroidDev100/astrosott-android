@@ -53,17 +53,22 @@ public class SeriesShowAdapter extends RecyclerView.Adapter<SeriesShowAdapter.Si
 
     @Override
     public void onBindViewHolder(@NonNull SingleItemViewHolder holder, int position) {
-        if (similarItemList.get(position).getObject().getImages() != null && similarItemList.get(position).getObject().getImages().size() > 0) {
-            List<MediaImage> media = similarItemList.get(position).getObject().getImages();
-            for (MediaImage mediaFile : media) {
-                if (mediaFile.getRatio().equalsIgnoreCase("16x9")) {
-                    String image_url = mediaFile.getUrl();
-                    String final_url = image_url + AppLevelConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
-                    ImageHelper.getInstance(holder.landscapeItemBinding.image.getContext()).loadImageTo(holder.landscapeItemBinding.image, final_url, R.drawable.ic_landscape_placeholder);
+        if (similarItemList.get(position) != null && similarItemList.get(position).getObject() != null) {
+            Asset asset = similarItemList.get(position).getObject();
+            if (asset.getImages() != null && asset.getImages().size() > 0) {
+                List<MediaImage> media = asset.getImages();
+                for (MediaImage mediaFile : media) {
+                    if (mediaFile.getRatio().equalsIgnoreCase("16x9")) {
+                        String image_url = mediaFile.getUrl();
+                        String final_url = image_url + AppLevelConstants.WIDTH + (int) mContext.getResources().getDimension(R.dimen.landscape_image_width) + AppLevelConstants.HEIGHT + (int) mContext.getResources().getDimension(R.dimen.landscape_image_height) + AppLevelConstants.QUALITY;
+                        ImageHelper.getInstance(holder.landscapeItemBinding.image.getContext()).loadImageTo(holder.landscapeItemBinding.image, final_url, R.drawable.ic_landscape_placeholder);
+                    }
                 }
             }
+            if (isMovieShow) {
+                holder.landscapeItemBinding.lanscapeTitle.setText(asset.getName());
+            }
         }
-
     }
 
 
