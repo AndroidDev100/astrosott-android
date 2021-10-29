@@ -3,6 +3,7 @@ package com.astro.sott.repositories.search;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -186,7 +187,7 @@ public class SearchRepository {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }else{
+                    } else {
                         connection.postValue(null);
 
                     }
@@ -199,13 +200,13 @@ public class SearchRepository {
     }
 
 
-    public LiveData<ArrayList<SearchModel>> matchSetHitApi(String searchString, final Context context, final List<MediaTypeModel> list, int counter,int from,int beginFrom) {
+    public LiveData<ArrayList<SearchModel>> matchSetHitApi(String searchString, final Context context, final List<MediaTypeModel> list, int counter, int from, int beginFrom) {
         initRealm(context);
         matchingKeyword(searchString);
         //Log.w("valuesFromList",list.get(counter).getId()+"");
         final MutableLiveData<ArrayList<SearchModel>> connection = new MutableLiveData<>();
         final KsServices ksServices = new KsServices(context);
-        callNonCollectiondata(searchString,context,list,counter,ksServices,connection,"",1);
+        callNonCollectiondata(searchString, context, list, counter, ksServices, connection, "", 1);
        /* if (counter==0){
             callNonCollectiondata(searchString,context,list,counter,ksServices,connection,"",1);
 
@@ -234,7 +235,7 @@ public class SearchRepository {
     }
 
     private void callMovieCollectiondata(String searchString, Context context, List<MediaTypeModel> list, int counter, KsServices ksServices, MutableLiveData<ArrayList<SearchModel>> connection) {
-        Log.w("valuesFromList M",list.get(counter).getId()+"");
+        Log.w("valuesFromList M", list.get(counter).getId() + "");
         String tag3 = "name ~ '";
         String tag2 = "'";
 
@@ -248,14 +249,14 @@ public class SearchRepository {
             @Override
             public void configuration(boolean status) {
                 if (status) {
-                    ksServices.searchMovieKeyword(context, modifyString, list,counter, (status1, result, remarks) -> {
+                    ksServices.searchMovieKeyword(context, modifyString, list, counter, (status1, result, remarks) -> {
                         if (status1) {
 
                             if (remarks.equalsIgnoreCase(AppLevelConstants.NO_RESULT_FOUND)) {
                                 connection.postValue(new ArrayList<>());
-                            } else{
-                                callVodCollection(searchString,context,list,counter,ksServices,connection,result);
-                              //  connection.postValue(sortMediaTypeList(context, result,counter));
+                            } else {
+                                callVodCollection(searchString, context, list, counter, ksServices, connection, result);
+                                //  connection.postValue(sortMediaTypeList(context, result,counter));
                             }
                         }
                     });
@@ -267,7 +268,7 @@ public class SearchRepository {
     }
 
     private void callVodCollection(String searchString, Context context, List<MediaTypeModel> list, int counter, KsServices ksServices, MutableLiveData<ArrayList<SearchModel>> connection, ArrayList<SearchModel> results) {
-        Log.w("valuesFromList M",list.get(counter).getId()+"");
+        Log.w("valuesFromList M", list.get(counter).getId() + "");
         String tag3 = "";
         String tag2 = "(and IsSponsored='0')";
 
@@ -280,26 +281,26 @@ public class SearchRepository {
             @Override
             public void configuration(boolean status) {
                 if (status) {
-                    ksServices.searchVodCollectionKeyword(context, modifyString, list,counter, (status1, result, remarks) -> {
+                    ksServices.searchVodCollectionKeyword(context, modifyString, list, counter, (status1, result, remarks) -> {
                         if (status1) {
 
                             if (remarks.equalsIgnoreCase(AppLevelConstants.NO_RESULT_FOUND)) {
                                 connection.postValue(results);
-                            } else{
-                                List<Asset> list=results.get(0).getAllItemsInSection();
-                                List<Asset> list2=result.get(0).getAllItemsInSection();
+                            } else {
+                                List<Asset> list = results.get(0).getAllItemsInSection();
+                                List<Asset> list2 = result.get(0).getAllItemsInSection();
 
                                 list.addAll(list2);
 
                                 results.get(0).setAllItemsInSection(list);
 
-                                connection.postValue(sortMediaTypeList(context, results,counter));
+                                connection.postValue(sortMediaTypeList(context, results, counter));
                             }
 
-                        }else {
+                        } else {
                             connection.postValue(results);
                         }
-                    },searchString,"");
+                    }, searchString, "");
                 }
 
             }
@@ -307,8 +308,8 @@ public class SearchRepository {
 
     }
 
-    private void callCollectiondata(String searchString, Context context, List<MediaTypeModel> list, int counter, KsServices ksServices, MutableLiveData<ArrayList<SearchModel>> connection,String selectedGenre,int from) {
-        String searchKsql=AppCommonMethods.getSearchFieldsKsql(searchString,selectedGenre,from,context);
+    private void callCollectiondata(String searchString, Context context, List<MediaTypeModel> list, int counter, KsServices ksServices, MutableLiveData<ArrayList<SearchModel>> connection, String selectedGenre, int from) {
+        String searchKsql = AppCommonMethods.getSearchFieldsKsql(searchString, selectedGenre, from, context);
         String tag3 = "(and name ~ '";
         String tag2 = "' (and IsSponsored='1'))";
 
@@ -322,16 +323,16 @@ public class SearchRepository {
             @Override
             public void configuration(boolean status) {
                 if (status) {
-                    ksServices.searchVodCollectionKeyword(context, searchKsql, list,counter, (status1, result, remarks) -> {
+                    ksServices.searchVodCollectionKeyword(context, searchKsql, list, counter, (status1, result, remarks) -> {
                         if (status1) {
 
                             if (remarks.equalsIgnoreCase(AppLevelConstants.NO_RESULT_FOUND)) {
                                 connection.postValue(new ArrayList<>());
                             } else
-                                connection.postValue(sortMediaTypeList(context, result,counter));
+                                connection.postValue(sortMediaTypeList(context, result, counter));
 
                         }
-                    },searchString,selectedGenre);
+                    }, searchString, selectedGenre);
                 }
 
             }
@@ -339,25 +340,25 @@ public class SearchRepository {
 
     }
 
-    String searchKsql="";
-    private void callNonCollectiondata(String searchString, Context context, List<MediaTypeModel> list, int counter,KsServices ksServices,MutableLiveData<ArrayList<SearchModel>> connection,String selectedGenre,int from) {
-        Log.w("valuesFromList N",list.get(counter).getId()+"");
-        searchKsql =AppCommonMethods.getVODSearchKsql(searchString,selectedGenre,from,context);
-        if (list.get(counter).getId().contains(",")){
-            String []mediaTypes=list.get(counter).getId().split(",");
-            String one=mediaTypes[0];
-            String two=mediaTypes[1];
-            if (one.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getLinear(context))) && two.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getProgram(context)))){
-               searchKsql =AppCommonMethods.getLiveSearchKsql(searchString,selectedGenre,from,context);
-            }else {
-                searchKsql =AppCommonMethods.getVODSearchKsql(searchString,selectedGenre,from,context);
+    String searchKsql = "";
+
+    private void callNonCollectiondata(String searchString, Context context, List<MediaTypeModel> list, int counter, KsServices ksServices, MutableLiveData<ArrayList<SearchModel>> connection, String selectedGenre, int from) {
+        Log.w("valuesFromList N", list.get(counter).getId() + "");
+        searchKsql = AppCommonMethods.getVODSearchKsql(searchString, selectedGenre, from, context);
+        if (list.get(counter).getId().contains(",")) {
+            String[] mediaTypes = list.get(counter).getId().split(",");
+            String one = mediaTypes[0];
+            String two = mediaTypes[1];
+            if (one.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getLinear(context))) && two.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getProgram(context)))) {
+                searchKsql = AppCommonMethods.getLiveSearchKsql(searchString, selectedGenre, from, context);
+            } else {
+                searchKsql = AppCommonMethods.getVODSearchKsql(searchString, selectedGenre, from, context);
             }
-        }
-        else{
-            searchKsql =AppCommonMethods.getPagesSearchKsql(searchString,selectedGenre,from,context);
+        } else {
+            searchKsql = AppCommonMethods.getPagesSearchKsql(searchString, selectedGenre, from, context);
         }
 
-        Log.w("SearchKsql-->>",searchKsql);
+        Log.w("SearchKsql-->>", searchKsql);
         String tag3 = "name ~ '";
         String tag2 = "'";
 
@@ -371,24 +372,22 @@ public class SearchRepository {
             @Override
             public void configuration(boolean status) {
                 if (status) {
-                    ksServices.searchKeyword(context, searchKsql, list,counter, (status1, result, remarks) -> {
+                    ksServices.searchKeyword(context, searchKsql, list, counter, (status1, result, remarks) -> {
                         try {
                             if (status1) {
 
                                 if (remarks.equalsIgnoreCase(AppLevelConstants.NO_RESULT_FOUND)) {
                                     connection.postValue(new ArrayList<>());
-                                } else{
-                                    if (list.get(counter).getId().contains(",")){
-                                        connection.postValue(sortMediaTypeList(context, result,counter));
-                                    }else {
-                                        if (result.get(0).getAllItemsInSection()!=null && result.get(0).getAllItemsInSection().size()>0) {
+                                } else {
+                                    if (list.get(counter).getId().contains(",")) {
+                                        connection.postValue(sortMediaTypeList(context, result, counter));
+                                    } else {
+                                        if (result.get(0).getAllItemsInSection() != null && result.get(0).getAllItemsInSection().size() > 0) {
                                             Asset asset = result.get(0).getAllItemsInSection().get(0);
-                                            if (AppCommonMethods.isPages(context,asset)){
-                                                connection.postValue(sortMediaTypeList2(context, result,counter));
-                                            }else {
-                                                connection.postValue(new ArrayList<>());
-                                            }
-                                        }else{
+
+                                            connection.postValue(sortMediaTypeList2(context, result, counter));
+
+                                        } else {
                                             connection.postValue(new ArrayList<>());
                                         }
 
@@ -396,10 +395,10 @@ public class SearchRepository {
                                 }
                             }
 
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             connection.postValue(new ArrayList<>());
                         }
-                    },searchString,selectedGenre);
+                    }, searchString, selectedGenre);
                 }
 
             }
@@ -407,7 +406,7 @@ public class SearchRepository {
 
     }
 
-    public LiveData<ArrayList<SearchModel>> autoCompleteHit(String searchString, final Context context, final List<MediaTypeModel> list,int autoCompleteCounter) {
+    public LiveData<ArrayList<SearchModel>> autoCompleteHit(String searchString, final Context context, final List<MediaTypeModel> list, int autoCompleteCounter) {
         initRealm(context);
 
         String tag3 = "name ~ '";
@@ -418,8 +417,8 @@ public class SearchRepository {
         // below string will be used to search
         final String modifyString =
                 tag3 +
-                searchString +
-                tag2;
+                        searchString +
+                        tag2;
 
         final MutableLiveData<ArrayList<SearchModel>> connection = new MutableLiveData<>();
         final KsServices ksServices = new KsServices(context);
@@ -427,7 +426,7 @@ public class SearchRepository {
             @Override
             public void configuration(boolean status) {
                 if (status) {
-                    ksServices.searchKeywordAuto(autoCompleteCounter,context, modifyString, list, new SearchResultCallBack() {
+                    ksServices.searchKeywordAuto(autoCompleteCounter, context, modifyString, list, new SearchResultCallBack() {
                         @Override
                         public void response(boolean status, ArrayList<SearchModel> result, String remarks) {
                             if (status) {
@@ -444,7 +443,7 @@ public class SearchRepository {
                                 }
                             }
                         }
-                    },searchString,"");
+                    }, searchString, "");
                 }
 
             }
@@ -454,7 +453,7 @@ public class SearchRepository {
         return connection;
     }
 
-    private ArrayList<SearchModel> sortMediaTypeList2(Context context, ArrayList<SearchModel> list,int counter) {
+    private ArrayList<SearchModel> sortMediaTypeList2(Context context, ArrayList<SearchModel> list, int counter) {
         ArrayList<SearchModel> allSampleData = new ArrayList<>();
 
         //please do not break sequence
@@ -465,31 +464,27 @@ public class SearchRepository {
         SearchModel Linear = new SearchModel();
         SearchModel Program = new SearchModel();
 
-        if (list.get(0).getAllItemsInSection()!=null && list.get(0).getAllItemsInSection().size()>0){
-            Asset asset=list.get(0).getAllItemsInSection().get(0);
-            if (asset.getType()==MediaTypeConstant.getMovie(context)){
+        if (list.get(0).getAllItemsInSection() != null && list.get(0).getAllItemsInSection().size() > 0) {
+            Asset asset = list.get(0).getAllItemsInSection().get(0);
+            if (asset.getType() == MediaTypeConstant.getMovie(context)) {
                 Movie = list.get(0);
-            }else if (asset.getType()==MediaTypeConstant.getCollection(context)){
-                if (AppCommonMethods.isPages(context,asset)){
-                    Collection=list.get(0);
-                }else {
-                    Movie = list.get(0);
-                }
+            } else if (asset.getType() == MediaTypeConstant.getCollection(context)) {
+                /*   if (AppCommonMethods.isPages(context, asset)) {*/
+                Collection = list.get(0);
+               /* } else {
+                    Collection = list.get(0);
+                }*/
 
-            }
-            else if (asset.getType()==MediaTypeConstant.getSeries(context)){
+            } else if (asset.getType() == MediaTypeConstant.getSeries(context)) {
                 Episode = list.get(0);
                 Series = list.get(0);
-            }
-            else if (asset.getType()==MediaTypeConstant.getEpisode(context)){
+            } else if (asset.getType() == MediaTypeConstant.getEpisode(context)) {
                 Episode = list.get(0);
                 Series = list.get(0);
-            }
-            else if (asset.getType()==MediaTypeConstant.getLinear(context)){
+            } else if (asset.getType() == MediaTypeConstant.getLinear(context)) {
                 Linear = list.get(0);
                 Program = list.get(0);
-            }
-            else if (asset.getType()==MediaTypeConstant.getProgram(context)){
+            } else if (asset.getType() == MediaTypeConstant.getProgram(context)) {
                 Linear = list.get(0);
                 Program = list.get(0);
             }
@@ -509,7 +504,7 @@ public class SearchRepository {
         }*/
 
 
-        Log.w("valuesFromList S",list.size()+"");
+        Log.w("valuesFromList S", list.size() + "");
 /*
         for (int i = 0; i < list.size(); i++) {
 
@@ -536,33 +531,33 @@ public class SearchRepository {
             }
         }
 */
-        if (Movie.getAllItemsInSection()!=null && Movie.getAllItemsInSection().size() > 0) {
+        if (Movie.getAllItemsInSection() != null && Movie.getAllItemsInSection().size() > 0) {
             Movie.setHeaderTitle(SearchModel.SEARCH_VOD);
             allSampleData.add(Movie);
         }
 
-        if (Series.getAllItemsInSection()!=null && Series.getAllItemsInSection().size() > 0) {
+        if (Series.getAllItemsInSection() != null && Series.getAllItemsInSection().size() > 0) {
             Series.setHeaderTitle(SearchModel.SEARCH_TV_SHOWS);
             allSampleData.add(Series);
         }
 
 
-        if (Episode.getAllItemsInSection()!=null && Episode.getAllItemsInSection().size() > 0) {
+        if (Episode.getAllItemsInSection() != null && Episode.getAllItemsInSection().size() > 0) {
             Episode.setHeaderTitle(SearchModel.SEARCH_TV_SHOWS);
             allSampleData.add(Episode);
         }
 
-        if (Collection.getAllItemsInSection()!=null && Collection.getAllItemsInSection().size() > 0) {
+        if (Collection.getAllItemsInSection() != null && Collection.getAllItemsInSection().size() > 0) {
             Collection.setHeaderTitle(SearchModel.SEARCH_PAGE);
             allSampleData.add(Collection);
         }
 
-        if (Linear.getAllItemsInSection()!=null && Linear.getAllItemsInSection().size() > 0) {
+        if (Linear.getAllItemsInSection() != null && Linear.getAllItemsInSection().size() > 0) {
             Linear.setHeaderTitle(SearchModel.SEARCH_LIVE);
             allSampleData.add(Linear);
         }
 
-        if (Program.getAllItemsInSection()!=null && Program.getAllItemsInSection().size() > 0) {
+        if (Program.getAllItemsInSection() != null && Program.getAllItemsInSection().size() > 0) {
             Linear.setHeaderTitle(SearchModel.SEARCH_LIVE);
             allSampleData.add(Linear);
         }
@@ -572,7 +567,7 @@ public class SearchRepository {
     }
 
 
-    private ArrayList<SearchModel> sortMediaTypeList(Context context, ArrayList<SearchModel> list,int counter) {
+    private ArrayList<SearchModel> sortMediaTypeList(Context context, ArrayList<SearchModel> list, int counter) {
         ArrayList<SearchModel> allSampleData = new ArrayList<>();
 
         //please do not break sequence
@@ -583,31 +578,27 @@ public class SearchRepository {
         SearchModel Linear = new SearchModel();
         SearchModel Program = new SearchModel();
 
-        if (list.get(0).getAllItemsInSection()!=null && list.get(0).getAllItemsInSection().size()>0){
-            Asset asset=list.get(0).getAllItemsInSection().get(0);
-            if (asset.getType()==MediaTypeConstant.getMovie(context)){
+        if (list.get(0).getAllItemsInSection() != null && list.get(0).getAllItemsInSection().size() > 0) {
+            Asset asset = list.get(0).getAllItemsInSection().get(0);
+            if (asset.getType() == MediaTypeConstant.getMovie(context)) {
                 Movie = list.get(0);
-            }else if (asset.getType()==MediaTypeConstant.getCollection(context)){
-                if (AppCommonMethods.isPages(context,asset)){
-                    Collection=list.get(0);
-                }else {
+            } else if (asset.getType() == MediaTypeConstant.getCollection(context)) {
+                if (AppCommonMethods.isPages(context, asset)) {
+                    Collection = list.get(0);
+                } else {
                     Movie = list.get(0);
                 }
 
-            }
-            else if (asset.getType()==MediaTypeConstant.getSeries(context)){
+            } else if (asset.getType() == MediaTypeConstant.getSeries(context)) {
                 Episode = list.get(0);
                 Series = list.get(0);
-            }
-            else if (asset.getType()==MediaTypeConstant.getEpisode(context)){
+            } else if (asset.getType() == MediaTypeConstant.getEpisode(context)) {
                 Episode = list.get(0);
                 Series = list.get(0);
-            }
-            else if (asset.getType()==MediaTypeConstant.getLinear(context)){
+            } else if (asset.getType() == MediaTypeConstant.getLinear(context)) {
                 Linear = list.get(0);
                 Program = list.get(0);
-            }
-            else if (asset.getType()==MediaTypeConstant.getProgram(context)){
+            } else if (asset.getType() == MediaTypeConstant.getProgram(context)) {
                 Linear = list.get(0);
                 Program = list.get(0);
             }
@@ -627,7 +618,7 @@ public class SearchRepository {
         }*/
 
 
-        Log.w("valuesFromList S",list.size()+"");
+        Log.w("valuesFromList S", list.size() + "");
 /*
         for (int i = 0; i < list.size(); i++) {
 
@@ -654,33 +645,33 @@ public class SearchRepository {
             }
         }
 */
-        if (Movie.getAllItemsInSection()!=null && Movie.getAllItemsInSection().size() > 0) {
+        if (Movie.getAllItemsInSection() != null && Movie.getAllItemsInSection().size() > 0) {
             Movie.setHeaderTitle(SearchModel.SEARCH_VOD);
             allSampleData.add(Movie);
         }
 
-        if (Series.getAllItemsInSection()!=null && Series.getAllItemsInSection().size() > 0) {
+        if (Series.getAllItemsInSection() != null && Series.getAllItemsInSection().size() > 0) {
             Series.setHeaderTitle(SearchModel.SEARCH_TV_SHOWS);
             allSampleData.add(Series);
         }
 
 
-        if (Episode.getAllItemsInSection()!=null && Episode.getAllItemsInSection().size() > 0) {
+        if (Episode.getAllItemsInSection() != null && Episode.getAllItemsInSection().size() > 0) {
             Episode.setHeaderTitle(SearchModel.SEARCH_TV_SHOWS);
             allSampleData.add(Episode);
         }
 
-        if (Collection.getAllItemsInSection()!=null && Collection.getAllItemsInSection().size() > 0) {
+        if (Collection.getAllItemsInSection() != null && Collection.getAllItemsInSection().size() > 0) {
             Collection.setHeaderTitle(SearchModel.SEARCH_PAGE);
             allSampleData.add(Collection);
         }
 
-        if (Linear.getAllItemsInSection()!=null && Linear.getAllItemsInSection().size() > 0) {
+        if (Linear.getAllItemsInSection() != null && Linear.getAllItemsInSection().size() > 0) {
             Linear.setHeaderTitle(SearchModel.SEARCH_LIVE);
             allSampleData.add(Linear);
         }
 
-        if (Program.getAllItemsInSection()!=null && Program.getAllItemsInSection().size() > 0) {
+        if (Program.getAllItemsInSection() != null && Program.getAllItemsInSection().size() > 0) {
             Linear.setHeaderTitle(SearchModel.SEARCH_LIVE);
             allSampleData.add(Linear);
         }
@@ -690,22 +681,22 @@ public class SearchRepository {
     }
 
 
-    public LiveData<ArrayList<SearchModel>> hitQuickSearchAPI(String searchString, final Context context, final List<MediaTypeModel> list, int counter,String selectedGenre,int from,int beginFrom) {
+    public LiveData<ArrayList<SearchModel>> hitQuickSearchAPI(String searchString, final Context context, final List<MediaTypeModel> list, int counter, String selectedGenre, int from, int beginFrom) {
         initRealm(context);
-        if (searchString!=null && !searchString.equalsIgnoreCase("")){
+        if (searchString != null && !searchString.equalsIgnoreCase("")) {
             matchingKeyword(searchString);
         }
         //Log.w("valuesFromList",list.get(counter).getId()+"");
         final MutableLiveData<ArrayList<SearchModel>> connection = new MutableLiveData<>();
         final KsServices ksServices = new KsServices(context);
-        if (counter==0){
-            callNonCollectiondata(searchString,context,list,counter,ksServices,connection,selectedGenre,from);
+        if (counter == 0) {
+            callNonCollectiondata(searchString, context, list, counter, ksServices, connection, selectedGenre, from);
             // callMovieCollectiondata(searchString,context,list,counter,ksServices,connection);
-        }else if (counter==3){
+        } else if (counter == 3) {
             // callNonCollectiondata(searchString,context,list,counter,ksServices,connection);
-            callCollectiondata(searchString,context,list,counter,ksServices,connection,selectedGenre,from);
-        }else {
-            callNonCollectiondata(searchString,context,list,counter,ksServices,connection,selectedGenre,from);
+            callCollectiondata(searchString, context, list, counter, ksServices, connection, selectedGenre, from);
+        } else {
+            callNonCollectiondata(searchString, context, list, counter, ksServices, connection, selectedGenre, from);
         }
       /*  if (list.get(counter).getId().contains(",")){
             if (counter==0){
@@ -731,10 +722,10 @@ public class SearchRepository {
         AppCommonMethods.checkDMS(context, status -> {
             if (status) {
 
-                ksServices.recentSearchKaltura(context,searchedKeywords1 -> {
-                    if (searchedKeywords1.size()>0){
+                ksServices.recentSearchKaltura(context, searchedKeywords1 -> {
+                    if (searchedKeywords1.size() > 0) {
                         connection.postValue(searchedKeywords1);
-                    }else {
+                    } else {
                         connection.postValue(searchedKeywords1);
                     }
                 });

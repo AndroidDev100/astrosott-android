@@ -2664,11 +2664,11 @@ public class AppCommonMethods {
             }
         }
 
-        if (StringBuilderHolder.getInstance().getText().toString() != null && !StringBuilderHolder.getInstance().getText().toString().equalsIgnoreCase("") && StringBuilderHolder.getInstance().getText().toString().contains("(and")) {
+       /* if (StringBuilderHolder.getInstance().getText().toString() != null && !StringBuilderHolder.getInstance().getText().toString().equalsIgnoreCase("") && StringBuilderHolder.getInstance().getText().toString().contains("(and")) {
             StringBuilderHolder.getInstance().append(" IsSponsored='1' ");
         } else {
             StringBuilderHolder.getInstance().append("(and IsSponsored='1' ");
-        }
+        }*/
 
         StringBuilderHolder.getInstance().append("(or name~'");
         StringBuilderHolder.getInstance().append(searchString);

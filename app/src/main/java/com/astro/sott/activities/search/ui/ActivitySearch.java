@@ -417,7 +417,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     private void setMediaType(int contentTypeFilter) {
         mediaList = new ArrayList<>();
         if (contentTypeFilter == 1) {
-            mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_MOVIE, String.valueOf(MediaTypeConstant.getMovie(ActivitySearch.this)) + "," + String.valueOf(MediaTypeConstant.getCollection(ActivitySearch.this))));
+            mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_MOVIE, String.valueOf(MediaTypeConstant.getMovie(ActivitySearch.this))));
             mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SERIES, String.valueOf(MediaTypeConstant.getSeries(ActivitySearch.this)) + "," + String.valueOf(MediaTypeConstant.getEpisode(ActivitySearch.this))));
             // mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_EPISODE, ""));
             mediaList.add(new MediaTypeModel(AppLevelConstants.MEDIATYPE_SEARCH_LINEAR, String.valueOf(MediaTypeConstant.getLinear(ActivitySearch.this)) + "," + String.valueOf(MediaTypeConstant.getProgram(ActivitySearch.this))));
