@@ -191,7 +191,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         try {
             String installer = context.getPackageManager()
                     .getInstallerPackageName(context.getPackageName());
-            result = !TextUtils.isEmpty(installer);
+            result = !TextUtils.isEmpty(installer) && installer.equalsIgnoreCase("com.android.vending");
         } catch (Throwable e) {
         }
         Toast.makeText(context, result + "", Toast.LENGTH_SHORT).show();

@@ -1055,8 +1055,8 @@ public class PlayerRepository {
 
 
             playerPluginConfig.setPluginConfig(PhoenixAnalyticsPlugin.factory.getName(), phoenixPluginConfig.toJson());
-            if (AppCommonMethods.isAdsEnable && !isLivePlayer) {
-                if (!AssetContent.isAdsEnable(asset.getMetas())) {
+            if (AppCommonMethods.isAdsEnable) {
+                if (true) {
                     getAdsContextApi(asset, playerMutableLiveData, mediaConfig);
                 } else {
                     preparePlayer(playerPluginConfig, playerMutableLiveData, mediaConfig);
@@ -1115,7 +1115,7 @@ public class PlayerRepository {
         String fileId = AppCommonMethods.getFileIdOfAssest(asset);
 
         new KsServices(context).getAdsContext(assetId, fileId, policy -> {
-            if (policy.equalsIgnoreCase(AppLevelConstants.KEEP_ADS)) {
+            if (true) {
                 addIMAConfig(context, playerPluginConfig, asset);
                 preparePlayer(playerPluginConfig, playerMutableLiveData, mediaConfig);
             } else {
@@ -1211,8 +1211,14 @@ public class PlayerRepository {
         //   String imaVastTag = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=";
         String imaVastTag = "";
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAdTagURL() != null && responseDmsModel.getParams().getAdTagURL().getURL() != null) {
-            imaVastTag = AppCommonMethods.getAdsUrl(responseDmsModel.getParams().getAdTagURL().getURL(), asset, context);
+        if (isLivePlayer) {
+            if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAdTagURL() != null && responseDmsModel.getParams().getAdTagURL().getURL() != null) {
+                imaVastTag = AppCommonMethods.getAdsUrl(responseDmsModel.getParams().getAdTagURL().getURL(), asset, context);
+            }
+        } else {
+            if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAdTagURL() != null && responseDmsModel.getParams().getAdTagURL().getURL() != null) {
+                imaVastTag = AppCommonMethods.getAdsUrl(responseDmsModel.getParams().getAdTagURL().getURL(), asset, context);
+            }
         }
         //+responseDmsModel.getParams().getAdTagURL().getURL()
 
