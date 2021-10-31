@@ -36,7 +36,7 @@ public class SearchModel implements Parcelable {
     public static final String SEARCH_VOD = "VOD";
     public static final String SEARCH_TV_SHOWS = "TV Shows";
     public static final String SEARCH_LIVE = "Live TV";
-    public static final String SEARCH_PAGE = "Pages";
+    public static final String SEARCH_PAGE = "Collections";
 
     public String getSearchString() {
         return searchString;

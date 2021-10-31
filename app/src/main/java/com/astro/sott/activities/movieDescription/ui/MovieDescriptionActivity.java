@@ -454,6 +454,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 if (apiStatus) {
                     if (purchasedStatus) {
                         runOnUiThread(() -> {
+                            getBinding().btnProgressBar.setVisibility(View.GONE);
                             if (playbackControlValue) {
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                 if (watchPosition > 0) {
@@ -491,13 +492,13 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                             });
                             this.vodType = EntitlementCheck.SVOD;
 
-                    } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
-                        runOnUiThread(() -> {
-                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                            checkBuyTextButtonCondition(fileId);
-                            getBinding().starIcon.setVisibility(View.GONE);
-                            becomeVipButtonCLicked = false;
-                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                        } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
+                            runOnUiThread(() -> {
+                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                checkBuyTextButtonCondition(fileId);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                becomeVipButtonCLicked = false;
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
 
                             });
@@ -512,6 +513,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
                 }
             });
+        } else {
+            getBinding().btnProgressBar.setVisibility(View.GONE);
         }
 
        /* new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
@@ -545,10 +548,11 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
     private void checkBuyTextButtonCondition(String fileId) {
         BuyButtonManager.getInstance().getPackages(this, "", fileId, true, (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
+            getBinding().btnProgressBar.setVisibility(View.GONE);
             PacksDateLayer.getInstance().setPackDetailList(packDetailList);
             this.subscriptionIds = subscriptionIds;
             if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
-                getBinding().playText.setText(getResources().getString(R.string.buy_from) +" "+ lowestPackagePrice);
+                getBinding().playText.setText(getResources().getString(R.string.buy_from) + " " + lowestPackagePrice);
                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
             } else if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD)) {
                 getBinding().playText.setText(getResources().getString(R.string.become_vip));

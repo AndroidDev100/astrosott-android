@@ -507,6 +507,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 if (apiStatus) {
                     if (purchasedStatus) {
                         runOnUiThread(() -> {
+                            getBinding().btnProgressBar.setVisibility(View.GONE);
                             if (playbackControlValue) {
                                 getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                 getBinding().playText.setText(getResources().getString(R.string.watch_now));
@@ -579,6 +580,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
                 }
             });
+        } else {
+            getBinding().btnProgressBar.setVisibility(View.GONE);
         }
 
     }
@@ -586,9 +589,10 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private void checkBuyTextButtonCondition(String fileId) {
         BuyButtonManager.getInstance().getPackages(this, "", fileId, true, (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
             PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+            getBinding().btnProgressBar.setVisibility(View.GONE);
             this.subscriptionIds = subscriptionIds;
             if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
-                getBinding().playText.setText(getResources().getString(R.string.buy_from) +" "+ lowestPackagePrice);
+                getBinding().playText.setText(getResources().getString(R.string.buy_from) + " " + lowestPackagePrice);
                 getBinding().vipButtonLive.setVisibility(View.VISIBLE);
             } else if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD)) {
                 getBinding().playText.setText(getResources().getString(R.string.become_vip));

@@ -1374,6 +1374,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 if (apiStatus) {
                     if (purchasedStatus) {
                         runOnUiThread(() -> {
+                            getBinding().btnProgressBar.setVisibility(View.GONE);
                             if (playbackControlValue) {
                                 getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                 if (watchPosition > 0) {
@@ -1428,6 +1429,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
                 }
             });
+        } else {
+            getBinding().btnProgressBar.setVisibility(View.GONE);
         }
         /* new EntitlementCheck().checkAssetType(WebSeriesDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
             if (status) {
@@ -1466,6 +1469,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void checkBuyTextButtonCondition(String fileId) {
         BuyButtonManager.getInstance().getPackages(this, "", fileId, true, (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
+            getBinding().btnProgressBar.setVisibility(View.GONE);
             PacksDateLayer.getInstance().setPackDetailList(packDetailList);
             this.subscriptionIds = subscriptionIds;
             if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {

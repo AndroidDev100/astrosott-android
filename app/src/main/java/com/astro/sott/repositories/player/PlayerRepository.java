@@ -1056,7 +1056,7 @@ public class PlayerRepository {
 
             playerPluginConfig.setPluginConfig(PhoenixAnalyticsPlugin.factory.getName(), phoenixPluginConfig.toJson());
             if (AppCommonMethods.isAdsEnable) {
-                if (true) {
+                if (!AssetContent.isAdsEnable(asset.getMetas())) {
                     getAdsContextApi(asset, playerMutableLiveData, mediaConfig);
                 } else {
                     preparePlayer(playerPluginConfig, playerMutableLiveData, mediaConfig);
@@ -1115,7 +1115,7 @@ public class PlayerRepository {
         String fileId = AppCommonMethods.getFileIdOfAssest(asset);
 
         new KsServices(context).getAdsContext(assetId, fileId, policy -> {
-            if (true) {
+            if (policy.equalsIgnoreCase(AppLevelConstants.KEEP_ADS)) {
                 addIMAConfig(context, playerPluginConfig, asset);
                 preparePlayer(playerPluginConfig, playerMutableLiveData, mediaConfig);
             } else {
@@ -1212,8 +1212,8 @@ public class PlayerRepository {
         String imaVastTag = "";
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
         if (isLivePlayer) {
-            if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAdTagURL() != null && responseDmsModel.getParams().getAdTagURL().getURL() != null) {
-                imaVastTag = AppCommonMethods.getAdsUrl(responseDmsModel.getParams().getAdTagURL().getURL(), asset, context);
+            if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getLinearAdTagURL() != null && responseDmsModel.getParams().getLinearAdTagURL().getURL() != null) {
+                imaVastTag = AppCommonMethods.getAdsUrl(responseDmsModel.getParams().getLinearAdTagURL().getURL(), asset, context);
             }
         } else {
             if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAdTagURL() != null && responseDmsModel.getParams().getAdTagURL().getURL() != null) {

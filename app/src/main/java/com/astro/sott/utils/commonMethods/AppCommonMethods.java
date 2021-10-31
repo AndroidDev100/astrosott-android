@@ -2334,6 +2334,8 @@ public class AppCommonMethods {
                             if (sponsored.getValue() != null) {
                                 if (!sponsored.getValue()) {
                                     sortedList.add(results);
+                                }else {
+                                    sortedList.add(results);
                                 }
                             } else {
                                 sortedList.add(results);
@@ -2357,6 +2359,8 @@ public class AppCommonMethods {
                                     if (sponsored.getValue() != null) {
                                         if (!sponsored.getValue()) {
                                             sortedList.add(results);
+                                        }else {
+                                            sortedList.add(results);
                                         }
                                     } else {
                                         sortedList.add(results);
@@ -2374,6 +2378,8 @@ public class AppCommonMethods {
                             if (sponsored != null) {
                                 if (sponsored.getValue() != null) {
                                     if (!sponsored.getValue()) {
+                                        sortedList.add(results);
+                                    }else {
                                         sortedList.add(results);
                                     }
                                 } else {
@@ -2397,6 +2403,8 @@ public class AppCommonMethods {
                                     if (sponsored.getValue() != null) {
                                         if (!sponsored.getValue()) {
                                             sortedList.add(results);
+                                        }else {
+                                            sortedList.add(results);
                                         }
                                     } else {
                                         sortedList.add(results);
@@ -2416,6 +2424,8 @@ public class AppCommonMethods {
                     if (sponsored != null) {
                         if (sponsored.getValue() != null) {
                             if (!sponsored.getValue()) {
+                                sortedList.add(results);
+                            }else {
                                 sortedList.add(results);
                             }
                         } else {
@@ -2672,13 +2682,13 @@ public class AppCommonMethods {
 
         StringBuilderHolder.getInstance().append("(or name~'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
-
+       /* StringBuilderHolder.getInstance().append("'");
+*/
       /*  StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");*/
 
-        StringBuilderHolder.getInstance().append("director~'");
+       /* StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
@@ -2687,7 +2697,7 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append("'");
 
         StringBuilderHolder.getInstance().append("Actors~'");
-        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append(searchString);*/
         if (StringBuilderHolder.getInstance().getText().toString().contains("(and")) {
             StringBuilderHolder.getInstance().append("'))");
         } else {

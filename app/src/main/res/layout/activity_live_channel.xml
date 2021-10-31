@@ -72,8 +72,8 @@
 
                             <ImageView
                                 android:layout_width="match_parent"
-                                android:background="@drawable/ic_shadow"
-                                android:layout_height="match_parent"></ImageView>
+                                android:layout_height="match_parent"
+                                android:background="@drawable/ic_shadow"></ImageView>
 
                             <ImageView
                                 android:id="@+id/astro_play_button"
@@ -146,6 +146,16 @@
 
                 </RelativeLayout>
 
+                <ProgressBar
+                    android:id="@+id/btn_progress_bar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:elevation="5dp"
+                    android:theme="@style/progressBarBlue"
+                    android:visibility="visible" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -188,8 +198,7 @@
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                       >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/metas"
@@ -234,9 +243,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="34dp"
-                        android:layout_marginStart="@dimen/_10sdp"
                         android:orientation="vertical"
                         app:el_expanded="false"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -248,30 +257,30 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-<!--                            <LinearLayout-->
-<!--                                android:id="@+id/duration_lay"-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top"-->
-<!--                                android:visibility="gone">-->
+                            <!--                            <LinearLayout-->
+                            <!--                                android:id="@+id/duration_lay"-->
+                            <!--                                android:layout_width="match_parent"-->
+                            <!--                                android:layout_height="wrap_content"-->
+                            <!--                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top"-->
+                            <!--                                android:visibility="gone">-->
 
-<!--                                <TextView-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:fontFamily="@font/roboto_bold"-->
-<!--                                    android:text="@string/duration"-->
+                            <!--                                <TextView-->
+                            <!--                                    android:layout_width="wrap_content"-->
+                            <!--                                    android:layout_height="wrap_content"-->
+                            <!--                                    android:fontFamily="@font/roboto_bold"-->
+                            <!--                                    android:text="@string/duration"-->
 
-<!--                                    android:textColor="@color/white"-->
-<!--                                    android:textSize="@dimen/font_medium" />-->
+                            <!--                                    android:textColor="@color/white"-->
+                            <!--                                    android:textSize="@dimen/font_medium" />-->
 
-<!--                                <TextView-->
-<!--                                    android:id="@+id/duration_text"-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:fontFamily="@font/roboto_regular"-->
-<!--                                    android:textColor="@color/white"-->
-<!--                                    android:textSize="@dimen/font_medium" />-->
-<!--                            </LinearLayout>-->
+                            <!--                                <TextView-->
+                            <!--                                    android:id="@+id/duration_text"-->
+                            <!--                                    android:layout_width="wrap_content"-->
+                            <!--                                    android:layout_height="wrap_content"-->
+                            <!--                                    android:fontFamily="@font/roboto_regular"-->
+                            <!--                                    android:textColor="@color/white"-->
+                            <!--                                    android:textSize="@dimen/font_medium" />-->
+                            <!--                            </LinearLayout>-->
 
                             <LinearLayout
                                 android:id="@+id/subtitle_lay"
@@ -387,10 +396,10 @@
                         android:layout_marginTop="10dp"
                         android:background="@drawable/tab_bg"
                         android:visibility="gone"
-                        app:tabGravity="fill"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:tabBackground="@color/transparentColor"
+                        app:tabGravity="fill"
                         app:tabIndicator="@color/transparentColor"
                         app:tabSelectedTextColor="@color/white"
                         app:tabTextAppearance="@style/MineCustomTabText"

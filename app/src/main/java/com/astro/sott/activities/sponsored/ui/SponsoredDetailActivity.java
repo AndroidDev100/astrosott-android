@@ -142,6 +142,8 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
     private void getDataFromBack(RailCommonData commonRailData, int layout) {
         railData = commonRailData;
         asset = railData.getObject();
+        if (asset.getName() != null)
+            FirebaseEventManager.getFirebaseInstance(SponsoredDetailActivity.this).trackScreenName(asset.getName());
         layoutType = layout;
         assetId = asset.getId();
         name = asset.getName();
@@ -278,6 +280,7 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
 
 
     }
+
     private void isWatchlistedOrNot() {
         viewModel.listAllwatchList(assetId + "").observe(this, commonResponse -> {
             if (commonResponse.getStatus()) {
@@ -568,6 +571,12 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
+            try {
+                CleverTapManager.getInstance().socialShare(this, asset, false);
+                FirebaseEventManager.getFirebaseInstance(this).shareEvent(asset, this);
+            } catch (Exception e) {
+
+            }
             openShareDialouge();
         });
         setWatchlist();
@@ -575,6 +584,7 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
         // setRailFragment();
         setRailBaseFragment();
     }
+
     private void setWatchlist() {
         getBinding().watchList.setOnClickListener(view -> {
             if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
@@ -599,6 +609,7 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
         });
 
     }
+
     private void addToWatchlist(String title) {
 
         if (UserInfo.getInstance(this).isActive()) {
@@ -610,6 +621,7 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
             });
         }
     }
+
     private void checkAddedCondition(CommonResponse s) {
         if (s.getStatus()) {
             Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist), Toast.LENGTH_SHORT).show();
@@ -689,7 +701,7 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
                 getBinding().tabLayout.setLayoutParams(params);
             }
 
-            SponsoredPagerAdapter detailPagerAdapter = new SponsoredPagerAdapter(getSupportFragmentManager(),  sponsoredTabDataList);
+            SponsoredPagerAdapter detailPagerAdapter = new SponsoredPagerAdapter(getSupportFragmentManager(), sponsoredTabDataList);
             getBinding().pager.setAdapter(detailPagerAdapter);
             getBinding().pager.disableScroll(true);
 

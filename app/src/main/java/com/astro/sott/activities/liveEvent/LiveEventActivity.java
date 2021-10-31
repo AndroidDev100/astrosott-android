@@ -690,6 +690,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     if (apiStatus) {
                         if (purchasedStatus) {
                             runOnUiThread(() -> {
+                                getBinding().btnProgressBar.setVisibility(View.GONE);
                                 if (playbackControlValue) {
                                     getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                     getBinding().playText.setTextColor(getResources().getColor(R.color.black));
@@ -768,6 +769,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
                     }
                 });
+            }else {
+               getBinding().btnProgressBar.setVisibility(View.GONE);
             }
         } else {
             fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
@@ -777,6 +780,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     if (apiStatus) {
                         if (purchasedStatus) {
                             runOnUiThread(() -> {
+                                getBinding().btnProgressBar.setVisibility(View.GONE);
                                 if (playbackControlValue) {
                                     getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.live_event_button));
                                     getBinding().playText.setTextColor(getResources().getColor(R.color.heather));
@@ -853,6 +857,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
                     }
                 });
+            }else {
+              getBinding().btnProgressBar.setVisibility(View.GONE);
             }
         }
 
@@ -860,6 +866,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
     private void checkBuyTextButtonCondition(String fileId) {
         BuyButtonManager.getInstance().getPackages(this, AppLevelConstants.LIVE_EVENT, fileId, isPlayableOrNot(), (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
+            getBinding().btnProgressBar.setVisibility(View.GONE);
             PacksDateLayer.getInstance().setPackDetailList(packDetailList);
             this.subscriptionIds = subscriptionIds;
             if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
