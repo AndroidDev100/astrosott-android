@@ -248,7 +248,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
             if (inAppProcessListener != null) {
                 inAppProcessListener.onPurchasesUpdated(billingResult, purchases);
 
-                try {
+              /*  try {
                     if (purchaseType != null && !purchaseType.equalsIgnoreCase("") && purchaseType.equalsIgnoreCase(PurchaseType.SUBSCRIPTION.name())) {
                         if (myBillingClient != null && myBillingClient.isReady()) {
                             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
@@ -265,7 +265,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                     }
                 } catch (Exception e) {
 
-                }
+                }*/
 
             }
             //  processPurchases(purchases);
@@ -853,7 +853,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                             JSONObject jsonObject = new JSONObject(purchaseItem.getOriginalJson());
                             Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
                             if (!isAcknowledged) {
-                                acknowledgeNonConsumablePurchases(purchaseItem);
+                                inAppProcessListener.onAcknowledged(purchaseItem.getSku(), purchaseItem.getPurchaseToken(), purchaseItem.getOrderId());
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -886,7 +886,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                     JSONObject jsonObject = new JSONObject(purchaseProductItem.getOriginalJson());
                     Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
                     if (!isAcknowledged) {
-                        acknowledgeNonConsumablePurchases(purchaseProductItem);
+                        inAppProcessListener.onAcknowledged(purchaseProductItem.getSku(), purchaseProductItem.getPurchaseToken(), purchaseProductItem.getOrderId());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

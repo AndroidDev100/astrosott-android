@@ -8,7 +8,10 @@
 
     <string name="no_internet_title">You are offline. Check your internet connection</string>
     <string name="no_internet">Your network seems too slow to reach \n our server</string>
-
+    <string name="payment_progress">Payment in Progress</string>
+    <string name="already_purchase">You Already Purchased This Offer</string>
+    <string name="payment_progress_desc">You currently have a pending transaction. You may retry later after the pending transaction is completed.</string>
+   <string name="already_purchase_desc">Try to refresh the screen or reopen the app to reflect your purchases. Please contact us if issue persist.</string>
     <string name="save_video_to">Save video to...</string>
     <string name="new_playlist">New Playlist</string>
     <string name="done">Done</string>

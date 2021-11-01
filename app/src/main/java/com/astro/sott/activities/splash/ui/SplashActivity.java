@@ -1067,8 +1067,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         }
 
 
-        isStoreVersion(this);
-
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName("Splash Screen");
 
         Bundle bundle = getIntent().getExtras();

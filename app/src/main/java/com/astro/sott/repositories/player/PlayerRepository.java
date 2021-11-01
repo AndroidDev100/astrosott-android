@@ -1213,7 +1213,7 @@ public class PlayerRepository {
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
         if (isLivePlayer) {
             if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getLinearAdTagURL() != null && responseDmsModel.getParams().getLinearAdTagURL().getURL() != null) {
-                imaVastTag = AppCommonMethods.getAdsUrl(responseDmsModel.getParams().getLinearAdTagURL().getURL(), asset, context);
+                imaVastTag = responseDmsModel.getParams().getLinearAdTagURL().getURL();
             }
         } else {
             if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAdTagURL() != null && responseDmsModel.getParams().getAdTagURL().getURL() != null) {

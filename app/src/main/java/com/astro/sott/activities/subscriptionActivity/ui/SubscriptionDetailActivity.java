@@ -26,6 +26,7 @@ import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
+import com.astro.sott.fragments.dialog.CommonDialogFragment;
 import com.astro.sott.fragments.dialog.MaxisEditRestrictionPop;
 import com.astro.sott.fragments.manageSubscription.ui.ManageSubscriptionFragment;
 import com.astro.sott.fragments.manageSubscription.ui.PlanNotUpdated;
@@ -56,7 +57,7 @@ import com.kaltura.client.types.Subscription;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubscriptionDetailBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener, MaxisEditRestrictionPop.EditDialogListener, PlanNotUpdated.PlanUpdatedListener {
+public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubscriptionDetailBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener, MaxisEditRestrictionPop.EditDialogListener, PlanNotUpdated.PlanUpdatedListener, CommonDialogFragment.EditDialogListener {
     private BillingProcessor billingProcessor;
     private SubscriptionViewModel subscriptionViewModel;
     private SkuDetails skuDetails;
@@ -561,6 +562,10 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                             AppCommonMethods.removeUserPrerences(this);
                         }
                     });
+                } else if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2428")) {
+                    commonDialog(getResources().getString(R.string.payment_progress), getResources().getString(R.string.payment_progress_desc), getResources().getString(R.string.ok));
+                } else if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase("ev1144")) {
+                    commonDialog(getResources().getString(R.string.already_purchase), getResources().getString(R.string.already_purchase_desc), getResources().getString(R.string.ok));
                 } else {
                     Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                     onBackPressed();
@@ -570,6 +575,12 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     }
 
+    private void commonDialog(String tiltle, String description, String actionBtn) {
+        FragmentManager fm = getSupportFragmentManager();
+        CommonDialogFragment commonDialogFragment = CommonDialogFragment.newInstance(tiltle, description, actionBtn);
+        commonDialogFragment.setEditDialogCallBack(this);
+        commonDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+    }
 
     @Override
     public void onListOfSKUFetched(@Nullable List<SkuDetails> purchases) {
@@ -646,5 +657,10 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     @Override
     public void onPlanUpdated() {
         onBackPressed();
+    }
+
+    @Override
+    public void onActionBtnClicked() {
+
     }
 }
