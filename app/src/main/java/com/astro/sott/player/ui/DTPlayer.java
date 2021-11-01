@@ -20,6 +20,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Color;
 import android.graphics.Insets;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.display.DisplayManager;
 import android.media.AudioManager;
@@ -32,6 +33,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -70,6 +72,7 @@ import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewM
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.DoubleClick;
+import com.astro.sott.callBacks.DragListner;
 import com.astro.sott.callBacks.WindowFocusCallback;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
 import com.astro.sott.callBacks.kalturaCallBacks.PlayBackContextCallBack;
@@ -93,6 +96,7 @@ import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.Network;
 import com.astro.sott.utils.helpers.NetworkChangeReceiver;
+import com.astro.sott.utils.helpers.SwipeGestureListener;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
@@ -252,6 +256,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private String scrubberUrl = "";
     ObjectAnimator objectAnimator;
     private boolean isPlayerSurfaceClicked = false;
+    private boolean intLeft, intRight;
+    private int sWidth, sHeight;
+    private long diffX, diffY;
+    private Display display;
+    private Point size;
+    private float downX, downY;
+    int currBrightness;
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -366,6 +377,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private int assetRuleErrorCode = -1;
     private boolean isDialogOpen = false;
     private MediaAsset mediaAsset;
+    private float initialX;
+    private float initialY;
+    private float old;
+    private float currentX;
+    private float currentY;
+    private int condition;
+    private int condition2;
 
 
     @Override
@@ -485,6 +503,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         if (mDisplayManager != null) {
             isHDMI(mDisplayManager);
         }
+
+        getScreenSize();
 
     }
 
@@ -2742,6 +2762,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().seekBar.setMax(100);
 
         getBinding().brightnessSeek.seekBar1.setProgress(50);
+        getBinding().brightnessSeek.seekBar1.setMax(100);
+        //getBinding().brightnessSeek.seekBar1.setKeyProgressIncrement(1);
+         currBrightness = Settings.System.getInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS,0);
+
+
         getBinding().brightnessSeek.seekBar1.setOnSeekBarChangeListener(this);
 
         getBinding().seekBar.setOnSeekBarChangeListener(this);
@@ -2761,6 +2786,28 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //            ShowAndHideView();
 //
 //        });
+        gestureDetector = new GestureDetector(getActivity(), new SwipeGestureListener(bottomSheetBehavior, new DragListner() {
+            @Override
+            public void dragging(String name) {
+                if (name.equalsIgnoreCase("up")) {
+                    drag = true;
+//                    timeHandler.removeCallbacks(myRunnable);
+//                    getBinding().seekBar.setVisibility(View.GONE);
+//                    getBinding().rlUp.setVisibility(View.GONE);
+//                    getBinding().playerMediaControls.setVisibility(View.GONE);
+//                    getBinding().currentTime.setVisibility(View.GONE);
+//                    getBinding().totalDuration.setVisibility(View.GONE);
+//                    getBinding().goLive.setVisibility(View.GONE);
+//                    getBinding().lockImg.setVisibility(View.GONE);
+//                    getBinding().arrowBack.setVisibility(View.GONE);
+//                    getBinding().arrowForward.setVisibility(View.GONE);
+//                    getBinding().playCatchup.setVisibility(View.INVISIBLE);
+                } else if (name.equalsIgnoreCase("down")) {
+                    Log.d("ElseCalled", "True");
+                    drag = false;
+                }
+            }
+        }));
 
 
         getBinding().playericon.setOnClickListener(view -> {
@@ -2857,15 +2904,24 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             @Override
             public void onDoubleClick(View view) {
-                if (lockEnable) {
-//                    if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
-//                        getBinding().lockIcon.setVisibility(View.GONE);
-//                    } else {
-//                        getBinding().lockIcon.setVisibility(View.VISIBLE);
-//                    }
-                } else {
-                    viewModel.changeVideoRatio();
+                if (runningPlayer.isPlaying()){
+                    pausePlayer();
+                }else {
+                    if (runningPlayer!=null){
+                        runningPlayer.play();
+                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+                        Log.d("ftftftfftf","Enterrl");
+                    }
                 }
+//                if (lockEnable) {
+////                    if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
+////                        getBinding().lockIcon.setVisibility(View.GONE);
+////                    } else {
+////                        getBinding().lockIcon.setVisibility(View.VISIBLE);
+////                    }
+//                } else {
+//                    viewModel.changeVideoRatio();
+//                }
                 //playPauseControl();
 
             }
@@ -2921,25 +2977,358 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             @Override
             public void onDoubleClick(View view) {
-                viewModel.changeVideoRatio();
+                if (runningPlayer.isPlaying()){
+                    pausePlayer();
+                }else {
+                    if (runningPlayer!=null){
+                        runningPlayer.play();
+                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+                        Log.d("ftftftfftf","Enterrl1");
+                    }
+                }
+               // viewModel.changeVideoRatio();
                 //playPauseControl();
             }
         }));
 
-        getBinding().rl1.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
+//        getBinding().rl.setOnTouchListener(new View.OnTouchListener(){
+//            @Override
+//            public boolean onTouch (View v, MotionEvent event) {
+//
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        initialX = event.getX();
+//                        initialY = event.getY();
+//                        return true;
+//
+//                    case MotionEvent.ACTION_UP:
+//                        old = 0.0f;
+//                        return true;
+//
+//                    case MotionEvent.ACTION_MOVE:
+//
+//                     //   clearAndReset();
+//                        if (timer && timeHandler != null) {
+//                            timeHandler.removeCallbacks(myRunnable);
+//                        }
+//
+//                        currentX = event.getX();
+//                        currentY = event.getY();
+//
+//                        if (initialX > currentX) {
+//                            Log.e("TOUCH", "Left");
+//                            float New = (initialX - currentX) * 100 / 1000;
+//                            condition = (int) (condition2 - ((New <= old) ? 0 : (New - old)));
+//                            condition2 = (condition <= 0) ? 0 : condition;
+//                            Log.d("dfgdgfdd", "" + condition);
+//                            Log.d("dfgdgfdd",condition2+"");
+//                            old = (initialX - currentX) * 100 / 1000;
+//                            Log.d("dfgdgfdd",old+"");
+//                        }
+//
+//                        if (initialX < currentX) {
+//                            Log.e("TOUCH", "RIGHT");
+//                            float New = (currentX - initialX) * 100 / 1000;
+//                            condition = (int) (condition2 + ((New <= old) ? 0 : (New - old)));
+//                            condition2 = (condition >= 100) ? 100 : condition;
+//                            Log.e("INT", "" + condition);
+//                            Log.d("dfgdgfdd", "" + condition);
+//                            Log.d("dfgdgfdd",condition2+"");
+//                            old = (currentX - initialX) * 100 / 1000;
+//                            Log.d("dfgdgfdd",old+"");
+//                            audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
+//                            getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+//
+//                        }
+//
+//                }
+//                return true;
+//            }
+//        });
+
+
+        getBinding().rl1.setOnTouchListener(new View.OnTouchListener(){
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                try {
-                    gestureDetector.onTouchEvent(motionEvent);
+            public boolean onTouch (View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
 
+                        //touch is start
+                        downX = event.getX();
+                        downY = event.getY();
+                        if (event.getX() < (sWidth / 2)) {
 
-                } catch (Exception e) {
+                            //here check touch is screen left or right side
+                            intLeft = true;
+                            intRight = false;
 
+                        } else if (event.getX() > (sWidth / 2)) {
+
+                            //here check touch is screen left or right side
+                            intLeft = false;
+                            intRight = true;
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+
+                    case MotionEvent.ACTION_MOVE:
+
+                        //finger move to screen
+                        float x2 = event.getX();
+                        float y2 = event.getY();
+
+                        diffX = (long) (Math.ceil(event.getX() - downX));
+                        diffY = (long) (Math.ceil(event.getY() - downY));
+
+                        if (Math.abs(diffY) > Math.abs(diffX)) {
+                            if (intLeft) {
+                                //if left its for brightness
+
+                                if (downY < y2) {
+                                    currBrightness = currBrightness-2;
+                                    Log.d("fgfgfgfgfg",currBrightness+"");
+                                    WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
+                                    layout.screenBrightness = currBrightness / 100F;
+                                    getActivity().getWindow().setAttributes(layout);
+                                    getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
+                                    //down swipe brightness decrease
+                                } else if (downY > y2) {
+                                    currBrightness = currBrightness+2;
+                                    Log.d("fgfgfgfgfg",currBrightness+"");
+                                    WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
+                                    layout.screenBrightness = currBrightness / 100F;
+                                    getActivity().getWindow().setAttributes(layout);
+                                    getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
+                                    //up  swipe brightness increase
+                                }
+
+                            } else if (intRight) {
+
+                                //if right its for audio
+                                if (downY < y2) {
+
+                                    //down swipe volume decrease
+                                    audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
+                                    getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+
+                                } else if (downY > y2) {
+
+                                    //up  swipe volume increase
+                                    mAudioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
+                                    getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+                                }
+                            }
+                        }
                 }
-                return false;
+                return true;
+
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        initialX = event.getX();
+//                        initialY = event.getY();
+//                        return true;
+//
+//                    case MotionEvent.ACTION_UP:
+//                        old = 0.0f;
+//                        return true;
+//
+//                    case MotionEvent.ACTION_MOVE:
+//                       // clearAndReset();
+//                        if (timer && timeHandler != null) {
+//                            timeHandler.removeCallbacks(myRunnable);
+//                        }
+//                        currentX = event.getX();
+//                        currentY = event.getY();
+//
+//                        if (initialX > currentX) {
+//                            Log.e("TOUCH", "Left");
+//                            float New = (initialX - currentX) * 100 / 1000;
+//                            condition = (int) (condition2 - ((New <= old) ? 0 : (New - old)));
+//                            condition2 = (condition <= 0) ? 0 : condition;
+//                            Log.d("dfgdgfdd", "" + condition);
+//                            Log.d("dfgdgfdd",condition2+"");
+//                            old = (initialX - currentX) * 100 / 1000;
+//                            Log.d("dfgdgfdd",old+"");
+//                        }
+//
+//                        if (initialX < currentX) {
+//                            Log.e("TOUCH", "RIGHT");
+//                            float New = (currentX - initialX) * 100 / 1000;
+//                            condition = (int) (condition2 + ((New <= old) ? 0 : (New - old)));
+//                            condition2 = (condition >= 100) ? 100 : condition;
+//                            Log.e("INT", "" + condition);
+//                            Log.d("dfgdgfdd", "" + condition);
+//                            Log.d("dfgdgfdd",condition2+"");
+//                            old = (currentX - initialX) * 100 / 1000;
+//                            Log.d("dfgdgfdd",old+"");
+//                            audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
+//                            getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+//                        }
+//
+//                }
+//                return true;
             }
         });
+
+
+
+//        getBinding().rl1.setOnTouchListener(new View.OnTouchListener() {
+//            @SuppressLint("ClickableViewAccessibility")
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                try {
+//                    gestureDetector.onTouchEvent(motionEvent);
+//
+//
+//                } catch (Exception e) {
+//
+//                }
+//                return false;
+//            }
+//        });
+
+//        getBinding().rl1.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//
+//                        //touch is start
+//                        downX = event.getX();
+//                        downY = event.getY();
+//                        if (event.getX() < (sWidth / 2)) {
+//
+//                            //here check touch is screen left or right side
+//                            intLeft = true;
+//                            intRight = false;
+//
+//                        } else if (event.getX() > (sWidth / 2)) {
+//
+//                            //here check touch is screen left or right side
+//                            intLeft = false;
+//                            intRight = true;
+//                        }
+//                        break;
+//
+//                    case MotionEvent.ACTION_UP:
+//
+//                    case MotionEvent.ACTION_MOVE:
+//
+//                        //finger move to screen
+//                        float x2 = event.getX();
+//                        float y2 = event.getY();
+//
+//                        diffX = (long) (Math.ceil(event.getX() - downX));
+//                        diffY = (long) (Math.ceil(event.getY() - downY));
+//
+//                        if (Math.abs(diffY) > Math.abs(diffX)) {
+//                            if (intLeft) {
+//                                //if left its for brightness
+//
+//                                if (downY < y2) {
+//                                    //down swipe brightness decrease
+//                                } else if (downY > y2) {
+//                                    //up  swipe brightness increase
+//                                }
+//
+//                            } else if (intRight) {
+//
+//                                //if right its for audio
+//                                if (downY < y2) {
+//
+//                                    Log.d("dfdfdfdfdf",downY+"");
+//                                    Log.d("dfdfdfdfdf",y2+"");
+//
+//                                    //down swipe volume decrease
+//                                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, y2, 0);
+//
+//                                } else if (downY > y2) {
+//                                    Log.d("dfdfdfdfdf",downY+"");
+//                                    Log.d("dfdfdfdfdf",y2+"");
+//                                    //up  swipe volume increase
+//                                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int) downY, 0);
+//                                }
+//                            }
+//                        }
+//                }
+//                return false;
+//                //return false;
+//            }
+//        });
+//        getBinding().rl.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//
+//                        //touch is start
+//                        downX = event.getX();
+//                        downY = event.getY();
+//                        if (event.getX() < (sWidth / 2)) {
+//
+//                            //here check touch is screen left or right side
+//                            intLeft = true;
+//                            intRight = false;
+//
+//                        } else if (event.getX() > (sWidth / 2)) {
+//
+//                            //here check touch is screen left or right side
+//                            intLeft = false;
+//                            intRight = true;
+//                        }
+//                        break;
+//
+//                    case MotionEvent.ACTION_UP:
+//
+//                    case MotionEvent.ACTION_MOVE:
+//
+//                        //finger move to screen
+//                        float x2 = event.getX();
+//                        float y2 = event.getY();
+//
+//                        diffX = (long) (Math.ceil(event.getX() - downX));
+//                        diffY = (long) (Math.ceil(event.getY() - downY));
+//
+//                        if (Math.abs(diffY) > Math.abs(diffX)) {
+//                            if (intLeft) {
+//                                //if left its for brightness
+//
+//                                if (downY < y2) {
+//                                    //down swipe brightness decrease
+//                                } else if (downY > y2) {
+//                                    //up  swipe brightness increase
+//                                }
+//
+//                            } else if (intRight) {
+//
+//                                //if right its for audio
+//                                if (downY < y2) {
+//
+//                                    Log.d("dfdfdfdfdf",downY+"");
+//                                    Log.d("dfdfdfdfdf",y2+"");
+//
+//                                    //down swipe volume decrease
+//                                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int) downY, 0);
+//
+//                                } else if (downY > y2) {
+//                                    Log.d("dfdfdfdfdf",downY+"");
+//                                    Log.d("dfdfdfdfdf",y2+"");
+//                                    //up  swipe volume increase
+//                                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int) downY, 0);
+//                                }
+//                            }
+//                        }
+//                }
+//                return false;
+//                //return false;
+//            }
+//        });
+
+
+
 
 
         getBinding().forward.setOnClickListener(view -> {
@@ -3188,6 +3577,15 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //        };
 //        cTimer.start();
         playNextEpisode();
+    }
+
+
+    private void getScreenSize() {
+        display = getActivity().getWindowManager().getDefaultDisplay();
+        size = new Point();
+        display.getSize(size);
+        sWidth = size.x;
+        sHeight = size.y;
     }
 
     private void playNextEpisode() {
@@ -3635,6 +4033,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                   boolean fromTouch) {
 
         if (seekbar.getId() == R.id.seekBar1) {
+            Log.d("fgfgfgfgfg",progress+"");
             WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
             layout.screenBrightness = progress / 100F;
             getActivity().getWindow().setAttributes(layout);
@@ -4771,6 +5170,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         bitmapRegionDecoder.recycle();
         return previewImagesHashMap;
     }
+
 
 
 }

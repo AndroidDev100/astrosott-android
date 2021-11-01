@@ -1,6 +1,6 @@
 package com.astro.sott.utils.helpers;
 
-import android.os.Handler;
+
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.astro.sott.callBacks.DragListner;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-
 
 public class SwipeGestureListener extends GestureDetector.SimpleOnGestureListener implements View.OnClickListener{
 
@@ -62,14 +61,15 @@ public class SwipeGestureListener extends GestureDetector.SimpleOnGestureListene
     /** Override this method. The Direction enum will tell you how the user swiped. */
     public boolean onSwipe(Direction direction){
         Log.d("DirectionNameIs",direction.name());
+        Log.d("DirectionNameIs",direction.ordinal()+"");
 
         if (direction.name().equalsIgnoreCase(Direction.up.name())){
             dragListner.dragging(direction.name());
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            //bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         }else if (direction.name().equalsIgnoreCase(Direction.down.name())){
             dragListner.dragging(direction.name());
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            //bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
         return false;
     }
@@ -165,7 +165,6 @@ public class SwipeGestureListener extends GestureDetector.SimpleOnGestureListene
     /*
      * Handler to process click event.
      */
-    private final Handler mHandler = new Handler();
 
     /*
      * Click callback.
@@ -187,30 +186,6 @@ public class SwipeGestureListener extends GestureDetector.SimpleOnGestureListene
     @Override
     public void onClick(final View view) {
 
-        if (!isBusy) {
-            //  Prevent multiple click in this short time
-            isBusy = true;
-
-            // Increase clicks count
-            clicks++;
-
-            mHandler.postDelayed(new Runnable() {
-                public final void run() {
-
-                    if (clicks >= 2) {  // Double tap.
-                       // doubleClickListener.onDoubleClick(view);
-                    }
-
-                    if (clicks == 1) {  // Single tap
-                       // doubleClickListener.onSingleClick(view);
-                    }
-
-                    // we need to  restore clicks count
-                    clicks = 0;
-                }
-            }, DOUBLE_CLICK_INTERVAL);
-            isBusy = false;
-        }
 
     }
 
