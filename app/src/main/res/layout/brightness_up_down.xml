@@ -41,7 +41,7 @@
                 android:layout_width="110dp"
                 android:layout_height="@dimen/dimen32dp"
                 android:layout_gravity="center"
-                android:maxHeight="6dp"
+                android:maxHeight="3dp"
                 android:progress="30"
                 android:progressDrawable="@drawable/seekbarprogress_style"
                 android:rotation="270"

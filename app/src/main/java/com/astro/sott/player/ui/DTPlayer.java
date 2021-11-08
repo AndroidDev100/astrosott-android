@@ -263,6 +263,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private Point size;
     private float downX, downY;
     int currBrightness;
+    int clickCount = 0;
+    long startTime1;
+    long duration;
+    static final int MAX_DURATION = 500;
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -2991,61 +2995,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             }
         }));
 
-//        getBinding().rl.setOnTouchListener(new View.OnTouchListener(){
-//            @Override
-//            public boolean onTouch (View v, MotionEvent event) {
-//
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        initialX = event.getX();
-//                        initialY = event.getY();
-//                        return true;
-//
-//                    case MotionEvent.ACTION_UP:
-//                        old = 0.0f;
-//                        return true;
-//
-//                    case MotionEvent.ACTION_MOVE:
-//
-//                     //   clearAndReset();
-//                        if (timer && timeHandler != null) {
-//                            timeHandler.removeCallbacks(myRunnable);
-//                        }
-//
-//                        currentX = event.getX();
-//                        currentY = event.getY();
-//
-//                        if (initialX > currentX) {
-//                            Log.e("TOUCH", "Left");
-//                            float New = (initialX - currentX) * 100 / 1000;
-//                            condition = (int) (condition2 - ((New <= old) ? 0 : (New - old)));
-//                            condition2 = (condition <= 0) ? 0 : condition;
-//                            Log.d("dfgdgfdd", "" + condition);
-//                            Log.d("dfgdgfdd",condition2+"");
-//                            old = (initialX - currentX) * 100 / 1000;
-//                            Log.d("dfgdgfdd",old+"");
-//                        }
-//
-//                        if (initialX < currentX) {
-//                            Log.e("TOUCH", "RIGHT");
-//                            float New = (currentX - initialX) * 100 / 1000;
-//                            condition = (int) (condition2 + ((New <= old) ? 0 : (New - old)));
-//                            condition2 = (condition >= 100) ? 100 : condition;
-//                            Log.e("INT", "" + condition);
-//                            Log.d("dfgdgfdd", "" + condition);
-//                            Log.d("dfgdgfdd",condition2+"");
-//                            old = (currentX - initialX) * 100 / 1000;
-//                            Log.d("dfgdgfdd",old+"");
-//                            audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
-//                            getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-//
-//                        }
-//
-//                }
-//                return true;
-//            }
-//        });
-
 
         getBinding().rl1.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -3072,6 +3021,34 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                     case MotionEvent.ACTION_UP:
 
+                        clickCount++;
+
+                        if (clickCount==1){
+                            startTime1 = System.currentTimeMillis();
+                        }
+
+                        else if(clickCount == 2)
+                        {
+                            long duration =  System.currentTimeMillis() - startTime1;
+                            if(duration <= MAX_DURATION)
+                            {
+                                if (runningPlayer.isPlaying()){
+                                    pausePlayer();
+                                }else {
+                                    if (runningPlayer!=null){
+                                        runningPlayer.play();
+                                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+                                    }
+                                }
+                                clickCount = 0;
+                                duration = 0;
+                            }else{
+                                clickCount = 1;
+                                startTime1 = System.currentTimeMillis();
+                            }
+                            break;
+                        }
+
                     case MotionEvent.ACTION_MOVE:
 
                         //finger move to screen
@@ -3086,20 +3063,24 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 //if left its for brightness
 
                                 if (downY < y2) {
-                                    currBrightness = currBrightness-2;
-                                    Log.d("fgfgfgfgfg",currBrightness+"");
-                                    WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
-                                    layout.screenBrightness = currBrightness / 100F;
-                                    getActivity().getWindow().setAttributes(layout);
-                                    getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
+                                    if (currBrightness >0) {
+                                        currBrightness = currBrightness - 2;
+                                        Log.d("fgfgfgfgfg", currBrightness + "");
+                                        WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
+                                        layout.screenBrightness = currBrightness / 100F;
+                                        getActivity().getWindow().setAttributes(layout);
+                                        getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
+                                    }
                                     //down swipe brightness decrease
                                 } else if (downY > y2) {
-                                    currBrightness = currBrightness+2;
-                                    Log.d("fgfgfgfgfg",currBrightness+"");
-                                    WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
-                                    layout.screenBrightness = currBrightness / 100F;
-                                    getActivity().getWindow().setAttributes(layout);
-                                    getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
+                                    if (currBrightness <100){
+                                        currBrightness = currBrightness + 2;
+                                        Log.d("fgfgfgfgfg", currBrightness + "");
+                                        WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
+                                        layout.screenBrightness = currBrightness / 100F;
+                                        getActivity().getWindow().setAttributes(layout);
+                                        getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
+                                    }
                                     //up  swipe brightness increase
                                 }
 

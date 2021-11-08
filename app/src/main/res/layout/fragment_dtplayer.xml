@@ -237,7 +237,7 @@
                     android:layout_marginStart="@dimen/seek_bar_margin_start"
                     android:layout_marginEnd="@dimen/seek_bar_margin_start"
                     android:layout_marginBottom="85dp"
-                    android:maxHeight="6dp"
+                    android:maxHeight="3dp"
                     android:paddingBottom="2dp"
                     android:progressDrawable="@drawable/seekbarprogress_style"
                     android:thumb="@drawable/ic_thumb_icon"
@@ -259,7 +259,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3dp"
-                        android:layout_marginTop="32.7dp"
+                        android:layout_marginTop="38.7dp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:layout_toEndOf="@+id/slash"
                         android:fontFamily="@font/roboto_regular"
@@ -267,7 +267,7 @@
                         android:lineHeight="32sp"
                         android:text=""
                         android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/dimen15sp"
+                        android:textSize="@dimen/sp12"
                         android:visibility="visible"
                         tools:targetApi="p" />
 
@@ -277,14 +277,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="13dp"
-                        android:layout_marginTop="32.7dp"
+                        android:layout_marginTop="38.7dp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
                         android:text=""
                         android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/dimen15sp"
+                        android:textSize="@dimen/sp12"
                         android:visibility="visible"
                         tools:targetApi="p" />
 
@@ -293,7 +293,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3dp"
-                        android:layout_marginTop="32.7dp"
+                        android:layout_marginTop="38.7dp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:layout_toEndOf="@+id/current_time"
                         android:fontFamily="@font/roboto_regular"
@@ -301,7 +301,7 @@
                         android:lineHeight="32sp"
                         android:text="/"
                         android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/dimen15sp"
+                        android:textSize="@dimen/sp12"
                         android:visibility="visible"
                         tools:targetApi="p" />
 
@@ -338,7 +338,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginTop="32.7dp"
                     android:layout_marginEnd="@dimen/uploaded_image_height"
-                    android:layout_marginBottom="39dp"
+                    android:layout_marginBottom="30dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:weightSum="3">
@@ -375,7 +375,7 @@
                             android:text="@string/manage_quality"
                             android:textAllCaps="false"
                             android:textColor="@color/pale_gray"
-                            android:textSize="@dimen/dimen15sp"
+                            android:textSize="13sp"
                             tools:targetApi="p"
                             app:drawableLeftCompat="@drawable/ic_video_quality" />
                     </FrameLayout>
@@ -395,7 +395,7 @@
                         android:text="@string/subtitle_audio"
                         android:textAllCaps="false"
                         android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/dimen15sp"
+                        android:textSize="13sp"
 
                         tools:targetApi="p"
                         app:drawableLeftCompat="@drawable/ic_subtitle" />
@@ -415,7 +415,7 @@
                         android:text="@string/next_episode"
                         android:textAllCaps="false"
                         android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/dimen15sp"
+                        android:textSize="13sp"
                         android:visibility="gone"
                         tools:targetApi="p"
                         app:drawableLeftCompat="@drawable/ic_next_episode" />
