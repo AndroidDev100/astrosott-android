@@ -244,7 +244,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                 PrintLogging.printLog(TAG, "onPurchasesUpdate() responseCode: " + billingResult.getResponseCode() + "-----------" + purchase);
             }
         }*/
-        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
             if (inAppProcessListener != null) {
                 inAppProcessListener.onPurchasesUpdated(billingResult, purchases);
 
@@ -852,8 +852,11 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                         try {
                             JSONObject jsonObject = new JSONObject(purchaseItem.getOriginalJson());
                             Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
-                            if (!isAcknowledged) {
-                                inAppProcessListener.onAcknowledged(purchaseItem.getSku(), purchaseItem.getPurchaseToken(), purchaseItem.getOrderId());
+                            String accountId = jsonObject.getString("obfuscatedAccountId");
+                            if (accountId.equalsIgnoreCase(UserInfo.getInstance(context).getCpCustomerId())) {
+                                if (!isAcknowledged) {
+                                    inAppProcessListener.onAcknowledged(purchaseItem.getSku(), purchaseItem.getPurchaseToken(), purchaseItem.getOrderId());
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -885,8 +888,11 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
                     JSONObject jsonObject = new JSONObject(purchaseProductItem.getOriginalJson());
                     Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
-                    if (!isAcknowledged) {
-                        inAppProcessListener.onAcknowledged(purchaseProductItem.getSku(), purchaseProductItem.getPurchaseToken(), purchaseProductItem.getOrderId());
+                    String accountId = jsonObject.getString("obfuscatedAccountId");
+                    if (accountId.equalsIgnoreCase(UserInfo.getInstance(context).getCpCustomerId())) {
+                        if (!isAcknowledged) {
+                            inAppProcessListener.onAcknowledged(purchaseProductItem.getSku(), purchaseProductItem.getPurchaseToken(), purchaseProductItem.getOrderId());
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

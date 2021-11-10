@@ -35,6 +35,7 @@ import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
+import com.astro.sott.utils.billing.AstroBillingProcessor;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
@@ -74,6 +75,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private GoogleSignInClient mGoogleSignInClient;
     private CallbackManager callbackManager;
     private String from;
+    private AstroBillingProcessor billingProcessor;
     private boolean passwordVisibility = false;
     private String passwordError = "";
     private String name = "";
@@ -96,6 +98,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             from = getIntent().getStringExtra(AppLevelConstants.FROM_KEY);
         modelCall();
         setClicks();
+        intializeBilling();
         CleverTapManager.getInstance().setLoginOrigin(from);
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.LOGIN);
         setGoogleSignIn();
@@ -110,6 +113,11 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             LoginManager.getInstance().logOut();
         } else {
         }
+    }
+
+    private void intializeBilling() {
+        billingProcessor = new AstroBillingProcessor(this);
+        billingProcessor.initializeBillingProcessor();
     }
 
     private void setFb() {
@@ -504,6 +512,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
     private void setActive() {
         UserInfo.getInstance(this).setActive(true);
+        billingProcessor.queryPurchases(this);
         Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
         AppCommonMethods.setCleverTap(this);
         if (UserInfo.getInstance(this).getCpCustomerId() != null && !UserInfo.getInstance(this).getCpCustomerId().equalsIgnoreCase(""))
@@ -638,7 +647,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     return false;
 
                 }
-            } else if (email_mobile.matches(EMAIL_REGEX)) {
+            } else if (true) {
                 type = "Email";
                 getBinding().errorEmail.setTextColor(getResources().getColor(R.color.heather));
                 getBinding().errorEmail.setText(getResources().getString(R.string.mobile_suggestion));

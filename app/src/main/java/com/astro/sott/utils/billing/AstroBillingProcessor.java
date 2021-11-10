@@ -2,10 +2,14 @@ package com.astro.sott.utils.billing;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
@@ -15,9 +19,13 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
+import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.userInfo.UserInfo;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -26,10 +34,12 @@ import java.util.List;
 public class AstroBillingProcessor implements PurchasesUpdatedListener {
     private static WeakReference<Activity> mActivity;
     private BillingClient myBillingClient = null;
+    private SubscriptionViewModel subscriptionViewModel;
     public static final String TAG = BillingProcessor.class.getName();
 
     public AstroBillingProcessor(Activity activity) {
         mActivity = new WeakReference<>(activity);
+        modelCall(activity);
     }
 
     public void initializeBillingProcessor() {
@@ -50,6 +60,10 @@ public class AstroBillingProcessor implements PurchasesUpdatedListener {
             myBillingClient.endConnection();
         }
         // networkManager.removeCallback(this);
+    }
+
+    private void modelCall(Activity activity) {
+        subscriptionViewModel = ViewModelProviders.of((FragmentActivity) activity).get(SubscriptionViewModel.class);
     }
 
     private void connectToPlayBillingService() {
@@ -225,6 +239,86 @@ public class AstroBillingProcessor implements PurchasesUpdatedListener {
                         }
                     }
                 });
+    }
+
+    public void queryPurchases(Activity context) {
+        if (UserInfo.getInstance(context).isActive()) {
+            if (myBillingClient != null) {
+                final Purchase.PurchasesResult purchasesResult =
+                        myBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+
+                final List<Purchase> purchases = new ArrayList<>();
+                if (purchasesResult.getPurchasesList() != null) {
+                    purchases.addAll(purchasesResult.getPurchasesList());
+                }
+
+                if (purchases.size() > 0) {
+                    for (Purchase purchaseItem : purchases) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(purchaseItem.getOriginalJson());
+                            Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
+                            String accountId = jsonObject.getString("obfuscatedAccountId");
+                            if (accountId.equalsIgnoreCase(UserInfo.getInstance(context).getCpCustomerId())) {
+                                if (!isAcknowledged) {
+                                    addSubscription(context, purchaseItem);
+                                    //  inAppProcessListener.onAcknowledged(purchaseItem.getSku(), purchaseItem.getPurchaseToken(), purchaseItem.getOrderId());
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                } else {
+                }
+
+                queryPurchaseProduct(context);
+
+            }
+        }
+
+    }
+
+    private void addSubscription(Context context, Purchase purchaseItem) {
+        subscriptionViewModel.addSubscription(UserInfo.getInstance(context).getAccessToken(), purchaseItem.getSku(), purchaseItem.getPurchaseToken(), purchaseItem.getOrderId(), "").observe((LifecycleOwner) context, addSubscriptionResponseEvergentCommonResponse -> {
+            if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
+                if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
+                }
+            } else {
+
+            }
+        });
+    }
+
+    private void queryPurchaseProduct(Activity context) {
+        final Purchase.PurchasesResult purchasesProductResult =
+                myBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+
+        final List<Purchase> purchasesArraylist = new ArrayList<>();
+        if (purchasesProductResult.getPurchasesList() != null) {
+            purchasesArraylist.addAll(purchasesProductResult.getPurchasesList());
+        }
+
+        if (purchasesArraylist.size() > 0) {
+            for (Purchase purchaseProductItem : purchasesArraylist) {
+                try {
+
+                    JSONObject jsonObject = new JSONObject(purchaseProductItem.getOriginalJson());
+                    Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
+                    String accountId = jsonObject.getString("obfuscatedAccountId");
+                    if (accountId.equalsIgnoreCase(UserInfo.getInstance(context).getCpCustomerId())) {
+                        if (!isAcknowledged) {
+                            addSubscription(context, purchaseProductItem);
+                            // inAppProcessListener.onAcknowledged(purchaseProductItem.getSku(), purchaseProductItem.getPurchaseToken(), purchaseProductItem.getOrderId());
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+        }
     }
 
     @Override

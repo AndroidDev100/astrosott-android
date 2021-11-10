@@ -623,7 +623,10 @@ class EvergentServices {
         }
 
         devicejson.addProperty("serialNo", getDeviceId(context.contentResolver))
-        devicejson.addProperty("deviceName",  Settings.Global.getString(context.contentResolver, Settings.Global.DEVICE_NAME))
+        devicejson.addProperty(
+            "deviceName",
+            Settings.Global.getString(context.contentResolver, Settings.Global.DEVICE_NAME)
+        )
         if (isTablet) {
             devicejson.addProperty("deviceType", "ANDROID_TABLET")
         } else {
@@ -1046,7 +1049,7 @@ class EvergentServices {
         productId: String,
         token: String,
         acessToken: String,
-        orderId: String,
+        orderId: String, status: String,
         evergentGetDeviceCallback: EvergentResponseCallBack<AddSubscriptionResponse>
     ) {
 
@@ -1061,6 +1064,9 @@ class EvergentServices {
         var paymentMethodJson = JsonObject()
         var transactionRefMsgJson = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        if (status.equals("Pending", true)) {
+            json.addProperty("status", status)
+        }
         json.addProperty("cpCustomerID", "")
         json.addProperty("rateType", "")
         json.addProperty(SERVICE_TYPE, SERVICE_TYPE_VALUE)

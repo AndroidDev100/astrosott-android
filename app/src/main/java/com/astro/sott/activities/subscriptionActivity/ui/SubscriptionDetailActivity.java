@@ -64,6 +64,9 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private ArrayList<PackDetail> packDetailList;
     private String paymentMethod = "";
     private String posterImageUrl = "";
+    private List<Purchase> googlePendingPurchases;
+    private boolean isGooglePending = false;
+    private boolean isUpgrade = false, isDowngrade = false;
     private boolean haveSvod = false, haveTvod = false;
 
     String fileId = "";
@@ -104,12 +107,16 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel.class);
     }
 
+    private List<AccountServiceMessageItem> accountServiceMessageArrayList;
+
     private void getActiveSubscription() {
+        accountServiceMessageArrayList = new ArrayList<>();
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), "profile").observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
-                    for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
-                        if (!accountServiceMessageItem.isFreemium()) {
+                    accountServiceMessageArrayList.addAll(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
+                    for (AccountServiceMessageItem accountServiceMessageItem : accountServiceMessageArrayList) {
+                        if (!accountServiceMessageItem.isFreemium() && accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE")) {
                             paymentMethod = accountServiceMessageItem.getPaymentMethod();
                         }
                     }
@@ -135,6 +142,19 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 checkPackRedirection();
             }
         });
+    }
+
+    private boolean checkForPending(List<AccountServiceMessageItem> accountServiceMessage, String serviceType) {
+        for (AccountServiceMessageItem accountServiceMessageItem : accountServiceMessage) {
+            if (!accountServiceMessageItem.isFreemium()) {
+                if (accountServiceMessageItem.getStatus().equalsIgnoreCase("PENDING ACTIVE") || accountServiceMessageItem.getStatus().equalsIgnoreCase("PENDING")) {
+                    if (accountServiceMessageItem.getServiceType().equalsIgnoreCase(serviceType)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private String[] subscriptionIds;
@@ -389,10 +409,14 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     @Override
     public void onCardClicked(String productId, String serviceType, String active, String planName, Long price) {
-        this.planName = planName;
-        offerId = productId;
-        planPrice = price;
-        checkForCpId(serviceType, productId, price);
+        if (checkForPending(accountServiceMessageArrayList, serviceType)) {
+            commonDialog(getResources().getString(R.string.payment_progress), getResources().getString(R.string.payment_progress_desc), getResources().getString(R.string.ok));
+        } else {
+            this.planName = planName;
+            offerId = productId;
+            planPrice = price;
+            checkForCpId(serviceType, productId, price);
+        }
     }
 
     private void maxisRestrictionPopUp(String message) {
@@ -433,7 +457,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     }
 
     private void processPayment(String serviceType, String productId) {
-
+        isDowngrade = false;
+        isUpgrade = false;
         if (serviceType.equalsIgnoreCase("ppv")) {
             offerType = "TVOD";
             billingProcessor.purchase(SubscriptionDetailActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
@@ -477,6 +502,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     @Override
     public void onBillingInitialized() {
         getActiveSubscription();
+        googlePendingPurchases = new ArrayList<>();
 
 
     }
@@ -507,8 +533,12 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     //  PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
                     // handle pending purchases, e.g. confirm with users about the pending
                     // purchases, prompt them to complete it, etc.
-                    Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    isGooglePending = true;
+                    googlePendingPurchases.add(purchase);
+                    commonDialog(getResources().getString(R.string.pending_payment), getResources().getString(R.string.pending_payment_desc), getResources().getString(R.string.ok_single_exlamation));
 
+                } else {
+                    Toast.makeText(this, getResources().getString(R.string.payment_failed), Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (Exception ignored) {
@@ -533,10 +563,16 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         } catch (Exception e) {
 
         }
-        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId, "").observe(this, addSubscriptionResponseEvergentCommonResponse -> {
             if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
-                    Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                    if (isUpgrade) {
+                        Toast.makeText(this, getResources().getString(R.string.upgrade_success), Toast.LENGTH_SHORT).show();
+                    } else if (isDowngrade) {
+                        Toast.makeText(this, getResources().getString(R.string.downgrade_success), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                    }
                     try {
                         CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Success", "Content Details Page");
                         FirebaseEventManager.getFirebaseInstance(this).packageEvent(planName, planPrice, FirebaseEventManager.TXN_SUCCESS, UserInfo.getInstance(this).getCpCustomerId());
@@ -573,6 +609,21 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
             }
         });
 
+    }
+
+
+    private void pendingAddSubscription(Purchase purchase) {
+        String orderId = "";
+        if (purchase.getOrderId() != null) {
+            orderId = purchase.getOrderId();
+        } else {
+            orderId = "";
+        }
+        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId, "Pending").observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+            onBackPressed();
+        });
     }
 
     private void commonDialog(String tiltle, String description, String actionBtn) {
@@ -640,11 +691,13 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     @Override
     public void onUpgradeClick() {
+        isUpgrade = true;
         billingProcessor.upgrade();
     }
 
     @Override
     public void onDowngradeClick() {
+        isDowngrade = true;
         billingProcessor.downgrade();
 
     }
@@ -661,6 +714,11 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     @Override
     public void onActionBtnClicked() {
-
+        if (isGooglePending) {
+            for (Purchase purchase : googlePendingPurchases) {
+                pendingAddSubscription(purchase);
+                isGooglePending = false;
+            }
+        }
     }
 }

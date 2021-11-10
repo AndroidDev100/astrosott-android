@@ -128,20 +128,24 @@ class SubscriptionPagerAdapter(
             bannerBinding.btnChooseMe.background = buttonDrawable
             bannerBinding.masktop.setColorFilter(currentColor)
             bannerBinding.maskbottom.setColorFilter(currentColor)
-            var attributeList = packageModel.attributes!!
-            Collections.sort(attributeList, object : Comparator<Attribute?> {
-                override fun compare(o1: Attribute?, o2: Attribute?): Int {
-                    return o1?.attributeLabel?.compareTo(o2?.attributeLabel!!)!!
-                }
-            })
-            val my_array = ArrayList<String>()
             if (packageModel.attributes != null) {
-                for (attribute in attributeList) {
-                    if (!attribute.attributeLabel.equals("ImageURL1", true)) {
-                        my_array.add(attribute.attributeValue.toString())
+                var attributeList = packageModel.attributes!!
+                Collections.sort(attributeList, object : Comparator<Attribute?> {
+                    override fun compare(o1: Attribute?, o2: Attribute?): Int {
+                        return o1?.attributeLabel?.compareTo(o2?.attributeLabel!!)!!
                     }
-                }
+                })
+                val my_array = ArrayList<String>()
+                if (packageModel.attributes != null) {
+                    for (attribute in attributeList) {
+                        if (!attribute.attributeLabel.equals("ImageURL1", true)) {
+                            my_array.add(attribute.attributeValue.toString())
+                        }
+                    }
 
+                }
+                val adapter: ArrayAdapter<String> = BulletsAdapter(context, my_array, currentColor)
+                bannerBinding.bulletsList.adapter = adapter
             }
             if (packageModel.skuORQuickCode != null && productList != null) {
                 if (checkActiveOrNot(packageModel.skuORQuickCode!!)) {
@@ -157,8 +161,6 @@ class SubscriptionPagerAdapter(
             }
 
 
-            val adapter: ArrayAdapter<String> = BulletsAdapter(context, my_array, currentColor)
-            bannerBinding.bulletsList.adapter = adapter
         } catch (e: Exception) {
 
         }

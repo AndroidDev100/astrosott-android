@@ -266,12 +266,15 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
 
     private void setData(String dataType) {
         if (dataType.equalsIgnoreCase(getResources().getString(R.string.successful))) {
+            getBinding().downloadButton.setVisibility(View.VISIBLE);
             loadDataFromModel(approvedList, false);
             getBinding().selectedText.setText(getResources().getString(R.string.successful));
         } else if (dataType.equalsIgnoreCase(getResources().getString(R.string.pending))) {
+            getBinding().downloadButton.setVisibility(View.GONE);
             loadDataFromModel(pendingList, false);
             getBinding().selectedText.setText(getResources().getString(R.string.pending));
         } else if (dataType.equalsIgnoreCase(getResources().getString(R.string.failed))) {
+            getBinding().downloadButton.setVisibility(View.GONE);
             loadDataFromModel(failedOrderList, false);
             getBinding().selectedText.setText(getResources().getString(R.string.failed));
         }

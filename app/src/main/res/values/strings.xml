@@ -11,7 +11,7 @@
     <string name="payment_progress">Payment in Progress</string>
     <string name="already_purchase">You Already Purchased This Offer</string>
     <string name="payment_progress_desc">You currently have a pending transaction. You may retry later after the pending transaction is completed.</string>
-   <string name="already_purchase_desc">Try to refresh the screen or reopen the app to reflect your purchases. Please contact us if issue persist.</string>
+    <string name="already_purchase_desc">Try to refresh the screen or reopen the app to reflect your purchases. Please contact us if issue persist.</string>
     <string name="save_video_to">Save video to...</string>
     <string name="new_playlist">New Playlist</string>
     <string name="done">Done</string>
@@ -103,7 +103,11 @@
     <string name="more">More</string>
     <string name="view_more"><u>View More</u></string>
     <string name="view_less"><u>View Less</u></string>
-    <string name="subscribed_success">Subscribed Successfully</string>
+    <string name="upgrade_success">Upgrade successful!</string>
+    <string name="subscribed_success">Payment successful! Enjoy the show!</string>
+    <string name="downgrade_success">Downgrade request will be reflected next renewal cycle.</string>
+    <string name="pending_payment">Payment Pending</string>
+    <string name="pending_payment_desc">Please check back later in Transaction History at Profile page and/or check with your payment provider.</string>
     <string name="less">Less</string>
     <string name="live">Live Now</string>
     <string name="login_successfull"> Login Successful!</string>
@@ -291,6 +295,7 @@
     <string name="subscribe__dialog_description_logout">  Please login or create an account to complete the purchase!</string>
     <string name="new_version">New Version Available</string>
     <string name="pin_required">Pin cannot be blank</string>
+    <string name="payment_failed">Payment failed. Please try again later and/or check with your payment provider.</string>
     <string name="upgrade_description">Upgrade will be immediate and prorated upgrade price will be charged/refunded accordingly to each payment method policies.</string>
     <string name="downgrade_description">Downgrade will only take effect in the next billing cycle!</string>
     <string name="incorrect_pin">Incorrect Pin. Try again</string>

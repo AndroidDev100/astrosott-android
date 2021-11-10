@@ -23,6 +23,7 @@ import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionAct
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivityProfileSubscriptionBinding;
+import com.astro.sott.fragments.dialog.CommonDialogFragment;
 import com.astro.sott.fragments.dialog.MaxisEditRestrictionPop;
 import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.fragments.subscription.dialog.DowngradeDialogFragment;
@@ -46,10 +47,12 @@ import com.astro.sott.utils.userInfo.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityProfileSubscriptionBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener,MaxisEditRestrictionPop.EditDialogListener {
+public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityProfileSubscriptionBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener, MaxisEditRestrictionPop.EditDialogListener, CommonDialogFragment.EditDialogListener {
     private BillingProcessor billingProcessor;
     private SubscriptionViewModel subscriptionViewModel;
-
+    private List<Purchase> googlePendingPurchases;
+    private boolean isGooglePending = false;
+    private boolean isUpgrade = false, isDowngrade = false;
 
     @Override
     protected ActivityProfileSubscriptionBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -94,13 +97,25 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     //  PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
                     // handle pending purchases, e.g. confirm with users about the pending
                     // purchases, prompt them to complete it, etc.
-                    Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    isGooglePending = true;
+                    googlePendingPurchases.add(purchase);
+                    commonDialog(getResources().getString(R.string.pending_payment), getResources().getString(R.string.pending_payment_desc), getResources().getString(R.string.ok_single_exlamation));
+
+                } else {
+                    Toast.makeText(this, getResources().getString(R.string.payment_failed), Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (Exception ignored) {
 
         }
 
+    }
+
+    private void commonDialog(String tiltle, String description, String actionBtn) {
+        FragmentManager fm = getSupportFragmentManager();
+        CommonDialogFragment commonDialogFragment = CommonDialogFragment.newInstance(tiltle, description, actionBtn);
+        commonDialogFragment.setEditDialogCallBack(this);
+        commonDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
     }
 
     private void handlePurchase(Purchase purchase) {
@@ -113,7 +128,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
             orderId = "";
         }
 
-        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId, "").observe(this, addSubscriptionResponseEvergentCommonResponse -> {
             if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
                     try {
@@ -122,7 +137,13 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     } catch (Exception e) {
                         Log.w("ex", e);
                     }
-                    Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                    if (isUpgrade) {
+                        Toast.makeText(this, getResources().getString(R.string.upgrade_success), Toast.LENGTH_SHORT).show();
+                    } else if (isDowngrade) {
+                        Toast.makeText(this, getResources().getString(R.string.downgrade_success), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                    }
                     if (from.equalsIgnoreCase("Content Detail Page")) {
                         onBackPressed();
                     } else {
@@ -154,6 +175,18 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
         });
 
 
+    }
+
+    private void pendingAddSubscription(Purchase purchase) {
+        String orderId = "";
+        if (purchase.getOrderId() != null) {
+            orderId = purchase.getOrderId();
+        } else {
+            orderId = "";
+        }
+        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId, "Pending").observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+            onBackPressed();
+        });
     }
 
     @Override
@@ -227,6 +260,8 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
     }
 
     private void processPayment(String serviceType, String productId) {
+        isDowngrade = false;
+        isUpgrade = false;
         if (serviceType.equalsIgnoreCase("ppv")) {
             offerType = "TVOD";
             billingProcessor.purchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
@@ -278,6 +313,10 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                 if (!TabsData.getInstance().isDetail())
                     processPurchase(purchases);
             }
+        } else {
+            if (isDowngrade) {
+                Toast.makeText(this, getResources().getString(R.string.downgrade_success), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -328,16 +367,28 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
 
     @Override
     public void onUpgradeClick() {
+        isUpgrade = true;
         billingProcessor.upgrade();
     }
 
     @Override
     public void onDowngradeClick() {
+        isDowngrade = true;
         billingProcessor.downgrade();
     }
 
     @Override
     public void onFinishEditDialog() {
 
+    }
+
+    @Override
+    public void onActionBtnClicked() {
+        if (isGooglePending) {
+            for (Purchase purchase : googlePendingPurchases) {
+                pendingAddSubscription(purchase);
+                isGooglePending = false;
+            }
+        }
     }
 }

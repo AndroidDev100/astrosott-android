@@ -1331,12 +1331,12 @@ public class PlayerRepository {
     private void registerPlugins(Context context, Asset asset) {
         PlayKitManager.registerPlugins(context, KavaAnalyticsPlugin.factory);
         PlayKitManager.registerPlugins(context, PhoenixAnalyticsPlugin.factory);
-        if (asset.getType() == MediaTypeConstant.getLinear(context) || asset.getType() == MediaTypeConstant.getProgram(context)) {
+       /* if (asset.getType() == MediaTypeConstant.getLinear(context) || asset.getType() == MediaTypeConstant.getProgram(context)) {
 
-        } else {
+        } else {*/
             if (AppCommonMethods.isAdsEnable)
                 PlayKitManager.registerPlugins(context, IMAPlugin.factory);
-        }
+       /* }*/
     }
 
     public LiveData<Boolean> getPlayerStateforPlay() {
