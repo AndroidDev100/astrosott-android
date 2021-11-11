@@ -64,8 +64,6 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     private ArrayList<PackDetail> packDetailList;
     private String paymentMethod = "";
     private String posterImageUrl = "";
-    private List<Purchase> googlePendingPurchases;
-    private boolean isGooglePending = false;
     private boolean isUpgrade = false, isDowngrade = false;
     private boolean haveSvod = false, haveTvod = false;
 
@@ -409,7 +407,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     @Override
     public void onCardClicked(String productId, String serviceType, String active, String planName, Long price) {
-        if (checkForPending(accountServiceMessageArrayList, serviceType)) {
+        if (checkForPending(accountServiceMessageArrayList, serviceType) || checkGooglePending(serviceType)) {
             commonDialog(getResources().getString(R.string.payment_progress), getResources().getString(R.string.payment_progress_desc), getResources().getString(R.string.ok));
         } else {
             this.planName = planName;
@@ -417,6 +415,16 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
             planPrice = price;
             checkForCpId(serviceType, productId, price);
         }
+    }
+
+    private boolean checkGooglePending(String serviceType) {
+        if (serviceType.equalsIgnoreCase("PPV")) {
+            return billingProcessor.pendingProduct(this);
+        } else if (serviceType.equalsIgnoreCase("SVOD")) {
+            return billingProcessor.pendingProduct(this);
+
+        }
+        return false;
     }
 
     private void maxisRestrictionPopUp(String message) {
@@ -532,7 +540,6 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     //  PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
                     // handle pending purchases, e.g. confirm with users about the pending
                     // purchases, prompt them to complete it, etc.
-                    isGooglePending = true;
                     pendingAddSubscription(purchase);
                     commonDialog(getResources().getString(R.string.pending_payment), getResources().getString(R.string.pending_payment_desc), getResources().getString(R.string.ok_single_exlamation));
 

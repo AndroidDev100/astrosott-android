@@ -791,6 +791,56 @@ public class BillingProcessor implements PurchasesUpdatedListener {
     PurchaseDetailListener callBack;
     SkuDetails oldSkuDetails = null;
 
+
+    public boolean pendingSubscription(Activity context) {
+        if (UserInfo.getInstance(context).isActive()) {
+            if (myBillingClient != null) {
+                final Purchase.PurchasesResult purchasesResult =
+                        myBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+
+                final List<Purchase> purchases = new ArrayList<>();
+                if (purchasesResult.getPurchasesList() != null) {
+                    purchases.addAll(purchasesResult.getPurchasesList());
+                }
+                if (purchases.size() > 0) {
+                    for (Purchase purchaseItem : purchases) {
+                        if (purchaseItem.getPurchaseState() == 4) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+        }
+        return false;
+
+    }
+
+    public boolean pendingProduct(Activity context) {
+        if (UserInfo.getInstance(context).isActive()) {
+            if (myBillingClient != null) {
+                final Purchase.PurchasesResult purchasesResult =
+                        myBillingClient.queryPurchases(BillingClient.SkuType.INAPP);
+
+                final List<Purchase> purchases = new ArrayList<>();
+                if (purchasesResult.getPurchasesList() != null) {
+                    purchases.addAll(purchasesResult.getPurchasesList());
+                }
+                if (purchases.size() > 0) {
+                    for (Purchase purchaseItem : purchases) {
+                        if (purchaseItem.getPurchaseState() == 4) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+        }
+        return false;
+
+    }
+
+
     public void queryPurchases(Activity context, PurchaseDetailListener call) {
         if (UserInfo.getInstance(context).isActive()) {
             if (myBillingClient != null) {

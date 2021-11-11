@@ -50,8 +50,6 @@ import java.util.List;
 public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityProfileSubscriptionBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener, MaxisEditRestrictionPop.EditDialogListener, CommonDialogFragment.EditDialogListener {
     private BillingProcessor billingProcessor;
     private SubscriptionViewModel subscriptionViewModel;
-    private List<Purchase> googlePendingPurchases;
-    private boolean isGooglePending = false;
     private boolean isUpgrade = false, isDowngrade = false;
 
     @Override
@@ -97,7 +95,6 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     //  PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
                     // handle pending purchases, e.g. confirm with users about the pending
                     // purchases, prompt them to complete it, etc.
-                    isGooglePending = true;
                     pendingAddSubscription(purchase);
                     commonDialog(getResources().getString(R.string.pending_payment), getResources().getString(R.string.pending_payment_desc), getResources().getString(R.string.ok_single_exlamation));
 
@@ -219,15 +216,27 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
 
     @Override
     public void onCardClicked(String productId, String serviceType, String activePlan, String name, Long price) {
+        if (checkGooglePending(serviceType)) {
+            commonDialog(getResources().getString(R.string.payment_progress), getResources().getString(R.string.payment_progress_desc), getResources().getString(R.string.ok));
+        } else {
+            this.planName = name;
+            offerId = productId;
+            planPrice = price;
+            FirebaseEventManager.getFirebaseInstance(this).packageEvent(name, price, "trx_select", "");
+            checkForCpId(serviceType, productId);
+        }
 
-        this.planName = name;
-        offerId = productId;
-        planPrice = price;
-        FirebaseEventManager.getFirebaseInstance(this).packageEvent(name, price, "trx_select", "");
 
-        checkForCpId(serviceType, productId);
+    }
 
+    private boolean checkGooglePending(String serviceType) {
+        if (serviceType.equalsIgnoreCase("PPV")) {
+            return billingProcessor.pendingProduct(this);
+        } else if (serviceType.equalsIgnoreCase("SVOD")) {
+            return billingProcessor.pendingProduct(this);
 
+        }
+        return false;
     }
 
     private void checkForCpId(String serviceType, String productId) {
