@@ -876,6 +876,7 @@ public class AppCommonMethods {
             Log.w("urivalue-->>", asset.getName() + "  " + shortLinkTask.toString());
 
         } catch (Exception ignored) {
+            Log.w("urivalue-->,","");
 
         }
     }

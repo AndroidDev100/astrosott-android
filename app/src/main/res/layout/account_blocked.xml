@@ -1,79 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingRight="38dp"
-    android:paddingLeft="38dp"
-    android:paddingBottom="16dp"
-    android:background="@color/grape_purple">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="6dp"
+    app:cardBackgroundColor="@color/grape_purple"
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/close_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/contentDescription"
-        android:src="@drawable/ic_baseline_clear_24"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/roboto_medium"
-        android:lineHeight="35sp"
-        android:text="@string/account_block"
-        android:textColor="@color/title_color"
-        android:textSize="@dimen/font_large"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/close_icon"
-        tools:targetApi="p" />
+        android:background="@color/grape_purple"
+        android:paddingLeft="38dp"
+        android:layout_marginBottom="16dp">
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/roboto_medium"
-        android:gravity="center"
-        android:lineHeight="20sp"
-        android:text="@string/account_has_been_locked"
-        android:textColor="@color/title_color"
-        android:textSize="@dimen/font_medium_large"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        tools:targetApi="p" />
+        <ImageView
+            android:id="@+id/close_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="14dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/contentDescription"
+            android:src="@drawable/ic_baseline_clear_24"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/forgot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_medium"
-        android:gravity="center"
-        android:lineHeight="20sp"
-        android:layout_marginTop="12dp"
-        android:text="@string/forgt_psw_without_question_mark"
-        android:textColor="@color/aqua_marine"
-        android:textSize="@dimen/font_medium_large"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description"
-        tools:targetApi="p" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:lineHeight="35sp"
+            android:text="@string/account_block"
+            android:paddingRight="38dp"
+            android:textColor="@color/title_color"
+            android:textSize="@dimen/font_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/close_icon"
+            tools:targetApi="p" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:lineHeight="20sp"
+            android:paddingRight="38dp"
+            android:text="@string/account_has_been_locked"
+            android:textColor="@color/title_color"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:targetApi="p" />
+
+        <TextView
+            android:id="@+id/forgot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:lineHeight="20sp"
+            android:text="@string/forgt_psw_without_question_mark"
+            android:paddingRight="38dp"
+            android:textColor="@color/aqua_marine"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/description"
+            tools:targetApi="p" />
 
 
-
-
-
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

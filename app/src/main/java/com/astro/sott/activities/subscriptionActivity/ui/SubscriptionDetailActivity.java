@@ -111,7 +111,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     private void getActiveSubscription() {
         accountServiceMessageArrayList = new ArrayList<>();
-        subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), "profile").observe(this, evergentCommonResponse -> {
+        subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), from).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
                     accountServiceMessageArrayList.addAll(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
@@ -502,7 +502,6 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
     @Override
     public void onBillingInitialized() {
         getActiveSubscription();
-        googlePendingPurchases = new ArrayList<>();
 
 
     }
@@ -534,7 +533,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     // handle pending purchases, e.g. confirm with users about the pending
                     // purchases, prompt them to complete it, etc.
                     isGooglePending = true;
-                    googlePendingPurchases.add(purchase);
+                    pendingAddSubscription(purchase);
                     commonDialog(getResources().getString(R.string.pending_payment), getResources().getString(R.string.pending_payment_desc), getResources().getString(R.string.ok_single_exlamation));
 
                 } else {
@@ -619,10 +618,9 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         } else {
             orderId = "";
         }
-        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+        //getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId, "Pending").observe(this, addSubscriptionResponseEvergentCommonResponse -> {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-            onBackPressed();
         });
     }
 
@@ -714,11 +712,6 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     @Override
     public void onActionBtnClicked() {
-        if (isGooglePending) {
-            for (Purchase purchase : googlePendingPurchases) {
-                pendingAddSubscription(purchase);
-                isGooglePending = false;
-            }
-        }
+        onBackPressed();
     }
 }

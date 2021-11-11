@@ -930,9 +930,9 @@ class EvergentServices {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
-        /*if (from.equals("profile", true)) {*/
-        json.addProperty("returnLiveEvents", "F")
-        /*  }*/
+        if (!from.equals("Live Event", true)) {
+            json.addProperty("returnLiveEvents", "F")
+        }
         createUserJson.add("GetActiveSubscriptionsRequestMessage", json)
 
 

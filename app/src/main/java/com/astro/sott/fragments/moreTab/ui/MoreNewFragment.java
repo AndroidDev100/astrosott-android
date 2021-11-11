@@ -173,11 +173,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     }
                 } else {
                     navBar.setVisibility(View.GONE);
-                    ManageSubscriptionFragment manageSubscriptionFragment = new ManageSubscriptionFragment();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.content_frame, manageSubscriptionFragment); // give your fragment container id in first parameter
-                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                    transaction.commit();
+                    startActivity(new Intent(getActivity(), ManageSubscriptionFragment.class));
                 }
 
             }
@@ -186,7 +182,6 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             @Override
             public void onClick(View v) {
                 navBar.setVisibility(View.GONE);
-
                 ChangeEmailConfirmation someFragment = new ChangeEmailConfirmation();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
@@ -199,11 +194,8 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             public void onClick(View v) {
                 navBar.setVisibility(View.GONE);
                 if (UserInfo.getInstance(getActivity()).isActive()) {
-                    TransactionHistory transactionHistory = new TransactionHistory();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.add(R.id.content_frame, transactionHistory); // give your fragment container id in first parameter
-                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                    transaction.commit();
+                    startActivity(new Intent(getActivity(), TransactionHistory.class));
+
                 } else {
                     FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
                     new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
@@ -434,8 +426,12 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             getBinding().tvVIPUser.setText(getResources().getString(R.string.become_vip));
         } else {
             getBinding().tvVIPUser.setText(getResources().getString(R.string.become_vip));
-
+            getBinding().edit.setVisibility(View.GONE);
+            getBinding().rlLogout.setVisibility(View.GONE);
+            getBinding().loginSignupMore.setVisibility(View.VISIBLE);
+            getBinding().loginUi.setVisibility(View.GONE);
         }
+
         getBinding().tvBilling.setVisibility(View.GONE);
         getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
         getBinding().tvSubscribeNow.setText(getResources().getString(R.string.subscibe_now));
@@ -502,6 +498,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                             getActiveSubscription();
                         } else {
                             AppCommonMethods.removeUserPrerences(getActivity());
+                            setUiForLogout();
                         }
                     });
                 } else {
@@ -560,12 +557,10 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         AppCommonMethods.removeUserPrerences(getActivity());
         Toast.makeText(getActivity(), "Logout Successful!", Toast.LENGTH_SHORT).show();
         setUiForLogout();
-        getBinding().rlLogout.setVisibility(View.GONE);
-        getBinding().loginSignupMore.setVisibility(View.VISIBLE);
-        getBinding().loginUi.setVisibility(View.GONE);
+
         LoginManager.getInstance().logOut();
         CleverTapManager.getInstance().setSignOutEvent(getActivity());
-        getBinding().edit.setVisibility(View.GONE);
+
         new ActivityLauncher(getActivity()).homeScreen(getActivity(), HomeActivity.class);
 
     }

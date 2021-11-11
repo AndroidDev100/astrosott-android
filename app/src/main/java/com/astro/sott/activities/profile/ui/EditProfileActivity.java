@@ -259,7 +259,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
                     EvergentRefreshToken.refreshToken(EditProfileActivity.this, UserInfo.getInstance(EditProfileActivity.this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
-                        if (evergentCommonResponse.isStatus()) {
+                        if (evergentCommonResponse1.isStatus()) {
                             getContact();
                         } else {
                             AppCommonMethods.removeUserPrerences(this);

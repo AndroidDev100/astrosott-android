@@ -21,6 +21,36 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <RelativeLayout
+            android:id="@+id/no_data_layout"
+            android:layout_width="match_parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="25dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/no_data_img"
+                android:layout_width="133dp"
+                android:layout_centerHorizontal="true"
+                android:layout_height="114dp"
+                android:background="@drawable/sponsor_data"></ImageView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/no_data_img"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textSize="@dimen/font_medium_large"
+                android:text="@string/no_data_sponsor"
+                android:textColor="@color/title_color"></TextView>
+        </RelativeLayout>
+
         <TextView
             android:id="@+id/load_more"
             android:layout_width="wrap_content"
@@ -30,9 +60,9 @@
             android:fontFamily="@font/roboto_regular"
             android:paddingBottom="10dp"
             android:text="Load More"
-            android:visibility="gone"
             android:textColor="@color/title_color"
             android:textSize="@dimen/font_medium_large"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recyclerView" />

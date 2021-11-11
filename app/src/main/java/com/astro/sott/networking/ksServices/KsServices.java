@@ -3966,7 +3966,7 @@ public class KsServices {
             }
 
         } else {
-            assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+          //  assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
         }
 
       /*  if (count==0){

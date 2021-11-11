@@ -566,7 +566,6 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
         getBinding().noConnectionLayout.setVisibility(View.GONE);
         setExpandable();
         getBinding().shareWith.setOnClickListener(view -> {
-
             if (SystemClock.elapsedRealtime() - lastClickTime < AppLevelConstants.SHARE_DIALOG_DELAY) {
                 return;
             }
@@ -813,10 +812,10 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
         getBinding().setMovieAssestModel(asset);
         setMetas();
 
-        getMovieCasts();
-        getMovieCrews();
-        setSubtitleLanguage();
-        getDuration();
+        // getMovieCasts();
+        // getMovieCrews();
+        //  setSubtitleLanguage();
+        //  getDuration();
         if (type == 1) {
 
             PrintLogging.printLog(this.getClass(), "type 1", "");
@@ -999,37 +998,24 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
 
 
     private void setExpandable() {
-        getBinding().expandableLayout.collapse();
+        //    getBinding().expandableLayout.collapse();
         getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
 //        getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
-        getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
+        // getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
         getBinding().lessButton.setOnClickListener(view -> {
 
             getBinding().descriptionText.toggle();
 
             if (getBinding().descriptionText.isExpanded()) {
                 getBinding().descriptionText.setEllipsize(null);
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
                 getBinding().shadow.setVisibility(View.GONE);
 
             } else {
                 getBinding().shadow.setVisibility(View.VISIBLE);
+                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
                 getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
             }
-
-            if (getBinding().expandableLayout.isExpanded()) {
-//                getBinding().textExpandable.setText(getResources().getString(R.string.view_more));
-                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
-
-
-            } else {
-                getBinding().textExpandable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
-
-//                getBinding().textExpandable.setText(getResources().getString(R.string.view_less));
-            }
-            if (view != null) {
-                getBinding().expandableLayout.expand();
-            }
-            getBinding().expandableLayout.collapse();
         });
 
     }

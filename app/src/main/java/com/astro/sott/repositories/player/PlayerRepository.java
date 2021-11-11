@@ -1055,7 +1055,7 @@ public class PlayerRepository {
 
 
             playerPluginConfig.setPluginConfig(PhoenixAnalyticsPlugin.factory.getName(), phoenixPluginConfig.toJson());
-            if (AppCommonMethods.isAdsEnable) {
+            if (AppCommonMethods.isAdsEnable && !isLivePlayer) {
                 if (!AssetContent.isAdsEnable(asset.getMetas())) {
                     getAdsContextApi(asset, playerMutableLiveData, mediaConfig);
                 } else {
@@ -1331,12 +1331,12 @@ public class PlayerRepository {
     private void registerPlugins(Context context, Asset asset) {
         PlayKitManager.registerPlugins(context, KavaAnalyticsPlugin.factory);
         PlayKitManager.registerPlugins(context, PhoenixAnalyticsPlugin.factory);
-       /* if (asset.getType() == MediaTypeConstant.getLinear(context) || asset.getType() == MediaTypeConstant.getProgram(context)) {
+        if (asset.getType() == MediaTypeConstant.getLinear(context) || asset.getType() == MediaTypeConstant.getProgram(context)) {
 
-        } else {*/
-            if (AppCommonMethods.isAdsEnable)
-                PlayKitManager.registerPlugins(context, IMAPlugin.factory);
-       /* }*/
+        } else {
+        if (AppCommonMethods.isAdsEnable)
+            PlayKitManager.registerPlugins(context, IMAPlugin.factory);
+        }
     }
 
     public LiveData<Boolean> getPlayerStateforPlay() {

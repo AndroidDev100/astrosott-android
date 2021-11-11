@@ -769,8 +769,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
                     }
                 });
-            }else {
-               getBinding().btnProgressBar.setVisibility(View.GONE);
+            } else {
+                getBinding().btnProgressBar.setVisibility(View.GONE);
             }
         } else {
             fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
@@ -857,8 +857,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
                     }
                 });
-            }else {
-              getBinding().btnProgressBar.setVisibility(View.GONE);
+            } else {
+                getBinding().btnProgressBar.setVisibility(View.GONE);
             }
         }
 

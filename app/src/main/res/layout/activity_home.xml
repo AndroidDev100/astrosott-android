@@ -76,7 +76,6 @@
             </ScrollView>
 
 
-
             <RelativeLayout
                 android:id="@+id/lay"
                 android:layout_width="match_parent"
@@ -97,6 +96,7 @@
                     android:background="@drawable/grey_above_shadow"
                     android:visibility="gone" />
             </RelativeLayout>
+
             <FrameLayout
                 android:id="@+id/frame_content"
                 android:layout_width="match_parent"

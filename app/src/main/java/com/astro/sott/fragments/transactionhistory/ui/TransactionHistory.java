@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -33,6 +34,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.callBacks.commonCallBacks.PlanSelectedCallback;
 import com.astro.sott.databinding.FragmentTransactionHistoryBinding;
@@ -46,6 +48,8 @@ import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -56,12 +60,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TransactionHistory#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class TransactionHistory extends BaseBindingFragment<FragmentTransactionHistoryBinding> implements PlanSelectedCallback {
+
+public class TransactionHistory extends BaseBindingActivity<FragmentTransactionHistoryBinding> implements PlanSelectedCallback {
     private SubscriptionViewModel subscriptionViewModel;
     private List<OrderItem> orderList;
     private List<OrderItem> failedOrderList, pendingList, approvedList;
@@ -85,54 +85,32 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TransactionHistory.
-     */
     // TODO: Rename and change types and number of parameters
-    public static TransactionHistory newInstance(String param1, String param2) {
+  /*  public static TransactionHistory newInstance(String param1, String param2) {
         TransactionHistory fragment = new TransactionHistory();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         modelCall();
         UIinitialization();
-        FirebaseEventManager.getFirebaseInstance(getActivity()).trackScreenName(FirebaseEventManager.TRANSACTION_HISTORY);
+        FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.TRANSACTION_HISTORY);
         setClicks();
         getPaymentV2();
         boolean permission = osPermission();
-      /*  Log.w("permission-->>", permission + "");
-        if (permission) {
-
-        } else {
-            requestPermission();
-        }*/
     }
+
 
     private void setClicks() {
 
         getBinding().addSubscription.setOnClickListener(v -> {
-            new ActivityLauncher(getActivity()).profileSubscription("Profile");
+            new ActivityLauncher(this).profileSubscription("Profile");
         });
         getBinding().arrow.setOnClickListener(v -> {
             if (getBinding().separator.getVisibility() == View.GONE) {
@@ -302,7 +280,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
     private void getInvoices(String transactionId, int count) {
         getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         if (transactionIdCount < downloadIds.size()) {
-            subscriptionViewModel.getInvoice(UserInfo.getInstance(getActivity()).getAccessToken(), transactionId).observe(this, invoiceResponse -> {
+            subscriptionViewModel.getInvoice(UserInfo.getInstance(this).getAccessToken(), transactionId).observe(this, invoiceResponse -> {
                 if (invoiceResponse.isStatus()) {
                     if (invoiceResponse.getResponse().getGetInvoicePDFResponseMessage() != null && invoiceResponse.getResponse().getGetInvoicePDFResponseMessage().getResponseData() != null) {
                         urls[count] = invoiceResponse.getResponse().getGetInvoicePDFResponseMessage().getResponseData();
@@ -314,7 +292,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                     }
                 } else {
                     //  new DownloadFileFromURL().execute(urls);
-                    Toast.makeText(getActivity(), invoiceResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, invoiceResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
 
                 }
@@ -334,7 +312,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         orderList = new ArrayList<>();
         downloadIds = new ArrayList<>();
         getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
-        subscriptionViewModel.getPaymentV2(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
+        subscriptionViewModel.getPaymentV2(UserInfo.getInstance(this).getAccessToken()).observe(this, evergentCommonResponse -> {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 getBinding().noDataLayout.setVisibility(View.GONE);
@@ -350,18 +328,18 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                 }
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equals("111111111")) {
-                    EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                    EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
                         if (evergentCommonResponse.isStatus()) {
                             getPaymentV2();
                         } else {
-                            AppCommonMethods.removeUserPrerences(getActivity());
+                            AppCommonMethods.removeUserPrerences(this);
                         }
                     });
                 } else {
                     getBinding().statusLay.setVisibility(View.GONE);
                     getBinding().noDataLayout.setVisibility(View.VISIBLE);
                     getBinding().downloadButton.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -407,13 +385,13 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         getBinding().recyclerView.hasFixedSize();
         getBinding().recyclerView.setNestedScrollingEnabled(false);
         getBinding().recyclerView.hasFixedSize();
-        getBinding().recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        getBinding().recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
         getBinding().selectedText.setText(getResources().getString(R.string.successful));
         getBinding().secondText.setText(getResources().getString(R.string.pending));
         getBinding().thirdText.setText(getResources().getString(R.string.failed));
         getBinding().backButton.setOnClickListener(v -> {
-            getActivity().onBackPressed();
+            onBackPressed();
         });
     }
 
@@ -441,11 +419,6 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         return false;
        /* int result = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         return result == PackageManager.PERMISSION_GRANTED;*/
-    }
-
-    @Override
-    protected FragmentTransactionHistoryBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
-        return FragmentTransactionHistoryBinding.inflate(inflater);
     }
 
 
@@ -487,6 +460,11 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
 
     }
 
+    @Override
+    protected FragmentTransactionHistoryBinding inflateBindingLayout(@NonNull @NotNull LayoutInflater inflater) {
+        return FragmentTransactionHistoryBinding.inflate(inflater);
+    }
+
     class DownloadFileFromURL extends AsyncTask<String, Integer, String> {
 
         /**
@@ -525,10 +503,10 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
          **/
         @Override
         protected void onPostExecute(String file_url) {
-            if (getActivity() != null) {
+           /* if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                 });
-            }
+            }*/
             // dismiss the dialog after the file was downloaded
 
             // Displaying downloaded image into image view
@@ -549,15 +527,15 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                 os.close();
                 getFilePathAndStatus.filStatus = true;
                 getFilePathAndStatus.filePath = getReportPath(filename, extension);
-                getActivity().runOnUiThread(() -> {
+                runOnUiThread(() -> {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "Invoice Downloaded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TransactionHistory.this, "Invoice Downloaded", Toast.LENGTH_SHORT).show();
                     getBinding().downloadLay.setVisibility(View.GONE);
 
                 });
                 return getFilePathAndStatus;
             } catch (IOException e) {
-                getActivity().runOnUiThread(() -> {
+                runOnUiThread(() -> {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 });
                 e.printStackTrace();
@@ -568,8 +546,8 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         }
 
         public String getReportPath(String filename, String extension) {
-            String root = getActivity().getExternalFilesDir(null).getAbsolutePath();
-            File myDir = new File(root + "/" + getActivity().getResources().getString(R.string.app_name));
+            String root = getExternalFilesDir(null).getAbsolutePath();
+            File myDir = new File(root + "/" + getResources().getString(R.string.app_name));
             if (!myDir.exists()) {
                 myDir.mkdirs();
             }
@@ -591,7 +569,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
         try {
             byte[] decodedBytes = Base64.decode(base64, 0);
             InputStream in = new ByteArrayInputStream(decodedBytes);
-            Uri savedFileUri = savePdf(getActivity(), in, "files/pdf", s + ".pdf", "pdf");
+            Uri savedFileUri = savePdf(this, in, "files/pdf", s + ".pdf", "pdf");
         } catch (Exception ignored) {
 
         }
@@ -601,7 +579,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                        @NonNull final String mimeType,
                        @NonNull final String displayName, @Nullable final String subFolder) throws IOException {
         FileOutputStream fos;
-        File myDir = new File(getActivity().getExternalFilesDir(null) + "/" + getActivity().getResources().getString(R.string.app_name));
+        File myDir = new File(getExternalFilesDir(null) + "/" + getResources().getString(R.string.app_name));
         String relativeLocation = Environment.DIRECTORY_DOWNLOADS;
 
         if (!TextUtils.isEmpty(subFolder)) {
@@ -625,7 +603,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
             ParcelFileDescriptor pfd;
             try {
                 assert uri != null;
-                pfd = getActivity().getContentResolver().openFileDescriptor(uri, "w");
+                pfd = getContentResolver().openFileDescriptor(uri, "w");
                 assert pfd != null;
                 FileOutputStream out = new FileOutputStream(pfd.getFileDescriptor());
 
@@ -638,9 +616,9 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
                 out.close();
                 in.close();
                 pfd.close();
-                getActivity().runOnUiThread(() -> {
+                runOnUiThread(() -> {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "Invoice Downloaded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TransactionHistory.this, "Invoice Downloaded", Toast.LENGTH_SHORT).show();
                     getBinding().downloadLay.setVisibility(View.GONE);
 
                 });
@@ -650,7 +628,7 @@ public class TransactionHistory extends BaseBindingFragment<FragmentTransactionH
 
             contentValues.clear();
             contentValues.put(MediaStore.Video.Media.IS_PENDING, 0);
-            getActivity().getContentResolver().update(uri, contentValues, null, null);
+            getContentResolver().update(uri, contentValues, null, null);
             stream = resolver.openOutputStream(uri);
             if (stream == null) {
                 throw new IOException("Failed to get output stream.");

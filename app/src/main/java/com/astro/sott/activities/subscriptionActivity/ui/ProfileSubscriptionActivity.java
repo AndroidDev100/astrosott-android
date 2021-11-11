@@ -98,7 +98,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     // handle pending purchases, e.g. confirm with users about the pending
                     // purchases, prompt them to complete it, etc.
                     isGooglePending = true;
-                    googlePendingPurchases.add(purchase);
+                    pendingAddSubscription(purchase);
                     commonDialog(getResources().getString(R.string.pending_payment), getResources().getString(R.string.pending_payment_desc), getResources().getString(R.string.ok_single_exlamation));
 
                 } else {
@@ -185,7 +185,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
             orderId = "";
         }
         subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId, "Pending").observe(this, addSubscriptionResponseEvergentCommonResponse -> {
-            onBackPressed();
+            // onBackPressed();
         });
     }
 
@@ -384,11 +384,6 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
 
     @Override
     public void onActionBtnClicked() {
-        if (isGooglePending) {
-            for (Purchase purchase : googlePendingPurchases) {
-                pendingAddSubscription(purchase);
-                isGooglePending = false;
-            }
-        }
+
     }
 }

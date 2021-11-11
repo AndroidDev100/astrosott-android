@@ -118,7 +118,8 @@ public class SponsoredTabFragment extends BaseBindingFragment<FragmentSponsoredT
     private void getSponsorData() {
         if (channelId != null) {
             viewModel.getSponsorChannelData(channelId).observe(getViewLifecycleOwner(), asset -> {
-                if (asset != null) {
+                if (asset != null && asset.size() > 0) {
+                    getBinding().noDataLayout.setVisibility(View.GONE);
                     railCommonDataList = new ArrayList<>();
                     for (Asset assetData : asset) {
                         RailCommonData railCommonData = new RailCommonData();
@@ -127,6 +128,8 @@ public class SponsoredTabFragment extends BaseBindingFragment<FragmentSponsoredT
                     }
                     SeriesShowAdapter showAdapter = new SeriesShowAdapter(getActivity(), railCommonDataList, true);
                     getBinding().recyclerView.setAdapter(showAdapter);
+                } else {
+                    getBinding().noDataLayout.setVisibility(View.VISIBLE);
                 }
             });
         }

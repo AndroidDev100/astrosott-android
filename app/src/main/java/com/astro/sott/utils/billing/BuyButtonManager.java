@@ -77,6 +77,8 @@ public class BuyButtonManager {
                         }
                         getProducts(from, buyButtonListener);
                     }
+                }else {
+                    buyButtonListener.onPackagesAvailable(packDetailList, SVOD, "0", subscriptionIds);
                 }
             });
         } else {
@@ -87,8 +89,10 @@ public class BuyButtonManager {
                             subscriptionIds = new String[subscriptionList.size()];
                             for (Subscription subscription : subscriptionList) {
                                 if (subscription.getId() != null) {
+                                    try {
                                     subscriptionIds[count] = subscription.getId();
                                     count++;
+                                    }catch (Exception e){ }
                                 }
                             }
                             getProducts(from, buyButtonListener);
