@@ -7,7 +7,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/main_layut_player">
+        android:id="@+id/main_layut_player"
+        android:focusableInTouchMode="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -63,7 +64,7 @@
                         android:lineHeight="32sp"
                         android:maxLines="1"
                         android:textColor="@color/pale_gray"
-                        android:textSize="@dimen/dimen20sp"
+                        android:textSize="@dimen/_16sp"
                         android:visibility="gone"
                         tools:targetApi="p" />
 
@@ -85,8 +86,8 @@
                         tools:ignore="ContentDescription" />
 
                     <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="35dp"
+                        android:layout_width="100dp"
+                        android:layout_height="25dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerInParent="true"
                         android:layout_marginStart="@dimen/dimen10dp"
@@ -259,8 +260,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3dp"
-                        android:layout_marginTop="38.7dp"
-                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/dimen48dp"
+                        android:layout_marginBottom="@dimen/_3sdp"
                         android:layout_toEndOf="@+id/slash"
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
@@ -277,8 +278,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="13dp"
-                        android:layout_marginTop="38.7dp"
-                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/dimen48dp"
+                        android:layout_marginBottom="@dimen/_3sdp"
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:lineHeight="32sp"
@@ -293,8 +294,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3dp"
-                        android:layout_marginTop="38.7dp"
-                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/dimen48dp"
+                        android:layout_marginBottom="@dimen/_3sdp"
                         android:layout_toEndOf="@+id/current_time"
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
