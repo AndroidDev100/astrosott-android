@@ -267,6 +267,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     long startTime1;
     long duration;
     static final int MAX_DURATION = 500;
+    private float upX1;
+    private float upX2;
+    private float upY1;
+    private float upY2;
+    private boolean isTouchCaptured = false;
+    static final int min_distance = 100;
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -2674,6 +2680,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void ShowAndHideView() {
+        if (getBinding().imagePreview.getVisibility() == View.VISIBLE){
+            getBinding().imagePreview.setVisibility(View.GONE);
+        }
         Log.d("DragValueIs", drag + "");
 
 
@@ -3020,7 +3029,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         break;
 
                     case MotionEvent.ACTION_UP:
-
+                        isTouchCaptured = false;
                         clickCount++;
 
                         if (clickCount==1){
@@ -3029,7 +3038,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                         else if(clickCount == 2)
                         {
-                            long duration =  System.currentTimeMillis() - startTime1;
+                             duration =  System.currentTimeMillis() - startTime1;
                             if(duration <= MAX_DURATION)
                             {
                                 if (runningPlayer.isPlaying()){
@@ -3098,6 +3107,121 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     //up  swipe volume increase
                                     mAudioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
                                     getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+                                }
+                            }
+
+
+//                            downX = event.getX();
+//                            downY = event.getY();
+
+
+                        }
+
+                        if (!isTouchCaptured) {
+                            upX1 = event.getX();
+                            upY1 = event.getY();
+                            isTouchCaptured = true;
+                        } else {
+                            upX2 = event.getX();
+                            upY2 = event.getY();
+
+                            float deltaX = upX1 - upX2;
+                            float deltaY = upY1 - upY2;
+                            //HORIZONTAL SCROLL
+                            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                                if (Math.abs(deltaX) > min_distance) {
+                                    // left or right
+                                    if (deltaX < 0) {
+                                        Log.d("dgdgdgd","Right");
+                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 3000);
+                                        getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
+
+                                        if (isLivePlayer) {
+                                        } else {
+                                            positionInPercentage = Math.round((getBinding().seekBar.getProgress() * 100 / runningPlayer.getDuration()));
+                                            Log.d("Positionperc",positionInPercentage+"");
+
+                                            float leftMargin = getBinding().seekBar.getWidth() * positionInPercentage / 100;
+
+
+//
+                                            if (leftMargin < (getBinding().seekBar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
+                                                //previewImage.translationX = leftMargin
+                                                getBinding().imagePreview.setTranslationX(leftMargin);
+                                            }
+//
+//
+                                            try {
+
+
+                                                if (previewImagesHashMap != null) {
+                                                    Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
+                                                    if (bitmap != null) {
+                                                        getBinding().imagePreview.setVisibility(View.VISIBLE);
+                                                        getBinding().imagePreview.setImageBitmap(bitmap);
+                                                        getBinding().imagePreview.bringToFront();
+                                                    }
+                                                } else {
+                                                    getBinding().imagePreview.setVisibility(View.VISIBLE);
+                                                    getBinding().imagePreview.bringToFront();
+                                                }
+
+                                            } catch (Exception e) {
+
+                                            }
+                                        }
+
+                                        viewModel.sendSeekBarProgress(getBinding().seekBar.getProgress()).observe(getActivity(), s -> getBinding().currentTime.setText(s));
+
+                                        return true;
+                                    }
+                                    if (deltaX > 0) {
+                                        Log.d("dgdgdgd","Left");
+                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() - 3000);
+                                        getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
+
+                                        if (isLivePlayer) {
+                                        } else {
+                                            positionInPercentage = Math.round((getBinding().seekBar.getProgress() * 100 / runningPlayer.getDuration()));
+                                            Log.d("Positionperc",positionInPercentage+"");
+
+                                            float leftMargin = getBinding().seekBar.getWidth() * positionInPercentage / 100;
+
+
+//
+                                            if (leftMargin < (getBinding().seekBar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
+                                                //previewImage.translationX = leftMargin
+                                                getBinding().imagePreview.setTranslationX(leftMargin);
+                                            }
+//
+//
+                                            try {
+
+
+                                                if (previewImagesHashMap != null) {
+                                                    Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
+                                                    if (bitmap != null) {
+                                                        getBinding().imagePreview.setVisibility(View.VISIBLE);
+                                                        getBinding().imagePreview.setImageBitmap(bitmap);
+                                                        getBinding().imagePreview.bringToFront();
+                                                    }
+                                                } else {
+                                                    getBinding().imagePreview.setVisibility(View.VISIBLE);
+                                                    getBinding().imagePreview.bringToFront();
+                                                }
+
+                                            } catch (Exception e) {
+
+                                            }
+                                        }
+
+                                        viewModel.sendSeekBarProgress(getBinding().seekBar.getProgress()).observe(getActivity(), s -> getBinding().currentTime.setText(s));
+                                        return true;
+                                    }
+                                } else {
+                                    //not long enough swipe...
+                                    getBinding().imagePreview.setVisibility(View.GONE);
+                                    return false;
                                 }
                             }
                         }
@@ -3175,6 +3299,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         break;
 
                     case MotionEvent.ACTION_UP:
+                        isTouchCaptured = false;
 
                         clickCount++;
 
@@ -3184,7 +3309,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                         else if(clickCount == 2)
                         {
-                            long duration =  System.currentTimeMillis() - startTime1;
+                             duration =  System.currentTimeMillis() - startTime1;
                             if(duration <= MAX_DURATION)
                             {
                                 if (runningPlayer.isPlaying()){
@@ -3253,6 +3378,117 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     //up  swipe volume increase
                                     mAudioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
                                     getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+                                }
+                            }
+                        }
+
+                        if (!isTouchCaptured) {
+                            upX1 = event.getX();
+                            upY1 = event.getY();
+                            isTouchCaptured = true;
+                        } else {
+                            upX2 = event.getX();
+                            upY2 = event.getY();
+
+                            float deltaX = upX1 - upX2;
+                            float deltaY = upY1 - upY2;
+                            //HORIZONTAL SCROLL
+                            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                                if (Math.abs(deltaX) > min_distance) {
+                                    getBinding().rl1.setVisibility(View.VISIBLE);
+                                    // left or right
+                                    if (deltaX < 0) {
+
+                                        Log.d("dgdgdgd","Right");
+                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 3000);
+                                        getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
+
+                                        if (isLivePlayer) {
+                                        } else {
+                                            positionInPercentage = Math.round((getBinding().seekBar.getProgress() * 100 / runningPlayer.getDuration()));
+                                            Log.d("Positionperc",positionInPercentage+"");
+
+                                            float leftMargin = getBinding().seekBar.getWidth() * positionInPercentage / 100;
+
+
+//
+                                            if (leftMargin < (getBinding().seekBar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
+                                                //previewImage.translationX = leftMargin
+                                                getBinding().imagePreview.setTranslationX(leftMargin);
+                                            }
+//
+//
+                                            try {
+
+
+                                                if (previewImagesHashMap != null) {
+                                                    Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
+                                                    if (bitmap != null) {
+                                                        getBinding().imagePreview.setVisibility(View.VISIBLE);
+                                                        getBinding().imagePreview.setImageBitmap(bitmap);
+                                                        getBinding().imagePreview.bringToFront();
+                                                    }
+                                                } else {
+                                                    getBinding().imagePreview.setVisibility(View.VISIBLE);
+                                                    getBinding().imagePreview.bringToFront();
+                                                }
+
+                                            } catch (Exception e) {
+
+                                            }
+                                        }
+
+                                        viewModel.sendSeekBarProgress(getBinding().seekBar.getProgress()).observe(getActivity(), s -> getBinding().currentTime.setText(s));
+
+                                        return true;
+                                    }
+                                    if (deltaX > 0) {
+                                        Log.d("dgdgdgd","Left");
+                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() - 3000);
+                                        getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
+
+                                        if (isLivePlayer) {
+                                        } else {
+                                            positionInPercentage = Math.round((getBinding().seekBar.getProgress() * 100 / runningPlayer.getDuration()));
+                                            Log.d("Positionperc",positionInPercentage+"");
+
+                                            float leftMargin = getBinding().seekBar.getWidth() * positionInPercentage / 100;
+
+
+//
+                                            if (leftMargin < (getBinding().seekBar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
+                                                //previewImage.translationX = leftMargin
+                                                getBinding().imagePreview.setTranslationX(leftMargin);
+                                            }
+//
+//
+                                            try {
+
+
+                                                if (previewImagesHashMap != null) {
+                                                    Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
+                                                    if (bitmap != null) {
+                                                        getBinding().imagePreview.setVisibility(View.VISIBLE);
+                                                        getBinding().imagePreview.setImageBitmap(bitmap);
+                                                        getBinding().imagePreview.bringToFront();
+                                                    }
+                                                } else {
+                                                    getBinding().imagePreview.setVisibility(View.VISIBLE);
+                                                    getBinding().imagePreview.bringToFront();
+                                                }
+
+                                            } catch (Exception e) {
+
+                                            }
+                                        }
+
+                                        viewModel.sendSeekBarProgress(getBinding().seekBar.getProgress()).observe(getActivity(), s -> getBinding().currentTime.setText(s));
+                                        return true;
+                                    }
+                                } else {
+                                    //not long enough swipe...
+                                    getBinding().imagePreview.setVisibility(View.GONE);
+                                    return false;
                                 }
                             }
                         }
