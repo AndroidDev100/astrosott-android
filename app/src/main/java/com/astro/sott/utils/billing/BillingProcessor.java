@@ -925,7 +925,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
     private void queryPurchaseProduct(Activity context) {
         final Purchase.PurchasesResult purchasesProductResult =
-                myBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+                myBillingClient.queryPurchases(BillingClient.SkuType.INAPP);
 
         final List<Purchase> purchasesArraylist = new ArrayList<>();
         if (purchasesProductResult.getPurchasesList() != null) {
@@ -939,6 +939,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                     JSONObject jsonObject = new JSONObject(purchaseProductItem.getOriginalJson());
                     Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
                     String accountId = jsonObject.getString("obfuscatedAccountId");
+                 //   handleConsumablePurchasesAsync(purchaseProductItem);
                     if (accountId.equalsIgnoreCase(UserInfo.getInstance(context).getCpCustomerId())) {
                         if (!isAcknowledged) {
                             inAppProcessListener.onAcknowledged(purchaseProductItem.getSku(), purchaseProductItem.getPurchaseToken(), purchaseProductItem.getOrderId());
