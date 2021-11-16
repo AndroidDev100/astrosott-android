@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.astro.sott.R;
 import com.astro.sott.activities.confirmPassword.ui.ConfirmPasswordActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
-import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityEditEmailBinding;
@@ -216,9 +215,10 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
         astroLoginViewModel.createOtp(type, newMobile).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 getBinding().progressBar.setVisibility(View.GONE);
-                Intent intent = new Intent(this, VerificationActivity.class);
+                Intent intent = new Intent(this, EditVerificationActivity.class);
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type);
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, newMobile);
+                intent.putExtra(AppLevelConstants.SCREEN_FROM,  getBinding().title.getText().toString());
                 if (!newMobile.equalsIgnoreCase(""))
                     intent.putExtra("newMobile", newMobile);
                 intent.putExtra(AppLevelConstants.PASSWORD_KEY, password);
@@ -239,8 +239,9 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
                 if (evergentCommonResponse.isStatus()) {
                     //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(this, VerificationActivity.class);
+                    Intent intent = new Intent(this, EditVerificationActivity.class);
                     intent.putExtra(AppLevelConstants.TYPE_KEY, "mobile");
+                    intent.putExtra(AppLevelConstants.SCREEN_FROM,  getBinding().title.getText().toString());
                     intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, UserInfo.getInstance(this).getEmail());
                     intent.putExtra("newMobile", mobile);
                     intent.putExtra(AppLevelConstants.PASSWORD_KEY, "");
@@ -256,10 +257,11 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
             astroLoginViewModel.createOtp("mobile", mobile).observe(this, evergentCommonResponse -> {
 
                 if (evergentCommonResponse.isStatus()) {
-                    Intent intent = new Intent(this, VerificationActivity.class);
+                    Intent intent = new Intent(this, EditVerificationActivity.class);
                     intent.putExtra(AppLevelConstants.TYPE_KEY, "mobile");
                     intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, mobile);
                     intent.putExtra("newMobile", mobile);
+                    intent.putExtra(AppLevelConstants.SCREEN_FROM, getBinding().title.getText().toString());
                     intent.putExtra(AppLevelConstants.PASSWORD_KEY, "");
                     intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD);
                     startActivity(intent);

@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.astro.sott.R;
 import com.astro.sott.activities.confirmPassword.ui.ConfirmPasswordActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
-import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityEditEmailBinding;
@@ -222,8 +221,9 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
         astroLoginViewModel.createOtp(type, newEmail).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 getBinding().progressBar.setVisibility(View.GONE);
-                Intent intent = new Intent(this, VerificationActivity.class);
+                Intent intent = new Intent(this, EditVerificationActivity.class);
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type);
+                intent.putExtra(AppLevelConstants.SCREEN_FROM, getBinding().title.getText().toString());
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, newEmail);
                 if (!newEmail.equalsIgnoreCase(""))
                     intent.putExtra("newEmail", newEmail);
@@ -269,8 +269,9 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
                 if (evergentCommonResponse.isStatus()) {
                     //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(this, VerificationActivity.class);
+                    Intent intent = new Intent(this, EditVerificationActivity.class);
                     intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
+                    intent.putExtra(AppLevelConstants.SCREEN_FROM, getBinding().title.getText().toString());
                     intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, UserInfo.getInstance(this).getEmail());
                     intent.putExtra("newEmail", email);
                     intent.putExtra(AppLevelConstants.PASSWORD_KEY, "");
@@ -288,8 +289,9 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
                 if (evergentCommonResponse.isStatus()) {
                     //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(this, VerificationActivity.class);
+                    Intent intent = new Intent(this, EditVerificationActivity.class);
                     intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
+                    intent.putExtra(AppLevelConstants.SCREEN_FROM, getBinding().title.getText().toString());
                     intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email);
                     intent.putExtra("newEmail", email);
                     intent.putExtra(AppLevelConstants.PASSWORD_KEY, "");

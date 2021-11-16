@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.astro.sott">
-    <!--    <uses-permission android:name="android.permission.BLUETOOTH"/>-->
-    <!--    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />-->
+    <!-- <uses-permission android:name="android.permission.BLUETOOTH"/> -->
+    <!-- <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -14,11 +14,13 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    <!--  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
+    <!--
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
       <uses-permission
           android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-          android:maxSdkVersion="28" />-->
-    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS"  />-->
+          android:maxSdkVersion="28" />
+    -->
+    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS"  /> -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission
@@ -38,9 +40,10 @@
         android:theme="@style/MyMaterialTheme"
         android:windowSoftInputMode="stateVisible|adjustPan|adjustResize"
         tools:replace="android:allowBackup">
+        <activity android:name=".activities.profile.ui.EditVerificationActivity"></activity>
         <activity
             android:name=".activities.subscriptionActivity.ui.ProfileSubscriptionActivity"
-            android:screenOrientation="locked"></activity>
+            android:screenOrientation="locked" />
         <activity android:name=".activities.webEpisodeDescription.WebEpisodeDetailActivity" />
         <activity android:name=".activities.moreListing.ui.CustomListingActivity" />
         <activity android:name=".activities.isThatYou.IsThatYouActivity" />
@@ -85,7 +88,6 @@
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.verification.VerificationActivity"
-
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.forgotPassword.ui.ChangePasswordActivity"
@@ -166,15 +168,15 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-
-        <!-- <receiver
+        <!--
+ <receiver
              android:name="com.appsflyer.MultipleInstallBroadcastReceiver"
              android:exported="true">
              <intent-filter>
                  <action android:name="com.android.vending.INSTALL_REFERRER" />
              </intent-filter>
-         </receiver>-->
-
+         </receiver>
+        -->
         <activity android:name=".activities.parentalControl.ui.ParentalControl" />
         <activity
             android:name=".activities.myplaylist.ui.MultiplePlaylistActivity"
@@ -190,8 +192,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -200,10 +200,7 @@
 
                 <data android:host="@string/app_domain" />
                 <data android:scheme="https" />
-
-
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -213,11 +210,7 @@
                 <data android:host="@string/fcm_prefix_link" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-
-
             </intent-filter>
-
-
         </activity>
         <activity
             android:name=".activities.moreListing.ui.ListingActivity"
@@ -295,12 +288,14 @@
             android:name="io.branch.sdk.BranchKey.test"
             android:value="key_test_dpMilXzvM21SxylARpBHDecaAufZATMO" />
         -->
-        <!--   <meta-data
+        <!--
+   <meta-data
                android:name="io.branch.sdk.BranchKey.test"
                android:value="key_test_kkKkZ0b009gmqvDPdtM6npigEtkTW343" /> &lt;!&ndash; Branch testing (TestMode "true" to simulate fresh installs on dev environment) &ndash;&gt;
            <meta-data
                android:name="io.branch.sdk.TestMode"
-               android:value="false" />-->
+               android:value="false" />
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -310,14 +305,16 @@
         <!-- android:name="com.google.firebase.messaging.default_notification_color" -->
         <!-- android:resource="@color/colorPrimary" /> -->
         <!-- suppress AndroidDomInspection -->
-        <!-- <receiver
+        <!--
+ <receiver
              android:name="io.branch.referral.InstallListener"
              android:exported="true"
              tools:ignore="MissingClass">
              <intent-filter>
                  <action android:name="com.android.vending.INSTALL_REFERRER" />
              </intent-filter>
-         </receiver>-->
+         </receiver>
+        -->
         <!--
 <service
             android:name="com.clevertap.android.sdk.FcmTokenListenerService">
@@ -333,26 +330,29 @@
             </intent-filter>
         </service>
         -->
-        <!-- <service android:name=".thirdParty.fcm.SookaFirebaseMessagingService">
+        <!--
+ <service android:name=".thirdParty.fcm.SookaFirebaseMessagingService">
              <intent-filter>
                  <action android:name="com.google.firebase.MESSAGING_EVENT" />
              </intent-filter>
-         </service>-->
+         </service>
+        -->
         <service android:name="com.clevertap.android.sdk.pushnotification.fcm.FcmMessageListenerService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="FCM_SENDER_ID"
             android:value="@string/fcm_sender_id" />
-
-        <!-- <service android:name=".thirdParty.fcm.SookaFirebaseInstanceIdService">
+        <!--
+ <service android:name=".thirdParty.fcm.SookaFirebaseInstanceIdService">
              <intent-filter>
                  <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
              </intent-filter>
          </service>
- -->
+        -->
         <activity
             android:name=".activities.appSettings.ui.AppSettingsActivity"
             android:screenOrientation="locked" />
@@ -412,18 +412,6 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-        <!--<activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="@string/fb_login_protocol_scheme" />
-            </intent-filter>
-        </activity>-->
     </application>
 
 </manifest>

@@ -137,7 +137,10 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             }
         });
         getBinding().editpassword.setOnClickListener(view -> {
-            checkForPassword();
+            Intent i = new Intent(getApplicationContext(), EditPasswordActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+            //   checkForPassword();
 
         });
 
@@ -321,7 +324,6 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                 }
             } else {
                 Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
-
             }
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);

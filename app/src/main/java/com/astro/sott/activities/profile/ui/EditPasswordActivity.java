@@ -17,7 +17,6 @@ import com.astro.sott.R;
 import com.astro.sott.activities.forgotPassword.ui.PasswordChangedDialog;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
-import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityEditPasswordBinding;
@@ -57,6 +56,7 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
             getBinding().layoutExistingpassword.setVisibility(View.GONE);
         } else {
             getBinding().title.setText(getResources().getString(R.string.edit_password));
+            getBinding().layoutExistingpassword.setVisibility(View.VISIBLE);
 
         }
     }
@@ -73,29 +73,31 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
                     getBinding().newPasswordError.setTextColor(getResources().getColor(R.color.red_live));
                     getBinding().newPasswordError.setText(getResources().getString(R.string.password_rules));
                 } else {
+                    getBinding().progressBar.setVisibility(View.VISIBLE);
                     getBinding().newPasswordError.setVisibility(View.GONE);
-                    resetPassword(newPassword);
+                    // resetPassword(newPassword);
                     // changePassword(newPassword);
+                    if (UserInfo.getInstance(this).isPasswordExists()) {
+                        String oldPassword = getBinding().existingPsw.getText().toString();
+
+                        if (!oldPassword.matches(PASSWORD_REGEX)) {
+                            getBinding().existPasswordError.setVisibility(View.VISIBLE);
+                        } else if (!newPassword.matches(PASSWORD_REGEX)) {
+                            getBinding().newPasswordError.setVisibility(View.VISIBLE);
+
+                        } else {
+                            createOtp();
+                        }
+                    } else {
+                        setPassword(newPassword);
+                    }
                 }
             } else {
                 getBinding().newPasswordError.setVisibility(View.VISIBLE);
                 getBinding().newPasswordError.setTextColor(getResources().getColor(R.color.red_live));
                 getBinding().newPasswordError.setText(getResources().getString(R.string.field_cannot_empty));
             }
-           /* if (UserInfo.getInstance(this).isPasswordExists()) {
-                String oldPassword = getBinding().existingPsw.getText().toString();
 
-                if (!oldPassword.matches(PASSWORD_REGEX)) {
-                    getBinding().existPasswordError.setVisibility(View.VISIBLE);
-                } else if (!newPassword.matches(PASSWORD_REGEX)) {
-                    getBinding().newPasswordError.setVisibility(View.VISIBLE);
-
-                } else {
-                    createOtp();
-                }
-            } else {
-                setPassword(newPassword);
-            }*/
         });
         setTextWatcher();
     }
@@ -161,8 +163,9 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 // Toast.makeText(this, getResources().getString(R.string.verification_code_Send) + email_mobile, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, VerificationActivity.class);
+                Intent intent = new Intent(this, EditVerificationActivity.class);
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type);
+                intent.putExtra(AppLevelConstants.SCREEN_FROM, getBinding().title.getText().toString());
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email_mobile);
                 intent.putExtra(AppLevelConstants.OLD_PASSWORD_KEY, getBinding().existingPsw.getText().toString());
                 intent.putExtra(AppLevelConstants.PASSWORD_KEY, getBinding().newPsw.getText().toString());

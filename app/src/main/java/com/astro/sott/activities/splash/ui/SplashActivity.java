@@ -1,6 +1,7 @@
 
 package com.astro.sott.activities.splash.ui;
 
+import android.animation.Animator;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -945,21 +946,24 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     private void showAnimation() {
-        Animation slideUP = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.fade_in);
-        //    getBinding().splashImage.startAnimation(slideUP);
-        slideUP.setAnimationListener(new Animation.AnimationListener() {
+        getBinding().animationView.addAnimatorListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
+            public void onAnimationStart(Animator animation) {
 
             }
 
             @Override
-            public void onAnimationEnd(Animation animation) {
+            public void onAnimationEnd(Animator animation) {
+                callViewModel();
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
 
             }
         });
@@ -1118,7 +1122,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         }
         Log.e(TAG, "oncreate: " + "in");
         AppCommonMethods.isAdsEnable = true;
-        callViewModel();
         showAnimation();
 
         if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {

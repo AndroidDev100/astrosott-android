@@ -15,7 +15,7 @@
     <string name="save_video_to">Save video to...</string>
     <string name="new_playlist">New Playlist</string>
     <string name="done">Done</string>
-    <string name="mobile_error">Mobile number is 11-12 numerical values, without \n spacing &amp; hyphen</string>
+    <string name="mobile_error">Mobile number is 11-12 numerical values, without \nspacing &amp; hyphen</string>
     <string name="email_mobile_error">Please enter a valid email address or mobile number.</string>
     <string name="email_error">Please enter a valid email address</string>
     <string name="valid_password">Please enter valid password</string>
@@ -646,6 +646,8 @@
     <string name="next">Next</string>
     <string name="sooka_superstar">sooka Superstar</string>
     <string name="otp_valid_for">The verification code is valid for</string>
+    <string name="edit_otp_valid_for">Code valid for</string>
+
     <string name="invalid_otp">The verification code you entered is invalid</string>
     <string name="sign_up_text"><u>Sign Up</u></string>
     <string name="sign_up">Sign Up</string>
@@ -684,7 +686,7 @@
     <string name="clear">Clear</string>
     <string name="apply">Apply</string>
     <string name="is_this_you">Is this you?</string>
-    <string name="email_suggestion">Enter a valid email address format. eg: example@email.com</string>
+    <string name="email_suggestion">Enter a valid email address format. eg: \nexample@email.com</string>
     <string name="is_that_you_para">Please login with your registered password \n \u0020\u0020\u0020 to continue.</string>
     <string name="proceed">Proceed</string>
     <string name="details_confirmation">Details Confirmation</string>
@@ -724,6 +726,7 @@
     <string name="next_episode">Next Episode</string>
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="privacy_polices">Privacy Policies</string>
+    <string name="edit_one_time_pass_desc">One time passcode had been sent to </string>
     <string name="onetime_pass_code_text"><![CDATA[A verification code has been sent to ]]></string>
     <string name="link"><u>Link</u></string>
     <string name="unlink"><u>Unlink</u></string>

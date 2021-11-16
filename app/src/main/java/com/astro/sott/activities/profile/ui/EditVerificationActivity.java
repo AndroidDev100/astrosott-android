@@ -1,6 +1,7 @@
-package com.astro.sott.activities.verification;
+package com.astro.sott.activities.profile.ui;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -18,17 +19,13 @@ import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
 import com.astro.sott.activities.forgotPassword.ui.PasswordChangedDialog;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
-import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog;
-import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
-import com.astro.sott.activities.profile.ui.EditPasswordActivity;
+import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.activities.verification.dialog.MaximumLimitDialog;
-import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
+import com.astro.sott.databinding.ActivityEditVerificationBinding;
 import com.astro.sott.databinding.ActivityVerificationBinding;
 import com.astro.sott.fragments.dialog.CommonDialogFragment;
-import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
-import com.astro.sott.fragments.verification.Verification;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
@@ -41,20 +38,20 @@ import com.astro.sott.utils.helpers.CustomTextWatcher;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
-public class VerificationActivity extends BaseBindingActivity<ActivityVerificationBinding> implements MaximumLimitDialog.EditDialogListener, PasswordChangedDialog.EditDialogListener, CommonDialogFragment.EditDialogListener {
+public class EditVerificationActivity extends BaseBindingActivity<ActivityEditVerificationBinding> implements MaximumLimitDialog.EditDialogListener, PasswordChangedDialog.EditDialogListener, CommonDialogFragment.EditDialogListener {
     private AstroLoginViewModel astroLoginViewModel;
-    private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "", origin = "";
+    private String loginType, emailMobile, password, oldPassword = "", from, token = "", newEmail = "", newMobile = "", origin = "", screenFrom = "";
     private CountDownTimer countDownTimer;
-    private String num = "+91";
     private StringBuilder stringBuilder = new StringBuilder();
-    ;
     private List<SocialLoginTypesItem> socialLoginTypesItem;
 
     @Override
-    protected ActivityVerificationBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
-        return ActivityVerificationBinding.inflate(inflater);
+    protected ActivityEditVerificationBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+        return ActivityEditVerificationBinding.inflate(inflater);
     }
 
     @Override
@@ -68,6 +65,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void getIntentData() {
         loginType = getIntent().getExtras().getString(AppLevelConstants.TYPE_KEY);
+        screenFrom = getIntent().getExtras().getString(AppLevelConstants.SCREEN_FROM);
         emailMobile = getIntent().getExtras().getString(AppLevelConstants.EMAIL_MOBILE_KEY);
         if (getIntent().getExtras().getString(AppLevelConstants.OLD_PASSWORD_KEY) != null)
             oldPassword = getIntent().getExtras().getString(AppLevelConstants.OLD_PASSWORD_KEY);
@@ -75,8 +73,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             newEmail = getIntent().getExtras().getString("newEmail");
         if (getIntent().getExtras().getString("newMobile") != null)
             newMobile = getIntent().getExtras().getString("newMobile");
-        Log.d("eMOBILENUMBER", newMobile + "");
 
+        getBinding().title.setText(screenFrom);
 
         password = getIntent().getExtras().getString(AppLevelConstants.PASSWORD_KEY);
         from = getIntent().getExtras().getString(AppLevelConstants.FROM_KEY);
@@ -86,11 +84,10 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             } else if (loginType.equalsIgnoreCase("Mobile")) {
                 emailMobile = newMobile;
                 stringBuilder = stringBuilder.append(emailMobile);
-                Log.d("eMOBILENUMBER", stringBuilder + "");
             }
         }
         if (emailMobile != null && !emailMobile.equalsIgnoreCase("")) {
-            getBinding().descriptionTxt.setText(getResources().getString(R.string.onetime_pass_code_text) + "\n" + emailMobile);
+            getBinding().descriptionTxt.setText(getResources().getString(R.string.edit_one_time_pass_desc) + "\n" + emailMobile);
         }
 
 
@@ -140,8 +137,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
         getBinding().verify.setOnClickListener(view -> {
             confirmOtp();
         });
-
-        getBinding().verifyBack.setOnClickListener(new View.OnClickListener() {
+        getBinding().backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -265,17 +261,26 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void changePassword() {
-        Intent i = new Intent(getApplicationContext(), EditPasswordActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
+        astroLoginViewModel.changePassword(UserInfo.getInstance(this).getAccessToken(), oldPassword, password).observe(this, changePasswordResponse -> {
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (changePasswordResponse.isStatus() && changePasswordResponse.getResponse().getChangePasswordResponseMessage() != null) {
+                FragmentManager fm = getSupportFragmentManager();
+                PasswordChangedDialog cancelDialogFragment = PasswordChangedDialog.newInstance("Detail Page", "");
+                cancelDialogFragment.setEditDialogCallBack(EditVerificationActivity.this);
+                cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+            } else {
+                Toast.makeText(this, changePasswordResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getResources().getString(R.string.password_change_failed), Toast.LENGTH_SHORT).show();
 
+                onBackPressed();
+            }
+        });
     }
 
     private void createOtp() {
         getBinding().progressBar.setVisibility(View.VISIBLE);
         astroLoginViewModel.createOtp(loginType, emailMobile).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
-
             if (evergentCommonResponse.isStatus()) {
                 Toast.makeText(this, "Verification code resend " + (evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getCurrentOTPCount() - 1) + " of " + (evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getMaxOTPCount() - 1), Toast.LENGTH_SHORT).show();
                 countDownTimer();
@@ -283,7 +288,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2846")) {
                     FragmentManager fm = getSupportFragmentManager();
                     MaximumLimitDialog cancelDialogFragment = MaximumLimitDialog.newInstance("Detail Page", "");
-                    cancelDialogFragment.setEditDialogCallBack(VerificationActivity.this);
+                    cancelDialogFragment.setEditDialogCallBack(EditVerificationActivity.this);
                     cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
                 } else {
                     Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
@@ -365,7 +370,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
-                    EvergentRefreshToken.refreshToken(VerificationActivity.this, UserInfo.getInstance(VerificationActivity.this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
+                    EvergentRefreshToken.refreshToken(EditVerificationActivity.this, UserInfo.getInstance(EditVerificationActivity.this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
                         if (evergentCommonResponse.isStatus()) {
                             getContact();
                         } else {
@@ -437,7 +442,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     @Override
     public void onPasswordChanged() {
-        new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);
+        new ActivityLauncher(EditVerificationActivity.this).profileScreenRedirection(EditVerificationActivity.this, HomeActivity.class);
     }
 
     @Override

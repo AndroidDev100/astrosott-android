@@ -79,10 +79,13 @@ public interface AppLevelConstants {
     int TAB_LIVETV_DETAIL = 7;
     int TAB_FORWARDED_EPG_DETAIL = 8;
     String EMAIL_MOBILE_KEY = "emailMobile";
+    String SCREEN_FROM = "screenFrom";
     String FROM_KEY = "from";
     String CONFIRM_PASSWORD = "confirmPassword";
     String CONFIRM_PASSWORD_WITHOUT_PASSWORD = "confirmPassword_without_Password";
-
+    String EDIT_MOBILE = "EditMobile";
+    String EDIT_EMAIL = "EditEmail";
+    String EDIT_PASSWORD = "EditPassword";
     String TYPE_KEY = "type";
     String FILE_ID_KEY = "file_id";
     String PLAYABLE = "playable";

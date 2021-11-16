@@ -5,7 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.Layout;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.AlignmentSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +84,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private boolean passwordVisibility = false;
     private String passwordError = "";
     private String name = "";
+    private boolean isFirstTimeClicked = false;
     private final String MOBILE_REGEX = "^[0-9]*$";
     private final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -281,22 +287,30 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         });
         getBinding().passwordEdt.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                String password = getBinding().passwordEdt.getText().toString();
-                if (checkEmailVaildation()) {
-                    checkPasswordValidation(password);
+                if (isFirstTimeClicked) {
+                    String password = getBinding().passwordEdt.getText().toString();
+                    if (checkEmailVaildation()) {
+                        checkPasswordValidation(password);
+                    }
                 }
+                isFirstTimeClicked = true;
             }
         });
         getBinding().emailMobileEdt.setOnFocusChangeListener((v, hasFocus) -> {
-            if (checkEmailVaildation()) {
-                String password = getBinding().passwordEdt.getText().toString();
-                if (checkPasswordValidation(password)) {
+            if (hasFocus) {
+                if (isFirstTimeClicked) {
+                    if (checkEmailVaildation()) {
+                        String password = getBinding().passwordEdt.getText().toString();
+                        if (checkPasswordValidation(password)) {
 
-                } else {
-                    getBinding().passwordError.setTextColor(getResources().getColor(R.color.red_live));
-                    getBinding().passwordError.setText(passwordError);
-                    getBinding().passwordError.setVisibility(View.VISIBLE);
+                        } else {
+                            getBinding().passwordError.setTextColor(getResources().getColor(R.color.red_live));
+                            getBinding().passwordError.setText(passwordError);
+                            getBinding().passwordError.setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
+                isFirstTimeClicked = true;
             }
         });
         getBinding().forgotText.setOnClickListener(view -> {
@@ -408,7 +422,6 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                         searchAccountv2(password);
                     } else {
                         Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-
                     }
                 } else {
                     if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV4492")) {
