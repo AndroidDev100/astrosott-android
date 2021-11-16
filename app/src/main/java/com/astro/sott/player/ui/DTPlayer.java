@@ -430,6 +430,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     public void onFinishDialog(boolean status) {
         if (status) {
             getBinding().rl1.setVisibility(View.GONE);
+            getBinding().volumeDialog.setVisibility(View.GONE);
+            getBinding().brightnessDialog.setVisibility(View.GONE);
             getBinding().pBar.setVisibility(View.VISIBLE);
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
@@ -468,6 +470,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void replayOnConnect() {
         getBinding().rl1.setVisibility(View.VISIBLE);
+        getBinding().volumeDialog.setVisibility(View.VISIBLE);
+        getBinding().brightnessDialog.setVisibility(View.VISIBLE);
         getBinding().pBar.setVisibility(View.GONE);
         isInternet = true;
         if (runningPlayer != null) {
@@ -1190,6 +1194,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().slash.setVisibility(View.GONE);
         getBinding().subtitleAudio.setVisibility(View.GONE);
         getBinding().quality.setVisibility(View.GONE);
+        getBinding().volumeDialog.setVisibility(View.GONE);
+        getBinding().brightnessDialog.setVisibility(View.GONE);
         //  getBinding().shareWith.setVisibility(View.GONE);
 
     }
@@ -1835,6 +1841,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().loading.setVisibility(View.GONE);
         getBinding().pBar.setVisibility(View.GONE);
 
+
     }
 
     private long introStartTime;
@@ -2000,8 +2007,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             //  getBinding().lockIcon.setVisibility(View.VISIBLE);
             if (lockEnable) {
                 getBinding().rl1.setVisibility(View.GONE);
+                getBinding().volumeDialog.setVisibility(View.GONE);
+                getBinding().brightnessDialog.setVisibility(View.GONE);
             } else {
                 getBinding().rl1.setVisibility(View.VISIBLE);
+                getBinding().volumeDialog.setVisibility(View.VISIBLE);
+                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
                 playContent();
             }
 
@@ -2315,8 +2326,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     //  getBinding().lockIcon.setVisibility(View.VISIBLE);
                     if (lockEnable) {
                         getBinding().rl1.setVisibility(View.GONE);
+                        getBinding().volumeDialog.setVisibility(View.GONE);
+                        getBinding().brightnessDialog.setVisibility(View.GONE);
                     } else {
                         getBinding().rl1.setVisibility(View.VISIBLE);
+                        getBinding().volumeDialog.setVisibility(View.VISIBLE);
+                        getBinding().brightnessDialog.setVisibility(View.VISIBLE);
                         playContent();
                     }
                 }
@@ -2362,8 +2377,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             if (lockEnable) {
                 getBinding().rl1.setVisibility(View.GONE);
+                getBinding().volumeDialog.setVisibility(View.GONE);
+                getBinding().brightnessDialog.setVisibility(View.GONE);
             } else {
                 getBinding().rl1.setVisibility(View.VISIBLE);
+                getBinding().volumeDialog.setVisibility(View.VISIBLE);
+                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
                 playContent();
 
             }
@@ -2423,9 +2442,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (lockEnable) {
                         getBinding().rl1.setVisibility(View.GONE);
                         getBinding().listViewSettings.setVisibility(View.GONE);
+                        getBinding().volumeDialog.setVisibility(View.GONE);
+                        getBinding().brightnessDialog.setVisibility(View.GONE);
                     } else {
                         getBinding().rl1.setVisibility(View.VISIBLE);
                         getBinding().listViewSettings.setVisibility(View.VISIBLE);
+                        getBinding().volumeDialog.setVisibility(View.VISIBLE);
+                        getBinding().brightnessDialog.setVisibility(View.VISIBLE);
                     }
 
                     if (!adRunning)
@@ -2469,6 +2492,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         //   getBinding().lockIcon.setVisibility(View.GONE);
                         getBinding().backward.setVisibility(View.GONE);
                         getBinding().forward.setVisibility(View.GONE);
+                        getBinding().volumeDialog.setVisibility(View.GONE);
+                        getBinding().brightnessDialog.setVisibility(View.GONE);
                     }
 
 
@@ -2732,6 +2757,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 Log.d("HideView", "True");
                 getBinding().rl1.startAnimation(animationFadeOut);
                 getBinding().rl1.setVisibility(View.GONE);
+                getBinding().volumeDialog.setVisibility(View.GONE);
+                getBinding().brightnessDialog.setVisibility(View.GONE);
                 if (getBinding().videoDialog.getVisibility() == View.VISIBLE || getBinding().audioDialog.getVisibility() == View.VISIBLE) {
                     getBinding().audioDialog.setVisibility(View.GONE);
                     getBinding().videoDialog.setVisibility(View.GONE);
@@ -2745,6 +2772,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             } else {
                 Log.d("HideView", "False");
                 getBinding().rl1.setVisibility(View.VISIBLE);
+                getBinding().volumeDialog.setVisibility(View.VISIBLE);
+                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
                 if (isSeries) {
                     if (getBinding().forward.getVisibility() == View.VISIBLE || getBinding().backward.getVisibility() == View.VISIBLE) {
                         getBinding().playButton.setVisibility(View.VISIBLE);
@@ -2757,6 +2786,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         getBinding().listViewSettings.setVisibility(View.GONE);
                         getBinding().slash.setVisibility(View.VISIBLE);
                         getBinding().quality.setVisibility(View.VISIBLE);
+
                     }
                 }
                 getBinding().rl1.startAnimation(animationFadeIn);
@@ -3133,7 +3163,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     // left or right
                                     if (deltaX < 0) {
                                         Log.d("dgdgdgd","Right");
-                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 3000);
+                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 2000);
                                         getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
 
                                         if (isLivePlayer) {
@@ -3177,7 +3207,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     }
                                     if (deltaX > 0) {
                                         Log.d("dgdgdgd","Left");
-                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() - 3000);
+                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() - 2000);
                                         getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
 
                                         if (isLivePlayer) {
@@ -3344,6 +3374,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                                 if (downY < y2) {
                                     if (currBrightness >0) {
+                                        getBinding().brightnessDialog.setVisibility(View.VISIBLE);
                                         currBrightness = currBrightness - 2;
                                         Log.d("fgfgfgfgfg", currBrightness + "");
                                         WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
@@ -3354,6 +3385,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     //down swipe brightness decrease
                                 } else if (downY > y2) {
                                     if (currBrightness <100){
+                                        getBinding().brightnessDialog.setVisibility(View.VISIBLE);
                                         currBrightness = currBrightness + 2;
                                         Log.d("fgfgfgfgfg", currBrightness + "");
                                         WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
@@ -3370,12 +3402,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 if (downY < y2) {
 
                                     //down swipe volume decrease
+                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
                                     audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
                                     getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
 
                                 } else if (downY > y2) {
 
                                     //up  swipe volume increase
+                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
                                     mAudioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
                                     getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
                                 }
@@ -3396,11 +3430,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             if (Math.abs(deltaX) > Math.abs(deltaY)) {
                                 if (Math.abs(deltaX) > min_distance) {
                                     getBinding().rl1.setVisibility(View.VISIBLE);
+                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
+                                    getBinding().brightnessDialog.setVisibility(View.VISIBLE);
                                     // left or right
                                     if (deltaX < 0) {
 
                                         Log.d("dgdgdgd","Right");
-                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 3000);
+                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 2000);
                                         getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
 
                                         if (isLivePlayer) {
@@ -3444,7 +3480,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     }
                                     if (deltaX > 0) {
                                         Log.d("dgdgdgd","Left");
-                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() - 3000);
+                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() - 2000);
                                         getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
 
                                         if (isLivePlayer) {
@@ -3930,6 +3966,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         // getBinding().lockIcon.setVisibility(View.GONE);
         getBinding().rl1.clearAnimation();
         getBinding().rl1.setVisibility(View.GONE);
+        getBinding().volumeDialog.setVisibility(View.GONE);
+        getBinding().brightnessDialog.setVisibility(View.GONE);
         getBinding().listViewSettings.setVisibility(View.GONE);
         if (animationFadeIn != null)
             animationFadeIn.cancel();
@@ -4702,6 +4740,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getUrl(playerURL, playerAsset, playerProgress, isLivePlayer, "", railList, programAsset);
                 if (adRunning) {
                     getBinding().rl1.setVisibility(View.GONE);
+                    getBinding().volumeDialog.setVisibility(View.GONE);
+                    getBinding().brightnessDialog.setVisibility(View.GONE);
                     getBinding().listViewSettings.setVisibility(View.GONE);
                 }
             }
@@ -4715,6 +4755,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void hidePlayerWigetOnResume() {
         getBinding().rl1.setVisibility(View.GONE);
+        getBinding().volumeDialog.setVisibility(View.GONE);
+        getBinding().brightnessDialog.setVisibility(View.GONE);
         getBinding().listViewSettings.setVisibility(View.GONE);
         getBinding().pBar.setVisibility(View.VISIBLE);
         getBinding().loading.setVisibility(View.VISIBLE);
@@ -4733,9 +4775,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (lockEnable) {
                     getBinding().rl1.setVisibility(View.GONE);
                     getBinding().listViewSettings.setVisibility(View.GONE);
+                    getBinding().volumeDialog.setVisibility(View.GONE);
+                    getBinding().brightnessDialog.setVisibility(View.GONE);
                 } else {
                     getBinding().rl1.setVisibility(View.VISIBLE);
                     getBinding().listViewSettings.setVisibility(View.VISIBLE);
+                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
+                    getBinding().brightnessDialog.setVisibility(View.VISIBLE);
                 }
             }
         }, 4000);
@@ -4899,6 +4945,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             getBinding().backward.setVisibility(View.GONE);
             getBinding().slash.setVisibility(View.VISIBLE);
             getBinding().quality.setVisibility(View.GONE);
+            getBinding().volumeDialog.setVisibility(View.VISIBLE);
+            getBinding().brightnessDialog.setVisibility(View.VISIBLE);
             //  getBinding().ivQuality.setVisibility(View.VISIBLE);
 
 
@@ -4917,6 +4965,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             getBinding().backward.setVisibility(View.VISIBLE);
             getBinding().slash.setVisibility(View.VISIBLE);
             getBinding().quality.setVisibility(View.VISIBLE);
+            getBinding().volumeDialog.setVisibility(View.VISIBLE);
+            getBinding().brightnessDialog.setVisibility(View.VISIBLE);
             //  getBinding().ivQuality.setVisibility(View.VISIBLE);
 
         }

@@ -190,31 +190,7 @@
                     android:layout_marginBottom="115dp"/>
 
 
-                <LinearLayout
-                    android:id="@+id/brightness_dialog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerInParent="true"
-                    android:visibility="gone">
 
-                    <include
-                        android:id="@+id/brightness_seek"
-                        layout="@layout/brightness_up_down" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/volume_dialog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerInParent="true"
-                    android:visibility="gone">
-
-                    <include
-                        android:id="@+id/volume_seek"
-                        layout="@layout/volume_up_down" />
-                </LinearLayout>
                 <!--</RelativeLayout>-->
                 <!--            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
                 <!--                android:layout_width="@dimen/height150dp"-->
@@ -848,6 +824,32 @@
                 android:id="@+id/audio_quality"
                 layout="@layout/layout_caption_audio_setting" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/brightness_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/brightness_seek"
+                layout="@layout/brightness_up_down" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/volume_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/volume_seek"
+                layout="@layout/volume_up_down" />
+        </LinearLayout>
+
     </RelativeLayout>
 
 
