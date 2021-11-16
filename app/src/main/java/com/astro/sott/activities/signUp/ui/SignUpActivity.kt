@@ -714,7 +714,11 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                 ""
             )
 
-        Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT)
+        Toast.makeText(
+            this@SignUpActivity,
+            resources.getString(R.string.login_successfull),
+            Toast.LENGTH_SHORT
+        )
             .show()
 
         if (from.equals("Profile", ignoreCase = true)) {

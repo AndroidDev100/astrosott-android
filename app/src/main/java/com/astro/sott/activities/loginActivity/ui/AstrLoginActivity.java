@@ -408,8 +408,6 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 KsPreferenceKey.getInstance(this).setStartSessionKs(evergentCommonResponse.getLoginResponse().getGetOAuthAccessTokenv2ResponseMessage().getExternalSessionToken());
                 getContact();
                 try {
-
-
                     CleverTapManager.getInstance().setSignInEvent(this, from, type);
                 } catch (Exception exception) {
 
