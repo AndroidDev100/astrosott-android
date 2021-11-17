@@ -421,7 +421,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
         if (serviceType.equalsIgnoreCase("PPV")) {
             return billingProcessor.pendingProduct(this);
         } else if (serviceType.equalsIgnoreCase("SVOD")) {
-            return billingProcessor.pendingProduct(this);
+            return billingProcessor.pendingSubscription(this);
 
         }
         return false;
