@@ -155,6 +155,21 @@
 
                                 </RelativeLayout>
                                 <TextView
+                                    android:id="@+id/watchList"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/_15sdp"
+                                    android:clickable="true"
+                                    android:drawablePadding="7dp"
+                                    android:focusable="true"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:gravity="center"
+                                    android:text="@string/my_list"
+                                    android:textColor="@color/grey"
+                                    android:textSize="@dimen/font_small"
+                                    app:drawableTopCompat="@drawable/favorite_unselected" />
+
+                                <TextView
                                     android:id="@+id/shareWith"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
