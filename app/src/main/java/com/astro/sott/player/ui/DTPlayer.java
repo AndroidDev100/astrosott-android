@@ -3071,14 +3071,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                              duration =  System.currentTimeMillis() - startTime1;
                             if(duration <= MAX_DURATION)
                             {
-                                if (runningPlayer.isPlaying()){
-                                    pausePlayer();
-                                }else {
-                                    if (runningPlayer!=null){
-                                        runningPlayer.play();
-                                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                                    }
-                                }
+//                                if (runningPlayer.isPlaying()){
+//                                    pausePlayer();
+//                                }else {
+//                                    if (runningPlayer!=null){
+//                                        runningPlayer.play();
+//                                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//                                    }
+//                                }
                                 clickCount = 0;
                                 duration = 0;
                             }else{
@@ -3310,7 +3310,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             public boolean onTouch (View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-
+                        startTime1 = System.currentTimeMillis();
+                        clickCount++;
                         //touch is start
                         downX = event.getX();
                         downY = event.getY();
@@ -3331,33 +3332,28 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     case MotionEvent.ACTION_UP:
                         isTouchCaptured = false;
 
-                        clickCount++;
+//                        if (runningPlayer.isPlaying()){
+//                            pausePlayer();
+//                        }else {
+//                            if (runningPlayer!=null){
+//                                runningPlayer.play();
+//                                getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//                            }
+//                        }
 
-                        if (clickCount==1){
-                            startTime1 = System.currentTimeMillis();
-                        }
-
-                        else if(clickCount == 2)
+                        long time = System.currentTimeMillis() - startTime1;
+                        duration=  duration + time;
+                        if(clickCount == 2)
                         {
-                             duration =  System.currentTimeMillis() - startTime1;
-                            if(duration <= MAX_DURATION)
+                            if(duration<= MAX_DURATION)
                             {
-                                if (runningPlayer.isPlaying()){
-                                    pausePlayer();
-                                }else {
-                                    if (runningPlayer!=null){
-                                        runningPlayer.play();
-                                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                                    }
-                                }
-                                clickCount = 0;
-                                duration = 0;
-                            }else{
-                                clickCount = 1;
-                                startTime1 = System.currentTimeMillis();
+//                                Toast.makeText(getActivity(), "double tap",Toast.LENGTH_LONG).show();
                             }
+                            clickCount = 0;
+                            duration = 0;
                             break;
                         }
+
 
                     case MotionEvent.ACTION_MOVE:
 
