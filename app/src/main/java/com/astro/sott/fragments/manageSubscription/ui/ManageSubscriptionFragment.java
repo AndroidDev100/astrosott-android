@@ -126,9 +126,9 @@ public class ManageSubscriptionFragment extends BaseBindingActivity<FragmentMana
         subscriptionViewModel.getLastSubscription(UserInfo.getInstance(this).getAccessToken()).observe(this, evergentCommonResponse -> {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
-                if (evergentCommonResponse.getResponse().getGetLastSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetLastSubscriptionsResponseMessage().getAccountServiceMessage() != null) {
+                if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage() != null && evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage() != null) {
                     accountServiceMessage = new ArrayList<>();
-                    accountServiceMessage.add(evergentCommonResponse.getResponse().getGetLastSubscriptionsResponseMessage().getAccountServiceMessage());
+                    //accountServiceMessage.add(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage());
                     loadData(accountServiceMessage);
                 } else {
                     getBinding().nodataLayout.setVisibility(View.VISIBLE);

@@ -169,7 +169,7 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            calendar.add(Calendar.MINUTE,-5);
+            calendar.add(Calendar.MINUTE, -5);
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
@@ -189,7 +189,7 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            calendar.add(Calendar.MINUTE,-0);
+            calendar.add(Calendar.MINUTE, -0);
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
@@ -508,6 +508,22 @@ public class AppCommonMethods {
             calendar.setTimeInMillis(timestamp);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+            sdf.setTimeZone(TimeZone.getDefault());
+
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+    public static String getRenewDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
             sdf.setTimeZone(TimeZone.getDefault());
 
             Date currenTimeZone = (Date) calendar.getTime();
@@ -876,7 +892,7 @@ public class AppCommonMethods {
             Log.w("urivalue-->>", asset.getName() + "  " + shortLinkTask.toString());
 
         } catch (Exception ignored) {
-            Log.w("urivalue-->,","");
+            Log.w("urivalue-->,", "");
 
         }
     }
@@ -2335,7 +2351,7 @@ public class AppCommonMethods {
                             if (sponsored.getValue() != null) {
                                 if (!sponsored.getValue()) {
                                     sortedList.add(results);
-                                }else {
+                                } else {
                                     sortedList.add(results);
                                 }
                             } else {
@@ -2360,7 +2376,7 @@ public class AppCommonMethods {
                                     if (sponsored.getValue() != null) {
                                         if (!sponsored.getValue()) {
                                             sortedList.add(results);
-                                        }else {
+                                        } else {
                                             sortedList.add(results);
                                         }
                                     } else {
@@ -2380,7 +2396,7 @@ public class AppCommonMethods {
                                 if (sponsored.getValue() != null) {
                                     if (!sponsored.getValue()) {
                                         sortedList.add(results);
-                                    }else {
+                                    } else {
                                         sortedList.add(results);
                                     }
                                 } else {
@@ -2404,7 +2420,7 @@ public class AppCommonMethods {
                                     if (sponsored.getValue() != null) {
                                         if (!sponsored.getValue()) {
                                             sortedList.add(results);
-                                        }else {
+                                        } else {
                                             sortedList.add(results);
                                         }
                                     } else {
@@ -2426,7 +2442,7 @@ public class AppCommonMethods {
                         if (sponsored.getValue() != null) {
                             if (!sponsored.getValue()) {
                                 sortedList.add(results);
-                            }else {
+                            } else {
                                 sortedList.add(results);
                             }
                         } else {
@@ -2683,8 +2699,8 @@ public class AppCommonMethods {
 
         StringBuilderHolder.getInstance().append("(or name~'");
         StringBuilderHolder.getInstance().append(searchString);
-       /* StringBuilderHolder.getInstance().append("'");
-*/
+        /* StringBuilderHolder.getInstance().append("'");
+         */
       /*  StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");*/
@@ -2716,9 +2732,9 @@ public class AppCommonMethods {
         if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
 
         } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ONDEMAND.name())) {
-            StringBuilderHolder.getInstance().append("(and asset_type='"+MediaTypeConstant.getMovie(context)+"' asset_type='"+MediaTypeConstant.getCollection(context)+"' ");
+            StringBuilderHolder.getInstance().append("(and asset_type='" + MediaTypeConstant.getMovie(context) + "' asset_type='" + MediaTypeConstant.getCollection(context) + "' ");
         } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.LIVE.name())) {
-            StringBuilderHolder.getInstance().append("(and asset_type='"+MediaTypeConstant.getLinear(context)+"' asset_type='"+MediaTypeConstant.getProgram(context)+"' ");
+            StringBuilderHolder.getInstance().append("(and asset_type='" + MediaTypeConstant.getLinear(context) + "' asset_type='" + MediaTypeConstant.getProgram(context) + "' ");
         } else {
 
         }
@@ -2778,21 +2794,20 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);*/
         if (StringBuilderHolder.getInstance().getText().toString().contains("(and asset_type")) {
             if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
-                    StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")){
+                    StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")) {
                 StringBuilderHolder.getInstance().append("))");
-            }else {
+            } else {
                 StringBuilderHolder.getInstance().append(")");
             }
-        }else if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
-                StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")){
+        } else if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")) {
             StringBuilderHolder.getInstance().append(")");
-        }
-        else {
+        } else {
             StringBuilderHolder.getInstance().append("");
         }
 
 
-       // KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
+        // KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
         return StringBuilderHolder.getInstance().getText().toString();
     }
 
@@ -2802,7 +2817,7 @@ public class AppCommonMethods {
         if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
 
         } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ONDEMAND.name())) {
-            StringBuilderHolder.getInstance().append("(and asset_type='"+MediaTypeConstant.getMovie(context)+"' asset_type='"+MediaTypeConstant.getCollection(context)+"' ");
+            StringBuilderHolder.getInstance().append("(and asset_type='" + MediaTypeConstant.getMovie(context) + "' asset_type='" + MediaTypeConstant.getCollection(context) + "' ");
         } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.LIVE.name())) {
 
         } else {
@@ -2864,16 +2879,15 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);*/
         if (StringBuilderHolder.getInstance().getText().toString().contains("(and asset_type")) {
             if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
-                    StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")){
+                    StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")) {
                 StringBuilderHolder.getInstance().append("))");
-            }else {
+            } else {
                 StringBuilderHolder.getInstance().append(")");
             }
-        }else if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
-                StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")){
+        } else if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")) {
             StringBuilderHolder.getInstance().append(")");
-        }
-        else {
+        } else {
             StringBuilderHolder.getInstance().append("");
         }
 
@@ -2888,9 +2902,9 @@ public class AppCommonMethods {
         if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
 
         } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ONDEMAND.name())) {
-            StringBuilderHolder.getInstance().append("(and asset_type='"+MediaTypeConstant.getMovie(context)+"' asset_type='"+MediaTypeConstant.getCollection(context)+"' ");
+            StringBuilderHolder.getInstance().append("(and asset_type='" + MediaTypeConstant.getMovie(context) + "' asset_type='" + MediaTypeConstant.getCollection(context) + "' ");
         } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.LIVE.name())) {
-            StringBuilderHolder.getInstance().append("(and asset_type='"+MediaTypeConstant.getLinear(context)+"' asset_type='"+MediaTypeConstant.getProgram(context)+"' ");
+            StringBuilderHolder.getInstance().append("(and asset_type='" + MediaTypeConstant.getLinear(context) + "' asset_type='" + MediaTypeConstant.getProgram(context) + "' ");
         } else {
 
         }
@@ -2950,16 +2964,15 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);*/
         if (StringBuilderHolder.getInstance().getText().toString().contains("(and asset_type")) {
             if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
-                    StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")){
+                    StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")) {
                 StringBuilderHolder.getInstance().append("))");
-            }else {
+            } else {
                 StringBuilderHolder.getInstance().append(")");
             }
-        }else if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
-                StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")){
+        } else if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")) {
             StringBuilderHolder.getInstance().append(")");
-        }
-        else {
+        } else {
             StringBuilderHolder.getInstance().append("");
         }
 
@@ -2967,7 +2980,6 @@ public class AppCommonMethods {
         // KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
         return StringBuilderHolder.getInstance().getText().toString();
     }
-
 
 
     public static List<AccountDeviceDetailsItem> checkCurrentDevice(List<AccountDeviceDetailsItem> accountDeviceDetails, Context context) {
@@ -3512,7 +3524,7 @@ public class AppCommonMethods {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
-            calendar.add(Calendar.MINUTE,-0);
+            calendar.add(Calendar.MINUTE, -0);
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
             sdf.setTimeZone(tz);
             Date currenTimeZone = (Date) calendar.getTime();
@@ -3526,17 +3538,17 @@ public class AppCommonMethods {
 
     }
 
-    public static PendingIntent getPendingIntent(Context activity,String assetId) {
-            try {
-                Gson gson = new Gson();
-                String json = KsPreferenceKey.getInstance(activity).getReminderPenIntent(assetId);
-                return gson.fromJson(json, PendingIntent.class);
-            } catch (Exception e) {
-                return null;
-            }
+    public static PendingIntent getPendingIntent(Context activity, String assetId) {
+        try {
+            Gson gson = new Gson();
+            String json = KsPreferenceKey.getInstance(activity).getReminderPenIntent(assetId);
+            return gson.fromJson(json, PendingIntent.class);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    public static Intent getIntent(Context activity,String assetId) {
+    public static Intent getIntent(Context activity, String assetId) {
         try {
             Gson gson = new Gson();
             String json = KsPreferenceKey.getInstance(activity).getReminderIntent(assetId);

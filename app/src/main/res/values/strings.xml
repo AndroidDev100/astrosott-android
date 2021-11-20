@@ -549,9 +549,10 @@
     <string name="version_more">Version1.045b</string>
     <string name="siginup_more">Sign In / Sign Up</string>
     <string name="guest_user">Guest user</string>
-    <string name="free_sooka">Free sooka</string>
+    <string name="free_sooka">sooka Free</string>
     <string name="manage_subscription">Manage Subscriptions</string>
     <string name="partner_billing">Partner Billing</string>
+    <string name="subscription_description">Subscribe to unlock all premium titles!</string>
     <string name="subscribe_more">Subscribe</string>
     <string name="upgrade">Upgrade</string>
     <string name="downgrade">Downgrade</string>
@@ -561,7 +562,8 @@
     <string name="renew_date">Renew on 22/2/21</string>
     <string name="transac_history">Transaction History</string>
     <string name="cancel_plan"><u>Cancel</u></string>
-    <string name="change_plan"><u>Change Plan</u></string>
+    <string name="downgrade_billing_description">New plan VIP Entertainment starts on </string>
+    <string name="change_plan">Change Plan</string>
     <string name="lang_selection">Language Selection</string>
     <string name="downloads">Downloads</string>
     <string name="mannage_device">Manage Device</string>

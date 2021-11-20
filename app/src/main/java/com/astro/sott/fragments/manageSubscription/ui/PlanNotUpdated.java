@@ -1,6 +1,7 @@
 package com.astro.sott.fragments.manageSubscription.ui;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -64,6 +65,8 @@ public class PlanNotUpdated extends DialogFragment {
         if (getDialog().getWindow() != null) {
             strTitle = getArguments().getString(AppLevelConstants.TITLE);
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
+                    .TRANSPARENT));
             getDialog().setCancelable(false);
             // Get field from view
             inputLayoutDialog = view.findViewById(R.id.input_layout_dialog);
@@ -93,10 +96,9 @@ public class PlanNotUpdated extends DialogFragment {
 
 
     public void onResume() {
-        int width = getResources().getDimensionPixelSize(R.dimen.updated_dialog_width);
-        int height = getResources().getDimensionPixelSize(R.dimen.updated_dialog_height);
+        int width = getResources().getDisplayMetrics().widthPixels - 50;
         if (getDialog().getWindow() != null)
-            getDialog().getWindow().setLayout(width, height);
+            getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         // Call super onResume after sizing
         super.onResume();
     }

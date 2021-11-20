@@ -1008,18 +1008,18 @@ class EvergentServices {
                 call: Call<LastSubscriptionResponse?>,
                 response: Response<LastSubscriptionResponse?>
             ) {
-                if (response.body() != null && response.body()?.getLastSubscriptionsResponseMessage != null && response.body()?.getLastSubscriptionsResponseMessage?.responseCode != null) {
+                if (response.body() != null && response.body()?.getLastSubscriptionResponseMessage != null && response.body()?.getLastSubscriptionResponseMessage?.responseCode != null) {
 
-                    if (response.body()?.getLastSubscriptionsResponseMessage?.responseCode.equals(
+                    if (response.body()?.getLastSubscriptionResponseMessage?.responseCode.equals(
                             "1",
                             true
                         )
                     ) {
                         evergentGetDeviceCallback.onSuccess(response.body()!!);
                     } else {
-                        if (response.body()?.getLastSubscriptionsResponseMessage?.failureMessage != null) {
+                        if (response.body()?.getLastSubscriptionResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.getLastSubscriptionsResponseMessage?.failureMessage,
+                                response.body()?.getLastSubscriptionResponseMessage?.failureMessage,
                                 context
                             )
                             evergentGetDeviceCallback.onFailure(

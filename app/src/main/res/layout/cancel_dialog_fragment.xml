@@ -1,92 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingRight="38dp"
-    android:paddingLeft="38dp"
-    android:paddingBottom="16dp"
-    android:background="@color/grape_purple">
+    app:cardBackgroundColor="@color/grape_purple"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="0dp">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/roboto_medium"
-        android:lineHeight="35sp"
-        android:text="@string/sad_to_see"
-        android:textColor="@color/aqua_marine"
-        android:textSize="@dimen/font_xxlarge"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:targetApi="p" />
+        android:background="@color/grape_purple"
+        android:paddingLeft="38dp"
+        android:paddingRight="38dp"
+        android:paddingBottom="16dp">
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/roboto_medium"
-        android:gravity="center"
-        android:lineHeight="20sp"
-        android:text="@string/cancel_description"
-        android:textColor="@color/title_color"
-        android:textSize="@dimen/font_medium_large"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        tools:targetApi="p" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:lineHeight="35sp"
+            android:text="@string/sad_to_see"
+            android:textColor="@color/aqua_marine"
+            android:textSize="@dimen/font_xxlarge"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="p" />
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_medium"
-        android:gravity="center"
-        android:lineHeight="20sp"
-        android:textColor="@color/cancel_red_color"
-        android:textSize="@dimen/font_medium_large"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description"
-        tools:targetApi="p" />
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:lineHeight="20sp"
+            android:text="@string/cancel_description"
+            android:textColor="@color/title_color"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:targetApi="p" />
 
-
-    <TextView
-        android:id="@+id/not_yet"
-        android:layout_width="250dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/gradient_button"
-        android:fontFamily="@font/roboto_medium"
-        android:gravity="center"
-        android:text="@string/not_yet"
-        android:textAllCaps="true"
-        android:textColor="@color/title_color"
-        android:textSize="16sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date" />
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:lineHeight="20sp"
+            android:textColor="@color/cancel_red_color"
+            android:textSize="@dimen/font_medium_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/description"
+            tools:targetApi="p" />
 
 
-    <TextView
-        android:id="@+id/sorry"
-        android:layout_width="250dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/white_outline_button"
-        android:fontFamily="@font/roboto_medium"
-        android:gravity="center"
-        android:text="@string/sorry_have_to_go"
-        android:textAllCaps="true"
-        android:textColor="@color/title_color"
-        android:textSize="16sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/not_yet" />
+        <TextView
+            android:id="@+id/not_yet"
+            android:layout_width="250dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/gradient_button"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:text="@string/not_yet"
+            android:textAllCaps="true"
+            android:textColor="@color/title_color"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/sorry"
+            android:layout_width="250dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/white_outline_button"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:text="@string/sorry_have_to_go"
+            android:textAllCaps="true"
+            android:textColor="@color/title_color"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/not_yet" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
