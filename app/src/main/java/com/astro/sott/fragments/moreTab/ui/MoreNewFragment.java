@@ -68,7 +68,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     private int activePackListSize;
     private List<AccountServiceMessageItem> accountServiceMessageItemList;
     Long validTill;
-    private AccountServiceMessageItem lastActiveItem;
+    private AccountServiceMessageItem lastActiveItem, downgradeActive, lastExpiredItem;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -515,9 +515,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     if (activePackListSize > 0) {
                         getActivePacks(accountServiceMessageItemList);
                     } else {
-                        if (FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked)
-                            new ActivityLauncher(getActivity()).profileSubscription("Profile");
-                        setUiForLogout();
+                        getLastSubscription();
                     }
                    /* for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
                         if (!accountServiceMessageItem.isFreemium() && accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && accountServiceMessageItem.isCurrentPlan()) {
@@ -595,38 +593,46 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             if (activePackListSize > 1) {
                 checkForDowngrade(accountServiceMessageItemList);
             } else {
-                if (accountServiceMessageItemList.get(activePackListSize - 1).isCurrentPlan() != null && accountServiceMessageItemList.get(activePackListSize - 1).isCurrentPlan()) {
-                    if (accountServiceMessageItemList.get(activePackListSize - 1).getStatus().equalsIgnoreCase("ACTIVE")) {
-                        lastActiveItem = accountServiceMessageItemList.get(activePackListSize - 1);
-                    } else if (accountServiceMessageItemList.get(activePackListSize - 1).getStatus().equalsIgnoreCase("FINAL BILL")) {
-                        lastActiveItem = accountServiceMessageItemList.get(activePackListSize - 1);
+                try {
+                    if (accountServiceMessageItemList.get(activePackListSize - 1).isCurrentPlan() != null && accountServiceMessageItemList.get(activePackListSize - 1).isCurrentPlan()) {
+                        if (accountServiceMessageItemList.get(activePackListSize - 1).getStatus().equalsIgnoreCase("ACTIVE")) {
+                            lastActiveItem = accountServiceMessageItemList.get(activePackListSize - 1);
+                        } else if (accountServiceMessageItemList.get(activePackListSize - 1).getStatus().equalsIgnoreCase("FINAL BILL")) {
+                            lastActiveItem = accountServiceMessageItemList.get(activePackListSize - 1);
+                        }
                     }
-                }
-
-
-                if (lastActiveItem != null) {
-                    UserInfo.getInstance(getActivity()).setVip(true);
-                    UserInfo.getInstance(getActivity()).setMaxis(lastActiveItem.getPaymentMethod().equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING));
-                    getBinding().tvVIPUser.setText(lastActiveItem.getDisplayName());
-                    if (!lastActiveItem.isRenewal()) {
-                        getBinding().tvSubscribeNow.setVisibility(View.GONE);
+                    if (lastActiveItem != null) {
+                        UserInfo.getInstance(getActivity()).setVip(true);
+                        UserInfo.getInstance(getActivity()).setMaxis(lastActiveItem.getPaymentMethod().equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING));
+                        getBinding().tvVIPUser.setText(lastActiveItem.getDisplayName());
+                        if (!lastActiveItem.isRenewal()) {
+                            getBinding().tvSubscribeNow.setVisibility(View.GONE);
+                        } else {
+                            getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
+                            if (!lastActiveItem.getStatus().equalsIgnoreCase("FINAL BILL")) {
+                                getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getRenewDate(lastActiveItem.getValidityTill()));
+                            } else {
+                                getBinding().tvSubscribeNow.setText("Ends on " + AppCommonMethods.getRenewDate(lastActiveItem.getValidityTill()));
+                            }
+                        }
+                        getBinding().partnerBillingText.setVisibility(View.VISIBLE);
+                        if (lastActiveItem.getPaymentMethod() != null && !lastActiveItem.getPaymentMethod().equalsIgnoreCase("")) {
+                            if (UserInfo.getInstance(getActivity()).isMaxis()) {
+                                getBinding().partnerBillingText.setText(lastActiveItem.getPaymentMethod());
+                            } else {
+                                getBinding().partnerBillingText.setText(lastActiveItem.getPaymentMethod() + ": " + lastActiveItem.getCurrencyCode() + lastActiveItem.getRetailPrice() + "/month");
+                            }
+                        }
+                        getBinding().subscribe.setVisibility(View.GONE);
+                        if (lastActiveItem.getStatus().equalsIgnoreCase("ACTIVE")) {
+                            getBinding().cancelPlan.setVisibility(View.VISIBLE);
+                            getBinding().changePlan.setVisibility(View.VISIBLE);
+                        }
                     } else {
-                        getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
-                        getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getRenewDate(lastActiveItem.getValidityTill()));
+                        getLastSubscription();
                     }
-                    getBinding().partnerBillingText.setVisibility(View.VISIBLE);
-                    if (lastActiveItem.getPaymentMethod() != null && !lastActiveItem.getPaymentMethod().equalsIgnoreCase("")) {
-                        getBinding().partnerBillingText.setText(lastActiveItem.getPaymentMethod() + ": " + lastActiveItem.getCurrencyCode() + lastActiveItem.getRetailPrice() + "/month");
-                    }
-                    getBinding().subscribe.setVisibility(View.GONE);
-                    if (lastActiveItem.getStatus().equalsIgnoreCase("ACTIVE")) {
-                        getBinding().cancelPlan.setVisibility(View.VISIBLE);
-                        getBinding().changePlan.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    getLastSubscription();
+                } catch (Exception e) {
                 }
-
 
             }
         }
@@ -636,8 +642,10 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
     private void checkForDowngrade(List<AccountServiceMessageItem> accountServiceMessageItemList) {
         for (AccountServiceMessageItem accountServiceMessageItem : accountServiceMessageItemList) {
-            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("FINAL BILL")&&accountServiceMessageItem.isCurrentPlan()!=null&&accountServiceMessageItem.isCurrentPlan() && AppCommonMethods.getCurrentTimeStampLong() < accountServiceMessageItem.getValidityTill()) {
+            if (accountServiceMessageItem.getStatus().equalsIgnoreCase("FINAL BILL") && accountServiceMessageItem.isCurrentPlan() != null && accountServiceMessageItem.isCurrentPlan() && AppCommonMethods.getCurrentTimeStampLong() < accountServiceMessageItem.getValidityTill()) {
                 lastActiveItem = accountServiceMessageItem;
+            } else if (accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE")) {
+                downgradeActive = accountServiceMessageItem;
             }
         }
         if (lastActiveItem != null) {
@@ -648,7 +656,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 getBinding().tvSubscribeNow.setVisibility(View.GONE);
             } else {
                 getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
-                getBinding().tvSubscribeNow.setText(getResources().getString(R.string.downgrade_billing_description) + AppCommonMethods.getRenewDate(lastActiveItem.getValidityTill()));
+                getBinding().tvSubscribeNow.setText(getResources().getString(R.string.new_plan) + " " + downgradeActive.getDisplayName() + " " + getResources().getString(R.string.downgrade_billing_description) + " " + AppCommonMethods.getRenewDate(lastActiveItem.getValidityTill()));
             }
             getBinding().partnerBillingText.setVisibility(View.VISIBLE);
             if (lastActiveItem.getPaymentMethod() != null && !lastActiveItem.getPaymentMethod().equalsIgnoreCase("")) {
@@ -675,15 +683,29 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage() != null && evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage() != null) {
-                    getBinding().tvVIPUser.setText(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getDisplayName());
-                    getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
-                    getBinding().subscribe.setVisibility(View.VISIBLE);
-                    getBinding().subscribe.setText(getResources().getString(R.string.become_vip));
-                    getBinding().partnerBillingText.setVisibility(View.VISIBLE);
-                    if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod() != null && !evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod().equalsIgnoreCase("")) {
-                        getBinding().partnerBillingText.setText(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod() + ": " + evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getCurrencyCode() + evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getRetailPrice() + "/month");
+                    if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getStatus().equalsIgnoreCase("EXPIRED")) {
+                        getBinding().tvVIPUser.setText(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getDisplayName());
+                        getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
+                        getBinding().subscribe.setVisibility(View.VISIBLE);
+                        getBinding().subscribe.setText(getResources().getString(R.string.become_vip));
+                        getBinding().partnerBillingText.setVisibility(View.VISIBLE);
+                        getBinding().changePlan.setVisibility(View.GONE);
+                        getBinding().cancelPlan.setVisibility(View.GONE);
+                        if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod() != null && !evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod().equalsIgnoreCase("")) {
+                            if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod().equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING)) {
+                                getBinding().partnerBillingText.setText(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod());
+                            } else {
+                                getBinding().partnerBillingText.setText(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod() + ": " + evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getCurrencyCode() + evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getRetailPrice() + "/month");
+                            }
+                        }
+                        if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getValidityTill() != null) {
+                            getBinding().tvSubscribeNow.setText("Ended on " + AppCommonMethods.getRenewDate(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getValidityTill()));
+                        }
+                    } else {
+                        if (FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked)
+                            new ActivityLauncher(getActivity()).profileSubscription("Profile");
+                        setUiForLogout();
                     }
-                    getBinding().tvSubscribeNow.setText("End on " + AppCommonMethods.getRenewDate(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getValidityTill()));
                 } else {
                     if (FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked)
                         new ActivityLauncher(getActivity()).profileSubscription("Profile");

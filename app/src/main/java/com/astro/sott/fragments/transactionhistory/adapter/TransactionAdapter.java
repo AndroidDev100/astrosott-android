@@ -122,13 +122,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     public String getDate(long timestamp) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timestamp);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd/MM/yyyy", Locale.getDefault());
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
+            return sdf.format(timestamp);
         } catch (Exception e) {
         }
         return "";

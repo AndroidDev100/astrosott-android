@@ -562,7 +562,8 @@
     <string name="renew_date">Renew on 22/2/21</string>
     <string name="transac_history">Transaction History</string>
     <string name="cancel_plan"><u>Cancel</u></string>
-    <string name="downgrade_billing_description">New plan VIP Entertainment starts on </string>
+    <string name="new_plan">New plan</string>
+    <string name="downgrade_billing_description"> starts on </string>
     <string name="change_plan">Change Plan</string>
     <string name="lang_selection">Language Selection</string>
     <string name="downloads">Downloads</string>

@@ -503,15 +503,9 @@ public class AppCommonMethods {
 
     public static String getDateFromTimeStamp(long timestamp) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timestamp);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
             sdf.setTimeZone(TimeZone.getDefault());
-
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
+            return sdf.format(timestamp);
         } catch (Exception e) {
         }
         return "";
@@ -519,15 +513,9 @@ public class AppCommonMethods {
 
     public static String getRenewDate(long timestamp) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timestamp);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
             sdf.setTimeZone(TimeZone.getDefault());
-
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
+            return sdf.format(timestamp);
         } catch (Exception e) {
         }
         return "";
@@ -535,15 +523,9 @@ public class AppCommonMethods {
 
     public static String getDateCleverTap(long timestamp) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timestamp);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DDTHH:MM:SSZ", Locale.getDefault());
             sdf.setTimeZone(TimeZone.getDefault());
-
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
+            return sdf.format(timestamp);
         } catch (Exception e) {
         }
         return "";
