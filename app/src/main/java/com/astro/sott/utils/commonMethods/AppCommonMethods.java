@@ -3290,22 +3290,15 @@ public class AppCommonMethods {
     public static String getAdsUrl(String url, Asset asset, Context context) {
         StringBuilder finalUrl = new StringBuilder();
         StringBuilder stringBuilder = new StringBuilder();
-       /* stringBuilder.append(url);
-        stringBuilder.append("&cust_params=");*/
-        //did%3D" + AppCommonMethods.getDeviceId(context.getContentResolver())
-       /* if (UserInfo.getInstance(context).getCpCustomerId() != null && !UserInfo.getInstance(context).getCpCustomerId().equalsIgnoreCase(""))
-            stringBuilder.append("&cid%3D" + UserInfo.getInstance(context).getCpCustomerId());*/
         stringBuilder.append("vid=" + asset.getId());
         if (!asset.getName().equalsIgnoreCase(""))
             stringBuilder.append("&vtitle=" + asset.getName());
 
-        /* stringBuilder.append("&ver%3D" + BuildConfig.VERSION_NAME);*/
 
         if (asset.getType() == MediaTypeConstant.getLinear(context)) {
             if (AssetContent.isLiveEvent(asset.getMetas())) {
                 stringBuilder.append("&vtype=Live Event");
             } else {
-                /*  stringBuilder.append("&ch%3D" + asset.getName());*/
                 stringBuilder.append("&vtype=Linear Programme");
             }
         } else {
@@ -3322,8 +3315,6 @@ public class AppCommonMethods {
         if (!AssetContent.getProvider(asset.getTags()).equalsIgnoreCase(""))
             stringBuilder.append("&vpro=" + AssetContent.getProvider(asset.getTags()));
 
-       /* if (!AssetContent.getSubTitleLanguageDataString(asset.getTags(), context).equalsIgnoreCase(""))
-            stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags(), context));*/
         stringBuilder.append("&lang=" + "English");
         try {
             finalUrl.append(url);
@@ -3538,5 +3529,26 @@ public class AppCommonMethods {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static String getLiveAdUrl(String url, Context context, Asset asset) {
+        StringBuilder finalUrl = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("chid=" + asset.getId());
+        if (!asset.getName().equalsIgnoreCase(""))
+            stringBuilder.append("&chname=" + asset.getName());
+
+        try {
+            finalUrl.append(url);
+            finalUrl.append("&cust_params=");
+            finalUrl.append(URLEncoder.encode(stringBuilder.toString(), "UTF-8"));
+            Log.w("addImaTagUrl", URLDecoder.decode(stringBuilder.toString(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            finalUrl.append(url);
+            finalUrl.append("&cust_params=");
+            finalUrl.append(stringBuilder.toString());
+            e.printStackTrace();
+        }
+        return finalUrl.toString();
     }
 }
