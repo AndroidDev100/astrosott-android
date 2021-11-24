@@ -335,15 +335,15 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
 
     public void checkPackRedirection() {
         packDetailList = PacksDateLayer.getInstance().getPackDetailList();
-        for (PackDetail packDetail : packDetailList) {
-            if (packDetail.getProductsResponseMessageItem().getServiceType().equalsIgnoreCase("ppv")) {
-                haveTvod = true;
-            } else {
-                haveSvod = true;
-            }
-        }
         if (packDetailList != null) {
             if (packDetailList.size() > 0) {
+                for (PackDetail packDetail : packDetailList) {
+                    if (packDetail.getProductsResponseMessageItem().getServiceType().equalsIgnoreCase("ppv")) {
+                        haveTvod = true;
+                    } else {
+                        haveSvod = true;
+                    }
+                }
                 if (packDetailList.size() == 1) {
                     getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                     if (UserInfo.getInstance(SubscriptionDetailActivity.this).isMaxis()) {

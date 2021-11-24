@@ -1398,16 +1398,6 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                                 checkBuyTextButtonCondition(fileId);
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-                                if (becomeVipButtonCLicked) {
-                                    becomeVipButtonCLicked = false;
-                                    if (UserInfo.getInstance(this).isActive()) {
-                                        if (!fileId.equalsIgnoreCase("")) {
-                                            Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                                            intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
-                                            startActivity(intent);
-                                        }
-                                    }
-                                }
 
                             });
                             this.vodType = EntitlementCheck.SVOD;
@@ -1482,6 +1472,16 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 getBinding().playText.setText(getResources().getString(R.string.buy));
                 getBinding().ivPlayIcon.setVisibility(View.VISIBLE);
 
+            }
+            if (becomeVipButtonCLicked) {
+                becomeVipButtonCLicked = false;
+                if (UserInfo.getInstance(this).isActive()) {
+                    if (!fileId.equalsIgnoreCase("")) {
+                        Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                        intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        startActivity(intent);
+                    }
+                }
             }
         });
     }
