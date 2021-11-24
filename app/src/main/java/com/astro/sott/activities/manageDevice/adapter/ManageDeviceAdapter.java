@@ -58,7 +58,7 @@ public class ManageDeviceAdapter extends RecyclerView.Adapter<ManageDeviceAdapte
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_android_24px));
         } else if (itemList.get(position).getDeviceType().equalsIgnoreCase("PC")) {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_laptop_24_px));
-        } else if (itemList.get(position).getDeviceType().equalsIgnoreCase("Samsung_TV") || itemList.get(position).getDeviceType().equalsIgnoreCase("Lg_TV") || itemList.get(position).getDeviceType().equalsIgnoreCase("Android_TV")) {
+        } else if (itemList.get(position).getDeviceType().equalsIgnoreCase("Samsung TV") || itemList.get(position).getDeviceType().equalsIgnoreCase("LG TV") || itemList.get(position).getDeviceType().equalsIgnoreCase("Android TV")) {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_tv_black_24_dp));
         } else {
             holder.manageDeviceItemBinding.imgDevice.setBackground(mContext.getResources().getDrawable(R.drawable.ic_laptop_24_px));
