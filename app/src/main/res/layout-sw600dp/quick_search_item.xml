@@ -81,17 +81,16 @@
             </androidx.cardview.widget.CardView>
 
 
-
         </FrameLayout>
 
 
         <LinearLayout
             android:layout_width="@dimen/landscape_item_width"
-            android:visibility="visible"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/popular_searches_title_margin_left"
             android:layout_marginEnd="@dimen/popular_searches_margin_left"
             android:orientation="vertical"
+            android:visibility="visible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchItemImage">
 
@@ -99,14 +98,28 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="1"
-                android:layout_marginTop="4dp"
                 android:singleLine="true"
                 android:text="@{ResultAllXmlUtils.setTitle(singleItem)}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_medium" />
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="start"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/_2sdp"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/_9sdp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tvEpisode"
@@ -115,11 +128,11 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/search_item_card_view_corner"
                 android:ellipsize="end"
-                android:visibility="gone"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="1"
                 android:textColor="@color/search_sub_title"
-                android:textSize="@dimen/font_medium_large" />
+                android:textSize="@dimen/font_medium_large"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -130,12 +143,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="2dp"
             android:layout_gravity="top|end"
             android:layout_marginStart="@dimen/popular_searches_margin_left"
+            android:layout_marginTop="2dp"
             android:layout_marginBottom="@dimen/_5sdp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/search_item_seperator_width"
