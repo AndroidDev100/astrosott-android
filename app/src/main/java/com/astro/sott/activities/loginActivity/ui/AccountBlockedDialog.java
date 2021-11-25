@@ -90,7 +90,7 @@ public class AccountBlockedDialog extends DialogFragment {
 
 
     public void onResume() {
-        int width = getResources().getDisplayMetrics().widthPixels - 100;
+        int width = getResources().getDisplayMetrics().widthPixels - 120;
         int height = getResources().getDimensionPixelSize(R.dimen.blocked_fragment_height);
         if (getDialog().getWindow() != null)
             getDialog().getWindow().setLayout(width, height);
