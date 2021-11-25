@@ -49,6 +49,9 @@ public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePa
     private void setCLicks() {
 
         setTextWather();
+        getBinding().backArrow.setOnClickListener(v -> {
+            onBackPressed();
+        });
         getBinding().update.setOnClickListener(view -> {
             String newPassword = getBinding().newPasswordEdt.getText().toString();
             String confirmPassword = getBinding().confirmPasswordEdt.getText().toString();
