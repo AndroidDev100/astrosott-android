@@ -627,6 +627,9 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                         if (lastActiveItem.getStatus().equalsIgnoreCase("ACTIVE")) {
                             getBinding().cancelPlan.setVisibility(View.VISIBLE);
                             getBinding().changePlan.setVisibility(View.VISIBLE);
+                        }else {
+                            getBinding().cancelPlan.setVisibility(View.GONE);
+                            getBinding().changePlan.setVisibility(View.GONE);
                         }
                     } else {
                         getLastSubscription();

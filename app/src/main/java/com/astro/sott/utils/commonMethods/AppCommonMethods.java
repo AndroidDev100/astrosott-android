@@ -2527,7 +2527,7 @@ public class AppCommonMethods {
             }
         }
 
-        StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append("(or name*'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
@@ -2535,15 +2535,15 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");*/
 
-        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append("director*'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append("Keywords*'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append("Actors*'");
         StringBuilderHolder.getInstance().append(searchString);
         if (StringBuilderHolder.getInstance().getText().toString().contains("(and")) {
             StringBuilderHolder.getInstance().append("'))");
@@ -2603,7 +2603,7 @@ public class AppCommonMethods {
             StringBuilderHolder.getInstance().append("(and start_date>='0' ");
         }
 
-        StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append("(or name*'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
@@ -2611,15 +2611,15 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");*/
 
-        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append("director*'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append("Keywords*'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append("Actors*'");
         StringBuilderHolder.getInstance().append(searchString);
         if (StringBuilderHolder.getInstance().getText().toString().contains("(and")) {
             StringBuilderHolder.getInstance().append("'))");
@@ -2679,7 +2679,7 @@ public class AppCommonMethods {
             StringBuilderHolder.getInstance().append("(and IsSponsored='1' ");
         }*/
 
-        StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append("(or name*'");
         StringBuilderHolder.getInstance().append(searchString);
         /* StringBuilderHolder.getInstance().append("'");
          */

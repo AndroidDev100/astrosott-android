@@ -1115,7 +1115,7 @@ public class PlayerRepository {
         String fileId = AppCommonMethods.getFileIdOfAssest(asset);
 
         new KsServices(context).getAdsContext(assetId, fileId, policy -> {
-            if (true) {
+            if (policy.equalsIgnoreCase(AppLevelConstants.KEEP_ADS)) {
                 addIMAConfig(context, playerPluginConfig, asset);
                 preparePlayer(playerPluginConfig, playerMutableLiveData, mediaConfig);
             } else {

@@ -409,7 +409,7 @@ public class SearchRepository {
     public LiveData<ArrayList<SearchModel>> autoCompleteHit(String searchString, final Context context, final List<MediaTypeModel> list, int autoCompleteCounter) {
         initRealm(context);
 
-        String tag3 = "name ~ '";
+        String tag3 = "name * '";
         //below tags are future to be used string tags
         String tag2 = "'";
 

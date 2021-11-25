@@ -160,7 +160,7 @@
 
     <string name="no">No</string>
     <string name="ok_with_exlamation">Ok!!</string>
-    <string name="ok_understand">OK, understand!</string>
+    <string name="ok_understand">Ok, understand!</string>
     <string name="go">Go</string>
     <string name="exit">Exit</string>
     <string name="maxis_edit_restriction_title">You’re on sooka Partner Bundle Subscription</string>
@@ -598,7 +598,7 @@
     <string name="edit_name">Edit Name</string>
 
     <string name="existing_name">Existing Name</string>
-    <string name="existing_email">Existing Email Address</string>
+    <string name="existing_email">Existing Email</string>
     <string name="existing_mobile">Existing Mobile Number</string>
 
     <string name="new_name">New Name</string>
