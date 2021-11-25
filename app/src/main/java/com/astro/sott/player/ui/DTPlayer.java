@@ -2016,8 +2016,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (introStartTime != 0 && introEndTime != 0 || creditStartTime != 0 && creditEndTime != 0) {
                         Log.w("introValues", runningPlayer.getCurrentPosition() + "----" + introStartTime + "----" + playerTimeInSeconds(runningPlayer.getCurrentPosition()));
                         if (introStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introEndTime) {
-                            getBinding().skipIntro.setText(labelIntro);
-                            getBinding().skipIntro.setVisibility(View.VISIBLE);
+                            if (asset.getType() == MediaTypeConstant.getEpisode(baseActivity) || asset.getType() == MediaTypeConstant.getMovie(baseActivity)) {
+                                getBinding().skipIntro.setText(labelIntro);
+                                getBinding().skipIntro.setVisibility(View.VISIBLE);
+                            }
                             skipValue = 1;
                             getBinding().skipRecap.setVisibility(View.GONE);
                             getBinding().skipCredits.setVisibility(View.GONE);
@@ -2028,8 +2030,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         }
 
                         if (recapStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > recapStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < recapEndTime) {
-                            getBinding().skipRecap.setText(labelRecap);
-                            getBinding().skipRecap.setVisibility(View.VISIBLE);
+                            if (asset.getType() == MediaTypeConstant.getEpisode(baseActivity) || asset.getType() == MediaTypeConstant.getMovie(baseActivity)) {
+                                getBinding().skipRecap.setText(labelRecap);
+                                getBinding().skipRecap.setVisibility(View.VISIBLE);
+                            }
                             skipValue = 2;
                             getBinding().skipIntro.setVisibility(View.GONE);
                             getBinding().skipCredits.setVisibility(View.GONE);
@@ -2051,10 +2055,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     }
 
                                 });
-                                objectAnimator.start();
-
-                                getBinding().skipCredits.setText(labelCredit);
-                                getBinding().skipCredits.setVisibility(View.VISIBLE);
+                                if (asset.getType() == MediaTypeConstant.getEpisode(baseActivity)) {
+                                    objectAnimator.start();
+                                    getBinding().skipCredits.setText(labelCredit);
+                                    getBinding().skipCredits.setVisibility(View.VISIBLE);
+                                }
                                 isPlayerSurfaceClicked = false;
                                 isSkipCreditVisible = true;
                                 isUserGeneratedCredit = false;
@@ -3755,10 +3760,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             getBinding().progressBar.setProgress(progress);
                         }
                     });
-                    objectAnimator.start();
-                    getBinding().skipCredits.setText(labelCredit);
-                    getBinding().skipCredits.setVisibility(View.VISIBLE);
-
+                    if (asset.getType() == MediaTypeConstant.getEpisode(baseActivity)) {
+                        objectAnimator.start();
+                        getBinding().skipCredits.setText(labelCredit);
+                        getBinding().skipCredits.setVisibility(View.VISIBLE);
+                    }
 
                     hideSkipIntro();
                 }
