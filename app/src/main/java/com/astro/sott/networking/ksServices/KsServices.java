@@ -1601,37 +1601,40 @@ public class KsServices {
         seasonCallBack = callBack;
         clientSetupKs();
 
-        List<AssetGroupBy> assetGroup = new ArrayList<>();
-        AssetMetaOrTagGroupBy assetGroupBy = new AssetMetaOrTagGroupBy();
-
-        assetGroupBy.setValue("SeasonNumber");
-        assetGroup.add(assetGroupBy);
-
-        DetachedResponseProfile responseProfile = new DetachedResponseProfile();
-        DetachedResponseProfile relatedProfile = new DetachedResponseProfile();
-
-        AggregationCountFilter aggregationCountFilter = new AggregationCountFilter();
-        relatedProfile.setFilter(aggregationCountFilter);
-        relatedProfile.name("Episodes_In_Season");
-        List<DetachedResponseProfile> list = new ArrayList<>();
-        list.add(relatedProfile);
-        responseProfile.setRelatedProfiles(list);
+//        List<AssetGroupBy> assetGroup = new ArrayList<>();
+//        AssetMetaOrTagGroupBy assetGroupBy = new AssetMetaOrTagGroupBy();
+//
+//        assetGroupBy.setValue("SeasonNumber");
+//        assetGroup.add(assetGroupBy);
+//
+//        DetachedResponseProfile responseProfile = new DetachedResponseProfile();
+//        DetachedResponseProfile relatedProfile = new DetachedResponseProfile();
+//
+//        AggregationCountFilter aggregationCountFilter = new AggregationCountFilter();
+//        relatedProfile.setFilter(aggregationCountFilter);
+//        relatedProfile.name("Episodes_In_Season");
+//        List<DetachedResponseProfile> list = new ArrayList<>();
+//        list.add(relatedProfile);
+//        responseProfile.setRelatedProfiles(list);
 
 
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
-        searchAssetFilter.setGroupBy(assetGroup);
-
-        String one = "SeriesId='";
-        String two = "'";
+        DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
+        dynamicOrderBy.orderBy("META_ASC");
+      //  searchAssetFilter.setOrderBy("META_ASC");
+       // (and SeriesId='PACK0000000000000200')
+        String one = "(and SeriesId='";
+        String two = "')";
         String kSQL = one + seriesID + two;
 
         searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
 
-        if (assetType == MediaTypeConstant.getSeries(activity)) {
-            searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
-        } else if (assetType == MediaTypeConstant.getEpisode(activity)) {
-            searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
-        }
+//        if (assetType == MediaTypeConstant.getSeries(activity)) {
+//            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
+//        } else if (assetType == MediaTypeConstant.getEpisode(activity)) {
+//            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
+//        }
 
         AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
             @Override
@@ -1671,7 +1674,7 @@ public class KsServices {
                 }
             }
         });
-        builder.setResponseProfile(responseProfile);
+       // builder.setResponseProfile(responseProfile);
         getRequestQueue().queue(builder.build(client));
     }
 
