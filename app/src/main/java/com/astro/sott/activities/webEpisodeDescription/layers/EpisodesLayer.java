@@ -1,5 +1,6 @@
 package com.astro.sott.activities.webEpisodeDescription.layers;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -250,5 +251,55 @@ public class EpisodesLayer {
             assetCommonBean.setTotalCount(list.get(position).results.getTotalCount());
             assetCommonList.add(assetCommonBean);
         }
+    }
+
+    public LiveData<List<AssetCommonBean>> callEpisodes(Context context, String externalId, Integer assetType, int counter, List<Asset> seasonData, int seasonCounter, int layoutType, LifecycleOwner owner) {
+        responseList = new ArrayList<>();
+        assetCommonList = new ArrayList<>();
+        final MutableLiveData<List<AssetCommonBean>> connection = new MutableLiveData<>();
+        assetCommonBean = new AssetCommonBean();
+        //  seriesId = asset.getExternalId();
+        KsServices ksServices = new KsServices(context);
+        ksServices.callExternalEpisodes(externalId,assetType,counter,seasonData, ((status, commonResponse) -> {
+
+            if (status) {
+                Log.d("checkStatus",status+"");
+                assetCommonBean.setStatus(true);
+                 parseEpisodesAssestsForNonNumerical(context, commonResponse.getAssetList(), seasonData, layoutType, assetType, seasonCounter);
+                connection.postValue(assetCommonList);
+            } else {
+                assetCommonBean.setStatus(false);
+                assetCommonList.add(assetCommonBean);
+                connection.postValue(assetCommonList);
+            }
+        }));
+        return connection;
+    }
+
+    private void parseEpisodesAssestsForNonNumerical(Context context, Response<ListResponse<Asset>> list, List<Asset> seasonData, int layoutType, Integer assetType, int seasonCounter) {
+        if (list == null) {
+            return;
+        }
+        responseList.add(list);
+        assetCommonBean.setRailType(layoutType);
+        assetCommonBean.setMoreType(AppLevelConstants.WEB_EPISODE);
+        if (assetType == MediaTypeConstant.getEpisode(context)) {
+            assetCommonBean.setMoreAssetType(assetType);
+        } else {
+            if (assetType == MediaTypeConstant.getSeries(context)) {
+                assetCommonBean.setMoreType(AppLevelConstants.WEB_EPISODE);
+            }
+        }
+        long id = 1;
+        assetCommonBean.setID(id);
+
+        assetCommonBean.setMoreSeriesID(seriesId);
+        int seriesNumber = 0;
+            Log.d("ghghghghg",seasonData.get(0).getName());
+            assetCommonBean.setTitle(seasonData.get(0).getName());
+
+
+
+        setRailData(context, responseList, assetCommonBean, 0);
     }
 }

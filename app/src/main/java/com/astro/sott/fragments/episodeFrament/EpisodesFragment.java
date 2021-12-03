@@ -97,6 +97,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     private String externalId = "";
     private Map<String, MultilingualStringValueArray> map;
     private List<Integer> seriesNumberList;
+    private List<Asset> SeasonNameList;
     private int seasonCounter = 0;
 
     @Override
@@ -172,12 +173,20 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         private final List<Integer> list;
         private int selectedPos;
         private Context mContext;
+        private List<Asset> seasonNumList;
+        private int size;
 
         //TrackGroup list;
-        public SeasonListAdapter(List<Integer> list, int selectedPos, Context context) {
+        public SeasonListAdapter(List<Integer> list, int selectedPos, Context context, List<Asset> seasonNameList) {
             this.list = list;
             this.selectedPos = selectedPos;
             mContext = context;
+            this.seasonNumList = seasonNameList;
+            if (list!=null){
+                size = list.size();
+            }else {
+                size = seasonNameList.size();
+            }
         }
 
         @NonNull
@@ -189,25 +198,51 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-            holder.season.setText(mContext.getResources().getString(R.string.season) + " " + list.get(position).toString());
-            if (selectedIndex == position) {
-                holder.season.setTextColor(mContext.getResources().getColor(R.color.green));
-                holder.season.setTextSize(20);
-                Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
-                holder.season.setTypeface(boldTypeface);
-            } else {
-                holder.season.setTextColor(mContext.getResources().getColor(R.color.white));
-                holder.season.setTextSize(16);
-                Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.NORMAL);
-                holder.season.setTypeface(boldTypeface);
+
+            if (list!=null) {
+                holder.season.setText(mContext.getResources().getString(R.string.season) + " " + list.get(position).toString());
+                if (selectedIndex == position) {
+                    holder.season.setTextColor(mContext.getResources().getColor(R.color.green));
+                    holder.season.setTextSize(20);
+                    Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
+                    holder.season.setTypeface(boldTypeface);
+                } else {
+                    holder.season.setTextColor(mContext.getResources().getColor(R.color.white));
+                    holder.season.setTextSize(16);
+                    Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.NORMAL);
+                    holder.season.setTypeface(boldTypeface);
+                }
+            }else {
+                holder.season.setText(seasonNumList.get(position).getName());
+
+                if (selectedIndex == position) {
+                    holder.season.setTextColor(mContext.getResources().getColor(R.color.green));
+                   // holder.season.setTextSize(20);
+                    Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
+                    holder.season.setTypeface(boldTypeface);
+                } else {
+                    holder.season.setTextColor(mContext.getResources().getColor(R.color.white));
+                   // holder.season.setTextSize(16);
+                    Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.NORMAL);
+                    holder.season.setTypeface(boldTypeface);
+                }
+
             }
 
             holder.season.setOnClickListener(v -> {
-                alertDialog.cancel();
-                selectedIndex = position;
-                seasonNumber = list.get(position);
-                getBinding().seasonText.setText(getResources().getString(R.string.season) + " " + seasonNumber);
-                getEpisodes(selectedIndex);
+                if (list!=null) {
+                    alertDialog.cancel();
+                    selectedIndex = position;
+                    seasonNumber = list.get(position);
+                    getBinding().seasonText.setText(getResources().getString(R.string.season) + " " + seasonNumber);
+                    getEpisodes(selectedIndex);
+                }else {
+                    alertDialog.cancel();
+                    selectedIndex = position;
+                   // seasonNumber = list.get(position);
+                    getBinding().seasonText.setText(seasonNumList.get(position).getName());
+                    getEpisodesWithExternalId(seasonNumList.get(position).getExternalId(),seasonNumList.get(position).getName());
+                }
 
             });
 
@@ -215,7 +250,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
         @Override
         public int getItemCount() {
-            return list.size();
+            return size;
         }
 
 
@@ -228,6 +263,32 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             }
         }
 
+    }
+
+    private void getEpisodesWithExternalId(String externalId, String name) {
+        loadedList.clear();
+        counter = 1;
+        adapter = null;
+        seasonCounter = selectedIndex;
+        callSeasonEpisodesWithExternaId(externalId,name);
+    }
+
+    private void callSeasonEpisodesWithExternaId(String externalId, String name) {
+        TabsData.getInstance().setSelectedSeason(seasonCounter);
+        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().loadMoreTxt.setText(getActivity().getResources().getString(R.string.loading));
+
+        viewModel.callSeasonEpisodesWithExternalId(externalId, asset.getType(), counter, seasonCounter, TabsData.getInstance().getSeasonData(), AppConstants.Rail5, AppLevelConstants.KEY_EPISODE_NUMBER, this).observe(this, assetCommonBeans -> {
+            getBinding().loadMoreTxt.setText("Load More");
+            getBinding().progressBar.setVisibility(View.GONE);
+            if (assetCommonBeans.get(0).getStatus()) {
+                getBinding().retryTxt.setVisibility(View.GONE);
+                getBinding().seasonText.setText(name);
+                getBinding().season.setVisibility(View.VISIBLE);
+                getBinding().recyclerView.setVisibility(View.VISIBLE);
+                setClosedUIComponets(assetCommonBeans);
+            }
+        });
     }
 
     class EpisodeListAdapter extends RecyclerView.Adapter<EpisodeListAdapter.ViewHolder> {
@@ -315,7 +376,18 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
                 seriesNumberList = TabsData.getInstance().getSeasonList();
                 setClosedUIComponets(TabsData.getInstance().getClosedSeriesData());
-            } else {
+            }else if (TabsData.getInstance().getSeasonData()!=null && TabsData.getInstance().getClosedSeriesData()!=null){
+                Log.d("CloseSeriesData",new Gson().toJson(TabsData.getInstance().getClosedSeriesData()));
+                getBinding().season.setVisibility(View.VISIBLE);
+                seriesType = "closed";
+                closedSeriesData = TabsData.getInstance().getClosedSeriesData();
+                getBinding().seasonText.setText(closedSeriesData.get(0).getTitle());
+
+                SeasonNameList = TabsData.getInstance().getSeasonData();
+                setClosedUIComponets(TabsData.getInstance().getClosedSeriesData());
+            }
+
+            else {
                 getOpenSeriesData();
             }
             //getSeasons();
@@ -421,7 +493,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         }catch (Exception e){
 
         }
-        SeasonListAdapter listAdapter = new SeasonListAdapter(seriesNumberList, selectedIndex, context);
+        SeasonListAdapter listAdapter = new SeasonListAdapter(seriesNumberList, selectedIndex, context,SeasonNameList);
         builder = new android.app.AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View content = inflater.inflate(R.layout.season_custom_dialog, null);
@@ -651,6 +723,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         if (seriesType.equalsIgnoreCase("open")) {
             setOpenSeriesAdapter(railData);
         } else {
+            Log.d("fdfdfdfdf","Enter");
             setCLosedSeriesAdapter(railData);
         }
     }

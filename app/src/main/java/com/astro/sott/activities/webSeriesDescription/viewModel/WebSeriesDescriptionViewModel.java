@@ -3,11 +3,13 @@ package com.astro.sott.activities.webSeriesDescription.viewModel;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
 
 import com.astro.sott.baseModel.ChannelLayer;
 import com.astro.sott.repositories.movieDescription.MovieDescriptionRepository;
+import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.activities.webEpisodeDescription.layers.ClipLayer;
@@ -86,7 +88,8 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
                                                       Map<String, Value> map,
                                                       int layoutType,
                                                       String seriesMediaTyp) {
-        return SeasonsLayer.getInstance().loadData(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, seriesMediaTyp);
+       // return SeasonsLayer.getInstance().loadData(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, seriesMediaTyp);
+        return null;
     }
 
     public LiveData<List<Bookmark>> getEpisodeProgress(String assetList) {
@@ -166,6 +169,11 @@ public class WebSeriesDescriptionViewModel extends AndroidViewModel {
 
     public LiveData<String> getDtvAccountList() {
         return DTVRepository.getInstance().getDtvAccountList(getApplication().getApplicationContext());
+    }
+
+    public LiveData<List<AssetCommonBean>> callSeasonEpisodesWithExternalId(String externalId, Integer type, int counter, int seasonCounter, List<Asset> seasonData, int layoutType, String sortType, LifecycleOwner owner) {
+       // TabsData.getInstance().setSortType(sortType);
+        return EpisodesLayer.getInstance().callEpisodes(getApplication().getApplicationContext(),externalId,type,counter,seasonData,seasonCounter,layoutType,owner);
     }
 
 }

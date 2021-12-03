@@ -1630,6 +1630,10 @@ public class KsServices {
         searchAssetFilter.setKSql(kSQL);
         searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
 
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageSize(20);
+        filterPager.setPageIndex(1);
+
 //        if (assetType == MediaTypeConstant.getSeries(activity)) {
 //            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
 //        } else if (assetType == MediaTypeConstant.getEpisode(activity)) {
@@ -8700,6 +8704,84 @@ public class KsServices {
                 waterMarkCallback.onError(0);
             }
         });
+
+    }
+
+    public void callExternalEpisodes(String externalId, Integer assetType, int counter, List<Asset> seasonData, SimilarMovieCallBack callBack) {
+        clientSetupKs();
+        similarMovieCallBack = callBack;
+        final CommonResponse commonResponse = new CommonResponse();
+
+
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
+        dynamicOrderBy.orderBy("META_ASC");
+        //  searchAssetFilter.setOrderBy("META_ASC");
+        // (and SeriesId='PACK0000000000000200')
+        String one = "(and ParentRefId='";
+        String two = "')";
+        String kSQL = one + externalId + two;
+
+        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.typeIn(685+"");
+
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageSize(20);
+        filterPager.setPageIndex(counter);
+
+//        if (assetType == MediaTypeConstant.getSeries(activity)) {
+//            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
+//        } else if (assetType == MediaTypeConstant.getEpisode(activity)) {
+//            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
+//        }
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Asset>> result) {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null) {
+                            if (result.results.getObjects().size() > 0) {
+                                commonResponse.setStatus(true);
+                                commonResponse.setAssetList(result);
+                                similarMovieCallBack.response(true, commonResponse);
+                            } else {
+                                similarMovieCallBack.response(false, commonResponse);
+                            }
+                        } else {
+                            similarMovieCallBack.response(false, commonResponse);
+                        }
+                    } else {
+                        similarMovieCallBack.response(false, commonResponse);
+                    }
+                } else {
+                    if (result.error != null) {
+
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        callExternalEpisodes(externalId,assetType,counter,seasonData,callBack);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        similarMovieCallBack.response(false, commonResponse);
+                                    }
+                                }
+                            });
+                        else {
+                            similarMovieCallBack.response(false, commonResponse);
+                        }
+                    } else {
+                        similarMovieCallBack.response(false, commonResponse);
+                    }
+
+                }
+            }
+        });
+        // builder.setResponseProfile(responseProfile);
+        getRequestQueue().queue(builder.build(client));
 
     }
 }

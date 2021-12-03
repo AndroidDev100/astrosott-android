@@ -22,6 +22,7 @@ import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
+import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaImage;
 import com.kaltura.client.types.MultilingualStringValue;
@@ -53,6 +54,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
         this.episodeNumber = episodeNumber;
         this.episodeClickListner = episodeCallBAck;
         episodeClickListner.episodeList(railList);
+        Log.d("fhdhfhdfhd",new Gson().toJson(railList));
     }
 
     @NonNull

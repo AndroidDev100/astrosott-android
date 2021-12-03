@@ -26,7 +26,9 @@ import com.astro.sott.fragments.trailerFragment.viewModel.TrailerFragmentViewMod
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.MediaTypeConstant;
+import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 
 import java.util.ArrayList;
@@ -95,26 +97,94 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
     }
 
     private void getSeasons() {
-        trailerFragmentViewModel.getSeasonsListData(asset.getId().intValue(), 1, asset.getType(), asset.getMetas(), AppConstants.Rail5, externalId).observe(getActivity(), integers -> {
-            if (integers != null) {
-                if (integers.size() > 0) {
-                    seriesNumberList = integers;
+
+        trailerFragmentViewModel.getSeasonsListData(asset.getId().intValue(), 1, asset.getType(), asset.getMetas(), AppConstants.Rail5, externalId).observe(getActivity(), assetListResponse -> {
+            if (assetListResponse!=null){
+                if (AssetContent.getSeasonNumberFromList(assetListResponse.get(0).getMetas())){
+                    seriesNumberList = AssetContent.getAllSeasonNumber(assetListResponse);
                     trailerFragmentViewModel.setOpenSeriesData(null);
-                    trailerFragmentViewModel.setSeasonList(integers);
+                    TabsData.getInstance().setSeasonData(null);
+                    trailerFragmentViewModel.setSeasonList(seriesNumberList);
                     getEpisode(seriesNumberList);
-                } else {
-                    trailerFragmentViewModel.setSeasonList(null);
-                    trailerFragmentViewModel.setClosedSeriesData(null);
-                    getOpenSeriesEpisodes();
+                }else {
+                    TabsData.getInstance().setSeasonData(assetListResponse);
+                    if (TabsData.getInstance().getSeasonData()!=null){
+                       TabsData.getInstance().setSelectedSeason(seasonCounter);
+                        trailerFragmentViewModel.callSeasonEpisodesWithExternalId(TabsData.getInstance().getSeasonData().get(0).getExternalId(),asset.getType(), counter, seasonCounter, TabsData.getInstance().getSeasonData(),AppConstants.Rail5,AppLevelConstants.KEY_EPISODE_NUMBER,this).observe(this, assetCommonBeans -> {
+                            if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus()) {
+                                trailerFragmentViewModel.setOpenSeriesData(null);
+                                trailerFragmentViewModel.setClosedSeriesData(assetCommonBeans);
+                                trailerFragmentViewModel.setSeasonList(null);
+                                isTrailerCount = 1;
+                                getRefId(asset.getType());
+                                trailerFragmentType = 1;
+
+                            } else {
+                                trailerFragmentViewModel.setClosedSeriesData(null);
+                                getRefId(asset.getType());
+
+                            }
+                        });
+
+                    }else {
+
+                        trailerFragmentViewModel.setSeasonList(null);
+                        trailerFragmentViewModel.setClosedSeriesData(null);
+                        getOpenSeriesEpisodes();
+                    }
                 }
-            } else {
+
+
+            }else {
                 trailerFragmentViewModel.setSeasonList(null);
                 trailerFragmentViewModel.setClosedSeriesData(null);
                 getOpenSeriesEpisodes();
-
             }
-
         });
+
+//        trailerFragmentViewModel.getSeasonsListData(asset.getId().intValue(), 1, asset.getType(), asset.getMetas(), AppConstants.Rail5, externalId).observe(getActivity(), integers -> {
+//            if (integers != null) {
+//                if (integers.size() > 0) {
+//                    seriesNumberList = integers;
+//                    trailerFragmentViewModel.setOpenSeriesData(null);
+//                    trailerFragmentViewModel.setSeasonList(integers);
+//                    getEpisode(seriesNumberList);
+//                } else {
+//                    Log.d("fgfgfgf",new Gson().toJson(TabsData.getInstance().getSeasonData()));
+//
+//                    if (TabsData.getInstance().getSeasonData()!=null){
+//
+//                        TabsData.getInstance().setSelectedSeason(seasonCounter);
+//                        trailerFragmentViewModel.callSeasonEpisodesWithExternalId(TabsData.getInstance().getSeasonData().get(0).getExternalId(),asset.getType(), counter, seasonCounter, TabsData.getInstance().getSeasonData(),AppConstants.Rail5,this).observe(this, assetCommonBeans -> {
+//                            if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus()) {
+//                                Log.d("fhfgffgfg",new Gson().toJson(assetCommonBeans));
+//                                trailerFragmentViewModel.setClosedSeriesData(assetCommonBeans);
+//                                isTrailerCount = 1;
+//                                getRefId(asset.getType());
+//                                trailerFragmentType = 1;
+//
+//                            } else {
+//                                trailerFragmentViewModel.setClosedSeriesData(null);
+//                                getRefId(asset.getType());
+//
+//                            }
+//                        });
+//
+//                    }else {
+//
+//                        trailerFragmentViewModel.setSeasonList(null);
+//                        trailerFragmentViewModel.setClosedSeriesData(null);
+//                        getOpenSeriesEpisodes();
+//                    }
+//                }
+//            } else {
+//                trailerFragmentViewModel.setSeasonList(null);
+//                trailerFragmentViewModel.setClosedSeriesData(null);
+//                getOpenSeriesEpisodes();
+//
+//            }
+//
+//        });
 
 
     }

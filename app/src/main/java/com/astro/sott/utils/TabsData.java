@@ -16,11 +16,20 @@ public class TabsData {
     private boolean isDetail = false;
     private String seriesType;
     private int selectedSeason;
+
+    public List<Asset> getSeasonData() {
+        return seasonData;
+    }
+
+    public void setSeasonData(List<Asset> seasonData) {
+        this.seasonData = seasonData;
+    }
+
     private List<RailCommonData> youMayAlsoLikeData;
     private List<AssetCommonBean> openSeriesData;
     private Asset seriesAsset;
     private List<AssetCommonBean> closedSeriesData;
-
+    private List<Asset> seasonData;
     private List<Integer> seasonList;
 
 
