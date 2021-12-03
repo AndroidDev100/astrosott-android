@@ -119,6 +119,7 @@ import com.astro.sott.utils.userInfo.UserInfo;
 import com.conviva.sdk.ConvivaSdkConstants;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MediaAsset;
@@ -708,8 +709,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 railList.clear();
                                 episodesList.clear();
                                 seriesNumberList = TabsData.getInstance().getSeasonList();
-                                if (seriesNumberList.size() > seasonCounter && seriesNumberList.get(seasonCounter) != null)
-                                    getSeasonEpisode(seasonCounter, "nextSeason");
+                                seasonNumberList = TabsData.getInstance().getSeasonData();
+                                if (seriesNumberList!=null) {
+                                    if (seriesNumberList.size() > seasonCounter && seriesNumberList.get(seasonCounter) != null)
+                                        getSeasonEpisode(seasonCounter, "nextSeason");
+                                }else if (seasonNumberList.size() > seasonCounter && seasonNumberList.get(seasonCounter)!=null){
+                                        getSeasonEpisodeWithExternalId(seasonNumberList.get(seasonCounter).getExternalId(),"nextSeason");
+                                }
 
                             }
                         }
@@ -718,6 +724,30 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             }
         } catch (Exception ex) {
+        }
+    }
+
+    private void getSeasonEpisodeWithExternalId(String externalId, String nextSeason) {
+        Asset seriesAsset = TabsData.getInstance().getSeriesAsset();
+        if (!nextSeason.equalsIgnoreCase("")) {
+            viewModel.callSeasonEpisodesWithExternalId(externalId, asset.getType(), 1, seasonCounter, TabsData.getInstance().getSeasonData(), AppConstants.Rail5, AppLevelConstants.KEY_EPISODE_NUMBER, this).observe(this, assetCommonBeans -> {
+                if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus() && assetCommonBeans.get(0).getRailAssetList() != null && assetCommonBeans.get(0).getRailAssetList().size() > 0) {
+                    episodeCounter++;
+                    totalEpisode = assetCommonBeans.get(0).getTotalCount();
+                    for (RailCommonData railCommonData : assetCommonBeans.get(0).getRailAssetList()) {
+                        if (railCommonData.getObject() != null) {
+                            railList.add(railCommonData);
+                            episodesList.add(railCommonData.getObject());
+                        }
+                    }
+                    if (nextEpisodeCounter != -1 && episodesList.get(nextEpisodeCounter) != null) {
+                        nextPlayingAsset = episodesList.get(nextEpisodeCounter);
+                        hasNextEpisode = true;
+                    }
+                } else {
+
+                }
+            });
         }
     }
 
@@ -750,6 +780,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private List<Integer> seriesNumberList;
+    private List<Asset> seasonNumberList;
 
     private void getSeasonEpisode(int seasonNumber, String nextSeason) {
 

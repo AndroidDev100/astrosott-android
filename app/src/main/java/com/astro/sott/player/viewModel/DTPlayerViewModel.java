@@ -288,4 +288,8 @@ public class DTPlayerViewModel extends AndroidViewModel {
         return PlayerRepository.getInstance().callWaterMarkApi(getApplication().getApplicationContext(), kalturaPhoenixUrl, ks);
 
     }
+    public LiveData<List<AssetCommonBean>> callSeasonEpisodesWithExternalId(String externalId, Integer type, int counter, int seasonCounter, List<Asset> seasonData, int layoutType, String sortType, LifecycleOwner owner) {
+        TabsData.getInstance().setSortType(sortType);
+        return EpisodesLayer.getInstance().callEpisodes(getApplication().getApplicationContext(),externalId,type,counter,seasonData,seasonCounter,layoutType,owner);
+    }
 }
