@@ -99,6 +99,8 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     private List<Integer> seriesNumberList;
     private List<Asset> SeasonNameList;
     private int seasonCounter = 0;
+    private String external_Id = "";
+    private String seasonName = "";
 
     @Override
     protected EpisodeFooterFragmentBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -240,6 +242,8 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                     alertDialog.cancel();
                     selectedIndex = position;
                    // seasonNumber = list.get(position);
+                    external_Id = seasonNumList.get(position).getExternalId();
+                    seasonName = seasonNumList.get(position).getName();
                     getBinding().seasonText.setText(seasonNumList.get(position).getName());
                     getEpisodesWithExternalId(seasonNumList.get(position).getExternalId(),seasonNumList.get(position).getName());
                 }
@@ -384,6 +388,8 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 getBinding().seasonText.setText(closedSeriesData.get(0).getTitle());
 
                 SeasonNameList = TabsData.getInstance().getSeasonData();
+                external_Id = TabsData.getInstance().getSeasonData().get(0).getExternalId();
+                seasonName = TabsData.getInstance().getSeasonData().get(0).getName();
                 setClosedUIComponets(TabsData.getInstance().getClosedSeriesData());
             }
 
@@ -402,7 +408,11 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             @Override
             public void onClick(View view) {
                 counter++;
-                callSeasonEpisodes(seriesNumberList);
+                if (list!=null) {
+                    callSeasonEpisodes(seriesNumberList);
+                }else {
+                    callSeasonEpisodesWithExternaId(external_Id,seasonName);
+                }
 
             }
         });
