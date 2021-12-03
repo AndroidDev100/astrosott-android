@@ -67,7 +67,6 @@ import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.DoubleClick;
 import com.astro.sott.callBacks.WindowFocusCallback;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
-import com.astro.sott.callBacks.kalturaCallBacks.PlayBackContextCallBack;
 import com.astro.sott.callBacks.kalturaCallBacks.RefreshTokenCallBack;
 import com.astro.sott.fragments.dialog.AlertDialogFragment;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
@@ -89,7 +88,6 @@ import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.Network;
 import com.astro.sott.utils.helpers.NetworkChangeReceiver;
 import com.astro.sott.utils.helpers.ToastHandler;
-import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.Alarm.MyReceiver;
 import com.astro.sott.BuildConfig;
@@ -119,7 +117,6 @@ import com.astro.sott.utils.userInfo.UserInfo;
 import com.conviva.sdk.ConvivaSdkConstants;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MediaAsset;
@@ -247,6 +244,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private String scrubberUrl = "";
     ObjectAnimator objectAnimator;
     private boolean isPlayerSurfaceClicked = false;
+    private int counter_for_non_numerical = 0;
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -697,8 +695,14 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             if (TabsData.getInstance().getSeriesType().equalsIgnoreCase(AppLevelConstants.OPEN)) {
                                 GetEpisodeListWithoutSeason();
                             } else if (TabsData.getInstance().getSeriesType().equalsIgnoreCase(AppLevelConstants.CLOSE)) {
+                                seasonNumberList = TabsData.getInstance().getSeasonData();
                                 seasonCounter = TabsData.getInstance().getSelectedSeason();
-                                getSeasonEpisode(seasonCounter, "");
+                                if (seasonNumberList!=null){
+                                    counter_for_non_numerical++;
+                                    getSeasonEpisodeWithExternalId(seasonNumberList.get(seasonCounter).getExternalId(),"",counter_for_non_numerical);
+                                }else {
+                                    getSeasonEpisode(seasonCounter, "");
+                                }
                             }
                         } else {
                             if (TabsData.getInstance().getSeriesType().equalsIgnoreCase(AppLevelConstants.CLOSE)) {
@@ -714,7 +718,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     if (seriesNumberList.size() > seasonCounter && seriesNumberList.get(seasonCounter) != null)
                                         getSeasonEpisode(seasonCounter, "nextSeason");
                                 }else if (seasonNumberList.size() > seasonCounter && seasonNumberList.get(seasonCounter)!=null){
-                                        getSeasonEpisodeWithExternalId(seasonNumberList.get(seasonCounter).getExternalId(),"nextSeason");
+                                        counter_for_non_numerical = 0;
+                                        getSeasonEpisodeWithExternalId(seasonNumberList.get(seasonCounter).getExternalId(),"nextSeason",0);
                                 }
 
                             }
@@ -727,7 +732,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
-    private void getSeasonEpisodeWithExternalId(String externalId, String nextSeason) {
+    private void getSeasonEpisodeWithExternalId(String externalId, String nextSeason, int counter_for_non_numerical) {
         Asset seriesAsset = TabsData.getInstance().getSeriesAsset();
         if (!nextSeason.equalsIgnoreCase("")) {
             viewModel.callSeasonEpisodesWithExternalId(externalId, asset.getType(), 1, seasonCounter, TabsData.getInstance().getSeasonData(), AppConstants.Rail5, AppLevelConstants.KEY_EPISODE_NUMBER, this).observe(this, assetCommonBeans -> {
@@ -748,6 +753,26 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 }
             });
+        }else {
+            viewModel.callSeasonEpisodesWithExternalId(externalId, asset.getType(), counter_for_non_numerical, seasonCounter, TabsData.getInstance().getSeasonData(), AppConstants.Rail5, AppLevelConstants.KEY_EPISODE_NUMBER, this).observe(this, assetCommonBeans -> {
+                if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus() && assetCommonBeans.get(0).getRailAssetList() != null && assetCommonBeans.get(0).getRailAssetList().size() > 0) {
+                    episodeCounter++;
+                    totalEpisode = assetCommonBeans.get(0).getTotalCount();
+                    for (RailCommonData railCommonData : assetCommonBeans.get(0).getRailAssetList()) {
+                        if (railCommonData.getObject() != null) {
+                            railList.add(railCommonData);
+                            episodesList.add(railCommonData.getObject());
+                        }
+                    }
+                    if (nextEpisodeCounter != -1 && episodesList.get(nextEpisodeCounter) != null) {
+                        nextPlayingAsset = episodesList.get(nextEpisodeCounter);
+                        hasNextEpisode = true;
+                    }
+                } else {
+
+                }
+            });
+
         }
     }
 
