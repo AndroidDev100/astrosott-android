@@ -381,7 +381,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 seriesNumberList = TabsData.getInstance().getSeasonList();
                 setClosedUIComponets(TabsData.getInstance().getClosedSeriesData());
             }else if (TabsData.getInstance().getSeasonData()!=null && TabsData.getInstance().getClosedSeriesData()!=null){
-                Log.d("CloseSeriesData",new Gson().toJson(TabsData.getInstance().getClosedSeriesData()));
+               // Log.d("CloseSeriesData",new Gson().toJson(TabsData.getInstance().getClosedSeriesData()));
                 getBinding().season.setVisibility(View.VISIBLE);
                 seriesType = "closed";
                 closedSeriesData = TabsData.getInstance().getClosedSeriesData();
@@ -733,7 +733,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         if (seriesType.equalsIgnoreCase("open")) {
             setOpenSeriesAdapter(railData);
         } else {
-            Log.d("fdfdfdfdf","Enter");
+           // Log.d("fdfdfdfdf","Enter");
             setCLosedSeriesAdapter(railData);
         }
     }
