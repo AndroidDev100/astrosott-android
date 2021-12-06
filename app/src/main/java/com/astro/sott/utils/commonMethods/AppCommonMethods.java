@@ -65,6 +65,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.astro.sott.R;
 import com.astro.sott.utils.constants.AppConstants;
+import com.bumptech.glide.Glide;
 import com.clevertap.android.sdk.CleverTapAPI;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardType;
@@ -198,6 +199,10 @@ public class AppCommonMethods {
         } catch (Exception e) {
         }
         return "";
+    }
+
+    public static void setProgressBar(ImageView imageView) {
+        Glide.with(imageView.getContext()).load(R.drawable.heart_beat).into(imageView);
     }
 
     public static void setCrashlyticsUserId(Activity activity) {
