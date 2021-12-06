@@ -11,6 +11,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="0dp"
+            android:layout_marginStart="10dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:nestedScrollingEnabled="false" />
@@ -19,6 +20,7 @@
             android:id="@+id/billing_image"
             android:layout_width="30dp"
             android:layout_height="22dp"
+            android:layout_marginTop="6dp"
             android:layout_gravity="right"
             android:background="@drawable/vip_billing"
             android:contentDescription="@string/contentDescription"
