@@ -317,9 +317,6 @@ public class ActivityLauncher {
             case AppLevelConstants.BOX_SET_DETAIL:
                 boxSetScreenCheck(name, railCommonData, layoutPosition, layoutType, detailRailClick);
                 break;
-            case AppLevelConstants.LIVE_CHANNEL:
-                liveplayerScreenCheck(name, railCommonData, layoutPosition, layoutType, detailRailClick);
-                break;
             case AppLevelConstants.SHORT_FILM_ACTIVITY:
                 break;
             case AppLevelConstants.WEB_SERIES_DESCCRIPTION_ACTIVITY:
@@ -621,7 +618,7 @@ public class ActivityLauncher {
                         Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
                     }
                 });
-            }else {
+            } else {
                 Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
