@@ -21,14 +21,7 @@
             app:lottie_loop="false"
             app:lottie_rawRes="@raw/sookaopeningindentpotrait1"
             app:lottie_speed="1.0" />
-        <!--  <ImageView
-              android:id="@+id/splash_image"
-              android:layout_width="@dimen/splash_icon_width"
-              android:layout_height="@dimen/splash_icon_height"
-              android:layout_centerInParent="true"
-              android:background="@drawable/sooka"
-              android:contentDescription=""
-              tools:ignore="ContentDescription" />-->
+
 
         <FrameLayout
             android:id="@+id/no_connection_layout"
