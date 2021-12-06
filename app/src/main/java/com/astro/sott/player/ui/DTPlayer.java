@@ -244,7 +244,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private String scrubberUrl = "";
     ObjectAnimator objectAnimator;
     private boolean isPlayerSurfaceClicked = false;
-    private int counter_for_non_numerical = 0;
+    private int counter_for_non_numerical = 1;
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
