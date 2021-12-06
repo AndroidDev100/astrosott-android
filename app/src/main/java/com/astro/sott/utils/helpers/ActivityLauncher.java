@@ -35,7 +35,6 @@ import com.astro.sott.activities.forwardEPG.ForwardedEPGActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.liveChannel.liveChannelManager.LiveChannelManager;
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.mbbaccount.ui.AddMBBAccountActivity;
 import com.astro.sott.activities.mbbaccount.ui.MBBAccountActivity;
 import com.astro.sott.activities.moreListing.ui.ContinueWatchingActivity;
@@ -821,13 +820,6 @@ public class ActivityLauncher {
     }
 
 
-    public void loginActivity(Activity source, Class<LoginActivity> destination,
-                              int pos, String s) {
-        Intent intent = new Intent(source, destination);
-        intent.putExtra("position", pos);
-        intent.putExtra("screenName", s);
-        activity.startActivity(intent);
-    }
 
     public void subscriptionActivity(Activity
                                              source, Class<SubscriptionActivity> destination, int pos) {

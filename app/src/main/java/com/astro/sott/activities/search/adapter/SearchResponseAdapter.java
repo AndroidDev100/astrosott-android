@@ -119,12 +119,6 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (count < 15)
             all.setVisibility(View.GONE);
 
-
-        // StringBuilderHolder.getInstance().clear();
-        // StringBuilderHolder.getInstance().append(activity.getResources().getString(R.string.show_all));
-        // StringBuilderHolder.getInstance().append(" ");
-
-        //  all.setText(StringBuilderHolder.getInstance().getText());
     }
 
     @Override
@@ -167,11 +161,6 @@ public class SearchResponseAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-
-    private void getProgramRailCommonData(Asset currentProgram, String program_videoItemClicked) {
-        railCommonData = new RailCommonData();
-        railCommonData.setObject(currentProgram);
-    }
 
     private void getRailCommonData(Asset itemValue, String title) {
         railCommonData = new RailCommonData();

@@ -114,7 +114,6 @@ public interface AppLevelConstants {
     int SPAN_COUNT_SQUARE = 4;
     //Device management
     String DEVICE_EXISTS = "1015";
-
     //kaltura error codes
     String KS_EXPIRE = "500016";
     String HOUSEHOLD_ERROR = "1003";
@@ -489,6 +488,9 @@ public interface AppLevelConstants {
     String OPEN = "open";
     String CLOSE = "close";
     String KEY_ENTRY_ID = "entryId";
+
+    String CHANNEL_FILTER_CATALOGUE_VALUE = "(or Catalogue = 'sottott')";
+    String CATALOGUE_VALUE = "(and Catalogue = 'sottott'";
 
 
 }

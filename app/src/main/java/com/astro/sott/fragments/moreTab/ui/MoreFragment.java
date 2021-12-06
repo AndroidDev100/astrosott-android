@@ -32,7 +32,6 @@ import com.astro.sott.activities.accountSettings.ui.AccountSettingsActivity;
 import com.astro.sott.activities.appSettings.ui.AppSettingsActivity;
 import com.astro.sott.activities.deviceMangment.helper.RecyclerTouchListener;
 import com.astro.sott.activities.home.HomeActivity;
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.adapter.moreTab.MoreListAdapter;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.callBacks.commonCallBacks.ClickListener;
@@ -126,7 +125,6 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
                     //logout
                     confirmDeletion();
                 } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.LOGIN)) {
-                    new ActivityLauncher(getActivity()).loginActivity(getActivity(), LoginActivity.class, 0, "");
 //                    forceLogin();
                 } else if (alList.get(position).equalsIgnoreCase(AppLevelConstants.TNC) || alList.get(position).equalsIgnoreCase("Syarat & syarat")) {
                     Intent intent = new Intent(homeActivity, WebViewActivity.class);
@@ -140,7 +138,6 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
                     if (isLogin) {
                         new ActivityLauncher(getActivity()).accountSetting(getActivity(), AccountSettingsActivity.class);
                     } else {
-                        new ActivityLauncher(getActivity()).loginActivity(getActivity(), LoginActivity.class, 0, "");
                     }
 
 
@@ -149,7 +146,6 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> {
                     if (isLogin) {
                         new ActivityLauncher(getActivity()).multipleplaylistActivity(getActivity(), MultiplePlaylistActivity.class);
                     } else {
-                        new ActivityLauncher(getActivity()).loginActivity(getActivity(), LoginActivity.class, 0, "");
                     }
 
 
