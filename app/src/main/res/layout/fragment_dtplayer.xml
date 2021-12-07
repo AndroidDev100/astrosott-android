@@ -611,19 +611,29 @@
             </LinearLayout>
 
 
-            <ProgressBar
-                android:id="@+id/pBar"
-                style="?android:attr/progressBarStyleLarge"
+<!--            <ProgressBar-->
+<!--                android:id="@+id/pBar"-->
+<!--                style="?android:attr/progressBarStyleLarge"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:indeterminateTint="@color/primary_blue"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                tools:targetApi="lollipop" />-->
+            <include
+                android:id="@+id/progress_lay"
+                layout="@layout/progress_animation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:indeterminateTint="@color/primary_blue"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:targetApi="lollipop" />
+                android:visibility="gone"
+                />
 
             <TextView
                 android:id="@+id/loading"
@@ -637,7 +647,7 @@
                 android:textSize="@dimen/extra_large_text_view_size_title"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/pBar"
+                app:layout_constraintLeft_toRightOf="@+id/progress_lay"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton

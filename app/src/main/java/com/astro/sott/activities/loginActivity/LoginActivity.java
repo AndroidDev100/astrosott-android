@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements AlertDialogSingl
 
 
         private void getMpin() {
-            activityLoginBinding.progressBar.setVisibility(View.VISIBLE);
+            activityLoginBinding.progressLay.progressHeart.setVisibility(View.VISIBLE);
 
                 String msisdn = KsPreferenceKey.getInstance(this).getUser().getUsername();
 //            if (msisdn.startsWith("0")) {
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements AlertDialogSingl
                 String finalMsisdn = msisdn;
                 if (getApplicationContext() != null && NetworkConnectivity.isOnline(LoginActivity.this)) {
                     viewModel.getMpin(finalMsisdn).observe(this, otpModel -> {
-                        activityLoginBinding.progressBar.setVisibility(View.GONE);
+                        activityLoginBinding.progressLay.progressHeart.setVisibility(View.GONE);
                         Log.e("OTP MODEL",new Gson().toJson(otpModel));
                         if (otpModel != null) {
                             if (TextUtils.isEmpty(String.valueOf(otpModel.getmPin())) || otpModel.getResponseCode() == 1 || otpModel.getResponseCode() == 2) {
@@ -109,18 +109,16 @@ public class LoginActivity extends AppCompatActivity implements AlertDialogSingl
                         }
                     });
                 } else {
-                    activityLoginBinding.progressBar.setVisibility(View.GONE);
+                    activityLoginBinding.progressLay.progressHeart.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
                 }
             }
-
-
 
     @Override
     public void onFragmentInteraction(String fragment, String event, String msisdn, String otp, Boolean isAutoMSISDN, String txnId) {
         if (fragment.equalsIgnoreCase(AppLevelConstants.SIGN_UP)) {
             if (isAutoMSISDN) {
-                activityLoginBinding.progressBar.setVisibility(View.VISIBLE);
+                activityLoginBinding.progressLay.progressHeart.setVisibility(View.VISIBLE);
                 registerUser(msisdn);
             } else {
                 if (event.equalsIgnoreCase(AppLevelConstants.ALREADY_USER)) {
@@ -131,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements AlertDialogSingl
             }
         } else if (fragment.equalsIgnoreCase(AppLevelConstants.SIGN_IN)) {
             if (isAutoMSISDN) {
-                activityLoginBinding.progressBar.setVisibility(View.VISIBLE);
+                activityLoginBinding.progressLay.progressHeart.setVisibility(View.VISIBLE);
                 loginUser(msisdn, false);
             } else {
                 if (event.equalsIgnoreCase(AppLevelConstants.CONTINUE)) {
@@ -160,7 +158,7 @@ public class LoginActivity extends AppCompatActivity implements AlertDialogSingl
     private void loginUser(String msisdn, Boolean viaRegistration) {
 
         viewModel.loginUser(msisdn, viaRegistration).observe(this, commonResponse -> {
-            activityLoginBinding.progressBar.setVisibility(View.GONE);
+            activityLoginBinding.progressLay.progressHeart.setVisibility(View.GONE);
             String message;
             if (viaRegistration) {
                 message = getString(R.string.success_register_user);
@@ -220,7 +218,7 @@ public class LoginActivity extends AppCompatActivity implements AlertDialogSingl
         super.onStop();
         InputMethodManager mgr = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (mgr != null)
-            mgr.hideSoftInputFromWindow(activityLoginBinding.progressBar.getWindowToken(), 0);
+            mgr.hideSoftInputFromWindow(activityLoginBinding.progressLay.progressHeart.getWindowToken(), 0);
     }
 
 

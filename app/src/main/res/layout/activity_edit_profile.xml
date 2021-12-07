@@ -49,13 +49,21 @@
 
             </RelativeLayout>
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
+<!--            <ProgressBar-->
+<!--                android:id="@+id/progress_bar"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:theme="@style/progressBarBlue"-->
+<!--                android:visibility="gone" />-->
+            <include
+                android:id="@+id/progress_lay"
+                layout="@layout/progress_animation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:theme="@style/progressBarBlue"
-                android:visibility="gone" />
+                android:visibility="gone"
+                />
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button"

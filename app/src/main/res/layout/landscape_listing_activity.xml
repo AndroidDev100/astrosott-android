@@ -77,14 +77,22 @@
 
             </LinearLayout>
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="@style/Widget.AppCompat.ProgressBar"
+            <include
+                android:id="@+id/progress_lay"
+                layout="@layout/progress_animation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/progressBarBlue"
                 android:visibility="gone"
                 android:layout_centerInParent="true"/>
+
+<!--            <ProgressBar-->
+<!--                android:id="@+id/progress_bar"-->
+<!--                style="@style/Widget.AppCompat.ProgressBar"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:theme="@style/progressBarBlue"-->
+<!--                android:visibility="gone"-->
+<!--                android:layout_centerInParent="true"/>-->
 
 
         </RelativeLayout>

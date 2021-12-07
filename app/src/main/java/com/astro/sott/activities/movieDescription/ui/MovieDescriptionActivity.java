@@ -454,7 +454,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 if (apiStatus) {
                     if (purchasedStatus) {
                         runOnUiThread(() -> {
-                            getBinding().btnProgressBar.setVisibility(View.GONE);
+                            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                             if (playbackControlValue) {
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                 if (watchPosition > 0) {
@@ -514,7 +514,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 }
             });
         } else {
-            getBinding().btnProgressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
         }
 
        /* new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
@@ -548,7 +548,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
     private void checkBuyTextButtonCondition(String fileId) {
         BuyButtonManager.getInstance().getPackages(this, "", fileId, true, (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
-            getBinding().btnProgressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             PacksDateLayer.getInstance().setPackDetailList(packDetailList);
             this.subscriptionIds = subscriptionIds;
             if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {

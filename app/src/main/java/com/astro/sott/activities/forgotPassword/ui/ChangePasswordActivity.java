@@ -166,11 +166,11 @@ public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePa
     }
 
     private void resetPassword() {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressBar.progressHeart.setVisibility(View.VISIBLE);
         getBinding().errorPasssword.setVisibility(View.GONE);
         String password = getBinding().confirmPasswordEdt.getText().toString();
         astroLoginViewModel.resetPassword(token, password).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressBar.progressHeart.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 FragmentManager fm = getSupportFragmentManager();
                 PasswordChangedDialog cancelDialogFragment = PasswordChangedDialog.newInstance("Detail Page", "");
