@@ -40,6 +40,7 @@ import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServiceMessageItem;
 import com.astro.sott.usermanagment.modelClasses.getProducts.ProductsResponseMessageItem;
+import com.astro.sott.utils.ErrorCodes;
 import com.astro.sott.utils.PacksDateLayer;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.billing.BillingProcessor;
@@ -596,7 +597,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failed", "Content Details Page");
                 } catch (Exception ex) {
                 }
-                if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals("111111111")) {
+                if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2124)) || addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals("111111111")|| addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals(String.valueOf(ErrorCodes.eV2138))|| addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals(String.valueOf(ErrorCodes.eV2292))) {
                     EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
                         if (evergentCommonResponse1.isStatus()) {
                             handlePurchase(purchase);
@@ -604,9 +605,9 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                             AppCommonMethods.removeUserPrerences(this);
                         }
                     });
-                } else if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2428")) {
+                } else if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2428))||addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2597))) {
                     commonDialog(getResources().getString(R.string.payment_progress), getResources().getString(R.string.payment_progress_desc), getResources().getString(R.string.ok));
-                } else if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase("ev1144")) {
+                } else if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.ev1144))||addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2365))||addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2378))) {
                     commonDialog(getResources().getString(R.string.already_purchase), getResources().getString(R.string.already_purchase_desc), getResources().getString(R.string.ok));
                 } else {
                     Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
