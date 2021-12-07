@@ -2,6 +2,7 @@ package com.astro.sott.baseModel;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -56,7 +57,7 @@ public class DeepSearchLayer {
 
     }
 
-    private void callDynamicData(Context context,String layout, List<Response<ListResponse<Asset>>> list) {
+    private void callDynamicData(Context context, String layout, List<Response<ListResponse<Asset>>> list) {
         try {
 
             if (list != null) {
@@ -65,7 +66,6 @@ public class DeepSearchLayer {
                     RailCommonData railCommonData = new RailCommonData();
                     railCommonData.setTotalCount(list.get(0).results.getTotalCount());
                     railCommonData.setStatus(true);
-//            railCommonData.setCatchUpBuffer(list.get(0).results.getObjects().get(j).getEnableCatchUp());
                     railCommonData.setType(list.get(0).results.getObjects().get(j).getType());
                     railCommonData.setName(list.get(0).results.getObjects().get(j).getName());
                     railCommonData.setId(list.get(0).results.getObjects().get(j).getId());
@@ -76,111 +76,84 @@ public class DeepSearchLayer {
 
                     if (ugcCreator == MediaTypeConstant.getUGCCreator(context)) {
                         railCommonData.setCreatorName(AppCommonMethods.getCteatorName(list.get(0).results.getObjects().get(j).getName()));
-                        // AppCommonMethods.getImageList(tileType,position,j,k,list,assetCommonImages,imagesList);
                     } else {
                         for (int k = 0; k < list.get(0).results.getObjects().get(j).getImages().size(); k++) {
-
                             AssetCommonImages assetCommonImages = new AssetCommonImages();
-                            //imageLogic(tileType,position,j,k,list,assetCommonImages,imagesList);
-                           /* if (ugcCreator == MediaTypeConstant.getUGCCreator()){
-                                railCommonData.setCreatorName(AppCommonMethods.getCteatorName(list.get(position).results.getObjects().get(j).getName()));
-                                // AppCommonMethods.getImageList(tileType,position,j,k,list,assetCommonImages,imagesList);
-                            }else {
-
-                            }*/
-                            AppCommonMethods.getImageList(context,layout, 0, j, k, list, assetCommonImages, imagesList);
-                            //  AppCommonMethods.getImageList(tileType,position,j,k,list,assetCommonImages,imagesList);
+                            AppCommonMethods.getImageList(context, layout, 0, j, k, list, assetCommonImages, imagesList);
                         }
                     }
-
-           /* for (int k = 0; k < list.get(position).results.getObjects().get(j).getImages().size(); k++) {
-
-                AssetCommonImages assetCommonImages = new AssetCommonImages();
-                //imageLogic(tileType,position,j,k,list,assetCommonImages,imagesList);
-
-                if (ugcCreator == MediaTypeConstant.getUGCCreator()){
-                    railCommonData.setCreatorName(AppCommonMethods.getCteatorName(list.get(position).results.getObjects().get(j).getName()));
-                    // AppCommonMethods.getImageList(tileType,position,j,k,list,assetCommonImages,imagesList);
-                }else {
-                    AppCommonMethods.getImageList(layout, position, j, k, list, assetCommonImages, imagesList);
-                }
-
-
-            }*/
 
                     List<AssetCommonUrls> urlList = new ArrayList<AssetCommonUrls>();
                     if (list.get(0).results.getObjects().get(j).getType() == MediaTypeConstant.getProgram(context)) {
 
                     } else {
-
-
                         for (int k = 0; k < list.get(0).results.getObjects().get(j).getMediaFiles().size(); k++) {
                             AssetCommonUrls assetCommonUrls = new AssetCommonUrls();
                             assetCommonUrls.setUrl(list.get(0).results.getObjects().get(j).getMediaFiles().get(k).getUrl());
                             assetCommonUrls.setUrlType(list.get(0).results.getObjects().get(j).getMediaFiles().get(k).getType());
                             assetCommonUrls.setDuration(AppCommonMethods.getDuration(list, 0, j, k));
-                       /* if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("16:9")){
-                            Log.w("sliderLoop",list.get(position).results.getObjects().get(j).getImages().get(k).getUrl());
-                            assetCommonImages.setImage16By9(list.get(position).results.getObjects().get(j).getImages().get(k).getUrl());
-                        }
-                        else if (list.get(position).results.getObjects().get(j).getImages().get(k).getRatio().equals("2:3")){
-                            Log.w("sliderLoop",list.get(position).results.getObjects().get(j).getImages().get(k).getUrl());
-                            assetCommonImages.setImage2by3(list.get(position).results.getObjects().get(j).getImages().get(k).getUrl());
-                        }*/
                             urlList.add(assetCommonUrls);
                         }
                     }
                     railCommonData.setImages(imagesList);
                     railCommonData.setUrls(urlList);
-                    boolean value=applyFreePaidChannelFilter(list.get(0).results.getObjects().get(j), railList,context,railCommonData);
+                    boolean value = applyFreePaidChannelFilter(list.get(0).results.getObjects().get(j), railList, context, railCommonData);
 
                 }
             }
-        }catch (Exception e){
-            Log.e("Error",e.getMessage());
+        } catch (Exception e) {
+            Log.e("Error", e.getMessage());
         }
     }
 
-    private boolean applyFreePaidChannelFilter(Asset results, ArrayList<RailCommonData> railList,Context context,RailCommonData railCommonData) {
+    private boolean applyFreePaidChannelFilter(Asset results, ArrayList<RailCommonData> railList, Context context, RailCommonData railCommonData) {
         try {
-        if (!KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase("")) {
+            if (!KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase("")) {
 
-            Map<String, MultilingualStringValueArray> tagMap = results.getTags();
-            if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
-                railList.add(railCommonData);
-            } else if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.FREE.name())) {
-                MultilingualStringValueArray language_list = tagMap.get(AppLevelConstants.KEY_BILLING_ID);
-                if (language_list != null) {
-                    if (language_list.getObjects() != null && language_list.getObjects().size() > 0 && language_list.getObjects().get(0).getValue() != null
-                            && !language_list.getObjects().get(0).getValue().equalsIgnoreCase("")) {
+                Map<String, MultilingualStringValueArray> tagMap = results.getTags();
+                if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
+                    railList.add(railCommonData);
+                } else if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.FREE.name())) {
+                    MultilingualStringValueArray language_list = tagMap.get(AppLevelConstants.KEY_BILLING_ID);
+                    if (results.getType() == MediaTypeConstant.getSeries(context) || results.getType() == MediaTypeConstant.getCollection(context) || results.getType() == MediaTypeConstant.getLinear(context)) {
+                        if (!AssetContent.getBillingIdForSeries(tagMap)) {
+                            railList.add(railCommonData);
+                        }
+                    } else if (language_list != null) {
+                        if (language_list.getObjects() != null && language_list.getObjects().size() > 0 && language_list.getObjects().get(0).getValue() != null
+                                && !language_list.getObjects().get(0).getValue().equalsIgnoreCase("")) {
 
+                        } else {
+                            railList.add(railCommonData);
+                        }
                     } else {
                         railList.add(railCommonData);
                     }
-                } else {
-                    railList.add(railCommonData);
-                }
-            } else if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.PAID.name())) {
-                MultilingualStringValueArray language_list = tagMap.get(AppLevelConstants.KEY_BILLING_ID);
-                if (language_list != null) {
-                    if (language_list.getObjects() != null && language_list.getObjects().size() > 0 && language_list.getObjects().get(0).getValue() != null
-                            && !language_list.getObjects().get(0).getValue().equalsIgnoreCase("")) {
-                        railList.add(railCommonData);
+                } else if (KsPreferenceKey.getInstance(context).getFilterFreePaid().equalsIgnoreCase(SearchFilterEnum.PAID.name())) {
+                    MultilingualStringValueArray language_list = tagMap.get(AppLevelConstants.KEY_BILLING_ID);
+                    if (results.getType() == MediaTypeConstant.getSeries(context) || results.getType() == MediaTypeConstant.getCollection(context) || results.getType() == MediaTypeConstant.getLinear(context)) {
+                        if (AssetContent.getBillingIdForSeries(tagMap)) {
+                            railList.add(railCommonData);
+                        }
+                    } else if (language_list != null) {
+                        if (language_list.getObjects() != null && language_list.getObjects().size() > 0 && language_list.getObjects().get(0).getValue() != null
+                                && !language_list.getObjects().get(0).getValue().equalsIgnoreCase("")) {
+                            railList.add(railCommonData);
+                        }
                     }
                 }
+            } else {
+                railList.add(railCommonData);
             }
-        } else {
-            railList.add(railCommonData);
-        }
 
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
             railList.add(railCommonData);
         }
         return false;
     }
 
 
-    public LiveData<List<RailCommonData>> loadSearchedData(Context context, int assetId,String filterValue, List<String> genreList, int counter, final String layout, boolean isScrolling,int pageSize) {
+    public LiveData<List<RailCommonData>> loadSearchedData(Context context, int assetId, String filterValue, List<String> genreList, int counter, final String layout, boolean isScrolling, int pageSize) {
         if (!isScrolling) {
             railList.clear();
         }
@@ -191,7 +164,7 @@ public class DeepSearchLayer {
         VIUChannel channel = new VIUChannel();
         channel.setId((long) assetId);
 
-        ksql =AppCommonMethods.getDeepSearchKsql("",null,1,context);
+        ksql = AppCommonMethods.getDeepSearchKsql("", null, 1, context);
        /* if(genreList.size()>0) {
 
             ksql = AssetContent.getGenredata(genreList);
@@ -200,10 +173,10 @@ public class DeepSearchLayer {
         }*/
         // DTChannel channel = new DTChannel((long) assetId,"","");
         list.add(channel);
-        ksServices.callDeepSearchAssetListing(context,(long) 1233, list,ksql, filterValue, counter,pageSize, (status, listResponseResponse, channelList) -> {
+        ksServices.callDeepSearchAssetListing(context, (long) 1233, list, ksql, filterValue, counter, pageSize, (status, listResponseResponse, channelList) -> {
             if (status) {
                 // PrintLogging.printLog("totalCount");
-                callDynamicData(context,layout, listResponseResponse);
+                callDynamicData(context, layout, listResponseResponse);
                 connection.postValue(railList);
             } else {
                 errorHandling();
