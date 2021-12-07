@@ -79,7 +79,7 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
 
 
     private void createUser(String password) {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         astroLoginViewModel.createUser(type, email_mobile, password, name, tabletSize).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
@@ -93,7 +93,7 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             }
 
         });
@@ -101,7 +101,7 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
 
     private void getContact() {
         astroLoginViewModel.getContact(UserInfo.getInstance(this).getAccessToken()).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus() && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().size() > 0) {
                 UserInfo.getInstance(this).setFirstName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getFirstName());

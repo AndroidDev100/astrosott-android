@@ -118,15 +118,13 @@ android:layout_marginTop="@dimen/_50sdp"
 
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
+        <include
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:theme="@style/progressBarBlue"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_70sdp"
-            android:layout_below="@id/season"
-            android:visibility="gone" />
+            android:id="@+id/progress_lay"
+            layout="@layout/progress_animation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
     </RelativeLayout>
 
 </layout>

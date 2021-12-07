@@ -144,6 +144,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         parentalLevels = new ArrayList<>();
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         connectionObserver();
     }
 
@@ -448,7 +449,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             getBookmarking(railData.getObject());
 
             fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
-
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
             new EntitlementCheck().checkAssetPurchaseStatus(MovieDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
                 this.errorCode = AppLevelConstants.NO_ERROR;
                 if (apiStatus) {

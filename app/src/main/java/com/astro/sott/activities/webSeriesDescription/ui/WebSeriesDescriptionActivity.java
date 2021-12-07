@@ -156,6 +156,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         parentalLevels = new ArrayList<>();
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         connectionObserver();
         getBinding().myRecyclerView.hasFixedSize();
         getBinding().myRecyclerView.setNestedScrollingEnabled(false);
@@ -1370,11 +1372,12 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         if (railCommonData != null && railCommonData.getObject() != null) {
             isEntitlementCheck = true;
             fileId = AppCommonMethods.getFileIdOfAssest(railCommonData.getObject());
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
             new EntitlementCheck().checkAssetPurchaseStatus(WebSeriesDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
                 if (apiStatus) {
                     if (purchasedStatus) {
                         runOnUiThread(() -> {
-                            getBinding().btnProgressBar.setVisibility(View.GONE);
+                            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                             if (playbackControlValue) {
                                 getBinding().ivPlayIcon.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                 if (watchPosition > 0) {
@@ -1420,7 +1423,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
                 }
             });
         } else {
-            getBinding().btnProgressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
         }
         /* new EntitlementCheck().checkAssetType(WebSeriesDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
             if (status) {
@@ -1459,7 +1462,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     private void checkBuyTextButtonCondition(String fileId) {
         BuyButtonManager.getInstance().getPackages(this, "", fileId, true, (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
-            getBinding().btnProgressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             PacksDateLayer.getInstance().setPackDetailList(packDetailList);
             this.subscriptionIds = subscriptionIds;
             if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {

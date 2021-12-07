@@ -170,10 +170,11 @@
 
                             </LinearLayout>
                             <include
+                                android:layout_gravity="center_horizontal"
                                 android:id="@+id/progress_lay"
                                 layout="@layout/progress_animation"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"/>
 
                             <RelativeLayout
                                 android:id="@+id/astro_play_button"

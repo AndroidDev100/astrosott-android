@@ -626,8 +626,8 @@
             <include
                 android:id="@+id/progress_lay"
                 layout="@layout/progress_animation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -635,20 +635,20 @@
                 android:visibility="gone"
                 />
 
-            <TextView
-                android:id="@+id/loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="@dimen/upload_edit_text_margin_left"
-                android:fontFamily="@font/roboto_regular"
-                android:text="@string/loading"
-                android:textColor="@color/white"
-                android:textSize="@dimen/extra_large_text_view_size_title"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/progress_lay"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <TextView-->
+<!--                android:id="@+id/loading"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:layout_marginStart="@dimen/upload_edit_text_margin_left"-->
+<!--                android:fontFamily="@font/roboto_regular"-->
+<!--                android:text="@string/loading"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="@dimen/extra_large_text_view_size_title"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintLeft_toRightOf="@+id/progress_lay"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
             <ImageButton
                 android:id="@+id/playericon"

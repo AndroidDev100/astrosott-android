@@ -83,6 +83,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCommonMethods.resetFilter(ActivitySearch.this);
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         modelCall();
         FirebaseEventManager.getFirebaseInstance(ActivitySearch.this).trackScreenName(FirebaseEventManager.SEARCH);
         connectionObserver();
@@ -277,7 +278,8 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         if (aBoolean) {
             resetLayout();
             UIinitialization();
-            getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
+//            getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
             // loadDataFromModel();
             addGenreFragment();
 
@@ -638,10 +640,14 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     public void isDataLoaded(boolean isLoaded) {
         getBinding().searchText.setEnabled(true);
         if (isLoaded) {
-            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+
+//            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             getBinding().quickSearchLayout.setVisibility(View.VISIBLE);
         } else {
-            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+
+//            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
             getBinding().quickSearchLayout.setVisibility(View.GONE);
         }
 
@@ -694,17 +700,23 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     private void callViewModel(final String searchString, int from) {
         getBinding().quickSearchLayout.setVisibility(View.GONE);
         if (counter == 0) {
-            getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
+
+//            getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         }
         if (counter != mediaList.size() && counter < mediaList.size()) {
             searchHappen = true;
             viewModel.getListSearchResult(searchString, mediaList, counter, from, searchBeginFrom).observe(this, searchmodels -> {
                 if (mediaList.size() > 0) {
                     if (counter == 4)
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+
+//                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 }
                 if (searchmodels.size() > 0) {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+
+//                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                     getBinding().llSearchResultLayout.setVisibility(View.VISIBLE);
                     getBinding().rvSearchResult.setVisibility(View.VISIBLE);
                     getBinding().noResult.setVisibility(View.GONE);
@@ -736,7 +748,9 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         } else {
             searchHappen = false;
             if (laodMoreList != null && laodMoreList.size() == 0) {
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+
+//                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
                 getBinding().noResult.setVisibility(View.VISIBLE);
                 getBinding().popularSearchGroup.setVisibility(View.GONE);
@@ -753,7 +767,9 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         getBinding().genreFragment.setVisibility(View.GONE);
         getBinding().quickSearchLayout.setVisibility(View.GONE);
         if (counter == 0) {
-            getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
+
+//            getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
         }
         if (counter != mediaList.size() && counter < mediaList.size()) {
             searchHappen = true;
@@ -761,10 +777,14 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             viewModel.getQuickSearchResult(searchString, mediaList, counter, selectedGenreValues, from, searchBeginFrom).observe(this, searchmodels -> {
                 if (mediaList.size() > 0) {
                     if (counter == 4)
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
+
+//                    getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
                 }
                 if (searchmodels.size() > 0) {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+
+//                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                     getBinding().llSearchResultLayout.setVisibility(View.VISIBLE);
                     getBinding().rvSearchResult.setVisibility(View.VISIBLE);
                     getBinding().noResult.setVisibility(View.GONE);
@@ -796,7 +816,9 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         } else {
             searchHappen = false;
             if (laodMoreList != null && laodMoreList.size() == 0) {
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+
+//                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
                 getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
                 getBinding().noResult.setVisibility(View.VISIBLE);
                 getBinding().popularSearchGroup.setVisibility(View.GONE);

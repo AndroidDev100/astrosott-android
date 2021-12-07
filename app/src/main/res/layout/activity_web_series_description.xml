@@ -180,16 +180,6 @@
 
                             </LinearLayout>
 
-<!--                            <ProgressBar-->
-<!--                                android:id="@+id/btn_progress_bar"-->
-<!--                                android:layout_width="30dp"-->
-<!--                                android:layout_height="30dp"-->
-<!--                                android:layout_gravity="center"-->
-<!--                                android:layout_marginTop="10dp"-->
-<!--                                android:elevation="5dp"-->
-<!--                                android:theme="@style/progressBarBlue"-->
-<!--                                android:visibility="visible" />-->
-
                             <include
                                 android:id="@+id/progress_lay"
                                 layout="@layout/progress_animation"

@@ -282,7 +282,7 @@ public class DetailListingActivity extends BaseBindingActivity<ListingActivityBi
     }
 
     private void checkTypeOfList() {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         int type = viewModel.checkMoreType(assetCommonBean);
         if (type == AppLevelConstants.SIMILAR_MOVIES) {
             simmilarMovieListingCall();
@@ -327,7 +327,7 @@ public class DetailListingActivity extends BaseBindingActivity<ListingActivityBi
     }
 
     private void setLayoutType(List<RailCommonData> railCommonData) {
-        getBinding().progressBar.setVisibility(View.GONE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
         if (railCommonData != null) {
             if (railCommonData.size() > 0) {
                 if (railCommonData.get(0).getStatus()) {

@@ -21,6 +21,7 @@ import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionAct
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonImages;
 import com.astro.sott.callBacks.commonCallBacks.CheckLiveProgram;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.SpacingItemDecoration;
@@ -125,10 +126,10 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
     }
 
     private void loadDataFromModel() {
-        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         viewModel.getListSearchResult(ResultActivity.this, String.valueOf(allResult.getType()), allResult.getSearchString(), counter, isScrolling).observe(this, assets -> {
 
-            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (assets != null && assets.size() > 0) {
                 if (!isScrolling) {
                     setUIComponets(assets);
@@ -198,7 +199,7 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
                         if (railCommonData.getImages().size() == itemValue.getImages().size())
                             new ActivityLauncher(ResultActivity.this).liveChannelActivity(ResultActivity.this, LiveChannel.class, railCommonData);
                     } else if (itemValue.getType() == MediaTypeConstant.getProgram(ResultActivity.this)) {
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                         new ActivityLauncher(ResultActivity.this).checkCurrentProgram(itemValue);
                         //  liveProgramCallBack.response(itemValue);
                         //new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class,railCommonData);
@@ -263,6 +264,7 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         getBundleValue();
         modelCall();
         connectionObserver();
