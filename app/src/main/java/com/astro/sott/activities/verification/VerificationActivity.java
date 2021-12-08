@@ -60,6 +60,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         getIntentData();
         modelCall();
         setClicks();
@@ -173,7 +174,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void confirmOtp() {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         String otp = getBinding().pin.getText().toString();
         if (!otp.equalsIgnoreCase("") && otp.length() == 6) {
 
@@ -183,7 +184,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
                     // Toast.makeText(this, evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getStatus(), Toast.LENGTH_SHORT).show();
                     if (from.equalsIgnoreCase("signIn")) {
-                        getBinding().progressBar.setVisibility(View.GONE);
+                        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
                         token = evergentCommonResponse.getConfirmOtpResponse().getConfirmOTPResponseMessage().getToken();
                         if (token != null && !token.equalsIgnoreCase("")) {
@@ -210,29 +211,29 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                     Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
 //                    getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
                     getBinding().errorLine.setVisibility(View.VISIBLE);
-                    getBinding().progressBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                     getBinding().invalidOtp.setVisibility(View.VISIBLE);
 
 
                 }
             });
         } else {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
             getBinding().invalidOtp.setVisibility(View.VISIBLE);
         }
     }
 
     private void setPassword() {
-        getBinding().progressBar.setVisibility(View.GONE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
         new ActivityLauncher(this).setPasswordActivity(this, token, newEmail, newMobile);
     }
 
     private void updateProfile(String name, String type) {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         String acessToken = UserInfo.getInstance(this).getAccessToken();
         astroLoginViewModel.updateProfile(type, name, acessToken, "").observe(this, updateProfileResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 if (type.equalsIgnoreCase("email")) {
                     AppCommonMethods.emailPushCleverTap(this, name);
@@ -272,9 +273,9 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
     }
 
     private void createOtp() {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         astroLoginViewModel.createOtp(loginType, emailMobile).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus()) {
                 Toast.makeText(this, "Verification code resend " + (evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getCurrentOTPCount() - 1) + " of " + (evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getMaxOTPCount() - 1), Toast.LENGTH_SHORT).show();
@@ -291,7 +292,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 //                getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
                 getBinding().errorLine.setVisibility(View.VISIBLE);
 
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
 
             }
@@ -319,21 +320,21 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 //                getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
                 getBinding().errorLine.setVisibility(View.VISIBLE);
 
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             }
 
         });
     }
 
     private void login(String loginType, String emailMobile, String password) {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         astroLoginViewModel.loginUser(loginType, emailMobile, password, tabletSize).observe(this, evergentCommonResponse -> {
 
             if (evergentCommonResponse.isStatus()) {
 
             } else {
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -363,7 +364,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                 AppCommonMethods.setCrashlyticsUserId(this);
                 getActiveSubscription();
             } else {
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
                     EvergentRefreshToken.refreshToken(VerificationActivity.this, UserInfo.getInstance(VerificationActivity.this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
                         if (evergentCommonResponse.isStatus()) {
@@ -387,7 +388,7 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
 
     private void getActiveSubscription() {
         astroLoginViewModel.getActiveSubscription(UserInfo.getInstance(this).getAccessToken(), "").observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null) {
                     if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {

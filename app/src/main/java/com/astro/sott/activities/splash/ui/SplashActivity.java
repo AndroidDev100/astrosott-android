@@ -878,7 +878,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 return;
             }
         }
-        Log.i("USER-AGENT",System.getProperty("http.agent"));
+//        Dalvik/2.1.0 (Linux; U; Android 10; M2006C3LI MIUI/V12.0.18.0.QCDINXM)-AMB-[build-version]
+        Log.i("USER-AGENT",System.getProperty("http.agent")+"-AMB-"+BuildConfig.VERSION_NAME);
+
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName("Splash Screen");
 
         Bundle bundle = getIntent().getExtras();

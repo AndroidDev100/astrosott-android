@@ -90,14 +90,13 @@
 
                             </RelativeLayout>
 
-                            <FrameLayout
+
+                            <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/above_dark_shadow">
+                                android:background="@drawable/ic_shadow"></ImageView>
 
 
-
-                            </FrameLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
 
@@ -117,95 +116,45 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_15sdp"
-                                android:orientation="horizontal"
-                                android:gravity="center">
+                                android:gravity="center"
+                                android:orientation="horizontal">
 
-
-                                <RelativeLayout
-                                    android:id="@+id/astro_play_button"
-                                    android:layout_width="@dimen/_246dp"
-                                    android:layout_height="@dimen/dimen50dp"
-                                    android:layout_gravity="center_horizontal"
-                                    android:background="@drawable/gradient_button"
-                                    android:gravity="center_horizontal"
-                                    android:layout_marginEnd="@dimen/_15sdp"
-                                    android:visibility="gone">
-
-                                    <ImageView
-                                        android:id="@+id/star_icon"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_toStartOf="@+id/play_text"
-                                        android:layout_centerInParent="true"
-                                        android:layout_marginEnd="@dimen/_8dp"
-                                        android:visibility="gone"
-                                        android:src="@drawable/ic_star_24_px"
-                                        android:contentDescription="@string/contentDescription" />
-
-
-                                    <TextView
-                                        android:id="@+id/play_text"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerInParent="true"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="@dimen/share_margin_top"
-                                        android:drawablePadding="7dp"
-                                        android:focusable="true"
-                                        android:fontFamily="@font/roboto_medium"
-                                        android:text="@string/play_now"
-                                        android:textColor="@color/white"
-                                        android:textSize="@dimen/font_medium_large" />
-
-
-                                </RelativeLayout>
-                                <ProgressBar
-                                    android:id="@+id/btn_progress_bar"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginRight="100dp"
-                                    android:layout_marginTop="10dp"
-                                    android:elevation="5dp"
-                                    android:theme="@style/progressBarBlue"
-                                    android:visibility="visible" />
                                 <TextView
                                     android:id="@+id/watchList"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
+
+                                    android:layout_weight="1"
                                     android:clickable="true"
-                                    android:drawablePadding="7dp"
+                                    android:drawablePadding="5dp"
                                     android:focusable="true"
                                     android:fontFamily="@font/roboto_regular"
                                     android:gravity="center"
                                     android:text="@string/my_list"
-                                    android:layout_marginEnd="@dimen/_15sdp"
                                     android:textColor="@color/grey"
                                     android:textSize="@dimen/font_small"
                                     app:drawableTopCompat="@drawable/favorite_unselected" />
 
                                 <TextView
                                     android:id="@+id/share"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:visibility="visible"
-                                    android:drawablePadding="7dp"
+                                    android:layout_weight="1"
+                                    android:drawablePadding="5dp"
                                     android:fontFamily="@font/roboto_regular"
                                     android:gravity="center"
                                     android:text="@string/share"
-                                    android:layout_marginEnd="@dimen/_15sdp"
                                     android:textColor="@color/grey"
                                     android:textSize="@dimen/font_small"
+                                    android:visibility="visible"
                                     app:drawableTopCompat="@drawable/ic_share_24_px" />
 
                                 <TextView
                                     android:id="@+id/playlist"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-
                                     android:layout_weight="1"
                                     android:clickable="true"
                                     android:drawablePadding="5dp"
@@ -219,8 +168,52 @@
                                     app:drawableTopCompat="@drawable/ic_file_download_24px" />
 
 
-
                             </LinearLayout>
+                            <include
+                                android:layout_gravity="center_horizontal"
+                                android:id="@+id/progress_lay"
+                                layout="@layout/progress_animation"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"/>
+
+                            <RelativeLayout
+                                android:id="@+id/astro_play_button"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen50dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:background="@drawable/gradient_button"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:id="@+id/star_icon"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginEnd="@dimen/_8dp"
+                                    android:layout_toStartOf="@+id/play_text"
+                                    android:contentDescription="@string/contentDescription"
+                                    android:src="@drawable/ic_star_24_px"
+                                    android:visibility="gone" />
+
+
+                                <TextView
+                                    android:id="@+id/play_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/share_margin_top"
+                                    android:drawablePadding="7dp"
+                                    android:focusable="true"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:text="@string/play_now"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/font_medium_large" />
+
+
+                            </RelativeLayout>
+
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -242,7 +235,7 @@
                                         android:ellipsize="end"
                                         android:fontFamily="@font/roboto_medium"
                                         android:lineHeight="24sp"
-                                        android:maxLines="3"
+                                        android:maxLines="2"
                                         android:singleLine="true"
                                         android:textColor="@color/title_color"
                                         android:textSize="@dimen/font_xxlarge"
@@ -282,7 +275,7 @@
                                         <FrameLayout
                                             android:id="@+id/shadow"
                                             android:layout_width="match_parent"
-                                            android:layout_height="50dp"
+                                            android:layout_height="94dp"
                                             android:layout_alignParentBottom="true"
                                             android:background="@drawable/above_dark_shadow" />
                                     </RelativeLayout>
@@ -290,11 +283,12 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:orientation="vertical">
+
                                         <com.astro.sott.utils.helpers.ExpandableCardLayout
                                             android:id="@+id/expandable_layout"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginTop="10dp"
+                                            android:layout_marginTop="16dp"
                                             android:layout_marginEnd="@dimen/movie_metadata_expandable_card_margin_right"
                                             android:orientation="vertical"
                                             app:el_expanded="false"
@@ -426,8 +420,8 @@
                                                 android:textColor="@color/aqua_marine"
                                                 android:textSize="@dimen/font_medium" />
                                         </RelativeLayout>
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
 
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -480,12 +474,12 @@
         </FrameLayout>
 
         <include
-            android:id="@+id/include_progressbar"
-            layout="@layout/play_progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/include_progress_lay"
+            layout="@layout/progress_animation"
+            android:layout_width="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:layout_height="wrap_content"/>
 
     </RelativeLayout>
 </layout>

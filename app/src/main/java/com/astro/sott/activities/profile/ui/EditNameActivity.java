@@ -30,7 +30,7 @@ public class EditNameActivity extends BaseBindingActivity<ActivityEditNameBindin
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         modelCall();
-
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         if (UserInfo.getInstance(this).getFirstName().equalsIgnoreCase("")) {
             getBinding().title.setText(getResources().getString(R.string.set_name));
         } else {
@@ -62,10 +62,10 @@ public class EditNameActivity extends BaseBindingActivity<ActivityEditNameBindin
     }
 
     private void updateProfile(String name) {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         String acessToken = UserInfo.getInstance(this).getAccessToken();
         subscriptionViewModel.updateProfile("name", name, acessToken).observe(this, updateProfileResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 onBackPressed();
                 AppCommonMethods.namePushCleverTap(this, name);

@@ -68,6 +68,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.EDIT_PROFILE);
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         modelCall();
         setClicks();
         setFb();

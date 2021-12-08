@@ -1221,10 +1221,10 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (getBinding().includeProgressbar.progressBar.getVisibility() == View.VISIBLE) {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                if (getBinding().progressLay.progressHeart.getVisibility() == View.VISIBLE) {
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 } else {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                 }
 
             }

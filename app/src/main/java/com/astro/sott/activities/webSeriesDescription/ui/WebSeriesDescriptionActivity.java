@@ -617,10 +617,8 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
             getBinding().noConnectionLayout.setVisibility(View.GONE);
-            getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
 
-            });
-            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             modelCall();
             intentValues();
 //
@@ -889,7 +887,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 //
 //        }, 2000);
 
-        getBinding().includeProgressbar.progressBar.setOnClickListener(view1 -> {
+        getBinding().progressLay.progressHeart.setOnClickListener(view1 -> {
 
         });
 
@@ -1587,7 +1585,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             }
         });
 
@@ -1627,10 +1625,10 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (getBinding().includeProgressbar.progressBar.getVisibility() == View.VISIBLE) {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                if (getBinding().progressLay.progressHeart.getVisibility() == View.VISIBLE) {
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 } else {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                 }
 
             }

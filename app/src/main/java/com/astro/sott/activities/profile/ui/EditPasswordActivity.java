@@ -39,6 +39,7 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.EDIT_PASSWORD);
         setHeader();
         //UiInitialization();
@@ -73,7 +74,7 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
                     getBinding().newPasswordError.setTextColor(getResources().getColor(R.color.red_live));
                     getBinding().newPasswordError.setText(getResources().getString(R.string.password_rules));
                 } else {
-                    getBinding().progressBar.setVisibility(View.VISIBLE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                     getBinding().newPasswordError.setVisibility(View.GONE);
                     // resetPassword(newPassword);
                     // changePassword(newPassword);
@@ -160,7 +161,7 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
         }
 
         astroLoginViewModel.createOtp(type, email_mobile).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 // Toast.makeText(this, getResources().getString(R.string.verification_code_Send) + email_mobile, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, EditVerificationActivity.class);
@@ -179,9 +180,9 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
     }
 
     private void resetPassword(String password) {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         astroLoginViewModel.setPassword(UserInfo.getInstance(this).getAccessToken(), password).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 Toast.makeText(this, "Password changed", Toast.LENGTH_SHORT).show();
             } else {

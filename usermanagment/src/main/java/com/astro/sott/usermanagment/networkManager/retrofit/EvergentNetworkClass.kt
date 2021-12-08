@@ -20,7 +20,9 @@ class EvergentNetworkClass {
                         chain.request()
                             .newBuilder()
                             .header("User-Agent", System.getProperty("http.agent"))
-                            .build()) }
+                            .build()
+                    )
+                }
                 .readTimeout(120, TimeUnit.SECONDS)
                 .writeTimeout(120, TimeUnit.SECONDS)
                 .connectTimeout(120, TimeUnit.SECONDS)

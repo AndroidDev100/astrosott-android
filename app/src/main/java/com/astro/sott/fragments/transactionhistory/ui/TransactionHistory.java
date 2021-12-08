@@ -278,7 +278,7 @@ public class TransactionHistory extends BaseBindingActivity<FragmentTransactionH
 
 
     private void getInvoices(String transactionId, int count) {
-        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         if (transactionIdCount < downloadIds.size()) {
             subscriptionViewModel.getInvoice(UserInfo.getInstance(this).getAccessToken(), transactionId).observe(this, invoiceResponse -> {
                 if (invoiceResponse.isStatus()) {
@@ -287,13 +287,13 @@ public class TransactionHistory extends BaseBindingActivity<FragmentTransactionH
                         transactionIdCount++;
                         getInvoices(downloadIds.get(count), transactionIdCount);
                     } else {
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
                     }
                 } else {
                     //  new DownloadFileFromURL().execute(urls);
                     Toast.makeText(this, invoiceResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
                 }
             });
@@ -302,7 +302,7 @@ public class TransactionHistory extends BaseBindingActivity<FragmentTransactionH
                 transactionIdCount = 0;
                 new DownloadFileFromURL().execute(urls);
             } else {
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
             }
         }
@@ -311,9 +311,9 @@ public class TransactionHistory extends BaseBindingActivity<FragmentTransactionH
     private void getPaymentV2() {
         orderList = new ArrayList<>();
         downloadIds = new ArrayList<>();
-        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         subscriptionViewModel.getPaymentV2(UserInfo.getInstance(this).getAccessToken()).observe(this, evergentCommonResponse -> {
-            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 getBinding().noDataLayout.setVisibility(View.GONE);
                 getBinding().downloadButton.setVisibility(View.VISIBLE);
@@ -382,6 +382,7 @@ public class TransactionHistory extends BaseBindingActivity<FragmentTransactionH
     }
 
     private void UIinitialization() {
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         getBinding().recyclerView.hasFixedSize();
         getBinding().recyclerView.setNestedScrollingEnabled(false);
         getBinding().recyclerView.hasFixedSize();
@@ -528,7 +529,7 @@ public class TransactionHistory extends BaseBindingActivity<FragmentTransactionH
                 getFilePathAndStatus.filStatus = true;
                 getFilePathAndStatus.filePath = getReportPath(filename, extension);
                 runOnUiThread(() -> {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                     Toast.makeText(TransactionHistory.this, "Invoice Downloaded", Toast.LENGTH_SHORT).show();
                     getBinding().downloadLay.setVisibility(View.GONE);
 
@@ -536,7 +537,7 @@ public class TransactionHistory extends BaseBindingActivity<FragmentTransactionH
                 return getFilePathAndStatus;
             } catch (IOException e) {
                 runOnUiThread(() -> {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 });
                 e.printStackTrace();
                 getFilePathAndStatus.filStatus = false;
@@ -617,7 +618,7 @@ public class TransactionHistory extends BaseBindingActivity<FragmentTransactionH
                 in.close();
                 pfd.close();
                 runOnUiThread(() -> {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                     Toast.makeText(TransactionHistory.this, "Invoice Downloaded", Toast.LENGTH_SHORT).show();
                     getBinding().downloadLay.setVisibility(View.GONE);
 

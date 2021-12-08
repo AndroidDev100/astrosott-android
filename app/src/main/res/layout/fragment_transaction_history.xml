@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grape_purple"
@@ -47,12 +47,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:visibility="gone"
                 android:layout_centerInParent="true"
                 android:layout_margin="@dimen/_8sdp"
                 android:contentDescription="@string/contentDescription"
                 android:padding="@dimen/_6dp"
-                android:src="@drawable/ic_file_download_24px" />
+                android:src="@drawable/ic_file_download_24px"
+                android:visibility="gone" />
         </RelativeLayout>
 
 
@@ -61,19 +61,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/toolbar"
-            android:visibility="gone"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="130dp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
-                android:textSize="14sp"
                 android:text="@string/currently_not_active"
-                android:textColor="@color/title_color"></TextView>
+                android:textColor="@color/title_color"
+                android:textSize="14sp"></TextView>
 
             <TextView
                 android:id="@+id/addSubscription"
@@ -99,10 +99,10 @@
 
 
         <include
-            android:id="@+id/include_progressbar"
-            layout="@layout/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/progress_lay"
+            layout="@layout/progress_animation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerInParent="true" />
 
         <LinearLayout
