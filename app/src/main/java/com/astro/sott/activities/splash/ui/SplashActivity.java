@@ -878,6 +878,7 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 return;
             }
         }
+        Log.i("USER-AGENT",System.getProperty("http.agent"));
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName("Splash Screen");
 
         Bundle bundle = getIntent().getExtras();

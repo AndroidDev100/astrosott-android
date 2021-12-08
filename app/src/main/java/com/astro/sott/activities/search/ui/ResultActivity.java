@@ -204,7 +204,6 @@ public class ResultActivity extends BaseBindingActivity<ActivityResultBinding> {
                         //  liveProgramCallBack.response(itemValue);
                         //new ActivityLauncher(activity).liveChannelActivity(activity, LiveChannel.class,railCommonData);
                     }
-
                 }
 
 

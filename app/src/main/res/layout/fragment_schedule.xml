@@ -26,8 +26,8 @@
                     android:layout_height="30dp"
                     android:layout_marginStart="16dp"
                     android:background="@drawable/ic_baseline_arrow_back_ios_24"
-                    app:tint="@color/title_color"
-                    android:contentDescription="@string/contentDescription" />
+                    android:contentDescription="@string/contentDescription"
+                    app:tint="@color/title_color" />
 
                 <TextView
                     android:id="@+id/chip_Date_text"
@@ -76,11 +76,11 @@
                     android:id="@+id/program_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dimen10dp"
                     android:background="@color/grape_purple"
+                    android:nestedScrollingEnabled="false"
                     android:paddingStart="@dimen/dimen10dp"
                     android:paddingEnd="0dp"
-                    android:layout_marginEnd="@dimen/dimen10dp"
-                    android:nestedScrollingEnabled="false"
                     tools:targetApi="lollipop" />
 
                 <TextView
@@ -99,12 +99,14 @@
                     android:visibility="gone"
 
                     />
+
                 <include
                     android:id="@+id/progress_lay"
                     layout="@layout/progress_animation"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_centerInParent="true"/>
+                    android:layout_alignParentTop="true"
+                    android:layout_centerInParent="true" />
 
 
                 <TextView

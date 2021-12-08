@@ -15,18 +15,24 @@ class EvergentNetworkClass {
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.setLevel(okhttp3.logging.HttpLoggingInterceptor.Level.BODY)
             val okHttpClient: OkHttpClient = OkHttpClient.Builder()
-                    .readTimeout(120, TimeUnit.SECONDS)
-                    .writeTimeout(120, TimeUnit.SECONDS)
-                    .connectTimeout(120, TimeUnit.SECONDS)
-                    .addInterceptor(loggingInterceptor) //.addNetworkInterceptor(networkInterceptor)
-                    .build()
+                .addNetworkInterceptor { chain ->
+                    chain.proceed(
+                        chain.request()
+                            .newBuilder()
+                            .header("User-Agent", System.getProperty("http.agent"))
+                            .build()) }
+                .readTimeout(120, TimeUnit.SECONDS)
+                .writeTimeout(120, TimeUnit.SECONDS)
+                .connectTimeout(120, TimeUnit.SECONDS)
+                .addInterceptor(loggingInterceptor) //.addNetworkInterceptor(networkInterceptor)
+                .build()
             if (retrofit == null) {
                 if (EvergentBaseConfiguration.instance.clients != null) {
                     retrofit = Retrofit.Builder()
-                            .baseUrl(EvergentBaseConfiguration.instance.clients?.getBaseUrl())
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .client(okHttpClient)
-                            .build()
+                        .baseUrl(EvergentBaseConfiguration.instance.clients?.getBaseUrl())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .client(okHttpClient)
+                        .build()
                 }
             }
             return retrofit

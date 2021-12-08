@@ -188,7 +188,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         initializeRecyclerView();
         createEpgDateChips();
 
