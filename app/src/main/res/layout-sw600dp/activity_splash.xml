@@ -20,7 +20,7 @@
             app:lottie_autoPlay="true"
             app:lottie_speed="1.0"
             app:lottie_loop="false"
-            app:lottie_rawRes="@raw/sookaopeningindentpotrait1" />
+            app:lottie_rawRes="@raw/sooka_tablet_lanscape" />
 
         <FrameLayout
             android:id="@+id/no_connection_layout"
