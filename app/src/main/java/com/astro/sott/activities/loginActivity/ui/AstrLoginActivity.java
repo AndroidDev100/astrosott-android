@@ -16,18 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.astro.sott.ApplicationMain;
 import com.astro.sott.R;
-import com.astro.sott.activities.detailConfirmation.DetailConfirmationActivity;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
-import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.isThatYou.IsThatYouActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
@@ -45,6 +39,7 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.clevertap.android.sdk.CleverTapAPI;
@@ -151,14 +146,14 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                                             name = fbname;
                                             login(id + "");
                                         } else {
-                                            Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                                            ToastHandler.show(getResources().getString(R.string.email_unavailable), AstrLoginActivity.this);
                                         }
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                 } else {
-                                    Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                                    ToastHandler.show(getResources().getString(R.string.email_unavailable), AstrLoginActivity.this);
                                     LoginManager.getInstance().logOut();
                                 }
                             } else {
@@ -175,15 +170,13 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     @Override
                     public void onCancel() {
                         getBinding().progressLay.progressHeart.setVisibility(View.GONE);
-                        Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
-
+                        ToastHandler.show(getResources().getString(R.string.email_unavailable), AstrLoginActivity.this);
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
                         getBinding().progressLay.progressHeart.setVisibility(View.GONE);
-                        Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
-
+                        ToastHandler.show(getResources().getString(R.string.email_unavailable), AstrLoginActivity.this);
                     }
                 });
 
@@ -234,14 +227,13 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 email_mobile = account.getEmail();
                 login(account.getId());
             } else {
-                Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
-
+                ToastHandler.show(getResources().getString(R.string.email_unavailable), AstrLoginActivity.this);
             }
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
         } catch (ApiException e) {
             getBinding().progressLay.progressHeart.setVisibility(View.GONE);
-            Toast.makeText(AstrLoginActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+            ToastHandler.show(getResources().getString(R.string.email_unavailable), AstrLoginActivity.this);
         }
     }
 
@@ -420,7 +412,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2327")) {
                         searchAccountv2(password);
                     } else {
-                        Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(evergentCommonResponse.getErrorMessage(), AstrLoginActivity.this);
                     }
                 } else {
                     if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV4492")) {
@@ -429,7 +421,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                         accountBlockedDialog.setEditDialogCallBack(this);
                         accountBlockedDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
                     } else {
-                        Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(evergentCommonResponse.getErrorMessage(), AstrLoginActivity.this);
                     }
                 }
             }
@@ -478,7 +470,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                         }
                     });
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), AstrLoginActivity.this);
                 }
 
             }
@@ -525,7 +517,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     private void setActive() {
         UserInfo.getInstance(this).setActive(true);
         billingProcessor.queryPurchases(this);
-        Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();
+        ToastHandler.show(getResources().getString(R.string.login_successfull), AstrLoginActivity.this);
         AppCommonMethods.setCleverTap(this);
         if (UserInfo.getInstance(this).getCpCustomerId() != null && !UserInfo.getInstance(this).getCpCustomerId().equalsIgnoreCase(""))
             FirebaseEventManager.getFirebaseInstance(this).userLoginEvent(UserInfo.getInstance(this).getCpCustomerId(), UserInfo.getInstance(this).getAccountRole(), type);
@@ -594,7 +586,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2327")) {
                     createUser(password);
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), AstrLoginActivity.this);
                 }
             }
         });
@@ -614,7 +606,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 getContact();
 
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(), AstrLoginActivity.this);
                 getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             }
 
@@ -722,7 +714,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                     intent.putExtra(AppLevelConstants.FROM_KEY, "signIn");
                     startActivity(intent);
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), AstrLoginActivity.this);
                 }
             }
         });

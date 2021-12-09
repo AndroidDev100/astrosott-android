@@ -5,6 +5,7 @@
     <string name="title_video">Video</string>
     <string name="live_viu_tab">sooka Apps</string>
     <string name="title_more">More</string>
+    <string name="logout_success">Logout Successful!</string>
 
     <string name="no_internet_title">You are offline. Check your internet connection</string>
     <string name="no_internet">Your network seems too slow to reach \n our server</string>

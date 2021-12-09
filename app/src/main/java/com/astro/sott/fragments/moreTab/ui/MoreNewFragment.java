@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
@@ -47,6 +46,7 @@ import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServi
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.facebook.login.LoginManager;
@@ -236,13 +236,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 } else {
                     FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
                     new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
-
                 }
-//                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                transaction.replace(R.id.content_frame, quickSearchGenre); // give your fragment container id in first parameter
-//                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-//                transaction.commit();
             }
         });
         getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
@@ -251,63 +245,6 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.LOGOUT, FirebaseEventManager.BTN_CLICK);
                 showAlertDialog(getResources().getString(R.string.logout), getResources().getString(R.string.logout_confirmation_message_new));
             }
-        });
-        getBinding().rlContentPreference.setOnClickListener(v -> {
-           /* HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
-            profileUpdate.put("Name", UserInfo.getInstance(getActivity()).getFirstName());                  // String
-            profileUpdate.put("Identity", UserInfo.getInstance(getActivity()).getCpCustomerId() + "_ProfileA");                    // String or number
-            profileUpdate.put("Email", UserInfo.getInstance(getActivity()).getEmail());               // Email address of the user
-            profileUpdate.put("Phone", "+14155551234");                 // Phone (with the country code, starting with +)
-            profileUpdate.put("Gender", "M");                           // Can be either M or F
-            profileUpdate.put("DOB", new Date());                       // Date of Birth. Set the Date object to the appropriate value first
-            profileUpdate.put("Photo", "www.foobar.com/image.jpeg");    // URL to the Image
-
-// optional fields. controls whether the user will be sent email, push etc.
-            profileUpdate.put("MSG-email", false);                      // Disable email notifications
-            profileUpdate.put("MSG-push", true);                        // Enable push notifications
-            profileUpdate.put("MSG-sms", false);                        // Disable SMS notifications
-            profileUpdate.put("MSG-whatsapp", true);                    // Enable WhatsApp notifications
-
-            ArrayList<String> stuff = new ArrayList<String>();
-            stuff.add("bag");
-            stuff.add("shoes");
-            profileUpdate.put("MyStuff", stuff);                        //ArrayList of Strings
-
-            String[] otherStuff = {"Jeans", "Perfume"};
-            profileUpdate.put("MyStuff", otherStuff);                   //String Array
-
-            CleverTapAPI.getDefaultInstance(getActivity()).pushProfile(profileUpdate);
-            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();*/
-
-        });
-
-        getBinding().rlCoupanRedem.setOnClickListener(v -> {
-           /* HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
-            profileUpdate.put("Name", UserInfo.getInstance(getActivity()).getFirstName());                  // String
-            profileUpdate.put("Identity", UserInfo.getInstance(getActivity()).getCpCustomerId() + "_ProfileB");                    // String or number
-            profileUpdate.put("Email", UserInfo.getInstance(getActivity()).getEmail());               // Email address of the user
-            profileUpdate.put("Phone", "+14155551234");                 // Phone (with the country code, starting with +)
-            profileUpdate.put("Gender", "M");                           // Can be either M or F
-            profileUpdate.put("DOB", new Date());                       // Date of Birth. Set the Date object to the appropriate value first
-            profileUpdate.put("Photo", "www.foobar.com/image.jpeg");    // URL to the Image
-
-// optional fields. controls whether the user will be sent email, push etc.
-            profileUpdate.put("MSG-email", false);                      // Disable email notifications
-            profileUpdate.put("MSG-push", true);                        // Enable push notifications
-            profileUpdate.put("MSG-sms", false);                        // Disable SMS notifications
-            profileUpdate.put("MSG-whatsapp", true);                    // Enable WhatsApp notifications
-
-            ArrayList<String> stuff = new ArrayList<String>();
-            stuff.add("bag");
-            stuff.add("shoes");
-            profileUpdate.put("MyStuff", stuff);                        //ArrayList of Strings
-
-            String[] otherStuff = {"Jeans", "Perfume"};
-            profileUpdate.put("MyStuff", otherStuff);                   //String Array
-
-            CleverTapAPI.getDefaultInstance(getActivity()).pushProfile(profileUpdate);
-            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();*/
-
         });
         getBinding().rlManageDevice.setOnClickListener(view -> {
             if (UserInfo.getInstance(getActivity()).isActive()) {
@@ -339,39 +276,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             intent.putExtra(AppLevelConstants.WEBVIEW, "Privacy Policies");
             startActivity(intent);
         });
-//
-//       getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mBinding.subscribe.setVisibility(View.GONE);
-//                mBinding.manageSubscriptionMore.setVisibility(View.VISIBLE);
-//                mBinding.tvBilling.setVisibility(View.VISIBLE);
-//                mBinding.tvVIPUser.setText("VIP User");
-//
-//            }
-//        });
-//        getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mBinding.tvLogout.setVisibility(View.GONE);
-//                mBinding.loginSignupMore.setVisibility(View.VISIBLE);
-//                mBinding.tvEmail.setVisibility(View.GONE);
-//                mBinding.tvName.setVisibility(View.GONE);
-//                mBinding.edit.setVisibility(View.GONE);
-//            }
-//        });
-//        mBinding.rlPartnerBilling.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//        mBinding.rlTransactionHistory.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
+
         getBinding().rlLanguageSelection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -382,36 +287,6 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
             }
         });
-//        mBinding.rlDownloadsMore.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//        mBinding.rlManageDevice.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//        mBinding.rlContentPreference.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//        mBinding.rlCoupanRedem.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//        mBinding.rlHelp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
     }
 
     private void showAlertDialog(String title, String msg) {
@@ -425,7 +300,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         subscriptionViewModel.removeSubscription(UserInfo.getInstance(getActivity()).getAccessToken(), lastActiveItem.getServiceID()).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 getActiveSubscription();
-                Toast.makeText(getActivity(), "Subscription Successfully Cancelled", Toast.LENGTH_SHORT).show();
+                ToastHandler.show("Subscription Successfully Cancelled", getActivity());
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
                     EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentResponse1 -> {
@@ -436,7 +311,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                         }
                     });
                 } else {
-                    Toast.makeText(getActivity(), evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), getActivity());
                 }
             }
 
@@ -517,45 +392,6 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     } else {
                         getLastSubscription();
                     }
-                   /* for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
-                        if (!accountServiceMessageItem.isFreemium() && accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && accountServiceMessageItem.isCurrentPlan()) {
-                            if (accountServiceMessageItem.getDisplayName() != null)
-                                displayName = accountServiceMessageItem.getDisplayName();
-                            isRenewal = accountServiceMessageItem.isRenewal();
-                            if (isRenewal) {
-                                validTill = accountServiceMessageItem.getValidityTill();
-                            }
-                            if (accountServiceMessageItem.getPaymentMethod() != null && !accountServiceMessageItem.getPaymentMethod().equalsIgnoreCase("")) {
-                                paymentMethod = accountServiceMessageItem.getPaymentMethod() + ": " + accountServiceMessageItem.getCurrencyCode() + accountServiceMessageItem.getRetailPrice() + "/month";
-                            }
-                            lastActiveItem = accountServiceMessageItem;
-                        }
-                    }
-                    UserInfo.getInstance(getActivity()).setMaxis(paymentMethod.equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING));
-                    if (!displayName.equalsIgnoreCase("")) {
-                        UserInfo.getInstance(getActivity()).setVip(true);
-                        getBinding().tvVIPUser.setText(displayName);
-                        if (!isRenewal) {
-                            getBinding().tvSubscribeNow.setVisibility(View.GONE);
-                        } else {
-                            getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
-                            getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getDateFromTimeStamp(validTill));
-                        }
-                        getBinding().productCategory.setText(paymentMethod);
-                        getBinding().productCategory.setVisibility(View.GONE);
-                        if (!UserInfo.getInstance(getActivity()).isMaxis()) {
-                            getBinding().changePlan.setVisibility(View.VISIBLE);
-                            getBinding().cancelPlan.setVisibility(View.VISIBLE);
-                        }
-                        getBinding().subscribe.setVisibility(View.VISIBLE);
-                        getBinding().partnerBillingText.setVisibility(View.VISIBLE);
-                        getBinding().partnerBillingText.setText(paymentMethod);
-                        getBinding().subscribe.setVisibility(View.GONE);
-                    } else {
-                        if (FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked)
-                            new ActivityLauncher(getActivity()).profileSubscription("Profile");
-                        setUiForLogout();
-                    }*/
                 } else {
                     if (FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked)
                         new ActivityLauncher(getActivity()).profileSubscription("Profile");
@@ -627,7 +463,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                         if (lastActiveItem.getStatus().equalsIgnoreCase("ACTIVE")) {
                             getBinding().cancelPlan.setVisibility(View.VISIBLE);
                             getBinding().changePlan.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             getBinding().cancelPlan.setVisibility(View.GONE);
                             getBinding().changePlan.setVisibility(View.GONE);
                         }
@@ -780,7 +616,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     public void onFinishDialog() {
         logoutApi();
         AppCommonMethods.removeUserPrerences(getActivity());
-        Toast.makeText(getActivity(), "Logout Successful!", Toast.LENGTH_SHORT).show();
+        ToastHandler.show(getActivity().getResources().getString(R.string.logout_success), getActivity());
         setUiForLogout();
 
         LoginManager.getInstance().logOut();
