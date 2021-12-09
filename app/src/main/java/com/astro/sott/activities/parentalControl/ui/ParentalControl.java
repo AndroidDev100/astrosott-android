@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.R;
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
@@ -80,7 +79,6 @@ public class ParentalControl extends BaseBindingActivity<ActivityParentalControl
         handleParentalSwitch();
 
         getBinding().tvViewRestriction.setOnClickListener(view -> {
-            new ActivityLauncher(ParentalControl.this).loginActivity(ParentalControl.this, LoginActivity.class, 0,AppLevelConstants.ACTICITY_NAME);
            // new ActivityLauncher(ParentalControl.this).viewRestrictionActivity(ParentalControl.this, ViewingRestrictionActivity.class);
         });
 
@@ -124,7 +122,6 @@ public class ParentalControl extends BaseBindingActivity<ActivityParentalControl
             if(!compoundButton.isPressed()) {
                 return;
             }
-            new ActivityLauncher(ParentalControl.this).loginActivity(ParentalControl.this, LoginActivity.class, 0,AppLevelConstants.PARENTAL_SWITCH);
         });
     }
 

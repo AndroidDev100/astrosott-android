@@ -61,7 +61,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.DoubleClick;
@@ -4255,7 +4254,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         if (isPlayerIconClick) {
             isPlayerIconClick = false;
-            new ActivityLauncher(baseActivity).loginActivity(baseActivity, LoginActivity.class, 0, "");
         } else if (isError) {
             isError = false;
             getActivity().onBackPressed();

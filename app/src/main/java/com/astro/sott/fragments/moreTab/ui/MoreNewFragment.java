@@ -49,6 +49,7 @@ import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServi
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.facebook.login.LoginManager;
@@ -156,406 +157,144 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void setClicks() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        float yInches = metrics.heightPixels / metrics.ydpi;
-        float xInches = metrics.widthPixels / metrics.xdpi;
-        double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
-        if (diagonalInches >= 6.5) {
-            // device is Tablet
-            getBinding().circularImageViewMore.setOnClickListener(v -> {
-           /* Intent intent = new Intent(getActivity(), EditEmailActivity.class);
-            startActivity(intent);*/
-            });
-            getBinding().edit.setOnClickListener(v -> {
-                new ActivityLauncher(getActivity()).profileActivity(getActivity());
-            });
-
-            getBinding().loginSignupMore.setOnClickListener(view -> {
-                FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
-                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, "Sign Up/ Sign In", FirebaseEventManager.BTN_CLICK);
-                new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
-
-            });
-            getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), IsThisYouActivity.class);
-                    startActivity(intent);
-                }
-            });
-            getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, getBinding().subscribe.getText().toString(), FirebaseEventManager.BTN_CLICK);
-                    if (UserInfo.getInstance(getActivity()).isActive()) {
-                        navBar.setVisibility(View.GONE);
-                        new ActivityLauncher(getActivity()).profileSubscription("Profile");
-                    } else {
-                        FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = true;
-                        new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
-                    }
-                }
-            });
-            getBinding().rlLinkedAccounts.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    navBar.setVisibility(View.GONE);
-                    ChangeEmailConfirmation someFragment = new ChangeEmailConfirmation();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
-                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                    transaction.commit();
-                }
-            });
-            getBinding().rlTransactionHistory.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    navBar.setVisibility(View.GONE);
-                    if (UserInfo.getInstance(getActivity()).isActive()) {
-                        startActivity(new Intent(getActivity(), TransactionHistory.class));
-
-                    } else {
-                        FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
-                        new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
-
-                    }
-//                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                transaction.replace(R.id.content_frame, quickSearchGenre); // give your fragment container id in first parameter
-//                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-//                transaction.commit();
-                }
-            });
-            getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.LOGOUT, FirebaseEventManager.BTN_CLICK);
-                    showAlertDialog(getResources().getString(R.string.logout), getResources().getString(R.string.logout_confirmation_message_new));
-                }
-            });
-            getBinding().rlContentPreference.setOnClickListener(v -> {
-           /* HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
-            profileUpdate.put("Name", UserInfo.getInstance(getActivity()).getFirstName());                  // String
-            profileUpdate.put("Identity", UserInfo.getInstance(getActivity()).getCpCustomerId() + "_ProfileA");                    // String or number
-            profileUpdate.put("Email", UserInfo.getInstance(getActivity()).getEmail());               // Email address of the user
-            profileUpdate.put("Phone", "+14155551234");                 // Phone (with the country code, starting with +)
-            profileUpdate.put("Gender", "M");                           // Can be either M or F
-            profileUpdate.put("DOB", new Date());                       // Date of Birth. Set the Date object to the appropriate value first
-            profileUpdate.put("Photo", "www.foobar.com/image.jpeg");    // URL to the Image
-
-// optional fields. controls whether the user will be sent email, push etc.
-            profileUpdate.put("MSG-email", false);                      // Disable email notifications
-            profileUpdate.put("MSG-push", true);                        // Enable push notifications
-            profileUpdate.put("MSG-sms", false);                        // Disable SMS notifications
-            profileUpdate.put("MSG-whatsapp", true);                    // Enable WhatsApp notifications
-
-            ArrayList<String> stuff = new ArrayList<String>();
-            stuff.add("bag");
-            stuff.add("shoes");
-            profileUpdate.put("MyStuff", stuff);                        //ArrayList of Strings
-
-            String[] otherStuff = {"Jeans", "Perfume"};
-            profileUpdate.put("MyStuff", otherStuff);                   //String Array
-
-            CleverTapAPI.getDefaultInstance(getActivity()).pushProfile(profileUpdate);
-            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();*/
-
-            });
-
-            getBinding().rlCoupanRedem.setOnClickListener(v -> {
-           /* HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
-            profileUpdate.put("Name", UserInfo.getInstance(getActivity()).getFirstName());                  // String
-            profileUpdate.put("Identity", UserInfo.getInstance(getActivity()).getCpCustomerId() + "_ProfileB");                    // String or number
-            profileUpdate.put("Email", UserInfo.getInstance(getActivity()).getEmail());               // Email address of the user
-            profileUpdate.put("Phone", "+14155551234");                 // Phone (with the country code, starting with +)
-            profileUpdate.put("Gender", "M");                           // Can be either M or F
-            profileUpdate.put("DOB", new Date());                       // Date of Birth. Set the Date object to the appropriate value first
-            profileUpdate.put("Photo", "www.foobar.com/image.jpeg");    // URL to the Image
-
-// optional fields. controls whether the user will be sent email, push etc.
-            profileUpdate.put("MSG-email", false);                      // Disable email notifications
-            profileUpdate.put("MSG-push", true);                        // Enable push notifications
-            profileUpdate.put("MSG-sms", false);                        // Disable SMS notifications
-            profileUpdate.put("MSG-whatsapp", true);                    // Enable WhatsApp notifications
-
-            ArrayList<String> stuff = new ArrayList<String>();
-            stuff.add("bag");
-            stuff.add("shoes");
-            profileUpdate.put("MyStuff", stuff);                        //ArrayList of Strings
-
-            String[] otherStuff = {"Jeans", "Perfume"};
-            profileUpdate.put("MyStuff", otherStuff);                   //String Array
-
-            CleverTapAPI.getDefaultInstance(getActivity()).pushProfile(profileUpdate);
-            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();*/
-
-            });
-            getBinding().rlManageDevice.setOnClickListener(view -> {
-                if (UserInfo.getInstance(getActivity()).isActive()) {
-                    Intent manageDeviceIntent = new Intent(getActivity(), ManageDeviceActivity.class);
-                    manageDeviceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(manageDeviceIntent);
+        getBinding().changePlan.setOnClickListener(v -> {
+            if (UserInfo.getInstance(getActivity()).isMaxis()) {
+                maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
+            } else {
+                if (lastActiveItem.getPaymentMethod().equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
+                    new ActivityLauncher(getActivity()).profileSubscription("Profile");
                 } else {
-                    FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
-                    new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
-
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    PlanNotUpdated planNotUpdated = PlanNotUpdated.newInstance(getResources().getString(R.string.plan_with_different_payment), "");
+                    planNotUpdated.setEditDialogCallBack(MoreNewFragment.this);
+                    planNotUpdated.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
                 }
-
-
-            });
-            getBinding().rlHelp.setOnClickListener(v -> {
-                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.HELP, FirebaseEventManager.BTN_CLICK);
-                Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            });
-
-            getBinding().rlTerms.setOnClickListener(v -> {
-                new ActivityLauncher(getActivity()).termAndCondition(getActivity());
-            });
-
-            getBinding().rlPrivacy.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra(AppLevelConstants.WEBVIEW, "Privacy Policies");
-                startActivity(intent);
-            });
-        } else {
-            //device is mobile
-            getBinding().circularImageViewMore.setOnClickListener(v -> {
-           /* Intent intent = new Intent(getActivity(), EditEmailActivity.class);
-            startActivity(intent);*/
-            });
-            getBinding().edit.setOnClickListener(v -> {
-                new ActivityLauncher(getActivity()).profileActivity(getActivity());
-            });
-
-            getBinding().loginSignupMore.setOnClickListener(view -> {
-                FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
-                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, "Sign Up/ Sign In", FirebaseEventManager.BTN_CLICK);
-                new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
-
-            });
-            getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), IsThisYouActivity.class);
-                    startActivity(intent);
-                }
-            });
-            getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, getBinding().subscribe.getText().toString(), FirebaseEventManager.BTN_CLICK);
-                    if (UserInfo.getInstance(getActivity()).isActive()) {
-                        navBar.setVisibility(View.GONE);
-                        new ActivityLauncher(getActivity()).profileSubscription("Profile");
-                    } else {
-                        FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = true;
-                        new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
-                    }
-                }
-            });
-            getBinding().rlLinkedAccounts.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    navBar.setVisibility(View.GONE);
-                    ChangeEmailConfirmation someFragment = new ChangeEmailConfirmation();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
-                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                    transaction.commit();
-                }
-            });
-            getBinding().rlTransactionHistory.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    navBar.setVisibility(View.GONE);
-                    if (UserInfo.getInstance(getActivity()).isActive()) {
-                        startActivity(new Intent(getActivity(), TransactionHistory.class));
-
-                    } else {
-                        FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
-                        new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
-
-                    }
-//                QuickSearchGenre quickSearchGenre = new QuickSearchGenre();
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                transaction.replace(R.id.content_frame, quickSearchGenre); // give your fragment container id in first parameter
-//                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-//                transaction.commit();
-                }
-            });
-            getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.LOGOUT, FirebaseEventManager.BTN_CLICK);
-                    showAlertDialog(getResources().getString(R.string.logout), getResources().getString(R.string.logout_confirmation_message_new));
-                }
-            });
-            getBinding().rlContentPreference.setOnClickListener(v -> {
-           /* HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
-            profileUpdate.put("Name", UserInfo.getInstance(getActivity()).getFirstName());                  // String
-            profileUpdate.put("Identity", UserInfo.getInstance(getActivity()).getCpCustomerId() + "_ProfileA");                    // String or number
-            profileUpdate.put("Email", UserInfo.getInstance(getActivity()).getEmail());               // Email address of the user
-            profileUpdate.put("Phone", "+14155551234");                 // Phone (with the country code, starting with +)
-            profileUpdate.put("Gender", "M");                           // Can be either M or F
-            profileUpdate.put("DOB", new Date());                       // Date of Birth. Set the Date object to the appropriate value first
-            profileUpdate.put("Photo", "www.foobar.com/image.jpeg");    // URL to the Image
-
-// optional fields. controls whether the user will be sent email, push etc.
-            profileUpdate.put("MSG-email", false);                      // Disable email notifications
-            profileUpdate.put("MSG-push", true);                        // Enable push notifications
-            profileUpdate.put("MSG-sms", false);                        // Disable SMS notifications
-            profileUpdate.put("MSG-whatsapp", true);                    // Enable WhatsApp notifications
-
-            ArrayList<String> stuff = new ArrayList<String>();
-            stuff.add("bag");
-            stuff.add("shoes");
-            profileUpdate.put("MyStuff", stuff);                        //ArrayList of Strings
-
-            String[] otherStuff = {"Jeans", "Perfume"};
-            profileUpdate.put("MyStuff", otherStuff);                   //String Array
-
-            CleverTapAPI.getDefaultInstance(getActivity()).pushProfile(profileUpdate);
-            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();*/
-
-            });
-
-            getBinding().rlCoupanRedem.setOnClickListener(v -> {
-           /* HashMap<String, Object> profileUpdate = new HashMap<String, Object>();
-            profileUpdate.put("Name", UserInfo.getInstance(getActivity()).getFirstName());                  // String
-            profileUpdate.put("Identity", UserInfo.getInstance(getActivity()).getCpCustomerId() + "_ProfileB");                    // String or number
-            profileUpdate.put("Email", UserInfo.getInstance(getActivity()).getEmail());               // Email address of the user
-            profileUpdate.put("Phone", "+14155551234");                 // Phone (with the country code, starting with +)
-            profileUpdate.put("Gender", "M");                           // Can be either M or F
-            profileUpdate.put("DOB", new Date());                       // Date of Birth. Set the Date object to the appropriate value first
-            profileUpdate.put("Photo", "www.foobar.com/image.jpeg");    // URL to the Image
-
-// optional fields. controls whether the user will be sent email, push etc.
-            profileUpdate.put("MSG-email", false);                      // Disable email notifications
-            profileUpdate.put("MSG-push", true);                        // Enable push notifications
-            profileUpdate.put("MSG-sms", false);                        // Disable SMS notifications
-            profileUpdate.put("MSG-whatsapp", true);                    // Enable WhatsApp notifications
-
-            ArrayList<String> stuff = new ArrayList<String>();
-            stuff.add("bag");
-            stuff.add("shoes");
-            profileUpdate.put("MyStuff", stuff);                        //ArrayList of Strings
-
-            String[] otherStuff = {"Jeans", "Perfume"};
-            profileUpdate.put("MyStuff", otherStuff);                   //String Array
-
-            CleverTapAPI.getDefaultInstance(getActivity()).pushProfile(profileUpdate);
-            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();*/
-
-            });
-            getBinding().rlManageDevice.setOnClickListener(view -> {
-                if (UserInfo.getInstance(getActivity()).isActive()) {
-                    Intent manageDeviceIntent = new Intent(getActivity(), ManageDeviceActivity.class);
-                    manageDeviceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(manageDeviceIntent);
-                } else {
-                    FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
-                    new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
-
-                }
-
-
-            });
-            getBinding().rlHelp.setOnClickListener(v -> {
-                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.HELP, FirebaseEventManager.BTN_CLICK);
-                Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            });
-
-            getBinding().rlTerms.setOnClickListener(v -> {
-                new ActivityLauncher(getActivity()).termAndCondition(getActivity());
-            });
-
-            getBinding().rlPrivacy.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra(AppLevelConstants.WEBVIEW, "Privacy Policies");
-                startActivity(intent);
-            });
-            getBinding().changePlan.setOnClickListener(v -> {
-                if (UserInfo.getInstance(getActivity()).isMaxis()) {
-                    maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
-                } else {
+            }
+        });
+        getBinding().cancelPlan.setOnClickListener(v -> {
+            if (UserInfo.getInstance(getActivity()).isMaxis()) {
+                maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
+            } else {
+                if (lastActiveItem.isRenewal() && lastActiveItem.getServiceID() != null && lastActiveItem.getValidityTill() != null) {
                     if (lastActiveItem.getPaymentMethod().equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
-                        new ActivityLauncher(getActivity()).profileSubscription("Profile");
+                        FragmentManager fm = getActivity().getSupportFragmentManager();
+                        CancelDialogFragment cancelDialogFragment = CancelDialogFragment.newInstance(getResources().getString(R.string.create_playlist_name_title), AppCommonMethods.getDateFromTimeStamp(lastActiveItem.getValidityTill()));
+                        cancelDialogFragment.setEditDialogCallBack(MoreNewFragment.this);
+                        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
                     } else {
                         FragmentManager fm = getActivity().getSupportFragmentManager();
-                        PlanNotUpdated planNotUpdated = PlanNotUpdated.newInstance(getResources().getString(R.string.plan_with_different_payment), "");
+                        PlanNotUpdated planNotUpdated = PlanNotUpdated.newInstance(getResources().getString(R.string.cancel_plan_with_different_payment), "");
                         planNotUpdated.setEditDialogCallBack(MoreNewFragment.this);
                         planNotUpdated.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
                     }
                 }
+            }
+        });
+        getBinding().circularImageViewMore.setOnClickListener(v -> {
+           /* Intent intent = new Intent(getActivity(), EditEmailActivity.class);
+            startActivity(intent);*/
             });
-            getBinding().cancelPlan.setOnClickListener(v -> {
-                if (UserInfo.getInstance(getActivity()).isMaxis()) {
-                    maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
-                } else {
-                    if (lastActiveItem.isRenewal() && lastActiveItem.getServiceID() != null && lastActiveItem.getValidityTill() != null) {
-                        if (lastActiveItem.getPaymentMethod().equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET)) {
-                            FragmentManager fm = getActivity().getSupportFragmentManager();
-                            CancelDialogFragment cancelDialogFragment = CancelDialogFragment.newInstance(getResources().getString(R.string.create_playlist_name_title), AppCommonMethods.getDateFromTimeStamp(lastActiveItem.getValidityTill()));
-                            cancelDialogFragment.setEditDialogCallBack(MoreNewFragment.this);
-                            cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
-                        } else {
-                            FragmentManager fm = getActivity().getSupportFragmentManager();
-                            PlanNotUpdated planNotUpdated = PlanNotUpdated.newInstance(getResources().getString(R.string.cancel_plan_with_different_payment), "");
-                            planNotUpdated.setEditDialogCallBack(MoreNewFragment.this);
-                            planNotUpdated.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
-                        }
+            getBinding().edit.setOnClickListener(v -> {
+                new ActivityLauncher(getActivity()).profileActivity(getActivity());
+            });
+
+            getBinding().loginSignupMore.setOnClickListener(view -> {
+                FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
+                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, "Sign Up/ Sign In", FirebaseEventManager.BTN_CLICK);
+                new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
+
+            });
+            getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), IsThisYouActivity.class);
+                    startActivity(intent);
+                }
+            });
+            getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, getBinding().subscribe.getText().toString(), FirebaseEventManager.BTN_CLICK);
+                    if (UserInfo.getInstance(getActivity()).isActive()) {
+                        navBar.setVisibility(View.GONE);
+                        new ActivityLauncher(getActivity()).profileSubscription("Profile");
+                    } else {
+                        FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = true;
+                        new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
                     }
                 }
             });
-        }
+            getBinding().rlLinkedAccounts.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    navBar.setVisibility(View.GONE);
+                    ChangeEmailConfirmation someFragment = new ChangeEmailConfirmation();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
+                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                    transaction.commit();
+                }
+            });
+            getBinding().rlTransactionHistory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    navBar.setVisibility(View.GONE);
+                    if (UserInfo.getInstance(getActivity()).isActive()) {
+                        startActivity(new Intent(getActivity(), TransactionHistory.class));
+
+                } else {
+                    FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
+                    new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
+                }
+            }
+        });
+        getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.LOGOUT, FirebaseEventManager.BTN_CLICK);
+                showAlertDialog(getResources().getString(R.string.logout), getResources().getString(R.string.logout_confirmation_message_new));
+            }
+        });
+        getBinding().rlManageDevice.setOnClickListener(view -> {
+            if (UserInfo.getInstance(getActivity()).isActive()) {
+                Intent manageDeviceIntent = new Intent(getActivity(), ManageDeviceActivity.class);
+                manageDeviceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(manageDeviceIntent);
+            } else {
+                FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
+                new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
+
+                }
 
 
+            });
+            getBinding().rlHelp.setOnClickListener(v -> {
+                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.HELP, FirebaseEventManager.BTN_CLICK);
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            });
 
-//
-//       getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mBinding.subscribe.setVisibility(View.GONE);
-//                mBinding.manageSubscriptionMore.setVisibility(View.VISIBLE);
-//                mBinding.tvBilling.setVisibility(View.VISIBLE);
-//                mBinding.tvVIPUser.setText("VIP User");
-//
-//            }
-//        });
-//        getBinding().rlLogout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mBinding.tvLogout.setVisibility(View.GONE);
-//                mBinding.loginSignupMore.setVisibility(View.VISIBLE);
-//                mBinding.tvEmail.setVisibility(View.GONE);
-//                mBinding.tvName.setVisibility(View.GONE);
-//                mBinding.edit.setVisibility(View.GONE);
-//            }
-//        });
-//        mBinding.rlPartnerBilling.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//        mBinding.rlTransactionHistory.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-        getBinding().rlLanguageSelection.setOnClickListener(v -> {
-            Intent intent1 = new Intent(getActivity(), LanguageSettingsActivity.class);
-            intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent1);
+            getBinding().rlTerms.setOnClickListener(v -> {
+                new ActivityLauncher(getActivity()).termAndCondition(getActivity());
+            });
+
+        getBinding().rlPrivacy.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+            intent.putExtra(AppLevelConstants.WEBVIEW, "Privacy Policies");
+            startActivity(intent);
+        });
+
+        getBinding().rlLanguageSelection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(getActivity(), LanguageSettingsActivity.class);
+                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent1);
+
+
+            }
         });
     }
 
@@ -571,7 +310,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         subscriptionViewModel.removeSubscription(UserInfo.getInstance(getActivity()).getAccessToken(), lastActiveItem.getServiceID()).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 getActiveSubscription();
-                Toast.makeText(getActivity(), "Subscription Successfully Cancelled", Toast.LENGTH_SHORT).show();
+                ToastHandler.show("Subscription Successfully Cancelled", getActivity());
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
                     EvergentRefreshToken.refreshToken(getActivity(), UserInfo.getInstance(getActivity()).getRefreshToken()).observe(this, evergentResponse1 -> {
@@ -582,7 +321,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                         }
                     });
                 } else {
-                    Toast.makeText(getActivity(), evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), getActivity());
                 }
             }
 
@@ -624,49 +363,24 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     public void setUiForLogout() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        float yInches = metrics.heightPixels / metrics.ydpi;
-        float xInches = metrics.widthPixels / metrics.xdpi;
-        double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
-        if (diagonalInches >= 6.5) {
-            getBinding().tvBilling.setVisibility(View.GONE);
-
-            if (UserInfo.getInstance(getActivity()).isActive()) {
-                getBinding().tvVIPUser.setText(getResources().getString(R.string.free_sooka));
-            } else {
-                getBinding().tvVIPUser.setText(getResources().getString(R.string.free_sooka));
-                getBinding().edit.setVisibility(View.GONE);
-                getBinding().rlLogout.setVisibility(View.GONE);
-                getBinding().loginSignupMore.setVisibility(View.VISIBLE);
-                getBinding().loginUi.setVisibility(View.GONE);
-            }
-            getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
-            getBinding().tvSubscribeNow.setText(getResources().getString(R.string.subscription_description));
-            getBinding().subscribe.setVisibility(View.VISIBLE);
-            getBinding().subscribe.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-            getBinding().subscribe.setText(getResources().getString(R.string.become_vip));
+        if (UserInfo.getInstance(getActivity()).isActive()) {
+            getBinding().tvVIPUser.setText(getResources().getString(R.string.free_sooka));
         } else {
-            getBinding().tvBilling.setVisibility(View.GONE);
-            getBinding().changePlan.setVisibility(View.GONE);
-            getBinding().cancelPlan.setVisibility(View.GONE);
-            getBinding().partnerBillingText.setVisibility(View.GONE);
-            if (UserInfo.getInstance(getActivity()).isActive()) {
-                getBinding().tvVIPUser.setText(getResources().getString(R.string.free_sooka));
-            } else {
-                getBinding().tvVIPUser.setText(getResources().getString(R.string.free_sooka));
-                getBinding().edit.setVisibility(View.GONE);
-                getBinding().rlLogout.setVisibility(View.GONE);
-                getBinding().loginSignupMore.setVisibility(View.VISIBLE);
-                getBinding().loginUi.setVisibility(View.GONE);
-            }
-            getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
-            getBinding().tvSubscribeNow.setText(getResources().getString(R.string.subscription_description));
-            getBinding().subscribe.setVisibility(View.VISIBLE);
-            getBinding().subscribe.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-            getBinding().subscribe.setText(getResources().getString(R.string.become_vip));
+            getBinding().tvVIPUser.setText(getResources().getString(R.string.free_sooka));
+            getBinding().edit.setVisibility(View.GONE);
+            getBinding().rlLogout.setVisibility(View.GONE);
+            getBinding().loginSignupMore.setVisibility(View.VISIBLE);
+            getBinding().loginUi.setVisibility(View.GONE);
         }
-
+        getBinding().changePlan.setVisibility(View.GONE);
+        getBinding().cancelPlan.setVisibility(View.GONE);
+        getBinding().partnerBillingText.setVisibility(View.GONE);
+        getBinding().tvBilling.setVisibility(View.GONE);
+        getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
+        getBinding().subscribe.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+        getBinding().tvSubscribeNow.setText(getResources().getString(R.string.subscription_description));
+        getBinding().subscribe.setText(getResources().getString(R.string.become_vip));
+        getBinding().subscribe.setVisibility(View.VISIBLE);
 
 
     }
@@ -686,45 +400,6 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                     } else {
                         getLastSubscription();
                     }
-                   /* for (AccountServiceMessageItem accountServiceMessageItem : evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage()) {
-                        if (!accountServiceMessageItem.isFreemium() && accountServiceMessageItem.getStatus().equalsIgnoreCase("ACTIVE") && accountServiceMessageItem.isCurrentPlan()) {
-                            if (accountServiceMessageItem.getDisplayName() != null)
-                                displayName = accountServiceMessageItem.getDisplayName();
-                            isRenewal = accountServiceMessageItem.isRenewal();
-                            if (isRenewal) {
-                                validTill = accountServiceMessageItem.getValidityTill();
-                            }
-                            if (accountServiceMessageItem.getPaymentMethod() != null && !accountServiceMessageItem.getPaymentMethod().equalsIgnoreCase("")) {
-                                paymentMethod = accountServiceMessageItem.getPaymentMethod() + ": " + accountServiceMessageItem.getCurrencyCode() + accountServiceMessageItem.getRetailPrice() + "/month";
-                            }
-                            lastActiveItem = accountServiceMessageItem;
-                        }
-                    }
-                    UserInfo.getInstance(getActivity()).setMaxis(paymentMethod.equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING));
-                    if (!displayName.equalsIgnoreCase("")) {
-                        UserInfo.getInstance(getActivity()).setVip(true);
-                        getBinding().tvVIPUser.setText(displayName);
-                        if (!isRenewal) {
-                            getBinding().tvSubscribeNow.setVisibility(View.GONE);
-                        } else {
-                            getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
-                            getBinding().tvSubscribeNow.setText("Renew on " + AppCommonMethods.getDateFromTimeStamp(validTill));
-                        }
-                        getBinding().productCategory.setText(paymentMethod);
-                        getBinding().productCategory.setVisibility(View.GONE);
-                        if (!UserInfo.getInstance(getActivity()).isMaxis()) {
-                            getBinding().changePlan.setVisibility(View.VISIBLE);
-                            getBinding().cancelPlan.setVisibility(View.VISIBLE);
-                        }
-                        getBinding().subscribe.setVisibility(View.VISIBLE);
-                        getBinding().partnerBillingText.setVisibility(View.VISIBLE);
-                        getBinding().partnerBillingText.setText(paymentMethod);
-                        getBinding().subscribe.setVisibility(View.GONE);
-                    } else {
-                        if (FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked)
-                            new ActivityLauncher(getActivity()).profileSubscription("Profile");
-                        setUiForLogout();
-                    }*/
                 } else {
                     if (FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked)
                         new ActivityLauncher(getActivity()).profileSubscription("Profile");
@@ -785,53 +460,21 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                                 getBinding().tvSubscribeNow.setText("Ends on " + AppCommonMethods.getRenewDate(lastActiveItem.getValidityTill()));
                             }
                         }
-                        DisplayMetrics metrics = new DisplayMetrics();
-                        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-                        float yInches = metrics.heightPixels / metrics.ydpi;
-                        float xInches = metrics.widthPixels / metrics.xdpi;
-                        double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
-                        if (diagonalInches >= 6.5) {
-                            // 6.5inch device or bigger
-                        } else {
-                            getBinding().partnerBillingText.setVisibility(View.VISIBLE);
-                            if (lastActiveItem.getPaymentMethod() != null && !lastActiveItem.getPaymentMethod().equalsIgnoreCase("")) {
-                                if (UserInfo.getInstance(getActivity()).isMaxis()) {
-                                    getBinding().partnerBillingText.setText(lastActiveItem.getPaymentMethod());
-                                } else {
-                                    getBinding().partnerBillingText.setText(lastActiveItem.getPaymentMethod() + ": " + lastActiveItem.getCurrencyCode() + lastActiveItem.getRetailPrice() + "/month");
-                                }
+                        getBinding().partnerBillingText.setVisibility(View.VISIBLE);
+                        if (lastActiveItem.getPaymentMethod() != null && !lastActiveItem.getPaymentMethod().equalsIgnoreCase("")) {
+                            if (UserInfo.getInstance(getActivity()).isMaxis()) {
+                                getBinding().partnerBillingText.setText(lastActiveItem.getPaymentMethod());
+                            } else {
+                                getBinding().partnerBillingText.setText(lastActiveItem.getPaymentMethod() + ": " + lastActiveItem.getCurrencyCode() + lastActiveItem.getRetailPrice() + "/month");
                             }
                         }
-
+                        getBinding().subscribe.setVisibility(View.GONE);
                         if (lastActiveItem.getStatus().equalsIgnoreCase("ACTIVE")) {
-
-                            DisplayMetrics metrics1 = new DisplayMetrics();
-                            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-                            float yInches1 = metrics1.heightPixels / metrics1.ydpi;
-                            float xInches1 = metrics1.widthPixels / metrics1.xdpi;
-                            double diagonalInches1 = Math.sqrt(xInches1 * xInches1 + yInches1 * yInches1);
-                            if (diagonalInches1 >= 6.5) {
-                                // 6.5inch device or bigger
-                            } else {
-                                getBinding().changePlan.setVisibility(View.VISIBLE);
-                                getBinding().cancelPlan.setVisibility(View.VISIBLE);
-                            }
+                            getBinding().cancelPlan.setVisibility(View.VISIBLE);
+                            getBinding().changePlan.setVisibility(View.VISIBLE);
                         } else {
-
-                            DisplayMetrics metrics2 = new DisplayMetrics();
-                            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-                            float yInches2 = metrics2.heightPixels / metrics2.ydpi;
-                            float xInches2 = metrics2.widthPixels / metrics2.xdpi;
-                            double diagonalInches2 = Math.sqrt(xInches2 * xInches2 + yInches2 * yInches2);
-                            if (diagonalInches2 >= 6.5) {
-                                // 6.5inch device or bigger
-                            } else {
-                                getBinding().changePlan.setVisibility(View.GONE);
-                                getBinding().cancelPlan.setVisibility(View.GONE);
-                            }
+                            getBinding().cancelPlan.setVisibility(View.GONE);
+                            getBinding().changePlan.setVisibility(View.GONE);
                         }
                     } else {
                         getLastSubscription();
@@ -867,18 +510,8 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             }
             getBinding().subscribe.setVisibility(View.GONE);
             if (lastActiveItem.getStatus().equalsIgnoreCase("ACTIVE")) {
-                DisplayMetrics metrics = new DisplayMetrics();
-                getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-                float yInches = metrics.heightPixels / metrics.ydpi;
-                float xInches = metrics.widthPixels / metrics.xdpi;
-                double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
-                if (diagonalInches >= 6.5) {
-                    // 6.5inch device or bigger
-                } else {
-                    getBinding().changePlan.setVisibility(View.VISIBLE);
-                    getBinding().cancelPlan.setVisibility(View.VISIBLE);
-                }
+                getBinding().cancelPlan.setVisibility(View.VISIBLE);
+                getBinding().changePlan.setVisibility(View.VISIBLE);
             }
         } else {
             getLastSubscription();
@@ -902,22 +535,14 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                         getBinding().tvSubscribeNow.setVisibility(View.VISIBLE);
                         getBinding().subscribe.setVisibility(View.VISIBLE);
                         getBinding().subscribe.setText(getResources().getString(R.string.become_vip));
-                        DisplayMetrics metrics = new DisplayMetrics();
-                        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-                        float yInches = metrics.heightPixels / metrics.ydpi;
-                        float xInches = metrics.widthPixels / metrics.xdpi;
-                        double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
-                        if (diagonalInches >= 6.5) {
-                            // 6.5inch device or bigger
-                        } else {
-                            getBinding().partnerBillingText.setVisibility(View.VISIBLE);
-                            if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod() != null && !evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod().equalsIgnoreCase("")) {
-                                if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod().equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING)) {
-                                    getBinding().partnerBillingText.setText(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod());
-                                } else {
-                                    getBinding().partnerBillingText.setText(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod() + ": " + evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getCurrencyCode() + evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getRetailPrice() + "/month");
-                                }
+                        getBinding().partnerBillingText.setVisibility(View.VISIBLE);
+                        getBinding().changePlan.setVisibility(View.GONE);
+                        getBinding().cancelPlan.setVisibility(View.GONE);
+                        if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod() != null && !evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod().equalsIgnoreCase("")) {
+                            if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod().equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING)) {
+                                getBinding().partnerBillingText.setText(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod());
+                            } else {
+                                getBinding().partnerBillingText.setText(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod() + ": " + evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getCurrencyCode() + evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getRetailPrice() + "/month");
                             }
                             getBinding().changePlan.setVisibility(View.GONE);
                             getBinding().cancelPlan.setVisibility(View.GONE);
@@ -1001,7 +626,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     public void onFinishDialog() {
         logoutApi();
         AppCommonMethods.removeUserPrerences(getActivity());
-        Toast.makeText(getActivity(), "Logout Successful!", Toast.LENGTH_SHORT).show();
+        ToastHandler.show(getActivity().getResources().getString(R.string.logout_success), getActivity());
         setUiForLogout();
 
         LoginManager.getInstance().logOut();

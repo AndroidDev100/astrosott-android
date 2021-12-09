@@ -68,16 +68,8 @@ public class MaterialToast {
 
         LinearLayout outerLayout = viewHolder.findViewById(R.id.outerLayout);
         outerLayout.setBackground(drawable);
-
         TextView toastTitle = viewHolder.findViewById(R.id.toastTitle);
         toastTitle.setText(message);
-        //CustomeText.setFontRegular(toastTitle);
-
-//        Toast toastObject = new Toast(activity);
-//        toastObject.setDuration(40000);
-//        toastObject.setGravity(Gravity.BOTTOM,0,140);
-//        toastObject.setView(viewHolder);
-//        toastObject.show();
 
         int duration = Toast.LENGTH_LONG;
         final Toast toast = Toast.makeText(activity.getApplicationContext(), message, duration);

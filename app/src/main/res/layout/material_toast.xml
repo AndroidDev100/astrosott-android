@@ -20,8 +20,7 @@
             android:paddingTop="10dp"
             android:paddingRight="15dp"
             android:paddingBottom="10dp"
-            android:text=""
-            android:textColor="@color/toast_text"
+            android:textColor="@color/black"
             android:textSize="@dimen/font_medium" />
 
 
