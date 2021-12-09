@@ -626,7 +626,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     public void onFinishDialog() {
         logoutApi();
         AppCommonMethods.removeUserPrerences(getActivity());
-        ToastHandler.show(getActivity().getResources().getString(R.string.logout_success), getActivity());
+        Toast.makeText(getActivity(), "Logout Successful!", Toast.LENGTH_SHORT).show();
         setUiForLogout();
 
         LoginManager.getInstance().logOut();

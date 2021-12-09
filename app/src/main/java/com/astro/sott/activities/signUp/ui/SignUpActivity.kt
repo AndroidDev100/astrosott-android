@@ -101,7 +101,6 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
-
     private fun setWatcher() {
         activitySinUpBinding?.mobileEmailEdt?.addTextChangedListener(
             CustomTextWatcher(
