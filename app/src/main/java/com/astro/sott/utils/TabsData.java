@@ -31,7 +31,15 @@ public class TabsData {
     private List<AssetCommonBean> closedSeriesData;
     private List<Asset> seasonData;
     private List<Integer> seasonList;
+    private int selectedSeasonNumIndex;
 
+    public int getSelectedSeasonNumIndex() {
+        return selectedSeasonNumIndex;
+    }
+
+    public void setSelectedSeasonNumIndex(int selectedSeasonNumIndex) {
+        this.selectedSeasonNumIndex = selectedSeasonNumIndex;
+    }
 
     public static TabsData getInstance() {
         if (tabsData == null) {

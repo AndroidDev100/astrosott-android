@@ -1621,7 +1621,7 @@ public class KsServices {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
         dynamicOrderBy.orderBy("META_ASC");
-        dynamicOrderBy.setName("SeasonNumber");
+        dynamicOrderBy.setName("TitleSortName");
       //  searchAssetFilter.setOrderBy("META_ASC");
        // (and SeriesId='PACK0000000000000200')
         String one = "(and SeriesId='";

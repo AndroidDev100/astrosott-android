@@ -1,5 +1,6 @@
 package com.astro.sott.fragments.episodeFrament;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -199,11 +200,12 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
             if (list!=null) {
                 holder.season.setText(mContext.getResources().getString(R.string.season) + " " + list.get(position).toString());
-                if (selectedIndex == position) {
+                if (seasonName.equalsIgnoreCase(holder.season.getText().toString())) {
+                    TabsData.getInstance().setSelectedSeasonNumIndex(position);
                     holder.season.setTextColor(mContext.getResources().getColor(R.color.green));
                     holder.season.setTextSize(20);
                     Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
@@ -217,7 +219,9 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             }else {
                 holder.season.setText(seasonNumList.get(position).getName());
 
-                if (selectedIndex == position) {
+                if (seasonName.equalsIgnoreCase(seasonNumList.get(position).getName())) {
+
+                    TabsData.getInstance().setSelectedSeasonNumIndex(position);
                     holder.season.setTextColor(mContext.getResources().getColor(R.color.green));
                    // holder.season.setTextSize(20);
                     Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
@@ -235,12 +239,15 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 if (list!=null) {
                     alertDialog.cancel();
                     selectedIndex = position;
+                    TabsData.getInstance().setSelectedSeasonNumIndex(position);
                     seasonNumber = list.get(position);
                     getBinding().seasonText.setText(getResources().getString(R.string.season) + " " + seasonNumber);
+                    seasonName = getBinding().seasonText.getText().toString();
                     getEpisodes(selectedIndex);
                 }else {
                     alertDialog.cancel();
                     selectedIndex = position;
+                    TabsData.getInstance().setSelectedSeasonNumIndex(position);
                    // seasonNumber = list.get(position);
                     external_Id = seasonNumList.get(position).getExternalId();
                     seasonName = seasonNumList.get(position).getName();
@@ -377,8 +384,19 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                 seriesType = "closed";
                 closedSeriesData = TabsData.getInstance().getClosedSeriesData();
                 getBinding().seasonText.setText(closedSeriesData.get(0).getTitle());
-
+                seasonName = getBinding().seasonText.getText().toString();
                 seriesNumberList = TabsData.getInstance().getSeasonList();
+                String[] splitString = seasonName.trim().split("\\s+");
+                if (splitString[1].equalsIgnoreCase("1")){
+                    TabsData.getInstance().setSelectedSeasonNumIndex(0);
+                }else if (splitString[1].equalsIgnoreCase("2")){
+                    TabsData.getInstance().setSelectedSeasonNumIndex(1);
+                }else if (splitString[1].equalsIgnoreCase("3")){
+                    TabsData.getInstance().setSelectedSeasonNumIndex(2);
+                }else if (splitString[1].equalsIgnoreCase("4")){
+                    TabsData.getInstance().setSelectedSeasonNumIndex(3);
+                }
+                //Log.d("etydyydyd",new Gson().toJson(seasonName));
                 setClosedUIComponets(TabsData.getInstance().getClosedSeriesData());
             }else if (TabsData.getInstance().getSeasonData()!=null && TabsData.getInstance().getClosedSeriesData()!=null){
                // Log.d("CloseSeriesData",new Gson().toJson(TabsData.getInstance().getClosedSeriesData()));
@@ -389,7 +407,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
                 SeasonNameList = TabsData.getInstance().getSeasonData();
                 external_Id = TabsData.getInstance().getSeasonData().get(0).getExternalId();
-                seasonName = TabsData.getInstance().getSeasonData().get(0).getName();
+                seasonName = getBinding().seasonText.getText().toString();
                 setClosedUIComponets(TabsData.getInstance().getClosedSeriesData());
             }
 

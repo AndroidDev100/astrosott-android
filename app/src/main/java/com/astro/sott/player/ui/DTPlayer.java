@@ -667,6 +667,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void checkEpisode(List<Asset> episodesList) {
         try {
+
+            if (TabsData.getInstance().getSelectedSeasonNumIndex()!= 0){
+                seasonCounter = TabsData.getInstance().getSelectedSeasonNumIndex();
+                TabsData.getInstance().setSelectedSeasonNumIndex(0);
+            }
+
             boolean found = false;
             hasEpisodesList = true;
             if (episodesList.size() > 0) {
