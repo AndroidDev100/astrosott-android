@@ -19,7 +19,7 @@ class EvergentNetworkClass {
                     chain.proceed(
                         chain.request()
                             .newBuilder()
-                            .header("User-Agent", System.getProperty("http.agent"))
+                            .header("User-Agent", System.getProperty("http.agent")+"-AMB-21.11.08(26)")
                             .build()
                     )
                 }
