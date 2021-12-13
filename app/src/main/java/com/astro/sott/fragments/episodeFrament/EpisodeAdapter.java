@@ -54,7 +54,6 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SingleIt
         this.episodeNumber = episodeNumber;
         this.episodeClickListner = episodeCallBAck;
         episodeClickListner.episodeList(railList);
-       // Log.d("fhdhfhdfhd",new Gson().toJson(railList));
     }
 
     @NonNull

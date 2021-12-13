@@ -16,6 +16,15 @@ public class TabsData {
     private boolean isDetail = false;
     private String seriesType;
     private int selectedSeason;
+    private int totalCount;
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
 
     public List<Asset> getSeasonData() {
         return seasonData;

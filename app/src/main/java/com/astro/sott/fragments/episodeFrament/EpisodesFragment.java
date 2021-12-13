@@ -642,6 +642,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     private void setUIComponets(List<AssetCommonBean> assetCommonBeans) {
         try {
             loadedList = assetCommonBeans.get(0).getRailAssetList();
+            TabsData.getInstance().setTotalCount(assetCommonBeans.get(0).getTotalCount());
             list = new ArrayList<>();
             for (int i = 0; i < loadedList.size(); i++) {
                 list.add(i, loadedList.get(i));
@@ -817,6 +818,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     private void setClosedUIComponets(List<AssetCommonBean> assetCommonBeans) {
         try {
             loadedList.addAll(assetCommonBeans.get(0).getRailAssetList());
+            TabsData.getInstance().setTotalCount(assetCommonBeans.get(0).getTotalCount());
             list = new ArrayList<>();
             for (int i = 0; i < loadedList.size(); i++) {
                 list.add(i, loadedList.get(i));

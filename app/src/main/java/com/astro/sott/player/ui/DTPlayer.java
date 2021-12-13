@@ -639,8 +639,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
         if (railList != null && railList.size() > 0) {
-            //totalEpisode = railList.get(0).getTotalCount();
-            totalEpisode = railList.size();
+            totalEpisode = TabsData.getInstance().getTotalCount();
+            Log.d("fgssgsgssg",new Gson().toJson(totalEpisode));
+            //totalEpisode = railList.size();
             List<Asset> assets = new ArrayList<>();
             RailCommonData railCommonData = new RailCommonData();
             for (int i = 0; i < railList.size(); i++) {
@@ -704,7 +705,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 if (found) {
                     if ((nextEpisodeCounter != -1) && episodesList.size() > nextEpisodeCounter) {
-                        Log.d("rtrtrtrtr","EnterHere");
                         nextPlayingAsset = episodesList.get(nextEpisodeCounter);
                         hasNextEpisode = true;
                     } else {
@@ -719,7 +719,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     getSeasonEpisodeWithExternalId(seasonNumberList.get(seasonCounter).getExternalId(),"",counter_for_non_numerical);
                                 }else {
                                     getSeasonEpisode(seasonCounter, "");
-                                    Log.d("rtrtrtrtr","ApiCalled");
                                 }
                             }
                         } else {
@@ -758,6 +757,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus() && assetCommonBeans.get(0).getRailAssetList() != null && assetCommonBeans.get(0).getRailAssetList().size() > 0) {
                     episodeCounter++;
                     totalEpisode = assetCommonBeans.get(0).getTotalCount();
+                    TabsData.getInstance().setTotalCount(totalEpisode);
                     for (RailCommonData railCommonData : assetCommonBeans.get(0).getRailAssetList()) {
                         if (railCommonData.getObject() != null) {
                             railList.add(railCommonData);
@@ -777,6 +777,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus() && assetCommonBeans.get(0).getRailAssetList() != null && assetCommonBeans.get(0).getRailAssetList().size() > 0) {
                     episodeCounter++;
                     totalEpisode = assetCommonBeans.get(0).getTotalCount();
+                    TabsData.getInstance().setTotalCount(totalEpisode);
                     for (RailCommonData railCommonData : assetCommonBeans.get(0).getRailAssetList()) {
                         if (railCommonData.getObject() != null) {
                             railList.add(railCommonData);
@@ -834,6 +835,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus() && assetCommonBeans.get(0).getRailAssetList() != null && assetCommonBeans.get(0).getRailAssetList().size() > 0) {
                     episodeCounter++;
                     totalEpisode = assetCommonBeans.get(0).getTotalCount();
+                    TabsData.getInstance().setTotalCount(totalEpisode);
                     for (RailCommonData railCommonData : assetCommonBeans.get(0).getRailAssetList()) {
                         if (railCommonData.getObject() != null) {
                             railList.add(railCommonData);
@@ -854,6 +856,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus() && assetCommonBeans.get(0).getRailAssetList() != null && assetCommonBeans.get(0).getRailAssetList().size() > 0) {
                     episodeCounter++;
                     totalEpisode = assetCommonBeans.get(0).getTotalCount();
+                    TabsData.getInstance().setTotalCount(totalEpisode);
                     for (RailCommonData railCommonData : assetCommonBeans.get(0).getRailAssetList()) {
                         if (railCommonData.getObject() != null) {
                             railList.add(railCommonData);
@@ -1280,7 +1283,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             if (!isLivePlayer) {
 
-                if (isSeries && episodesList != null && episodesList.size() > 1) {
+                if (isSeries && episodesList != null && episodesList.size() > 0) {
                     getBinding().nextEpisode.setVisibility(View.VISIBLE);
                 } else {
                     getBinding().nextEpisode.setVisibility(View.GONE);
