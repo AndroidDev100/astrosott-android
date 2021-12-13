@@ -395,6 +395,18 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
                     TabsData.getInstance().setSelectedSeasonNumIndex(2);
                 }else if (splitString[1].equalsIgnoreCase("4")){
                     TabsData.getInstance().setSelectedSeasonNumIndex(3);
+                }else if (splitString[1].equalsIgnoreCase("5")){
+                    TabsData.getInstance().setSelectedSeasonNumIndex(4);
+                }else if (splitString[1].equalsIgnoreCase("6")){
+                    TabsData.getInstance().setSelectedSeasonNumIndex(5);
+                }else if (splitString[1].equalsIgnoreCase("7")){
+                    TabsData.getInstance().setSelectedSeasonNumIndex(6);
+                }else if (splitString[1].equalsIgnoreCase("8")){
+                    TabsData.getInstance().setSelectedSeasonNumIndex(7);
+                }else if (splitString[1].equalsIgnoreCase("9")){
+                    TabsData.getInstance().setSelectedSeasonNumIndex(8);
+                }else if (splitString[1].equalsIgnoreCase("10")){
+                    TabsData.getInstance().setSelectedSeasonNumIndex(9);
                 }
                 //Log.d("etydyydyd",new Gson().toJson(seasonName));
                 setClosedUIComponets(TabsData.getInstance().getClosedSeriesData());
