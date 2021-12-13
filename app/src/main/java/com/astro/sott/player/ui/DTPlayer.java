@@ -117,6 +117,7 @@ import com.astro.sott.utils.userInfo.UserInfo;
 import com.conviva.sdk.ConvivaSdkConstants;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MediaAsset;
@@ -151,6 +152,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import java.util.Collections;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
@@ -721,6 +723,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 seriesNumberList = TabsData.getInstance().getSeasonList();
                                 seasonNumberList = TabsData.getInstance().getSeasonData();
                                 if (seriesNumberList!=null) {
+                                    Collections.sort(seriesNumberList);
                                     if (seriesNumberList.size() > seasonCounter && seriesNumberList.get(seasonCounter) != null)
                                         getSeasonEpisode(seasonCounter, "nextSeason");
                                 }else if (seasonNumberList.size() > seasonCounter && seasonNumberList.get(seasonCounter)!=null){
