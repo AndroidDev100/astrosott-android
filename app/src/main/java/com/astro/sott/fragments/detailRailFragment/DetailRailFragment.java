@@ -107,31 +107,36 @@ public class DetailRailFragment extends BaseBindingFragment<FragmentDetailRailBi
                     trailerFragmentViewModel.setSeasonList(seriesNumberList);
                     getEpisode(seriesNumberList);
                 }else {
-                    TabsData.getInstance().setSeasonData(assetListResponse);
-                    if (TabsData.getInstance().getSeasonData()!=null){
-                       TabsData.getInstance().setSelectedSeason(seasonCounter);
-                        trailerFragmentViewModel.callSeasonEpisodesWithExternalId(TabsData.getInstance().getSeasonData().get(0).getExternalId(),asset.getType(), counter, seasonCounter, TabsData.getInstance().getSeasonData(),AppConstants.Rail5,AppLevelConstants.KEY_EPISODE_NUMBER,this).observe(this, assetCommonBeans -> {
-                            if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus()) {
-                                trailerFragmentViewModel.setOpenSeriesData(null);
-                                trailerFragmentViewModel.setClosedSeriesData(assetCommonBeans);
-                                trailerFragmentViewModel.setSeasonList(null);
-                                isTrailerCount = 1;
-                                getRefId(asset.getType());
-                                trailerFragmentType = 1;
 
-                            } else {
-                                trailerFragmentViewModel.setClosedSeriesData(null);
-                                getRefId(asset.getType());
+                    trailerFragmentViewModel.getSeasonsListData1(asset.getId().intValue(), 1, asset.getType(), asset.getMetas(), AppConstants.Rail5, externalId).observe(getActivity(), assetListResponse1 -> {
+                                if (assetListResponse1 != null) {
+                                    TabsData.getInstance().setSeasonData(assetListResponse1);
+                                    if (TabsData.getInstance().getSeasonData()!=null){
+                                        TabsData.getInstance().setSelectedSeason(seasonCounter);
+                                        trailerFragmentViewModel.callSeasonEpisodesWithExternalId(TabsData.getInstance().getSeasonData().get(0).getExternalId(),asset.getType(), counter, seasonCounter, TabsData.getInstance().getSeasonData(),AppConstants.Rail5,AppLevelConstants.KEY_EPISODE_NUMBER,this).observe(this, assetCommonBeans -> {
+                                            if (assetCommonBeans.get(0) != null && assetCommonBeans.get(0).getStatus()) {
+                                                trailerFragmentViewModel.setOpenSeriesData(null);
+                                                trailerFragmentViewModel.setClosedSeriesData(assetCommonBeans);
+                                                trailerFragmentViewModel.setSeasonList(null);
+                                                isTrailerCount = 1;
+                                                getRefId(asset.getType());
+                                                trailerFragmentType = 1;
 
-                            }
-                        });
+                                            } else {
+                                                trailerFragmentViewModel.setClosedSeriesData(null);
+                                                getRefId(asset.getType());
 
-                    }else {
+                                            }
+                                        });
 
-                        trailerFragmentViewModel.setSeasonList(null);
-                        trailerFragmentViewModel.setClosedSeriesData(null);
-                        getOpenSeriesEpisodes();
-                    }
+                                    }else {
+
+                                        trailerFragmentViewModel.setSeasonList(null);
+                                        trailerFragmentViewModel.setClosedSeriesData(null);
+                                        getOpenSeriesEpisodes();
+                                    }
+                                }
+                            });
                 }
 
 

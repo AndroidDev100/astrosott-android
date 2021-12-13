@@ -635,8 +635,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                sortListWithEPSD(episodesList);
 //            }
 //        });
+
+
+
         if (railList != null && railList.size() > 0) {
-            totalEpisode = railList.get(0).getTotalCount();
+            //totalEpisode = railList.get(0).getTotalCount();
+            totalEpisode = railList.size();
             List<Asset> assets = new ArrayList<>();
             RailCommonData railCommonData = new RailCommonData();
             for (int i = 0; i < railList.size(); i++) {
@@ -675,12 +679,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 TabsData.getInstance().setSelectedSeasonNumIndex(0);
             }
 
+           // Log.d("fgfgfgffg",asset.getId()+"");
+
             boolean found = false;
             hasEpisodesList = true;
+
             if (episodesList.size() > 0) {
                 for (int i = 0; i < episodesList.size(); i++) {
 //                int listEpisode = AssetContent.getSpecificEpisode(episodesList.get(i).getMetas());
                     long listEpisode = episodesList.get(i).getId();
+                  //  Log.d("fgfgfgffg",listEpisode+"");
                     //  if (listSeason == seasonNumber) {
                     //   if(episodesList.get(i).getId()==asset.getId()){
 
@@ -696,6 +704,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 if (found) {
                     if ((nextEpisodeCounter != -1) && episodesList.size() > nextEpisodeCounter) {
+                        Log.d("rtrtrtrtr","EnterHere");
                         nextPlayingAsset = episodesList.get(nextEpisodeCounter);
                         hasNextEpisode = true;
                     } else {
@@ -710,6 +719,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     getSeasonEpisodeWithExternalId(seasonNumberList.get(seasonCounter).getExternalId(),"",counter_for_non_numerical);
                                 }else {
                                     getSeasonEpisode(seasonCounter, "");
+                                    Log.d("rtrtrtrtr","ApiCalled");
                                 }
                             }
                         } else {
@@ -1270,7 +1280,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             if (!isLivePlayer) {
 
-                if (isSeries && episodesList != null && episodesList.size() > 0) {
+                if (isSeries && episodesList != null && episodesList.size() > 1) {
                     getBinding().nextEpisode.setVisibility(View.VISIBLE);
                 } else {
                     getBinding().nextEpisode.setVisibility(View.GONE);

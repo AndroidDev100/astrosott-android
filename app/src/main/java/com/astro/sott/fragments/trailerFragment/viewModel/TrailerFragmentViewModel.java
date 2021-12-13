@@ -136,6 +136,15 @@ public class TrailerFragmentViewModel extends AndroidViewModel {
         return SeasonsLayer.getInstance().loadData(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, externalId);
     }
 
+    public LiveData<List<Asset>> getSeasonsListData1(int assetId,
+                                                    int counter,
+                                                    int assetType,
+                                                    Map<String, Value> map,
+                                                    int layoutType,
+                                                    String externalId) {
+        return SeasonsLayer.getInstance().loadData1(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, externalId);
+    }
+
     public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType, String sortType, LifecycleOwner owner) {
         TabsData.getInstance().setSortType(sortType);
         return checkHasEpisodeNumberForSeason(getApplication().getApplicationContext(), map, assetType, counter, seasonCounter, layoutType, sortType, owner, seriesNumberList);

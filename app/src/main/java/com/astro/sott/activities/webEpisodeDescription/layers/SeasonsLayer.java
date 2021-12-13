@@ -68,5 +68,42 @@ public class SeasonsLayer {
         return connection;
     }
 
+
+    public LiveData<List<Asset>> loadData1(final Context context,
+                                          final int assetId,
+                                          int counter,
+                                          final int assetTyp,
+                                          Map<String, Value> map,
+                                          final int layoutType,
+                                          final String seriesId) {
+
+        assetType = assetTyp;
+        final MutableLiveData<List<Asset>> connection = new MutableLiveData<>();
+        // Response<ListResponse<Asset>> emptyList = new ArrayList<>();
+        final KsServices ksServices = new KsServices(context);
+        if (!seriesId.equals("")) {
+            AppCommonMethods.checkDMS(context, status -> {
+                if (status) {
+                    ksServices.callSeasons1(0, seriesId, assetType, (status1, result) -> {
+                        if (status1) {
+                            // TabsData.getInstance().setSeasonData(result.results.getObjects());
+//                            connection.postValue(AssetContent.getSeasonNumber(result));
+                            connection.postValue(result.results.getObjects());
+                        } else {
+                            connection.postValue(null);
+
+                        }
+                    });
+                }
+            });
+        } else {
+            // connection.postValue(emptyList);
+
+        }
+        return connection;
+    }
+
+
+
 }
 

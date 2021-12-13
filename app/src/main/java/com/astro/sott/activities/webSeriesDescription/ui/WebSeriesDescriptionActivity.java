@@ -740,6 +740,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
         if (type == 0) {
             fromNextEpisode = false;
             this.railList = railList;
+            this.railList1 = railList;
             callProgressBar();
             playerChecks(railCommonData);
         } else {
@@ -806,6 +807,7 @@ public class WebSeriesDescriptionActivity extends BaseBindingActivity<ActivityWe
 
     public void episodeCallback(List<RailCommonData> railList) {
         fromNextEpisode = false;
+        this.railList1 = railList;
         this.railList = railList;
     }
 
