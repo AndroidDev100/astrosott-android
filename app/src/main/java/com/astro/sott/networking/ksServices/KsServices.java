@@ -1021,7 +1021,7 @@ public class KsServices {
         String one = "(and epg_channel_id='";
         String two = "' start_date<'0' end_date>'0')";
         String ksql = one + channelId + two;
-        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+ksql+")");
+        searchAssetFilter.setKSql(ksql);
         searchAssetFilter.setTypeIn(MediaTypeConstant.getProgram(activity) + "");
 
 
@@ -1907,7 +1907,7 @@ public class KsServices {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
 
         EPGListKSQL = KSQL.forEPGRail(externalId, startDate, endDate);
-        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+EPGListKSQL+")");
+        searchAssetFilter.setKSql(EPGListKSQL);
         searchAssetFilter.typeIn("0");
         searchAssetFilter.setOrderBy("START_DATE_ASC");
         FilterPager filterPager = new FilterPager();
@@ -1967,7 +1967,7 @@ public class KsServices {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
 
         EPGListKSQL = KSQL.forEPGRail(externalId, startDate, endDate);
-        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+EPGListKSQL+")");
+        searchAssetFilter.setKSql(EPGListKSQL);
         searchAssetFilter.typeIn("0");
         searchAssetFilter.setOrderBy("START_DATE_ASC");
         FilterPager filterPager = new FilterPager();
@@ -2029,10 +2029,10 @@ public class KsServices {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         if (type == 1) {
             String particularProgKSQL = KSQL.forParticularProgram(externalId, "0", "0");
-            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+particularProgKSQL+")");
+            searchAssetFilter.setKSql(particularProgKSQL);
         } else {
             EPGListKSQL = KSQL.forEPGListing(externalId, startDate, endDate);
-            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+EPGListKSQL+")");
+            searchAssetFilter.setKSql(EPGListKSQL);
         }
         searchAssetFilter.typeIn("0");
         searchAssetFilter.setOrderBy("START_DATE_ASC");
@@ -2157,7 +2157,7 @@ public class KsServices {
         clientSetupKs();
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         String particularProgKSQL = KSQL.forParticularProgram(externalId, "0", "0");
-        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+particularProgKSQL+")");
+        searchAssetFilter.setKSql(particularProgKSQL);
 
 
         searchAssetFilter.typeIn("0");
@@ -3684,7 +3684,7 @@ public class KsServices {
 
         String deepSearchKSQL = AppCommonMethods.getLiveDeepSearchKsql("", null, 1, context);
         EPGListKSQL = KSQL.forDeepSearchEPGRail(externalId, startDate, endDate, deepSearchKSQL);
-        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+AppLevelConstants.CATALOGUE_VALUE+EPGListKSQL+")"+")");
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+EPGListKSQL+")");
         searchAssetFilter.typeIn("0");
         try {
             if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")) {
