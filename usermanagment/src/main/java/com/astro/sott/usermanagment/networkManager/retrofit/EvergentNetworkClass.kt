@@ -1,5 +1,7 @@
 package com.astro.sott.usermanagment.networkManager.retrofit
 
+import com.astro.sott.usermanagment.BuildConfig
+import com.astro.sott.usermanagment.EvergentBaseClient.EvergentBaseClient
 import com.astro.sott.usermanagment.EvergentBaseClient.EvergentBaseConfiguration
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,7 +21,7 @@ class EvergentNetworkClass {
                     chain.proceed(
                         chain.request()
                             .newBuilder()
-                            .header("User-Agent", System.getProperty("http.agent")+"-AMB-21.11.08(26)")
+                            .header("User-Agent", System.getProperty("http.agent")+"-AMB-"+EvergentBaseClient.getAppVersion())
                             .build()
                     )
                 }
