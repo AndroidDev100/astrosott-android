@@ -46,7 +46,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.baseModel.RailBaseFragment;

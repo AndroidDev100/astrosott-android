@@ -393,7 +393,7 @@ public class KsServices {
         allWatchlist = callBack;
         responseListt = new ArrayList<>();
         final SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
-        searchAssetFilter.setKSql(KSQL.watchList(ksql));
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+KSQL.watchList(ksql)+")");
         searchAssetFilter.orderBy("NAME_ASC");
         final FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
@@ -462,12 +462,8 @@ public class KsServices {
             ChannelFilter channelFilter = new ChannelFilter();
             channelFilter.setIdEqual(iid);
             String name = "";
-
             String KsqlValue = ksql;
-            PrintLogging.printLog("", "genreValueIs" + KsqlValue);
-
-
-            channelFilter.setKSql(KsqlValue);
+            channelFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+KsqlValue+")");
             try {
                 if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")) {
                     if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())) {
@@ -573,15 +569,10 @@ public class KsServices {
         listAssetBuilders = new ArrayList<>();
         for (int i = 0; i < channelList.size(); i++) {
             long idd = channelList.get(i).getId();
-            Log.w("idsssoftiles", idd + " " + counter);
             int iid = (int) idd;
             ChannelFilter channelFilter = new ChannelFilter();
             channelFilter.setIdEqual(iid);
-
-            // PersonalListSearchFilter
-
-            // Sear
-
+            channelFilter.setKSql(AppLevelConstants.CHANNEL_FILTER_CATALOGUE_VALUE);
             FilterPager filterPager = new FilterPager();
             filterPager.setPageIndex(counter);
             filterPager.setPageSize(20);
@@ -654,11 +645,7 @@ public class KsServices {
             int iid = (int) idd;
             ChannelFilter channelFilter = new ChannelFilter();
             channelFilter.setIdEqual(iid);
-
-            // PersonalListSearchFilter
-
-            // Sear
-
+            channelFilter.setKSql(AppLevelConstants.CHANNEL_FILTER_CATALOGUE_VALUE);
             FilterPager filterPager = new FilterPager();
             filterPager.setPageIndex(counter);
             filterPager.setPageSize(20);
@@ -820,7 +807,7 @@ public class KsServices {
         commonResponseHandler = callBack;
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         String kSQL = KSQL.forNumberOfEpisodes(seriesId);
-        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
         searchAssetFilter.setTypeIn(String.valueOf(mediaType));
 
         AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
@@ -932,7 +919,7 @@ public class KsServices {
 
         if (mediaType == MediaTypeConstant.getEpisode(activity)) {
             String ksql = KSQL.getSeriesKSQL(MediaTypeConstant.getSeries(activity), seriesID);
-            searchAssetFilter.setKSql(ksql);
+            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+ksql+")");
         }
 
 
@@ -983,7 +970,7 @@ public class KsServices {
         filterPager.setPageSize(1);
 
         String ksql = KSQL.getAssetFromTrailerKSQL(MediaTypeConstant.getMovie(activity), MediaTypeConstant.getSeries(activity), refId);
-        searchAssetFilter.setKSql(ksql);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+ksql+")");
 
 
         AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter, filterPager).setCompletion(result -> {
@@ -1089,7 +1076,7 @@ public class KsServices {
             Log.w("idsssoftiles", "idsprints" + idd + "-->>" + kSQL);
             SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
 
-            searchAssetFilter.setKSql(kSQL);
+            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
 
             if (assetType == MediaTypeConstant.getDrama(activity)) {
                 searchAssetFilter.typeIn(MediaTypeConstant.getWebEpisode(activity) + "");
@@ -1154,7 +1141,7 @@ public class KsServices {
         PrintLogging.printLog(this.getClass(), "", "respponsssss" + kSQL);
 
         searchAssetFilter.orderBy("NAME_ASC");
-        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
 
         if (assetType == MediaTypeConstant.getDrama(activity)) {
             searchAssetFilter.typeIn(MediaTypeConstant.getWebEpisode(activity) + "");
@@ -1201,7 +1188,7 @@ public class KsServices {
             String kSQL = one + seriesId + two + iid + three;
             // Log.w("idsssoftiles", "idsprints" + idd + "-->>" + kSQL);
             SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
-            searchAssetFilter.setKSql(kSQL);
+            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
             Log.e("ASSET TYPE", String.valueOf(assetType));
             if (assetType == MediaTypeConstant.getSeries(activity)) {
                 searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
@@ -1287,7 +1274,7 @@ public class KsServices {
             String kSQL = one + seriesId + two + iid + three;
             // Log.w("idsssoftiles", "idsprints" + idd + "-->>" + kSQL);
             SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
-            searchAssetFilter.setKSql(kSQL);
+            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
             Log.d("frfrfrfrfrf", kSQL);
             Log.e("ASSET TYPE", String.valueOf(assetType));
             if (assetType == MediaTypeConstant.getSeries(activity)) {
@@ -1375,7 +1362,7 @@ public class KsServices {
             // Log.w("idsssoftiles", "idsprints" + idd + "-->>" + kSQL);
             SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
 
-            searchAssetFilter.setKSql(kSQL);
+            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
             Log.e("ASSET TYPE", String.valueOf(assetType));
             if (assetType == MediaTypeConstant.getSeries(activity)) {
                 searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
@@ -1463,7 +1450,7 @@ public class KsServices {
             String kSQL = one + seriesId + two + iid + three;
             SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
 
-            searchAssetFilter.setKSql(kSQL);
+            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
             if (assetType == MediaTypeConstant.getDrama(activity)) {
                 searchAssetFilter.typeIn(MediaTypeConstant.getWebEpisode(activity) + "");
             } else if (assetType == MediaTypeConstant.getWebEpisode(activity)) {
@@ -1513,7 +1500,7 @@ public class KsServices {
         String three = "')";
         String kSQL = one + MediaTypeConstant.getClip() + two + ref_id + three;
         PrintLogging.printLog(this.getClass(), "", "trailorKSQL" + kSQL);
-        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
@@ -1551,7 +1538,7 @@ public class KsServices {
         String two = "')";
         String kSQL = one + ref_id + two;
         PrintLogging.printLog(this.getClass(), "", "seriesKSQL" + kSQL);
-        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
@@ -1629,8 +1616,9 @@ public class KsServices {
         String two = "')";
         String kSQL = one + seriesID + two;
 
-        searchAssetFilter.setKSql(kSQL);
+        //searchAssetFilter.setKSql(kSQL);
         searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageSize(20);
@@ -1716,8 +1704,8 @@ public class KsServices {
         String one = "(and SeriesId='";
         String two = "')";
         String kSQL = one + seriesID + two;
-
-        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
+       // searchAssetFilter.setKSql(kSQL);
         searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
 
         FilterPager filterPager = new FilterPager();
@@ -1898,7 +1886,7 @@ public class KsServices {
 
         String similarChannel = KSQL.forSimilarChannel(type, genre);
 
-        searchAssetFilter.setKSql(similarChannel);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+similarChannel+")");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(counter);
@@ -1959,7 +1947,7 @@ public class KsServices {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         String kSQL = "(and start_date<'0' end_date>'0' )";
         searchAssetFilter.setTypeIn("0");
-        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(counter);
@@ -2199,11 +2187,11 @@ public class KsServices {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         if (type == 1) {
             String particularProgKSQL = KSQL.forCatchUpPreviousProgram(externalId, startDate);
-            searchAssetFilter.setKSql(particularProgKSQL);
+            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+particularProgKSQL+")");
             Log.d("ksqlValueIs", particularProgKSQL);
         } else {
             String particularProgKSQL = KSQL.forCatchUpNextProgram(externalId, startDate);
-            searchAssetFilter.setKSql(particularProgKSQL);
+            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+particularProgKSQL+")");
             Log.d("ksqlValueIs", particularProgKSQL);
         }
 
@@ -2327,7 +2315,7 @@ public class KsServices {
         String three = "')";
         String kSQL = one + MediaTypeConstant.getTrailer(activity) + two + ref_id + three;
         PrintLogging.printLog(this.getClass(), "", "trailorKSQL" + kSQL);
-        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
@@ -2380,7 +2368,7 @@ public class KsServices {
         String two = "' ParentRefId ~ '";
         String three = "')";
         String kSQL = one + assetType + two + ref_id + three;
-        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
         DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
         dynamicOrderBy.setName(AppLevelConstants.KEY_TITLE_SORT);
         dynamicOrderBy.orderBy("META_ASC");
@@ -2438,7 +2426,7 @@ public class KsServices {
         String two = "') ParentRefId ~ '";
         String three = "')";
         String kSQL = one + MediaTypeConstant.getTrailer(activity) + four + MediaTypeConstant.getHighlight(activity) + two + ref_id + three;
-        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
         filterPager.setPageSize(20);
@@ -2492,7 +2480,7 @@ public class KsServices {
         String two = "' externalId ~ '";
         String three = "')";
         String kSQL = one + MediaTypeConstant.getHighlight(activity) + two + ref_id + three;
-        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
@@ -2591,7 +2579,7 @@ public class KsServices {
         addwatchlistCallBack = callBack;
         final PersonalList personalList = new PersonalList();
         personalList.setName(titleName);
-        personalList.setKsql(id);
+        personalList.setKsql(AppLevelConstants.CATALOGUE_VALUE+id+")");
         personalList.setPartnerListType(Integer.valueOf(AppConstants.WATCHLIST_PARTNER_TYPE));
 
 //        Runnable runnable = new Runnable() {
@@ -3119,7 +3107,7 @@ public class KsServices {
         String two = "')";
         String kSQL = one + ref_id + two;
         PrintLogging.printLog(this.getClass(), "", "trailorKSQL" + kSQL);
-        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
@@ -3175,7 +3163,7 @@ public class KsServices {
         String one = "(and asset_type='";
         String two = "' (or " + genreSkl + "))";
         String third = String.valueOf(assetType);
-        relatedFilter.setKSql(one + third + two);
+        relatedFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+one + third + two+")");
         relatedFilter.setIdEqual(id);
 
         FilterPager filterPager = new FilterPager();
@@ -3207,7 +3195,7 @@ public class KsServices {
         clientSetupKs();
         listAssetBuilders = new ArrayList<>();
         RelatedFilter relatedFilter = new RelatedFilter();
-        relatedFilter.setKSql("(and asset_type='" + String.valueOf(assetType) + "')");
+        relatedFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+"(and asset_type='" + String.valueOf(assetType) + "')"+")");
         relatedFilter.setIdEqual(id);
 
         FilterPager filterPager = new FilterPager();
@@ -3543,7 +3531,6 @@ public class KsServices {
         filterPager.setPageIndex(counter);
         filterPager.setPageSize(15);
 
-        // PrintLogging.printLog(this.getClass(),"", "counter value  :" + counter);
         final SearchAssetFilter assetFilter = new SearchAssetFilter();
         String modifyString = AppCommonMethods.getSearchFieldsKsql(keyToSearch, "", 1, context);
         /*String tag3 = "name ~ '";
@@ -3553,9 +3540,9 @@ public class KsServices {
                 tag3 +
                         keyToSearch +
                         tag2;*/
-        assetFilter.setKSql(KsPreferenceKey.getInstance(context).getSearchKSQL());
+        assetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+AppLevelConstants.CATALOGUE_VALUE+KsPreferenceKey.getInstance(context).getSearchKSQL()+")"+")");
         if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getMovie(context)))) {
-            assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getMovie(context)) + "," + String.valueOf(MediaTypeConstant.getCollection(context)));
+            assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getMovie(context)) );
         } else if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getSeries(context))) || mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getEpisode(context)))) {
             assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getSeries(context)) + "," + String.valueOf(MediaTypeConstant.getEpisode(context)));
         } else if (mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getLinear(context))) || mediaType.equalsIgnoreCase(String.valueOf(MediaTypeConstant.getProgram(context)))) {
@@ -3572,11 +3559,11 @@ public class KsServices {
             } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())) {
                 assetFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
             } else {
-                assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+             //   assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
             }
 
         } else {
-            assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+         //   assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
         }
 
         Runnable runnable = () -> {
@@ -3795,7 +3782,7 @@ public class KsServices {
 
         String deepSearchKSQL = AppCommonMethods.getLiveDeepSearchKsql("", null, 1, context);
         EPGListKSQL = KSQL.forDeepSearchEPGRail(externalId, startDate, endDate, deepSearchKSQL);
-        searchAssetFilter.setKSql(EPGListKSQL);
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+EPGListKSQL+")");
         searchAssetFilter.typeIn("0");
         try {
             if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")) {
@@ -3955,10 +3942,8 @@ public class KsServices {
         filterPager.setPageIndex(1);
         filterPager.setPageSize(20);
 
-        Log.e(String.valueOf(count) + "====>", currentMediaTypes.get(count).getId());
-
         final SearchAssetFilter assetFilter = new SearchAssetFilter();
-        assetFilter.setKSql(keyToSearch);
+        assetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+keyToSearch+")");
         assetFilter.setTypeIn(currentMediaTypes.get(count).getId());
 
         AssetService.ListAssetBuilder assetService = AssetService.list(assetFilter, filterPager).setCompletion(result -> {
@@ -4009,7 +3994,7 @@ public class KsServices {
         filterPager.setPageSize(20);
         final SearchAssetFilter assetFilter = new SearchAssetFilter();
         String KSql = "EventCRID = '" + cridId + "'";
-        assetFilter.setKSql(KSql);
+        assetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+KSql+")");
         assetFilter.setTypeIn(MediaTypeConstant.getLinear(context) + "");
 
         AssetService.ListAssetBuilder assetService = AssetService.list(assetFilter, filterPager).setCompletion(result -> {
@@ -4045,11 +4030,9 @@ public class KsServices {
         filterPager.setPageIndex(1);
         filterPager.setPageSize(15);
 
-        Log.e(String.valueOf(count) + "====>", currentMediaTypes.get(count).getId());
-
         final SearchAssetFilter assetFilter = new SearchAssetFilter();
         assetFilter.name(searchKeyword);
-        assetFilter.setKSql(keyToSearch);
+        assetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+keyToSearch+")");
         assetFilter.setTypeIn(currentMediaTypes.get(count).getId());
         if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")) {
             if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.AZ.name())) {
@@ -4059,11 +4042,11 @@ public class KsServices {
             } else if (KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase(SearchFilterEnum.NEWEST.name())) {
                 assetFilter.orderBy(SortByEnum.CREATE_DATE_DESC.name());
             } else {
-                assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+             //   assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
             }
 
         } else {
-          //  assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
+            //  assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());
         }
 
       /*  if (count==0){
@@ -4146,7 +4129,7 @@ public class KsServices {
         Log.e(String.valueOf(count) + "====>", currentMediaTypes.get(count).getId());
 
         final SearchAssetFilter assetFilter = new SearchAssetFilter();
-        assetFilter.setKSql(keyToSearch);
+        assetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+keyToSearch+")");
         assetFilter.setTypeIn(currentMediaTypes.get(count).getId());
 
         AssetService.ListAssetBuilder assetService = AssetService.list(assetFilter, filterPager).setLanguage("may").setCompletion(result -> {
@@ -4216,7 +4199,7 @@ public class KsServices {
 
         final ChannelFilter channelFilter = new ChannelFilter();
         channelFilter.setIdEqual(333171);
-
+        channelFilter.setKSql(AppLevelConstants.CHANNEL_FILTER_CATALOGUE_VALUE);
         Runnable runnable = () -> {
             clientSetupKs();
             AssetService.ListAssetBuilder assetService = AssetService.list(channelFilter).setCompletion(result -> {
@@ -4747,7 +4730,7 @@ public class KsServices {
         SearchAssetFilter relatedFilter = new SearchAssetFilter();
 
         String ksql = KSQL.forContinueWatchingAssets(assetId);
-        relatedFilter.setKSql(ksql);
+        relatedFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+ksql+")");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
@@ -4897,7 +4880,7 @@ public class KsServices {
         SearchAssetFilter relatedFilter = new SearchAssetFilter();
 
         String ksql = KSQL.forContinueWatchingAssets(assetId);
-        relatedFilter.setKSql(ksql);
+        relatedFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+ksql+")");
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
@@ -5013,6 +4996,7 @@ public class KsServices {
                     int iid = (int) idd;
                     ChannelFilter channelFilter = new ChannelFilter();
                     channelFilter.setIdEqual(iid);
+                    channelFilter.setKSql(AppLevelConstants.CHANNEL_FILTER_CATALOGUE_VALUE);
 
                     FilterPager filterPager = new FilterPager();
                     filterPager.setPageIndex(1);
@@ -5057,6 +5041,7 @@ public class KsServices {
                 int iid = (int) idd;
                 ChannelFilter channelFilter = new ChannelFilter();
                 channelFilter.setIdEqual(iid);
+                channelFilter.setKSql(AppLevelConstants.CHANNEL_FILTER_CATALOGUE_VALUE);
 
                 FilterPager filterPager = new FilterPager();
                 filterPager.setPageIndex(1);
@@ -5946,6 +5931,7 @@ public class KsServices {
                 int iid = (int) channelID;
                 ChannelFilter channelFilter = new ChannelFilter();
                 channelFilter.setIdEqual(iid);
+                channelFilter.setKSql(AppLevelConstants.CHANNEL_FILTER_CATALOGUE_VALUE);
 
                 VIUChannel channel = list.get(counter);
 
@@ -6087,6 +6073,8 @@ public class KsServices {
                 int iid = (int) channelID;
                 ChannelFilter channelFilter = new ChannelFilter();
                 channelFilter.setIdEqual(iid);
+                channelFilter.setKSql(AppLevelConstants.CHANNEL_FILTER_CATALOGUE_VALUE);
+
                 VIUChannel channel = list.get(counter);
                 FilterPager filterPager = new FilterPager();
                 filterPager.setPageIndex(1);
@@ -6147,6 +6135,8 @@ public class KsServices {
         int iid = Integer.parseInt(channelId);
         ChannelFilter channelFilter = new ChannelFilter();
         channelFilter.setIdEqual(iid);
+        channelFilter.setKSql(AppLevelConstants.CHANNEL_FILTER_CATALOGUE_VALUE);
+
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
         filterPager.setPageSize(100);
@@ -6412,6 +6402,7 @@ public class KsServices {
         clientSetupKs();
         ChannelFilter channelFilter = new ChannelFilter();
         channelFilter.setIdEqual(Integer.valueOf(id));
+        channelFilter.setKSql(AppLevelConstants.CHANNEL_FILTER_CATALOGUE_VALUE);
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
@@ -6457,6 +6448,7 @@ public class KsServices {
         clientSetupKs();
         ChannelFilter channelFilter = new ChannelFilter();
         channelFilter.setIdEqual(Integer.valueOf(id));
+        channelFilter.setKSql(AppLevelConstants.CHANNEL_FILTER_CATALOGUE_VALUE);
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
@@ -6675,7 +6667,7 @@ public class KsServices {
         String two = "' (or " + genreSkl + "))";
 
         String third = String.valueOf(assetType);
-        relatedFilter.setKSql(one + third + two);
+        relatedFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+one + third + two+")");
 
         relatedFilter.setIdEqual(id);
         relatedFilter.orderBy("NAME_ASC");
@@ -6742,11 +6734,11 @@ public class KsServices {
         relatedFilter.setIdEqual(id);
         if (listingType == 1) {
             String ksql = KSQL.forsimillarMovie(assetType);
-            relatedFilter.setKSql(ksql);
+            relatedFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+ksql+")");
         } else {
             relatedFilter.orderBy("NAME_ASC");
             String ksql = KSQL.foryouMayLikeMovie(genreSkl, assetType);
-            relatedFilter.setKSql(ksql);
+            relatedFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+ksql+")");
         }
 
         FilterPager filterPager = new FilterPager();
@@ -6773,7 +6765,7 @@ public class KsServices {
         String one = "(and asset_type='";
         String two = "')";
         String third = String.valueOf(assetType);
-        relatedFilter.setKSql(one + third + two);
+        relatedFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+one + third + two+")");
         relatedFilter.setIdEqual(id);
         if (UserInfo.getInstance(activity).isActive())
             relatedFilter.excludeWatched("true");
@@ -7509,6 +7501,7 @@ public class KsServices {
         ksHouseHoldIdCallBack = callBack;
         ChannelFilter channelFilter = new ChannelFilter();
         channelFilter.idEqual(id);
+        channelFilter.setKSql(AppLevelConstants.CHANNEL_FILTER_CATALOGUE_VALUE);
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(counter);
@@ -8225,10 +8218,7 @@ public class KsServices {
 
         ChannelFilter channelFilter = new ChannelFilter();
         channelFilter.setIdEqual(Integer.valueOf(subscriptionOffer));
-
-        // PersonalListSearchFilter
-
-        // Sear
+        channelFilter.setKSql(AppLevelConstants.CHANNEL_FILTER_CATALOGUE_VALUE);
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageIndex(1);
@@ -8325,7 +8315,7 @@ public class KsServices {
             }
         }
         if (!kSql.equalsIgnoreCase("")) {
-            relatedFilter.setKSql(kSql);
+            relatedFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSql+")");
         }
         relatedFilter.setOrderBy("VIEWS_DESC");
 
@@ -8411,9 +8401,9 @@ public class KsServices {
         if (!kSql.equalsIgnoreCase("")) {
             if (!kSQL.equalsIgnoreCase("")) {
                 String finalKSQL = KSQL.forTrendingRail(kSql, kSQL);
-                relatedFilter.setKSql(finalKSQL);
+                relatedFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+finalKSQL+")");
             } else {
-                relatedFilter.setKSql(kSql);
+                relatedFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSql+")");
             }
 
         }
@@ -8597,7 +8587,7 @@ public class KsServices {
         Log.e(String.valueOf(count) + "====>", currentMediaTypes.get(count).getId());
 
         final SearchAssetFilter assetFilter = new SearchAssetFilter();
-        assetFilter.setKSql(keyToSearch);
+        assetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+keyToSearch+")");
         assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getMovie(context)));
 
         AssetService.ListAssetBuilder assetService = AssetService.list(assetFilter, filterPager).setCompletion(result -> {
@@ -8658,7 +8648,7 @@ public class KsServices {
         Log.e(String.valueOf(count) + "====>", currentMediaTypes.get(count).getId());
 
         final SearchAssetFilter assetFilter = new SearchAssetFilter();
-        assetFilter.setKSql(keyToSearch);
+        assetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+keyToSearch+")");
         assetFilter.name(searchKeyword);
         assetFilter.setTypeIn(String.valueOf(MediaTypeConstant.getCollection(context)));
         //assetFilter.orderBy(SortByEnum.RELEVANCY_DESC.name());

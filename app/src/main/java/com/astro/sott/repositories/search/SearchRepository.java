@@ -686,33 +686,15 @@ public class SearchRepository {
         if (searchString != null && !searchString.equalsIgnoreCase("")) {
             matchingKeyword(searchString);
         }
-        //Log.w("valuesFromList",list.get(counter).getId()+"");
         final MutableLiveData<ArrayList<SearchModel>> connection = new MutableLiveData<>();
         final KsServices ksServices = new KsServices(context);
         if (counter == 0) {
             callNonCollectiondata(searchString, context, list, counter, ksServices, connection, selectedGenre, from);
-            // callMovieCollectiondata(searchString,context,list,counter,ksServices,connection);
         } else if (counter == 3) {
-            // callNonCollectiondata(searchString,context,list,counter,ksServices,connection);
             callCollectiondata(searchString, context, list, counter, ksServices, connection, selectedGenre, from);
         } else {
             callNonCollectiondata(searchString, context, list, counter, ksServices, connection, selectedGenre, from);
         }
-      /*  if (list.get(counter).getId().contains(",")){
-            if (counter==0){
-                callMovieCollectiondata(searchString,context,list,counter,ksServices,connection);
-            }else {
-                callNonCollectiondata(searchString,context,list,counter,ksServices,connection);
-            }
-
-        }else {
-            if (list.get(counter).getId().equalsIgnoreCase(String.valueOf(MediaTypeConstant.getCollection(context)))){
-                callCollectiondata(searchString,context,list,counter,ksServices,connection);
-            }else {
-                callNonCollectiondata(searchString,context,list,counter,ksServices,connection);
-            }
-        }
-*/
         return connection;
     }
 

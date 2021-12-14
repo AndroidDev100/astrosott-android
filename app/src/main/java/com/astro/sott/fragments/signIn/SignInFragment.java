@@ -24,7 +24,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.loginActivity.viewModel.LoginViewModel;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentSignInBinding;
@@ -46,7 +45,6 @@ import java.security.spec.X509EncodedKeySpec;
 
 public class SignInFragment extends BaseBindingFragment<FragmentSignInBinding> implements TextView.OnEditorActionListener, AlertDialogSingleButtonFragment.AlertDialogListener {
     private OnFragmentInteractionListener mListener;
-    private LoginActivity loginActivity;
     private LoginViewModel viewModel;
 
     public SignInFragment() {
@@ -103,10 +101,7 @@ public class SignInFragment extends BaseBindingFragment<FragmentSignInBinding> i
     private void setClicks() {
         getBinding().dontAccountText.setOnClickListener(view -> mListener.onFragmentInteraction(AppLevelConstants.SIGN_IN, AppLevelConstants.DONT_HAVE_ACCOUNT, "", "", false, null));
         getBinding().cancelText.setOnClickListener(view -> {
-            InputMethodManager mgr = (InputMethodManager) loginActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (mgr != null)
-                mgr.hideSoftInputFromWindow(getBinding().etPhoneNo.getWindowToken(), 0);
-            loginActivity.finish();
+
         });
         getBinding().continueText.setOnClickListener(view -> signin(false));
     }
@@ -126,12 +121,10 @@ public class SignInFragment extends BaseBindingFragment<FragmentSignInBinding> i
                     getBinding().errorText.setVisibility(View.VISIBLE);
                     getBinding().errorText.setText(getResources().getString(R.string.phone_no_required));
                     getBinding().etPhoneNo.getBackground().setColorFilter(getActivity().getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
-                    AppCommonMethods.requestFocus(loginActivity, getBinding().etPhoneNo);
                 } else if (getBinding().etPhoneNo.getText().toString().trim().length() < 9) {
                     getBinding().errorText.setVisibility(View.VISIBLE);
                     getBinding().errorText.setText(getResources().getString(R.string.incorrect_phone_number));
                     getBinding().etPhoneNo.getBackground().setColorFilter(getActivity().getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
-                    AppCommonMethods.requestFocus(loginActivity, getBinding().etPhoneNo);
                 }
 //                else if (getBinding().etPhoneNo.getText().toString().startsWith("0") && getBinding().etPhoneNo.getText().toString().trim().length() == 9) {
 //                    getBinding().errorText.setText(getResources().getString(R.string.incorrect_phone_number));
@@ -153,13 +146,7 @@ public class SignInFragment extends BaseBindingFragment<FragmentSignInBinding> i
         super.onAttach(context);
 
         if (context != null) {
-            if (context instanceof LoginActivity) {
-                loginActivity = (LoginActivity) context;
-                mListener = (OnFragmentInteractionListener) context;
-            } else {
-                throw new RuntimeException(context.toString()
-                        + " must implement OnFragmentInteractionListener");
-            }
+
         }
     }
 
@@ -202,38 +189,12 @@ public class SignInFragment extends BaseBindingFragment<FragmentSignInBinding> i
                         mListener.onFragmentInteraction(AppLevelConstants.SIGN_IN, AppLevelConstants.CONTINUE, getBinding().etPhoneNo.getText().toString().trim(), "" + "123456", false, "");
 
                     }else {
-                        viewModel.getMpin(finalMsisdn).observe(this, otpModel -> {
-                            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                            Log.e("OTP MODEL", new Gson().toJson(otpModel));
-                            if (otpModel != null) {
-                                if (TextUtils.isEmpty(String.valueOf(otpModel.getmPin())) || otpModel.getResponseCode() == 1 || otpModel.getResponseCode() == 2) {
-                                    showDialog(getActivity().getResources().getString(R.string.something_went_wrong));
-                                } else {
-                                    KsPreferenceKey.getInstance(getActivity()).setMsisdn(finalMsisdn);
-                                    mListener.onFragmentInteraction(AppLevelConstants.SIGN_IN, AppLevelConstants.CONTINUE, getBinding().etPhoneNo.getText().toString().trim(), "" + otpModel.getmPin(), false, otpModel.getTxnId());
-                                }
-                            } else {
-                                showDialog(getResources().getString(R.string.error_sms_failure));
-                            }
-                        });
+
                     }
                 }
 
                 else {
-                    viewModel.getMpin(finalMsisdn).observe(this, otpModel -> {
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                        Log.e("OTP MODEL", new Gson().toJson(otpModel));
-                        if (otpModel != null) {
-                            if (TextUtils.isEmpty(String.valueOf(otpModel.getmPin())) || otpModel.getResponseCode() == 1 || otpModel.getResponseCode() == 2) {
-                                showDialog(getActivity().getResources().getString(R.string.something_went_wrong));
-                            } else {
-                                KsPreferenceKey.getInstance(getActivity()).setMsisdn(finalMsisdn);
-                                mListener.onFragmentInteraction(AppLevelConstants.SIGN_IN, AppLevelConstants.CONTINUE, getBinding().etPhoneNo.getText().toString().trim(), "" + otpModel.getmPin(), false, otpModel.getTxnId());
-                            }
-                        } else {
-                            showDialog(getResources().getString(R.string.error_sms_failure));
-                        }
-                    });
+
                 }
             } else {
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);

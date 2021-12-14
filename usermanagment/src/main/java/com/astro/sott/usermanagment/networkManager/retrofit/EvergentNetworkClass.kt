@@ -15,6 +15,7 @@ class EvergentNetworkClass {
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.setLevel(okhttp3.logging.HttpLoggingInterceptor.Level.BODY)
             val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+               // .addNetworkInterceptor { chain -> chain.proceed(chain.request().newBuilder().header("User-Agent","android-mobile").build()) }
                     .readTimeout(120, TimeUnit.SECONDS)
                     .writeTimeout(120, TimeUnit.SECONDS)
                     .connectTimeout(120, TimeUnit.SECONDS)

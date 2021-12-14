@@ -65,6 +65,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.astro.sott.R;
 import com.astro.sott.utils.constants.AppConstants;
+import com.bumptech.glide.Glide;
 import com.clevertap.android.sdk.CleverTapAPI;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardType;
@@ -124,16 +125,6 @@ public class AppCommonMethods {
     public static boolean isAdsEnable = true;
     private static Long _time;
     public static boolean isTablet = false;
-
-
-//    public static String convertProgramTime(String time) {
-//
-//        Date date = new Date(Long.parseLong(time) * 1000L);
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd=HH:mm a");
-//        String dateTimeValue = simpleDateFormat.format(date);
-////        PrintLogging.printLog(context.getClass(), "StartDateTIme", dateTimeValue + "");
-//        return dateTimeValue;
-//    }
 
     public static String getCurrentDateTimeStamp(int type) {
         String formattedDate;
@@ -198,6 +189,14 @@ public class AppCommonMethods {
         } catch (Exception e) {
         }
         return "";
+    }
+
+    public static void setProgressBar(ImageView imageView) {
+        Glide.with(imageView.getContext()).load(R.drawable.heart_beat).into(imageView);
+    }
+
+    public static String getCatalogueValue(){
+        return "(or Catalogue = 'sottott')";
     }
 
     public static void setCrashlyticsUserId(Activity activity) {
@@ -2044,23 +2043,23 @@ public class AppCommonMethods {
 //        Log.w("selectedGenre",selectedGenre);
         if (from == 1) {
             StringBuilderHolder.getInstance().clear();
-            StringBuilderHolder.getInstance().append("(or name~'");
+            StringBuilderHolder.getInstance().append("(or name*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("description~'");
+            StringBuilderHolder.getInstance().append("description*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("director~'");
+            StringBuilderHolder.getInstance().append("director*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("Keywords~'");
+            StringBuilderHolder.getInstance().append("Keywords*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("Actors~'");
+            StringBuilderHolder.getInstance().append("Actors*'");
             StringBuilderHolder.getInstance().append(searchString);
 
             if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
@@ -2101,44 +2100,21 @@ public class AppCommonMethods {
                 }
             }
 
-
-         /*   if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
-                StringBuilderHolder.getInstance().append("' (and ");
-                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
-                if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")){
-                    StringBuilderHolder.getInstance().append(") (and ");
-                    StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
-                    StringBuilderHolder.getInstance().append("))");
-                }else {
-                    StringBuilderHolder.getInstance().append("))");
-                }
-
-            }else {
-                if (selectedGenre!=null && !selectedGenre.equalsIgnoreCase("")){
-                    StringBuilderHolder.getInstance().append("' (and ");
-                    StringBuilderHolder.getInstance().append(selectedGenre);
-                    StringBuilderHolder.getInstance().append("))");
-                }else {
-                    StringBuilderHolder.getInstance().append("')");
-                }
-            }
-*/
-
         } else {
             StringBuilderHolder.getInstance().clear();
-            StringBuilderHolder.getInstance().append("(or name~'");
+            StringBuilderHolder.getInstance().append("(or name*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("description~'");
+            StringBuilderHolder.getInstance().append("description*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("director~'");
+            StringBuilderHolder.getInstance().append("director*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("Keywords~'");
+            StringBuilderHolder.getInstance().append("Keywords*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
@@ -2184,30 +2160,7 @@ public class AppCommonMethods {
             }
 
 
-            /*if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
-                    StringBuilderHolder.getInstance().append("' (and ");
-                    StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
-                    if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")){
-                        StringBuilderHolder.getInstance().append(") (and ");
-                        StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
-                        StringBuilderHolder.getInstance().append("))");
-                    }else {
-                        StringBuilderHolder.getInstance().append("))");
-                    }
-
-            }else {
-                if (selectedGenre!=null && !selectedGenre.equalsIgnoreCase("")){
-                    StringBuilderHolder.getInstance().append("' (and ");
-                    StringBuilderHolder.getInstance().append(selectedGenre);
-                    StringBuilderHolder.getInstance().append("))");
-                }else {
-                    StringBuilderHolder.getInstance().append("')");
-                }
-            }*/
-
-
         }
-
 
         KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
         return StringBuilderHolder.getInstance().getText().toString();
