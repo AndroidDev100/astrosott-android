@@ -10,11 +10,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.parentalControl.ui.ParentalControl;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityEditNameBinding;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 public class EditNameActivity extends BaseBindingActivity<ActivityEditNameBinding> {
@@ -52,7 +54,8 @@ public class EditNameActivity extends BaseBindingActivity<ActivityEditNameBindin
                 updateProfile(name);
             } else {
                 if (name.equalsIgnoreCase("")) {
-                    Toast.makeText(this, "Please Enter the Name", Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getString(R.string.please_enter_the_name), EditNameActivity.this);
+
                 } else {
                     updateProfile(name);
                 }
@@ -69,9 +72,11 @@ public class EditNameActivity extends BaseBindingActivity<ActivityEditNameBindin
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 onBackPressed();
                 AppCommonMethods.namePushCleverTap(this, name);
-                Toast.makeText(this, getResources().getString(R.string.name_updated_message), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getResources().getString(R.string.name_updated_message), EditNameActivity.this);
+
             } else {
-                Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
+                ToastHandler.show(updateProfileResponse.getErrorMessage() + "", EditNameActivity.this);
+
 
             }
         });

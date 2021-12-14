@@ -36,6 +36,7 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.helpers.ActivityLauncher
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.CustomTextWatcher
+import com.astro.sott.utils.helpers.ToastHandler
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey
 import com.astro.sott.utils.userInfo.UserInfo
 import com.facebook.*
@@ -184,22 +185,21 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                 login("Google", account.email!!, account.id!!)
             } else {
                 if (this != null)
-                    Toast.makeText(
-                        this,
+                    ToastHandler.show(
                         resources.getString(R.string.email_unavailable),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                        this@SignUpActivity
+                    )
             }
 
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
         } catch (e: ApiException) {
             activitySinUpBinding?.progressBar?.visibility = View.GONE
-            Toast.makeText(
-                this,
-                resources.getString(R.string.email_unavailable),
-                Toast.LENGTH_SHORT
-            ).show()
+            ToastHandler.show(
+                resources.getString(R.string.email_unavailable) + "",
+                SignUpActivity.this
+            );
+
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             // updateUI(null);
@@ -423,23 +423,20 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                                             name = fbName
                                             login("Facebook", email, id + "")
                                         } else {
-                                            Toast.makeText(
-                                                this@SignUpActivity,
+                                            ToastHandler.show(
                                                 resources.getString(R.string.email_unavailable),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                                this@SignUpActivity
+                                            )
                                         }
 
                                     } catch (e: JSONException) {
                                         e.printStackTrace()
                                     }
                                 } else {
-                                    Toast.makeText(
-                                        this@SignUpActivity,
+                                    ToastHandler.show(
                                         resources.getString(R.string.email_unavailable),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
+                                        this@SignUpActivity
+                                    )
                                     LoginManager.getInstance().logOut()
                                 }
                             }
@@ -456,22 +453,20 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
 
                 override fun onCancel() {
                     activitySinUpBinding?.progressBar?.visibility = View.GONE
-                    Toast.makeText(
-                        this@SignUpActivity,
-                        resources.getString(R.string.email_unavailable),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                    ToastHandler.show(
+                        getString(R.string.no_internet_connection),
+                        this@SignUpActivity
+                    )
 
+                }
 
                 // activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
                 override fun onError(exception: FacebookException) {
                     activitySinUpBinding?.progressBar?.visibility = View.GONE
-                    Toast.makeText(
-                        this@SignUpActivity,
-                        resources.getString(R.string.email_unavailable),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    ToastHandler.show(
+                        resources.getString(R.string.email_unavailable) + "",
+                        this@SignUpActivity
+                    )
                 }
             })
         // activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
@@ -547,11 +542,10 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                         if (evergentCommonResponse.errorCode.equals("eV2327", ignoreCase = true)) {
                             socialSearchAccountv2(password, type, emailMobile)
                         } else {
-                            Toast.makeText(
-                                this,
+                            ToastHandler.show(
                                 evergentCommonResponse.errorMessage,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                                this@SignUpActivity
+                            )
                         }
                     } else {
                         if (evergentCommonResponse.errorCode.equals("eV4492", ignoreCase = true)) {

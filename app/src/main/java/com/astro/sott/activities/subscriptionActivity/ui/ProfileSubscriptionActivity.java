@@ -18,6 +18,7 @@ import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.R;
+import com.astro.sott.activities.boxSet.ui.BoxSetDetailActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
@@ -43,6 +44,7 @@ import com.astro.sott.utils.billing.PurchaseType;
 import com.astro.sott.utils.billing.SKUsListListener;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.ArrayList;
@@ -100,7 +102,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     commonDialog(getResources().getString(R.string.pending_payment), getResources().getString(R.string.pending_payment_desc), getResources().getString(R.string.ok_single_exlamation));
 
                 } else {
-                    Toast.makeText(this, getResources().getString(R.string.payment_failed), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getResources().getString(R.string.payment_failed), ProfileSubscriptionActivity.this);
                 }
             }
         } catch (Exception ignored) {

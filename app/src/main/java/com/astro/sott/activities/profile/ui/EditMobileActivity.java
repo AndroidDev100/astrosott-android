@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.astro.sott.R;
 import com.astro.sott.activities.confirmPassword.ui.ConfirmPasswordActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
+import com.astro.sott.activities.parentalControl.ui.ParentalControl;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityEditEmailBinding;
@@ -24,6 +25,7 @@ import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -204,7 +206,8 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
                 createOtp();
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
-                Toast.makeText(this, checkCredentialResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(checkCredentialResponse.getErrorMessage(), EditMobileActivity.this);
+
             }
         });
     }
@@ -226,7 +229,8 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
                 startActivity(intent);
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditMobileActivity.this);
+
             }
         });
 
@@ -248,9 +252,8 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
                     intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD);
                     startActivity(intent);
 
-
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditMobileActivity.this);
                 }
             });
         } else {
@@ -268,7 +271,8 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
 
 
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditMobileActivity.this);
+
                 }
             });
         }

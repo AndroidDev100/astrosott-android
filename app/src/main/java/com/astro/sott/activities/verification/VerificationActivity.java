@@ -21,6 +21,7 @@ import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginView
 import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.profile.ui.EditPasswordActivity;
+import com.astro.sott.activities.profile.ui.SetPasswordActivity;
 import com.astro.sott.activities.verification.dialog.MaximumLimitDialog;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
@@ -38,6 +39,7 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 
@@ -207,7 +209,8 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                     }
 
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage() + "", VerificationActivity.this);
+
 //                    getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
                     getBinding().errorLine.setVisibility(View.VISIBLE);
                     getBinding().progressBar.setVisibility(View.GONE);
@@ -250,9 +253,9 @@ public class VerificationActivity extends BaseBindingActivity<ActivityVerificati
                         commonDialog(getResources().getString(R.string.mobile_updated_failed), getResources().getString(R.string.mobile_updated_description_failed), getResources().getString(R.string.ok_double_exlamation));
                     }
                 } else {
-                    Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(updateProfileResponse.getErrorMessage(),
+                            VerificationActivity.this);
                 }
-
             }
         });
     }

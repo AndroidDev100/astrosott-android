@@ -40,6 +40,7 @@ import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.NavigationItem;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.material.appbar.AppBarLayout;
@@ -543,11 +544,12 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId,"").observe(this, addSubscriptionResponseEvergentCommonResponse -> {
             if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
-                    Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getResources().getString(R.string.subscribed_success) + "", HomeActivity.this);
+
                 }
             } else {
-                Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-
+                ToastHandler.show(addSubscriptionResponseEvergentCommonResponse.getErrorMessage() + "",
+                        HomeActivity.this);
             }
         });
 

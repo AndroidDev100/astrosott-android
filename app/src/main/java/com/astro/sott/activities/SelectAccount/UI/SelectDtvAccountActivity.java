@@ -144,8 +144,7 @@ public class SelectDtvAccountActivity extends BaseBindingActivity<ActivitySelect
             });
         }else {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-            Toast.makeText(getApplicationContext(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
-
+            ToastHandler.show(getString(R.string.no_internet_connection), SelectDtvAccountActivity.this);
         }
     }
 
@@ -392,18 +391,17 @@ public class SelectDtvAccountActivity extends BaseBindingActivity<ActivitySelect
                         //TODO Add Popup for Error
 
                         getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        ToastHandler.show(getString(R.string.something_went_wrong), SelectDtvAccountActivity.this);
+
                     }
                 }
             });
 
         } else {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-            Toast.makeText(getApplicationContext(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
-
+            ToastHandler.show(getString(R.string.no_internet_connection) + "", SelectDtvAccountActivity.this);
         }
     }
-
 
     @Override
     public void onClick(String key, String value) {
