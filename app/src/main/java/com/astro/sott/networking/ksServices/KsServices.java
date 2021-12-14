@@ -1622,6 +1622,7 @@ public class KsServices {
         DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
         dynamicOrderBy.orderBy("META_ASC");
         dynamicOrderBy.setName("SeasonNumber");
+        searchAssetFilter.setDynamicOrderBy(dynamicOrderBy);
       //  searchAssetFilter.setOrderBy("META_ASC");
        // (and SeriesId='PACK0000000000000200')
         String one = "(and SeriesId='";
@@ -1641,7 +1642,7 @@ public class KsServices {
 //            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
 //        }
 
-        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter,filterPager).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
             @Override
             public void onComplete(Response<ListResponse<Asset>> result) {
                 if (result.isSuccess()) {
@@ -1709,6 +1710,7 @@ public class KsServices {
         DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
         dynamicOrderBy.orderBy("META_ASC");
         dynamicOrderBy.setName("TitleSortName");
+        searchAssetFilter.setDynamicOrderBy(dynamicOrderBy);
         //  searchAssetFilter.setOrderBy("META_ASC");
         // (and SeriesId='PACK0000000000000200')
         String one = "(and SeriesId='";

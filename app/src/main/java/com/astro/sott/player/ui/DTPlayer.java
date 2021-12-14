@@ -1283,7 +1283,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             if (!isLivePlayer) {
 
-                if (isSeries && episodesList != null && episodesList.size() > 0) {
+                if (isSeries && episodesList != null && episodesList.size() > 0 && hasNextEpisode) {
                     getBinding().nextEpisode.setVisibility(View.VISIBLE);
                 } else {
                     getBinding().nextEpisode.setVisibility(View.GONE);
