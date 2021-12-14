@@ -1730,7 +1730,7 @@ public class KsServices {
 //            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
 //        }
 
-        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter,filterPager).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
             @Override
             public void onComplete(Response<ListResponse<Asset>> result) {
                 if (result.isSuccess()) {
