@@ -262,7 +262,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private Display display;
     private Point size;
     private float downX, downY;
-    int currBrightness;
+    int currBrightness,volume_level;
     int clickCount = 0;
     long startTime1;
     long duration;
@@ -2817,9 +2817,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         getBinding().volumeSeek.seekBar2.setOnSeekBarChangeListener(this);
         audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+         volume_level= audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
         getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-        getBinding().volumeSeek.seekBar2.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+        getBinding().volumeSeek.seekBar2.setMax(100);
 
 
 //        getBinding().rl.setOnClickListener(view -> {
@@ -3103,7 +3104,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                                 if (downY < y2) {
                                     if (currBrightness >0) {
-                                        currBrightness = currBrightness - 2;
+                                        currBrightness = currBrightness - 3;
                                         Log.d("fgfgfgfgfg", currBrightness + "");
                                         WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
                                         layout.screenBrightness = currBrightness / 100F;
@@ -3113,8 +3114,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     //down swipe brightness decrease
                                 } else if (downY > y2) {
                                     if (currBrightness <100){
-                                        currBrightness = currBrightness + 2;
-                                        Log.d("fgfgfgfgfg", currBrightness + "");
+                                        currBrightness = currBrightness + 3;
                                         WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
                                         layout.screenBrightness = currBrightness / 100F;
                                         getActivity().getWindow().setAttributes(layout);
@@ -3129,14 +3129,31 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 if (downY < y2) {
 
                                     //down swipe volume decrease
-                                    audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
-                                    getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
+
+
+
+                                    if(volume_level>0){
+                                        volume_level = volume_level-2;
+                                        if (volume_level<=15) {
+                                            audioManager.setStreamVolume(audioManager.STREAM_MUSIC, volume_level, 0);
+                                        }
+                                        getBinding().volumeSeek.seekBar2.setProgress(volume_level);
+                                    }
 
                                 } else if (downY > y2) {
 
                                     //up  swipe volume increase
-                                    mAudioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
-                                    getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
+
+                                    if(volume_level<100){
+                                        volume_level = volume_level+2;
+                                        if (volume_level<=15) {
+                                            audioManager.setStreamVolume(audioManager.STREAM_MUSIC, volume_level, 0);
+                                        }
+                                        getBinding().volumeSeek.seekBar2.setProgress(volume_level);
+                                    }
+
                                 }
                             }
 
@@ -3258,51 +3275,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 }
                 return false;
 
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        initialX = event.getX();
-//                        initialY = event.getY();
-//                        return true;
-//
-//                    case MotionEvent.ACTION_UP:
-//                        old = 0.0f;
-//                        return true;
-//
-//                    case MotionEvent.ACTION_MOVE:
-//                       // clearAndReset();
-//                        if (timer && timeHandler != null) {
-//                            timeHandler.removeCallbacks(myRunnable);
-//                        }
-//                        currentX = event.getX();
-//                        currentY = event.getY();
-//
-//                        if (initialX > currentX) {
-//                            Log.e("TOUCH", "Left");
-//                            float New = (initialX - currentX) * 100 / 1000;
-//                            condition = (int) (condition2 - ((New <= old) ? 0 : (New - old)));
-//                            condition2 = (condition <= 0) ? 0 : condition;
-//                            Log.d("dfgdgfdd", "" + condition);
-//                            Log.d("dfgdgfdd",condition2+"");
-//                            old = (initialX - currentX) * 100 / 1000;
-//                            Log.d("dfgdgfdd",old+"");
-//                        }
-//
-//                        if (initialX < currentX) {
-//                            Log.e("TOUCH", "RIGHT");
-//                            float New = (currentX - initialX) * 100 / 1000;
-//                            condition = (int) (condition2 + ((New <= old) ? 0 : (New - old)));
-//                            condition2 = (condition >= 100) ? 100 : condition;
-//                            Log.e("INT", "" + condition);
-//                            Log.d("dfgdgfdd", "" + condition);
-//                            Log.d("dfgdgfdd",condition2+"");
-//                            old = (currentX - initialX) * 100 / 1000;
-//                            Log.d("dfgdgfdd",old+"");
-//                            audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
-//                            getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-//                        }
-//
-//                }
-//                return true;
             }
         });
         getBinding().rl.setOnTouchListener(new View.OnTouchListener(){
@@ -3371,8 +3343,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 if (downY < y2) {
                                     if (currBrightness >0) {
                                         getBinding().brightnessDialog.setVisibility(View.VISIBLE);
-                                        currBrightness = currBrightness - 2;
-                                        Log.d("fgfgfgfgfg", currBrightness + "");
+                                        currBrightness = currBrightness - 3;
                                         WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
                                         layout.screenBrightness = currBrightness / 100F;
                                         getActivity().getWindow().setAttributes(layout);
@@ -3382,8 +3353,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 } else if (downY > y2) {
                                     if (currBrightness <100){
                                         getBinding().brightnessDialog.setVisibility(View.VISIBLE);
-                                        currBrightness = currBrightness + 2;
-                                        Log.d("fgfgfgfgfg", currBrightness + "");
+                                        currBrightness = currBrightness + 3;
                                         WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
                                         layout.screenBrightness = currBrightness / 100F;
                                         getActivity().getWindow().setAttributes(layout);
@@ -3399,15 +3369,27 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                                     //down swipe volume decrease
                                     getBinding().volumeDialog.setVisibility(View.VISIBLE);
-                                    audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
-                                    getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+                                    if(volume_level>0){
+                                        volume_level = volume_level-2;
+                                        if (volume_level<=15) {
+                                            audioManager.setStreamVolume(audioManager.STREAM_MUSIC, volume_level, 0);
+                                        }
+                                        getBinding().volumeSeek.seekBar2.setProgress(volume_level);
+                                    }
 
                                 } else if (downY > y2) {
 
                                     //up  swipe volume increase
                                     getBinding().volumeDialog.setVisibility(View.VISIBLE);
-                                    mAudioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
-                                    getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+
+                                    if(volume_level<100){
+                                        volume_level = volume_level+2;
+                                        if (volume_level<=15) {
+                                            audioManager.setStreamVolume(audioManager.STREAM_MUSIC, volume_level, 0);
+                                        }
+                                        getBinding().volumeSeek.seekBar2.setProgress(volume_level);
+                                    }
+
                                 }
                             }
                         }
