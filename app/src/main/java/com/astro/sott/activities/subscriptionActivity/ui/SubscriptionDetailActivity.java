@@ -51,6 +51,7 @@ import com.astro.sott.utils.billing.SKUsListListener;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.gson.JsonArray;
 import com.kaltura.client.types.Subscription;
@@ -597,7 +598,7 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failed", "Content Details Page");
                 } catch (Exception ex) {
                 }
-                if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2124)) || addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals("111111111")|| addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals(String.valueOf(ErrorCodes.eV2138))|| addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals(String.valueOf(ErrorCodes.eV2292))) {
+                if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2124)) || addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals("111111111")) {
                     EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
                         if (evergentCommonResponse1.isStatus()) {
                             handlePurchase(purchase);
@@ -605,6 +606,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                             AppCommonMethods.removeUserPrerences(this);
                         }
                     });
+                }else if(addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals(String.valueOf(ErrorCodes.eV2138))|| addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals(String.valueOf(ErrorCodes.eV2292))){
+                    ToastHandler.show(getResources().getString(R.string.payment_failed),this);
                 } else if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2428))||addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2597))) {
                     commonDialog(getResources().getString(R.string.payment_progress), getResources().getString(R.string.payment_progress_desc), getResources().getString(R.string.ok));
                 } else if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.ev1144))||addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2365))||addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2378))) {
