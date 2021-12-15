@@ -46,7 +46,7 @@ public interface AppLevelConstants {
     String LAYOUT_TYPE = "layouttype";
     String ASSET_COMMON_BEAN = "assetCommonBean";
     String MOVIE_DESCRIPTION_ACTIVITY = "MovieDescriptionActivity";
-
+String SPONSOR_DETAIL_ACTIVITY="SponsoredDetailActivity";
     String CUSTOM_LISTING_ACTIVITY = "CustomListingActivity";
     String LISTING_ACTIVITY = "ListingActivity";
     String LISTING_ACTIVITY_NEW = "ListingActivityNew";

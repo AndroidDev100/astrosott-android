@@ -302,6 +302,8 @@ public class ActivityLauncher {
             if (railName != null)
                 FirebaseEventManager.getFirebaseInstance(activity).viewItemEvent(railName + " Listing", railCommonData.getObject(), activity);
 
+        } else if (name.equalsIgnoreCase(AppLevelConstants.SPONSOR_DETAIL_ACTIVITY)) {
+            FirebaseEventManager.getFirebaseInstance(activity).sponsorViewItem(NavigationItem.getInstance().getTab(), railCommonData.getObject(), activity);
         } else {
             if (railCommonData.getRailDetail() != null && railCommonData.getRailDetail().getName() != null)
                 FirebaseEventManager.getFirebaseInstance(activity).viewItemEvent(NavigationItem.getInstance().getTab() + "-" + railCommonData.getRailDetail().getName(), railCommonData.getObject(), activity);
@@ -818,7 +820,6 @@ public class ActivityLauncher {
         intent.putExtra("PhoneNumber", strPhoneNumber);
         activity.startActivity(intent);
     }
-
 
 
     public void subscriptionActivity(Activity

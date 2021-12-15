@@ -142,6 +142,7 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
     private void getDataFromBack(RailCommonData commonRailData, int layout) {
         railData = commonRailData;
         asset = railData.getObject();
+        FirebaseEventManager.getFirebaseInstance(this).setSponsorDetailName(asset.getName());
         if (asset.getName() != null)
             FirebaseEventManager.getFirebaseInstance(SponsoredDetailActivity.this).trackScreenName(asset.getName());
         layoutType = layout;
