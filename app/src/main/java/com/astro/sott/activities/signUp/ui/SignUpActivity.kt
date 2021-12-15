@@ -557,11 +557,11 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                             accountBlockedDialog.setEditDialogCallBack(this)
                             accountBlockedDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT)
                         } else {
-                            Toast.makeText(
-                                this,
+                            ToastHandler.show(
                                 evergentCommonResponse.errorMessage,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                                this@SignUpActivity
+                            )
+
                         }
                     }
                 }
@@ -643,11 +643,10 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                                     }
                                 })
                         } else {
-                            Toast.makeText(
-                                this,
-                                evergentCommonResponse.errorMessage,
-                                Toast.LENGTH_SHORT
-                            ).show()
+
+                            ToastHandler.show(evergentCommonResponse.errorMessage,
+                                this@SignUpActivity)
+
                         }
                     }
                 })
@@ -707,13 +706,10 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                 UserInfo.getInstance(this).accountRole,
                 ""
             )
-
-        Toast.makeText(
-            this@SignUpActivity,
-            resources.getString(R.string.login_successfull),
-            Toast.LENGTH_SHORT
+        ToastHandler.show(
+            getString(R.string.login_successfull),
+            this@SignUpActivity
         )
-            .show()
 
         if (from.equals("Profile", ignoreCase = true)) {
             ActivityLauncher(this).profileScreenRedirection(
@@ -742,11 +738,10 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                         createOtp(type, emailMobile, password)
                     } else {
                         activitySinUpBinding?.progressBar?.visibility = View.GONE
-                        Toast.makeText(
-                            this,
+                        ToastHandler.show(
                             evergentCommonResponse.errorMessage,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                            this@SignUpActivity
+                        )
                     }
                 }
             })
@@ -766,8 +761,10 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                     intent.putExtra(AppLevelConstants.FROM_KEY, "signUp")
                     startActivity(intent)
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT)
-                        .show()
+                    ToastHandler.show(
+                        evergentCommonResponse.errorMessage,
+                        this@SignUpActivity
+                    )
                 }
             })
     }
@@ -787,11 +784,9 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                     if (evergentCommonResponse.errorCode.equals("eV2327", ignoreCase = true)) {
                         createUser(password, emailMobile, type)
                     } else {
-                        Toast.makeText(
-                            this,
-                            evergentCommonResponse.errorMessage,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        ToastHandler.show(evergentCommonResponse.errorMessage,
+                            this@SignUpActivity
+                        )
                     }
                 }
             })
@@ -816,12 +811,9 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                         AppCommonMethods.onUserRegister(this)
                         getContact()
                     } else {
-                        Toast.makeText(
-                            this,
-                            evergentCommonResponse.errorMessage,
-                            Toast.LENGTH_SHORT
+                        ToastHandler.show(evergentCommonResponse.errorMessage,
+                            this@SignUpActivity
                         )
-                            .show()
                         activitySinUpBinding?.progressBar?.visibility = View.GONE
                     }
                 })

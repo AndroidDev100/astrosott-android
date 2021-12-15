@@ -38,6 +38,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.profile.ui.EditProfileActivity;
+import com.astro.sott.activities.profile.ui.EditVerificationActivity;
 import com.astro.sott.activities.splash.viewModel.SplashViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.modelClasses.appVersion.AppVersionStatus;
@@ -946,12 +947,15 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
             ProviderInstaller.installIfNeeded(this);
         } catch (GooglePlayServicesRepairableException e) {
             // Prompt the user to install/update/enable Google Play services.
-            Toast.makeText(this, "Install or Update Google Play services", Toast.LENGTH_SHORT).show();
+            ToastHandler.show(getString(R.string.install_or_update_google_play_services),
+                    SplashActivity.this
+            );
             GoogleApiAvailability.getInstance()
                     .showErrorNotification(this, e.getConnectionStatusCode());
         } catch (GooglePlayServicesNotAvailableException e) {
             // Indicates a non-recoverable error: let the user know.
-            Toast.makeText(this, "App may not work properly for your mobile", Toast.LENGTH_SHORT).show();
+            ToastHandler.show("App may not work properly for your mobile",
+                    SplashActivity.this);
         }
     }
 

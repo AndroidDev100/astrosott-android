@@ -321,7 +321,8 @@ public class Verification extends BaseBindingFragment<FragmentVerificationBindin
                 });
             } else {
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+                ToastHandler.show(getString(R.string.no_internet_connection),
+                        requireActivity());
             }
         }
     }

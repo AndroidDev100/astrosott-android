@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.astro.sott.activities.loginActivity.viewModel.LoginViewModel;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
@@ -205,7 +206,8 @@ public class SignUpFragment extends BaseBindingFragment<FragmentSignUpBinding> i
                 }
             } else {
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+                ToastHandler.show(getResources().getString(R.string.no_internet_connection),
+                        getActivity());
             }
         }
     }

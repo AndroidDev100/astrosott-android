@@ -41,6 +41,7 @@ import com.astro.sott.utils.billing.SKUsListListener
 import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.helpers.ActivityLauncher
 import com.astro.sott.utils.helpers.AppLevelConstants
+import com.astro.sott.utils.helpers.ToastHandler
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
 import com.astro.sott.utils.userInfo.UserInfo
 import kotlinx.android.synthetic.main.app_toolbar.view.*
@@ -230,11 +231,11 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                             })
                         }
                     } else {
-                        Toast.makeText(
-                            requireActivity(),
+
+                        ToastHandler.show(
                             evergentCommonResponse.errorMessage,
-                            Toast.LENGTH_SHORT
-                        ).show();
+                            requireActivity()
+                        )
                     }
                 }
             })

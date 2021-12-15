@@ -903,7 +903,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 // checkErrors(asset);
                                 checkOnlyDevice(asset);
                             } else {
-                                Toast.makeText(getActivity(), getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin),
+                                        requireActivity());
                             }
                         });
 

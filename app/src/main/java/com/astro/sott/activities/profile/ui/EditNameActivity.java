@@ -55,13 +55,11 @@ public class EditNameActivity extends BaseBindingActivity<ActivityEditNameBindin
             } else {
                 if (name.equalsIgnoreCase("")) {
                     ToastHandler.show(getString(R.string.please_enter_the_name), EditNameActivity.this);
-
                 } else {
                     updateProfile(name);
                 }
             }
         });
-
     }
 
     private void updateProfile(String name) {

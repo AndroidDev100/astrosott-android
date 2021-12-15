@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -198,7 +199,8 @@ public class SignInFragment extends BaseBindingFragment<FragmentSignInBinding> i
                 }
             } else {
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+                ToastHandler.show(getResources().getString(R.string.no_internet_connection),
+                        getActivity());
             }
         }
     }

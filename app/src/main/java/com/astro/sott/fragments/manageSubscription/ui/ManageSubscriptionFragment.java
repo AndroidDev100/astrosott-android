@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.astro.sott.R;
 import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.callBacks.commonCallBacks.ChangePlanCallBack;
@@ -33,6 +34,7 @@ import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServi
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.ArrayList;
@@ -219,7 +221,8 @@ public class ManageSubscriptionFragment extends BaseBindingActivity<FragmentMana
         subscriptionViewModel.removeSubscription(UserInfo.getInstance(this).getAccessToken(), cancelId).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 getActiveSubscription();
-                Toast.makeText(this, "Subscription Successfully Cancelled", Toast.LENGTH_SHORT).show();
+                ToastHandler.show("Subscription Successfully Cancelled",
+                        ManageSubscriptionFragment.this);
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
                     EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).getRefreshToken()).observe(this, evergentResponse1 -> {
@@ -230,7 +233,8 @@ public class ManageSubscriptionFragment extends BaseBindingActivity<FragmentMana
                         }
                     });
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(),
+                            ManageSubscriptionFragment.this);
                 }
             }
 

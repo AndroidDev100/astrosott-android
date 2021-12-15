@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
 import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.callBacks.TextWatcherCallBack;
@@ -22,6 +23,7 @@ import com.astro.sott.databinding.FragmentConfirmPasswordBinding;
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 /**
@@ -162,7 +164,8 @@ public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirm
                 createOtp();
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), checkCredentialResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(   checkCredentialResponse.getErrorMessage(),
+                        requireActivity());
             }
         });
     }
@@ -201,7 +204,8 @@ public class ConfirmPasswordFragment extends BaseBindingFragment<FragmentConfirm
                 intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD);
                 startActivity(intent);
             } else {
-                Toast.makeText(getActivity(), evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(),
+                        requireActivity());
             }
         });
 

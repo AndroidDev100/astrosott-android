@@ -327,7 +327,8 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     //Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getResources().getString(R.string.email_unavailable), EditProfileActivity.this);
+
             }
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
@@ -362,7 +363,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                                                 //  Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
-                                            Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                                        ToastHandler.show(getResources().getString(R.string.email_unavailable),EditProfileActivity.this);
                                         }
 
                                     } catch (JSONException e) {
@@ -406,26 +407,30 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     if (isLinking) {
                         UserInfo.getInstance(this).setFbLinked(true);
                         getBinding().linkFb.setText(getResources().getString(R.string.unlink));
-                        Toast.makeText(this, type + " " + getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(type + " " + getResources().getString(R.string.link_success),
+                                EditProfileActivity.this);
                     } else {
                         UserInfo.getInstance(this).setFbLinked(false);
                         getBinding().linkFb.setText(getResources().getString(R.string.link));
-                        Toast.makeText(this, type + " " + getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(type + " " + getResources().getString(R.string.unlink_success),
+                                EditProfileActivity.this);
                     }
                 } else if (type.equalsIgnoreCase("Google")) {
                     if (isLinking) {
-                        Toast.makeText(this, type + " " + getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(type + " " + getResources().getString(R.string.link_success),
+                                EditProfileActivity.this);
                         UserInfo.getInstance(this).setGoogleLinked(true);
                         getBinding().linkGoogle.setText(getResources().getString(R.string.unlink));
                     } else {
                         UserInfo.getInstance(this).setGoogleLinked(false);
                         getBinding().linkGoogle.setText(getResources().getString(R.string.link));
-                        Toast.makeText(this, type + " " + getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(type + " " + getResources().getString(R.string.unlink_success), EditProfileActivity.this);
                     }
                 }
 
             } else {
-                Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
+                ToastHandler.show(updateProfileResponse.getErrorMessage() + "", EditProfileActivity.this);
+
 
             }
         });

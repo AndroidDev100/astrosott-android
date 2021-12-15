@@ -20,6 +20,7 @@ import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.R;
 import com.astro.sott.activities.boxSet.ui.BoxSetDetailActivity;
 import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.activities.sponsored.ui.SponsoredDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
@@ -138,11 +139,14 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                         Log.w("ex", e);
                     }
                     if (isUpgrade) {
-                        Toast.makeText(this, getResources().getString(R.string.upgrade_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(getResources().getString(R.string.upgrade_success),
+                                ProfileSubscriptionActivity.this);
                     } else if (isDowngrade) {
-                        Toast.makeText(this, getResources().getString(R.string.downgrade_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(getResources().getString(R.string.downgrade_success),
+                                ProfileSubscriptionActivity.this);
                     } else {
-                        Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(getResources().getString(R.string.subscribed_success),
+                                ProfileSubscriptionActivity.this);
                     }
                     if (from.equalsIgnoreCase("Content Detail Page")) {
                         onBackPressed();
@@ -173,7 +177,8 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     } else {
                         setFragment();
                     }
-                    Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(addSubscriptionResponseEvergentCommonResponse.getErrorMessage(),
+                            ProfileSubscriptionActivity.this);
                 }
             }
         });
@@ -270,7 +275,8 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
                 processPayment(serviceType, productId);
             } else {
-                Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getResources().getString(R.string.something_went_wrong),
+                        ProfileSubscriptionActivity.this);
             }
         });
     }
@@ -331,7 +337,8 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
             }
         } else {
             if (isDowngrade) {
-                Toast.makeText(this, getResources().getString(R.string.downgrade_success), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getResources().getString(R.string.downgrade_success),
+                        ProfileSubscriptionActivity.this);
             }
         }
     }

@@ -113,7 +113,8 @@ public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPassword
                 if (!newMobile.equalsIgnoreCase(""))
                     updateProfile(newMobile, "mobile");
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(),SetPasswordActivity.this);
+
             }
         });
     }
