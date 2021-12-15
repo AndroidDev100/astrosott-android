@@ -2187,11 +2187,11 @@ public class KsServices {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         if (type == 1) {
             String particularProgKSQL = KSQL.forCatchUpPreviousProgram(externalId, startDate);
-            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+particularProgKSQL+")");
+            searchAssetFilter.setKSql(particularProgKSQL);
             Log.d("ksqlValueIs", particularProgKSQL);
         } else {
             String particularProgKSQL = KSQL.forCatchUpNextProgram(externalId, startDate);
-            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+particularProgKSQL+")");
+            searchAssetFilter.setKSql(particularProgKSQL);
             Log.d("ksqlValueIs", particularProgKSQL);
         }
 
@@ -3782,7 +3782,7 @@ public class KsServices {
 
         String deepSearchKSQL = AppCommonMethods.getLiveDeepSearchKsql("", null, 1, context);
         EPGListKSQL = KSQL.forDeepSearchEPGRail(externalId, startDate, endDate, deepSearchKSQL);
-        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+EPGListKSQL+")");
+        searchAssetFilter.setKSql(EPGListKSQL);
         searchAssetFilter.typeIn("0");
         try {
             if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")) {
