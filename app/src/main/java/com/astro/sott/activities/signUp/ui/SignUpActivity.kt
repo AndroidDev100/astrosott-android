@@ -197,7 +197,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             activitySinUpBinding?.progressBar?.visibility = View.GONE
             ToastHandler.show(
                 resources.getString(R.string.email_unavailable) + "",
-                SignUpActivity.this
+                SignUpActivity@this
             );
 
             // The ApiException status code indicates the detailed failure reason.
@@ -499,7 +499,6 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
             activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
             activitySinUpBinding?.errorPasssword?.text = getString(R.string.field_cannot_empty)
-
         }
     }
 

@@ -168,7 +168,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().indicator.setVisibility(View.GONE);
 
-        setMargins(150, 110);
+        setMargins(24, 110);
 
         active = liveTvFragment;
     }
@@ -192,8 +192,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
         }
     }
-
-
     private BottomNavigationView navigation;
 
     @SuppressLint({"RestrictedApi", "WrongConstant"})
@@ -409,7 +407,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().indicator.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
-        setMargins(150, 110);
+        setMargins(24, 110);
 
         checkSameClick();
         active = liveTvFragment;
