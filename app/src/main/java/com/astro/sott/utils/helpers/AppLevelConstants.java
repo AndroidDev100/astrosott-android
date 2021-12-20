@@ -489,7 +489,7 @@ String SPONSOR_DETAIL_ACTIVITY="SponsoredDetailActivity";
     String CLOSE = "close";
     String KEY_ENTRY_ID = "entryId";
 
-    String CHANNEL_FILTER_CATALOGUE_VALUE = "(or Catalogue = 'sottott')";
+    String CHANNEL_FILTER_CATALOGUE_VALUE = "(or (and asset_type = 'epg' ) (and Catalogue = 'sottott') )";
     String CATALOGUE_VALUE = "(and Catalogue = 'sottott'";
 
 
