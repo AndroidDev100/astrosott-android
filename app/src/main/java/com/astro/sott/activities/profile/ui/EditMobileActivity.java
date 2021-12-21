@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +45,7 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
     private AstroLoginViewModel astroLoginViewModel;
     private final String MOBILE_REGEX = "^[0-9]*$";
     private String email_mobile = "", type = "";
-
+    private boolean isPasswordVisible;
     private String password, newMobile;
     private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
 
@@ -58,6 +61,7 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
         setHeader();
         modelCall();
         setClicks();
+        hidePassword();
     }
 
     private void setHeader() {
@@ -71,8 +75,41 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
 
         }
     }
+    private void togglePasswordVisiblity() {
+        if (isPasswordVisible) {
+            hidePassword();
+        } else {
+            showPassword();
+        }
+    }
+
+    private void hidePassword() {
+        getBinding().eyeIcon.setImageDrawable(getDrawable(R.drawable.ic_outline_visibility_off_light));
+        String pass = getBinding().confirmPassword.getText().toString();
+        getBinding().confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        getBinding().confirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        getBinding().confirmPassword.setText(pass);
+        getBinding().confirmPassword.setSelection(pass.length());
+        isPasswordVisible=false;
+    }
+
+    private void showPassword() {
+        getBinding().eyeIcon.setImageDrawable(getDrawable(R.drawable.ic_outline_visibility_light));
+        String pass = getBinding().confirmPassword.getText().toString();
+        getBinding().confirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        getBinding().confirmPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+        getBinding().confirmPassword.setText(pass);
+        getBinding().confirmPassword.setSelection(pass.length());
+        isPasswordVisible=true;
+    }
 
     private void setClicks() {
+        getBinding().eyeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                togglePasswordVisiblity();
+            }
+        });
         getBinding().backButton.setOnClickListener(v -> {
             onBackPressed();
         });
