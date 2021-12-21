@@ -168,7 +168,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().indicator.setVisibility(View.GONE);
 
-        setMargins(24, 110);
+        setMargins(150, 110);
 
         active = liveTvFragment;
     }
@@ -407,7 +407,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().indicator.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
-        setMargins(24, 110);
+        setMargins(150, 110);
 
         checkSameClick();
         active = liveTvFragment;
