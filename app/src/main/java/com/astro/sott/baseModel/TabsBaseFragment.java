@@ -341,9 +341,6 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     }
 
     private void swipeToRefresh() {
-        getBinding().swipeContainer.setProgressViewOffset(false,
-                45,
-                100);
         getBinding().swipeContainer.setOnRefreshListener(() -> {
 
             if (NetworkConnectivity.isOnline(getBaseActivity())) {
