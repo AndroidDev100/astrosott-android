@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +38,7 @@ import android.provider.Settings;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -170,6 +172,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.StringTokenizer;
+import java.util.concurrent.TimeUnit;
 
 import static android.content.Context.POWER_SERVICE;
 import static android.content.Context.TELEPHONY_SERVICE;
@@ -256,9 +259,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private String scrubberUrl = "";
     ObjectAnimator objectAnimator;
     private boolean isPlayerSurfaceClicked = false;
-    private boolean intLeft, intRight;
-    private int sWidth, sHeight;
-    private long diffX, diffY;
+    // private boolean intLeft, intRight;
+    //private int sWidth, sHeight;
+    //  private long diffX, diffY;
     private Display display;
     private Point size;
     private float downX, downY;
@@ -274,6 +277,24 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private boolean isTouchCaptured = false;
     static final int min_distance = 100;
     private int progressValue;
+
+    private Boolean tested_ok = false;
+    private int sWidth, sHeight;
+    private long diffX, diffY;
+    private int calculatedTime;
+    private String seekDur;
+    private float baseX, baseY;
+    private Boolean screen_swipe_move = false;
+    private static final int MIN_DISTANCE = 150;
+    private ContentResolver cResolver;
+    private Window window;
+    private int brightness, mediavolume, device_height, device_width;
+    private ImageView volIcon, brightnessIcon, vol_image, brightness_image;
+    private TextView vol_perc_center_text, brigtness_perc_center_text,txt_seek_secs,txt_seek_currTime;
+    private boolean immersiveMode, intLeft, intRight, intTop, intBottom, finLeft, finRight, finTop, finBottom;
+    //  private Display display;
+    //private Point size;
+    private double seekSpeed = 0;
 
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
@@ -521,6 +542,18 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
 
         getScreenSize();
+
+        display = getActivity().getWindowManager().getDefaultDisplay();
+        size    = new Point();
+        display.getSize(size);
+        sWidth  = size.x;
+        sHeight = size.y;
+
+        // Get device size: Gets display metrics that describe the size and density of this display.
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        device_height = displaymetrics.heightPixels;
+        device_width  = displaymetrics.widthPixels;
 
     }
 
@@ -2809,7 +2842,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().brightnessSeek.seekBar1.setProgress(50);
         getBinding().brightnessSeek.seekBar1.setMax(100);
         //getBinding().brightnessSeek.seekBar1.setKeyProgressIncrement(1);
-         currBrightness = Settings.System.getInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS,0);
+        currBrightness = Settings.System.getInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS,0);
 
 
         getBinding().brightnessSeek.seekBar1.setOnSeekBarChangeListener(this);
@@ -2819,10 +2852,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         getBinding().volumeSeek.seekBar2.setOnSeekBarChangeListener(this);
         audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
-         volume_level= audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        volume_level= audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
-        getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-        getBinding().volumeSeek.seekBar2.setMax(100);
+//        getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+//        getBinding().volumeSeek.seekBar2.setMax(100);
 
 
 //        getBinding().rl.setOnClickListener(view -> {
@@ -3032,7 +3065,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         Log.d("ftftftfftf","Enterrl1");
                     }
                 }
-               // viewModel.changeVideoRatio();
+                // viewModel.changeVideoRatio();
                 //playPauseControl();
             }
         }));
@@ -3041,781 +3074,291 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().rl1.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch (View v, MotionEvent event) {
-                switch (event.getAction()) {
+                switch (event.getAction()){
+                    // User touches the screen
                     case MotionEvent.ACTION_DOWN:
-
-                        //touch is start
-                        downX = event.getX();
-                        downY = event.getY();
+                        tested_ok = false;
+                        // We pressed on the left
                         if (event.getX() < (sWidth / 2)) {
-
-                            //here check touch is screen left or right side
                             intLeft = true;
                             intRight = false;
-
+                            // We pressed on the right
                         } else if (event.getX() > (sWidth / 2)) {
-
-                            //here check touch is screen left or right side
                             intLeft = false;
                             intRight = true;
                         }
+                        int upperLimit = (sHeight / 4) + 100;
+                        int lowerLimit = ((sHeight / 4) * 3) - 150;
+                        // We pressed on the top
+                        if (event.getY() < upperLimit) {
+                            intBottom = false;
+                            intTop = true;
+                            // We pressed in the bottom
+                        } else if (event.getY() > lowerLimit) {
+                            intBottom = true;
+                            intTop = false;
+                        } else {
+                            intBottom = false;
+                            intTop = false;
+                        }
+                        seekSpeed = (TimeUnit.MILLISECONDS.toSeconds(runningPlayer.getDuration()) * 0.2);
+                        diffX = 0;
+                        calculatedTime = 0;
+                        seekDur = String.format("%02d:%02d",
+                                TimeUnit.MILLISECONDS.toMinutes(diffX) -
+                                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(diffX)),
+                                TimeUnit.MILLISECONDS.toSeconds(diffX) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(diffX)));
+
+                        //TOUCH STARTED
+                        baseX = event.getX();
+                        baseY = event.getY();
                         break;
-
-                    case MotionEvent.ACTION_UP:
-                        isTouchCaptured = false;
-                        clickCount++;
-
-                        if (clickCount==1){
-                            startTime1 = System.currentTimeMillis();
-                        }
-
-                        else if(clickCount == 2)
-                        {
-                             duration =  System.currentTimeMillis() - startTime1;
-                            if(duration <= MAX_DURATION)
-                            {
-//                                if (runningPlayer.isPlaying()){
-//                                    pausePlayer();
-//                                }else {
-//                                    if (runningPlayer!=null){
-//                                        runningPlayer.play();
-//                                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-//                                    }
-//                                }
-                                clickCount = 0;
-                                duration = 0;
-                            }else{
-                                clickCount = 1;
-                                startTime1 = System.currentTimeMillis();
-                            }
-                            break;
-                        }
-
+                    // User moves the finger
                     case MotionEvent.ACTION_MOVE:
+                        // The finge is now moving
+                        screen_swipe_move = true;
+                        // Controls are currently visible
 
-                        //finger move to screen
-                        float x2 = event.getX();
-                        float y2 = event.getY();
-
-                        diffX = (long) (Math.ceil(event.getX() - downX));
-                        diffY = (long) (Math.ceil(event.getY() - downY));
-
+                        // Dissapear controls while finger is moving
+                        // root.setVisibility(View.GONE);
+                        diffX = (long) (Math.ceil(event.getX() - baseX));
+                        diffY = (long) Math.ceil(event.getY() - baseY);
+                        // Speed in which brightness can increase or deacrease
+                        double brightnessSpeed = 0.05;
+                        if (Math.abs(diffY) > MIN_DISTANCE) {
+                            tested_ok = true;
+                        }
+                        // Its vertical movement
                         if (Math.abs(diffY) > Math.abs(diffX)) {
+                            // Tap in left increases/decreases brightness
                             if (intLeft) {
-                                //if left its for brightness
 
-                                if (downY < y2) {
-                                    if (currBrightness >0) {
-                                        currBrightness = currBrightness - 3;
-                                        Log.d("fgfgfgfgfg", currBrightness + "");
-                                        WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
-                                        layout.screenBrightness = currBrightness / 100F;
-                                        getActivity().getWindow().setAttributes(layout);
-                                        getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
+                                boolean settingsCanWrite = Settings.System.canWrite(getActivity());
+                                if(!settingsCanWrite) {
+                                    // If do not have write settings permission then open the Can modify system settings panel.
+                                    Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                                    startActivity(intent);
+                                }else {
+                                    cResolver = getActivity().getContentResolver();
+                                    window    = getActivity().getWindow();
+                                    // Get the current brightness
+                                    try {
+                                        Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+                                        brightness = Settings.System.getInt(cResolver, Settings.System.SCREEN_BRIGHTNESS);
+                                    } catch (Settings.SettingNotFoundException e) {
+                                        e.printStackTrace();
                                     }
-                                    //down swipe brightness decrease
-                                } else if (downY > y2) {
-                                    if (currBrightness <100){
-                                        currBrightness = currBrightness + 3;
-                                        WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
-                                        layout.screenBrightness = currBrightness / 100F;
-                                        getActivity().getWindow().setAttributes(layout);
-                                        getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
+                                    // Define new brightness
+                                    int new_brightness = (int) (brightness - (diffY * brightnessSpeed));
+                                    // Keep brightness in bounds
+                                    if (new_brightness > 250) {
+                                        new_brightness = 250;
+                                    } else if (new_brightness < 1) {
+                                        new_brightness = 1;
                                     }
-                                    //up  swipe brightness increase
+                                    // Calculate brightness inside the bar container
+                                    double brightPerc = Math.ceil((((double) new_brightness / (double) 250) * (double) 100));
+                                    //brightnessBarContainer.setVisibility(View.VISIBLE);
+                                    // brightness_center_text.setVisibility(View.VISIBLE);
+                                    getBinding().brightnessSeek.seekBar1.setProgress((int) brightPerc);
+                                    Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS, (new_brightness));
+                                    WindowManager.LayoutParams layoutpars = window.getAttributes();
+                                    layoutpars.screenBrightness = brightness / (float) 255;
+                                    window.setAttributes(layoutpars);
                                 }
+
+
 
                             } else if (intRight) {
 
-                                //if right its for audio
-                                if (downY < y2) {
-
-                                    //down swipe volume decrease
-                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
 
 
-
-                                    if(volume_level>0){
-                                        volume_level = volume_level-2;
-                                        if (volume_level<=15) {
-                                            audioManager.setStreamVolume(audioManager.STREAM_MUSIC, volume_level, 0);
-                                        }
-                                        getBinding().volumeSeek.seekBar2.setProgress(volume_level);
-                                    }
-
-                                } else if (downY > y2) {
-
-                                    //up  swipe volume increase
-                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
-
-                                    if(volume_level<100){
-                                        volume_level = volume_level+2;
-                                        if (volume_level<=15) {
-                                            audioManager.setStreamVolume(audioManager.STREAM_MUSIC, volume_level, 0);
-                                        }
-                                        getBinding().volumeSeek.seekBar2.setProgress(volume_level);
-                                    }
-
-                                }
-                            }
-
-
-                        }
-
-                        if (!isTouchCaptured) {
-                            upX1 = event.getX();
-                            upY1 = event.getY();
-                            isTouchCaptured = true;
-                        } else {
-                            upX2 = event.getX();
-                            upY2 = event.getY();
-
-                            float deltaX = upX1 - upX2;
-                            float deltaY = upY1 - upY2;
-
-
-
-
-
-
-                            //HORIZONTAL SCROLL
-                            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                                if (Math.abs(deltaX) > min_distance) {
-                                    // left or right
-//                                    if (deltaX < 0) {
-
-                                        //int sliderValue = (int) (getBinding().seekBar.getProgress()*runningPlayer.getDuration() + deltaX/100.0*runningPlayer.getDuration()/400);
-                                        //Log.d("dgdgdgd",sliderValue+"");
-
-                                        //runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 2000);
-                                      //  runningPlayer.seekTo(sliderValue/runningPlayer.getDuration());
-                                       // getBinding().seekBar.setProgress(10000);
-                                    if (deltaX < 0) {
-                                        Log.d("ValueIs","EnterRight");
-                                        getBinding().seekBar.setProgress((int) (getBinding().seekBar.getProgress()+upX2*10));
-                                        int ProgressValue = getBinding().seekBar.getProgress();
-                                        onProgressChanged(getBinding().seekBar, ProgressValue,true);
-                                        new Handler().postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Log.d("SeekBarValueIS",ProgressValue+"");
-                                                onStopTrackingTouch(getBinding().seekBar);
-
-                                            }
-                                        },150);
-                                        return false;
-
-
-                                    }
-                                    if (deltaX > 0){
-                                        Log.d("ValueIs","EnterLeft");
-                                        getBinding().seekBar.setProgress((int) (getBinding().seekBar.getProgress()-upX1*10));
-                                        int ProgressValue = getBinding().seekBar.getProgress();
-                                        onProgressChanged(getBinding().seekBar, ProgressValue,true);
-                                        new Handler().postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Log.d("SeekBarValueIS",ProgressValue+"");
-                                                onStopTrackingTouch(getBinding().seekBar);
-
-                                            }
-                                        },150);
-                                        return false;
-
-                                    }
-                                       // runningPlayer.seekTo(getBinding().seekBar.getProgress());
-
-                                       // getBinding().seekBar.setKeyProgressIncrement(getBinding().seekBar.getProgress()+10000);
-
-
-
-//                                        if (isLivePlayer) {
-//                                        } else {
-////                                            getBinding().seekBar.setProgress((int) (getBinding().seekBar.getProgress()*100+upX2*40));
-//                                            positionInPercentage = Math.round((getBinding().seekBar.getProgress()*100 / runningPlayer.getDuration()));
-//                                            Log.d("Positionperc",positionInPercentage+"");
-//                                            //getBinding().seekBar.setProgress(positionInPercentage);
-//
-//                                            float leftMargin = getBinding().seekBar.getWidth() * positionInPercentage / 100;
-//
-//
-////
-//                                            if (leftMargin < (getBinding().seekBar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
-//                                                //previewImage.translationX = leftMargin
-//                                                getBinding().imagePreview.setTranslationX(leftMargin);
-//                                            }
-////
-////
-//                                            try {
-//
-//
-//                                                if (previewImagesHashMap != null) {
-//                                                    Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
-//                                                    if (bitmap != null) {
-//                                                        getBinding().imagePreview.setVisibility(View.VISIBLE);
-//                                                        getBinding().imagePreview.setImageBitmap(bitmap);
-//                                                        getBinding().imagePreview.bringToFront();
-//                                                    }
-//                                                } else {
-//                                                    getBinding().imagePreview.setVisibility(View.VISIBLE);
-//                                                    getBinding().imagePreview.bringToFront();
-//                                                }
-//
-//                                            } catch (Exception e) {
-//
-//                                            }
-//                                        }
-                                       // getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
-
-                                     //   viewModel.sendSeekBarProgress(getBinding().seekBar.getProgress()).observe(getActivity(), s -> getBinding().currentTime.setText(s));
-
-                                      //  return true;
-//                                    }
-//                                    if (deltaX > 0) {
-//                                        Log.d("dgdgdgd","Left");
-//
-//                                        //getBinding().seekBar.setProgress(getBinding().seekBar.getProgress()-10000);
-//                                       // getBinding().seekBar.setKeyProgressIncrement(getBinding().seekBar.getProgress()-10000);
-//                                        getBinding().seekBar.setProgress((int) (runningPlayer.getCurrentPosition()-upX1*500));
-//                                        Log.d("PositionpercForLeft",getBinding().seekBar.getProgress()+"");
-//                                      //  getBinding().seekBar.setProgress((int) (getBinding().seekBar.getProgress()-upX1*30));
-//
-//                                       // runningPlayer.seekTo(runningPlayer.getCurrentPosition() - 2000);
-////                                        int sliderValue = (int) (getBinding().seekBar.getProgress()*runningPlayer.getDuration() + deltaX/100.0*runningPlayer.getDuration()/400);
-////                                        getBinding().seekBar.setProgress((int) (sliderValue/runningPlayer.getDuration()));
-//
-//                                        if (isLivePlayer) {
-//                                        } else {
-////                                            getBinding().seekBar.setProgress((int) (getBinding().seekBar.getProgress()-upX1*40));
-//                                            positionInPercentage = Math.round((getBinding().seekBar.getProgress()*100 / runningPlayer.getDuration()));
-//                                            Log.d("Positionperc",positionInPercentage+"");
-//                                           // getBinding().seekBar.setProgress(positionInPercentage);
-//
-//                                            float leftMargin = getBinding().seekBar.getWidth() * positionInPercentage / 100;
-//
-//
-////
-//                                            if (leftMargin < (getBinding().seekBar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
-//                                                //previewImage.translationX = leftMargin
-//                                                getBinding().imagePreview.setTranslationX(leftMargin);
-//                                            }
-////
-////
-//                                            try {
-//
-//
-//                                                if (previewImagesHashMap != null) {
-//                                                    Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
-//                                                    if (bitmap != null) {
-//                                                        getBinding().imagePreview.setVisibility(View.VISIBLE);
-//                                                        getBinding().imagePreview.setImageBitmap(bitmap);
-//                                                        getBinding().imagePreview.bringToFront();
-//                                                    }
-//                                                } else {
-//                                                    getBinding().imagePreview.setVisibility(View.VISIBLE);
-//                                                    getBinding().imagePreview.bringToFront();
-//                                                }
-//
-//                                            } catch (Exception e) {
-//
-//                                            }
-//                                        }
-//                                       // getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
-//                                        viewModel.sendSeekBarProgress(getBinding().seekBar.getProgress()).observe(getActivity(), s -> getBinding().currentTime.setText(s));
-//                                        runningPlayer.seekTo(getBinding().seekBar.getProgress()/1000);
-//                                        return true;
-//                                    }
+                                if (diffY > 0) {
+                                    getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress() - 1 < 0) ? 0 : getBinding().volumeSeek.seekBar2.getProgress() - 1);
                                 } else {
-
-                                    //not long enough swipe...
-                                    getBinding().imagePreview.setVisibility(View.GONE);
-//                                    runningPlayer.seekTo(getBinding().seekBar.getProgress());
-                                    return false;
+                                    getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress() + 1 > getBinding().volumeSeek.seekBar2.getMax()) ? getBinding().volumeSeek.seekBar2.getMax() : getBinding().volumeSeek.seekBar2.getProgress() + 1);
                                 }
+
+                            }
+                        } else if (Math.abs(diffX) > Math.abs(diffY)) {
+                            // Its horizontal movement
+                            // Swipes above max distance -> forward
+                            if (Math.abs(diffX) > (MIN_DISTANCE + 100)) {
+                                tested_ok = true;
+                                // Show and hide correspondent controls
+                                String totime = "";
+                                // Calculate time to forward
+                                calculatedTime = (int) ((diffX) * seekSpeed);
+                                getBinding().seekBar.setProgress((int) (runningPlayer.getCurrentPosition() + (calculatedTime)));
+                                onProgressChanged(getBinding().seekBar,(int) (runningPlayer.getCurrentPosition() + (calculatedTime)),true);
                             }
                         }
+
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                        // Releases the finger
+                    case MotionEvent.ACTION_UP:
+                        // User removed finger from phone
+                        screen_swipe_move = false;
+                        tested_ok         = false;
+                        calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
+                        onStopTrackingTouch(getBinding().seekBar);
+                        // runningPlayer.seekTo(calculatedTime);
+                        //showControls();
+                        break;
                 }
                 return false;
-
             }
+
+
+
         });
-        getBinding().rl.setOnTouchListener(new View.OnTouchListener(){
+
+        getBinding().rl.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch (View v, MotionEvent event) {
-                switch (event.getAction()) {
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    // User touches the screen
                     case MotionEvent.ACTION_DOWN:
-                        startTime1 = System.currentTimeMillis();
-                        clickCount++;
-                        //touch is start
-                        downX = event.getX();
-                        downY = event.getY();
+                        tested_ok = false;
+                        // We pressed on the left
                         if (event.getX() < (sWidth / 2)) {
-
-                            //here check touch is screen left or right side
                             intLeft = true;
                             intRight = false;
-
+                            // We pressed on the right
                         } else if (event.getX() > (sWidth / 2)) {
-
-                            //here check touch is screen left or right side
                             intLeft = false;
                             intRight = true;
                         }
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        isTouchCaptured = false;
-
-//                        if (runningPlayer.isPlaying()){
-//                            pausePlayer();
-//                        }else {
-//                            if (runningPlayer!=null){
-//                                runningPlayer.play();
-//                                getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-//                            }
-//                        }
-
-                        long time = System.currentTimeMillis() - startTime1;
-                        duration=  duration + time;
-                        if(clickCount == 2)
-                        {
-                            if(duration<= MAX_DURATION)
-                            {
-//                                Toast.makeText(getActivity(), "double tap",Toast.LENGTH_LONG).show();
-                            }
-                            clickCount = 0;
-                            duration = 0;
-                            break;
+                        int upperLimit = (sHeight / 4) + 100;
+                        int lowerLimit = ((sHeight / 4) * 3) - 150;
+                        // We pressed on the top
+                        if (event.getY() < upperLimit) {
+                            intBottom = false;
+                            intTop = true;
+                            // We pressed in the bottom
+                        } else if (event.getY() > lowerLimit) {
+                            intBottom = true;
+                            intTop = false;
+                        } else {
+                            intBottom = false;
+                            intTop = false;
                         }
+                        seekSpeed = (TimeUnit.MILLISECONDS.toSeconds(runningPlayer.getDuration()) * 0.2);
+                        diffX = 0;
+                        calculatedTime = 0;
+                        seekDur = String.format("%02d:%02d",
+                                TimeUnit.MILLISECONDS.toMinutes(diffX) -
+                                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(diffX)),
+                                TimeUnit.MILLISECONDS.toSeconds(diffX) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(diffX)));
 
-
+                        //TOUCH STARTED
+                        baseX = event.getX();
+                        baseY = event.getY();
+                        break;
+                    // User moves the finger
                     case MotionEvent.ACTION_MOVE:
+                        // The finge is now moving
+                        screen_swipe_move = true;
+                        // Controls are currently visible
 
-                        //finger move to screen
-                        float x2 = event.getX();
-                        float y2 = event.getY();
-
-                        diffX = (long) (Math.ceil(event.getX() - downX));
-                        diffY = (long) (Math.ceil(event.getY() - downY));
-
+                        // Dissapear controls while finger is moving
+                        // root.setVisibility(View.GONE);
+                        diffX = (long) (Math.ceil(event.getX() - baseX));
+                        diffY = (long) Math.ceil(event.getY() - baseY);
+                        // Speed in which brightness can increase or deacrease
+                        double brightnessSpeed = 0.05;
+                        if (Math.abs(diffY) > MIN_DISTANCE) {
+                            tested_ok = true;
+                        }
+                        // Its vertical movement
                         if (Math.abs(diffY) > Math.abs(diffX)) {
+                            // Tap in left increases/decreases brightness
                             if (intLeft) {
-                                //if left its for brightness
 
-                                if (downY < y2) {
-                                    if (currBrightness >0) {
-                                        getBinding().brightnessDialog.setVisibility(View.VISIBLE);
-                                        currBrightness = currBrightness - 3;
-                                        WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
-                                        layout.screenBrightness = currBrightness / 100F;
-                                        getActivity().getWindow().setAttributes(layout);
-                                        getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
+
+                                boolean settingsCanWrite = Settings.System.canWrite(getActivity());
+                                if(!settingsCanWrite) {
+                                    // If do not have write settings permission then open the Can modify system settings panel.
+                                    Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                                    startActivity(intent);
+                                }else {
+                                    cResolver = getActivity().getContentResolver();
+                                    window    = getActivity().getWindow();
+                                    // Get the current brightness
+                                    try {
+                                        Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+                                        brightness = Settings.System.getInt(cResolver, Settings.System.SCREEN_BRIGHTNESS);
+                                    } catch (Settings.SettingNotFoundException e) {
+                                        e.printStackTrace();
                                     }
-                                    //down swipe brightness decrease
-                                } else if (downY > y2) {
-                                    if (currBrightness <100){
-                                        getBinding().brightnessDialog.setVisibility(View.VISIBLE);
-                                        currBrightness = currBrightness + 3;
-                                        WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
-                                        layout.screenBrightness = currBrightness / 100F;
-                                        getActivity().getWindow().setAttributes(layout);
-                                        getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
+                                    // Define new brightness
+                                    int new_brightness = (int) (brightness - (diffY * brightnessSpeed));
+                                    // Keep brightness in bounds
+                                    if (new_brightness > 250) {
+                                        new_brightness = 250;
+                                    } else if (new_brightness < 1) {
+                                        new_brightness = 1;
                                     }
-                                    //up  swipe brightness increase
+                                    // Calculate brightness inside the bar container
+                                    double brightPerc = Math.ceil((((double) new_brightness / (double) 250) * (double) 100));
+                                    //brightnessBarContainer.setVisibility(View.VISIBLE);
+                                    // brightness_center_text.setVisibility(View.VISIBLE);
+                                    getBinding().brightnessSeek.seekBar1.setProgress((int) brightPerc);
+                                    Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS, (new_brightness));
+                                    WindowManager.LayoutParams layoutpars = window.getAttributes();
+                                    layoutpars.screenBrightness = brightness / (float) 255;
+                                    window.setAttributes(layoutpars);
+
+                                    // If has permission then show an alert dialog with message.
+
                                 }
+
+
 
                             } else if (intRight) {
 
-                                //if right its for audio
-                                if (downY < y2) {
-
-                                    //down swipe volume decrease
-                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
-                                    if(volume_level>0){
-                                        volume_level = volume_level-2;
-                                        if (volume_level<=15) {
-                                            audioManager.setStreamVolume(audioManager.STREAM_MUSIC, volume_level, 0);
-                                        }
-                                        getBinding().volumeSeek.seekBar2.setProgress(volume_level);
-                                    }
-
-                                } else if (downY > y2) {
-
-                                    //up  swipe volume increase
-                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
-
-                                    if(volume_level<100){
-                                        volume_level = volume_level+2;
-                                        if (volume_level<=15) {
-                                            audioManager.setStreamVolume(audioManager.STREAM_MUSIC, volume_level, 0);
-                                        }
-                                        getBinding().volumeSeek.seekBar2.setProgress(volume_level);
-                                    }
-
-                                }
-                            }
-                        }
-
-                        if (!isTouchCaptured) {
-                            upX1 = event.getX();
-                            upY1 = event.getY();
-                            isTouchCaptured = true;
-                        } else {
-                            upX2 = event.getX();
-                            upY2 = event.getY();
-
-                            float deltaX = upX1 - upX2;
-                            float deltaY = upY1 - upY2;
-                            //HORIZONTAL SCROLL
-                            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                                if (Math.abs(deltaX) > min_distance) {
-                                    getBinding().rl1.setVisibility(View.VISIBLE);
-                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
-                                    getBinding().brightnessDialog.setVisibility(View.VISIBLE);
-
-
-                                    if (deltaX < 0) {
-                                        Log.d("ValueIs","EnterRight");
-                                        getBinding().seekBar.setProgress((int) (getBinding().seekBar.getProgress()+upX2*10));
-                                        int ProgressValue = getBinding().seekBar.getProgress();
-                                        onProgressChanged(getBinding().seekBar, ProgressValue,true);
-                                        new Handler().postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Log.d("SeekBarValueIS",ProgressValue+"");
-                                                onStopTrackingTouch(getBinding().seekBar);
-
-                                            }
-                                        },150);
-                                        return false;
-
-
-                                    }
-                                    if (deltaX > 0){
-                                        Log.d("ValueIs","EnterLeft");
-                                        getBinding().seekBar.setProgress((int) (getBinding().seekBar.getProgress()-upX1*10));
-                                        int ProgressValue = getBinding().seekBar.getProgress();
-                                        onProgressChanged(getBinding().seekBar, ProgressValue,true);
-                                        new Handler().postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Log.d("SeekBarValueIS",ProgressValue+"");
-                                                onStopTrackingTouch(getBinding().seekBar);
-
-                                            }
-                                        },150);
-                                        return false;
-
-                                    }
-
-                                    // left or right
-//                                    if (deltaX < 0) {
-//
-//                                        Log.d("dgdgdgd","Right");
-//                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 2000);
-//                                        getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
-//
-//                                        if (isLivePlayer) {
-//                                        } else {
-//                                            positionInPercentage = Math.round((getBinding().seekBar.getProgress() * 100 / runningPlayer.getDuration()));
-//                                            Log.d("Positionperc",positionInPercentage+"");
-//
-//                                            float leftMargin = getBinding().seekBar.getWidth() * positionInPercentage / 100;
-//
-//
-////
-//                                            if (leftMargin < (getBinding().seekBar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
-//                                                //previewImage.translationX = leftMargin
-//                                                getBinding().imagePreview.setTranslationX(leftMargin);
-//                                            }
-////
-////
-//                                            try {
-//
-//
-//                                                if (previewImagesHashMap != null) {
-//                                                    Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
-//                                                    if (bitmap != null) {
-//                                                        getBinding().imagePreview.setVisibility(View.VISIBLE);
-//                                                        getBinding().imagePreview.setImageBitmap(bitmap);
-//                                                        getBinding().imagePreview.bringToFront();
-//                                                    }
-//                                                } else {
-//                                                    getBinding().imagePreview.setVisibility(View.VISIBLE);
-//                                                    getBinding().imagePreview.bringToFront();
-//                                                }
-//
-//                                            } catch (Exception e) {
-//
-//                                            }
-//                                        }
-//
-//                                        viewModel.sendSeekBarProgress(getBinding().seekBar.getProgress()).observe(getActivity(), s -> getBinding().currentTime.setText(s));
-//
-//                                        return true;
-//                                    }
-//                                    if (deltaX > 0) {
-//                                        Log.d("dgdgdgd","Left");
-//                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() - 2000);
-//                                        getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
-//
-//                                        if (isLivePlayer) {
-//                                        } else {
-//                                            positionInPercentage = Math.round((getBinding().seekBar.getProgress() * 100 / runningPlayer.getDuration()));
-//                                            Log.d("Positionperc",positionInPercentage+"");
-//
-//                                            float leftMargin = getBinding().seekBar.getWidth() * positionInPercentage / 100;
-//
-//
-////
-//                                            if (leftMargin < (getBinding().seekBar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
-//                                                //previewImage.translationX = leftMargin
-//                                                getBinding().imagePreview.setTranslationX(leftMargin);
-//                                            }
-////
-////
-//                                            try {
-//
-//
-//                                                if (previewImagesHashMap != null) {
-//                                                    Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
-//                                                    if (bitmap != null) {
-//                                                        getBinding().imagePreview.setVisibility(View.VISIBLE);
-//                                                        getBinding().imagePreview.setImageBitmap(bitmap);
-//                                                        getBinding().imagePreview.bringToFront();
-//                                                    }
-//                                                } else {
-//                                                    getBinding().imagePreview.setVisibility(View.VISIBLE);
-//                                                    getBinding().imagePreview.bringToFront();
-//                                                }
-//
-//                                            } catch (Exception e) {
-//
-//                                            }
-//                                        }
-//
-//                                        viewModel.sendSeekBarProgress(getBinding().seekBar.getProgress()).observe(getActivity(), s -> getBinding().currentTime.setText(s));
-//                                        return true;
-//                                    }
+                                if (diffY > 0) {
+                                    getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress() - 1 < 0) ? 0 : getBinding().volumeSeek.seekBar2.getProgress() - 1);
                                 } else {
-                                    //not long enough swipe...
-                                    getBinding().imagePreview.setVisibility(View.GONE);
-                                    return false;
+                                    getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress() + 1 > getBinding().volumeSeek.seekBar2.getMax()) ? getBinding().volumeSeek.seekBar2.getMax() : getBinding().volumeSeek.seekBar2.getProgress() + 1);
                                 }
+
+
+                            }
+                        } else if (Math.abs(diffX) > Math.abs(diffY)) {
+                            // Its horizontal movement
+                            // Swipes above max distance -> forward
+                            if (Math.abs(diffX) > (MIN_DISTANCE + 100)) {
+                                tested_ok = true;
+                                String totime = "";
+                                // Calculate time to forward
+                                calculatedTime = (int) ((diffX) * seekSpeed);
+                                getBinding().seekBar.setProgress((int) (runningPlayer.getCurrentPosition() + (calculatedTime)));
+                                onProgressChanged(getBinding().seekBar,(int) (runningPlayer.getCurrentPosition() + (calculatedTime)),true);
                             }
                         }
+
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                        // Releases the finger
+                    case MotionEvent.ACTION_UP:
+                        // User removed finger from phone
+                        screen_swipe_move = false;
+                        tested_ok         = false;
+
+                        calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
+                        onStopTrackingTouch(getBinding().seekBar);
+                        // runningPlayer.seekTo(calculatedTime);
+                        //showControls();
+                        break;
                 }
                 return false;
-
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        initialX = event.getX();
-//                        initialY = event.getY();
-//                        return true;
-//
-//                    case MotionEvent.ACTION_UP:
-//                        old = 0.0f;
-//                        return true;
-//
-//                    case MotionEvent.ACTION_MOVE:
-//                       // clearAndReset();
-//                        if (timer && timeHandler != null) {
-//                            timeHandler.removeCallbacks(myRunnable);
-//                        }
-//                        currentX = event.getX();
-//                        currentY = event.getY();
-//
-//                        if (initialX > currentX) {
-//                            Log.e("TOUCH", "Left");
-//                            float New = (initialX - currentX) * 100 / 1000;
-//                            condition = (int) (condition2 - ((New <= old) ? 0 : (New - old)));
-//                            condition2 = (condition <= 0) ? 0 : condition;
-//                            Log.d("dfgdgfdd", "" + condition);
-//                            Log.d("dfgdgfdd",condition2+"");
-//                            old = (initialX - currentX) * 100 / 1000;
-//                            Log.d("dfgdgfdd",old+"");
-//                        }
-//
-//                        if (initialX < currentX) {
-//                            Log.e("TOUCH", "RIGHT");
-//                            float New = (currentX - initialX) * 100 / 1000;
-//                            condition = (int) (condition2 + ((New <= old) ? 0 : (New - old)));
-//                            condition2 = (condition >= 100) ? 100 : condition;
-//                            Log.e("INT", "" + condition);
-//                            Log.d("dfgdgfdd", "" + condition);
-//                            Log.d("dfgdgfdd",condition2+"");
-//                            old = (currentX - initialX) * 100 / 1000;
-//                            Log.d("dfgdgfdd",old+"");
-//                            audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
-//                            getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-//                        }
-//
-//                }
-//                return true;
             }
+
         });
-
-
-
-
-
-//        getBinding().rl1.setOnTouchListener(new View.OnTouchListener() {
-//            @SuppressLint("ClickableViewAccessibility")
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                try {
-//                    gestureDetector.onTouchEvent(motionEvent);
-//
-//
-//                } catch (Exception e) {
-//
-//                }
-//                return false;
-//            }
-//        });
-
-//        getBinding().rl1.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//
-//                        //touch is start
-//                        downX = event.getX();
-//                        downY = event.getY();
-//                        if (event.getX() < (sWidth / 2)) {
-//
-//                            //here check touch is screen left or right side
-//                            intLeft = true;
-//                            intRight = false;
-//
-//                        } else if (event.getX() > (sWidth / 2)) {
-//
-//                            //here check touch is screen left or right side
-//                            intLeft = false;
-//                            intRight = true;
-//                        }
-//                        break;
-//
-//                    case MotionEvent.ACTION_UP:
-//
-//                    case MotionEvent.ACTION_MOVE:
-//
-//                        //finger move to screen
-//                        float x2 = event.getX();
-//                        float y2 = event.getY();
-//
-//                        diffX = (long) (Math.ceil(event.getX() - downX));
-//                        diffY = (long) (Math.ceil(event.getY() - downY));
-//
-//                        if (Math.abs(diffY) > Math.abs(diffX)) {
-//                            if (intLeft) {
-//                                //if left its for brightness
-//
-//                                if (downY < y2) {
-//                                    //down swipe brightness decrease
-//                                } else if (downY > y2) {
-//                                    //up  swipe brightness increase
-//                                }
-//
-//                            } else if (intRight) {
-//
-//                                //if right its for audio
-//                                if (downY < y2) {
-//
-//                                    Log.d("dfdfdfdfdf",downY+"");
-//                                    Log.d("dfdfdfdfdf",y2+"");
-//
-//                                    //down swipe volume decrease
-//                                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, y2, 0);
-//
-//                                } else if (downY > y2) {
-//                                    Log.d("dfdfdfdfdf",downY+"");
-//                                    Log.d("dfdfdfdfdf",y2+"");
-//                                    //up  swipe volume increase
-//                                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int) downY, 0);
-//                                }
-//                            }
-//                        }
-//                }
-//                return false;
-//                //return false;
-//            }
-//        });
-//        getBinding().rl.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//
-//                        //touch is start
-//                        downX = event.getX();
-//                        downY = event.getY();
-//                        if (event.getX() < (sWidth / 2)) {
-//
-//                            //here check touch is screen left or right side
-//                            intLeft = true;
-//                            intRight = false;
-//
-//                        } else if (event.getX() > (sWidth / 2)) {
-//
-//                            //here check touch is screen left or right side
-//                            intLeft = false;
-//                            intRight = true;
-//                        }
-//                        break;
-//
-//                    case MotionEvent.ACTION_UP:
-//
-//                    case MotionEvent.ACTION_MOVE:
-//
-//                        //finger move to screen
-//                        float x2 = event.getX();
-//                        float y2 = event.getY();
-//
-//                        diffX = (long) (Math.ceil(event.getX() - downX));
-//                        diffY = (long) (Math.ceil(event.getY() - downY));
-//
-//                        if (Math.abs(diffY) > Math.abs(diffX)) {
-//                            if (intLeft) {
-//                                //if left its for brightness
-//
-//                                if (downY < y2) {
-//                                    //down swipe brightness decrease
-//                                } else if (downY > y2) {
-//                                    //up  swipe brightness increase
-//                                }
-//
-//                            } else if (intRight) {
-//
-//                                //if right its for audio
-//                                if (downY < y2) {
-//
-//                                    Log.d("dfdfdfdfdf",downY+"");
-//                                    Log.d("dfdfdfdfdf",y2+"");
-//
-//                                    //down swipe volume decrease
-//                                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int) downY, 0);
-//
-//                                } else if (downY > y2) {
-//                                    Log.d("dfdfdfdfdf",downY+"");
-//                                    Log.d("dfdfdfdfdf",y2+"");
-//                                    //up  swipe volume increase
-//                                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int) downY, 0);
-//                                }
-//                            }
-//                        }
-//                }
-//                return false;
-//                //return false;
-//            }
-//        });
-
-
-
-
 
         getBinding().forward.setOnClickListener(view -> {
             getBinding().pBar.setVisibility(View.VISIBLE);
@@ -4532,7 +4075,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             } else {
                 Log.d("SeekBarNewValue",seekbar.getProgress()+"");
                 positionInPercentage = Math.round((seekbar.getProgress() * 100 / runningPlayer.getDuration()));
-            Log.d("Positionperc",positionInPercentage+"");
+                Log.d("Positionperc",positionInPercentage+"");
 
                 float leftMargin = seekbar.getWidth() * positionInPercentage / 100;
 
