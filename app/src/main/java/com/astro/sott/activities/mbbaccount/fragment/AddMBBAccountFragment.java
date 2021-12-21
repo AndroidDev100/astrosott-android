@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.activities.loginActivity.viewModel.LoginViewModel;
 import com.astro.sott.activities.mbbaccount.ui.AddMBBAccountActivity;
+import com.astro.sott.activities.profile.ui.EditEmailActivity;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.R;
@@ -25,6 +26,7 @@ import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.databinding.FragmentAddMbbAccountBinding;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.google.gson.Gson;
 
 
@@ -177,7 +179,7 @@ public class AddMBBAccountFragment extends BaseBindingFragment<FragmentAddMbbAcc
                 });
             } else {
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+                ToastHandler.show(getString(R.string.no_internet_connection), requireActivity());
             }
 
     }

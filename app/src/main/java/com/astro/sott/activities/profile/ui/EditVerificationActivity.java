@@ -35,6 +35,7 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 
@@ -203,7 +204,8 @@ public class EditVerificationActivity extends BaseBindingActivity<ActivityEditVe
                     }
 
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(),
+                            EditVerificationActivity.this);
 //                    getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
                     getBinding().errorLine.setVisibility(View.VISIBLE);
                     getBinding().progressBar.setVisibility(View.GONE);
@@ -246,7 +248,9 @@ public class EditVerificationActivity extends BaseBindingActivity<ActivityEditVe
                         commonDialog(getResources().getString(R.string.mobile_updated_failed), getResources().getString(R.string.mobile_updated_description_failed), getResources().getString(R.string.ok_double_exlamation));
                     }
                 } else {
-                    Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(updateProfileResponse.getErrorMessage() + "",
+                            EditVerificationActivity.this
+                        );
                 }
 
             }
@@ -269,7 +273,8 @@ public class EditVerificationActivity extends BaseBindingActivity<ActivityEditVe
                 cancelDialogFragment.setEditDialogCallBack(EditVerificationActivity.this);
                 cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
             } else {
-                Toast.makeText(this, changePasswordResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(changePasswordResponse.getErrorMessage(),
+                        EditVerificationActivity.this);
 //                Toast.makeText(this, getResources().getString(R.string.password_change_failed), Toast.LENGTH_SHORT).show();
 
                 onBackPressed();
@@ -282,7 +287,9 @@ public class EditVerificationActivity extends BaseBindingActivity<ActivityEditVe
         astroLoginViewModel.createOtp(loginType, emailMobile).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
-                Toast.makeText(this, "Verification code resend " + (evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getCurrentOTPCount() - 1) + " of " + (evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getMaxOTPCount() - 1), Toast.LENGTH_SHORT).show();
+                ToastHandler.show("Verification code resend " + (evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getCurrentOTPCount() - 1) + " of " + (evergentCommonResponse.getCreateOtpResponse().getCreateOTPResponseMessage().getMaxOTPCount() - 1),
+                        EditVerificationActivity.this
+                );
                 countDownTimer();
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2846")) {
@@ -291,7 +298,8 @@ public class EditVerificationActivity extends BaseBindingActivity<ActivityEditVe
                     cancelDialogFragment.setEditDialogCallBack(EditVerificationActivity.this);
                     cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(),
+                            EditVerificationActivity.this);
                 }
 //                getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
                 getBinding().errorLine.setVisibility(View.VISIBLE);
@@ -320,7 +328,8 @@ public class EditVerificationActivity extends BaseBindingActivity<ActivityEditVe
                 } catch (Exception ex) {
                 }
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(),
+                        EditVerificationActivity.this);
 //                getBinding().pin.setLineColor(Color.parseColor("#f42d5b"));
                 getBinding().errorLine.setVisibility(View.VISIBLE);
 
@@ -339,7 +348,8 @@ public class EditVerificationActivity extends BaseBindingActivity<ActivityEditVe
 
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(),
+                        EditVerificationActivity.this);
             }
         });
     }
@@ -380,7 +390,8 @@ public class EditVerificationActivity extends BaseBindingActivity<ActivityEditVe
                         }
                     });
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show( evergentCommonResponse.getErrorMessage(),
+                            EditVerificationActivity.this);
 
                 }
 
@@ -429,7 +440,8 @@ public class EditVerificationActivity extends BaseBindingActivity<ActivityEditVe
         UserInfo.getInstance(this).setActive(true);
         AppCommonMethods.setCleverTap(this);
         // new ActivityLauncher(VerificationActivity.this).profileScreenRedirection(VerificationActivity.this, HomeActivity.class);
-        Toast.makeText(this, getResources().getString(R.string.registered_success), Toast.LENGTH_SHORT).show();
+        ToastHandler.show(getResources().getString(R.string.registered_success),
+                EditVerificationActivity.this);
         onBackPressed();
 
         // Toast.makeText(this, getResources().getString(R.string.login_successfull), Toast.LENGTH_SHORT).show();

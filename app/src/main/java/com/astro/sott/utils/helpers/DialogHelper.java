@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.profile.ui.EditProfileActivity;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscription.ui.SubscriptionActivity;
 import com.astro.sott.baseModel.BaseActivity;
@@ -265,9 +266,12 @@ public class DialogHelper {
             imm.showSoftInput(pinView, InputMethodManager.SHOW_IMPLICIT);
             btnOk.setOnClickListener(v -> {
                 if (pinView.getText().toString().length() == 0) {
-                    Toast.makeText(context, context.getString(R.string.empty_pin), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(context.getString(R.string.empty_pin), context);
+
                 } else if (pinView.getText().toString().length() > 0 && pinView.getText().toString().length() < 4) {
-                    Toast.makeText(context, context.getString(R.string.message_pin_length), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(context.getString(R.string.message_pin_length),
+                            context
+                    );
                 } else {
                     dialogInterface.onPositiveClick(pinView.getText().toString());
                 }

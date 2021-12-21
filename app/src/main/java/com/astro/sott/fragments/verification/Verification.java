@@ -26,6 +26,7 @@ import com.astro.sott.activities.SelectAccount.UI.SelectDtvAccountActivity;
 import com.astro.sott.activities.deviceMangment.ui.DeviceManagementActivity;
 import com.astro.sott.activities.loginActivity.viewModel.LoginViewModel;
 import com.astro.sott.activities.parentalControl.ui.ViewingRestrictionActivity;
+import com.astro.sott.activities.profile.ui.EditPasswordActivity;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
@@ -136,7 +137,8 @@ public class Verification extends BaseBindingFragment<FragmentVerificationBindin
             if (NetworkConnectivity.isOnline(getActivity()))
                 verifyPin();
             else
-                Toast.makeText(getActivity(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+            ToastHandler.show(getString(R.string.no_internet_connection), requireActivity());
+
         }
     }
 
@@ -319,7 +321,8 @@ public class Verification extends BaseBindingFragment<FragmentVerificationBindin
                 });
             } else {
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+                ToastHandler.show(getString(R.string.no_internet_connection),
+                        requireActivity());
             }
         }
     }

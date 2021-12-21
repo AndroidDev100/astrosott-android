@@ -543,12 +543,14 @@ public class ActivityLauncher {
 
                     }
                 } else {
-                    Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                    ToastHandler.show("Asset not Found",
+                            this.activity);
                 }
 
             });
         } else {
-            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+            ToastHandler.show("Asset not Found",
+                    this.activity);
 
         }
 
@@ -614,14 +616,17 @@ public class ActivityLauncher {
                         intent.putExtra("asset_ids", railCommonData1.getObject().getId());
                         activity.startActivity(intent);
                     } else {
-                        Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                        ToastHandler.show("Asset not Found",
+                                this.activity);
                     }
                 });
             } else {
-                Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                ToastHandler.show("Asset not Found",
+                        this.activity);
             }
         } catch (Exception e) {
-            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+            ToastHandler.show("Asset not Found",
+                    this.activity);
 
         }
         /*new LiveChannelManager().getLiveProgram(activity, itemValue, asset -> {
@@ -666,7 +671,8 @@ public class ActivityLauncher {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(activity, activity.getResources().getString(R.string.catchup_error), Toast.LENGTH_SHORT).show();
+                                    ToastHandler.show( activity.getResources().getString(R.string.catchup_error),
+                                            activity);
                                 }
                             });
                             //   new ActivityLauncher(activity).catchUpActivity(activity, CatchupActivity.class, railCommonData);
@@ -724,7 +730,9 @@ public class ActivityLauncher {
                 source.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                        ToastHandler.show( "Asset not Found",
+                                activity);
+
                     }
                 });
             }
