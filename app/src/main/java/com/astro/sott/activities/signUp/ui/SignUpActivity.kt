@@ -493,7 +493,6 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                 activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
                 activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
                 activitySinUpBinding?.errorPasssword?.text = getString(R.string.password_error)
-
             }
         } else {
             activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))

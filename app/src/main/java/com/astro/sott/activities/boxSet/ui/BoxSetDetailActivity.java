@@ -971,7 +971,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
             if (aBoolean != null && aBoolean.getStatus()) {
                 isAdded = false;
                 ToastHandler.show(
-                        getApplicationContext().getResources().getString(R.string.show_is) + "",
+                        getResources().getString(R.string.show_is) + "",
                         BoxSetDetailActivity.this);
                 getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
                 getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
@@ -981,7 +981,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                 } else {
                     if (aBoolean != null && aBoolean.getErrorCode().equals(AppLevelConstants.ALREADY_UNFOLLOW_ERROR)) {
                         isAdded = false;
-                        ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + "",
+                        ToastHandler.show(getResources().getString(R.string.show_is) + "",
                                 BoxSetDetailActivity.this);
                         getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
                         getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
@@ -1010,7 +1010,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
 
     private void checkAddedCondition(CommonResponse s) {
         if (s.getStatus()) {
-            ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist),
+            ToastHandler.show(getResources().getString(R.string.show_is) + " " + getResources().getString(R.string.added_to_watchlist),
                     BoxSetDetailActivity.this);
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
@@ -1023,7 +1023,7 @@ public class BoxSetDetailActivity extends BaseBindingActivity<BoxSetDetailBindin
                     showDialog(s.getMessage());
                     break;
                 case AppLevelConstants.ALREADY_FOLLOW_ERROR:
-                    ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist) + "",
+                    ToastHandler.show(getResources().getString(R.string.show_is) + " " + getResources().getString(R.string.already_added_in_watchlist) + "",
                             BoxSetDetailActivity.this);
                     break;
                 default:
