@@ -167,11 +167,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().indicator.setVisibility(View.GONE);
-        setLiveTvMargins();
-    }
-
-    private void setLiveTvMargins() {
         setMargins(97, 110);
+
     }
 
     private void setToolBarScroll(int type) {
@@ -409,7 +406,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().indicator.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
-        setLiveTvMargins();
+        setMargins(97, 110);
         checkSameClick();
 
     }
