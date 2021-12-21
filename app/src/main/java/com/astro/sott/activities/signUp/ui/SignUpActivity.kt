@@ -61,9 +61,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     private var name: String = ""
     private var isPasswordCheck = false
     private var isEmailCheck = false
-
     private val EMAIL = "email, public_profile"
-
     private val passwordPattern = Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=\\S+$).{8,16}$")
     private val mobilePattern = Regex("^[0-9]*$")
     private val emailPattern = Regex(
