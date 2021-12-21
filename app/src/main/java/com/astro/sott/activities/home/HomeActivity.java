@@ -167,10 +167,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().indicator.setVisibility(View.GONE);
+        setMargins(97, 110);
 
-        setMargins(150, 110);
-
-        active = liveTvFragment;
     }
 
     private void setToolBarScroll(int type) {
@@ -192,8 +190,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
         }
     }
-
-
     private BottomNavigationView navigation;
 
     @SuppressLint({"RestrictedApi", "WrongConstant"})
@@ -398,6 +394,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void switchToLiveTvFragment() {
         fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commitAllowingStateLoss();
+        active = liveTvFragment;
         setToolBarScroll(0);
         if (liveTvFragment != null)
             liveTvFragment.refreshData();
@@ -409,10 +406,9 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().indicator.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
-        setMargins(150, 110);
-
+        setMargins(97, 110);
         checkSameClick();
-        active = liveTvFragment;
+
     }
 
     private void switchToVideoFragment() {

@@ -61,9 +61,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     private var name: String = ""
     private var isPasswordCheck = false
     private var isEmailCheck = false
-
     private val EMAIL = "email, public_profile"
-
     private val passwordPattern = Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=\\S+$).{8,16}$")
     private val mobilePattern = Regex("^[0-9]*$")
     private val emailPattern = Regex(
@@ -197,7 +195,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             activitySinUpBinding?.progressBar?.visibility = View.GONE
             ToastHandler.show(
                 resources.getString(R.string.email_unavailable) + "",
-                SignUpActivity.this
+                SignUpActivity@this
             );
 
             // The ApiException status code indicates the detailed failure reason.
@@ -498,7 +496,6 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
             activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
             activitySinUpBinding?.errorPasssword?.text = getString(R.string.field_cannot_empty)
-
         }
     }
 
