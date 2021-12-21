@@ -285,6 +285,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private String seekDur;
     private float baseX, baseY;
     private Boolean screen_swipe_move = false;
+    private boolean isFromBrightness = false;
+    private boolean isFromAudio = false;
     private static final int MIN_DISTANCE = 150;
     private ContentResolver cResolver;
     private Window window;
@@ -3140,6 +3142,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
                                     startActivity(intent);
                                 }else {
+
+                                     isFromBrightness = true;
+
                                     cResolver = getActivity().getContentResolver();
                                     window    = getActivity().getWindow();
                                     // Get the current brightness
@@ -3172,7 +3177,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                             } else if (intRight) {
 
-
+                                isFromAudio = true;
 
                                 if (diffY > 0) {
                                     getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress() - 1 < 0) ? 0 : getBinding().volumeSeek.seekBar2.getProgress() - 1);
@@ -3202,8 +3207,17 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         // User removed finger from phone
                         screen_swipe_move = false;
                         tested_ok         = false;
-                        calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
-                        onStopTrackingTouch(getBinding().seekBar);
+
+                        if (isFromAudio || isFromBrightness){
+                            isFromBrightness = false;
+                            isFromAudio = false;
+                        }else {
+                            calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
+                            onStopTrackingTouch(getBinding().seekBar);
+                        }
+
+//                        calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
+//                        onStopTrackingTouch(getBinding().seekBar);
                         // runningPlayer.seekTo(calculatedTime);
                         //showControls();
                         break;
@@ -3285,6 +3299,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
                                     startActivity(intent);
                                 }else {
+                                    isFromBrightness = true;
                                     cResolver = getActivity().getContentResolver();
                                     window    = getActivity().getWindow();
                                     // Get the current brightness
@@ -3319,7 +3334,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
                             } else if (intRight) {
-
+                                isFromAudio = true;
                                 if (diffY > 0) {
                                     getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress() - 1 < 0) ? 0 : getBinding().volumeSeek.seekBar2.getProgress() - 1);
                                 } else {
@@ -3349,8 +3364,15 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         screen_swipe_move = false;
                         tested_ok         = false;
 
-                        calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
-                        onStopTrackingTouch(getBinding().seekBar);
+                        if (isFromAudio || isFromBrightness){
+                            isFromBrightness = false;
+                            isFromAudio = false;
+                        }else {
+                            calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
+                            onStopTrackingTouch(getBinding().seekBar);
+                        }
+
+
                         // runningPlayer.seekTo(calculatedTime);
                         //showControls();
                         break;
