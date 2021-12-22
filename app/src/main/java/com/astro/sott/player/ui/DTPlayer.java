@@ -2813,6 +2813,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().playButton.setVisibility(View.VISIBLE);
                 getBinding().volumeDialog.setVisibility(View.VISIBLE);
                 getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+                getBinding().seekBar.setVisibility(View.VISIBLE);
 
                 if (isCaption || isAudioTracks) {
                     getBinding().subtitleAudio.setVisibility(View.VISIBLE);
@@ -2946,152 +2947,152 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             }
         });
 
-        getBinding().rl.setOnClickListener(new DoubleClick(new DoubleClickListener() {
-            @Override
-            public void onSingleClick(View view) {
-
-
-                if (drag)
-                    drag = false;
-
-                if (isPlayerStart) {
-                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
-                        getBinding().skipCredits.setVisibility(View.GONE);
-                        getBinding().progressBar.setVisibility(View.GONE);
-                        if (objectAnimator != null) {
-                            objectAnimator.cancel();
-                            objectAnimator = null;
-                        }
-                        isPlayerSurfaceClicked = true;
-                        getBinding().progressBar.setProgress(0);
-                    }
-                    if (handler1 != null) {
-                        handler1.removeCallbacksAndMessages(null);
-                    }
-
-                    if (lockEnable) {
-//                        if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
-//                            getBinding().lockIcon.setVisibility(View.GONE);
-//                        } else {
-//                            getBinding().lockIcon.setVisibility(View.VISIBLE);
-//                            if (adRunning || isBingeView)
-//                                getBinding().lockIcon.setVisibility(View.GONE);
+//        getBinding().rl.setOnClickListener(new DoubleClick(new DoubleClickListener() {
+//            @Override
+//            public void onSingleClick(View view) {
+//
+//
+//                if (drag)
+//                    drag = false;
+//
+//                if (isPlayerStart) {
+//                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
+//                        getBinding().skipCredits.setVisibility(View.GONE);
+//                        getBinding().progressBar.setVisibility(View.GONE);
+//                        if (objectAnimator != null) {
+//                            objectAnimator.cancel();
+//                            objectAnimator = null;
 //                        }
-                    } else {
-                        if (timer) {
-                            if (timeHandler != null)
-                                timeHandler.removeCallbacks(myRunnable);
-                        }
-                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
-                            getBinding().videoDialog.setVisibility(View.GONE);
-                        }
-                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
-                            getBinding().audioDialog.setVisibility(View.GONE);
-                            getBinding().skipIntro.setClickable(true);
-                            getBinding().skipCredits.setClickable(true);
-                            getBinding().skipRecap.setClickable(true);
-                        }
-                        ShowAndHideView();
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onDoubleClick(View view) {
-                if (runningPlayer.isPlaying()){
-                    pausePlayer();
-                }else {
-                    if (runningPlayer!=null){
-                        runningPlayer.play();
-                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                    }
-                }
-//                if (lockEnable) {
-////                    if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
-////                        getBinding().lockIcon.setVisibility(View.GONE);
-////                    } else {
-////                        getBinding().lockIcon.setVisibility(View.VISIBLE);
-////                    }
-//                } else {
-//                    viewModel.changeVideoRatio();
+//                        isPlayerSurfaceClicked = true;
+//                        getBinding().progressBar.setProgress(0);
+//                    }
+//                    if (handler1 != null) {
+//                        handler1.removeCallbacksAndMessages(null);
+//                    }
+//
+//                    if (lockEnable) {
+////                        if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
+////                            getBinding().lockIcon.setVisibility(View.GONE);
+////                        } else {
+////                            getBinding().lockIcon.setVisibility(View.VISIBLE);
+////                            if (adRunning || isBingeView)
+////                                getBinding().lockIcon.setVisibility(View.GONE);
+////                        }
+//                    } else {
+//                        if (timer) {
+//                            if (timeHandler != null)
+//                                timeHandler.removeCallbacks(myRunnable);
+//                        }
+//                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
+//                            getBinding().videoDialog.setVisibility(View.GONE);
+//                        }
+//                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
+//                            getBinding().audioDialog.setVisibility(View.GONE);
+//                            getBinding().skipIntro.setClickable(true);
+//                            getBinding().skipCredits.setClickable(true);
+//                            getBinding().skipRecap.setClickable(true);
+//                        }
+//                        ShowAndHideView();
+//                    }
+//
 //                }
-                //playPauseControl();
-
-            }
-        }));
-        getBinding().rl1.setOnClickListener(new DoubleClick(new DoubleClickListener() {
-            @Override
-            public void onSingleClick(View view) {
-
-                getBinding().rl1.setEnabled(false);
-                getBinding().rl.setEnabled(false);
-
-                if (isPlayerStart) {
-                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
-                        getBinding().skipCredits.setVisibility(View.GONE);
-                        getBinding().progressBar.setVisibility(View.GONE);
-                        if (objectAnimator != null) {
-                            objectAnimator.cancel();
-                            objectAnimator = null;
-                        }
-                        getBinding().progressBar.setProgress(0);
-                        isPlayerSurfaceClicked = true;
-                    }
-                    if (handler1 != null) {
-                        handler1.removeCallbacksAndMessages(null);
-                    }
-                    if (lockEnable) {
-//                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
-//                                getBinding().lockIcon.setVisibility(View.GONE);
-//                            } else {
-//                                getBinding().lockIcon.setVisibility(View.VISIBLE);
-//                                if (adRunning || isBingeView)
-//                                    getBinding().lockIcon.setVisibility(View.GONE);
-//                            }
-
-                    } else {
-                        if (timer) {
-
-                            if (timeHandler != null)
-                                timeHandler.removeCallbacks(myRunnable);
-                        }
-                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
-                            getBinding().videoDialog.setVisibility(View.GONE);
-                        }
-                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
-                            getBinding().audioDialog.setVisibility(View.GONE);
-                            getBinding().skipIntro.setClickable(true);
-                            getBinding().skipCredits.setClickable(true);
-                            getBinding().skipRecap.setClickable(true);
-                        }
-                        ShowAndHideView();
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onDoubleClick(View view) {
-                if (runningPlayer.isPlaying()){
-                    pausePlayer();
-                }else {
-                    if (runningPlayer!=null){
-                        runningPlayer.play();
-                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                        Log.d("ftftftfftf","Enterrl1");
-                    }
-                }
-                // viewModel.changeVideoRatio();
-                //playPauseControl();
-            }
-
-
-
-
-        }));
+//
+//            }
+//
+//            @Override
+//            public void onDoubleClick(View view) {
+//                if (runningPlayer.isPlaying()){
+//                    pausePlayer();
+//                }else {
+//                    if (runningPlayer!=null){
+//                        runningPlayer.play();
+//                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//                    }
+//                }
+////                if (lockEnable) {
+//////                    if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
+//////                        getBinding().lockIcon.setVisibility(View.GONE);
+//////                    } else {
+//////                        getBinding().lockIcon.setVisibility(View.VISIBLE);
+//////                    }
+////                } else {
+////                    viewModel.changeVideoRatio();
+////                }
+//                //playPauseControl();
+//
+//            }
+//        }));
+//        getBinding().rl1.setOnClickListener(new DoubleClick(new DoubleClickListener() {
+//            @Override
+//            public void onSingleClick(View view) {
+//
+//                getBinding().rl1.setEnabled(false);
+//                getBinding().rl.setEnabled(false);
+//
+//                if (isPlayerStart) {
+//                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
+//                        getBinding().skipCredits.setVisibility(View.GONE);
+//                        getBinding().progressBar.setVisibility(View.GONE);
+//                        if (objectAnimator != null) {
+//                            objectAnimator.cancel();
+//                            objectAnimator = null;
+//                        }
+//                        getBinding().progressBar.setProgress(0);
+//                        isPlayerSurfaceClicked = true;
+//                    }
+//                    if (handler1 != null) {
+//                        handler1.removeCallbacksAndMessages(null);
+//                    }
+//                    if (lockEnable) {
+////                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
+////                                getBinding().lockIcon.setVisibility(View.GONE);
+////                            } else {
+////                                getBinding().lockIcon.setVisibility(View.VISIBLE);
+////                                if (adRunning || isBingeView)
+////                                    getBinding().lockIcon.setVisibility(View.GONE);
+////                            }
+//
+//                    } else {
+//                        if (timer) {
+//
+//                            if (timeHandler != null)
+//                                timeHandler.removeCallbacks(myRunnable);
+//                        }
+//                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
+//                            getBinding().videoDialog.setVisibility(View.GONE);
+//                        }
+//                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
+//                            getBinding().audioDialog.setVisibility(View.GONE);
+//                            getBinding().skipIntro.setClickable(true);
+//                            getBinding().skipCredits.setClickable(true);
+//                            getBinding().skipRecap.setClickable(true);
+//                        }
+//                        ShowAndHideView();
+//                    }
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onDoubleClick(View view) {
+//                if (runningPlayer.isPlaying()){
+//                    pausePlayer();
+//                }else {
+//                    if (runningPlayer!=null){
+//                        runningPlayer.play();
+//                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//                        Log.d("ftftftfftf","Enterrl1");
+//                    }
+//                }
+//                // viewModel.changeVideoRatio();
+//                //playPauseControl();
+//            }
+//
+//
+//
+//
+//        }));
 
 
         getBinding().rl1.setOnTouchListener(new View.OnTouchListener(){
@@ -3136,7 +3137,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         //TOUCH STARTED
                         baseX = event.getX();
                         baseY = event.getY();
-                        break;
+                        return true;
+                       // break;
                     // User moves the finger
                     case MotionEvent.ACTION_MOVE:
                         // The finge is now moving
@@ -3228,6 +3230,83 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     case MotionEvent.ACTION_UP:
                         // User removed finger from phone
 
+                        clickCount++;
+
+                        if (clickCount==1){
+                            startTime = System.currentTimeMillis();
+                        }
+
+                        else if(clickCount == 2)
+                        {
+                            long duration =  System.currentTimeMillis() - startTime;
+                            if(duration <= MAX_DURATION)
+                            {
+                                //hideDoubleTapControls();
+                                if (runningPlayer.isPlaying()){
+                                    pausePlayer();
+                                }else {
+                                    if (runningPlayer!=null){
+                                        runningPlayer.play();
+                                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+                                        Log.d("ftftftfftf","Enterrl1");
+                                    }
+                                }
+                                clickCount = 0;
+                                duration = 0;
+                            }else{
+                                clickCount = 1;
+                                startTime = System.currentTimeMillis();
+                                if (drag)
+                                    drag = false;
+
+                                if (isPlayerStart) {
+                                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
+                                        getBinding().skipCredits.setVisibility(View.GONE);
+                                        getBinding().progressBar.setVisibility(View.GONE);
+                                        if (objectAnimator != null) {
+                                            objectAnimator.cancel();
+                                            objectAnimator = null;
+                                        }
+                                        isPlayerSurfaceClicked = true;
+                                        getBinding().progressBar.setProgress(0);
+                                    }
+                                    if (handler1 != null) {
+                                        handler1.removeCallbacksAndMessages(null);
+                                    }
+
+                                    if (lockEnable) {
+//                        if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
+//                            getBinding().lockIcon.setVisibility(View.GONE);
+//                        } else {
+//                            getBinding().lockIcon.setVisibility(View.VISIBLE);
+//                            if (adRunning || isBingeView)
+//                                getBinding().lockIcon.setVisibility(View.GONE);
+//                        }
+                                    } else {
+                                        if (timer) {
+                                            if (timeHandler != null)
+                                                timeHandler.removeCallbacks(myRunnable);
+                                        }
+                                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
+                                            getBinding().videoDialog.setVisibility(View.GONE);
+                                        }
+                                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
+                                            getBinding().audioDialog.setVisibility(View.GONE);
+                                            getBinding().skipIntro.setClickable(true);
+                                            getBinding().skipCredits.setClickable(true);
+                                            getBinding().skipRecap.setClickable(true);
+                                        }
+                                        ShowAndHideView();
+                                    }
+
+                                }
+                            }
+                        }
+
+
+
+
+
                         screen_swipe_move = false;
                         tested_ok         = false;
                         if (isFromAudio || isFromBrightness){
@@ -3294,7 +3373,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         //TOUCH STARTED
                         baseX = event.getX();
                         baseY = event.getY();
-                        break;
+                        return true;
+                       // break;
                     // User moves the finger
                     case MotionEvent.ACTION_MOVE:
                         // The finge is now moving
@@ -3385,6 +3465,85 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     case MotionEvent.ACTION_CANCEL:
                         // Releases the finger
                     case MotionEvent.ACTION_UP:
+
+
+
+                        clickCount++;
+
+                        if (clickCount==1){
+                            startTime = System.currentTimeMillis();
+                        }
+
+                        else if(clickCount == 2)
+                        {
+                            long duration =  System.currentTimeMillis() - startTime;
+                            if(duration <= MAX_DURATION)
+                            {
+                                
+                                if (runningPlayer.isPlaying()){
+                                    pausePlayer();
+                                }else {
+                                    if (runningPlayer!=null){
+                                        runningPlayer.play();
+                                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+                                        Log.d("ftftftfftf","Enterrl1");
+                                    }
+                                }
+                                clickCount = 0;
+                                duration = 0;
+                            }else{
+                                clickCount = 1;
+                                startTime = System.currentTimeMillis();
+                                if (drag)
+                                    drag = false;
+
+                                if (isPlayerStart) {
+                                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
+                                        getBinding().skipCredits.setVisibility(View.GONE);
+                                        getBinding().progressBar.setVisibility(View.GONE);
+                                        if (objectAnimator != null) {
+                                            objectAnimator.cancel();
+                                            objectAnimator = null;
+                                        }
+                                        isPlayerSurfaceClicked = true;
+                                        getBinding().progressBar.setProgress(0);
+                                    }
+                                    if (handler1 != null) {
+                                        handler1.removeCallbacksAndMessages(null);
+                                    }
+
+                                    if (lockEnable) {
+//                        if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
+//                            getBinding().lockIcon.setVisibility(View.GONE);
+//                        } else {
+//                            getBinding().lockIcon.setVisibility(View.VISIBLE);
+//                            if (adRunning || isBingeView)
+//                                getBinding().lockIcon.setVisibility(View.GONE);
+//                        }
+                                    } else {
+                                        if (timer) {
+                                            if (timeHandler != null)
+                                                timeHandler.removeCallbacks(myRunnable);
+                                        }
+                                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
+                                            getBinding().videoDialog.setVisibility(View.GONE);
+                                        }
+                                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
+                                            getBinding().audioDialog.setVisibility(View.GONE);
+                                            getBinding().skipIntro.setClickable(true);
+                                            getBinding().skipCredits.setClickable(true);
+                                            getBinding().skipRecap.setClickable(true);
+                                        }
+                                        ShowAndHideView();
+                                    }
+
+                                }
+                            }
+
+                        }
+
+
+
                         // User removed finger from phone
                         screen_swipe_move = false;
                         tested_ok         = false;
