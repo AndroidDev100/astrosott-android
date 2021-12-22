@@ -197,7 +197,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             activitySinUpBinding?.progressBar?.visibility = View.GONE
             ToastHandler.show(
                 resources.getString(R.string.email_unavailable) + "",
-                SignUpActivity.this
+                this@SignUpActivity
             );
 
             // The ApiException status code indicates the detailed failure reason.

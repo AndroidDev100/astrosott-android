@@ -112,7 +112,6 @@
                     android:foregroundTint="@color/white"
                     android:hint="@string/new_mobile"
                     android:inputType="number"
-                    android:maxLength="11"
                     android:maxLines="1"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
