@@ -2810,6 +2810,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             } else {
                 Log.d("HideView", "False");
                 getBinding().rl1.setVisibility(View.VISIBLE);
+                getBinding().playerMediaControls.setVisibility(View.VISIBLE);
                 getBinding().playButton.setVisibility(View.VISIBLE);
                 getBinding().volumeDialog.setVisibility(View.VISIBLE);
                 getBinding().brightnessDialog.setVisibility(View.VISIBLE);
@@ -3159,13 +3160,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             // Tap in left increases/decreases brightness
                             if (intLeft) {
                                 hideBrightnessControl();
+                                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+                                getBinding().volumeDialog.setVisibility(View.GONE);
+                                getBinding().rl1.setVisibility(View.GONE);
                                 boolean settingsCanWrite = Settings.System.canWrite(getActivity());
                                 if(!settingsCanWrite) {
                                     // If do not have write settings permission then open the Can modify system settings panel.
                                     Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
                                     startActivity(intent);
                                 }else {
-
+                                    //timeHandler.removeCallbacks(myRunnable);
                                      isFromBrightness = true;
 
                                     cResolver = getActivity().getContentResolver();
@@ -3199,8 +3203,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
                             } else if (intRight) {
-
+//                                getBinding().brightnessDialog.setVisibility(View.GONE);
+//                                getBinding().volumeDialog.setVisibility(View.VISIBLE);
+//                                getBinding().rl1.setVisibility(View.GONE);
                                 isFromAudio = true;
+                               // timeHandler.removeCallbacks(myRunnable);
                                 hideVolumeControl();
                                 if (diffY > 0) {
                                     getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress() - 1 < 0) ? 0 : getBinding().volumeSeek.seekBar2.getProgress() - 1);
@@ -3310,6 +3317,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         screen_swipe_move = false;
                         tested_ok         = false;
                         if (isFromAudio || isFromBrightness){
+                            callHandler();
                             isFromBrightness = false;
                             isFromAudio = false;
                         }else {
@@ -3394,8 +3402,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         if (Math.abs(diffY) > Math.abs(diffX)) {
                             // Tap in left increases/decreases brightness
                             if (intLeft) {
-
+//                                timeHandler.removeCallbacks(myRunnable);
                                 hideBrightnessControl();
+//                                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+//                                getBinding().volumeDialog.setVisibility(View.GONE);
+//                                getBinding().rl1.setVisibility(View.GONE);
                                 boolean settingsCanWrite = Settings.System.canWrite(getActivity());
                                 if(!settingsCanWrite) {
                                     // If do not have write settings permission then open the Can modify system settings panel.
@@ -3437,7 +3448,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
                             } else if (intRight) {
+//                                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+//                                getBinding().volumeDialog.setVisibility(View.GONE);
+//                                getBinding().rl1.setVisibility(View.GONE);
                                 hideVolumeControl();
+//                                timeHandler.removeCallbacks(myRunnable);
                                 isFromAudio = true;
                                 if (diffY > 0) {
                                     getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress() - 1 < 0) ? 0 : getBinding().volumeSeek.seekBar2.getProgress() - 1);
@@ -3549,6 +3564,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         tested_ok         = false;
 
                         if (isFromAudio || isFromBrightness){
+                            callHandler();
                             isFromBrightness = false;
                             isFromAudio = false;
                         }else {
@@ -3790,14 +3806,15 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void hideBrightnessControl() {
-        getBinding().rl1.setVisibility(View.GONE);
-        getBinding().playButton.setVisibility(View.GONE);
+        getBinding().rl1.setVisibility(View.VISIBLE);
+        getBinding().playerMediaControls.setVisibility(View.GONE);
+      //  getBinding().playButton.setVisibility(View.INVISIBLE);
         getBinding().seekBar.setVisibility(View.GONE);
         getBinding().currentTime.setVisibility(View.GONE);
         getBinding().totalDuration.setVisibility(View.GONE);
         getBinding().fullscreen.setVisibility(View.GONE);
-        getBinding().forward.setVisibility(View.GONE);
-        getBinding().backward.setVisibility(View.GONE);
+//        getBinding().forward.setVisibility(View.INVISIBLE);
+//        getBinding().backward.setVisibility(View.INVISIBLE);
         getBinding().pBar.setVisibility(View.GONE);
         getBinding().playericon.setVisibility(View.GONE);
         // getBinding().ivQuality.setVisibility(View.GONE);
@@ -3812,14 +3829,15 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().brightnessDialog.setVisibility(View.VISIBLE);
     }
     private void hideVolumeControl(){
-        getBinding().rl1.setVisibility(View.GONE);
-        getBinding().playButton.setVisibility(View.GONE);
+        getBinding().rl1.setVisibility(View.VISIBLE);
+        getBinding().playerMediaControls.setVisibility(View.GONE);
+      //  getBinding().playButton.setVisibility(View.INVISIBLE);
         getBinding().seekBar.setVisibility(View.GONE);
         getBinding().currentTime.setVisibility(View.GONE);
         getBinding().totalDuration.setVisibility(View.GONE);
         getBinding().fullscreen.setVisibility(View.GONE);
-        getBinding().forward.setVisibility(View.GONE);
-        getBinding().backward.setVisibility(View.GONE);
+      //  getBinding().forward.setVisibility(View.INVISIBLE);
+      //  getBinding().backward.setVisibility(View.INVISIBLE);
         getBinding().pBar.setVisibility(View.GONE);
         getBinding().playericon.setVisibility(View.GONE);
         // getBinding().ivQuality.setVisibility(View.GONE);
