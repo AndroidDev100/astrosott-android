@@ -3005,7 +3005,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (runningPlayer!=null){
                         runningPlayer.play();
                         getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                        Log.d("ftftftfftf","Enterrl");
                     }
                 }
 //                if (lockEnable) {
@@ -3220,16 +3219,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         // Releases the finger
                     case MotionEvent.ACTION_UP:
                         // User removed finger from phone
+
                         screen_swipe_move = false;
                         tested_ok         = false;
-
                         if (isFromAudio || isFromBrightness){
                             isFromBrightness = false;
                             isFromAudio = false;
                         }else {
-                            timeHandler.removeCallbacks(myRunnable);
-                            calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
-                            onStopTrackingTouch(getBinding().seekBar);
+                                calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
+                                onStopTrackingTouch(getBinding().seekBar);
+
                         }
 
 //                        calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
@@ -3386,9 +3385,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             isFromBrightness = false;
                             isFromAudio = false;
                         }else {
-                            timeHandler.removeCallbacks(myRunnable);
-                            calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
-                            onStopTrackingTouch(getBinding().seekBar);
+
+                                calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
+                                onStopTrackingTouch(getBinding().seekBar);
+
                         }
 
 
@@ -3689,6 +3689,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().nextEpisode.setVisibility(View.GONE);
         getBinding().brightnessDialog.setVisibility(View.GONE);
     }
+
 
     void clearAndReset() {
         // getBinding().lockIcon.setVisibility(View.GONE);
