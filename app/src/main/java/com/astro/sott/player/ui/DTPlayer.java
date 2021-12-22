@@ -2950,6 +2950,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             @Override
             public void onSingleClick(View view) {
 
+
                 if (drag)
                     drag = false;
 
@@ -3024,6 +3025,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             @Override
             public void onSingleClick(View view) {
 
+                getBinding().rl1.setEnabled(false);
+                getBinding().rl.setEnabled(false);
+
                 if (isPlayerStart) {
                     if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
                         getBinding().skipCredits.setVisibility(View.GONE);
@@ -3083,6 +3087,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 // viewModel.changeVideoRatio();
                 //playPauseControl();
             }
+
+
+
+
         }));
 
 
