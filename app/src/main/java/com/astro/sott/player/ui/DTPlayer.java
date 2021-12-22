@@ -3160,9 +3160,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             // Tap in left increases/decreases brightness
                             if (intLeft) {
                                 hideBrightnessControl();
-                                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
-                                getBinding().volumeDialog.setVisibility(View.GONE);
-                                getBinding().rl1.setVisibility(View.GONE);
+//                                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+//                                getBinding().volumeDialog.setVisibility(View.GONE);
+//                                getBinding().rl1.setVisibility(View.GONE);
                                 boolean settingsCanWrite = Settings.System.canWrite(getActivity());
                                 if(!settingsCanWrite) {
                                     // If do not have write settings permission then open the Can modify system settings panel.
@@ -3258,6 +3258,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                         Log.d("ftftftfftf","Enterrl1");
                                     }
                                 }
+                                getBinding().playerMediaControls.setVisibility(View.VISIBLE);
                                 clickCount = 0;
                                 duration = 0;
                             }else{
@@ -3314,15 +3315,21 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
 
-                        screen_swipe_move = false;
-                        tested_ok         = false;
+
                         if (isFromAudio || isFromBrightness){
                             callHandler();
                             isFromBrightness = false;
                             isFromAudio = false;
                         }else {
+                            Log.d("dgdgdgdgddd",screen_swipe_move+"");
+                            Log.d("dgdgdgdgddd",calculatedTime+"");
+                            if (screen_swipe_move) {
                                 calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
                                 onStopTrackingTouch(getBinding().seekBar);
+                            }
+
+                            screen_swipe_move = false;
+                            tested_ok         = false;
 
                         }
 
@@ -3504,6 +3511,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                         Log.d("ftftftfftf","Enterrl1");
                                     }
                                 }
+                                getBinding().playerMediaControls.setVisibility(View.VISIBLE);
                                 clickCount = 0;
                                 duration = 0;
                             }else{
@@ -3560,17 +3568,23 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
                         // User removed finger from phone
-                        screen_swipe_move = false;
-                        tested_ok         = false;
+//                        screen_swipe_move = false;
+//                        tested_ok         = false;
 
                         if (isFromAudio || isFromBrightness){
                             callHandler();
                             isFromBrightness = false;
                             isFromAudio = false;
                         }else {
-
+                            Log.d("dgdgdgdgddd",screen_swipe_move+"");
+                            Log.d("dgdgdgdgddd",calculatedTime+"");
+                            if (screen_swipe_move) {
                                 calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
                                 onStopTrackingTouch(getBinding().seekBar);
+                            }
+
+                            screen_swipe_move = false;
+                            tested_ok         = false;
 
                         }
 
@@ -3856,6 +3870,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().playButton.setVisibility(View.GONE);
         getBinding().seekBar.setVisibility(View.VISIBLE);
         getBinding().imagePreview.setVisibility(View.VISIBLE);
+        getBinding().playerMediaControls.setVisibility(View.GONE);
         getBinding().currentTime.setVisibility(View.GONE);
         getBinding().totalDuration.setVisibility(View.GONE);
         getBinding().fullscreen.setVisibility(View.GONE);
@@ -4523,9 +4538,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         } else if (seekBar.getId() == R.id.seekBar2) {
 
         } else {
-            getBinding().rl1.setVisibility(View.GONE);
-            getBinding().backward.setVisibility(View.GONE);
-            getBinding().forward.setVisibility(View.GONE);
+//            getBinding().rl1.setVisibility(View.GONE);
+//            getBinding().backward.setVisibility(View.GONE);
+//            getBinding().forward.setVisibility(View.GONE);
+            getBinding().playerMediaControls.setVisibility(View.VISIBLE);
             getBinding().imagePreview.setVisibility(View.GONE);
             isSkipCreditVisible = false;
             getBinding().pBar.setVisibility(View.VISIBLE);
