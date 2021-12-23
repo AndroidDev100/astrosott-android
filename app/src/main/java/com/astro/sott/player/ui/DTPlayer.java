@@ -68,10 +68,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.astro.sott.activities.loginActivity.LoginActivity;
-import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
-import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.DoubleClick;
 import com.astro.sott.callBacks.DragListner;
@@ -154,13 +151,12 @@ import com.kaltura.playkit.providers.api.phoenix.APIDefines;
 import com.kaltura.playkit.providers.base.OnMediaLoadCompletion;
 import com.kaltura.playkit.providers.ott.PhoenixMediaProvider;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -604,7 +600,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         this.asset = asset;
         if (railCommonDataList != null)
             this.railList = railCommonDataList;
-        setEventConvivaEvent(isLivePlayer, programAsset);
+
 
         isSeries = (asset.getType() == MediaTypeConstant.getEpisode(getActivity()));
         skipIntro();
@@ -617,7 +613,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().name.setText("\"" + asset.getName() + "\"");
             }
         } else if (isLivePlayer) {
-            getBinding().name.setText("\"" + Constants.channelName + "\"");
+            if (programAsset != null) {
+                getBinding().name.setText(programAsset.getName());
+            } else {
+                getBinding().name.setText(asset.getName());
+            }
+//              getBinding().name.setText("\"" + Constants.channelname + "\"");
 
         } else {
             getBinding().name.setText("\"" + asset.getName() + "\"");
@@ -660,12 +661,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
     }
 
-    private void setEventConvivaEvent(Boolean isLivePlayer, Asset programAsset) {
+    private void setEventConvivaEvent(Boolean isLivePlayer, Asset programAsset, String url) {
         String fileId = "";
         String duraton = AppCommonMethods.getDuration(asset);
         fileId = AppCommonMethods.getFileIdOfAssest(playerAsset);
         if (!isLivePlayer && !fileId.equalsIgnoreCase("")) {
-            new KsServices(baseActivity).getPlaybackContext(playerAsset.getId() + "", fileId, new PlayBackContextCallBack() {
+            ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, url, programAsset);
+          /*  new KsServices(baseActivity).getPlaybackContext(playerAsset.getId() + "", fileId, new PlayBackContextCallBack() {
                 @Override
                 public void getUrl(String url) {
                     try {
@@ -673,7 +675,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     } catch (Exception ex) {
                     }
                 }
-            });
+            });*/
         } else {
             try {
                 ConvivaManager.setreportPlaybackRequested(baseActivity, asset, duraton, isLivePlayer, "", programAsset);
@@ -975,7 +977,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                 // checkErrors(asset);
                                 checkOnlyDevice(asset);
                             } else {
-                                Toast.makeText(getActivity(), getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin),
+                                        requireActivity());
                             }
                         });
 
@@ -1298,7 +1301,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             } else {
                 getBinding().seekBar.setVisibility(View.GONE);
-                getBinding().quality.setVisibility(View.GONE);
+                getBinding().quality.setVisibility(View.VISIBLE);
 
             }
 
@@ -1588,6 +1591,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     mediaProvider = new PhoenixMediaProvider()
                             .setSessionProvider(ksSessionProvider)
                             .setAssetId(mediaId)
+                            .setPKUrlType(APIDefines.KalturaUrlType.Direct)
                             .setProtocol(PhoenixMediaProvider.HttpProtocol.Https)
                             .setContextType(APIDefines.PlaybackContextType.Catchup)
                             .setAssetType(APIDefines.KalturaAssetType.Epg)
@@ -1597,6 +1601,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     mediaProvider = new PhoenixMediaProvider()
                             .setSessionProvider(ksSessionProvider)
                             .setAssetId(mediaId)
+                            .setPKUrlType(APIDefines.KalturaUrlType.Direct)
                             .setProtocol(PhoenixMediaProvider.HttpProtocol.Https)
                             .setContextType(APIDefines.PlaybackContextType.Playback)
                             .setAssetType(APIDefines.KalturaAssetType.Media)
@@ -1607,6 +1612,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 mediaProvider = new PhoenixMediaProvider()
                         .setSessionProvider(ksSessionProvider)
                         .setAssetId(mediaId)
+                        .setPKUrlType(APIDefines.KalturaUrlType.Direct)
                         .setProtocol(PhoenixMediaProvider.HttpProtocol.Https)
                         .setContextType(APIDefines.PlaybackContextType.Catchup)
                         .setAssetType(APIDefines.KalturaAssetType.Epg)
@@ -1617,6 +1623,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 mediaProvider = new PhoenixMediaProvider()
                         .setSessionProvider(ksSessionProvider)
                         .setAssetId(mediaId)
+                        .setPKUrlType(APIDefines.KalturaUrlType.Direct)
                         .setProtocol(PhoenixMediaProvider.HttpProtocol.Https)
                         .setContextType(APIDefines.PlaybackContextType.Playback)
                         .setAssetType(APIDefines.KalturaAssetType.Media)
@@ -1637,6 +1644,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 mediaEntry.setMediaType(PKMediaEntry.MediaEntryType.Vod);
 
             }
+            String sourceUrl = mediaEntry.getSources().get(0).getUrl();
+            getKeepAliveHeaderUrl(new URL(sourceUrl));
 
 
             if (getActivity() != null && getActivity().getSystemService(Context.AUDIO_SERVICE) != null) {
@@ -2012,6 +2021,16 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         });
 
+        player.addListener(this, PlayerEvent.sourceSelected, event -> {
+            Log.d(TAG, "event received: " + event.source.getUrl());
+            try {
+                getKeepAliveHeaderUrl(new URL(event.source.getUrl()));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+        });
+
         player.addListener(this, PlayerEvent.playbackInfoUpdated, event -> {
             try {
                 long bitRate = event.playbackInfo.getVideoBitrate() / 1000;
@@ -2078,8 +2097,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     if (introStartTime != 0 && introEndTime != 0 || creditStartTime != 0 && creditEndTime != 0) {
                         Log.w("introValues", runningPlayer.getCurrentPosition() + "----" + introStartTime + "----" + playerTimeInSeconds(runningPlayer.getCurrentPosition()));
                         if (introStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > introStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < introEndTime) {
-                            getBinding().skipIntro.setText(labelIntro);
-                            getBinding().skipIntro.setVisibility(View.VISIBLE);
+                            if (asset.getType() == MediaTypeConstant.getEpisode(baseActivity) || asset.getType() == MediaTypeConstant.getMovie(baseActivity)) {
+                                getBinding().skipIntro.setText(labelIntro);
+                                getBinding().skipIntro.setVisibility(View.VISIBLE);
+                            }
                             skipValue = 1;
                             getBinding().skipRecap.setVisibility(View.GONE);
                             getBinding().skipCredits.setVisibility(View.GONE);
@@ -2090,8 +2111,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         }
 
                         if (recapStartTime == playerTimeInSeconds(runningPlayer.getCurrentPosition()) || playerTimeInSeconds(runningPlayer.getCurrentPosition()) > recapStartTime && playerTimeInSeconds(runningPlayer.getCurrentPosition()) < recapEndTime) {
-                            getBinding().skipRecap.setText(labelRecap);
-                            getBinding().skipRecap.setVisibility(View.VISIBLE);
+                            if (asset.getType() == MediaTypeConstant.getEpisode(baseActivity) || asset.getType() == MediaTypeConstant.getMovie(baseActivity)) {
+                                getBinding().skipRecap.setText(labelRecap);
+                                getBinding().skipRecap.setVisibility(View.VISIBLE);
+                            }
                             skipValue = 2;
                             getBinding().skipIntro.setVisibility(View.GONE);
                             getBinding().skipCredits.setVisibility(View.GONE);
@@ -2113,10 +2136,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                     }
 
                                 });
-                                objectAnimator.start();
-
-                                getBinding().skipCredits.setText(labelCredit);
-                                getBinding().skipCredits.setVisibility(View.VISIBLE);
+                                if (asset.getType() == MediaTypeConstant.getEpisode(baseActivity)) {
+                                    objectAnimator.start();
+                                    getBinding().skipCredits.setText(labelCredit);
+                                    getBinding().skipCredits.setVisibility(View.VISIBLE);
+                                }
                                 isPlayerSurfaceClicked = false;
                                 isSkipCreditVisible = true;
                                 isUserGeneratedCredit = false;
@@ -2404,6 +2428,41 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             exitPlayeriew(player);
         }
     }
+
+    private class DownloadFilesTask extends AsyncTask<URL, Integer, Void> {
+        protected Void doInBackground(URL... urls) {
+
+            try {
+                HttpURLConnection conn = null;
+                conn = (HttpURLConnection) urls[0].openConnection();
+                conn.setInstanceFollowRedirects(false);
+                String keepAliveURL = conn.getHeaderField("Location");
+                boolean isSuccess = !TextUtils.isEmpty(keepAliveURL) && conn.getResponseCode() == 302;
+                if (isSuccess) {
+                    getKeepAliveHeaderUrl(new URL(keepAliveURL));
+                } else {
+                    setEventConvivaEvent(isLivePlayer, programAsset, urls[0] + "");
+                    Log.d("Test", "The Final Url Is : " + urls[0]);
+                }
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
+            return null;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+        }
+
+        protected void onPostExecute(Long result) {
+            showDialog("Downloaded " + result + " bytes");
+        }
+    }
+
+    private void getKeepAliveHeaderUrl(URL url) {
+        new DownloadFilesTask().execute(url);
+    }
+
 
     public void checkFatalError() {
         adRunning = false;
@@ -3501,7 +3560,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             long duration =  System.currentTimeMillis() - startTime;
                             if(duration <= MAX_DURATION)
                             {
-                                
+
                                 if (runningPlayer.isPlaying()){
                                     pausePlayer();
                                 }else {
@@ -4444,10 +4503,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             getBinding().progressBar.setProgress(progress);
                         }
                     });
-                    objectAnimator.start();
-                    getBinding().skipCredits.setText(labelCredit);
-                    getBinding().skipCredits.setVisibility(View.VISIBLE);
-
+                    if (asset.getType() == MediaTypeConstant.getEpisode(baseActivity)) {
+                        objectAnimator.start();
+                        getBinding().skipCredits.setText(labelCredit);
+                        getBinding().skipCredits.setVisibility(View.VISIBLE);
+                    }
 
                     hideSkipIntro();
                 }
@@ -4936,12 +4996,15 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void showDialog(String message) {
-        FragmentManager fm = getFragmentManager();
-        AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(getResources().getString(R.string.dialog), message, getResources().getString(R.string.ok));
-        alertDialog.setCancelable(false);
-        alertDialog.setAlertDialogCallBack(this);
-        if (fm != null)
-            alertDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        try {
+            FragmentManager fm = getFragmentManager();
+            AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(getResources().getString(R.string.dialog), message, getResources().getString(R.string.ok));
+            alertDialog.setCancelable(false);
+            alertDialog.setAlertDialogCallBack(this);
+            if (fm != null)
+                alertDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
@@ -4949,7 +5012,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         if (isPlayerIconClick) {
             isPlayerIconClick = false;
-            new ActivityLauncher(baseActivity).loginActivity(baseActivity, LoginActivity.class, 0, "");
         } else if (isError) {
             isError = false;
             getActivity().onBackPressed();
@@ -5302,7 +5364,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 if (captionItemClick == 0) {
                     Log.w("subtitleS 2", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey() + "-----" + captionItemClick);
                     // Log.w("colorChange 2",tracks[position].getTrackName()+"  "+new KsPreferenceKey(baseActivity).getAudioLangKey());
-                    if (new KsPreferenceKey(baseActivity).getSubtitleLanguageIndex() > -1 && !new KsPreferenceKey(baseActivity).getSubTitleLangKey().equalsIgnoreCase("")) {
+                    if (!new KsPreferenceKey(baseActivity).getSubTitleLangKey().equalsIgnoreCase("")) {
                         Log.w("subtitleS 3", tracks[position].getTrackName() + "" + new KsPreferenceKey(baseActivity).getSubTitleLangKey() + "-----" + captionItemClick);
                         if (tracks[position].getTrackName().trim().equalsIgnoreCase(new KsPreferenceKey(baseActivity).getSubTitleLangKey().trim())) {
                             holder.playbackCaption.setTextColor(getResources().getColor(R.color.green));
@@ -5527,7 +5589,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         bitmapRegionDecoder.recycle();
         return previewImagesHashMap;
     }
-
 
 
 }

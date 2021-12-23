@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.astro.sott.R;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.subscriptionActivity.ui.ProfileSubscriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivitySetPasswordBinding;
@@ -23,6 +24,7 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPasswordBinding>  implements CommonDialogFragment.EditDialogListener{
@@ -111,7 +113,8 @@ public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPassword
                 if (!newMobile.equalsIgnoreCase(""))
                     updateProfile(newMobile, "mobile");
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(),SetPasswordActivity.this);
+
             }
         });
     }
@@ -130,7 +133,7 @@ public class SetPasswordActivity extends BaseBindingActivity<ActivitySetPassword
 
                 }
             } else {
-                Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
+                ToastHandler.show(updateProfileResponse.getErrorMessage() + "", SetPasswordActivity.this);
 
             }
         });

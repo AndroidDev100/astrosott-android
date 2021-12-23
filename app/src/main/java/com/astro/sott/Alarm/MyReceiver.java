@@ -11,6 +11,7 @@ import com.astro.sott.utils.helpers.AppLevelConstants;
 public class MyReceiver extends BroadcastReceiver {
     private String name = "";
     private String description = "";
+    private String dateTime = "";
     private String screen_name = "";
     private Long Id;
     private int requestcode;
@@ -22,12 +23,13 @@ public class MyReceiver extends BroadcastReceiver {
         Log.d("OnConditionCall","1");
         name = intent.getStringExtra(AppLevelConstants.Title);
         description = intent.getStringExtra(AppLevelConstants.DESCRIPTION);
+        dateTime = intent.getStringExtra(AppLevelConstants.DATETIME_REMINDER);
         Id = intent.getLongExtra(AppLevelConstants.ID,0);
         screen_name = intent.getStringExtra(AppLevelConstants.SCREEN_NAME);
         requestcode = intent.getIntExtra("requestcode",0);
      //   new KsPreferenceKeys(context).setReminderId(Id.toString(),true);
         try{
-            utils.generateNotification(context,name,description,Id,screen_name,requestcode);
+            utils.generateNotification(context,name,description,Id,screen_name,requestcode,dateTime);
             Log.d("OnConditionCall",name+ " "+description+ " "+Id+ " "+screen_name+ " "+requestcode);
         }catch(Exception e){
             e.printStackTrace();

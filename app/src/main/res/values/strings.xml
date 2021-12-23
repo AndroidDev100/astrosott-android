@@ -5,18 +5,22 @@
     <string name="title_video">Video</string>
     <string name="live_viu_tab">sooka Apps</string>
     <string name="title_more">More</string>
+    <string name="logout_success">Logout Successful!</string>
 
     <string name="no_internet_title">You are offline. Check your internet connection</string>
     <string name="no_internet">Your network seems too slow to reach \n our server</string>
-
+    <string name="payment_progress">Payment in Progress</string>
+    <string name="already_purchase">You Already Purchased This Offer</string>
+    <string name="payment_progress_desc">You currently have a pending transaction. You may retry later after the pending transaction is completed.</string>
+    <string name="already_purchase_desc">Try to refresh the screen or reopen the app to reflect your purchases. Please contact us if issue persist.</string>
     <string name="save_video_to">Save video to...</string>
     <string name="new_playlist">New Playlist</string>
     <string name="done">Done</string>
-    <string name="mobile_error">Mobile number is 11-12 numerical values, without \n spacing &amp; hyphen</string>
+    <string name="mobile_error">Mobile number is 11-12 numerical values, without \nspacing &amp; hyphen</string>
     <string name="email_mobile_error">Please enter a valid email address or mobile number.</string>
     <string name="email_error">Please enter a valid email address</string>
     <string name="valid_password">Please enter valid password</string>
-
+    <string name="no_data_sponsor">Nothing here for now. \n You can still browse our other \n contents</string>
     <string name="password_error">Password must be 8-16 characters, at least 1 number, 1 lowercase letter &amp; 1 uppercase letter.</string>
     <string name="title">Title</string>
     <string name="high">High (720p)</string>
@@ -33,11 +37,12 @@
     <string name="mobile_updated">Mobile Number Updated!</string>
     <string name="mobile_updated_failed">Mobile Number Update Failed!</string>
     <string name="mobile_updated_description_failed">Unable to update new Mobile Number. Kindly reach out to us for further assistance.</string>
-
+    <string name="unlink_desc">With a linked account, you can log in faster.</string>
     <string name="mobile_updated_description">New Mobile Number updated successfully. You may use this for future login with password.</string>
     <string name="email_updated_Description">New Email updated successfully. You may use this for future login with password.</string>
     <string name="sms">SMS</string>
     <string name="push">Push</string>
+    <string name="unlink_from">Unlink from</string>
 
     <string name="create_playlist_name_title">Create a playlist name</string>
     <string name="epg_data_not_available">There is no EPG available for selected date</string>
@@ -70,7 +75,7 @@
     <string name="shows">Shows</string>
     <string name="term_policy_new">By clicking Sign Up or any of the Social Login above, you agree to</string>
     <string name="term_policy_login">By clicking Log In or any of the Social Login above, you agree to</string>
-
+    <string name="unable_link_social">Unable to link this social account. Kindly reach out to us for further assistance.</string>
     <string name="trailer_more">Trailers &amp; More</string>
     <string name="trailer_title">Trailers</string>
     <string name="highlights">Highlights</string>
@@ -99,7 +104,11 @@
     <string name="more">More</string>
     <string name="view_more"><u>View More</u></string>
     <string name="view_less"><u>View Less</u></string>
-    <string name="subscribed_success">Subscribed Successfully</string>
+    <string name="upgrade_success">Upgrade successful!</string>
+    <string name="subscribed_success">Payment successful! Enjoy the show!</string>
+    <string name="downgrade_success">Downgrade request will be reflected next renewal cycle.</string>
+    <string name="pending_payment">Payment Pending</string>
+    <string name="pending_payment_desc">Please check back later in Transaction History at Profile page and/or check with your payment provider.</string>
     <string name="less">Less</string>
     <string name="live">Live Now</string>
     <string name="login_successfull"> Login Successful!</string>
@@ -122,13 +131,17 @@
 
     <string name="removed_from_watchlist">removed from your My List</string>
     <string name="playlist_removed">Video removed from your playlist</string>
-    <string name="checkout">Checkout</string>
+    <string name="checkout">Watch</string>
     <string name="on_Dialog">on sooka!</string>
     <string name="added_to_watchlist">added to your My List</string>
     <!--    <string name="existing_sooka_account">Existing sooka account</string>-->
     <string name="password_updated">Password Updated!</string>
     <string name="maxed_out_title">Verification Code Resend Maxed Out!</string>
     <string name="become_vip">Become a VIP</string>
+    <string name="buy">Buy</string>
+    <string name="buy_from">Buy From </string>
+
+
     <string name="subscription_upgrade">Subscription Upgrade</string>
     <string name="subscription_downgrade">Subscription Downgrade</string>
 
@@ -148,9 +161,10 @@
 
     <string name="no">No</string>
     <string name="ok_with_exlamation">Ok!!</string>
-    <string name="ok_understand">OK, Understand!</string>
+    <string name="ok_understand">Ok, understand!</string>
     <string name="go">Go</string>
     <string name="exit">Exit</string>
+    <string name="maxis_edit_restriction_title">You’re on sooka Partner Bundle Subscription</string>
     <string name="existing_sooka_account">Existing sooka Account</string>
     <string name="event_is_live">Event is live , if you want to Watch this Event Please Go</string>
     <string name="retry">Retry</string>
@@ -268,6 +282,11 @@
     <string name="dialog">sooka</string>
     <string name="lock_Episode">Lock Episodes</string>
     <string name="got_it">Got it</string>
+    <string name="maxis_edit_description">You may only update your details at our Partner portal.</string>
+
+    <string name="maxis_upgrade_downgrade_restriction_description"> You may subscribe via sooka if your partner bundle subscription is cancelled and expired.</string>
+
+    <string name="maxis_packs_restriction_description">We sooka you a lot, but you need to head back to our Partner portal to change your subscription. You may subscribe via sooka if your partner bundle subscription is cancelled and expired.</string>
     <string name="existing_user_description">Account with this email/mobile number already exist. Kindly proceed to login with the right login method.</string>
     <string name="subscribe_header">Subscribe to unlock</string>
     <string name="maxed_out_description">Sorry, you have reached the maximum number Verification Code resend. Please try again 1 hour later.</string>
@@ -277,6 +296,7 @@
     <string name="subscribe__dialog_description_logout">  Please login or create an account to complete the purchase!</string>
     <string name="new_version">New Version Available</string>
     <string name="pin_required">Pin cannot be blank</string>
+    <string name="payment_failed">Payment failed. Please try again later and/or check with your payment provider.</string>
     <string name="upgrade_description">Upgrade will be immediate and prorated upgrade price will be charged/refunded accordingly to each payment method policies.</string>
     <string name="downgrade_description">Downgrade will only take effect in the next billing cycle!</string>
     <string name="incorrect_pin">Incorrect Pin. Try again</string>
@@ -530,19 +550,22 @@
     <string name="version_more">Version1.045b</string>
     <string name="siginup_more">Sign In / Sign Up</string>
     <string name="guest_user">Guest user</string>
-    <string name="free_sooka">Free sooka</string>
+    <string name="free_sooka">sooka Free</string>
     <string name="manage_subscription">Manage Subscriptions</string>
     <string name="partner_billing">Partner Billing</string>
+    <string name="subscription_description">Subscribe to unlock all premium titles!</string>
     <string name="subscribe_more">Subscribe</string>
     <string name="upgrade">Upgrade</string>
     <string name="downgrade">Downgrade</string>
-    <string name="currently_not_active">Currently no Active Subscription</string>
+    <string name="currently_not_active">No Transaction History</string>
     <string name="add_subscription">Add Subscriptions</string>
     <string name="manage_subscription_more">Manage Subscription</string>
     <string name="renew_date">Renew on 22/2/21</string>
     <string name="transac_history">Transaction History</string>
     <string name="cancel_plan"><u>Cancel</u></string>
-    <string name="change_plan"><u>Change Plan</u></string>
+    <string name="new_plan">New plan</string>
+    <string name="downgrade_billing_description"> starts on </string>
+    <string name="change_plan">Change Plan</string>
     <string name="lang_selection">Language Selection</string>
     <string name="downloads">Downloads</string>
     <string name="mannage_device">Manage Device</string>
@@ -576,7 +599,7 @@
     <string name="edit_name">Edit Name</string>
 
     <string name="existing_name">Existing Name</string>
-    <string name="existing_email">Existing Email Address</string>
+    <string name="existing_email">Existing Email</string>
     <string name="existing_mobile">Existing Mobile Number</string>
 
     <string name="new_name">New Name</string>
@@ -595,7 +618,7 @@
     <string name="select_one">You need to make at least one selection first!</string>
     <string name="profile_txt">Profile</string>
     <string name="link_success">Linked Successfully</string>
-    <string name="unlink_success">Your account is unlinked</string>
+    <string name="unlink_success">Unlinked Successfully</string>
 
     <string name="acount_mismatch">You can not link this account</string>
     <string name="live_home">Live TV</string>
@@ -605,7 +628,7 @@
     <string name="privacy"><u>Privacy</u></string>
     <string name="privacy_policy_new"><u>Privacy Policy</u></string>
 
-
+    <string name="linked_failed">Linking Failed!</string>
     <string name="already_have_an_account">Already have an account? </string>
     <string name="password_rules">Password must be 8-16 characters, at least 1 number, 1 lowercase letter &amp; 1 uppercase letter.</string>
     <string name="verify">Verify</string>
@@ -627,6 +650,8 @@
     <string name="next">Next</string>
     <string name="sooka_superstar">sooka Superstar</string>
     <string name="otp_valid_for">The verification code is valid for</string>
+    <string name="edit_otp_valid_for">Code valid for</string>
+
     <string name="invalid_otp">The verification code you entered is invalid</string>
     <string name="sign_up_text"><u>Sign Up</u></string>
     <string name="sign_up">Sign Up</string>
@@ -665,7 +690,7 @@
     <string name="clear">Clear</string>
     <string name="apply">Apply</string>
     <string name="is_this_you">Is this you?</string>
-    <string name="email_suggestion">Enter a valid email address format. eg: example@email.com</string>
+    <string name="email_suggestion">Enter a valid email address format. eg: \nexample@email.com</string>
     <string name="is_that_you_para">Please login with your registered password \n \u0020\u0020\u0020 to continue.</string>
     <string name="proceed">Proceed</string>
     <string name="details_confirmation">Details Confirmation</string>
@@ -705,6 +730,7 @@
     <string name="next_episode">Next Episode</string>
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="privacy_polices">Privacy Policies</string>
+    <string name="edit_one_time_pass_desc">One time passcode had been sent to </string>
     <string name="onetime_pass_code_text"><![CDATA[A verification code has been sent to ]]></string>
     <string name="link"><u>Link</u></string>
     <string name="unlink"><u>Unlink</u></string>
@@ -739,6 +765,16 @@
     <string name="sub_title_live">Subtitle:</string>
     <string name="cast_live">Cast:</string>
     <string name="password_rules_new">Incorrect email/mobile number or password</string>
+
+
+    //reminder
+    <string name="reminder_added">Reminder set for</string>
+    <string name="reminder_removed">Reminder removed for</string>
+    <string name="are_you_sure_remove_reminder">Are you sure you want to remove the reminder?</string>
+    <string name="reminder_program_about_to_start">Program is about to start, in under 5 min</string>
+    <string name="reminder_cannot_set">Cannot set reminder for this program. This program is already live.</string>
+    <string name="please_enter_the_name">Please Enter the Name</string>
+    <string name="install_or_update_google_play_services">Install or Update Google Play services</string>
 
 
 </resources>

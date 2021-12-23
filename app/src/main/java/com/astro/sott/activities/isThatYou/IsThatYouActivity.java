@@ -13,11 +13,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.detailConfirmation.DetailConfirmationActivity;
 import com.astro.sott.activities.forgotPassword.ui.ForgotPasswordActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityIsThatYouBinding;
@@ -29,6 +31,7 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 
@@ -121,7 +124,10 @@ public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBind
                     accountBlockedDialog.setEditDialogCallBack(this);
                     accountBlockedDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(
+                            evergentCommonResponse.getErrorMessage(),
+                            IsThatYouActivity.this
+                    );
                 }
 
             }
@@ -160,7 +166,10 @@ public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBind
                         }
                     });
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(
+                            evergentCommonResponse.getErrorMessage(),
+                            IsThatYouActivity.this
+                    );
                 }
 
             }
@@ -225,8 +234,8 @@ public class IsThatYouActivity extends BaseBindingActivity<ActivityIsThatYouBind
                 }
                 getActiveSubscription();
             } else {
-                Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
-
+                ToastHandler.show(updateProfileResponse.getErrorMessage(),
+                        IsThatYouActivity.this);
             }
         });
     }

@@ -1,6 +1,7 @@
 package com.astro.sott.fragments.manageSubscription.ui;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +60,8 @@ public class CancelDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.cancel_dialog_fragment, container);
         if (getDialog().getWindow() != null) {
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
+                    .TRANSPARENT));
             // Get field from view
             inputLayoutDialog = view.findViewById(R.id.input_layout_dialog);
             validDate = getArguments().getString(AppLevelConstants.DATE);

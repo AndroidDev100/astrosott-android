@@ -10,6 +10,7 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.astro.sott.activities.liveEvent.LiveEventActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
@@ -18,11 +19,15 @@ import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActiv
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceStatusCallBack;
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
+import com.astro.sott.modelClasses.InApp.PackDetail;
 import com.astro.sott.networking.ksServices.KsServices;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.PacksDateLayer;
+import com.astro.sott.utils.billing.BuyButtonListener;
+import com.astro.sott.utils.billing.BuyButtonManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.conviva.sdk.ConvivaSdkConstants;
@@ -42,7 +47,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.baseModel.RailBaseFragment;
@@ -97,7 +101,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private RailCommonData railData;
     private Asset asset;
     private String vodType;
-
+    private String[] subscriptionIds;
     private int layoutType, playlistId = 1;
     private DoubleValue doubleValue;
     private boolean xofferWindowValue = false, playbackControlValue = false;
@@ -220,6 +224,9 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                        intent.putExtra("SubscriptionIdBundle", bundle);
                         startActivity(intent);
                     }
                 } else {
@@ -304,7 +311,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                                 //checkErrors();
                                 checkOnlyDevice(railData);
                             } else {
-                                Toast.makeText(MovieDescriptionActivity.this, getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin),
+                                        MovieDescriptionActivity.this);
                                 assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
 
                             }
@@ -437,76 +445,78 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     private String fileId = "";
 
     private void checkEntitleMent(final RailCommonData railCommonData) {
-        if (railData != null && railData.getObject() != null)
+        if (railData != null && railData.getObject() != null) {
             getBookmarking(railData.getObject());
 
-        fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
+            fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
 
-        new EntitlementCheck().checkAssetPurchaseStatus(MovieDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
-            this.errorCode = AppLevelConstants.NO_ERROR;
-            if (apiStatus) {
-                if (purchasedStatus) {
-                    runOnUiThread(() -> {
-                        if (playbackControlValue) {
-                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
-                            if (watchPosition > 0) {
-                                getBinding().playText.setText(getResources().getString(R.string.resume));
-                            } else {
-                                getBinding().playText.setText(getResources().getString(R.string.watch_now));
-                            }
-                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.GONE);
-                            becomeVipButtonCLicked = false;
-                            getBinding().playText.setTextColor(getResources().getColor(R.color.black));
-                        }
-
-                    });
-                    this.vodType = EntitlementCheck.FREE;
-
-                } else {
-                    if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+            new EntitlementCheck().checkAssetPurchaseStatus(MovieDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
+                this.errorCode = AppLevelConstants.NO_ERROR;
+                if (apiStatus) {
+                    if (purchasedStatus) {
                         runOnUiThread(() -> {
-                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                            getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.GONE);
-                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-                            if (becomeVipButtonCLicked) {
+                            getBinding().btnProgressBar.setVisibility(View.GONE);
+                            if (playbackControlValue) {
+                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
+                                if (watchPosition > 0) {
+                                    getBinding().playText.setText(getResources().getString(R.string.resume));
+                                } else {
+                                    getBinding().playText.setText(getResources().getString(R.string.watch_now));
+                                }
+                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                getBinding().starIcon.setVisibility(View.GONE);
                                 becomeVipButtonCLicked = false;
-                                if (UserInfo.getInstance(this).isActive()) {
-                                    if (!fileId.equalsIgnoreCase("")) {
-                                        Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                                        intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
-                                        startActivity(intent);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.black));
+                            }
+
+                        });
+                        this.vodType = EntitlementCheck.FREE;
+
+                    } else {
+                        if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
+                            runOnUiThread(() -> {
+                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                checkBuyTextButtonCondition(fileId);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                                if (becomeVipButtonCLicked) {
+                                    becomeVipButtonCLicked = false;
+                                    if (UserInfo.getInstance(this).isActive()) {
+                                        if (!fileId.equalsIgnoreCase("")) {
+                                            Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                                            intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                            startActivity(intent);
+                                        }
                                     }
                                 }
-                            }
 
-                        });
-                        this.vodType = EntitlementCheck.SVOD;
+                            });
+                            this.vodType = EntitlementCheck.SVOD;
 
-                    } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
-                        runOnUiThread(() -> {
-                            getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                            getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                            getBinding().astroPlayButton.setVisibility(View.VISIBLE);
-                            getBinding().starIcon.setVisibility(View.GONE);
-                            becomeVipButtonCLicked = false;
-                            getBinding().playText.setTextColor(getResources().getColor(R.color.white));
+                        } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
+                            runOnUiThread(() -> {
+                                getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
+                                checkBuyTextButtonCondition(fileId);
+                                getBinding().starIcon.setVisibility(View.GONE);
+                                becomeVipButtonCLicked = false;
+                                getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
 
-                        });
+                            });
 
-                        this.vodType = EntitlementCheck.TVOD;
+                            this.vodType = EntitlementCheck.TVOD;
 
 
+                        }
                     }
+
+                } else {
+
                 }
-
-            } else {
-
-            }
-        });
+            });
+        } else {
+            getBinding().btnProgressBar.setVisibility(View.GONE);
+        }
 
        /* new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
             if (status) {
@@ -535,6 +545,25 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         });
 */
 
+    }
+
+    private void checkBuyTextButtonCondition(String fileId) {
+        BuyButtonManager.getInstance().getPackages(this, "", fileId, true, (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
+            getBinding().btnProgressBar.setVisibility(View.GONE);
+            PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+            this.subscriptionIds = subscriptionIds;
+            if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.buy_from) + " " + lowestPackagePrice);
+                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+            } else if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+            } else {
+                getBinding().playText.setText(getResources().getString(R.string.buy));
+                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+
+            }
+        });
     }
 
 
@@ -1069,7 +1098,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         viewModel.deleteWatchlist(idfromAssetWatchlist).observe(MovieDescriptionActivity.this, aBoolean -> {
             if (aBoolean != null && aBoolean.getStatus()) {
                 isAdded = false;
-                Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist),
+                        MovieDescriptionActivity.this);
                 getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
                 getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
             } else {
@@ -1078,7 +1108,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 } else {
                     if (aBoolean != null && aBoolean.getErrorCode().equals(AppLevelConstants.ALREADY_UNFOLLOW_ERROR)) {
                         isAdded = false;
-                        Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist),
+                                MovieDescriptionActivity.this);
                         getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
                         getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
                     } else {
@@ -1106,7 +1137,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
     private void checkAddedCondition(CommonResponse s) {
         if (s.getStatus()) {
-            Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist), Toast.LENGTH_SHORT).show();
+            ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist),
+                    MovieDescriptionActivity.this);
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
             getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
@@ -1118,7 +1150,8 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                     showDialog(s.getMessage());
                     break;
                 case AppLevelConstants.ALREADY_FOLLOW_ERROR:
-                    Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist),MovieDescriptionActivity.this);
+
                     break;
                 default:
                     showDialog(s.getMessage());

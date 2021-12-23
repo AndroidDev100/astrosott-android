@@ -254,8 +254,6 @@ public class MySubscriptionPlanRepository {
         MutableLiveData<EvergentCommonResponse<LastSubscriptionResponse>> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
         EvergentServices.Companion.getInstance().getLastSubscripton(context, acessToken, new EvergentResponseCallBack<LastSubscriptionResponse>() {
-
-
             @Override
             public void onFailure(@NotNull String errorMessage, @NotNull String errorCode) {
                 evergentCommonResponse.setStatus(false);
@@ -274,10 +272,10 @@ public class MySubscriptionPlanRepository {
         return mutableLiveData;
     }
 
-    public LiveData<EvergentCommonResponse<AddSubscriptionResponse>> addSubscription(Context context, String acessToken, String productId, String token, String orderId) {
+    public LiveData<EvergentCommonResponse<AddSubscriptionResponse>> addSubscription(Context context, String acessToken, String productId, String token, String orderId,String status) {
         MutableLiveData<EvergentCommonResponse<AddSubscriptionResponse>> mutableLiveData = new MutableLiveData<>();
         EvergentCommonResponse evergentCommonResponse = new EvergentCommonResponse();
-        EvergentServices.Companion.getInstance().addSubscription(context, productId, token, acessToken, orderId, new EvergentResponseCallBack<AddSubscriptionResponse>() {
+        EvergentServices.Companion.getInstance().addSubscription(context, productId, token, acessToken, orderId,status, new EvergentResponseCallBack<AddSubscriptionResponse>() {
 
 
             @Override

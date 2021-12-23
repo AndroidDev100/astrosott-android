@@ -34,9 +34,10 @@
                     android:layout_marginTop="@dimen/_2sdp"
                     android:background="@drawable/episode_shadow"
                     android:gravity="center_vertical"
-                    android:paddingStart="3dp"
-                    android:paddingEnd="3dp"
-                    android:paddingBottom="5dp">
+                    android:paddingStart="2dp"
+                    android:paddingTop="1dp"
+                    android:paddingEnd="2dp"
+                    android:paddingBottom="4dp">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="155dp"

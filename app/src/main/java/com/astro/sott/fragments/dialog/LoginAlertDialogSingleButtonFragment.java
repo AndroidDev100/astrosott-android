@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.R;
 
@@ -22,7 +21,6 @@ public class LoginAlertDialogSingleButtonFragment extends DialogFragment {
 
     private String strMessage = "",strTitle="";
     private String strPositiveButtonText = "";
-    private LoginActivity baseActivity;
 
 
     public LoginAlertDialogSingleButtonFragment() {
@@ -46,7 +44,6 @@ public class LoginAlertDialogSingleButtonFragment extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        baseActivity = (LoginActivity) context;
     }
 
     public void setAlertDialogCallBack(AlertDialogListener alertDialogListener) {
@@ -68,7 +65,7 @@ public class LoginAlertDialogSingleButtonFragment extends DialogFragment {
             strPositiveButtonText = getArguments().getString(AppLevelConstants.POSITIVE_BUTTON_TEXT);
         }
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(baseActivity, R.style.AppAlertTheme);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext(), R.style.AppAlertTheme);
         // alertDialogBuilder.setTitle(getResources().getString(R.string.dialog));
         alertDialogBuilder.setTitle(strTitle);
         alertDialogBuilder.setMessage(strMessage);
@@ -87,10 +84,6 @@ public class LoginAlertDialogSingleButtonFragment extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-
-        if (baseActivity != null) {
-            baseActivity = null;
-        }
     }
 
 

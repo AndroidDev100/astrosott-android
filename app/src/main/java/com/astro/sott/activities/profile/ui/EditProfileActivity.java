@@ -1,6 +1,7 @@
 package com.astro.sott.activities.profile.ui;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -13,13 +14,19 @@ import android.widget.Toast;
 import com.astro.sott.R;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.activities.verification.VerificationActivity;
+import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.databinding.ActivityEditProfileBinding;
+import com.astro.sott.fragments.dialog.CommonDialogFragment;
+import com.astro.sott.fragments.dialog.MaxisEditRestrictionPop;
+import com.astro.sott.fragments.dialog.UnlinkDialogFragment;
+import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -40,11 +47,12 @@ import org.json.JSONException;
 import java.util.Arrays;
 import java.util.List;
 
-public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfileBinding> {
+public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfileBinding> implements MaxisEditRestrictionPop.EditDialogListener, CommonDialogFragment.EditDialogListener, UnlinkDialogFragment.EditDialogListener {
     private AstroLoginViewModel astroLoginViewModel;
     private CallbackManager callbackManager;
     private String email_mobile = "";
     private String type = "";
+    private String unlinkType = "";
     private static final String EMAIL = "email, public_profile";
 
     private List<SocialLoginTypesItem> socialLoginTypesItem;
@@ -106,17 +114,34 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             startActivity(i);
         });
         getBinding().editemail.setOnClickListener(view -> {
-            Intent i = new Intent(getApplicationContext(), EditEmailActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
+            if (UserInfo.getInstance(this).isMaxis()) {
+                FragmentManager fm = getSupportFragmentManager();
+                MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), getResources().getString(R.string.maxis_edit_description), getResources().getString(R.string.ok_understand));
+                cancelDialogFragment.setEditDialogCallBack(EditProfileActivity.this);
+                cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+            } else {
+                Intent i = new Intent(getApplicationContext(), EditEmailActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
         });
         getBinding().editMobileNo.setOnClickListener(view -> {
-            Intent i = new Intent(getApplicationContext(), EditMobileActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
+            if (UserInfo.getInstance(this).isMaxis()) {
+                FragmentManager fm = getSupportFragmentManager();
+                MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), getResources().getString(R.string.maxis_edit_description), getResources().getString(R.string.ok_understand));
+                cancelDialogFragment.setEditDialogCallBack(EditProfileActivity.this);
+                cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+            } else {
+                Intent i = new Intent(getApplicationContext(), EditMobileActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
         });
         getBinding().editpassword.setOnClickListener(view -> {
-            checkForPassword();
+            Intent i = new Intent(getApplicationContext(), EditPasswordActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+            //   checkForPassword();
 
         });
 
@@ -126,10 +151,12 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     LoginManager.getInstance().logOut();
                     getBinding().loginButton.performClick();
                 } else {
-                    Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getResources().getString(R.string.acount_mismatch), EditProfileActivity.this);
+
                 }
             } else {
-                updateProfile("null", "Facebook", false);
+                unlinkType = "Facebook";
+                unlinkDialog(getResources().getString(R.string.unlink_from) + " " + unlinkType + "?", getResources().getString(R.string.unlink_desc), getResources().getString(R.string.YES), getResources().getString(R.string.cancel));
             }
 
         });
@@ -140,14 +167,30 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                     startActivityForResult(signInIntent, 4001);
                 } else {
-                    Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getResources().getString(R.string.acount_mismatch), EditProfileActivity.this);
+
 
                 }
             } else {
-                updateProfile("null", "Google", false);
+                unlinkType = "Google";
+                unlinkDialog(getResources().getString(R.string.unlink_from) + " " + unlinkType + "?", getResources().getString(R.string.unlink_desc), getResources().getString(R.string.YES), getResources().getString(R.string.cancel));
             }
         });
 
+    }
+
+    private void unlinkDialog(String tiltle, String description, String actionBtn, String negativeActn) {
+        FragmentManager fm = getSupportFragmentManager();
+        UnlinkDialogFragment commonDialogFragment = UnlinkDialogFragment.newInstance(tiltle, description, actionBtn, negativeActn);
+        commonDialogFragment.setEditDialogCallBack(this);
+        commonDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+    }
+
+    private void commonDialog(String tiltle, String description, String actionBtn) {
+        FragmentManager fm = getSupportFragmentManager();
+        CommonDialogFragment commonDialogFragment = CommonDialogFragment.newInstance(tiltle, description, actionBtn);
+        commonDialogFragment.setEditDialogCallBack(this);
+        commonDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
     }
 
     private void checkForPassword() {
@@ -179,7 +222,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                 startActivity(intent);
 
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditProfileActivity.this);
             }
         });
     }
@@ -222,7 +265,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
             } else {
                 if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || evergentCommonResponse.getErrorCode().equalsIgnoreCase("111111111")) {
                     EvergentRefreshToken.refreshToken(EditProfileActivity.this, UserInfo.getInstance(EditProfileActivity.this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
-                        if (evergentCommonResponse.isStatus()) {
+                        if (evergentCommonResponse1.isStatus()) {
                             getContact();
                         } else {
                             AppCommonMethods.removeUserPrerences(this);
@@ -231,7 +274,8 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                         }
                     });
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditProfileActivity.this);
+
                 }
 
             }
@@ -279,16 +323,18 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                 if (email_mobile.equalsIgnoreCase(UserInfo.getInstance(this).getEmail())) {
                     updateProfile(account.getId(), type, true);
                 } else {
-                    Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
+                    commonDialog(type + " " + getResources().getString(R.string.linked_failed), getResources().getString(R.string.unable_link_social), getResources().getString(R.string.ok_single_exlamation));
+                    //Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getResources().getString(R.string.email_unavailable), EditProfileActivity.this);
 
             }
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
         } catch (ApiException e) {
-            Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+            ToastHandler.show(getResources().getString(R.string.email_unavailable), EditProfileActivity.this);
+
         }
     }
 
@@ -310,20 +356,22 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                                         email_mobile = object.getString("email");
                                         type = "Facebook";
                                         if (email_mobile != null && !email_mobile.equalsIgnoreCase("") && id != null && !id.equalsIgnoreCase("")) {
-                                            if (true) {
+                                            if (email_mobile.equalsIgnoreCase(UserInfo.getInstance(EditProfileActivity.this).getEmail())) {
                                                 updateProfile(id, type, true);
                                             } else {
-                                                Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
+                                                commonDialog(type + " " + getResources().getString(R.string.linked_failed), getResources().getString(R.string.unable_link_social), getResources().getString(R.string.ok_single_exlamation));
+                                                //  Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
-                                            Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                                        ToastHandler.show(getResources().getString(R.string.email_unavailable),EditProfileActivity.this);
                                         }
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                 } else {
-                                    Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                                    ToastHandler.show(getResources().getString(R.string.email_unavailable), EditProfileActivity.this);
+
                                     LoginManager.getInstance().logOut();
                                 }
                             }
@@ -359,26 +407,30 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     if (isLinking) {
                         UserInfo.getInstance(this).setFbLinked(true);
                         getBinding().linkFb.setText(getResources().getString(R.string.unlink));
-                        Toast.makeText(this, getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(type + " " + getResources().getString(R.string.link_success),
+                                EditProfileActivity.this);
                     } else {
                         UserInfo.getInstance(this).setFbLinked(false);
                         getBinding().linkFb.setText(getResources().getString(R.string.link));
-                        Toast.makeText(this, getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(type + " " + getResources().getString(R.string.unlink_success),
+                                EditProfileActivity.this);
                     }
                 } else if (type.equalsIgnoreCase("Google")) {
                     if (isLinking) {
-                        Toast.makeText(this, getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(type + " " + getResources().getString(R.string.link_success),
+                                EditProfileActivity.this);
                         UserInfo.getInstance(this).setGoogleLinked(true);
                         getBinding().linkGoogle.setText(getResources().getString(R.string.unlink));
                     } else {
                         UserInfo.getInstance(this).setGoogleLinked(false);
                         getBinding().linkGoogle.setText(getResources().getString(R.string.link));
-                        Toast.makeText(this, getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(type + " " + getResources().getString(R.string.unlink_success), EditProfileActivity.this);
                     }
                 }
 
             } else {
-                Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
+                ToastHandler.show(updateProfileResponse.getErrorMessage() + "", EditProfileActivity.this);
+
 
             }
         });
@@ -391,5 +443,20 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+    }
+
+    @Override
+    public void onFinishEditDialog() {
+
+    }
+
+    @Override
+    public void onActionBtnClicked() {
+
+    }
+
+    @Override
+    public void unlinkBtnClicked() {
+        updateProfile("null", unlinkType, false);
     }
 }

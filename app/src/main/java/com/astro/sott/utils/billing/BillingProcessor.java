@@ -244,11 +244,11 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                 PrintLogging.printLog(TAG, "onPurchasesUpdate() responseCode: " + billingResult.getResponseCode() + "-----------" + purchase);
             }
         }*/
-        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
             if (inAppProcessListener != null) {
                 inAppProcessListener.onPurchasesUpdated(billingResult, purchases);
 
-                try {
+              /*  try {
                     if (purchaseType != null && !purchaseType.equalsIgnoreCase("") && purchaseType.equalsIgnoreCase(PurchaseType.SUBSCRIPTION.name())) {
                         if (myBillingClient != null && myBillingClient.isReady()) {
                             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
@@ -265,7 +265,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                     }
                 } catch (Exception e) {
 
-                }
+                }*/
 
             }
             //  processPurchases(purchases);
@@ -791,6 +791,56 @@ public class BillingProcessor implements PurchasesUpdatedListener {
     PurchaseDetailListener callBack;
     SkuDetails oldSkuDetails = null;
 
+
+    public boolean pendingSubscription(Activity context) {
+        if (UserInfo.getInstance(context).isActive()) {
+            if (myBillingClient != null) {
+                final Purchase.PurchasesResult purchasesResult =
+                        myBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+
+                final List<Purchase> purchases = new ArrayList<>();
+                if (purchasesResult.getPurchasesList() != null) {
+                    purchases.addAll(purchasesResult.getPurchasesList());
+                }
+                if (purchases.size() > 0) {
+                    for (Purchase purchaseItem : purchases) {
+                        if (purchaseItem.getPurchaseState() == 4) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+        }
+        return false;
+
+    }
+
+    public boolean pendingProduct(Activity context) {
+        if (UserInfo.getInstance(context).isActive()) {
+            if (myBillingClient != null) {
+                final Purchase.PurchasesResult purchasesResult =
+                        myBillingClient.queryPurchases(BillingClient.SkuType.INAPP);
+
+                final List<Purchase> purchases = new ArrayList<>();
+                if (purchasesResult.getPurchasesList() != null) {
+                    purchases.addAll(purchasesResult.getPurchasesList());
+                }
+                if (purchases.size() > 0) {
+                    for (Purchase purchaseItem : purchases) {
+                        if (purchaseItem.getPurchaseState() == 4) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+        }
+        return false;
+
+    }
+
+
     public void queryPurchases(Activity context, PurchaseDetailListener call) {
         if (UserInfo.getInstance(context).isActive()) {
             if (myBillingClient != null) {
@@ -852,8 +902,11 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                         try {
                             JSONObject jsonObject = new JSONObject(purchaseItem.getOriginalJson());
                             Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
-                            if (!isAcknowledged) {
-                                acknowledgeNonConsumablePurchases(purchaseItem);
+                            String accountId = jsonObject.getString("obfuscatedAccountId");
+                            if (accountId.equalsIgnoreCase(UserInfo.getInstance(context).getCpCustomerId())) {
+                                if (!isAcknowledged) {
+                                    inAppProcessListener.onAcknowledged(purchaseItem.getSku(), purchaseItem.getPurchaseToken(), purchaseItem.getOrderId());
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -862,9 +915,43 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
                 } else {
                 }
+
+                queryPurchaseProduct(context);
+
             }
         }
 
+    }
+
+    private void queryPurchaseProduct(Activity context) {
+        final Purchase.PurchasesResult purchasesProductResult =
+                myBillingClient.queryPurchases(BillingClient.SkuType.INAPP);
+
+        final List<Purchase> purchasesArraylist = new ArrayList<>();
+        if (purchasesProductResult.getPurchasesList() != null) {
+            purchasesArraylist.addAll(purchasesProductResult.getPurchasesList());
+        }
+
+        if (purchasesArraylist.size() > 0) {
+            for (Purchase purchaseProductItem : purchasesArraylist) {
+                try {
+
+                    JSONObject jsonObject = new JSONObject(purchaseProductItem.getOriginalJson());
+                    Boolean isAcknowledged = jsonObject.getBoolean("acknowledged");
+                    String accountId = jsonObject.getString("obfuscatedAccountId");
+                 //   handleConsumablePurchasesAsync(purchaseProductItem);
+                    if (accountId.equalsIgnoreCase(UserInfo.getInstance(context).getCpCustomerId())) {
+                        if (!isAcknowledged) {
+                            inAppProcessListener.onAcknowledged(purchaseProductItem.getSku(), purchaseProductItem.getPurchaseToken(), purchaseProductItem.getOrderId());
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+        }
     }
 
 

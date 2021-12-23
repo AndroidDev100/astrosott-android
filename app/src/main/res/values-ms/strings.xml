@@ -201,7 +201,7 @@
 
     <string name="removed_from_watchlist">removed from your playlist</string>
     <string name="playlist_removed">Video removed from your playlist</string>
-    <string name="checkout">Checkout</string>
+    <string name="checkout">Watch</string>
     <string name="on_Dialog">on Dialog SOTT!</string>
     <string name="added_to_watchlist">added to your playlist</string>
 
@@ -558,6 +558,15 @@
     <string name="dashes_long">.........</string>
     <string name="load_more">Load More</string>
     <string name="watch_movie">Watch Movie</string>
+
+
+    //reminder
+    <string name="reminder_added">Reminder set for</string>
+    <string name="reminder_removed">Reminder removed for</string>
+    <string name="are_you_sure_remove_reminder">Are you sure you want to remove the reminder?</string>
+    <string name="reminder_program_about_to_start">Program is about to start, in under 5 min</string>
+    <string name="reminder_cannot_set">Cannot set reminder for this program. This program is already live.</string>
+
 
 
 </resources>

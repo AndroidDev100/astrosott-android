@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.adapter.CommonLandscapeAdapter;
 import com.astro.sott.adapter.CommonPotraitAdapter;
 import com.astro.sott.adapter.CommonSquareAapter;
@@ -777,14 +776,6 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
 //                    PrintLogging.printLog("", "mediatypeClick-->>" + slides.get(i).getRailCommonData().getObject().getType() + "");
                     int pos = (int) l;
                     if (dataList.get(pos).getSlides()!=null&&dataList.get(pos).getSlides().get(i).getRailCommonData().getObject().getType() == MediaTypeConstant.getIFP(activity)) {
-                        /*boolean status = new KsPreferenceKeys(activity).getUserActive();
-                        if (status) {
-                            new ActivityLauncher(activity).ifpActivity(activity, IFPActivity.class);
-                        } else {
-                            new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 1);
-                        }*/
-
-                        new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 0,"");
                     } else {
                         int layoutType = AppCommonMethods.getRailTypeAccToMedia(activity,getLayoutPosition(), dataList, i);
 
@@ -914,13 +905,6 @@ public class MovieDescriptionCommonAdapter extends RecyclerView.Adapter<Recycler
 //                    PrintLogging.printLog("", "mediatypeClick-->>" + slides.get(i).getRailCommonData().getObject().getType() + "");
                     int pos = (int) l;
                     if (dataList.get(pos).getSlides().get(i).getRailCommonData().getObject().getType() == MediaTypeConstant.getIFP(activity)) {
-                       /* boolean status = new KsPreferenceKeys(activity).getUserActive();
-                        if (status) {
-                            new ActivityLauncher(activity).ifpActivity(activity, IFPActivity.class);
-                        } else {
-                            new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 1);
-                        }*/
-                        new ActivityLauncher(activity).loginActivity(activity, LoginActivity.class, 0,"");
 
                     } else {
                         int layoutType = AppCommonMethods.getRailTypeAccToMedia(activity,getLayoutPosition(), dataList, i);

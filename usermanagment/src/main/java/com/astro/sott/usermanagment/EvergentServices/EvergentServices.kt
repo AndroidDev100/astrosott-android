@@ -623,7 +623,10 @@ class EvergentServices {
         }
 
         devicejson.addProperty("serialNo", getDeviceId(context.contentResolver))
-        devicejson.addProperty("deviceName",  Settings.Global.getString(context.contentResolver, Settings.Global.DEVICE_NAME))
+        devicejson.addProperty(
+            "deviceName",
+            Settings.Global.getString(context.contentResolver, Settings.Global.DEVICE_NAME)
+        )
         if (isTablet) {
             devicejson.addProperty("deviceType", "ANDROID_TABLET")
         } else {
@@ -927,9 +930,9 @@ class EvergentServices {
 
         var createUserJson = JsonObject()
         var json = JsonObject()
-        /*if (from.equals("profile", true)) {*/
-        json.addProperty("returnLiveEvents", "F")
-        /*  }*/
+        if (!from.equals("Live Event", true)) {
+            json.addProperty("returnLiveEvents", "F")
+        }
         createUserJson.add("GetActiveSubscriptionsRequestMessage", json)
 
 
@@ -1005,18 +1008,18 @@ class EvergentServices {
                 call: Call<LastSubscriptionResponse?>,
                 response: Response<LastSubscriptionResponse?>
             ) {
-                if (response.body() != null && response.body()?.getLastSubscriptionsResponseMessage != null && response.body()?.getLastSubscriptionsResponseMessage?.responseCode != null) {
+                if (response.body() != null && response.body()?.getLastSubscriptionResponseMessage != null && response.body()?.getLastSubscriptionResponseMessage?.responseCode != null) {
 
-                    if (response.body()?.getLastSubscriptionsResponseMessage?.responseCode.equals(
+                    if (response.body()?.getLastSubscriptionResponseMessage?.responseCode.equals(
                             "1",
                             true
                         )
                     ) {
                         evergentGetDeviceCallback.onSuccess(response.body()!!);
                     } else {
-                        if (response.body()?.getLastSubscriptionsResponseMessage?.failureMessage != null) {
+                        if (response.body()?.getLastSubscriptionResponseMessage?.failureMessage != null) {
                             var errorModel = EvergentErrorHandling().getErrorMessage(
-                                response.body()?.getLastSubscriptionsResponseMessage?.failureMessage,
+                                response.body()?.getLastSubscriptionResponseMessage?.failureMessage,
                                 context
                             )
                             evergentGetDeviceCallback.onFailure(
@@ -1046,7 +1049,7 @@ class EvergentServices {
         productId: String,
         token: String,
         acessToken: String,
-        orderId: String,
+        orderId: String, status: String,
         evergentGetDeviceCallback: EvergentResponseCallBack<AddSubscriptionResponse>
     ) {
 
@@ -1061,6 +1064,9 @@ class EvergentServices {
         var paymentMethodJson = JsonObject()
         var transactionRefMsgJson = JsonObject()
         json.addProperty(CHANNEL_PARTNER_ID, CHANNEL_PARTNER_ID_VALUE)
+        if (status.equals("Pending", true)) {
+            json.addProperty("status", status)
+        }
         json.addProperty("cpCustomerID", "")
         json.addProperty("rateType", "")
         json.addProperty(SERVICE_TYPE, SERVICE_TYPE_VALUE)
@@ -1345,7 +1351,7 @@ class EvergentServices {
 
 
         val apiInterface = EvergentNetworkClass().client?.create(EvergentApiInterface::class.java)
-        val call = apiInterface?.getProducts("Bearer $accessToken", createUserJson)
+        val call = apiInterface?.getProducts(createUserJson)
         call?.enqueue(object : Callback<GetProductResponse?> {
             override fun onFailure(call: Call<GetProductResponse?>, t: Throwable) {
                 evergentRefreshToken.onFailure("Something Went Wrong", "")

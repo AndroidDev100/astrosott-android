@@ -78,6 +78,7 @@ public class VIUChannel implements Parcelable {
     private Object isAnonymousUser;
     private Object isLoggedInUser;
     private Asset asset;
+    private int sizeofFilter;
     private BaseCategory category;
     private String kalturaOTTImageType;
 
@@ -140,6 +141,9 @@ public class VIUChannel implements Parcelable {
             this.isAnonymousUser = category.isAnonymousUser() == null ? "" : category.isAnonymousUser();
             this.isLoggedInUser = category.isLoggedInUser() == null ? "" : category.isLoggedInUser();
             this.kalturaOTTImageType = category.getKalturaOTTImageType() == null ? "" : (String) category.getKalturaOTTImageType();
+            if (filter!=null && filter instanceof ArrayList){
+                sizeofFilter=((ArrayList<?>) filter).size();
+            }
 
         } catch (Exception e) {
             PrintLogging.printLog("", "crash-->" + "ViuChannel");
@@ -549,6 +553,14 @@ public class VIUChannel implements Parcelable {
         this.adWidth = adWidth;
     }
 
+    public void setSizeofFilter(int sizeofFilter) {
+        this.sizeofFilter = sizeofFilter;
+    }
+
+    public int getSizeofFilter() {
+        return sizeofFilter;
+    }
+
     public String getContentImageType() {
         return contentImageType;
     }
@@ -736,6 +748,7 @@ public class VIUChannel implements Parcelable {
         dest.writeByte(this.isSortable ? (byte) 1 : (byte) 0);
         dest.writeLong(this.id);
         dest.writeInt(this.widgetType);
+        dest.writeInt(this.sizeofFilter);
         dest.writeString(this.description);
         dest.writeString(this.kalturaOTTImageType);
         dest.writeString(this.name);
@@ -783,6 +796,7 @@ public class VIUChannel implements Parcelable {
         this.isSortable = in.readByte() != 0;
         this.id = in.readLong();
         this.widgetType = in.readInt();
+        this.sizeofFilter = in.readInt();
         this.description = in.readString();
         this.kalturaOTTImageType = in.readString();
         this.name = in.readString();

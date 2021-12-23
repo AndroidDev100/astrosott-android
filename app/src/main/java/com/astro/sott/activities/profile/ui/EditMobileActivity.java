@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.astro.sott.R;
 import com.astro.sott.activities.confirmPassword.ui.ConfirmPasswordActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
-import com.astro.sott.activities.verification.VerificationActivity;
+import com.astro.sott.activities.parentalControl.ui.ParentalControl;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityEditEmailBinding;
@@ -25,6 +25,7 @@ import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -205,7 +206,8 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
                 createOtp();
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
-                Toast.makeText(this, checkCredentialResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(checkCredentialResponse.getErrorMessage(), EditMobileActivity.this);
+
             }
         });
     }
@@ -216,9 +218,10 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
         astroLoginViewModel.createOtp(type, newMobile).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
                 getBinding().progressBar.setVisibility(View.GONE);
-                Intent intent = new Intent(this, VerificationActivity.class);
+                Intent intent = new Intent(this, EditVerificationActivity.class);
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type);
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, newMobile);
+                intent.putExtra(AppLevelConstants.SCREEN_FROM,  getBinding().title.getText().toString());
                 if (!newMobile.equalsIgnoreCase(""))
                     intent.putExtra("newMobile", newMobile);
                 intent.putExtra(AppLevelConstants.PASSWORD_KEY, password);
@@ -226,7 +229,8 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
                 startActivity(intent);
             } else {
                 getBinding().progressBar.setVisibility(View.GONE);
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditMobileActivity.this);
+
             }
         });
 
@@ -239,34 +243,36 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
                 if (evergentCommonResponse.isStatus()) {
                     //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(this, VerificationActivity.class);
+                    Intent intent = new Intent(this, EditVerificationActivity.class);
                     intent.putExtra(AppLevelConstants.TYPE_KEY, "mobile");
+                    intent.putExtra(AppLevelConstants.SCREEN_FROM,  getBinding().title.getText().toString());
                     intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, UserInfo.getInstance(this).getEmail());
                     intent.putExtra("newMobile", mobile);
                     intent.putExtra(AppLevelConstants.PASSWORD_KEY, "");
                     intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD);
                     startActivity(intent);
 
-
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditMobileActivity.this);
                 }
             });
         } else {
             astroLoginViewModel.createOtp("mobile", mobile).observe(this, evergentCommonResponse -> {
 
                 if (evergentCommonResponse.isStatus()) {
-                    Intent intent = new Intent(this, VerificationActivity.class);
+                    Intent intent = new Intent(this, EditVerificationActivity.class);
                     intent.putExtra(AppLevelConstants.TYPE_KEY, "mobile");
                     intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, mobile);
                     intent.putExtra("newMobile", mobile);
+                    intent.putExtra(AppLevelConstants.SCREEN_FROM, getBinding().title.getText().toString());
                     intent.putExtra(AppLevelConstants.PASSWORD_KEY, "");
                     intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD);
                     startActivity(intent);
 
 
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditMobileActivity.this);
+
                 }
             });
         }

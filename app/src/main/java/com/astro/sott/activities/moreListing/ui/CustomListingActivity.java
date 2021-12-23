@@ -6,14 +6,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.moreListing.filter.ListingFilterActivity;
 import com.astro.sott.activities.myList.viewModel.MyWatchlistViewModel;
+import com.astro.sott.activities.search.ui.ActivitySearch;
+import com.astro.sott.activities.search.ui.SearchKeywordActivity;
 import com.astro.sott.adapter.experiencemng.CommonLandscapeListingAdapteNew;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.VIUChannel;
@@ -22,10 +27,13 @@ import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
 import com.astro.sott.callBacks.commonCallBacks.DetailRailClick;
 import com.astro.sott.databinding.ActivityCustomListingBinding;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.constants.AppConstants;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.GridSpacingItemDecoration;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 
 
 import java.util.ArrayList;
@@ -40,7 +48,7 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
     private int count = 1, totalCOunt = 0, counter = 1;
     private int pastVisiblesItems, visibleItemCount, totalItemCount, firstVisiblePosition;
     int spanCount;
-
+    private long lastClickTime = 0;
     private MyWatchlistViewModel viewModel;
     private AssetCommonBean assetCommonBean;
     private String customMediaType = "", customRailType = "", customGenre = "", customGenreRule = "", customDays = "", customLinearAssetId = "", title = "";
@@ -55,6 +63,20 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
         super.onCreate(savedInstanceState);
         assetCommonBean = getIntent().getExtras().getParcelable("assetCommonBean");
         category = getIntent().getExtras().getParcelable("baseCategory");
+        getBinding().toolbar.ivfilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isApiCalling){
+                    if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                        return;
+                    }
+                    lastClickTime = SystemClock.elapsedRealtime();
+                    Intent intent = new Intent(CustomListingActivity.this, ListingFilterActivity.class);
+                    startActivity(intent);
+                }
+
+            }
+        });
         if (assetCommonBean != null) {
             title = assetCommonBean.getTitle();
             if (assetCommonBean.getCustomGenre() != null)
@@ -71,6 +93,11 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
                 customDays = assetCommonBean.getCustomDays();
         }
         FirebaseEventManager.getFirebaseInstance(CustomListingActivity.this).trackScreenName(title + " Listing");
+        try {
+            AppCommonMethods.resetFilter(CustomListingActivity.this);
+        }catch (Exception ignored){
+
+        }
         connectionObserver();
     }
 
@@ -97,14 +124,23 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
 
     }
 
-
+    boolean isApiCalling=false;
     private void loadData() {
         getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().noDataLayout.setVisibility(View.GONE);
+        getBinding().recyclerViewMore.setVisibility(View.VISIBLE);
         if (customRailType.equalsIgnoreCase(AppLevelConstants.TRENDING)) {
+            //need to apply filter-->>icon will always show
+            getBinding().toolbar.ivfilter.setVisibility(View.VISIBLE);
+            isApiCalling=true;
             getTrendingListing();
         } else if (customRailType.equalsIgnoreCase(AppLevelConstants.PPV_RAIL)) {
+            getBinding().toolbar.ivfilter.setVisibility(View.GONE);
             getPPVLiSTING();
         } else if (customRailType.equalsIgnoreCase(AppLevelConstants.LIVECHANNEL_RAIL)) {
+            //need to apply filter-->>icon will always show
+            getBinding().toolbar.ivfilter.setVisibility(View.VISIBLE);
+            isApiCalling=true;
             getEpgListing();
         }
     }
@@ -112,10 +148,17 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
     private void getTrendingListing() {
         viewModel.getTrendingListing(customMediaType, customGenre, customGenreRule, counter).observe(this, assetListResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
+            isApiCalling=false;
             if (assetListResponse != null && assetListResponse.size() > 0) {
                 totalCOunt = assetListResponse.get(0).getTotalCount();
                 arrayList.addAll(assetListResponse);
                 setUiComponent();
+            }else {
+                if (counter == 1) {
+                    getBinding().recyclerViewMore.setVisibility(View.GONE);
+                    getBinding().noDataLayout.setVisibility(View.VISIBLE);
+                    getBinding().noData.retryTxt.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -124,10 +167,17 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
 
         viewModel.getEpgListing(customDays, customLinearAssetId, counter).observe(this, assetListResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
+            isApiCalling=false;
             if (assetListResponse != null && assetListResponse.size() > 0) {
                 totalCOunt = assetListResponse.get(0).getTotalCount();
                 arrayList.addAll(assetListResponse);
                 setUiComponent();
+            }else {
+                if (counter == 1) {
+                    getBinding().recyclerViewMore.setVisibility(View.GONE);
+                    getBinding().noDataLayout.setVisibility(View.VISIBLE);
+                    getBinding().noData.retryTxt.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -178,15 +228,21 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
     private CommonLandscapeListingAdapteNew commonLandscapeListingAdapteNew;
 
     private void setUiComponent() {
-        if (commonLandscapeListingAdapteNew == null) {
-            commonLandscapeListingAdapteNew = new CommonLandscapeListingAdapteNew(this, arrayList, AppConstants.Rail5, assetCommonBean.getTitle(), category.getCategory());
-            getBinding().recyclerViewMore.setAdapter(commonLandscapeListingAdapteNew);
-            mIsLoading = commonLandscapeListingAdapteNew.getItemCount() != totalCOunt;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (commonLandscapeListingAdapteNew == null) {
+                    commonLandscapeListingAdapteNew = new CommonLandscapeListingAdapteNew(CustomListingActivity.this, arrayList, AppConstants.Rail5, assetCommonBean.getTitle(), category.getCategory());
+                    getBinding().recyclerViewMore.setAdapter(commonLandscapeListingAdapteNew);
+                    mIsLoading = commonLandscapeListingAdapteNew.getItemCount() != totalCOunt;
 
-        } else {
-            mIsLoading = commonLandscapeListingAdapteNew.getItemCount() != totalCOunt;
-            commonLandscapeListingAdapteNew.notifyDataSetChanged();
-        }
+                } else {
+                    mIsLoading = commonLandscapeListingAdapteNew.getItemCount() != totalCOunt;
+                    commonLandscapeListingAdapteNew.notifyDataSetChanged();
+                }
+            }
+        });
+
     }
 
     private void UIinitialization() {
@@ -229,5 +285,25 @@ public class CustomListingActivity extends BaseBindingActivity<ActivityCustomLis
     @Override
     public void detailItemClicked(String _url, int position, int type, RailCommonData commonData) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (!KsPreferenceKey.getInstance(CustomListingActivity.this).getFilterApply().equalsIgnoreCase("")) {
+                if (KsPreferenceKey.getInstance(CustomListingActivity.this).getFilterApply().equalsIgnoreCase("true")) {
+                    KsPreferenceKey.getInstance(CustomListingActivity.this).setFilterApply("false");
+                    mIsLoading=true;
+                    commonLandscapeListingAdapteNew=null;
+                    arrayList.clear();
+                    counter=1;
+                    totalCOunt=0;
+                    loadData();
+                }
+            }
+        }catch (Exception ignored){
+
+        }
     }
 }

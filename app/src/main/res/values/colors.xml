@@ -108,6 +108,7 @@
     <color name="edit_text_blue_bg">#0e0f24</color>
     <color name="ribbon_color">#1571db</color>
     <color name="ribbon_color_new">#ffb400</color>
+    <color name="cancel_text_color">#5c4672</color>
     <color name="neon_green">#13ff78</color>
     <color name="dark_blue">#3367d6</color>
     <color name="light_blue">#3975ea</color>
@@ -140,7 +141,7 @@
     <color name="pin_error_line_color">#f42d5b</color>
     <color name="ribben_text_color">#151024</color>
     <color name="pack_bg_color">#151024</color>
-    <color name="episode_shadow">#80000000</color>
+    <color name="episode_shadow">#33000000</color>
 
 
     <color name="black_text_color">#262C40</color>

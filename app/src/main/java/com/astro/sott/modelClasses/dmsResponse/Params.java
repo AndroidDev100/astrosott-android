@@ -137,7 +137,9 @@ public class Params {
     @Expose
     private AdTagURL AdTagURL;
 
-
+    @SerializedName("LinearAdTagURL")
+    @Expose
+    private AdTagURL LinearAdTagURL;
     public ZendeskURL getZendeskURL() {
         return zendeskURL;
     }
@@ -210,6 +212,10 @@ public class Params {
     @Expose
     private String highBitRatemaxLimit;
 
+
+    public com.astro.sott.modelClasses.dmsResponse.AdTagURL getLinearAdTagURL() {
+        return LinearAdTagURL;
+    }
 
     public com.astro.sott.modelClasses.dmsResponse.AdTagURL getAdTagURL() {
         return AdTagURL;

@@ -1,8 +1,11 @@
 package com.astro.sott.utils.helpers;
 
 import android.content.Context;
+
 import androidx.databinding.BindingAdapter;
+
 import android.text.format.DateFormat;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -20,6 +23,7 @@ public class ResultAllXmlUtils {
         String titleValue = items.getName();
         return titleValue.trim();
     }
+
 
 
     public static String getStartDate(long timeAsset) {

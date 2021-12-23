@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -191,12 +192,12 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             holder.season.setText(mContext.getResources().getString(R.string.season) + " " + list.get(position).toString());
             if (selectedIndex == position) {
                 holder.season.setTextColor(mContext.getResources().getColor(R.color.green));
-                //holder.season.setTextSize(getResources().getDimension(R.dimen.large_text_size));
+                holder.season.setTextSize(20);
                 Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
                 holder.season.setTypeface(boldTypeface);
             } else {
                 holder.season.setTextColor(mContext.getResources().getColor(R.color.white));
-                //holder.season.setTextSize(getResources().getDimension(R.dimen.large_text_size));
+                holder.season.setTextSize(16);
                 Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.NORMAL);
                 holder.season.setTypeface(boldTypeface);
             }
@@ -254,18 +255,20 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
             if (position + 1 == tOtalPages) {
-                holder.season.setText("EPISODE " + startNo + " - " + totalData);
+                holder.season.setText("Episode " + startNo + " - " + totalData);
             } else {
-                holder.season.setText("EPISODE " + startNo + " - " + endNo);
+                holder.season.setText("Episode " + startNo + " - " + endNo);
             }
             startNo += 20;
             endNo += 20;
             if (selectedIndex == position) {
                 holder.season.setTextColor(mContext.getResources().getColor(R.color.green));
+                holder.season.setTextSize(20);
                 Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
                 holder.season.setTypeface(boldTypeface);
             } else {
                 holder.season.setTextColor(mContext.getResources().getColor(R.color.white));
+                holder.season.setTextSize(16);
                 Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.NORMAL);
                 holder.season.setTypeface(boldTypeface);
             }
@@ -386,7 +389,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             getBinding().season.setVisibility(View.VISIBLE);
             total = openSeriesData.get(0).getTotalCount();
             if ((totalCount > 20)) {
-                getBinding().seasonText.setText("EPISODE 1 - 20");
+                getBinding().seasonText.setText("Episode 1 - 20");
 //
             } else {
 //                getBinding().seasonText.setText("EPISODE 1 - " + total);
@@ -424,7 +427,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         View content = inflater.inflate(R.layout.season_custom_dialog, null);
         builder.setView(content);
         RecyclerView mRecyclerView = content.findViewById(R.id.my_recycler_view);
-        ImageView imageView = content.findViewById(R.id.close);
+        FrameLayout imageView = content.findViewById(R.id.close);
         imageView.setOnClickListener(v -> {
             alertDialog.cancel();
         });
@@ -456,7 +459,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
         View content = inflater.inflate(R.layout.season_custom_dialog, null);
         builder.setView(content);
         RecyclerView mRecyclerView = content.findViewById(R.id.my_recycler_view);
-        ImageView imageView = content.findViewById(R.id.close);
+        FrameLayout imageView = content.findViewById(R.id.close);
         imageView.setOnClickListener(v -> {
             alertDialog.cancel();
         });

@@ -42,7 +42,7 @@
     <string name="invalid_contactid">Invalid ContactId</string>
     <string name="invalid_gender">Invalid gender</string>
     <string name="password_change_failed">Sorry, your current password is incorrect, please try again!</string>
-    <string name="password_changed">You have successfully updated your password. All other registered devices will be auto logout for security purposes.</string>
+    <string name="password_changed">You have successfully updated your password. All other registered devices will be auto logged out for security purposes.</string>
     <string name="middle_name_exceeds">Middle Name length should not exceed 1</string>
     <string name="invalid_mobile">Invalid  Mobile Phone</string>
     <string name="username_exists">User already exists with the given mobile number</string>

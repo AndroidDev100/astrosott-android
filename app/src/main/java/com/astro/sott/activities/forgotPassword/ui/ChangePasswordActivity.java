@@ -22,6 +22,7 @@ import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 
 public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePasswordBinding> implements PasswordChangedDialog.EditDialogListener {
     private String token = "";
@@ -49,6 +50,9 @@ public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePa
     private void setCLicks() {
 
         setTextWather();
+        getBinding().backArrow.setOnClickListener(v -> {
+            onBackPressed();
+        });
         getBinding().update.setOnClickListener(view -> {
             String newPassword = getBinding().newPasswordEdt.getText().toString();
             String confirmPassword = getBinding().confirmPasswordEdt.getText().toString();
@@ -175,7 +179,10 @@ public class ChangePasswordActivity extends BaseBindingActivity<ActivityChangePa
                 cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
 
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(
+                        evergentCommonResponse.getErrorMessage(),
+                        ChangePasswordActivity.this
+                );
             }
         });
     }

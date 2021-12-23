@@ -35,7 +35,7 @@ public class SearchKeywordAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<SearchedKeywords> searchedKeywordsList;
     ArrayList<FilterLanguages> filterLanguageList;
 
-    public SearchKeywordAdapter(SearchKeywordActivity ctx, List<SearchedKeywords> searchedKeywords, ArrayList<FilterLanguages> filterLangList) {
+    public SearchKeywordAdapter(Activity ctx, List<SearchedKeywords> searchedKeywords, ArrayList<FilterLanguages> filterLangList) {
         this.context= ctx;
         this.searchedKeywordsList=searchedKeywords;
         this.filterLanguageList=filterLangList;

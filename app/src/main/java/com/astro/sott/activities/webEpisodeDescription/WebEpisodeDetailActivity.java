@@ -23,6 +23,8 @@ import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.PacksDateLayer;
+import com.astro.sott.utils.billing.BuyButtonManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.conviva.sdk.ConvivaSdkConstants;
@@ -42,7 +44,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.baseModel.RailBaseFragment;
@@ -105,6 +106,8 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
     private Map<String, MultilingualStringValueArray> map;
     private Map<String, Value> yearMap;
     private FragmentManager manager;
+    private String[] subscriptionIds;
+
     private long assetId;
     private int assetType, watchPosition = 0;
     private List<PersonalList> playlist = new ArrayList<>();
@@ -212,6 +215,9 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                     fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                        intent.putExtra("SubscriptionIdBundle", bundle);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         startActivity(intent);
                     }
@@ -296,7 +302,8 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                                 //checkErrors();
                                 checkOnlyDevice(railData);
                             } else {
-                                Toast.makeText(WebEpisodeDetailActivity.this, getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin),
+                                        WebEpisodeDetailActivity.this);
                                 assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
 
                             }
@@ -439,6 +446,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                 if (apiStatus) {
                     if (purchasedStatus) {
                         runOnUiThread(() -> {
+                            getBinding().btnProgressBar.setVisibility(View.GONE);
                             if (playbackControlValue) {
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                 if (watchPosition > 0) {
@@ -458,8 +466,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                         if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
                             runOnUiThread(() -> {
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                checkBuyTextButtonCondition(fileId);
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
@@ -469,8 +476,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                         } else if (vodType.equalsIgnoreCase(EntitlementCheck.TVOD)) {
                             runOnUiThread(() -> {
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+                                checkBuyTextButtonCondition(fileId);
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.white));
 
@@ -488,6 +494,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                 }
             });
         } catch (Exception e) {
+            getBinding().btnProgressBar.setVisibility(View.GONE);
         }
 
        /* new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
@@ -519,6 +526,24 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
 
     }
 
+    private void checkBuyTextButtonCondition(String fileId) {
+        BuyButtonManager.getInstance().getPackages(this, "", fileId, true, (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
+            getBinding().btnProgressBar.setVisibility(View.GONE);
+            PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+            this.subscriptionIds = subscriptionIds;
+            if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.buy_from) + " " + lowestPackagePrice);
+                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+            } else if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+            } else {
+                getBinding().playText.setText(getResources().getString(R.string.buy));
+                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
+
+            }
+        });
+    }
 
     private void isDtvAccountAdded(RailCommonData railCommonData) {
         runOnUiThread(new Runnable() {
@@ -1050,7 +1075,8 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
         viewModel.deleteWatchlist(idfromAssetWatchlist).observe(WebEpisodeDetailActivity.this, aBoolean -> {
             if (aBoolean != null && aBoolean.getStatus()) {
                 isAdded = false;
-                Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist),
+                        WebEpisodeDetailActivity.this);
                 getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
                 getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
             } else {
@@ -1059,7 +1085,8 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                 } else {
                     if (aBoolean != null && aBoolean.getErrorCode().equals(AppLevelConstants.ALREADY_UNFOLLOW_ERROR)) {
                         isAdded = false;
-                        Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist),
+                                WebEpisodeDetailActivity.this);
                         getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
                         getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
                     } else {
@@ -1087,7 +1114,8 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
 
     private void checkAddedCondition(CommonResponse s) {
         if (s.getStatus()) {
-            Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist),
+                                WebEpisodeDetailActivity.this);
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
             getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
@@ -1099,7 +1127,8 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                     showDialog(s.getMessage());
                     break;
                 case AppLevelConstants.ALREADY_FOLLOW_ERROR:
-                    Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist),
+                            WebEpisodeDetailActivity.this);
                     break;
                 default:
                     showDialog(s.getMessage());

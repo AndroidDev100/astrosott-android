@@ -1,4 +1,11 @@
 buildscript {
+    gradle.buildFinished { BuildResult buildResult ->
+        // Beep on finish
+        try {
+            String filename = buildResult.getFailure() ? 'Alarm10.wav' : 'Alarm02.wav'
+            ['powershell', '-c', """(New-Object Media.SoundPlayer "C:\\Windows\\Media\\${filename}").PlaySync();"""].execute()
+        } catch (Throwable ignored) {}
+    }
     repositories {
         maven { url 'https://maven.fabric.io/public' }
 
@@ -9,7 +16,6 @@ buildscript {
 }
 def kotlin_version = "1.4.32"
 def lottieVersion = "3.4.0"
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -64,26 +70,18 @@ android {
     }
     flavorDimensions "default"
 
-//    https://sus8scm21a.execute-api.ap-southeast-1.amazonaws.com/QA/v4/send-otp  (send)
-//
-//    https://mo98wsla9h.execute-api.ap-southeast-1.amazonaws.com/QA/v4/verify-otp  (verify)
-//
-//    https://pqbjim2r2i.execute-api.ap-southeast-1.amazonaws.com/QA/v4/getDtvContactInfo  (getDtvContactInfo)
-//
-//    https://bo18wc4nfl.execute-api.ap-southeast-1.amazonaws.com/qa/v4/getConDetailsByRefAccount  (get Connection Detail by Ref)
-
     productFlavors {
         qa {
             dimension 'default'
-            versionCode 56
-            versionName "21.9.1.5(29)"
-            applicationId "com.astro.stagingsott"
+            versionCode 64
+            versionName "21.11.1.05(26)"
+            applicationId "com.astro.sott"
             buildConfigField "String", "KALTURA_BASE_URL", "\"https://api.sgs1.ott.kaltura.com/api_v3/service/\""
             buildConfigField "int", "KAVA_PARTNER_ID", "3089623"
 
             buildConfigField "String", "KALTURA_API_VERSION", "\"5.8.0\""
             buildConfigField "String", "KALTURA_APPLICATION_NAME", "\"com.kaltura.astro.mobile\""
-            buildConfigField "String", "KALTURA_CLIENT_VERSION", "\"0.0.3\""
+            buildConfigField "String", "KALTURA_CLIENT_VERSION", "\"0.0.5\""
             buildConfigField "String", "KALTURA_PLATFORM", "\"android\""
             buildConfigField "String", "KALTURA_PARTNER_ID", "\"3209\""
 
@@ -100,10 +98,8 @@ android {
         }
         prod {
             dimension 'default'
-            versionCode 1055
-            versionName "21.10.6(02)"
-            /*    versionCode 1
-                versionName "1"*/
+            versionCode 1074
+            versionName "21.11.08(26)"
             applicationId "com.astro.sott"
             buildConfigField "String", "KALTURA_BASE_URL", "\"https://rest-as.ott.kaltura.com/api_v3/service/\""
             buildConfigField "int", "KAVA_PARTNER_ID", "3089633"

@@ -330,7 +330,7 @@ public interface AppConstants {
     public static final String FIREBASE_IOS_PACKAGE = "com.astro.stagingsott";
     public static final String FIREBASE_ANDROID_PACKAGE = "com.astro.stagingsott";
     public static final String FIREBASE_FALLBACK_URL = "https://www.google.com";
-
+    public static final String FIREBASE_DPLNK_FALLBACK_URL = "https://www.sooka.my/en/data/";
 
 
 

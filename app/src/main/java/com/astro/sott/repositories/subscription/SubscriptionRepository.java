@@ -46,7 +46,6 @@ public class SubscriptionRepository {
             if(status1){
                 if(subscriptionListRespone != null){
                     if(subscriptionListRespone.size() > 0){
-
                         connection.postValue(subscriptionListRespone);
                     }else{
                         connection.postValue(subscriptionListRespone);

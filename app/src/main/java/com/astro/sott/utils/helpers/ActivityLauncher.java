@@ -35,7 +35,6 @@ import com.astro.sott.activities.forwardEPG.ForwardedEPGActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.liveChannel.liveChannelManager.LiveChannelManager;
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.mbbaccount.ui.AddMBBAccountActivity;
 import com.astro.sott.activities.mbbaccount.ui.MBBAccountActivity;
 import com.astro.sott.activities.moreListing.ui.ContinueWatchingActivity;
@@ -317,9 +316,6 @@ public class ActivityLauncher {
             case AppLevelConstants.BOX_SET_DETAIL:
                 boxSetScreenCheck(name, railCommonData, layoutPosition, layoutType, detailRailClick);
                 break;
-            case AppLevelConstants.LIVE_CHANNEL:
-                liveplayerScreenCheck(name, railCommonData, layoutPosition, layoutType, detailRailClick);
-                break;
             case AppLevelConstants.SHORT_FILM_ACTIVITY:
                 break;
             case AppLevelConstants.WEB_SERIES_DESCCRIPTION_ACTIVITY:
@@ -547,12 +543,14 @@ public class ActivityLauncher {
 
                     }
                 } else {
-                    Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                    ToastHandler.show("Asset not Found",
+                            this.activity);
                 }
 
             });
         } else {
-            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+            ToastHandler.show("Asset not Found",
+                    this.activity);
 
         }
 
@@ -618,14 +616,17 @@ public class ActivityLauncher {
                         intent.putExtra("asset_ids", railCommonData1.getObject().getId());
                         activity.startActivity(intent);
                     } else {
-                        Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                        ToastHandler.show("Asset not Found",
+                                this.activity);
                     }
                 });
-            }else {
-                Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+            } else {
+                ToastHandler.show("Asset not Found",
+                        this.activity);
             }
         } catch (Exception e) {
-            Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+            ToastHandler.show("Asset not Found",
+                    this.activity);
 
         }
         /*new LiveChannelManager().getLiveProgram(activity, itemValue, asset -> {
@@ -670,7 +671,8 @@ public class ActivityLauncher {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(activity, activity.getResources().getString(R.string.catchup_error), Toast.LENGTH_SHORT).show();
+                                    ToastHandler.show( activity.getResources().getString(R.string.catchup_error),
+                                            activity);
                                 }
                             });
                             //   new ActivityLauncher(activity).catchUpActivity(activity, CatchupActivity.class, railCommonData);
@@ -728,7 +730,9 @@ public class ActivityLauncher {
                 source.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(activity, "Asset not Found", Toast.LENGTH_SHORT).show();
+                        ToastHandler.show( "Asset not Found",
+                                activity);
+
                     }
                 });
             }
@@ -824,13 +828,6 @@ public class ActivityLauncher {
     }
 
 
-    public void loginActivity(Activity source, Class<LoginActivity> destination,
-                              int pos, String s) {
-        Intent intent = new Intent(source, destination);
-        intent.putExtra("position", pos);
-        intent.putExtra("screenName", s);
-        activity.startActivity(intent);
-    }
 
     public void subscriptionActivity(Activity
                                              source, Class<SubscriptionActivity> destination, int pos) {
