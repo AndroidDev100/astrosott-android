@@ -199,7 +199,6 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                 resources.getString(R.string.email_unavailable) + "",
                 this@SignUpActivity
             );
-
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             // updateUI(null);
